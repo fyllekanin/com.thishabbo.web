@@ -1,0 +1,124 @@
+<?php
+
+namespace App\Helpers;
+
+use App\EloquentModels\Forum\Category;
+use App\EloquentModels\Forum\ForumPermission;
+use App\EloquentModels\Group;
+use Exception;
+use Illuminate\Support\Facades\Cache;
+
+class PermissionHelper {
+
+    private static $superAdmins = [1];
+
+    public static function isSuperAdmin ($userId) {
+        return in_array($userId, self::$superAdmins);
+    }
+
+    public static function getSuperAdmins() {
+        return self::$superAdmins;
+    }
+
+    public static function haveGroupOption ($userId, $option) {
+        $user = UserHelper::getUserFromId($userId);
+        $groups = $user->userId > 0 ? $user->groups : [];
+
+        foreach ($groups as $group) {
+            if ($group->options & $option) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static function haveForumOption ($categoryId, $option) {
+        $category = Category::find($categoryId);
+        return $category && $category->options & $option;
+    }
+
+    public static function haveForumPermission ($userId, $permission, $categoryId) {
+        $cacheString = 'forum-permission-' . $userId . '-' . $permission . '-' . $categoryId;
+        if (Cache::has($cacheString)) {
+            return Cache::get($cacheString);
+        }
+        if (self::isSuperAdmin($userId)) {
+            return true;
+        }
+
+        $user = UserHelper::getUserFromId($userId);
+        if (!$user) {
+            return false;
+        }
+
+        $result = ForumPermission::where('categoryId', $categoryId)
+                ->whereIn('groupId', $user->groupIds)
+                ->whereRaw('(permissions & ' . $permission . ')')
+                ->count() > 0;
+
+        Cache::add($cacheString, $result, 10);
+        return $result;
+    }
+
+    public static function haveStaffPermission ($userId, $permission) {
+        return self::checkPermission('staffPermissions', $userId, $permission);
+    }
+
+    public static function haveForumPermissionWithException ($userId, $permission, $categoryId, $message, $status = 403) {
+        if (!self::haveForumPermission($userId, $permission, $categoryId)) {
+            abort($status, $message);
+        }
+    }
+
+    public static function haveAdminPermission ($userId, $permission) {
+        return self::checkPermission('adminPermissions', $userId, $permission);
+    }
+
+    public static function nameToNumberOptions ($category) {
+        $options = 0;
+        $categoryOptions = (array)$category->options;
+
+        foreach (ConfigHelper::getForumOptionsConfig() as $key => $value) {
+            if (isset($categoryOptions[$key]) && $categoryOptions[$key]) {
+                $options += $value;
+            }
+        }
+        return $options;
+    }
+
+    public static function getStaffMiddleware ($permission) {
+        if (is_array($permission)) {
+            $permissions = implode('|', $permission);
+            return ['staff_permission.check:' . $permissions];
+        }
+        return ['staff_permission.check:' . $permission];
+    }
+
+    public static function getAdminMiddleware ($permission) {
+        if (is_array($permission)) {
+            $permissions = implode('|', $permission);
+            return ['admin_permission.check:' . $permissions];
+        }
+        return ['admin_permission.check:' . $permission];
+    }
+
+    private static function checkPermission ($type, $userId, $permission) {
+        $availableTypes = ['adminPermissions', 'staffPermissions'];
+        if (self::isSuperAdmin($userId)) {
+            return true;
+        }
+
+        $user = UserHelper::getUserFromId($userId);
+        if ($user->userId == 0) {
+            return false;
+        }
+
+        if (!in_array($type, $availableTypes)) {
+            throw new Exception('Not a viable type');
+        }
+
+        return Group::whereIn('groupId', $user->groupIds)
+                ->whereRaw('(' . $type . ' & ' . $permission . ')')
+                ->count() > 0;
+    }
+}

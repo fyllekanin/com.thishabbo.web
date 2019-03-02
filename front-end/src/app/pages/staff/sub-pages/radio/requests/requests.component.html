@@ -1,0 +1,14 @@
+<div *ngIf="requests.length === 0">
+    <app-title [title]="'No requests'"></app-title>
+    <app-content>
+        <app-info-box [model]="infoModel"></app-info-box>
+    </app-content>
+</div>
+<div *ngIf="requests.length > 0">
+    <div *ngFor="let item of requests">
+        <app-title [title]="getTitle(item)"></app-title>
+        <app-content>
+            {{item.content}}
+        </app-content>
+    </div>
+</div>

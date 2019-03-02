@@ -1,0 +1,12 @@
+<app-betting-stats [stats]="stats"></app-betting-stats>
+
+<app-table [config]="trendingTable" (onAction)="onAction($event)"></app-table>
+
+<div *ngFor="let category of categories">
+    <app-table [isContracted]="isContracted(category.betCategoryId)"
+               [tabs]="toggleTab"
+               [config]="getTableConfig(category)"
+               (onTabClick)="onToggle(category.betCategoryId)"
+               (onAction)="onAction($event, category.betCategoryId)"
+    ></app-table>
+</div>

@@ -1,0 +1,11 @@
+<div *ngIf="mainCategories.length > 0">
+    <app-table *ngFor="let item of mainCategories; let first = first;"
+       [config]="getTableConfigFor(item)"
+       [tabs]="first ? tabs : []"
+       (onTabClick)="onTabClick($event)"
+       (onAction)="onAction($event)">
+    </app-table>
+</div>
+<div *ngIf="mainCategories.length === 0">
+    <app-title [title]="'Categories'" [tabs]="tabs"></app-title>
+</div>

@@ -1,0 +1,18 @@
+<select [(ngModel)]="historyTimestamp">
+    <option disabled [value]="-1">Select...</option>
+    <option *ngFor="let item of edits" [value]="item.timestamp">
+        {{item.label}}
+    </option>
+</select>
+
+<div *ngIf="edit">
+    <details>
+        <summary>Before</summary>
+        <div [innerHTML]="edit.before | safeHtml"></div>
+    </details>
+
+    <details>
+        <summary>After</summary>
+        <div [innerHTML]="edit.after | safeHtml"></div>
+    </details>
+</div>

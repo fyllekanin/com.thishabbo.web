@@ -1,0 +1,31 @@
+:host {
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,.18), inset 0 0 0 2px rgba(255,255,255,.18), 0 2px 0 rgba(0, 0, 0, 0.09);
+    color: white;
+    padding: 9px;
+    float: left;
+    margin-bottom: 10px;
+    display: block;
+    width: 100%;
+    position: relative;
+}
+
+:host(.warning) {
+    background: -webkit-linear-gradient(top, #bb4c4c 0, #ad6262 100%);
+}
+
+:host(.alert) {
+    background: -webkit-linear-gradient(top,#f9ab81 0,#e29976 100%);;
+}
+
+:host(.info) {
+    background: -webkit-linear-gradient(top,#6398fd 0,#658bd4 100%);
+}
+
+.closable {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 1.1rem;
+    opacity: 0.8;
+    cursor: pointer;
+}

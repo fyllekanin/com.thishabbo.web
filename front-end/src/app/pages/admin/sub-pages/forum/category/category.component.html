@@ -1,0 +1,83 @@
+<app-title [title]="title" [tabs]="tabs" (onTabClick)="onTabClick($event)"></app-title>
+<app-content>
+    <div class="grid-container full">
+        <div class="grid-x margin-x">
+            <div class="cell small-6">
+                <div class="label">Title</div>
+                <input name="category-text" type="text" [(ngModel)]="category.title"/>
+            </div>
+            <div class="cell small-6">
+                <div class="label">Parent</div>
+                <select [(ngModel)]="parentId" name="parent">
+                    <option selected="selected" value="-1">None</option>
+                    <option *ngFor="let item of categories" value="{{item.categoryId}}">{{item.title}}</option>
+                </select>
+            </div>
+            <div class="cell small-6">
+                <div class="label">Description</div>
+                <input type="text" [(ngModel)]="category.description"/>
+            </div>
+            <div class="cell small-6">
+                <div class="label">Display Order <em>(Lower = higher up)</em></div>
+                <input type="number" [(ngModel)]="category.displayOrder"/>
+            </div>
+            <div class="cell small-6">
+                <div class="label">Template</div>
+                <select [(ngModel)]="template" name="template">
+                    <option selected="selected" value="DEFAULT">Default</option>
+                    <option value="QUEST">Quest</option>
+                    <option value="MEDIA">Media</option>
+                </select>
+            </div>
+            <div class="cell small-6">
+                <div class="label">Is Hidden</div>
+                <select [(ngModel)]="category.isHidden" name="isHidden">
+                    <option [ngValue]="false">No</option>
+                    <option [ngValue]="true">Yes</option>
+                </select>
+            </div>
+            <div class="cell small-6">
+                <div class="label">Is Open</div>
+                <select [(ngModel)]="category.isOpen" name="isOpen">
+                    <option [ngValue]="false">No</option>
+                    <option [ngValue]="true">Yes</option>
+                </select>
+            </div>
+            <div class="cell small-6">
+                <div class="label">Link <em>(Clicking the category header leads here)</em></div>
+                <input type="text" [(ngModel)]="category.link"/>
+            </div>
+        </div>
+    </div>
+</app-content>
+
+<app-title
+    [title]="'Options'">
+</app-title>
+<app-content>
+    <label class="checkbox-container">
+        Threads need approval? <em>(Tick if yes)</em>
+        <input type="checkbox" [(ngModel)]="options.threadsNeedApproval">
+        <span class="checkmark"></span>
+    </label>
+    <label class="checkbox-container">
+        Threads need a prefix? <em>(Tick if yes)</em>
+        <input type="checkbox" [(ngModel)]="options.prefixMandatory">
+        <span class="checkmark"></span>
+    </label>    
+    <label class="checkbox-container">
+       Posts don't count <em>(Tick if yes)</em>
+        <input type="checkbox" [(ngModel)]="options.postsDontCount">
+        <span class="checkmark"></span>
+    </label>
+    <label class="checkbox-container">
+        Threads can have polls <em>(Tick if yes)</em>
+        <input type="checkbox" [(ngModel)]="options.threadsCanHavePolls">
+        <span class="checkmark"></span>
+    </label>
+    <label class="checkbox-container">
+        Is landing place for report posts <em>(Tick if yes)</em>
+        <input type="checkbox" [(ngModel)]="options.reportPostsGoHere">
+        <span class="checkmark"></span>
+    </label>
+</app-content>

@@ -1,0 +1,14 @@
+<app-title [title]="'Staff List'" [tabs]="tabs" (onTabClick)="onSave()"></app-title>
+<app-content>
+    <div class="grid-container full">
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-6">
+                <app-form-select [(value)]="selectedGroup" [items]="selectableGroups"></app-form-select>
+            </div>
+            <div class="cell small-6">
+                <div class="cell small-6"><button appButton (click)="addGroup()">Add Group</button></div>
+            </div>
+        </div>
+    </div>
+</app-content>
+<app-table [config]="tableConfig" (onAction)="onRemove($event)"></app-table>

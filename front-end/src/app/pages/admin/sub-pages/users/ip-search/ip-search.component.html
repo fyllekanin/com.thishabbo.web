@@ -1,0 +1,17 @@
+<app-title [title]="'IP Search'"></app-title>
+<app-content>
+    Tool to find IP address of a user or find users under the same IP address, you can search both by
+    IP address and nickname, leave a field empty to not include it in  your search.
+    <div class="grid-container content-margin">
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-6">
+                <input type="text" placeholder="IP Address" [(ngModel)]="ipAddress" (ngModelChange)="onFilter()"/>
+            </div>
+            <div class="cell small-6">
+                <input type="text" placeholder="nickname" [(ngModel)]="nickname" (ngModelChange)="onFilter()"/>
+            </div>
+        </div>
+    </div>
+</app-content>
+
+<app-table [config]="tableConfig"></app-table>

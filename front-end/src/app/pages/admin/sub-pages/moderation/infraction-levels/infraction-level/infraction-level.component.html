@@ -1,0 +1,26 @@
+<app-title [title]="title" [tabs]="tabs" (onTabClick)="onTabClick($event)"></app-title>
+<app-content>
+    <div class="grid-container full">
+        <div class="grid-x margin-x">
+            <div class="cell small-6">
+                <div class="label">Title:</div>
+                <input name="title" [(ngModel)]="model.title" type="text" placeholder="">
+            </div>
+            <div class="cell small-6">
+                <div class="label">Points:</div>
+                <input name="ponts" [(ngModel)]="model.points" type="number" placeholder="">
+            </div>
+            <div class="cell small-6">
+                <div class="label">Life Time: <em>(days)</em></div>
+                <input name="password" [(ngModel)]="model.lifeTime" type="number" [disabled]="isPersisted">
+            </div>
+            <div class="cell small-6">
+                <label class="checkbox-container">
+                    Is Persisted <em>(One year)</em>:
+                    <input type="checkbox" [ngModel]="isPersisted" (ngModelChange)="onIsPersistedToggle()">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+</app-content>

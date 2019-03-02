@@ -1,0 +1,120 @@
+.post-nickname {
+    text-align: center;
+    padding-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.post-content {
+    padding: 0 0 0 10px;
+    position: relative;
+    min-height: 19rem;
+}
+
+.signature {
+    padding: 0.5rem 0 0 0;
+    margin-left: 2rem;
+    position: relative;
+    border-top: 1px solid #eaeaea;
+}
+
+.inner-content {
+    min-height: 0;
+}
+
+.user {
+    background-color: rgba(241, 241, 241, 0.32);
+    padding: 4px;
+}
+
+img {
+    border-radius: 3px;
+}
+
+.tools {
+    margin-top: 1rem;
+    padding: 1rem 1rem;
+    background-color: rgba(255, 255, 255, 0.32);
+    box-shadow: inset 0 0 0 1px rgba(191, 191, 191, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.39), 0 2px 0 0 rgba(167, 167, 167, 0.123);
+    width: 100%;
+}
+
+.user-tools {
+    float: left;
+}
+
+.post-tools {
+    float: right;
+}
+
+.post-tools i {
+    font-size: 0.8rem;
+    margin: 0 0.5rem;
+}
+
+.user-tools i {
+    font-size: 0.8rem;
+    margin: 0 0.5rem;
+}
+
+.default {
+    text-align: center;
+    font-size: 5rem;
+    min-height: 9rem;
+}
+
+.post-content .post-quote {
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.32);
+    box-shadow: inset 0 0 0 1px rgba(191, 191, 191, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.39), 0 2px 0 0 rgba(167, 167, 167, 0.123);
+}
+
+.post-likers {
+    background: #fbfbfb;
+    border-radius: 2px;
+    box-shadow: inset 0 1px 2px rgba(197, 197, 197, 0.19);
+    margin-left: 10%;
+    margin-top: 1rem;
+    min-height: 2rem;
+    padding: 0.8rem;
+    text-align: center;
+}
+
+.post-bit {
+    color: #7d7d7d;
+}
+
+.post-bit-row {
+    background: rgba(165, 161, 161, .02);
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, .02);
+    color: #8c8a8a;
+    padding: 0.4rem;
+    text-shadow: #fff 1px 1px 0;
+}
+
+.avatar {
+    text-align: center;
+    padding-bottom: 0.5rem;
+}
+
+.mention-user {
+    color: #85c7ff;
+}
+
+.mention-group {
+    color: #5592c5;
+}
+
+.post-userbars {
+    margin: 0.5rem 0;
+}
+
+.post-avatar {
+    float: left;
+    width: 220px;
+    position: absolute;
+}
+
+.post-content-container {
+    margin-left: 220px;
+    width: 100%;
+}

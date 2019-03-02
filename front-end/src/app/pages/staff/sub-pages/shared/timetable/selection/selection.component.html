@@ -1,0 +1,8 @@
+<strong>User</strong> <em> (Leave empty for yourself)</em>
+<input type="text" placeholder="nickname..." [(ngModel)]="nickname" *ngIf="canBookForOther"/>
+<div *ngIf="canSelectEvent" class="event-type">
+    <strong>Select event</strong>
+    <select [(ngModel)]="eventId">
+        <option *ngFor="let item of events" [value]="item.eventId">{{item.name}}</option>
+    </select>
+</div>

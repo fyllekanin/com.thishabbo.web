@@ -1,0 +1,21 @@
+a {
+    display: block;
+    width: 100%;
+    font-size: 11px;
+    padding: 8px 10px 8px 6px;
+    border-bottom: 1px solid rgb(245, 243, 243);
+    text-decoration: none;
+    color: #179bfb;
+}
+
+a:last-child {
+    border-bottom: none;
+}
+
+a:hover {
+    cursor: pointer;
+}
+
+i {
+    margin-right: 0.5rem;
+}

@@ -1,0 +1,106 @@
+:host {
+    display: table;
+    width: 100%;
+}
+
+.wrapper {
+    width: 100%;
+    padding: 0.65rem 0.75rem;
+    color: #081016;
+    font-weight: bold;
+    font-size: 11px;
+    position: relative;
+    background-color: #ffffff;
+    border: 1px solid #cacaca;
+    border-top-left-radius: 0.2rem;
+    border-top-right-radius: 0.2rem;
+    border-bottom: 1px solid #e5e5e5;
+    margin-bottom: -1px;
+}
+
+.sub-title::before {
+    content: ' (';
+}
+
+.sub-title::after {
+    content: ')';
+}
+
+.sub-title {
+    font-size: 0.7rem;
+    font-weight: normal;
+    font-style: italic;
+}
+
+a {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 0.7rem;
+    height: 100%;
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #03355f7a;
+    opacity: 0.6;
+    transition: 0.5s;
+    max-width: 13rem;
+}
+
+a:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.tab {
+    border-right: 1px solid #e5e5e5;
+    border-top: 1px solid #e5e5e5;
+    border-left: 1px solid #e5e5e5;
+    margin: 0 0 0 7px;
+    padding: 5px;
+    font-size: 11px;
+    float:right;
+    color: #757575;
+    cursor: pointer;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.tab:hover {
+    cursor: pointer;
+    background-color: rgb(245, 245, 245);
+}
+
+.checkbox {
+    float: right;
+}
+
+.active {
+    font-weight: bold;
+    box-shadow: 1px 0 5px -1px rgba(0, 0, 0, 0.75);
+}
+
+.blue-top {
+    border-top: 3px solid #139bfb;
+}
+
+.pink-top {
+    border-top: 3px solid #ee6db7;
+}
+
+.green-top {
+    border-top: 3px solid #5ba23e;
+}
+
+.red-top {
+    border-top: 3px solid #ad6262;
+}

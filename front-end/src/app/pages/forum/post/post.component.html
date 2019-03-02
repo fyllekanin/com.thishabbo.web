@@ -1,0 +1,108 @@
+<div class="grid-container full position-relative">
+    <div class="grid-x">
+        <div class="post-avatar">
+            <div class="post-nickname">
+                <a [routerLink]="['/user/profile/', user.nickname]">
+                    <span [style]="user.styling | safeStyle">{{user.nickname}}</span>
+                </a>
+            </div>
+            <div class="avatar">
+                <img *ngIf="useAvatarImage" appLazyLoad [image]="userAvatarUrl" (error)="onAvatarError()"/>
+            </div>
+            <div class="default" *ngIf="!useAvatarImage">
+                <em class="fa fa-user"></em>
+            </div>
+            <div class="post-userbars">
+                <div *ngFor="let userbar of user.userBars" [style]="userbar.styling | safeStyle">
+                    {{userbar.name}}
+                </div>
+            </div>
+            <div class="post-bit" *ngIf="user.createdAt">
+                <div class="post-bit-row">
+                    <strong>Joined:</strong>
+                    <div class="float-right">
+                        {{longDay(user.createdAt)}}
+                    </div>
+                </div>
+            </div>
+            <div class="post-bit" *ngIf="user.posts">
+                <div class="post-bit-row">
+                    <strong>Posts:</strong>
+                    <div class="float-right">
+                        {{user.posts | number: '1.'}}
+                    </div>
+                </div>
+            </div>
+            <div class="post-bit" *ngIf="user.likes">
+                <div class="post-bit-row">
+                    <strong>Likes:</strong>
+                    <div class="float-right">
+                        {{user.likes | number: '1.'}}
+                    </div>
+                </div>
+            </div>
+            <div class="post-bit" *ngFor="let item of socials">
+                <div class="post-bit-row">
+                    <strong>{{item.label}}:</strong>
+                    <div class="float-right">
+                        {{item.value}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="post-content-container">
+            <div *ngIf="isInEditMode" class="post-content">
+                <app-editor #editor
+                            [buttons]="editorButtons"
+                            [content]="content"
+                            (onTabClick)="onButtonClick($event)">
+                </app-editor>
+            </div>
+            <div *ngIf="!isInEditMode" class="post-content" [innerHTML]="parsedContent | safeHtml"></div>
+            <div class="post-likers" *ngIf="haveLikers">
+                <span *ngFor="let item of visibleLikers; let first = first;"><span *ngIf="!first">, </span>{{item.nickname}}</span>
+                <span *ngIf="moreLikerNames.length">
+                    <div class="tooltips">
+                        and {{moreLikerNames.length}} more like this post!
+                        <span>
+                            <div *ngFor="let like of moreLikerNames">
+                                {{like.nickname}}
+                            </div>
+                        </span>
+                    </div>
+                </span>
+                <span *ngIf="!moreLikerNames.length">
+                    like this post!
+                </span>
+            </div>
+            <div class="signature" *ngIf="!ignoreSignatures && signature" [innerHTML]="signature | safeHtml"></div>
+        </div>
+        <div class="tools">
+            <div class="user-tools">
+                <div *ngIf="canInteractWithPost" (click)="reportPost()" tooltip="Report Post">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div *ngIf="canInteractWithPost" tooltip="Message User">
+                    <i class="fa fa-envelope"></i>
+                </div>
+                <div *ngIf="canInfractUser" (click)="infract()" tooltip="Give Warning / Infraction">
+                    <i class="fa fa-bell"></i>
+                </div>
+            </div>
+            <div class="post-tools">
+                <div *ngIf="canInteractWithPost && !haveLiked" (click)="likePost()" tooltip="Like the post!">
+                    <i class="fa fa-thumbs-up"></i>
+                </div>
+                <div *ngIf="canInteractWithPost && haveLiked" (click)="unlikePost()" tooltip="Unlike the post!">
+                    <i class="fa fa-thumbs-down"></i>
+                </div>
+                <div *ngIf="canEditPost" (click)="editPost()" tooltip="Edit post">
+                    <i class="fas fa-edit"></i>
+                </div>
+                <div *ngIf="canPost" (click)="quotePost()" tooltip="Quote the post">
+                    <i class="fa fa-quote-right"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,104 @@
+:host {
+    display: block;
+    border: 1px solid #cacaca !important;
+    width: 100%;
+    background: #ffffff;
+    margin-bottom: 1rem;
+    padding: 2px;
+    box-shadow: 0 0 0 1px #0e0e0e00, 0 3px 0 0 rgba(0, 0, 0, 0.03);
+    min-height: 319px;
+}
+
+.image {
+    background-repeat: no-repeat;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+}
+
+.inner-image {
+    height: 9rem;
+    width: 100%;
+    box-shadow: rgba(0, 0, 0, 0.22) 0 0 0 1px inset, rgba(255, 255, 255, 0.34) 0 0 0 2px inset, rgba(0, 0, 0, 0.07) 0 2px 0;
+    position: relative;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+}
+
+.badge {
+    position: absolute;
+    bottom: -0.2rem;
+    right: 0;
+    padding: 0.5rem;
+    background-color: #ffffff;
+    border-top-left-radius: 0.2rem;
+}
+
+.container {
+    padding: 10px;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.title {
+    color: #274351 !important;
+    font-weight: bold;
+    display: inline-block;
+    font-size: 13px;
+    padding-bottom: 3px;
+}
+
+.tags {
+    margin: 0 0 3px 0;
+    top: 0;
+    z-index: 1;
+    font-size: 11px;
+    position: relative;
+}
+
+.tag {
+    color: #fff;
+    display: inline-block;
+    font-size: .6rem;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.18), inset 0 0 0 2px rgba(255,255,255,0.18), 0 2px 0 0 rgba(0,0,0,0.1);
+    font-weight: 700;
+    padding: 6px;
+    border-radius: 3px;
+    margin: 0 4px 0 0;
+    background-image: url(/assets/images/boxtitlebg_trans.png);
+}
+
+.AVAILABLE {
+    background-color: #64c667;
+}
+
+.EASY {
+    background-color: #d5e028;
+}
+
+.FREE {
+    background-color: #3184ae;
+}
+
+.CLOSED {
+    background-color: #ee7c7b;
+}
+
+.content {
+    margin: 5px 0px 5px 0px;
+    width: 100%;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 67px;
+}
+
+.information {
+    padding-top: 0.4rem;
+    border-top: 1px solid #dcdcdc;
+}
+
+span {
+    margin-left: 0.2rem;
+}

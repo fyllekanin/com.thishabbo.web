@@ -1,0 +1,11 @@
+<app-editor #editor
+    [title]="'Signature'"
+    [content]="signature"
+    [buttons]="[saveButton]"
+    (onTabClick)="onSave()">
+</app-editor>
+
+<app-title [title]="'Current'"></app-title>
+<app-content>
+    <div [innerHTML]="parsedSignature | safeHtml"></div>
+</app-content>

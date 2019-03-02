@@ -1,0 +1,7 @@
+.vscode
+.vim.exe.stackdump
+.idea/*
+.idea/workspace.xml
+target
+target/*
+rest/composer.lock

@@ -1,0 +1,24 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "outDir": "../out-tsc/app",
+        "module": "es2015",
+        "types": [
+            "node"
+        ],
+        "alwaysStrict": true,
+        "baseUrl": "./",
+        "paths": {
+            "core/*": [
+                "app/core/*"
+            ],
+            "shared/*": [
+                "app/shared/*"
+            ]
+        }
+    },
+    "exclude": [
+        "src/test.ts",
+        "**/*.spec.ts"
+    ]
+}

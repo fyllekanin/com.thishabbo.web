@@ -1,0 +1,33 @@
+<div class="grid-container margin-bottom forum-home">
+    <div class="grid-x grid-margin-x">
+        <div class="cell small-6">
+            <div class="title" [routerLink]="['/forum', 'category', categoryId, 'page', 1]">{{title}}</div>
+            <div class="description">{{description}}</div>
+            <div *ngIf="children.length > 0" class="children">
+                <span *ngFor="let child of children; let index = index;">
+                    {{index > 0 ? ', ' : '' }}<a [routerLink]="['/forum', 'category', child.categoryId, 'page', 1]">{{child.title}}</a>
+                </span>
+            </div>
+        </div>
+        <div *ngIf="lastPost">
+            <img appUserProfile [info]="lastPostInfo"/>
+        </div>
+        <div *ngIf="lastPost" class="cell small-4">
+            <a class="thread-name" [routerLink]="['/forum', 'thread', lastPost.threadId, 'page', 1]">
+                <span *ngIf="lastPost.prefix" [style]="lastPost.prefix.style | safeStyle">
+                    {{lastPost.prefix.text}} &#xbb;
+                </span>
+                {{lastPost.threadTitle}}
+            </a>
+            <div class="nickname">
+                <a [routerLink]="['/user/profile/', lastPost.user.nickname]">
+                    <span [style]="lastPost.user.styling | safeStyle">{{lastPost.user.nickname}}</span>
+                </a>
+            </div>
+            <div class="time-ago">{{timeAgo(lastPost.createdAt)}}</div>
+        </div>
+        <div *ngIf="!lastPost" class="cell small-3">
+            <strong>No threads yet, oops!</strong>
+        </div>
+    </div>
+</div>

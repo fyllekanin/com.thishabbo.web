@@ -1,0 +1,11 @@
+<app-title [title]="'Cover Photo'" [tabs]="tabs" (onTabClick)="onSave()"></app-title>
+<app-content>
+    <div class="grid-container">
+        <div class="grid-x margin-x">
+            <div class="cell small-6 position-relative">
+                <strong>Upload new cover photo</strong>
+                <input #cover accept="image/*" type="file"/>
+            </div>
+        </div>
+    </div>
+</app-content>

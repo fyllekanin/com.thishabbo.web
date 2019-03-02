@@ -1,0 +1,19 @@
+<strong>Reason</strong> <br />
+<input type="text" [(ngModel)]="reason" />
+
+<strong>Infraction Level</strong>
+<select [(ngModel)]="infractionLevelId">
+    <option [value]="0" disabled="disabled">Choose level</option>
+    <option *ngFor="let item of levels" [value]="item.infractionLevelId">
+        {{item.title}}
+    </option>
+</select>
+
+<details>
+    <summary>Last 5 infractions</summary>
+    <div>
+        <li *ngFor="let item of history">
+            <strong>{{item.title}}</strong> by {{item.user.nickname}} - {{getTime(item.createdAt)}}
+        </li>
+    </div>
+</details>

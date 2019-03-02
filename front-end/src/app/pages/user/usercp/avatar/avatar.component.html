@@ -1,0 +1,15 @@
+<app-title [title]="'Avatar'" [tabs]="tabs" (onTabClick)="onSave()"></app-title>
+<app-content>
+    <div class="grid-container">
+        <div class="grid-x margin-x">
+            <div class="cell small-12 position-relative">
+                <strong>Max Width:</strong> {{avatarSize.width}}
+                <strong>Max Height:</strong> {{avatarSize.height}}
+            </div>
+            <div class="cell small-6 position-relative">
+                <strong>Upload new avatar</strong>
+                <input #avatar accept="image/*" type="file"/>
+            </div>
+        </div>
+    </div>
+</app-content>

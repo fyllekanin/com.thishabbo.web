@@ -1,0 +1,27 @@
+<div class="grid-container full">
+    <div class="grid-x margin-x">
+        <div class="cell small-8">
+            <app-title [title]="'Fast Typer'"></app-title>
+            <app-content>
+                <div class="game-content" [innerHTML]="gameContent | safeHtml"></div>
+            </app-content>
+
+            <app-title [title]="'Typing Area'" [tabs]="tabs" (onTabClick)="startGame()"></app-title>
+            <app-content>
+                <input id="gameInput" class="game-input" type="text" [(ngModel)]="gameInput" (input)="checkContent()" [disabled]="!isGameRunning" />
+                <div class="timer" *ngIf="countDownGoing"><h3>{{timer}}</h3></div>
+            </app-content>
+        </div>
+        <div class="cell small-4">
+            <app-title [title]="'Highscore'"></app-title>
+            <app-content>
+                <div class="highscore-row" *ngFor="let highscore of highscoreList; let i = index;">
+                    {{i + 1}}.
+                    <span [style]="highscore.user.styling | safeStyle">{{highscore.user.nickname}}</span>
+
+                    <span class="float-right">{{highscore.score}} wpm</span>
+                </div>
+            </app-content>
+        </div>
+    </div>
+</div>

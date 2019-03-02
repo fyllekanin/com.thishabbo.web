@@ -1,0 +1,47 @@
+<div class="logo"></div>
+
+<div class="stats-box">
+    <div class="radio-box">
+        <div class="album-art" [style.background]="'url(' + albumArt + ')' | safeStyle"></div>
+        <div class="radio-info">
+            <div class="inner-box">
+                <div class="dj-position"><i class="fas fa-user"></i> <b> {{nickname}}</b>
+                    <div class="likes"><i class="fas fa-heart"></i> {{likes}}</div>
+                </div>
+                <div class="dj-position song"><i class="fas fa-headphones"></i>
+                    <marquee class="marquee-chat">{{song}}</marquee>
+                </div>
+                <div class="dj-position next-dj"><i class="fas fa-arrow-right"></i> <b> Dez</b></div>
+                <div class="dj-position"><i class="fas fa-comment"></i>
+                    <marquee class="marquee-chat-radio">{{djSays}}</marquee>
+                </div>
+            </div>
+            <div class="radio-buttons">
+                <div class="radio-button blue-button"(click)="openRequest()"><i class="fas fa-comment icon-position"></i></div>
+                <div class="radio-button red-button" (click)="likeDj()"><i class="fas fa-heart icon-position"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="events-box">
+        <div class="event-info">
+            <div class="event-buttons">
+                <div class="events-box-button green-button"><i class="fas fa-arrow-up icon-position-events"></i></div>
+                <div class="events-box-button red-button"><i class="fas fa-heart icon-position-events"></i></div>
+            </div>
+            <div class="inner-box">
+                <div class="event-name"><i class="fas fa-user"></i> <b> Dez</b> <i> (122)</i><br/>
+                    <i class="fas fa-users"></i> Dangerzone
+                </div>
+                <div class="event-name event-position"><i class="fas fa-arrow-right"></i> <b> Dez</b> <i> (122)</i><br/>
+                    <i class="fas fa-arrow-right"></i>
+                    Banzai Cart Races
+                </div>
+                <div class="djInfo current-event"><i class="fas fa-comment"></i>
+                    <marquee class="marquee-chat-radio">Come on down to the event, come on!</marquee>
+                </div>
+            </div>
+        </div>
+        <div class="event-art"></div>
+    </div>
+</div>

@@ -1,0 +1,12 @@
+<div>Enter the nickname of the user you wish to merge with.</div>
+<div>
+    <strong>User: </strong>
+    <input type="text" [(ngModel)]="otherNickname" />
+</div>
+<div>
+    <label class="checkbox-container">
+        Keep {{ nickname }}?
+        <input type="checkbox" [(ngModel)]="swapUsers">
+        <span class="checkmark"></span>
+    </label>
+</div>

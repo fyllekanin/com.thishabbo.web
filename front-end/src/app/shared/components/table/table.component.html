@@ -1,0 +1,50 @@
+<div *ngIf="isSet">
+    <app-title
+        [title]="title"
+        [tabs]="tabs"
+        [top]="topBorder"
+        (onTabClick)="tabClick($event)">
+    </app-title>
+    <app-content [isContracted]="isContracted">
+        <div class="grid-container full position-relative filter" *ngIf="filterConfigs.length > 0">
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-6" *ngFor="let filterConfig of filterConfigs">
+                    <div class="label" *ngIf="filterConfig.title">{{filterConfig.title}}</div>
+                    <input type="text" name="filter" placeholder="{{filterConfig.placeholder}}"
+                           [(ngModel)]="filterConfig.value"
+                           (input)="onFilterChange()"/>
+                </div>
+            </div>
+        </div>
+        <table>
+            <tr>
+                <th *ngFor="let header of headers" [ngStyle]="{'width': header.width || 'auto'}">{{header.title}}</th>
+                <th *ngIf="haveActions" style="min-width: 150px;">Actions</th>
+            </tr>
+            <tr *ngFor="let row of rows">
+                <td *ngFor="let cell of row.cells">
+                    <div *ngIf="cell.statusBox">
+                        <span [ngClass]="cell.status ? 'status-good' : 'status-bad'">
+                            {{cell.title}}
+                        </span>
+                    </div>
+                    <div *ngIf="cell.isEditable">
+                        <input class="editable" [(ngModel)]="cell.value">
+                    </div>
+                    <div *ngIf="!cell.statusBox && !cell.isEditable">
+                        <div *ngIf="cell.innerHTML" [innerHTML]="cell.title | safeHtml"></div>
+                        <div *ngIf="!cell.innerHTML">
+                            {{cell.title}}
+                        </div>
+                    </div>
+                </td>
+                <td *ngIf="haveActions">
+                    <select (change)="onChange(row, $event)">
+                        <option [value]="null" disabled="disabled">{{ row.actionsPlaceholder || 'Choose' }}</option>
+                        <option *ngFor="let item of row.actions" [value]="item.value">{{item.title}}</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </app-content>
+</div>

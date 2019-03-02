@@ -1,0 +1,7 @@
+<app-title [title]="title" [tabs]="tabs" (onTabClick)="onTabClick($event)"></app-title>
+<app-content>
+    <div class="label">Nickname</div>
+    <input name="entry-name" type="text" [(ngModel)]="model.nickname" />
+    <div class="label">Reason</div>
+    <input name="entry-reason" type="text" [(ngModel)]="model.reason" />
+</app-content>

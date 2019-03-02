@@ -1,0 +1,34 @@
+<div class="grid-container margin-bottom forum-home" [ngClass]="isApproved ? '' : 'opacity'">
+    <div class="grid-x grid-margin-x">
+        <div class="cell small-8">
+            <a class="title" [routerLink]="[threadUrl]" title="{{title}}" [ngClass]="haveRead ? 'read' : ''">
+                <span *ngIf="thread.prefix" [style]="thread.prefix.style | safeStyle">
+                    {{thread.prefix.text}} &#xbb;
+                </span>
+                {{title}}
+            </a>
+            <span *ngIf="isClosed" class="closed">Closed</span>
+            <span *ngIf="!isApproved" class="unapproved">Unapproved</span>
+            <span *ngIf="isSticky" class="sticky">Sticky</span>
+            <div class="time-ago">{{timeAgo(thread.createdAt)}}</div>
+            <div class="nickname">by <a [routerLink]="['/user/profile/', thread.nickname]">{{thread.nickname}}</a>
+            </div>
+        </div>
+        <img appUserProfile [info]="lastPostInfo" />
+        <div class="cell small-2">
+            <div class="latest-post" (click)="goToLastPost()">Latest Post</div>
+            <div class="nickname">
+                <a [routerLink]="['/user/profile/', thread.lastPost.user.nickname]">
+                    <span [style]="thread.lastPost.user.styling | safeStyle">{{thread.lastPost.user.nickname}}</span>
+                </a>
+            </div>
+            <div class="time-ago">{{timeAgo(thread.lastPost.createdAt)}}</div>
+        </div>
+        <div class="small-1" *ngIf="canSelectThreads">
+            <label class="checkbox-container" >
+                <input type="checkbox" (change)="onCheck()" />
+                <span class="checkmark"></span>
+            </label>
+        </div>
+    </div>
+</div>

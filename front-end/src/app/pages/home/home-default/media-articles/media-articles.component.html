@@ -1,0 +1,26 @@
+<div class="grid-container full">
+    <div class="grid-x margin-x">
+        <div class="cell small-12">
+            <app-title [title]="'Media Articles'"></app-title>
+            <app-content>
+                <div class="wrapper" *ngFor="let item of articles">
+                    <div class="image" appLazyLoad [image]="getBackgroundImage(item.threadId)"></div>
+                    <div class="content">
+                        <a class="title" [routerLink]="['/forum', 'thread', item.threadId, 'page', 1]">
+                            <span *ngIf="item.prefix" [style]="item.prefix.style | safeStyle">{{item.prefix.text}} &#xbb;</span> {{item.title}}
+                        </a>
+                        <div class="divider"></div>
+                        <div class="inner-content" [innerHTML]="item.content | safeHtml"></div>
+                        <div class="divider"></div>
+                        <div><i class="fas fa-pencil-alt"></i> Authored by
+                            <a [routerLink]="['/user/profile/', item.user.nickname]">
+                                <span [style]="item.user.styling | safeStyle">{{item.user.nickname}}</span>
+                            </a>
+                        </div>
+                        <i class="fas fa-clock"></i> {{getTime(item)}}
+                    </div>
+                </div>
+            </app-content>
+        </div>
+    </div>
+</div>

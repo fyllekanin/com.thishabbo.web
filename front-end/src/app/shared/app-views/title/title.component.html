@@ -1,0 +1,18 @@
+<div class="wrapper" [ngClass]="topBorder">
+    <span (click)="titleClick()" [ngClass]="titlePointer ? 'pointer' : ''">{{title}}</span>
+
+    <span class="sub-title" *ngIf="subTitle">
+        {{subTitle}}
+    </span>
+
+    <span *ngFor="let item of tabs" class="tab" (click)="tabClick(item)" [ngClass]="item.isActive ? 'active' : ''">
+        {{item.title}}
+    </span>
+
+    <div class="checkbox" *ngIf="checkbox">
+        <label class="checkbox-container">
+            <input type="checkbox" [checked]="checkboxValue" (change)="onSelectToggle($event)">
+            <span class="checkmark" [ngClass]="checkboxDisabled ? 'checkmark-disabled' : ''"></span>
+        </label>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+.option {
+    margin: 10px 0;
+}
+
+.percentage {
+    background-color: #2aa0dd;
+    margin-top: 3px;
+    padding: 5px;
+    color: #ffffff;
+    border-radius: 3px;
+    display: inline-table;
+}
+
+.answer {
+    margin: 10px 0;
+}

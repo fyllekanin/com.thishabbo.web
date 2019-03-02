@@ -1,0 +1,119 @@
+<div class="grid-container content-margin">
+    <div class="grid-x grid-margin-x">
+        <div class="cell small-12 medium-8">
+            <app-title [title]="'Habbo Imager'"></app-title>
+            <app-content>
+                <div class="grid-x grid-margin-x grid-margin-y">
+                    <div class="cell small-8 center-habbo">
+                        <img [src]="url" />
+                    </div>
+                    <div class="cell small-4">
+                        <div>
+                            <div class="label">Habbo Name:</div>
+                            <input [(ngModel)]="habbo" (input)="urlBuilder()"/>
+                        </div>
+                        <div>
+                            <div class="label">Expression:</div>
+                            <select [(ngModel)]="expression" (change)="urlBuilder()">
+                                <option *ngFor="let emotion of emotions" [value]="emotion.value">
+                                    {{emotion.label}}
+                                </option>
+                            </select>
+                        </div>
+                        <div>
+                            <div class="label">Size:</div>
+                            <select [(ngModel)]="size" (change)="urlBuilder()">
+                                <option *ngFor="let size of sizes" [value]="size.value">
+                                    {{size.label}}
+                                </option>
+                            </select>
+                        </div>
+                        <div>
+                            <div class="label">Item:</div>
+                            <select [(ngModel)]="item" (change)="urlBuilder()">
+                                <option *ngFor="let item of items" [value]="item.value">
+                                    {{item.label}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="cell small-12">
+                        <div class="grid-x">
+                            <div class="cell small-2">
+                                <label class="checkbox-container">
+                                    Walking
+                                    <input type="checkbox" [(ngModel)]="actions.walking.value" (change)="urlBuilder()">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div class="cell small-2">
+                                <label class="checkbox-container">
+                                    Lying Down
+                                    <input type="checkbox" [(ngModel)]="actions.lying_down.value" (change)="urlBuilder()">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div class="cell small-2">
+                                <label class="checkbox-container">
+                                    Sitting
+                                    <input type="checkbox" [(ngModel)]="actions.sitting.value" (change)="urlBuilder()">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div class="cell small-2">
+                                <label class="checkbox-container">
+                                    Waving
+                                    <input type="checkbox" [(ngModel)]="actions.waving.value" (change)="urlBuilder()">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div class="cell small-2">
+                                <label class="checkbox-container">
+                                    Holding
+                                    <input type="checkbox" [(ngModel)]="actions.holding.value" (change)="urlBuilder()">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div class="cell small-2">
+                                <label class="checkbox-container">
+                                    Drinking
+                                    <input type="checkbox" [(ngModel)]="actions.drinking.value" (change)="urlBuilder()">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </app-content>
+
+            <app-content>
+                <div><strong>Body Directions</strong></div>
+                <div class="body-direction" *ngFor="let direction of bodyDirections">
+                    <img [src]="direction.src" (click)="updateBodyDirection(direction.value)" />
+                </div>
+
+                <div><strong>Head Directions</strong></div>
+                <div class="body-direction" *ngFor="let direction of headDirections">
+                    <img [src]="direction.src" (click)="updateHeadDirection(direction.value)" />
+                </div>
+            </app-content>
+        </div>
+        <div class="cell small-12 medium-4">
+            <app-title [title]="'Links'"></app-title>
+            <app-content>
+                <div>
+                    <div class="label">Direct link:</div>
+                    <input [ngModel]="directLink" />
+                </div>
+                <div>
+                    <div class="label">BBcode:</div>
+                    <input [ngModel]="bbcode" />
+                </div>
+                <div>
+                    <div class="label">HTML:</div>
+                    <input [ngModel]="html" />
+                </div>
+            </app-content>
+        </div>
+    </div>
+</div>

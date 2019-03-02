@@ -1,0 +1,148 @@
+import { Component, ElementRef, OnDestroy } from '@angular/core';
+import { NavigationStart, ResolveEnd, Router, Scroll } from '@angular/router';
+import { Page } from 'shared/page/page.model';
+import { UserService } from 'core/services/user/user.service';
+import { fadeAnimation } from 'shared/animations/fade.animation';
+
+@Component({
+    selector: 'app-root',
+    template: `
+        <div class="loader" [ngClass]="!isLoading ? 'not-loading' : ''" [ngStyle]="{'width': loadingProgress + '%'}"></div>
+        <app-dialog></app-dialog>
+        <app-global-notification></app-global-notification>
+        <app-top-bar></app-top-bar>
+        <app-top-box></app-top-box>
+        <app-header></app-header>
+        <div class="wrapper">
+            <div class="grid-container content-margin">
+                <app-site-messages></app-site-messages>
+                <div class="grid-x height-100">
+                    <div class="cell small-12" [@fadeAnimation]="o.isActivated ? o.activatedRoute : ''">
+                        <router-outlet #o="outlet"></router-outlet>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `,
+    styleUrls: ['app.component.css'],
+    animations: [fadeAnimation]
+})
+export class AppComponent extends Page implements OnDestroy {
+    loadingProgress = 0;
+    isLoading = false;
+
+    constructor(
+        private _router: Router,
+        private _elementRef: ElementRef,
+        private _userService: UserService
+    ) {
+        super(_elementRef);
+        this.addCustomListeners();
+        this.addActivityListener();
+        this._router.events.subscribe(ev => {
+            if (ev instanceof NavigationStart) {
+                this.loadingProgress = 10;
+                this.isLoading = true;
+            }
+            if (ev instanceof  ResolveEnd) {
+                this.loadingProgress = 75;
+            }
+            if (ev instanceof Scroll) {
+                this.loadingProgress = 100;
+                this.isLoading = false;
+                setTimeout(() => {
+                    this.loadingProgress = 0;
+                }, 2000);
+                try {
+                    if (AppComponent.isScrollToSet()) {
+                        this.tryToScrollToElement();
+                    } else if (!AppComponent.isScrollOff()) {
+                        document.getElementsByTagName('app-top-box')[0].scrollIntoView({ behavior: 'smooth' });
+                    }
+                } catch (e) {
+                    document.getElementsByTagName('app-top-box')[0].scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
+    }
+
+    ngOnDestroy(): void {
+        super.destroy();
+    }
+
+    private addCustomListeners(): void {
+        document.body.addEventListener('click', (event) => {
+            const target = event.target;
+            if (AppComponent.isTargetInternalLink(target)) {
+                event.preventDefault();
+                const url = AppComponent.getUrl(target);
+                this._router.navigateByUrl(url);
+            }
+        });
+    }
+
+    private addActivityListener(): void {
+        let isHidden, visibilityChange;
+        if (typeof document.hidden !== 'undefined') {
+            isHidden = 'hidden';
+            visibilityChange = 'visibilitychange';
+        } else if (typeof document['msHidden'] !== 'undefined') {
+            isHidden = 'msHidden';
+            visibilityChange = 'msvisibilitychange';
+        } else if (typeof document['webkitHidden'] !== 'undefined') {
+            isHidden = 'webkitHidden';
+            visibilityChange = 'webkitvisibilitychange';
+        }
+
+        if (!isHidden) {
+            return;
+        }
+        document.addEventListener(visibilityChange, () => {
+            this._userService.isUserActive = !document[isHidden];
+        }, false);
+    }
+
+    private static getUrl(ele): string {
+        return ele['dataset']['url'];
+    }
+
+    private static isTargetInternalLink(ele): boolean {
+        return ele instanceof Element
+            && ele.nodeName.toUpperCase() === 'A'
+            && ele['dataset']['type'] === 'internal';
+    }
+
+    private static isScrollToSet(): boolean {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.has('scrollTo');
+    }
+
+    private static isScrollOff(): boolean {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.has('skipScroll');
+    }
+
+    private tryToScrollToElement(): void {
+        let count = 0;
+        const interval = setInterval(() => {
+            const result = this.scrollToElement();
+            if (count > 5 || result) {
+                clearInterval(interval);
+            }
+            count++;
+        }, 500);
+    }
+
+    private scrollToElement(): boolean {
+        const urlParams = new URLSearchParams(window.location.search);
+        let top = -1;
+        if (urlParams.has('scrollTo')) {
+            const eleSelector = urlParams.get('scrollTo');
+            const eles = this._elementRef.nativeElement.getElementsByClassName(`${eleSelector}`);
+            top = eles.length > 0 ? eles[0]['offsetTop'] : -1;
+        }
+
+        window.scrollTo({ left: 0, top: top, behavior: 'smooth' });
+        return top > 0;
+    }
+}

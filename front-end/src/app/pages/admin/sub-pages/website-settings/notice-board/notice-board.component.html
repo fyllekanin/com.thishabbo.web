@@ -1,0 +1,32 @@
+<app-title
+    [title]="'Notices'"
+    [tabs]="tabs">
+</app-title>
+<app-content>
+    <div class="grid-container full">
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-10">
+                <div class="box" *ngFor="let notice of notices; let first = first; let last = last;">
+                    <div class="overlay">
+                        <div class="single" *ngIf="first" (click)="moveDown(notice.noticeId)">
+                            <em>Click to move down</em>
+                        </div>
+                        <div class="single" *ngIf="last" (click)="moveUp(notice.noticeId)">
+                            <em>Click to move up</em>
+                        </div>
+                        <div class="double" *ngIf="!last && !first">
+                            <div (click)="moveUp(notice.noticeId)"><em>Click to move up</em></div>
+                            <div (click)="moveDown(notice.noticeId)"><em>Click to move down</em></div>
+                        </div>
+                    </div>
+                    <app-notice [notice]="notice" [configuring]="true"></app-notice>
+                </div>
+            </div>
+            <div class="cell small-2">
+                <div class="remove" *ngFor="let notice of notices;">
+                    <button (click)="deleteNotice(notice)">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-content>

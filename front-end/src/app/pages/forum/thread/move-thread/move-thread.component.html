@@ -1,0 +1,6 @@
+<select [(ngModel)]="categoryId">
+    <option disabled [value]="-1">Select...</option>
+    <option *ngFor="let item of items" [value]="item.categoryId">
+        {{item.title}}
+    </option>
+</select>

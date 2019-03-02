@@ -1,0 +1,164 @@
+import { Component, ElementRef, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AdminPermissions } from 'core/services/auth/auth.model';
+import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
+import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
+import { DialogService } from 'core/services/dialog/dialog.service';
+import { HttpService } from 'core/services/http/http.service';
+import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { TitleTab } from 'shared/app-views/title/title.model';
+import { Page } from 'shared/page/page.model';
+import { SITECP_BREADCRUMB_ITEM, GROUP_LIST_BREADCRUMB_ITEM } from '../../../admin.constants';
+import { Group, GroupActions, GroupOptions } from '../groups.model';
+import { StaffPermissions } from 'core/services/auth/auth.model';
+
+@Component({
+    selector: 'app-groups-group',
+    templateUrl: 'group.component.html'
+})
+export class GroupComponent extends Page implements OnDestroy {
+    private _group: Group = new Group();
+
+    tabs: Array<TitleTab> = [];
+
+    constructor (
+        private _dialogService: DialogService,
+        private _globalNotificationService: GlobalNotificationService,
+        private _httpService: HttpService,
+        private _router: Router,
+        breadcrumbService: BreadcrumbService,
+        elementRef: ElementRef,
+        activatedRoute: ActivatedRoute
+    ) {
+        super(elementRef);
+        this.addSubscription(activatedRoute.data, this.onPage.bind(this));
+        breadcrumbService.breadcrumb = new Breadcrumb({
+            current: 'Editing Usergroup',
+            items: [
+                SITECP_BREADCRUMB_ITEM,
+                GROUP_LIST_BREADCRUMB_ITEM
+            ]
+        });
+    }
+
+    onTabClick (value: number): void {
+        switch (value) {
+            case GroupActions.SAVE:
+                this.save();
+                break;
+            case GroupActions.DELETE:
+                this.delete();
+                break;
+            case GroupActions.CANCEL:
+                this.cancel();
+                break;
+        }
+    }
+
+    ngOnDestroy (): void {
+        super.destroy();
+    }
+
+    save (): void {
+        if (this._group.createdAt) {
+            this._httpService.put(`admin/groups/${this._group.groupId}`, { group: this._group })
+                .subscribe(this.onSuccessUpdate.bind(this),
+                    this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+        } else {
+            this._httpService.post('admin/groups', { group: this._group })
+                .subscribe(this.onSuccessCreate.bind(this),
+                    this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+        }
+    }
+
+    delete (): void {
+        this._dialogService.openConfirmDialog(
+            `Deleting group`,
+            `Are you sure that you want to delete the group ${this._group.name}?`,
+            this.onDelete.bind(this)
+        );
+    }
+
+    cancel (): void {
+        this._router.navigateByUrl('/admin/groups/page/1');
+    }
+    onImmunityChange (): void {
+        if (this._group.immunity > this._group.maxImmunity) {
+            this._group.immunity = this._group.maxImmunity;
+        } else if (this._group.immunity < 0 || isNaN(this._group.immunity)) {
+            this._group.immunity = 0;
+        }
+    }
+
+    get userbarStyle(): string {
+        return this._group.userBarStyling;
+    }
+
+    get nicknameStyle(): string {
+        return this._group.nameStyling;
+    }
+
+    get title (): string {
+        return this._group.createdAt ?
+            `Editing group: ${this._group.name}` :
+            `Creating group: ${this._group.name}`;
+    }
+
+    get group (): Group {
+        return this._group;
+    }
+
+    get adminPermissions (): AdminPermissions {
+        return this._group.adminPermissions || new AdminPermissions();
+    }
+
+    get staffPermissions (): StaffPermissions {
+        return this._group.staffPermissions || new StaffPermissions();
+    }
+
+    get options (): GroupOptions {
+        return this._group.options || new GroupOptions();
+    }
+
+    private onDelete (): void {
+        this._httpService.delete(`admin/groups/${this._group.groupId}`)
+            .subscribe(() => {
+                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                    title: 'Success',
+                    message: 'Group deleted!'
+                }));
+                this._router.navigateByUrl('/admin/groups/page/1');
+            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService), () => {
+                this._dialogService.closeDialog();
+            });
+    }
+
+    private onPage (data: { data: Group }): void {
+        this._group = data.data;
+
+        const tabs = [
+            { title: 'Cancel', value: GroupActions.CANCEL, condition: true },
+            { title: 'Delete', value: GroupActions.DELETE, condition: this._group.createdAt },
+            { title: 'Save', value: GroupActions.SAVE, condition: true }
+        ];
+
+        this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));
+    }
+
+    private onSuccessUpdate (group: Group): void {
+        this._group = new Group(group);
+        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            title: 'Success',
+            message: 'Group updated!'
+        }));
+    }
+
+    private onSuccessCreate (group: Group): void {
+        this.onPage({ data: new Group(group) });
+        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            title: 'Success',
+            message: 'Group created!'
+        }));
+    }
+}

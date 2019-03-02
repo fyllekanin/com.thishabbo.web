@@ -1,0 +1,39 @@
+<div class="grid-container pager">
+    <div class="">
+        <div class="cell small-1">
+            <button class="previous" disabled="{{ thereIsPrevious ? '' : 'disabled' }}" (click)="goToPrevious()">
+                &#171; Previous
+            </button>
+        </div>
+        <div class="cell small-10">
+            <div class="grid-container full height-100">
+                <div class="grid-x numbers">
+                    <div class="items" *ngFor="let item of backwardItems"
+                         [ngClass]="item.value < 0 ? 'page-no-click' : ''">
+                        <a [routerLink]="[getUrl(item)]">{{item.title}}</a>
+                    </div>
+                    <div class="items" *ngFor="let item of fillBackwardItems"
+                         [ngClass]="item.value < 0 ? 'page-no-click' : ''">
+                        <a [routerLink]="[getUrl(item)]">{{item.title}}</a>
+                    </div>
+                    <div class="page-no-click current bold">
+                        {{currentPage}}
+                    </div>
+                    <div class="items" *ngFor="let item of fillForwardItems"
+                         [ngClass]="item.value < 0 ? 'page-no-click' : ''">
+                        <a [routerLink]="[getUrl(item)]">{{item.title}}</a>
+                    </div>
+                    <div class="items" *ngFor="let item of forwardItems"
+                         [ngClass]="item.value < 0 ? 'page-no-click' : ''">
+                        <a [routerLink]="[getUrl(item)]">{{item.title}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cell small-1">
+            <button class="next" disabled="{{ thereIsNext ? '' : 'disabled' }}" (click)="goToNext()">Next
+                &#187;
+            </button>
+        </div>
+    </div>
+</div>

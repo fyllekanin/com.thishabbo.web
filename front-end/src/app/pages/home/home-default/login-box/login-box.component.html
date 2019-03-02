@@ -1,0 +1,17 @@
+<app-title [title]="'Member Login'" [top]="titleTop"></app-title>
+
+<app-content>
+    <app-info-box [model]="infoModel"></app-info-box>
+    <div class="small-6 cell">
+        <div class="label">nickname:</div>
+        <input (keydown)="keyDownFunction($event)" [(ngModel)]="loginName" type="text" name="loginName">
+    </div>
+    <div class="small-6 cell">
+        <div class="label">Password:</div>
+        <input (keydown)="keyDownFunction($event)" [(ngModel)]="password" type="password" name="password">
+    </div>
+    <div class="small-12 cell align-right">
+        <button appButton [float]="'right'" (click)="doLogin()">Login</button>
+        <button appButton [color]="registerButton" [float]="'right'" [routerLink]="['/auth/register']">Register</button>
+    </div>
+</app-content>

@@ -1,0 +1,9 @@
+.center-habbo {
+    text-align: center;
+}
+
+.body-direction {
+    display: inline-block;
+    text-align: center;
+    padding: 0 0.5rem;
+}

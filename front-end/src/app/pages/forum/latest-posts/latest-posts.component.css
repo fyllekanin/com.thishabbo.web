@@ -1,0 +1,12 @@
+.latest-post-info {
+    float: left;
+    margin-left: 1rem;
+}
+
+.latest-post {
+    background: #00000003 !important;
+    padding: 8px;
+    margin-bottom: 6px;
+    width: 100%;
+    box-shadow: rgba(0, 0, 0, 0) 0 0 0 1px inset, rgba(0, 0, 0, 0) 0 0 0 2px inset, #00000008 0 2px 0;
+}

@@ -1,0 +1,23 @@
+<nav>
+    <div class="grid-container height-100 pc">
+        <div class="grid-x grid-margin-x height-100">
+            <div class="cell small-12 breadcrum">
+                <div class="nav-link">
+                    <li class="nav-first-item" *ngFor="let item of routes">
+                        <span class="dropdown">
+                            <a [routerLink]="[item.url]" class="main"><i [ngClass]="item.icon"></i> {{item.label}}</a>
+                            <div class="dropdown-content">
+                                <div *ngFor="let child of item.children">
+                                    <a *ngIf="!child.isDivider" [routerLink]="[child.url]">
+                                        <i [ngClass]="child.icon"></i> {{child.label}}
+                                    </a>
+                                    <div *ngIf="child.isDivider" class="divider"></div>
+                                </div>
+                            </div>
+                        </span>
+                    </li>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

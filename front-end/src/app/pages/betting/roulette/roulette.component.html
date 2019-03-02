@@ -1,0 +1,31 @@
+<app-betting-stats [stats]="stats"></app-betting-stats>
+
+<app-content [top]="rouletteBorder">
+    <div #wheel class="wheel">
+        <div class="line"></div>
+        <div #wrapper class="wrapper">
+            <div *ngFor="let number of numbers" class="number" [ngClass]="number.color">
+                {{number.number}}
+            </div>
+        </div>
+    </div>
+</app-content>
+
+<app-content [top]="betBorder">
+    <div class="grid-container full">
+        <div class="grid-x grid-margin-x grid-margin-y">
+            <div class="cell small-12">
+                <input type="number" [(ngModel)]="amount"/>
+            </div>
+            <div [ngClass]="isSpinning ? 'disabled' : ''" class="cell small-4 bet bet-black" (click)="spin('black')">
+                <h3>Black</h3>
+            </div>
+            <div [ngClass]="isSpinning ? 'disabled' : ''" class="cell small-4 bet bet-green" (click)="spin('green')">
+                <h3>Green</h3>
+            </div>
+            <div [ngClass]="isSpinning ? 'disabled' : ''" class="cell small-4 bet bet-red" (click)="spin('red')">
+                <h3>Red</h3>
+            </div>
+        </div>
+    </div>
+</app-content>

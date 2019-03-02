@@ -1,0 +1,69 @@
+<div class="big-header">
+    <div class="grid-container height-100">
+        <div class="grid-x">
+            <div class="cell small-4">
+                <div class="bulletin-details">
+                    <div class="bulletin-board"><i class="fas fa-comment"></i> <b> Dez</b> has posted a new thread: <b>Do
+                        you
+                        think
+                        VX is...</b></div>
+                    <div class="bulletin-board"><i class="fas fa-headphones"></i> <b> RADIO:</b> <b> Stevey</b> is live on
+                        air.
+                    </div>
+                    <div class="bulletin-board"><i class="fas fa-comment"></i> <b> Con</b> has liked a post in <b>Do you
+                        think
+                        VX
+                        is...</b></div>
+                    <div class="bulletin-board"><i class="fas fa-users"></i> <b> EVENT:</b> <b> irDez</b> is hosting - click
+                        <b>here</b>!
+                    </div>
+                    <div class="bulletin-board"><i class="fas fa-comment"></i> <b> ANNOUCNEMENT:</b> A new Staff member: <b>Chan
+                        is
+                        no...</b></div>
+                </div>
+            </div>
+            <div class="cell small-3 align-center">
+                <a class="logo" [routerLink]="[homePage]">
+                    <h3>Welcome to</h3>
+                    <h2>THISHABBO</h2>
+                </a>
+            </div>
+            <div class="cell small-5 height-100">
+                <app-radio [stats]="radioStats"></app-radio>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="grid-container tabs">
+    <div class="tab-content">
+        <div class="tab">
+            Home
+        </div>
+
+        <div class="no-tab">
+            <i class="fas fa-plus"></i> Add new tab
+        </div>
+    </div>
+</div>
+
+<div class="bottom-bar">
+    <div class="grid-container height-100">
+        <div class="grid-x grid-x margin-x">
+            <div class="cell medium-8 tabs">
+                <div class="inner-bottom-bar">
+                    <div class="item" tooltip="Dez">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <div class="item" tooltip="Dais">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="cell small-10 medium-4">
+                <app-radio-controls></app-radio-controls>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+<app-title
+    [tabs]="tabs"
+    [title]="'Request THC'"
+    (onTabClick)="onTabClick($event)">
+</app-title>
+<app-content>
+    Here you can request THC for a specific user which won a forum, events or radio competition. You can find the user either by
+    habbo name or their forum nickname, If you fill in both nickname and habbo the nickname will be checked first and habbo 2nd.
+    <br />
+    <br />
+    You can add multiple at one time, just click "Add row" above to add another line to fill in
+    <br />
+    <br />
+
+    <div class="grid-container">
+        <div class="grid-x grid-margin-x grid-margin-y" *ngFor="let item of rows">
+            <div class="cell small-2">
+                <strong>nickname:</strong>
+                <input type="text" [(ngModel)]="item.nickname" />
+            </div>
+            <div class="cell small-2">
+                <strong>Habbo:</strong>
+                <input type="text" [(ngModel)]="item.habbo" />
+            </div>
+            <div class="cell small-2">
+                <strong>Amount:</strong>
+                <input type="number" [(ngModel)]="item.amount" />
+            </div>
+            <div class="cell small-5">
+                <strong>Reason</strong>
+                <input type="text" [(ngModel)]="item.reason" />
+            </div>
+            <div class="cell small-1">
+                <i class="fas fa-trash" (click)="remove(item.id)"></i>
+            </div>
+        </div>
+    </div>
+</app-content>

@@ -1,0 +1,21 @@
+div {
+    text-align: center;
+}
+
+div i {
+    font-size: 1.5rem;
+    padding: 0.5rem 0;
+}
+
+.fa-ticket-alt {
+    transform: rotate(-45deg);
+}
+
+.amount {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.margin-width {
+    width: 101.2%;
+}

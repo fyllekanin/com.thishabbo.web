@@ -1,0 +1,214 @@
+:host {
+    width: 100%;
+}
+
+.big-header {
+    width: 100%;
+    max-width: 100%;
+    height: 13.9rem;
+    position: relative;
+    background: #3682b9 url(/assets/images/skyline.png) repeat-x bottom;
+    overflow: hidden;
+}
+
+.bottom-bar {
+    background: -webkit-linear-gradient(top, #fefefe 0, #ececec 100%);
+    color: white;
+    box-shadow: 0 1px white, 0 1px 7px #00000042;
+    height: 59px;
+    position: relative;
+    width: 100%;
+}
+
+.item {
+    box-shadow: inset 0 0 0 1px rgba(88, 85, 85, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.33), 0 2px 0 rgba(156, 156, 156, 0.09);
+    background: -webkit-linear-gradient(top, #efefef 0, #ececec 100%);
+    cursor: pointer;
+    display: inline-block;
+    padding: 5.5px;
+    position: relative;
+    text-align: center;
+    transition: background .8s ease;
+    margin: 0 5px 0 0;
+    border-radius: 3px;
+}
+
+.inner-bottom-bar {
+    margin-top: 11px;
+    position: absolute;
+}
+
+.item i {
+    font-size: 0.8rem;
+    padding: 8px;
+    color: #969696;
+}
+
+.bulletin-board {
+    margin-top: 1px;
+    padding: 4px;
+    margin-bottom: 0;
+    font-size: 11px;
+}
+
+.bulletin-details {
+    position: absolute;
+    width: 355px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 1.5rem 0 0 0;
+    background: #00000017;
+    padding: 5px;
+    color: #ffffff;
+    height: 137px;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.02) 0 3px 5px;
+    border-radius: 2px;
+}
+
+.tab {
+    background: -webkit-linear-gradient(top, #fcfcfc 0, #fefefe 100%);
+    cursor: pointer;
+    display: inline-block;
+    padding: 8px;
+    position: relative;
+    text-align: center;
+    min-width: 100.43px;
+    font-size: 11px;
+    transition: background .8s ease;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    margin-right: 8px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.no-tab {
+    cursor: pointer;
+    display: inline-block;
+    padding: 8px;
+    position: absolute;
+    text-align: center;
+    min-width: 110px;
+    font-size: 10px;
+    transition: background .8s ease;
+    margin: 0 5px 0 0;
+    text-transform: uppercase;
+    color: white;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.tab-content {
+    position: absolute;
+    z-index: 2;
+    height: 0;
+    margin: -32px 0 0 0px;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.logo:before {
+    pointer-events: none;
+    background-image: url(/assets/images/flare.png);
+    content: "";
+    height: 640px;
+    width: 640px;
+    position: absolute;
+    display: inline-block;
+    -webkit-animation:flare 20s linear infinite;
+    -moz-animation:flare 20s linear infinite;
+    animation:flare 20s linear infinite;
+    margin: -100px 0 0 -300px;
+}
+
+.logo h3 {
+    color: white;
+    font-family: CheetahKick, serif;
+    font-size: 42px;
+    margin-bottom: 0;
+    margin-top: 52px;
+    height: 48px;
+    font-weight: normal;
+}
+
+.logo h2 {
+    color: white;
+    font-family: FranklinGothic, serif;
+    font-size: 57px;
+    margin-top: -12px;
+    font-weight: normal;
+}
+
+.logo h3, .logo h2 {
+    background-image: -webkit-linear-gradient(#fff, #e2e2e2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(-1px 2px rgba(0,0,0,0.3));
+}
+
+.logo h3:hover, .logo h2:hover {
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+@-moz-keyframes flare {
+    100% {
+        -moz-transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes flare {
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes flare {
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes shake {
+    10%, 90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+    20%, 80% {
+        transform: translate3d(2px, 0, 0);
+    }
+    30%, 50%, 70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+    40%, 60% {
+        transform: translate3d(4px, 0, 0);
+    }
+}
+
+.mobile-menu {
+    display: none;
+}
+
+.mobile-menu i {
+    margin-top: 11px;
+    position: absolute;
+
+    color: #d2d2d2;
+    font-size: 36px;
+    left: 15px;
+}

@@ -1,0 +1,13 @@
+<div *ngFor="let block of blocks">
+    <app-title
+            [title]="block.title"
+            [tabs]="toggleTab"
+            (onTabClick)="toggleMenuItem((block.title))">
+    </app-title>
+    <app-content [isContracted]="isMenuItemContracted(block.title)">
+        <a *ngFor="let item of block.items" [routerLink]="[item.link]">
+            <i class="fa fa-columns"></i>
+            <span>{{item.title}}</span>
+        </a>
+    </app-content>
+</div>

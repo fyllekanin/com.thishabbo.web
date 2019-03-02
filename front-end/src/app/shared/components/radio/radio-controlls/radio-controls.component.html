@@ -1,0 +1,16 @@
+<div class="radio-button green-button" (click)="isPlaying = !isPlaying">
+    <i class="fas fa-play" *ngIf="!isPlaying"></i>
+    <i class="fas fa-pause" *ngIf="isPlaying"></i>
+</div>
+<div class="radio-button blue-button mobile-button" (click)="openRequest()">
+    <i class="fas fa-comment icon-position"></i>
+</div>
+<div class="radio-button red-button mobile-button" (click)="likeDj()">
+        <i class="fas fa-heart icon-position"></i>
+    </div>
+<div class="radio-button listen-button"><i class="fas fa-headphones"></i> {{listeners}}</div>
+<div class="slider desktop-button">
+    <input type="range"/>
+</div>
+<div class="radio-button pink-button desktop-button"><i class="fas fa-sync-alt"></i></div>
+<div class="radio-button pink-button mobile-button" (click)="openInfo()"><i class="fas fa-info"></i></div>

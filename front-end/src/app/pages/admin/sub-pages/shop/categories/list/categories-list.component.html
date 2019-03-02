@@ -1,0 +1,8 @@
+<app-table
+        [config]="tableConfig"
+        [tabs]="tabs"
+        (onAction)="onAction($event)"
+        (onFilter)="onFilter($event)">
+</app-table>
+
+<app-pagination [paginationModel]="pagination"></app-pagination>

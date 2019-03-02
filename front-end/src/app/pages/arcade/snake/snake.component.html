@@ -1,0 +1,25 @@
+<div class="grid-container full">
+    <div class="grid-x margin-x">
+        <div class="cell small-8">
+            <app-title
+                [title]="'Snake - Score: ' + score"
+                [tabs]="tabs"
+                (onTabClick)="start()">
+                </app-title>
+            <app-content>
+                <canvas style="width: 100%;" #game></canvas>
+            </app-content>
+        </div>
+        <div class="cell small-4">
+            <app-title [title]="'Highscore'"></app-title>
+            <app-content>
+                <div class="highscore-row" *ngFor="let highscore of highscoreList; let i = index;">
+                    {{i + 1}}.
+                    <span [style]="highscore.user.styling | safeStyle">{{highscore.user.nickname}}</span>
+
+                    <span class="float-right">{{highscore.score}} candies</span>
+                </div>
+            </app-content>
+        </div>
+    </div>
+</div>

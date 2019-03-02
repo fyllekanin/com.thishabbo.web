@@ -1,0 +1,98 @@
+<app-title [title]="pageTitle"></app-title>
+<app-content>
+    <div class="grid-container full">
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-6">
+                <div class="label">Title:</div>
+                <input [(ngModel)]="thread.title" placeholder="New Thread" type="text" name="thread-title">
+            </div>
+            <div class="cell small-6">
+                <div class="label">Prefix:</div>
+                <select [(ngModel)]="thread.prefixId">
+                    <option value="0">None</option>
+                    <option *ngFor="let prefix of thread.prefixes" value="{{prefix.prefixId}}">{{prefix.text}}</option>
+                </select>
+            </div>
+            <div *ngIf="shouldHaveTumbnail" class="cell small-6">
+                <div class="label">Thumbnail:</div>
+                <input type="file" accept="image/*" #file name="thread-thumbnail">
+            </div>
+            <div *ngIf="isQuestTemplate" class="cell small-6">
+                <div class="label">Badge: <em *ngIf="badeHaveError" class="error">Only name!</em></div>
+                <input [(ngModel)]="thread.badge" type="text" name="thread-badge"> <br/>
+            </div>
+            <div *ngIf="isQuestTemplate" class="cell small-6">
+                <div class="label">Tags:</div>
+                <div class="grid-container full">
+                    <div class="grid-x grid-margin-x">
+                        <div class="cell small-6">
+                            <label class="checkbox-container" (click)="toggleTag($event, 'AVAILABLE')">
+                                Available
+                                <input type="checkbox" [checked]="haveTag('AVAILABLE')">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="checkbox-container" (click)="toggleTag($event, 'EASY')">
+                                Easy
+                                <input type="checkbox" [checked]="haveTag('EASY')">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                        <div class="cell small-6">
+                            <label class="checkbox-container" (click)="toggleTag($event, 'FREE')">
+                                Free
+                                <input type="checkbox" [checked]="haveTag('FREE')">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="checkbox-container" (click)="toggleTag($event, 'CLOSED')">
+                                Closed
+                                <input type="checkbox" [checked]="haveTag('CLOSED')">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="cell small-6" *ngIf="isQuestTemplate">
+                Preview: <br/>
+                <img *ngIf="badge" appLazyLoad [image]="badgeUrl"/>
+            </div>
+        </div>
+    </div>
+</app-content>
+
+<app-title  [title]="'Thread Poll'"></app-title>
+<app-content>
+    <div *ngIf="thread.poll">
+        <em>You can later not edit the poll after creation, make sure it's correct before saving</em>
+        <div class="grid-container full poll-answer">
+            <div class="grid-x">
+                <div class="cell small-11">
+                    <div class="label">Question:</div>
+                    <input [(ngModel)]="thread.poll.question" type="text" [disabled]="thread.createdAt && !thread.poll.isNew" name="thread-poll-question">
+                </div>
+            </div>
+        </div>
+        <div *ngFor="let answer of thread.poll.answers; let index = index;">
+            <div class="grid-container full poll-answer">
+                <div class="grid-x">
+                    <div class="cell small-11">
+                        <div class="label">Answer #{{index+1}}</div>
+                        <input [(ngModel)]="answer.label" type="text" [disabled]="thread.createdAt && !thread.poll.isNew" name="thread-poll-answer">
+                    </div>
+                    <div class="cell small-1 remove-answer" *ngIf="!thread.createdAt && thread.poll.isNew">
+                        <i class="fas fa-trash" (click)="removeAnswer(answer.id)"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button appButton (click)="addThreadAnswer()" [disabled]="thread.createdAt && !thread.poll.isNew">+Add Answer</button>
+    </div>
+</app-content>
+
+
+<app-editor #editor
+            [buttons]="editorButtons"
+            [content]="thread.content"
+            (onTabClick)="onButtonClick($event)"
+            (onKeyUp)="onKeyUp($event)">
+</app-editor>

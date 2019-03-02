@@ -1,0 +1,27 @@
+<app-title [title]="title" [tabs]="tabs" (onTabClick)="onTabClick($event)"></app-title>
+<app-content>
+    <div class="grid-container">
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-6">
+                <div class="label">Title</div>
+                <input name="title" [(ngModel)]="model.title" type="text">
+            </div>
+            <div class="cell small-6">
+                <div class="label">Is Active</div>
+                <select [(ngModel)]="model.isActive">
+                    <option [value]="0">No</option>
+                    <option [value]="1">Yes</option>
+                </select>
+            </div>
+            <div class="cell small-6">
+                <div class="label">Type</div>
+                <select [(ngModel)]="model.type">
+                    <option [value]="1">Warning (red)</option>
+                    <option [value]="2">Info (blue)</option>
+                    <option [value]="3">Alert (orange)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</app-content>
+<app-editor #editor [title]="'Content'" [content]="model.content"></app-editor>

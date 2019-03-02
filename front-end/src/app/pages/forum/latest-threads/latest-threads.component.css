@@ -1,0 +1,13 @@
+.latest-thread-info {
+    float: left;
+    margin-top: 0.8rem;
+    margin-left: 1rem;
+}
+
+.latest-thread {
+    -webkit-box-shadow: 3px 3px 20px -6px rgba(209,209,209,1);
+    -moz-box-shadow: 3px 3px 20px -6px rgba(209,209,209,1);
+    box-shadow: 3px 3px 20px -6px rgba(209,209,209,1);
+    background: rgba(255, 255, 255, 0.69);
+    padding: 5px;
+}

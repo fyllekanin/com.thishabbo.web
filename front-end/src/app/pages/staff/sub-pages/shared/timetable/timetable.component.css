@@ -1,0 +1,14 @@
+.hour {
+    text-align: center;
+    transition: 0.5s;
+    padding: 0.3rem;
+}
+
+.hour:hover {
+    background-color: #f3f3f3;
+    cursor: pointer;
+}
+
+.current-slot {
+    font-weight: bold;
+}

@@ -1,0 +1,19 @@
+:host {
+    z-index: 4;
+    position: fixed;
+    left: 1rem;
+    bottom: 1rem;
+    max-width: 9rem;
+}
+
+button {
+    width: 9rem;
+    max-width: 9rem;
+    padding: 10px;
+    color: #747474;
+    margin-top: 10px;
+    background: -webkit-linear-gradient(top, rgb(255, 255, 255) 0px, rgb(243, 243, 243) 100%);
+    box-shadow: rgba(0, 0, 0, 0.18) 0 0 0 1px inset, rgba(255, 255, 255, 0.18) 0 0 0 2px inset, rgba(0, 0, 0, 0.09) 0 2px 0;
+    outline: none;
+    cursor: pointer;
+}

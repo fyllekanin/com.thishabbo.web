@@ -1,0 +1,24 @@
+<app-title [title]="'Display Options'"></app-title>
+<app-content>
+    <div class="display-controller">
+        <strong>Sorted By</strong>
+        <select [(ngModel)]="options.sortedBy">
+            <option *ngFor="let item of sortedByOptions" [value]="item">{{prettifyString(item)}}</option>
+        </select>
+    </div>
+    <div class="display-controller">
+        <strong>Sort Order</strong>
+        <select [(ngModel)]="options.sortOrder">
+            <option *ngFor="let item of sortOrderOptions" [value]="item">{{prettifyString(item)}}</option>
+        </select>
+    </div>
+    <div class="display-controller">
+        <strong>From The</strong>
+        <select [(ngModel)]="options.fromThe">
+            <option *ngFor="let item of fromTheOptions" [value]="item.value">{{item.label}}</option>
+        </select>
+    </div>
+    <div class="display-controller display-controller-button">
+        <button appButton (click)="sortThreads()">Show Threads</button>
+    </div>
+</app-content>

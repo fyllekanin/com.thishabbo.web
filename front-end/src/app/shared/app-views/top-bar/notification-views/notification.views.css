@@ -1,0 +1,32 @@
+.picture {
+    -webkit-box-shadow: rgba(0, 0, 0, .1) 0 3px 5px;
+    box-shadow: rgba(0, 0, 0, .1) 0 3px 5px;
+    background: no-repeat center;
+    background-position-x: 0;
+    background-size: 100%;
+    border: 1px solid #fff;
+    border-radius: 100%;
+    float: left;
+    height: 70px;
+    margin: 0 10px .5rem 0;
+    width: 70px;
+}
+
+.fallback {
+    text-align: center;
+    padding-top: 12px;
+    font-size: 32px;
+}
+
+.description {
+    width: 74%;
+    display: inline-block;
+    position: relative;
+    height: 70px;
+}
+
+.time {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}

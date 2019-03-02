@@ -1,0 +1,46 @@
+<app-title [title]="'My Groups'" [tabs]="tabs" (onTabClick)="updateDisplayGroup()"></app-title>
+<app-content>
+    <div class="grid-container">
+        <div class="grid-x margin-x">
+            <div class="cell small-6">
+                <strong>Display Group</strong> <br />
+                <em>(Group which decides styling on name)</em>
+            </div>
+            <div class="cell small-6">
+                <select [(ngModel)]="displayGroupId">
+                    <option *ngFor="let group of memberGroups" [value]="group.groupId">{{group.name}}</option>
+                </select>
+            </div>
+            <div class="cell small-4 position-relative groups" *ngFor="let group of memberGroups">
+                <div>
+                    <strong>Usergroup:</strong> {{group.name}}
+                </div>
+                <div>
+                    <strong>Type: </strong> <span>{{group.isPublic ? 'Public' : 'Non-public'}}</span>
+                </div>
+                <div>
+                    <strong>Status: </strong>
+                    <span *ngIf="group.isMember">Is member (<span class="apply" (click)="leave(group.groupId)">Leave</span>)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-content>
+
+<app-title [title]="'Public Groups'"></app-title>
+<app-content>
+    <div class="grid-container">
+        <div class="grid-x margin-x">
+            <div class="cell small-6 position-relative groups" *ngFor="let group of nonMemberPublicGroups">
+                <div>
+                    <strong>Usergroup:</strong> {{group.name}}
+                </div>
+                <div>
+                    <strong>Status: </strong>
+                    <span *ngIf="!group.isMember && !group.haveApplied" class="apply" (click)="apply(group.groupId)">Apply</span>
+                    <span *ngIf="!group.isMember && group.haveApplied">Waiting approval or denial</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-content>

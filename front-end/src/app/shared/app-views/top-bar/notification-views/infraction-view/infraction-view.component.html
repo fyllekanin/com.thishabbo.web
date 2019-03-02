@@ -1,0 +1,10 @@
+<div class="picture fallback">
+    <em class="fa" [ngClass]="isInfractionGivenType ? 'fa-exclamation-triangle' : 'fa-smile-beam'"></em>
+</div>
+<div class="description">
+    {{text}}, infraction level: <br />
+    <strong>{{title}}!</strong>
+    <div class="time">
+        <i class="fas fa-clock"></i> about {{getTime()}}
+    </div>
+</div>

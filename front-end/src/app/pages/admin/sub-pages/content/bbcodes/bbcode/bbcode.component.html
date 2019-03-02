@@ -1,0 +1,40 @@
+<app-title [title]="title" [tabs]="tabs" (onTabClick)="onTabClick($event)"></app-title>
+<app-content>
+    <div class="grid-container full">
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-6">
+                <div class="label">Name</div>
+                <input name="bbcode-name" type="text" [(ngModel)]="bbcode.name" />
+            </div>
+            <div class="cell small-6">
+                <br />
+                <br />
+                <label class="checkbox-container">
+                    Is Emoji?
+                    <input type="checkbox" [(ngModel)]="bbcode.isEmoji">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div class="cell small-6" *ngIf="!bbcode.isEmoji">
+                <div class="label">Example</div>
+                <input name="bbcode-example" type="text" [(ngModel)]="bbcode.example" />
+            </div>
+            <div class="cell small-6">
+                <div class="label">Pattern</div>
+                <input name="bbcode-pattern" type="text" [(ngModel)]="bbcode.pattern" />
+            </div>
+            <div class="cell small-6" *ngIf="bbcode.isEmoji">
+                <div class="label">Image <em>(22x22px size)</em></div>
+                <input #image accept="image/*" type="file"/>
+            </div>
+            <div class="cell small-6" *ngIf="!bbcode.isEmoji">
+                <div class="label">Replace</div>
+                <input name="bbcode-replace" type="text" [(ngModel)]="bbcode.replace" />
+            </div>
+            <div class="cell small-6" *ngIf="!bbcode.isEmoji">
+                <div class="label">Content</div>
+                <input name="bbcode-content" type="text" [(ngModel)]="bbcode.content" />
+            </div>
+        </div>
+    </div>
+</app-content>

@@ -1,0 +1,55 @@
+<app-title [title]="'Connection information'"></app-title>
+<app-content>
+    <div class="grid-container">
+        <div class="grid-x margin-x">
+            <div class="cell small-3 breadcrum">
+                <strong>Server Type</strong>
+            </div>
+            <div class="cell small-9 breadcrum">
+                Shoutcase 1
+            </div>
+
+            <div class="cell small-3 breadcrum">
+                <strong>Bitrate</strong>
+            </div>
+            <div class="cell small-9 breadcrum">
+                128kbps, 44100Hz
+            </div>
+
+            <div class="cell small-3 breadcrum">
+                <strong>IP</strong>
+            </div>
+            <div name="info-ip" class="cell small-9 breadcrum">
+                {{ip}}
+            </div>
+
+            <div class="cell small-3 breadcrum">
+                <strong>Port</strong>
+            </div>
+            <div name="info-port" class="cell small-9 breadcrum">
+                {{port}}
+            </div>
+
+            <div class="cell small-3 breadcrum">
+                <strong>Password</strong>
+            </div>
+            <div name="info-password" class="cell small-9 breadcrum">
+                {{password}}
+            </div>
+
+            <div class="cell small-3 breadcrum">
+                <strong>Station Name</strong>
+            </div>
+            <div class="cell small-9 breadcrum">
+                Your stream name
+            </div>
+
+            <div class="cell small-3 breadcrum">
+                <strong>Genre</strong>
+            </div>
+            <div class="cell small-9 breadcrum">
+                {{nickname}}
+            </div>
+        </div>
+    </div>
+</app-content>

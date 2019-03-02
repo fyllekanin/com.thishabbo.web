@@ -1,0 +1,17 @@
+<app-title [title]="'Device Settings'"></app-title>
+<app-content>
+    <p>
+        <em>These are settings which are just bound to your current device. <br />
+        If you visit the site on another device these settings will be default until changed.</em>
+    </p>
+    <label class="checkbox-container">
+        Default BBcode mode in editor
+        <input type="checkbox" [(ngModel)]="editorSourceMode">
+        <span class="checkmark"></span>
+    </label>
+    <label class="checkbox-container">
+        Ignore Signatures
+        <input type="checkbox" [(ngModel)]="ignoreSignatures">
+        <span class="checkmark"></span>
+    </label>
+</app-content>

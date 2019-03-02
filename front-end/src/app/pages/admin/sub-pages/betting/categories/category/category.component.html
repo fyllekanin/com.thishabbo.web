@@ -1,0 +1,15 @@
+<app-title [title]="title" [tabs]="tabs" (onTabClick)="onTabClick($event)"></app-title>
+<app-content>
+    <div class="grid-container full">
+        <div class="grid-x margin-x">
+            <div class="cell small-6">
+                <div class="label">Name</div>
+                <input type="text" name="name" [(ngModel)]="model.name"/>
+            </div>
+            <div class="small-6">
+                <div class="label">Display Order</div>
+                <input type="text" name="name" [(ngModel)]="model.displayOrder"/>
+            </div>
+        </div>
+    </div>
+</app-content>

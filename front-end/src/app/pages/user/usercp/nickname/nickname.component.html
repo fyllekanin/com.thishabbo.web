@@ -1,0 +1,18 @@
+<app-title [title]="'Change Nickname'" [tabs]="tabs" (onTabClick)="onSave()"></app-title>
+<app-content>
+    <em>
+        Your nickname is your display name that is showed to other users on the website. You do not use this
+        to login on the website but only to be visible to other users. Your nickname is also used for tagging on the forum
+        and other functionality. Your username which you login with is only used for login.<br />
+        <br />
+        For older users, the difference with nickname is that you can change to an existing nickname someone have
+        if they have not been active for the past 3 months. Their nickname will be changed to something new so you own
+        the nickname yourself.
+    </em>
+    <br /> <br />
+    <strong>Short info:</strong>
+    <li>Costs 300 credits on the site to change your nickname</li>
+    <li>After changing nickname you can't change again for at least a week</li>
+    <div class="label">New Nickname</div>
+    <input name="nickname" [(ngModel)]="nickname" type="text">
+</app-content>

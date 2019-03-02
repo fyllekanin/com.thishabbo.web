@@ -1,0 +1,29 @@
+.wrapper {
+    min-height: 100vh;
+}
+
+.content-margin {
+    margin-top: 1.3rem;
+}
+
+@media screen and (max-width: 1200px) {
+    app-header {
+        display: none;
+    }
+}
+
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 11;
+    background-color: #3682b9;
+    height: 3px;
+    opacity: 1;
+
+    transition: opacity 2s linear;
+}
+
+.not-loading {
+    opacity: 0;
+}

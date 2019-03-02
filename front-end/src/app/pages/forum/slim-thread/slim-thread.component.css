@@ -1,0 +1,86 @@
+:host {
+    margin-bottom: 0rem;
+}
+
+.title {
+    font-weight: bold;
+    color: #0591ff;
+    font-size: 11px;
+    outline: none;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 70%;
+}
+
+.read {
+    font-weight: normal !important;
+}
+
+.closed, .unapproved, .sticky {
+    position: relative;
+    top: -0.3rem;
+    margin-left: 0.5rem;
+    padding: 0.3rem 0.5rem;
+    background-color: rgb(216, 106, 106);
+    color: #fff;
+    border-radius: 3px;
+    font-size: 10px;
+}
+
+.sticky {
+    background-color: rgb(63, 187, 115);
+}
+
+.title:hover {
+    cursor: pointer;
+}
+
+.views, .posts {
+    text-align: center;
+    display: inline-block;
+    padding: 0.8rem 0;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .18), inset 0 0 0 2px rgba(255, 255, 255, .18), 0 2px 0 0 rgba(0, 0, 0, 0.1);
+    margin-right: 1.5rem;
+    line-height: 1rem;
+    width: 5rem;
+}
+
+.time-ago, .nickname {
+    text-align: left;
+}
+
+.nickname a {
+    display: inline-block;
+}
+
+.latest-post {
+    font-weight: bold;
+    color: #0591ff;
+    padding-top: 0.5rem;
+}
+
+.latest-post:hover {
+    cursor: pointer;
+}
+
+a {
+    display: block;
+    text-decoration: none;
+}
+
+.opacity {
+    opacity: 0.4;
+}
+
+.margin-bottom {
+    margin-bottom: 5px;
+}
+
+.forum-home {
+    background: #00000003 !important;
+    padding: 10px;
+    width: 100%;
+    box-shadow: rgba(0, 0, 0, 0) 0 0 0 1px inset, rgba(0, 0, 0, 0) 0 0 0 2px inset, #00000008 0 2px 0;
+}

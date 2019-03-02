@@ -1,0 +1,25 @@
+<div class="image" appLazyLoad [image]="backgroundImage">
+    <div class="inner-image">
+        <div class="badge" *ngIf="haveBadge">
+            <img appLazyLoad [image]="badgeUrl"/>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <a class="title" [routerLink]="[threadLink]"><i class="fas fa-comment"></i> {{article.title}}</a>
+    <div class="tags">
+        <div *ngFor="let tag of article.tags" class="tag {{tag}}">{{prettify(tag)}}</div>
+    </div>
+    <div class="content" [innerHTML]="article.content | safeHtml"></div>
+    <div class="information">
+        <div class="author">
+            <em class="fas fa-pencil-alt"></em> Authored by
+            <a [routerLink]="['/user/profile/', article.user.nickname]">
+                <span [style]="article.user.styling | safeStyle">{{article.user.nickname}}</span>
+            </a>
+        </div>
+        <div class="time">
+            <em class="fas fa-clock"></em> {{time}}
+        </div>
+    </div>
+</div>

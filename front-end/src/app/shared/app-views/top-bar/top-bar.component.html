@@ -1,0 +1,223 @@
+<div class="wrapper">
+    <div class="grid-container height-100">
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-7 medium-8 breadcrum">
+                <a [routerLink]="homePage">ThisHabbo VX</a> &#187;
+                <a *ngFor="let item of breadcrumbItems" [routerLink]="[item.url]">
+                    {{item.title}} &#187;
+                </a>
+                <span [innerHTML]="current | safeHtml"></span>
+            </div>
+            <div class="cell small-4 medium-4 login-pc" *ngIf="!loggedIn">
+                <div class="login-wrapper">
+                    <input type="text" class="top-login" (keydown)="keyDownFunction($event)" [(ngModel)]="loginName"
+                           placeholder="Username/Habbo"
+                           name="loginName"/>
+                    <input type="password" class="top-login" (keydown)="keyDownFunction($event)" [(ngModel)]="password"
+                           placeholder="Password"
+                           name="password"/>
+                    <button appButton [float]="'right'" class="top-login" (click)="login()">Login</button>
+                </div>
+            </div>
+            <div class="cell small-5 medium-4 login-phone" *ngIf="!loggedIn">
+                <div class="login-wrapper">
+                    <a [routerLink]="['/auth/login']">Login</a> or <a [routerLink]="['/auth/register']">Register</a>
+                </div>
+            </div>
+            <div class="cell small-5 medium-offset-1 medium-3 notification-wrapper" *ngIf="loggedIn">
+                <div class="notification dropdown">
+                    <em class="fa fa-bell" [ngClass]="notifications.length > 0 ? 'new' : ''"></em>
+                    <div class="dropdown-content notif-size">
+                        <div class="notif-top">
+                            <b>Notifications</b>
+                            <div class="pull-right">
+                                Mark all as read - Mute - Settings
+                            </div>
+                        </div>
+                        <div class="notif-overflow">
+                            <div *ngIf="notifications.length === 0" class="notif-view">
+                                You do not have any notification currently!
+                            </div>
+                            <div class="notif-view" *ngFor="let notification of notifications"
+                                 (click)="notificationClick(notification)" [ngSwitch]="notification.type">
+                                <app-top-bar-thread-view *ngSwitchCase="1" [notification]="notification" (onClick)="notificationClick($event)"></app-top-bar-thread-view>
+                                <app-top-bar-thread-view *ngSwitchCase="2" [notification]="notification" (onClick)="notificationClick($event)"></app-top-bar-thread-view>
+                                <app-top-bar-thread-view *ngSwitchCase="4" [notification]="notification" (onClick)="notificationClick($event)"></app-top-bar-thread-view>
+
+                                <app-top-bar-badge-view *ngSwitchCase="3" [notification]="notification" (onClick)="notificationClick($event)"></app-top-bar-badge-view>
+                                <app-top-bar-category-view *ngSwitchCase="5" [notification]="notification" (onClick)="notificationClick($event)"></app-top-bar-category-view>
+                                <app-top-bar-infraction-view *ngSwitchCase="6" [notification]="notification" (onClick)="notificationClick($event)"></app-top-bar-infraction-view>
+                                <app-top-bar-infraction-view *ngSwitchCase="7" [notification]="notification" (onClick)="notificationClick($event)"></app-top-bar-infraction-view>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="notification dropdown">
+                    <em class="fa fa-comment"></em>
+                    <div class="dropdown-content notif-size">
+                        <div class="notif-top">
+
+                            <b>Inbox</b> (7)
+
+                            <div class="pull-right">
+                                Mark all as read - New Message - Settings
+                            </div>
+
+                        </div>
+
+                        <div class="notif-overflow">
+
+                            <div class="notif-view notif-unread">
+                                <div class="forum-pic"
+                                     style="background-image: url('https://www.thishabbo.com/_assets/img/avatars/152933661432818.gif');">
+                                </div>
+                                <div class="notif-desc">
+                                    <b>Dais</b> <i class="fas fa-user vxmessageIcon"></i>
+                                    <br>
+                                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem...
+                                    <br>
+                                    <i class="fas fa-clock"></i> about an hour ago <i
+                                    class="fas fa-comments pull-right"></i>
+                                </div>
+                            </div>
+
+                            <div class="notif-view">
+                                <div class="forum-pic"
+                                     style="background-image: url('https://www.thishabbo.com/_assets/img/avatars/152933661432818.gif');">
+                                </div>
+                                <div class="notif-desc">
+                                    <b>Dais</b> <i class="fas fa-user vxmessageIcon"></i>
+                                    <br>
+                                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem...
+                                    <br>
+                                    <i class="fas fa-clock"></i> about an hour ago <i
+                                    class="fas fa-comments pull-right"></i>
+                                </div>
+                            </div>
+
+                            <div class="notif-view notif-unread">
+                                <div class="forum-pic"
+                                     style="background-image: url('https://www.thishabbo.com/_assets/img/avatars/152933661432818.gif');">
+                                </div>
+                                <div class="notif-desc">
+                                    <b>Dais</b> <i class="fas fa-user vxmessageIcon"></i>
+                                    <br>
+                                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem...
+                                    <br>
+                                    <i class="fas fa-clock"></i> about an hour ago <i
+                                    class="fas fa-comments pull-right"></i>
+                                </div>
+                            </div>
+
+                            <div class="notif-view notif-unread">
+                                <div class="forum-pic"
+                                     style="background-image: url('https://www.thishabbo.com/_assets/img/avatars/152933661432818.gif');">
+                                </div>
+                                <div class="notif-desc">
+                                    <b>Dais</b>, <b>Fergie</b> &amp; <b>2 others</b> <i
+                                    class="fas fa-users vxmessageIcon"></i>
+                                    <br>
+                                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem...
+                                    <br>
+                                    <i class="fas fa-clock"></i> about an hour ago <i
+                                    class="fas fa-comments pull-right"></i>
+                                </div>
+                            </div>
+
+                            <div class="notif-view">
+                                <div class="forum-pic"
+                                     style="background-image: url('https://www.thishabbo.com/_assets/img/avatars/152933661432818.gif');">
+                                </div>
+                                <div class="notif-desc">
+                                    <b>Dais</b> <i class="fas fa-user vxmessageIcon"></i>
+                                    <br>
+                                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem...
+                                    <br>
+                                    <i class="fas fa-clock"></i> about an hour ago <i
+                                    class="fas fa-comments pull-right"></i>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="notification dropdown">
+                    <em class="fa fa-gift"></em>
+                    <div class="dropdown-content notif-size">
+                        <div class="notif-top">
+
+                            <b>Gifts</b> (7)
+
+                            <div class="pull-right">
+                                Mark all as read - Send a Gift
+                            </div>
+
+                        </div>
+
+                        <div class="notif-overflow">
+
+                            <div class="notif-view notif-unread">
+                                <div class="forum-pic"
+                                     style="background-image: url('https://www.thishabbo.com/_assets/img/avatars/152933661432818.gif');">
+                                </div>
+                                <div class="notif-desc">
+                                    <b>Dais</b> has sent you <b>34 THC</b><br>
+                                    <i class="fas fa-clock"></i> about an hour ago
+                                </div>
+                            </div>
+
+                            <div class="notif-view">
+                                <div class="forum-pic"
+                                     style="background-image: url('https://www.thishabbo.com/_assets/img/avatars/152933661432818.gif');">
+                                </div>
+                                <div class="notif-desc">
+                                    <b>Phillip the Cat</b><br>
+                                    You have earnt <b>1,420</b> THC this month! That is an average of <b>355</b> THC a
+                                    week this month.
+                                    <br>
+                                    <i class="fas fa-clock"></i> about an hour ago
+                                </div>
+                            </div>
+
+                            <div class="notif-view notif-unread">
+                                <div class="forum-pic"
+                                     style="background-image: url('https://www.thishabbo.com/_assets/img/avatars/152933661432818.gif');">
+                                </div>
+                                <div class="notif-desc">
+                                    <b>Phillip the Cat</b><br>
+                                    As the user wishes to be anonymous, they have sent you <b>1 month</b> ThisHabboClub
+                                    for free! I wonder who that could be?
+                                    <br>
+                                    <i class="fas fa-clock"></i> about an hour ago
+                                </div>
+                            </div>
+
+                            <div class="notif-view notif-unread">
+                                <div class="forum-pic"
+                                     style="background-image: url('https://www.thishabbo.com/_assets/img/avatars/152933661432818.gif');">
+                                </div>
+                                <div class="notif-desc">
+                                    <b>Phillip the Cat</b><br>
+                                    <b>Dais</b> has sent you <b>1 month</b> ThisHabboClub for free!
+                                    <br>
+                                    <i class="fas fa-clock"></i> about an hour ago
+                                </div>
+                            </div>
+
+                            <div class="notif-view">
+                                <div class="forum-pic"
+                                     style="background-image: url('https://www.thishabbo.com/_assets/img/avatars/152933661432818.gif');">
+                                </div>
+                                <div class="notif-desc">
+                                    <b>Phillip the Cat</b><br>
+                                    You have earnt <b>1,420</b> THC with the voucher code 8mdm3Y.
+                                    <br>
+                                    <i class="fas fa-clock"></i> about an hour ago
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

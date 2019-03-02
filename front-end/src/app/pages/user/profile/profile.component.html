@@ -1,0 +1,65 @@
+<app-cover-photo-with-avatar [userId]="coverPhotoData.userId" [version]="coverPhotoData.version" [isVisible]="true"></app-cover-photo-with-avatar>
+<div class="grid-container">
+    <div class="grid-x grid-margin-x">
+        <div class="cell small-4">
+            Left
+        </div>
+        <div class="cell small-4">
+            Center
+        </div>
+        <div class="cell small-4">
+            <app-title [title]="'Community'"></app-title>
+            <app-content>
+                <div class="post-bit">
+                    <div class="post-bit-row">
+                        <strong>Likes:</strong>
+                        <div class="float-right">
+                            {{stats.likes | number: '1.'}}
+                        </div>
+                    </div>
+                    <div class="post-bit-row">
+                        <strong>Threads Created:</strong>
+                        <div class="float-right">
+                            {{stats.threads | number: '1.'}}
+                        </div>
+                    </div>
+                    <div class="post-bit-row">
+                        <strong>Posts Created:</strong>
+                        <div class="float-right">
+                            {{stats.posts | number: '1.'}}
+                        </div>
+                    </div>
+                </div>
+            </app-content>
+            <app-title [title]="'About ' + nickname"></app-title>
+            <app-content>
+                <div class="post-bit">
+                    <div class="post-bit-row">
+                        <strong>ThisHabbo ID:</strong>
+                        <div class="float-right">
+                            #{{stats.userId}}
+                        </div>
+                    </div>
+                    <div class="post-bit-row">
+                        <strong>Habbo ID:</strong>
+                        <div class="float-right">
+                            {{stats.habbo}}
+                        </div>
+                    </div>
+                    <div class="post-bit-row">
+                        <strong>Last Active:</strong>
+                        <div class="float-right">
+                            {{timeAgo(stats.lastActivity)}}
+                        </div>
+                    </div>
+                    <div class="post-bit-row">
+                        <strong>Registered:</strong>
+                        <div class="float-right">
+                            {{timeAgo(stats.createdAt)}}
+                        </div>
+                    </div>
+                </div>
+            </app-content>
+        </div>
+    </div>
+</div>

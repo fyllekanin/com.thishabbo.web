@@ -1,0 +1,25 @@
+.latest-post-icon {
+    background: #fbfbfb;
+    padding: 10.5px;
+    margin: 0 0 4px 0;
+    display: flex;
+    float: left;
+    box-shadow: rgba(0, 0, 0, 0) 0 0 0 1px inset, rgba(0, 0, 0, 0) 0 0 0 2px inset, #00000005 0 2px 0;
+}
+
+.latest-post-content {
+    margin: 0 0 4px 0;
+    padding: 8px;
+    background: #fbfbfb;
+    width: 90.6%;
+    float: right;
+    box-shadow: rgba(0, 0, 0, 0) 0 0 0 1px inset, rgba(0, 0, 0, 0) 0 0 0 2px inset, #00000005 0 2px 0;
+}
+
+.name {
+    float: right;
+}
+
+a {
+    color: #ad6262;
+}

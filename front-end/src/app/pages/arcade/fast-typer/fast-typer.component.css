@@ -1,0 +1,28 @@
+.game-input {
+    width: 100%;
+    display: block;
+    height: 2rem;
+    font-size: 1rem;
+    padding: 0.5rem;
+}
+
+.game-content {
+    font-weight: bold;
+}
+
+.timer {
+    text-align: center;
+}
+
+.cleared {
+    color: rgb(39, 192, 108);
+}
+
+.highscore-row {
+    background: rgba(251, 251, 251, .52);
+    box-shadow: inset 0 1px 2px rgba(181, 180, 180, .04);
+    margin-bottom: 2px;
+    min-height: 33px;
+    padding: 7px;
+    width: 100%;
+}

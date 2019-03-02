@@ -1,0 +1,59 @@
+.status-good {
+    padding: 0.3rem 0.5rem;
+    background-color: rgb(55, 165, 55);
+    color: #ffffff;
+    border-radius: 3px;
+}
+
+.status-bad {
+    padding: 0.3rem 0.5rem;
+    background-color: rgb(165, 55, 55);
+    color: #ffffff;
+    border-radius: 3px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: left;
+}
+
+table tr:first-child {
+    border-bottom: 1px solid rgb(231, 231, 231) !important;
+}
+
+table th {
+    padding-bottom: 0.5rem;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+table td {
+    padding: 1rem 0 !important;
+}
+
+table tr td:first-child {
+    padding-left: 0.5rem !important;
+}
+
+table tr td:last-child {
+    padding-right: 0.5rem !important;
+}
+
+tbody tr:nth-child(even){
+    background-color: rgb(250, 250, 250);
+}
+
+.editable {
+    width: 2rem !important;
+    margin-bottom: 0;
+}
+
+button {
+    margin-left: 0.5rem;
+    margin-top: 0;
+}
+
+.filter {
+    margin-bottom: 1rem;
+}

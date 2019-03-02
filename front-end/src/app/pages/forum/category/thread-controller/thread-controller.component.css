@@ -1,0 +1,17 @@
+.error {
+    color: #cc6363;
+}
+
+.poll-answer {
+    margin-bottom: 0.3rem;
+}
+
+.remove-answer {
+    padding-top: 2.1rem;
+    font-size: 1rem;
+    padding-left: 1rem;
+}
+
+.remove-answer i {
+    cursor: pointer;
+}

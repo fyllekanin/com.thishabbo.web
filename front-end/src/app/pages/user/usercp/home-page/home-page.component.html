@@ -1,0 +1,11 @@
+<app-title [title]="'Update home page'" [tabs]="tabs" (onTabClick)="update()"></app-title>
+<app-content>
+    <div class="grid-container">
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-12">
+                <div class="label">Home page <em>(/home, /forum etc)</em></div>
+                <input type="text" [(ngModel)]="homePage" name="homePage"/>
+            </div>
+        </div>
+    </div>
+</app-content>

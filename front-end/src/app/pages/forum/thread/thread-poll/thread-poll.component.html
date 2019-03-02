@@ -1,0 +1,18 @@
+<app-title [title]="question" [tabs]="haveVoted ? [] : tabs" (onTabClick)="vote()"></app-title>
+<app-content *ngIf="haveVoted">
+    <div class="answer" *ngFor="let answer of answers">
+        <div>{{answer.label}}</div>
+        <div class="percentage" [ngStyle]="{ 'width': answer.percentage + '%' }">
+            {{answer.votes}} votes <em>({{answer.percentage}}%)</em>
+        </div>
+    </div>
+</app-content>
+<app-content *ngIf="!haveVoted">
+    <div class="option" *ngFor="let option of options">
+        <label class="checkbox-container">
+            {{option.label}}
+            <input type="checkbox" [checked]="answerId === option.id" (click)="answerId = option.id">
+            <span class="checkmark"></span>
+        </label>
+    </div>
+</app-content>

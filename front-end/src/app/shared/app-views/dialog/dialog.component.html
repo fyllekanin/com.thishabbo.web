@@ -1,0 +1,15 @@
+<div class="grid-container">
+    <div class="grid-x grid-margin-x">
+        <div class="cell small-12 medium-6 medium-offset-3">
+            <div class="wrapper">
+                <h2>{{title}}</h2>
+                <div class="content" [innerHTML]="content" *ngIf="!isComponent"></div>
+                <ng-template #container></ng-template>
+                <div class="line" *ngIf="isComponent"></div>
+                <div class="buttons">
+                    <button *ngFor="let button of buttons" appButton [color]="button.type" [float]="'right'" (click)="onButton(button)">{{button.title}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+<app-title [title]="title" [tabs]="tabs" (onTabClick)="onTabClick($event)"></app-title>
+<app-content>
+    <div class="grid-container">
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-6">
+                <div class="label">Title:</div>
+                <input [(ngModel)]="model.title" type="text" name="auto-ban-title">
+            </div>
+            <div class="cell small-6">
+                <div class="label">Amount: <em>(Amount of points to trigger)</em></div>
+                <input [(ngModel)]="model.amount" type="number" name="auto-ban-amount">
+            </div>
+            <div class="cell small-6">
+                <div class="label">Ban Length in hours:</div>
+                <input [(ngModel)]="model.banLength" type="number" name="auto-ban-banLength">
+            </div>
+            <div class="cell small-6">
+                <div class="label">Reason on ban:</div>
+                <input [(ngModel)]="model.reason" type="text" name="auto-ban-reason">
+            </div>
+        </div>
+    </div>
+</app-content>

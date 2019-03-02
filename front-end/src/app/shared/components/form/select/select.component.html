@@ -1,0 +1,7 @@
+<div contenteditable="true" (focus)="onFocus()" class="input" [textContent]="textContent" (input)="filter = $event.target.textContent">
+</div>
+<div contenteditable="false" class="values" [ngClass]="isOpen ? 'open' : ''">
+    <div *ngFor="let item of items" (click)="onValueChanged(item);">
+        {{item.label}}
+    </div>
+</div>

@@ -1,0 +1,9 @@
+<app-title [title]="'Navigation'" [tabs]="tabs" (onTabClick)="onAction($event)"></app-title>
+<app-content></app-content>
+
+<app-table *ngFor="let config of tableConfigs"
+           [config]="config"
+           [tabs]="tableTabs"
+           (onAction)="onTableAction($event)"
+           (onTabClick)="onAddChild(config.id)">
+</app-table>
