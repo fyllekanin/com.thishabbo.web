@@ -43,7 +43,7 @@ export class NavigationUtil {
 
     static clickButton(value: string): void {
         const ele = element(by.cssContainingText('button', value));
-        browser.wait(ExpectedConditions.presenceOf(ele), 5000, `Expected button with text "${value}" to be present`);
+        browser.wait(ExpectedConditions.presenceOf(ele), 10000, `Expected button with text "${value}" to be present`);
 
         CommonUtil.click(ele);
     }
@@ -66,7 +66,7 @@ export class NavigationUtil {
 
     static clickFixedTools(value: string): void {
         const ele = element(by.cssContainingText('app-fixed-tools button', value));
-        browser.wait(ExpectedConditions.presenceOf(ele), 5000, `Expected fixed tools "${value}" to be present`);
+        browser.wait(ExpectedConditions.presenceOf(ele), 10000, `Expected fixed tools "${value}" to be present`);
         CommonUtil.click(ele);
     }
 }

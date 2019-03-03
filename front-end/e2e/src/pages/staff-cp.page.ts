@@ -14,14 +14,14 @@ export class StaffCpPage {
 
     static selectEventType(value: string): void {
         const ele = StaffCpPage.getEventTypeOption(value);
-        browser.wait(ExpectedConditions.presenceOf(ele), 5000, `Expected event type ${value} to be present`);
+        browser.wait(ExpectedConditions.presenceOf(ele), 10000, `Expected event type ${value} to be present`);
 
         CommonUtil.click(ele);
     }
 
     static getNewEventTypeInput(): ElementFinder {
         const ele = element(by.css('input[placeholder="Event name..."]'));
-        browser.wait(ExpectedConditions.presenceOf(ele), 5000, `Expected new event type input to be present`);
+        browser.wait(ExpectedConditions.presenceOf(ele), 10000, `Expected new event type input to be present`);
 
         return ele;
     }

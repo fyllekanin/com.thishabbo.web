@@ -20,11 +20,11 @@ export class UserCpPage {
         const repassword = element(by.css('app-auth-register input[name="repassword"]'));
         const email = element(by.css('app-auth-register input[name="email"]'));
 
-        browser.wait(ExpectedConditions.presenceOf(username), 5000, 'Expected username input to be present');
-        browser.wait(ExpectedConditions.presenceOf(nickname), 5000, 'Expected nickname input to be present');
-        browser.wait(ExpectedConditions.presenceOf(password), 5000, 'Expected password input to be present');
-        browser.wait(ExpectedConditions.presenceOf(repassword), 5000, 'Expected repassword input to be present');
-        browser.wait(ExpectedConditions.presenceOf(email), 5000, 'Expected email input to be present');
+        browser.wait(ExpectedConditions.presenceOf(username), 10000, 'Expected username input to be present');
+        browser.wait(ExpectedConditions.presenceOf(nickname), 10000, 'Expected nickname input to be present');
+        browser.wait(ExpectedConditions.presenceOf(password), 10000, 'Expected password input to be present');
+        browser.wait(ExpectedConditions.presenceOf(repassword), 10000, 'Expected repassword input to be present');
+        browser.wait(ExpectedConditions.presenceOf(email), 10000, 'Expected email input to be present');
 
         InputUtil.fillInput(username, data.username);
         InputUtil.fillInput(nickname, data.username);
@@ -38,23 +38,23 @@ export class UserCpPage {
         const repasswordEle = element(by.css('app-usercp-password input[name="repassword"]'));
         const currentPasswordEle = element(by.css('app-usercp-password input[name="currentPassword"]'));
 
-        browser.wait(ExpectedConditions.presenceOf(passwordEle), 5000, 'Expected password input to be present');
-        browser.wait(ExpectedConditions.presenceOf(repasswordEle), 5000, 'Expected re-password input to be present');
-        browser.wait(ExpectedConditions.presenceOf(currentPasswordEle), 5000, 'Expected current password input to be present');
+        browser.wait(ExpectedConditions.presenceOf(passwordEle), 10000, 'Expected password input to be present');
+        browser.wait(ExpectedConditions.presenceOf(repasswordEle), 10000, 'Expected re-password input to be present');
+        browser.wait(ExpectedConditions.presenceOf(currentPasswordEle), 10000, 'Expected current password input to be present');
 
         return [passwordEle, repasswordEle, currentPasswordEle];
     }
 
     static getEditHomePageInput(): ElementFinder {
         const ele = element(by.css('app-usercp-home-page input[name="homePage"]'));
-        browser.wait(ExpectedConditions.presenceOf(ele), 5000, 'Expected home page input to be present');
+        browser.wait(ExpectedConditions.presenceOf(ele), 10000, 'Expected home page input to be present');
 
         return ele;
     }
 
     static getSignatureEditor(): ElementFinder {
         const ele = element(by.css('app-usercp-signature app-editor iframe'));
-        browser.wait(ExpectedConditions.presenceOf(ele), 5000, 'Expected signature editor to be present');
+        browser.wait(ExpectedConditions.presenceOf(ele), 10000, 'Expected signature editor to be present');
 
         return ele;
     }
