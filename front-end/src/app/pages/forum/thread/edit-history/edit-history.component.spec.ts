@@ -49,7 +49,7 @@ describe('EditHistoryComponent', () => {
         });
     });
 
-    it('edits should map the history to label and timestamp', () => {
+    it('edits should map the history to label and correct timestamp', () => {
         // Given
         component.setData([
             new PostHistoryModel({
@@ -66,7 +66,7 @@ describe('EditHistoryComponent', () => {
         const result = component.edits;
 
         // Then
-        const reg = new RegExp(/1st January 1970 - [0-9]+:[0-9]+ [A-Z]+ - [a-zA-Z]+/);
+        const reg = new RegExp(/[a-zA-Z0-9]+ [a-zA-Z]+ [0-9]+ - [0-9]+:[0-9]+ [A-Z]+ - [a-zA-Z]+/);
         expect(result[0].label.match(reg)).toBeTruthy();
         expect(result[1].label.match(reg)).toBeTruthy();
     });
