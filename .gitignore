@@ -5,3 +5,4 @@
 target
 target/*
 rest/composer.lock
+**/debug.log

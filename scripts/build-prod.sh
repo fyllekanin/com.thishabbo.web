@@ -24,5 +24,3 @@ cp ./front-end/.htaccess ./target/public/.htaccess
 cd target
 php artisan route:cache
 
-
-

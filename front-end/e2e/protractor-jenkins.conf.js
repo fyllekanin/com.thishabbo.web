@@ -1,10 +1,10 @@
 // Protractor configuration file, see link for more information
 // https://github.com/angular/protractor/blob/master/lib/config.ts
 
-const {SpecReporter} = require('jasmine-spec-reporter');
+const { SpecReporter } = require('jasmine-spec-reporter');
 
 exports.config = {
-    allScriptsTimeout: 11000,
+    allScriptsTimeout: 110000,
     specs: [
         './src/tests/user/*.e2e-spec.ts',
         './src/tests/forum/*.e2e-spec.ts',
@@ -19,12 +19,12 @@ exports.config = {
             args: ['--headless', 'no-sandbox', '--disable-gpu', '--window-size=1200,800']
         }
     },
-    directConnect: true,
-    baseUrl: 'http://localhost',
+    directConnect: false,
+    baseUrl: 'http://test.rabbit-network.net',
     framework: 'jasmine',
     jasmineNodeOpts: {
         showColors: true,
-        defaultTimeoutInterval: 60000,
+        defaultTimeoutInterval: 600000,
         print: function () {
         }
     },

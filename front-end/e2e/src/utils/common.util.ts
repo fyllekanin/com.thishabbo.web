@@ -21,22 +21,22 @@ export class CommonUtil {
         browser.sleep(250);
 
         const experience = element(by.css('app-top-box .experience'));
-        browser.wait(ExpectedConditions.presenceOf(experience), 5000, 'Expected user to be logged in');
+        browser.wait(ExpectedConditions.presenceOf(experience), 10000, 'Expected user to be logged in');
     }
 
     static getNicknameElement(): ElementFinder {
         const nicknameEle = element(by.css('app-top-box .welcome .logged-in .nickname'));
-        browser.wait(ExpectedConditions.presenceOf(nicknameEle), 5000, 'Expected nickname to be present');
+        browser.wait(ExpectedConditions.presenceOf(nicknameEle), 10000, 'Expected nickname to be present');
         return nicknameEle;
     }
 
     static click(ele: ElementFinder): void {
         browser.actions().mouseMove(ele).perform();
-        browser.wait(ExpectedConditions.elementToBeClickable(ele), 5000, `Expected element to be clickable`);
+        browser.wait(ExpectedConditions.elementToBeClickable(ele), 10000, `Expected element to be clickable`);
         ele.click();
 
         const loadingWrapper = element(by.css('.loading-wrapper'));
-        browser.wait(ExpectedConditions.invisibilityOf(loadingWrapper), 5000, 'Expected loading wrapper to be gone');
+        browser.wait(ExpectedConditions.invisibilityOf(loadingWrapper), 10000, 'Expected loading wrapper to be gone');
         browser.sleep(200);
     }
 
@@ -46,7 +46,7 @@ export class CommonUtil {
 
     static enterTableFilter(placeholder: string, value: string): void {
         const ele = element(by.css('app-table .filter input[placeholder="' + placeholder + '"]'));
-        browser.wait(ExpectedConditions.presenceOf(ele), 5000, `Expected table filter with placeholder "${placeholder}" to be present`);
+        browser.wait(ExpectedConditions.presenceOf(ele), 10000, `Expected table filter with placeholder "${placeholder}" to be present`);
 
         InputUtil.fillInput(ele, value);
     }
