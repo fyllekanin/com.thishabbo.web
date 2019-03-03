@@ -19,7 +19,7 @@ exports.config = {
             args: ['--headless', 'no-sandbox', '--disable-gpu', '--window-size=1200,800']
         }
     },
-    directConnect: true,
+    directConnect: false,
     baseUrl: 'http://test.rabbit-network.net',
     framework: 'jasmine',
     jasmineNodeOpts: {
