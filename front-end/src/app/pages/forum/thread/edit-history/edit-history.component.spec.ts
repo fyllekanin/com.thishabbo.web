@@ -49,7 +49,7 @@ describe('EditHistoryComponent', () => {
         });
     });
 
-    it('edits should map the history to label and timestamp', () => {
+    it('edits should map the history to label and correct timestamp', () => {
         // Given
         component.setData([
             new PostHistoryModel({
