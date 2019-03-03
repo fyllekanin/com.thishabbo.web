@@ -20,7 +20,7 @@ exports.config = {
         }
     },
     directConnect: true,
-    baseUrl: 'http://localhost:8000',
+    baseUrl: 'http://test.rabbit-network.net',
     framework: 'jasmine',
     jasmineNodeOpts: {
         showColors: true,
