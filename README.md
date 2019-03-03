@@ -88,7 +88,6 @@ In scripts there is the file "job-runner.sh"
 This file will be present in the production produced code.
 
 After everything is setup the following steps should be taken on an update:
-- 1 killall job-runner.sh
-  - To kill the previous runner
-- 2 bash -c "exec -a JobRunner nohup ./job-runner.sh &>/dev/null &"
+- 1 bash -c "exec -a JobRunner nohup ./job-runner.sh &>/dev/null &"
   - To start up the runner again
+  - It will kill the previous if exists

@@ -3,7 +3,14 @@ if [ -f setup_reviewer.sh ]; then
     cd ./..
 fi
 
-cd rest
+# Kill the previous job runner
+if [ pgrep job-runner.sh ]; then
+    killall job-runner.sh
+fi
+
+if [ -f rest]; then
+    cd rest
+fi
 while true
 do
 	php artisan queue:radio
