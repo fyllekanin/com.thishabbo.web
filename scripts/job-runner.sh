@@ -1,5 +1,4 @@
 #!/bin/bash
-# Setup project (installation)
 if [ -f setup_reviewer.sh ]; then
     cd ./..
 fi
