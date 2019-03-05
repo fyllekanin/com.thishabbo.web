@@ -41,5 +41,9 @@ exports.config = {
         }));
         browser.waitForAngularEnabled(true);
         browser.driver.manage().window().setSize(1280, 1024);
+    },
+    beforeEach() {
+        browser.executeScript('window.localStorage.clear();');
+        browser.executeScript('window.sessionStorage.clear();');
     }
 };
