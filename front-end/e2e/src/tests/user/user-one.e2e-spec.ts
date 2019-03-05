@@ -11,11 +11,17 @@ describe('User #1', () => {
     const NEW_PASSWORD = 'test4321';
     const NEW_SIGNATURE = 'This is my new signature';
 
-    beforeEach(() => {
+    beforeEach(done => {
         CommonUtil.open('/home');
+        CommonUtil.isLoggedIn().then(isLoggedIn => {
+            if (!isLoggedIn) {
+                CommonUtil.login(USERNAME, PASSWORD);
+            }
+        });
     });
 
     it('should be possible to login', () => {
+        NavigationUtil.clickUserCpTool('Logout');
         CommonUtil.login(USERNAME, PASSWORD);
 
         expect(CommonUtil.getNicknameElement().getText()).toEqual('test');
