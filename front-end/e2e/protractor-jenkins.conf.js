@@ -2,6 +2,7 @@
 // https://github.com/angular/protractor/blob/master/lib/config.ts
 
 const { SpecReporter } = require('jasmine-spec-reporter');
+const HtmlScreenshotReporter = require('protractor-jasmine2-screenshot-reporter');
 
 exports.config = {
     allScriptsTimeout: 110000,
@@ -33,6 +34,11 @@ exports.config = {
             project: require('path').join(__dirname, './tsconfig.e2e.json')
         });
         jasmine.getEnv().addReporter(new SpecReporter({spec: {displayStacktrace: true}}));
+        jasmine.getEnv().addReporter(new HtmlScreenshotReporter({
+            dest: 'target/screenshots',
+            filename: 'my-report.html',
+            captureOnlyFailedSpecs: true
+        }));
         browser.waitForAngularEnabled(true);
         browser.driver.manage().window().setSize(1280, 1024);
     }
