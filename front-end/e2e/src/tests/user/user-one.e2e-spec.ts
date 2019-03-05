@@ -17,6 +17,7 @@ describe('User #1', () => {
             if (!isLoggedIn) {
                 CommonUtil.login(USERNAME, PASSWORD);
             }
+            done();
         });
     });
 
