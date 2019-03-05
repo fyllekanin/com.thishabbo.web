@@ -92,7 +92,6 @@ class PageController extends Controller {
                 'posts' => $user->posts,
                 'threads' => $user->threads,
                 'likes' => $user->likes,
-                'habbo' => Value::objectProperty($user->userdata, 'habbo', null),
                 'createdAt' => $user->createdAt->timestamp,
                 'lastActivity' => $user->lastActivity
             ]

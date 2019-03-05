@@ -21,11 +21,9 @@ class UserdataTableSeeder extends Seeder
                 'userdataId' => 1,
                 'userId' => 1,
                 'signature' => NULL,
-                'habbo' => 'bear94',
                 'postBit' => 0,
                 'avatarUpdatedAt' => 0,
                 'credits' => 50,
-                'habboCheckedAt' => 1539549039,
                 'createdAt' => 1539549027,
                 'updatedAt' => 1539549039
             ),
@@ -34,11 +32,9 @@ class UserdataTableSeeder extends Seeder
                 'userdataId' => 2,
                 'userId' => 2,
                 'signature' => NULL,
-                'habbo' => 'test',
                 'postBit' => 0,
                 'avatarUpdatedAt' => 0,
                 'credits' => 50,
-                'habboCheckedAt' => 1539549039,
                 'createdAt' => 1539549027,
                 'updatedAt' => 1539549039
             ),
@@ -47,11 +43,9 @@ class UserdataTableSeeder extends Seeder
                 'userdataId' => 3,
                 'userId' => 3,
                 'signature' => NULL,
-                'habbo' => 'test1234',
                 'postBit' => 0,
                 'avatarUpdatedAt' => 0,
                 'credits' => 50,
-                'habboCheckedAt' => 1539549039,
                 'createdAt' => 1539549027,
                 'updatedAt' => 1539549039
             )

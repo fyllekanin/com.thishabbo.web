@@ -7,8 +7,6 @@ export class BasicModel {
     @primitive()
     nickname: string;
     @primitive()
-    habbo: string;
-    @primitive()
     password: string;
     @primitive()
     repassword: string;

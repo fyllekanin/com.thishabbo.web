@@ -4,8 +4,6 @@ export class ListUser {
     @primitive()
     nickname: string;
     @primitive()
-    habbo: string;
-    @primitive()
     userId: number;
     @primitive()
     updatedAt: number;

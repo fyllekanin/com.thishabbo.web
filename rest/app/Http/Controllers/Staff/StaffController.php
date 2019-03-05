@@ -27,8 +27,7 @@ class StaffController extends Controller {
 
         foreach ($requests as $thcRequest) {
             $nickname = Value::arrayProperty($thcRequest, 'nickname', '');
-            $habbo = Value::arrayProperty($thcRequest, 'habbo', '');
-            $account = $this->findAccount($nickname, $habbo);
+            $account = User::withNickname($nickname)->first();
             if ($account->lastActivity < strtotime('-1 month')) {
                 continue;
             }
@@ -53,42 +52,17 @@ class StaffController extends Controller {
      */
     private function validateRequests ($requests) {
         foreach ($requests as $request) {
-            Condition::precondition(!isset($request['nickname']) && !isset($request['habbo']),
-                400, 'nickname or habbo needs to be set');
-            Condition::precondition(empty($request['nickname']) && empty($request['habbo']),
-                400, 'nickname or habbo needs to be set');
+            Condition::precondition(!isset($request['nickname']) || empty($request['nickname']),
+                400, 'nickname needs to be set');
             Condition::precondition(!is_numeric($request['amount']) || $request['amount'] < 1, 400,
                 'The amount is not valid, 1 or more number is mandatory');
             Condition::precondition(!isset($request['reason']) || empty($request['reason']),
                 400, 'Each row needs a reason');
 
             $nickname = Value::arrayProperty($request, 'nickname', '');
-            $habbo = Value::arrayProperty($request, 'habbo', '');
-            $account = $this->findAccount($nickname, $habbo);
-            Condition::precondition(!$account, 404, sprintf('There is no account related with %s or %s',
-                $nickname, $habbo));
+            $account = User::withNickname($nickname)->first();
+            Condition::precondition(!$account, 404, sprintf('There is no account related with %s',
+                $nickname));
         }
-    }
-
-    /**
-     * Find an account based on nickname if not try habbo name
-     *
-     * @param $nickname
-     * @param $habbo
-     *
-     * @return null|object
-     */
-    private function findAccount ($nickname, $habbo) {
-        $account = User::withNickname($nickname)->first();
-        if ($account) {
-            return $account;
-        }
-
-        $userData = UserData::withHabbo($habbo)->first();
-        if (!$userData) {
-            return null;
-        }
-
-        return UserHelper::getUserFromId($userData->userId);
     }
 }

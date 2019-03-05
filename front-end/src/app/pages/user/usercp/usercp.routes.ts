@@ -10,8 +10,6 @@ import { UsercpPostBitService } from './services/usercp-post-bit.service';
 import { SignatureComponent } from './signature/signature.component';
 import { PostBitComponent } from './post-bit/post-bit.component';
 import { UsercpComponent } from './usercp.component';
-import { HabboComponent } from './habbo/habbo.component';
-import { UsercpHabboService } from './services/usercp-habbo.service';
 import { HomePageComponent } from './home-page/home-page.component';
 import { SocialNetworksComponent } from './social-networks/social-networks.component';
 import { UsercpSocialNetworksService } from './services/usercp-social-networks.service';
@@ -67,13 +65,6 @@ export const usercpRoutes: Routes = [
             {
                 path: 'cover',
                 component: CoverPhotoComponent
-            },
-            {
-                path: 'habbo',
-                component: HabboComponent,
-                resolve: {
-                    data: UsercpHabboService
-                }
             },
             {
                 path: 'post-bit',

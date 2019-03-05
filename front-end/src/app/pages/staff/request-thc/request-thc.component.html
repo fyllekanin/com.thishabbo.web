@@ -4,8 +4,7 @@
     (onTabClick)="onTabClick($event)">
 </app-title>
 <app-content>
-    Here you can request THC for a specific user which won a forum, events or radio competition. You can find the user either by
-    habbo name or their forum nickname, If you fill in both nickname and habbo the nickname will be checked first and habbo 2nd.
+    Here you can request THC for a specific user which won a forum, events or radio competition.
     <br />
     <br />
     You can add multiple at one time, just click "Add row" above to add another line to fill in
@@ -17,10 +16,6 @@
             <div class="cell small-2">
                 <strong>nickname:</strong>
                 <input type="text" [(ngModel)]="item.nickname" />
-            </div>
-            <div class="cell small-2">
-                <strong>Habbo:</strong>
-                <input type="text" [(ngModel)]="item.habbo" />
             </div>
             <div class="cell small-2">
                 <strong>Amount:</strong>

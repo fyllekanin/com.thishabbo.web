@@ -184,11 +184,6 @@ export class UsersListComponent extends Page implements OnDestroy {
                     title: 'Nickname',
                     placeholder: 'Search for users',
                     key: 'nickname'
-                }),
-                new FilterConfig({
-                    title: 'Habbo',
-                    placeholder: 'Search for habbo',
-                    key: 'habbo'
                 })
             ]
         });
@@ -201,7 +196,6 @@ export class UsersListComponent extends Page implements OnDestroy {
                 id: String(user.userId),
                 cells: [
                     new TableCell({ title: user.nickname }),
-                    new TableCell({ title: user.habbo || '' }),
                     new TableCell({ title: this.timeAgo(user.updatedAt) })
                 ],
                 actions: actions
@@ -212,7 +206,6 @@ export class UsersListComponent extends Page implements OnDestroy {
     private getTableHeaders(): Array<TableHeader> {
         return [
             new TableHeader({ title: 'Nickname' }),
-            new TableHeader({ title: 'Habbo' }),
             new TableHeader({ title: 'Last modified' })
         ];
     }

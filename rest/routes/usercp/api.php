@@ -20,9 +20,6 @@ Route::get('avatar', 'Usercp\ProfileController@getAvatarSize');
 Route::get('post-bit', 'Usercp\AccountController@getPostBit');
 Route::put('post-bit', 'Usercp\AccountController@updatePostBit');
 
-Route::get('habbo', 'Usercp\AccountController@getHabbo');
-Route::put('habbo', 'Usercp\AccountController@updateHabbo');
-
 Route::get('social-networks', 'Usercp\ProfileController@getSocialNetworks');
 Route::put('social-networks', 'Usercp\ProfileController@updateSocialNetworks');
 

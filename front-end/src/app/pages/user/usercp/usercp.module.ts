@@ -18,8 +18,6 @@ import { SignatureComponent } from './signature/signature.component';
 import { PostBitComponent } from './post-bit/post-bit.component';
 import { UsercpComponent } from './usercp.component';
 import { usercpRoutes } from './usercp.routes';
-import { UsercpHabboService } from './services/usercp-habbo.service';
-import { HabboComponent } from './habbo/habbo.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { UsercpSocialNetworksService } from './services/usercp-social-networks.service';
 import { SocialNetworksComponent } from './social-networks/social-networks.component';
@@ -65,7 +63,6 @@ import { NicknameComponent } from './nickname/nickname.component';
         SignatureComponent,
         PasswordComponent,
         AvatarComponent,
-        HabboComponent,
         PostBitComponent,
         HomePageComponent,
         SocialNetworksComponent,
@@ -82,7 +79,6 @@ import { NicknameComponent } from './nickname/nickname.component';
         UsercpGroupsService,
         UsercpSignatureService,
         UsercpAvatarService,
-        UsercpHabboService,
         UsercpPostBitService,
         UsercpSocialNetworksService,
         UsercpNotificationSettingsService,

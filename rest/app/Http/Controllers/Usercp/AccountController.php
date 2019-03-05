@@ -15,23 +15,18 @@ use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
 use App\Services\AuthService;
-use App\Services\HabboService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AccountController extends Controller {
-    private $habboService;
     private $authService;
 
     /**
      * AccountController constructor.
-     *
-     * @param HabboService $habboService
      */
-    public function __construct (HabboService $habboService, AuthService $authService) {
+    public function __construct (AuthService $authService) {
         parent::__construct();
-        $this->habboService = $habboService;
         $this->authService = $authService;
     }
 
@@ -202,50 +197,6 @@ class AccountController extends Controller {
         ]);
 
         Logger::user($user->userId, $request->ip(), Action::UPDATED_PASSWORD);
-        return response()->json();
-    }
-
-    /**
-     * Get request for fetching users current verified habbo
-     *
-     * @param Request $request
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getHabbo (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
-        $userData = UserData::userId($user->userId)->first();
-
-        return response()->json([
-            'habbo' => $userData ? $userData->habbo : ''
-        ]);
-    }
-
-    /**
-     * Put request to update the habbo, checks motto on habbo API to match
-     * with the supplied string used in FE. "thishabbo-{userId}"
-     * Validation for one month at least since creation date is in place
-     *
-     * @param Request $request
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function updateHabbo (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
-        $habbo = $request->input('habbo');
-        Condition::precondition(!$habbo, 400, 'You did not fill anything in');
-
-        $userData = UserHelper::getUserDataOrCreate($user->userId);
-        Condition::precondition($userData && $userData->habboCheckedAt > $this->nowMinus15, 400, 'You are trying to update to quick!');
-
-        $userData->habboCheckedAt = time();
-        $userData->save();
-        $this->habboService->validateHabbo($habbo, $user->userId);
-
-        $userData->habbo = $habbo;
-        $userData->save();
-
-        Logger::user($user->userId, $request->ip(), Action::UPDATED_HABBO, ['habbo' => $habbo]);
         return response()->json();
     }
 
