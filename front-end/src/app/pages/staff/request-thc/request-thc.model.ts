@@ -7,8 +7,6 @@ export class RequestThcModel {
     @primitive()
     nickname: string;
     @primitive()
-    habbo: string;
-    @primitive()
     reason: string;
     @primitive()
     amount: number;

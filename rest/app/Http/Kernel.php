@@ -53,7 +53,6 @@ class Kernel extends HttpKernel
         'token.check' => \App\Http\Middleware\CheckToken::class,
         'admin_permission.check' => \App\Http\Middleware\CheckAdminPermission::class,
         'staff_permission.check' => \App\Http\Middleware\CheckStaffPermission::class,
-        'maintenance' => \App\Http\Middleware\CheckMaintenance::class,
-        'habbo_verify.check' => \App\Http\Middleware\CheckHabboVerified::class
+        'maintenance' => \App\Http\Middleware\CheckMaintenance::class
     ];
 }

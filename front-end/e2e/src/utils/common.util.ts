@@ -7,6 +7,10 @@ export class CommonUtil {
         browser.get(url);
     }
 
+    static isLoggedIn() {
+        return element(by.css('app-top-box .welcome .logged-in .dropdown')).isPresent();
+    }
+
     static login(username: string, password: string): void {
         const usernameInput = element(by.css('app-top-bar input[name="loginName"]'));
         InputUtil.fillInput(usernameInput, username);

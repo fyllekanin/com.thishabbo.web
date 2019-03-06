@@ -81,7 +81,7 @@ export class RequestThcComponent extends Page implements OnDestroy {
 
     private rowsAreInvalid(): boolean {
         return this._rows.some(row => {
-            return (!row.habbo && !row.nickname) || isNaN(row.amount) || !row.reason;
+            return !row.nickname || isNaN(row.amount) || !row.reason;
         });
     }
 }

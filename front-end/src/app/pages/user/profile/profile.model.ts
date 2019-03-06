@@ -12,8 +12,6 @@ export class ProfileStats {
     @primitive()
     userId: number;
     @primitive()
-    habbo: string;
-    @primitive()
     lastActivity: number;
 
     constructor(source: Partial<ProfileStats>) {

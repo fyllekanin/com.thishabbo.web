@@ -111,14 +111,6 @@ class Action {
         'data' => []
     ];
 
-    const UPDATED_HABBO = [
-        'id' => 13,
-        'description' => 'User updated habbo',
-        'data' => [
-            'habbo' => 'Name of the habbo set'
-        ]
-    ];
-
     const UPDATED_POSTBIT = [
         'id' => 14,
         'description' => 'User updated their postBit',

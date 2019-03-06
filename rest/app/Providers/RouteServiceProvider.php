@@ -88,7 +88,6 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapApiForumRoutes()
     {
         Route::prefix('api/forum')
-            ->middleware(['api', 'maintenance', 'token.check', 'habbo_verify.check'])
             ->namespace($this->namespace)
             ->group(base_path('routes/forum/api.php'));
     }

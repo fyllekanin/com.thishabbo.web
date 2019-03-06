@@ -10,7 +10,6 @@ use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
 use App\Services\AuthService;
-use App\Services\HabboService;
 use App\Utils\Condition;
 use App\Utils\Iterables;
 use Illuminate\Http\Request;
@@ -21,18 +20,15 @@ use App\EloquentModels\Forum\PostLike;
 
 class UserController extends Controller {
     private $authService;
-    private $habboService;
 
     /**
      * UserController constructor.
      *
      * @param AuthService  $authService
-     * @param HabboService $habboService
      */
-    public function __construct (AuthService $authService, HabboService $habboService) {
+    public function __construct (AuthService $authService) {
         parent::__construct();
         $this->authService = $authService;
-        $this->habboService = $habboService;
     }
 
     /**
@@ -89,16 +85,11 @@ class UserController extends Controller {
      */
     public function getUsers (Request $request, $page) {
         $nickname = $request->input('nickname');
-        $habbo = $request->input('habbo');
         $user = UserHelper::getUserFromRequest($request);
 
-        $getUserSql = User::select('users.nickname', 'users.userId', 'users.updatedAt', 'userdata.habbo')
+        $getUserSql = User::select('users.nickname', 'users.userId', 'users.updatedAt')
             ->leftJoin('userdata', 'userdata.userId', '=', 'users.userId')
             ->orderBy('nickname', 'ASC');
-
-        if ($habbo) {
-            $getUserSql->where('userdata.habbo', 'LIKE', '%' . $habbo . '%');
-        }
 
         if ($nickname) {
             $getUserSql->where('users.nickname', 'LIKE', '%' . $nickname . '%');
@@ -133,14 +124,10 @@ class UserController extends Controller {
         Condition::precondition(!UserHelper::canManageUser($user, $userId),
             400, 'You can not edit this user');
 
-        $userData = UserHelper::getUserDataOrCreate($current->userId);
-        $current->habbo = $userData->habbo;
-
         return response()->json([
             'user' => [
                 'userId' => $current->userId,
                 'nickname' => $current->nickname,
-                'habbo' => $current->habbo,
                 'email' => $current->email
             ]
         ]);
@@ -178,8 +165,6 @@ class UserController extends Controller {
             $current->nickname = $newUser->nickname;
             $current->email = $newUser->email;
             $userData = UserHelper::getUserDataOrCreate($current->userId);
-            $userData->habbo = $newUser->habbo;
-            $userData->habboCheckedAt = time();
             $userData->save();
         }
         $current->save();
@@ -206,7 +191,5 @@ class UserController extends Controller {
         Condition::precondition(!$this->authService->isEmailValid($newUser->email), 400, 'Email is not valid or taken');
         Condition::precondition(!isset($newUser->nickname) || ($user->nickname != $newUser->nickname && !$this->authService->isNicknameValid($newUser->nickname)),
             400, 'nickname is not valid');
-
-        Condition::precondition(!isset($newUser->habbo) || empty($newUser->habbo), 400, 'Habbo name can not be empty');
     }
 }

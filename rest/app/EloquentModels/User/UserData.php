@@ -12,9 +12,7 @@ class UserData extends UnixTimeModel {
         'userId',
         'signature',
         'avatarUpdatedAt',
-        'habbo',
         'postBit',
-        'habboCheckedAt',
         'credits',
         'homePage',
         'discord',
@@ -28,9 +26,5 @@ class UserData extends UnixTimeModel {
 
     public function scopeUserId (Builder $query, $userId) {
         return $query->where('userId', $userId);
-    }
-
-    public function scopeWithHabbo (Builder $query, $habbo) {
-        return $query->whereRaw('lower(habbo) = ?', [strtolower($habbo)]);
     }
 }

@@ -13,7 +13,6 @@ use App\Helpers\UserHelper;
 use App\Logger;
 use App\Models\Logger\Action;
 use App\Services\AuthService;
-use App\Services\HabboService;
 use App\Services\WelcomeBotService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
@@ -26,20 +25,17 @@ class AuthController extends Controller {
 
     private $welcomeBotService;
     private $authService;
-    private $habboService;
 
     /**
      * AuthController constructor.
      *
      * @param WelcomeBotService $welcomeBotService
      * @param AuthService       $authService
-     * @param HabboService      $habboService
      */
-    public function __construct (WelcomeBotService $welcomeBotService, AuthService $authService, HabboService $habboService) {
+    public function __construct (WelcomeBotService $welcomeBotService, AuthService $authService) {
         parent::__construct();
         $this->welcomeBotService = $welcomeBotService;
         $this->authService = $authService;
-        $this->habboService = $habboService;
     }
 
     /**
@@ -219,7 +215,7 @@ class AuthController extends Controller {
         Condition::precondition(!isset($password) || empty($password), 400, 'Password is not set');
 
         $userId = $this->findUser($loginName, $password);
-        Condition::precondition(!$userId, 404, 'No user with that username or habbo name');
+        Condition::precondition(!$userId, 404, 'No user with that username');
 
         $user = User::where('users.userId', $userId)
             ->leftJoin('userdata', 'userdata.userId', '=', 'users.userId')
@@ -270,16 +266,8 @@ class AuthController extends Controller {
      */
     private function findUser ($loginName, $password) {
         $userWithUsername = User::withUsername($loginName)->first();
-        $userdataWithHabbo = UserData::withHabbo($loginName)->first();
-        $userWithHabbo = null;
-        if ($userdataWithHabbo) {
-            $userWithHabbo = User::find($userdataWithHabbo->userId);
-        }
-
         if ($userWithUsername && Hash::check($password, $userWithUsername->password)) {
             return $userWithUsername->userId;
-        } else if ($userWithHabbo && Hash::check($password, $userWithHabbo->password)) {
-            return $userWithHabbo->userId;
         }
         return null;
     }
