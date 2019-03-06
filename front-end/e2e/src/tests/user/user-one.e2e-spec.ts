@@ -16,14 +16,12 @@ describe('User #1', () => {
     });
 
     it('should be possible to login', () => {
-        NavigationUtil.clickUserCpTool('Logout');
         CommonUtil.login(USERNAME, PASSWORD);
 
         expect(CommonUtil.getNicknameElement().getText()).toEqual('test');
     });
 
     it('should be possible to change password', () => {
-        CommonUtil.login(USERNAME, PASSWORD);
         NavigationUtil.clickUserNavigation('UserCP');
         NavigationUtil.clickUserCpTool('Change Password');
 
@@ -40,7 +38,6 @@ describe('User #1', () => {
     });
 
     it('should be possible to edit home page', () => {
-        CommonUtil.login(USERNAME, PASSWORD);
         NavigationUtil.clickUserNavigation('UserCP');
         NavigationUtil.clickUserCpTool('Edit Home Page');
 
@@ -54,7 +51,6 @@ describe('User #1', () => {
     });
 
     it('should be possible to update the signature', () => {
-        CommonUtil.login(USERNAME, PASSWORD);
         NavigationUtil.clickNavigation('Forum');
         NavigationUtil.clickCategory('Reports');
         NavigationUtil.clickCategory('Sorted Reports');
@@ -76,7 +72,6 @@ describe('User #1', () => {
     });
 
     it('should be possible to apply for a public group', () => {
-        CommonUtil.login(USERNAME, PASSWORD);
         NavigationUtil.clickUserNavigation('UserCP');
         NavigationUtil.clickUserCpTool('Groups');
 
@@ -87,7 +82,6 @@ describe('User #1', () => {
     });
 
     it('should be possible to register on the website', () => {
-        CommonUtil.login(USERNAME, PASSWORD);
         NavigationUtil.clickUserNavigation('Logout');
         NavigationUtil.clickRegisterPage();
         UserCpPage.fillRegisterInformation({
