@@ -575,6 +575,19 @@ class BBcodesTableSeeder extends Seeder
                 'createdAt' => 1550695781,
                 'updatedAt' => 1550695781,
             ),
+            43 =>
+                array (
+                    'bbcodeId' => 47,
+                    'name' => 'Youtube',
+                    'example' => '[youtube]M0uSnNauWJU[/youtube]',
+                    'pattern' => '/\\[youtube\\](((?R)|.)*?)\\[\\/youtube\\]/si',
+                    'replace' => '<iframe width="560" height="315" frameborder="0" src="https://www.youtube.com/embed/$1?wmode=opaque" data-youtube-id="$1" allowfullscreen=""></iframe>',
+                    'content' => '$1',
+                    'isEmoji' => 0,
+                    'isSystem' => 1,
+                    'createdAt' => 1547139924,
+                    'updatedAt' => 1547139924,
+                ),
         ));
 
 
