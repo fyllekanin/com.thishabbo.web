@@ -104,7 +104,7 @@ export class ThreadActionExecutor {
                     }));
                     return;
                 }
-                this.onPostHistory(selectedIds[0])
+                this.onPostHistory(selectedIds[0]);
                 break;
         }
     }
