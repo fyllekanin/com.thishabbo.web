@@ -79,7 +79,6 @@ describe('StaffCP #1', () => {
         StaffCpPage.setRadioInfoPort('8081');
         StaffCpPage.setRadioInfoPassword('ThIsIsANewPassword');
         StaffCpPage.setRadioInfoAdminPassword('ThisIsATestAdminPassword');
-
         NavigationUtil.clickTab('Save');
 
         browser.sleep(1000);
