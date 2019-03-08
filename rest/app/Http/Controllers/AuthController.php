@@ -323,9 +323,9 @@ class AuthController extends Controller {
         Condition::precondition(!$this->authService->isUsernamevalid($data->username),
             400, 'Username is not valid');
         Condition::precondition(!$this->authService->isPasswordValid($data->password),
-            400, 'Password is not valid');
+            400, 'Password must be at least 8 characters long');
         Condition::precondition(!$this->authService->isRePasswordValid($data->repassword, $data->password),
-            400, 'Re - password is not valid');
+            400, 'The passwords entered do not match');
     }
 
     /**
