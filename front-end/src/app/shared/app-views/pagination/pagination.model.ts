@@ -1,13 +1,13 @@
-import { ClassHelper, isPresent } from 'shared/helpers/class.helper';
+import {ClassHelper, isPresent, primitiveOf} from 'shared/helpers/class.helper';
 import { primitive } from 'shared/helpers/class.helper';
 import { QueryParameters } from 'core/services/http/http.model';
 import { HttpService } from 'core/services/http/http.service';
 
 export class PaginationModel {
-    @primitive()
-    page: number;
-    @primitive()
-    total: number;
+    @primitiveOf(Number)
+    page = 1;
+    @primitiveOf(Number)
+    total = 1;
     @primitive()
     url = '';
     params: QueryParameters;

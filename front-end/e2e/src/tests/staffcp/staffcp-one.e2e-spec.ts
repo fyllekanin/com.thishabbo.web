@@ -10,7 +10,6 @@ describe('StaffCP #1', () => {
 
     beforeEach(() => {
         CommonUtil.open('/home');
-
         NavigationUtil.clickUserNavigation('Logout');
         CommonUtil.login(USERNAME, PASSWORD);
         CommonUtil.open('/staff/dashboard');
@@ -73,13 +72,14 @@ describe('StaffCP #1', () => {
     });
 
     it('should be possible to update connection information', () => {
+        browser.executeScript('window.scrollTo(0, document.body.scrollHeight)');
+        browser.sleep(1000);
         NavigationUtil.clickStaffCpTool('Manage Connection Information');
 
         StaffCpPage.setRadioInfoIP('test.thishabbo.com');
         StaffCpPage.setRadioInfoPort('8081');
         StaffCpPage.setRadioInfoPassword('ThIsIsANewPassword');
         StaffCpPage.setRadioInfoAdminPassword('ThisIsATestAdminPassword');
-
         NavigationUtil.clickTab('Save');
 
         browser.sleep(1000);

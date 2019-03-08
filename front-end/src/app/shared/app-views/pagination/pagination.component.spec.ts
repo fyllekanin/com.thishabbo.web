@@ -158,14 +158,23 @@ describe('PaginationComponent', () => {
         });
     });
 
-    it('currentPage should return current page as string', () => {
-        // Given
-        component.paginationModel = new PaginationModel({ page: 2, total: 1, url: 'test' });
+    describe('currentPage', () => {
+        it('should return current page as string', () => {
+            // Given
+            component.paginationModel = new PaginationModel({ page: 2, total: 1, url: 'test' });
 
-        // When
-        const result = component.currentPage;
+            // When
+            const result = component.currentPage;
 
-        // Then
-        expect(result).toEqual(jasmine.any(String));
+            // Then
+            expect(result).toEqual(jasmine.any(String));
+        });
+        it('should not crash if no model have been set', () => {
+            // When
+            const result = component.currentPage;
+
+            // Then
+            expect(result).toEqual(jasmine.any(String));
+        });
     });
 });
