@@ -83,6 +83,26 @@ describe('ThreadComponent', () => {
         });
     });
 
+    describe('toggleFixedTools', () => {
+        it('should set fixed tools to a new instance if they are not hidden', () => {
+            // Given
+            // When
+            component.onTabClick(ThreadActions.TOGGLE_TOOLS);
+
+            // Then
+            expect(component.fixedTools).not.toBeNull();
+        });
+        it('should set the fixed tools to null if hidden', () => {
+            // Given
+            // When
+            component.onTabClick(ThreadActions.TOGGLE_TOOLS);
+            component.onTabClick(ThreadActions.TOGGLE_TOOLS);
+
+            // Then
+            expect(component.fixedTools).toBeNull();
+        });
+    });
+
     describe('subTitle', () => {
         it('should return empty string if thread is open', () => {
             // Given

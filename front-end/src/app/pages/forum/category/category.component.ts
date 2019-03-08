@@ -1,24 +1,23 @@
-import { DialogService } from 'core/services/dialog/dialog.service';
-import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
-import { TitleTab } from 'shared/app-views/title/title.model';
-import { FixedToolItem, FixedTools } from 'shared/components/fixed-tools/fixed-tools.model';
-import { ThreadActions } from '../thread/thread.model';
-import { BreadcrumbItem } from 'core/services/breadcrum/breadcrum.model';
-import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
-import { Page } from 'shared/page/page.model';
-import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CATEGORY_SORT_BY, CategoryActions, CategoryDisplayOptions, CategoryPage, SORT_ORDER } from './category.model';
-import { Component, ComponentFactoryResolver, ElementRef, OnDestroy } from '@angular/core';
-import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
-import { FORUM_BREADCRUM_ITEM } from '../forum.constants';
-import { ArrayHelper } from 'shared/helpers/array.helper';
-import { AuthService } from 'core/services/auth/auth.service';
-import { HttpService } from 'core/services/http/http.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
-import { MoveThreadComponent } from '../thread/move-thread/move-thread.component';
-import { ChangeOwnerComponent } from '../thread/change-owner/change-owner.component';
+import {DialogService} from 'core/services/dialog/dialog.service';
+import {DialogButton, DialogCloseButton} from 'shared/app-views/dialog/dialog.model';
+import {TitleTab} from 'shared/app-views/title/title.model';
+import {FixedToolItem, FixedTools} from 'shared/components/fixed-tools/fixed-tools.model';
+import {ThreadActions} from '../thread/thread.model';
+import {Breadcrumb, BreadcrumbItem} from 'core/services/breadcrum/breadcrum.model';
+import {BreadcrumbService} from 'core/services/breadcrum/breadcrumb.service';
+import {Page} from 'shared/page/page.model';
+import {PaginationModel} from 'shared/app-views/pagination/pagination.model';
+import {ActivatedRoute, Router} from '@angular/router';
+import {CATEGORY_SORT_BY, CategoryActions, CategoryDisplayOptions, CategoryPage, SORT_ORDER} from './category.model';
+import {Component, ComponentFactoryResolver, ElementRef, OnDestroy} from '@angular/core';
+import {FORUM_BREADCRUM_ITEM} from '../forum.constants';
+import {ArrayHelper} from 'shared/helpers/array.helper';
+import {AuthService} from 'core/services/auth/auth.service';
+import {HttpService} from 'core/services/http/http.service';
+import {GlobalNotificationService} from 'core/services/notification/global-notification.service';
+import {GlobalNotification} from 'shared/app-views/global-notification/global-notification.model';
+import {MoveThreadComponent} from '../thread/move-thread/move-thread.component';
+import {ChangeOwnerComponent} from '../thread/change-owner/change-owner.component';
 
 @Component({
     selector: 'app-forum-category',
@@ -28,6 +27,7 @@ import { ChangeOwnerComponent } from '../thread/change-owner/change-owner.compon
 export class CategoryComponent extends Page implements OnDestroy {
     private _categoryPage: CategoryPage = new CategoryPage();
     private _selectedThreadIds: Array<number> = [];
+    private _isToolsVisible = false;
 
     fixedTools: FixedTools;
     pagination: PaginationModel;
@@ -102,6 +102,10 @@ export class CategoryComponent extends Page implements OnDestroy {
                         }));
                     }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
                 break;
+            case CategoryActions.TOGGLE_TOOLS:
+                this._isToolsVisible = !this._isToolsVisible;
+                this.buildModerationTools();
+                break;
         }
     }
 
@@ -123,7 +127,6 @@ export class CategoryComponent extends Page implements OnDestroy {
             this._selectedThreadIds.push(threadId);
         }
     }
-
 
     get categoryPage(): CategoryPage {
         return this._categoryPage;
@@ -172,9 +175,26 @@ export class CategoryComponent extends Page implements OnDestroy {
             { title: 'Un-ignore', value: CategoryActions.UNIGNORE, condition: this._categoryPage.isIgnored }
         ];
 
+        actions.push({
+            title: 'Toggle Tools',
+            value: CategoryActions.TOGGLE_TOOLS,
+            condition: this.getThreadTools().filter(item => item.condition).length > 0
+        });
+
         this.tabs = actions.filter(item => item.condition)
             .map(item => new TitleTab(item));
+    }
 
+    private getThreadTools(): Array<{ title: string, value: number, condition: boolean}> {
+        return [
+            {
+                title: 'Move Thread(s)', value: ThreadActions.MOVE_THREAD,
+                condition: this._categoryPage.forumPermissions.canMoveThreads
+            },
+            {   title: 'Change Owner', value: ThreadActions.CHANGE_OWNER,
+                condition: this._categoryPage.forumPermissions.canChangeThreadOwner
+            }
+        ];
     }
 
     private setBreadcrumb(): void {
@@ -196,33 +216,23 @@ export class CategoryComponent extends Page implements OnDestroy {
         });
     }
 
-    private getThreadTools(): Array<{ title: string, value: number, condition: boolean}> {
-        return [
-            {
-                title: 'Move Thread(s)', value: ThreadActions.MOVE_THREAD,
-                condition: this._categoryPage.forumPermissions.canMoveThreads
-            },
-            {   title: 'Change Owner', value: ThreadActions.CHANGE_OWNER,
-                condition: this._categoryPage.forumPermissions.canChangeThreadOwner
-            }
-        ];
-    }
-
     private buildModerationTools(): void {
-        const tools = this.getThreadTools().filter(item => item.condition);
-        if (tools.length > 0) {
-            this.fixedTools = new FixedTools({
-                items: [
-                    new FixedToolItem({
-                        title: 'Thread tools',
-                        children: tools.map(action => new FixedToolItem({
-                            title: action.title,
-                            value: action.value
-                        })),
-                    })
-                ]
-            });
+        if (!this._isToolsVisible) {
+            this.fixedTools = null;
+            return;
         }
+
+        this.fixedTools = new FixedTools({
+            items: [
+                new FixedToolItem({
+                    title: 'Thread tools',
+                    children: this.getThreadTools().filter(item => item.condition).map(action => new FixedToolItem({
+                        title: action.title,
+                        value: action.value
+                    })),
+                })
+            ]
+        });
     }
 
     private onMoveThread(): void {

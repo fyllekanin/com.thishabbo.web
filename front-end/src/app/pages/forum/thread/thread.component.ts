@@ -9,7 +9,7 @@ import { AuthService } from 'core/services/auth/auth.service';
 import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 import { PostModel } from '../post/post.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { getThreadActions, ThreadActions, ThreadPage } from './thread.model';
+import {getPostTools, getThreadTools, ThreadActions, ThreadPage} from './thread.model';
 import { Component, ComponentFactoryResolver, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { EditorAction } from 'shared/components/editor/editor.model';
@@ -33,6 +33,7 @@ import { ThreadActionExecutor } from './thread.helper';
 
 export class ThreadComponent extends Page implements OnDestroy {
     private _threadPage: ThreadPage = new ThreadPage();
+    private _isToolsVisible = false;
 
     @ViewChild('editor') editor: EditorComponent;
 
@@ -139,6 +140,10 @@ export class ThreadComponent extends Page implements OnDestroy {
             case ThreadActions.UNIGNORE:
                 this.onIgnoreToggle();
                 break;
+            case ThreadActions.TOGGLE_TOOLS:
+                this._isToolsVisible = !this._isToolsVisible;
+                this.buildModerationTools();
+                break;
         }
     }
 
@@ -146,16 +151,7 @@ export class ThreadComponent extends Page implements OnDestroy {
         this._service.toggleIgnore(this._threadPage)
             .subscribe(isIgnored => {
                 this._threadPage.isIgnored = isIgnored;
-                this.tabs = [
-                    new TitleTab({
-                        title: this._threadPage.isSubscribed ? 'Unsubscribe' : 'Subscribe',
-                        value: this._threadPage.isSubscribed ? ThreadActions.UNSUBSCRIBE : ThreadActions.SUBSCRIBE
-                    }),
-                    new TitleTab({
-                        title: this._threadPage.isIgnored ? 'Un-ignore' : 'Ignore',
-                        value: this._threadPage.isIgnored ? ThreadActions.UNIGNORE : ThreadActions.IGNORE
-                    })
-                ];
+                this.createOrUpdateTabs();
             });
     }
 
@@ -163,16 +159,7 @@ export class ThreadComponent extends Page implements OnDestroy {
         this._service.toggleSubscription(this._threadPage)
             .subscribe(isSubscribed => {
                 this._threadPage.isSubscribed = isSubscribed;
-                this.tabs = [
-                    new TitleTab({
-                        title: this._threadPage.isSubscribed ? 'Unsubscribe' : 'Subscribe',
-                        value: this._threadPage.isSubscribed ? ThreadActions.UNSUBSCRIBE : ThreadActions.SUBSCRIBE
-                    }),
-                    new TitleTab({
-                        title: this._threadPage.isIgnored ? 'Un-ignore' : 'Ignore',
-                        value: this._threadPage.isIgnored ? ThreadActions.UNIGNORE : ThreadActions.IGNORE
-                    })
-                ];
+                this.createOrUpdateTabs();
             });
     }
 
@@ -273,20 +260,34 @@ export class ThreadComponent extends Page implements OnDestroy {
             url: `/forum/thread/${this._threadPage.threadId}/page/:page`
         });
         this.setPrefix();
+        this.createOrUpdateTabs();
 
         if (this._authService.isLoggedIn()) {
             this.buildEditorButtons();
             this.buildModerationTools();
-            this.tabs = this._authService.isLoggedIn() ? [
-                new TitleTab({
-                    title: this._threadPage.isSubscribed ? 'Unsubscribe' : 'Subscribe',
-                    value: this._threadPage.isSubscribed ? ThreadActions.UNSUBSCRIBE : ThreadActions.SUBSCRIBE
-                }),
-                new TitleTab({
-                    title: this._threadPage.isIgnored ? 'Un-ignore' : 'Ignore',
-                    value: this._threadPage.isIgnored ? ThreadActions.UNIGNORE : ThreadActions.IGNORE
-                })
-            ] : [];
+        }
+    }
+
+    private createOrUpdateTabs(): void {
+        if (!this._authService.isLoggedIn()) {
+            this.tabs = [];
+        }
+        this.tabs = [
+            new TitleTab({
+                title: this._threadPage.isSubscribed ? 'Unsubscribe' : 'Subscribe',
+                value: this._threadPage.isSubscribed ? ThreadActions.UNSUBSCRIBE : ThreadActions.SUBSCRIBE
+            }),
+            new TitleTab({
+                title: this._threadPage.isIgnored ? 'Un-ignore' : 'Ignore',
+                value: this._threadPage.isIgnored ? ThreadActions.UNIGNORE : ThreadActions.IGNORE
+            }),
+        ];
+
+        if (this.haveAnyTools()) {
+            this.tabs.push(new TitleTab({
+                title: 'Toggle Tools',
+                value: ThreadActions.TOGGLE_TOOLS
+            }));
         }
     }
 
@@ -310,27 +311,32 @@ export class ThreadComponent extends Page implements OnDestroy {
     }
 
     private buildModerationTools(): void {
-        const postTools = [
-            { title: 'Approve posts', value: ThreadActions.APPROVE_POSTS, condition: this.forumPermissions.canApprovePosts },
-            { title: 'Unapprove posts', value: ThreadActions.UNAPPROVE_POSTS, condition: this.forumPermissions.canApprovePosts },
-            { title: 'Merge Posts', value: ThreadActions.MERGE_POSTS, condition: this.forumPermissions.canMergePosts },
-            { title: 'Edit History', value: ThreadActions.POST_HISTORY, condition: this.forumPermissions.canEditOthersPosts }
-        ];
+        if (!this._isToolsVisible) {
+            this.fixedTools = null;
+            return;
+        }
+
         this.fixedTools = new FixedTools({
             items: [
                 new FixedToolItem({
                     title: 'Post tools',
-                    children: postTools.filter(action => action.condition)
+                    children: getPostTools(this.forumPermissions).filter(action => action.condition)
                         .map(action => new FixedToolItem({ title: action.title, value: action.value }))
                 }),
                 new FixedToolItem({
                     title: 'Thread tools',
-                    children: getThreadActions(this._authService.authUser.userId, this._threadPage, this.forumPermissions)
+                    children: getThreadTools(this._authService.authUser.userId, this._threadPage, this.forumPermissions)
                         .filter(action => action.condition)
                         .map(action => new FixedToolItem({ title: action.title, value: action.value }))
                 })
             ]
         });
+    }
+
+    private haveAnyTools(): boolean {
+        return getPostTools(this.forumPermissions).filter(item => item.condition).length > 0 ||
+            getThreadTools(this._authService.authUser.userId, this._threadPage, this.forumPermissions)
+                .filter(item => item.condition).length > 0;
     }
 
     private buildEditorButtons(): void {
