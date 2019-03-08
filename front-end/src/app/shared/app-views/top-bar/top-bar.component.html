@@ -36,7 +36,7 @@
                         </div>
                         <div class="notif-overflow">
                             <div *ngIf="notifications.length === 0" class="notif-view">
-                                You do not have any notification currently!
+                                You do not have any notifications currently!
                             </div>
                             <div class="notif-view" *ngFor="let notification of notifications"
                                  (click)="notificationClick(notification)" [ngSwitch]="notification.type">

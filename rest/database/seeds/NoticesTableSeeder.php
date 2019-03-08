@@ -24,7 +24,7 @@ class NoticesTableSeeder extends Seeder
 
         DB::table('notices')->insert([
             'title' => 'VX Log in bonus!',
-            'text' => 'Don\'t worry - we din\'t forget our members. \\n Log in and claim free ThisHabboClub for free!',
+            'text' => 'Don\'t worry - we don\'t forget our members. \\n Log in and claim free ThisHabboClub for free!',
             'backgroundColor' => '#5c84cc',
             'order' => 2,
             'userId' => 1,
@@ -34,7 +34,7 @@ class NoticesTableSeeder extends Seeder
 
         DB::table('notices')->insert([
             'title' => 'We pay our staff!',
-            'text' => 'With our no minimums system, work for us \\n when you want and we\'ll pay you for the time \\n you deciate!',
+            'text' => 'With our no minimums system, work for us \\n when you want and we\'ll pay you for the time \\n you dedicate!',
             'backgroundColor' => '#21252f',
             'order' => 3,
             'userId' => 1,
