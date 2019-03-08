@@ -346,7 +346,7 @@ export class ThreadComponent extends Page implements OnDestroy {
                 value: ThreadActions.POST,
                 saveCallback: this.onButtonClick.bind(this, { value: ThreadActions.POST })
             }),
-            new EditorAction({ title: 'Post', value: ThreadActions.POST, asButton: true, buttonColor: Button.GREEN })
+            new EditorAction({ title: 'Post', value: ThreadActions.POST, asButton: true, buttonColor: Button.BLUE })
         ];
 
         if (this._threadPage.forumPermissions.canCloseOpenThread && this._threadPage.isOpen) {
@@ -355,7 +355,7 @@ export class ThreadComponent extends Page implements OnDestroy {
                 title: 'Post & Close Thread',
                 value: ThreadActions.POST_CLOSE,
                 asButton: true,
-                buttonColor: Button.BLUE
+                buttonColor: Button.GREEN
             }));
         } else if (this._threadPage.forumPermissions.canCloseOpenThread && !this._threadPage.isOpen) {
             buttons.push(new EditorAction({ title: 'Post & Open Thread', value: ThreadActions.POST_OPEN }));

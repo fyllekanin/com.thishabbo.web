@@ -20,7 +20,7 @@ export class ButtonDirective {
     @HostBinding('style.float') floatDirection = 'left';
     @HostBinding('style.color') textColor = '#ffffff';
     @HostBinding('style.outline') outline = 'none';
-    @HostBinding('style.margin') margin = '4px 0px 0px 5px';
+    @HostBinding('style.margin') margin = '8px 0px 0px 5px';
 
     constructor(
         private _sanitizer: DomSanitizer

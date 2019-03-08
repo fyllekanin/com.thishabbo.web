@@ -1,18 +1,16 @@
 <app-title [title]="'Change Nickname'" [tabs]="tabs" (onTabClick)="onSave()"></app-title>
 <app-content>
     <em>
-        Your nickname is your display name that is showed to other users on the website. You do not use this
-        to login on the website but only to be visible to other users. Your nickname is also used for tagging on the forum
-        and other functionality. Your username which you login with is only used for login.<br />
-        <br />
-        For older users, the difference with nickname is that you can change to an existing nickname someone have
-        if they have not been active for the past 3 months. Their nickname will be changed to something new so you own
-        the nickname yourself.
+        VX does things differently. You will have two usernames - one will be your nickname that is displayed & visible to other users on the website and a username that is soley used to login. While your nickname may change freely if you don't hit the minimum requirements to keep it, your username will never be changed so you'll never lose access to the website. 
+        <br/><br/>
+        On our new version, 
+        we made the decision to have 2 usernames to change names freely without worrying about locking users out. On previous versions, names would be changed and it would lock users out and became very inconvienent. Having a name that never changes will ensure users won't be locked out when strict requirements are implemented to keep your nickname. <br />
     </em>
-    <br /> <br />
-    <strong>Short info:</strong>
-    <li>Costs 300 credits on the site to change your nickname</li>
-    <li>After changing nickname you can't change again for at least a week</li>
+    <br />
+    <strong>Information:</strong>
+    <li>It costs 300 THC to change your nickname</li>
+    <li>Once changed, you won't be able to change your nickname again for 7 days</li>
+    <li>Your login username will never change</li>
     <div class="label">New Nickname</div>
     <input name="nickname" [(ngModel)]="nickname" type="text">
 </app-content>

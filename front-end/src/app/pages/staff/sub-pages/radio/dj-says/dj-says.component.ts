@@ -37,7 +37,7 @@ export class DjSaysComponent extends Page implements OnDestroy {
         super(elementRef);
         this.addSubscription(activatedRoute.data, this.onData.bind(this));
         breadcrumbService.breadcrumb = new Breadcrumb({
-            current: 'Dj Says',
+            current: 'DJ Says',
             items: [
                 STAFFCP_BREADCRUM_ITEM,
                 STAFFCP_RADIO_BREADCRUM_ITEM

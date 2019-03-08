@@ -14,15 +14,15 @@
     <div class="grid-container">
         <div class="grid-x grid-margin-x grid-margin-y" *ngFor="let item of rows">
             <div class="cell small-2">
-                <strong>nickname:</strong>
+                <div class="label"><strong>Nickname:</strong></div>
                 <input type="text" [(ngModel)]="item.nickname" />
             </div>
             <div class="cell small-2">
-                <strong>Amount:</strong>
+                    <div class="label"><strong>Amount:</strong></div>
                 <input type="number" [(ngModel)]="item.amount" />
             </div>
-            <div class="cell small-5">
-                <strong>Reason</strong>
+            <div class="cell small-7">
+                    <div class="label"><strong>Reason</strong></div>
                 <input type="text" [(ngModel)]="item.reason" />
             </div>
             <div class="cell small-1">

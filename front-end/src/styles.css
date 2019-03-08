@@ -230,7 +230,7 @@ select {
     display: none;
     position: absolute;
     right: 0;
-    top: 32px;
+    top: 36px;
     padding: 2px 2px 2px 2px;
     min-width: 8rem;
     border-radius: 0 !important;
@@ -339,7 +339,7 @@ select {
 .divider {
     background-color: #e5e5e5;
     height: 1px;
-    margin: 8px 0 6px 0;
+    margin: 8px 0 0px 0;
     overflow: hidden;
     width: 100%;
     float: left;
@@ -380,3 +380,30 @@ button:disabled {
 details {
     margin: 10px 0;
 }
+
+.amount {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.templateSize {
+    font-size: 1.5rem;
+    padding: 0.5rem 0;
+}
+
+.useStats {
+    text-align: center;
+}
+
+::-webkit-input-placeholder {
+    font-style: italic;
+ }
+ :-moz-placeholder {
+    font-style: italic;  
+ }
+ ::-moz-placeholder {
+    font-style: italic;  
+ }
+ :-ms-input-placeholder {  
+    font-style: italic; 
+ }

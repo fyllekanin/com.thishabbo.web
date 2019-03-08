@@ -1,12 +1,12 @@
-<app-title [title]="'Changing E-mail'" [tabs]="tabs" (onTabClick)="onSave()"></app-title>
+<app-title [title]="'Changing E-Mail'" [tabs]="tabs" (onTabClick)="onSave()"></app-title>
 <app-content>
     <div class="grid-container">
         <div class="grid-x margin-x">
-            <div class="cell small-6">
-                <div class="label">E-mail:</div>
+            <div class="small-12">
+                <div class="label">E-Mail:</div>
                 <input name="email" [(ngModel)]="model.email" type="email">
             </div>
-            <div class="cell small-6">
+            <div class="small-12">
                 <div class="label">Password:</div>
                 <input name="password" [(ngModel)]="model.password" type="password">
             </div>

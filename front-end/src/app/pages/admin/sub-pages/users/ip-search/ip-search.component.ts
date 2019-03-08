@@ -76,7 +76,7 @@ export class IpSearchComponent extends Page implements OnDestroy {
 
     private getTableHeaders(): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'nickname' }),
+            new TableHeader({ title: 'Nickname' }),
             new TableHeader({ title: 'IP' }),
             new TableHeader({ title: 'Date' })
         ];

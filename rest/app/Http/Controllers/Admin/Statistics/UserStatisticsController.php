@@ -14,8 +14,8 @@ class UserStatisticsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function getUsersLoggedIn($year, $month) {
-        Condition::precondition(!is_numeric($month), 400, 'Month needs to be a number');
-        Condition::precondition($month > 12 || $month < 1, 400, 'Not a correct month');
+        Condition::precondition(!is_numeric($month), 400, 'Month needs to be a number!');
+        Condition::precondition($month > 12 || $month < 1, 400, 'Not a correct month!');
 
         $days = $month == 2 ? ($year % 4 ? 28 : ($year % 100 ? 29 : ($year % 400 ? 28 : 29))) :
             (($month - 1) % 7 % 2 ? 30 : 31);

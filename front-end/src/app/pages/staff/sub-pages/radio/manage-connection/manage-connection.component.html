@@ -1,12 +1,12 @@
 <app-title [title]="'Updating Connection Information'" [tabs]="tabs" (onTabClick)="onTabClick($event)"></app-title>
 <app-content>
-    <div class="label">Radio IP</div>
+    <div class="label">Radio IP:</div>
     <input name="info-ip" type="text" [(ngModel)]="ip" />
-    <div class="label">Radio Port</div>
+    <div class="label">Radio Port:</div>
     <input name="info-port" type="text" [(ngModel)]="port" />
 
-    <div class="label">Radio Password</div>
+    <div class="label">Radio Password:</div>
     <input name="info-password" type="text" [(ngModel)]="password" />
-    <div class="label">Admin Password</div>
+    <div class="label">Admin Password:</div>
     <input name="info-admin-password" type="text" [(ngModel)]="adminPassword" />
 </app-content>

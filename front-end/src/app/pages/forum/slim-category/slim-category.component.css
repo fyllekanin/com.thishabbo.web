@@ -52,7 +52,7 @@ a {
     background: #00000003 !important;
     padding: 10px;
     width: 100%;
-    box-shadow: rgba(0, 0, 0, 0) 0 0 0 1px inset, rgba(0, 0, 0, 0) 0 0 0 2px inset, #00000008 0 2px 0;
+    box-shadow: rgba(0, 0, 0, 0) 0 0 0 1px inset, rgba(0, 0, 0, 0) 0 0 0 2px inset, #50404008 0 2px 0;
 }
 
 .children a {
