@@ -34,9 +34,8 @@ export class CommonUtil {
         return nicknameEle;
     }
 
-    static click(ele: ElementFinder): void {
-        browser.executeScript('arguments[0].scrollIntoView(false)', ele).then(() => {
-            browser.actions().mouseMove(ele).perform();
+    static click(ele: ElementFinder) {
+        return browser.executeScript('arguments[0].scrollIntoView(false)', ele).then(() => {
             browser.wait(ExpectedConditions.elementToBeClickable(ele), 10000, `Expected element to be clickable`);
             ele.click();
 
