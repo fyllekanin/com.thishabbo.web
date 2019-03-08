@@ -50,7 +50,7 @@ and easy to use!
 
 ## Installing
 Before running the installations, you need to setup the database!
-The database currently is named "minecraft" and uses nickname "root" without a password.
+The database currently is named "thsite" and uses nickname "root" without a password.
 
 Installing the project is not harder then running a simple script.
 For the easiest possible way to install, just get into the scripts folder and run
