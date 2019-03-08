@@ -35,14 +35,15 @@ export class CommonUtil {
     }
 
     static click(ele: ElementFinder): void {
-        browser.executeScript('arguments[0].scrollIntoView(false)', ele);
-        browser.actions().mouseMove(ele).perform();
-        browser.wait(ExpectedConditions.elementToBeClickable(ele), 10000, `Expected element to be clickable`);
-        ele.click();
+        browser.executeScript('arguments[0].scrollIntoView(false)', ele).then(() => {
+            browser.actions().mouseMove(ele).perform();
+            browser.wait(ExpectedConditions.elementToBeClickable(ele), 10000, `Expected element to be clickable`);
+            ele.click();
 
-        const loadingWrapper = element(by.css('.loading-wrapper'));
-        browser.wait(ExpectedConditions.invisibilityOf(loadingWrapper), 10000, 'Expected loading wrapper to be gone');
-        browser.sleep(200);
+            const loadingWrapper = element(by.css('.loading-wrapper'));
+            browser.wait(ExpectedConditions.invisibilityOf(loadingWrapper), 10000, 'Expected loading wrapper to be gone');
+            browser.sleep(200);
+        });
     }
 
     static getTableRows() {
