@@ -104,4 +104,14 @@ describe('TimeHelper', () => {
             expect(result).toEqual('4th');
         });
     });
+
+    it('getHours should return all available hours in a day', () => {
+        // When
+        const hours = TimeHelper.getHours();
+
+        // Then
+        expect(hours.length).toBe(24);
+        expect(hours[0].number).toBe(0);
+        expect(hours[23].number).toBe(23);
+    });
 });
