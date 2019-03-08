@@ -77,7 +77,7 @@ describe('Fourm #1', () => {
 
         CommonUtil.open('/forum');
 
-        ForumPage.verifyLatestPost('New Tests', 0);
+        ForumPage.verifyLatestPost('VX Ongoing!', 0);
     });
 
     it('should be possible to sticky and unsticky a thread', () => {
