@@ -4,7 +4,7 @@
             <div class="cell small-12 breadcrum">
                 <div class="nav-link">
                     <li class="nav-first-item" *ngFor="let item of routes">
-                        <span class="dropdown">
+                        <span [ngClass]="item.children.length > 0 ? 'dropdown' : ''">
                             <a [routerLink]="[item.url]" class="main"><i [ngClass]="item.icon"></i> {{item.label}}</a>
                             <div class="dropdown-content">
                                 <div *ngFor="let child of item.children">

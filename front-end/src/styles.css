@@ -96,7 +96,7 @@ a:hover {
     background: rgba(0,0,0,0.7);
     text-align: center;
     color: #fff;
-    font-size: 12px;
+    font-size: 11px;
     min-width: 80px;
     border-radius: 5px;
     pointer-events: none;
@@ -230,7 +230,7 @@ select {
     display: none;
     position: absolute;
     right: 0;
-    top: 36px;
+    top: 32px;
     padding: 2px 2px 2px 2px;
     min-width: 8rem;
     border-radius: 0 !important;

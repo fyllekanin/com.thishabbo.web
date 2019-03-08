@@ -24,15 +24,6 @@
             </div>
         </div>
         <div class="cell small-12 medium-4">
-                <app-title [title]="'Quick Links'"></app-title>
-                <app-content>
-                    1. Betting Hub<br />
-                    2. Arcade<br />
-                    3. The Shop<br />
-                    4. New Posts<br>
-                    5. New Threads
-                </app-content>
-        <div class="cell small-12 medium-4">
             <app-title [title]="'Latest Posts'" [top]="latestPostersTop"></app-title>
             <app-content>
                 <div *ngIf="latestPosts.length === 0">
