@@ -10,7 +10,6 @@ describe('StaffCP #1', () => {
 
     beforeEach(() => {
         CommonUtil.open('/home');
-
         NavigationUtil.clickUserNavigation('Logout');
         CommonUtil.login(USERNAME, PASSWORD);
         CommonUtil.open('/staff/dashboard');
