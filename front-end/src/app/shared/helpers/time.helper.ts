@@ -83,7 +83,7 @@ export class TimeHelper {
 
     static getHours(): Array<Hour> {
         const hours: Array<Hour> = [];
-        for (let i = 0; i < 23; i++) {
+        for (let i = 0; i < 24; i++) {
             hours.push({
                 label: i === 0 ? '12:00 AM' : (i > 11 ? `${i}:00 PM` : `${i}:00 AM`),
                 number: i
