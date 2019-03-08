@@ -58,7 +58,7 @@ class WelcomeBotService {
 
         $threadSkeleton = new \stdClass();
         $threadSkeleton->categoryId = $welcomeBotSettings->categoryId;
-        $threadSkeleton->content = str_replace(':nickname:', '[mention=' . $user->userId . ']' . $user->nickname . '[/mention]', $welcomeBotSettings->content);
+        $threadSkeleton->content = str_replace(':nickname:', '[mention]' . $user->nickname . '[/mention]', $welcomeBotSettings->content);
         $threadSkeleton->title = 'Welcome ' . $user->nickname . '!';
 
         $threadController = new ThreadCrudController($this->forumService, $this->validatorService);
