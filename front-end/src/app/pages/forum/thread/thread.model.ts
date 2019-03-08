@@ -97,7 +97,8 @@ export enum ThreadActions {
     IGNORE,
     UNIGNORE,
     THREAD_HISTORY,
-    POST_HISTORY
+    POST_HISTORY,
+    TOGGLE_TOOLS
 }
 
 export class PostHistoryModel {
@@ -115,13 +116,22 @@ export class PostHistoryModel {
     }
 }
 
+export function getPostTools(forumPermissions: ForumPermissions) {
+    return [
+        { title: 'Approve posts', value: ThreadActions.APPROVE_POSTS, condition: forumPermissions.canApprovePosts },
+        { title: 'Unapprove posts', value: ThreadActions.UNAPPROVE_POSTS, condition: forumPermissions.canApprovePosts },
+        { title: 'Merge Posts', value: ThreadActions.MERGE_POSTS, condition: forumPermissions.canMergePosts },
+        { title: 'Edit History', value: ThreadActions.POST_HISTORY, condition: forumPermissions.canEditOthersPosts }
+    ];
+}
+
 /**
  * Get the list of thread actions that can be used
  * @param userId of the logged in user
  * @param threadPage of the current thread
  * @param forumPermissions of the current user
  */
-export function getThreadActions(userId: number, threadPage: ThreadPage, forumPermissions: ForumPermissions) {
+export function getThreadTools(userId: number, threadPage: ThreadPage, forumPermissions: ForumPermissions) {
     return [
         {
             title: 'Edit Thread',

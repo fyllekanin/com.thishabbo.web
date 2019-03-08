@@ -97,5 +97,6 @@ export enum CategoryActions {
     SUBSCRIBE,
     UNSUBSCRIBE,
     IGNORE,
-    UNIGNORE
+    UNIGNORE,
+    TOGGLE_TOOLS
 }
