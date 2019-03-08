@@ -35,6 +35,7 @@ export class CommonUtil {
     }
 
     static click(ele: ElementFinder): void {
+        browser.executeScript('arguments[0].scrollIntoView(false)', ele);
         browser.actions().mouseMove(ele).perform();
         browser.wait(ExpectedConditions.elementToBeClickable(ele), 10000, `Expected element to be clickable`);
         ele.click();
