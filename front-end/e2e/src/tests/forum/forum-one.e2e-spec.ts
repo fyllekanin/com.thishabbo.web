@@ -47,6 +47,7 @@ describe('Fourm #1', () => {
         expect(ForumPage.getClosedElement(0).isPresent()).toBeFalsy();
         NavigationUtil.clickThread('VX Ongoing!');
 
+        NavigationUtil.clickTab('Toggle Tools');
         NavigationUtil.clickFixedTools('Thread tools');
         NavigationUtil.clickFixedTools('Close Thread');
 
@@ -55,6 +56,7 @@ describe('Fourm #1', () => {
         expect(ForumPage.getClosedElement(0).isPresent()).toBeTruthy();
         NavigationUtil.clickThread('VX Ongoing!');
 
+        NavigationUtil.clickTab('Toggle Tools');
         NavigationUtil.clickFixedTools('Thread tools');
         NavigationUtil.clickFixedTools('Open Thread');
 
@@ -84,6 +86,7 @@ describe('Fourm #1', () => {
         expect(ForumPage.getStickyElement(0).isPresent()).toBeFalsy();
         NavigationUtil.clickThread('VX Ongoing!');
 
+        NavigationUtil.clickTab('Toggle Tools');
         NavigationUtil.clickFixedTools('Thread tools');
         NavigationUtil.clickFixedTools('Sticky');
 
@@ -92,6 +95,7 @@ describe('Fourm #1', () => {
         expect(ForumPage.getStickyElement(0).isPresent()).toBeTruthy();
         NavigationUtil.clickThread('VX Ongoing!');
 
+        NavigationUtil.clickTab('Toggle Tools');
         NavigationUtil.clickFixedTools('Thread tools');
         NavigationUtil.clickFixedTools('Unsticky');
 
@@ -106,6 +110,7 @@ describe('Fourm #1', () => {
         NavigationUtil.clickThread('VX Ongoing!');
         expect(ThreadPage.getPostOwner(0).getText()).toEqual('Tovven');
 
+        NavigationUtil.clickTab('Toggle Tools');
         NavigationUtil.clickFixedTools('Thread tools');
         NavigationUtil.clickFixedTools('Change Owner');
 
@@ -120,6 +125,7 @@ describe('Fourm #1', () => {
         NavigationUtil.clickCategory('Announcements');
         NavigationUtil.clickThread('VX Ongoing!');
 
+        NavigationUtil.clickTab('Toggle Tools');
         NavigationUtil.clickFixedTools('Thread tools');
         NavigationUtil.clickFixedTools('Delete Thread');
         NavigationUtil.clickButton('Yes');
