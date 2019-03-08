@@ -72,6 +72,8 @@ describe('StaffCP #1', () => {
     });
 
     it('should be possible to update connection information', () => {
+        browser.executeScript('window.scrollTo(0, document.body.scrollHeight)');
+        browser.sleep(1000);
         NavigationUtil.clickStaffCpTool('Manage Connection Information');
 
         StaffCpPage.setRadioInfoIP('test.thishabbo.com');
