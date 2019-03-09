@@ -8,16 +8,15 @@ import { HttpService } from 'core/services/http/http.service';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import {
-    STAFFCP_BREADCRUM_ITEM,
-    STAFFCP_RADIO_BREADCRUM_ITEM,
-    STAFFCP_RADIO_PERM_SHOW_BREADCRUM_ITEM
+    STAFFCP_BREADCRUM_ITEM, STAFFCP_MANAGEMENT_BREADCRUMB_ITEM,
+    STAFFCP_PERM_SHOW_BREADCRUM_ITEM
 } from 'app/pages/staff/staff.constants';
 import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TimeHelper, Day, Hour } from 'shared/helpers/time.helper';
 
 @Component({
-    selector: 'app-staff-radio-permshow',
+    selector: 'app-staff-management-permshow',
     templateUrl: './permshow.component.html'
 })
 export class PermShowComponent extends Page implements OnDestroy {
@@ -41,8 +40,8 @@ export class PermShowComponent extends Page implements OnDestroy {
             current: 'Permanent Show',
             items: [
                 STAFFCP_BREADCRUM_ITEM,
-                STAFFCP_RADIO_BREADCRUM_ITEM,
-                STAFFCP_RADIO_PERM_SHOW_BREADCRUM_ITEM
+                STAFFCP_MANAGEMENT_BREADCRUMB_ITEM,
+                STAFFCP_PERM_SHOW_BREADCRUM_ITEM
             ]
         });
     }
@@ -75,16 +74,17 @@ export class PermShowComponent extends Page implements OnDestroy {
             timetableId: this._permShow.timetableId,
             name: this._permShow.name,
             description: this._permShow.description,
-            createdAt: this._permShow.createdAt
+            createdAt: this._permShow.createdAt,
+            type: this._permShow.type
         };
 
         if (this._permShow.createdAt) {
-            this._httpService.put(`staff/radio/permanent-shows/${this._permShow.timetableId}`,
+            this._httpService.put(`staff/management/permanent-shows/${this._permShow.timetableId}`,
                 { booking: booking })
                     .subscribe(this.onSuccessUpdate.bind(this, this._permShow),
                         this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
         } else {
-            this._httpService.post('staff/radio/permanent-shows', { booking: booking })
+            this._httpService.post('staff/management/permanent-shows', { booking: booking })
                 .subscribe(this.onSuccessCreate.bind(this, this._permShow),
                     this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
         }
@@ -99,7 +99,7 @@ export class PermShowComponent extends Page implements OnDestroy {
     }
 
     private cancel(): void {
-        this._router.navigateByUrl('/staff/radio/permanent-shows/page/1');
+        this._router.navigateByUrl('/staff/management/permanent-shows/page/1');
     }
 
     get title (): string {
@@ -113,13 +113,13 @@ export class PermShowComponent extends Page implements OnDestroy {
     }
 
     private onDelete (permShowId: number): void {
-        this._httpService.delete(`staff/radio/permanent-shows/${permShowId}`)
+        this._httpService.delete(`staff/management/permanent-shows/${permShowId}`)
             .subscribe(() => {
                 this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
                     title: 'Success',
                     message: 'Perm show deleted!'
                 }));
-                this._router.navigateByUrl('/staff/radio/permanent-shows/page/1');
+                this._router.navigateByUrl('/staff/management/permanent-shows/page/1');
             }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService), () => {
                 this._dialogService.closeDialog();
             });
@@ -130,7 +130,7 @@ export class PermShowComponent extends Page implements OnDestroy {
             title: 'Success',
             message: 'Permanent show created!'
         }));
-        this._router.navigateByUrl('/staff/radio/permanent-shows/page/1');
+        this._router.navigateByUrl('/staff/management/permanent-shows/page/1');
 
     }
 
@@ -139,7 +139,7 @@ export class PermShowComponent extends Page implements OnDestroy {
             title: 'Success',
             message: 'Permanent show updated!'
         }));
-        this._router.navigateByUrl('/staff/radio/permanent-shows/page/1');
+        this._router.navigateByUrl('/staff/management/permanent-shows/page/1');
 
     }
 

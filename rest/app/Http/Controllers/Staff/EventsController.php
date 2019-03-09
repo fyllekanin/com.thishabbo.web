@@ -307,7 +307,11 @@ class EventsController extends Controller {
         $canBookForOthers = PermissionHelper::haveStaffPermission($user->userId, ConfigHelper::getStaffConfig()->canBookRadioForOthers);
         Condition::precondition($booking->userId != $user->userId && !$canBookForOthers, 400, 'You can not unbook others slots');
 
-        $booking->isDeleted = true;
+        if ($booking->isPerm) {
+            $booking->isActive = false;
+        } else {
+            $booking->isDeleted = true;
+        }
         $booking->save();
 
         Logger::staff($user->userId, $request->ip(), Action::UNBOOKED_EVENT_SLOT, ['timetableId' => $booking->timetableId]);

@@ -10,9 +10,9 @@ export const STAFFCP_RADIO_BREADCRUM_ITEM = new BreadcrumbItem({
     url: '/staff/radio'
 });
 
-export const STAFFCP_RADIO_PERM_SHOW_BREADCRUM_ITEM = new BreadcrumbItem({
+export const STAFFCP_PERM_SHOW_BREADCRUM_ITEM = new BreadcrumbItem({
     title: 'Manage Permanent Shows',
-    url: '/staff/radio/permanent-shows/page/1'
+    url: '/staff/management/permanent-shows/page/1'
 });
 
 export const STAFFCP_EVENTS_BREADCRUM_ITEM = new BreadcrumbItem({
