@@ -1,0 +1,11 @@
+<div class="grid-container full">
+    <div class="grid-x margin-x margin-width">
+        <div *ngFor="let stat of stats" class="cell" [ngClass]="column">
+            <app-content [top]="stat.borderColor">
+                <div><i [ngClass]="stat.icon"></i></div>
+                <div class="title">{{stat.title}}</div>
+                <div>{{stat.breadText}}</div>
+            </app-content>
+        </div>
+    </div>
+</div>

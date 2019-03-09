@@ -7,10 +7,11 @@ import { Roulette, RouletteModel, RouletteNumber } from './roulette.model';
 import { NumberHelper } from 'shared/helpers/number.helper';
 import { HttpService } from 'core/services/http/http.service';
 import { ActivatedRoute } from '@angular/router';
-import { StatsModel } from '../betting.model';
+import { getBettingStats } from '../betting.model';
 import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
 import { GlobalNotification, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { TitleTopBorder } from 'shared/app-views/title/title.model';
+import { StatsBoxModel } from 'shared/app-views/stats-boxes/stats-boxes.model';
 
 
 @Component({
@@ -28,6 +29,7 @@ export class RouletteComponent extends Page implements OnDestroy {
     betBorder = TitleTopBorder.BLUE;
     rouletteBorder = TitleTopBorder.RED;
     isSpinning = false;
+    stats: Array<StatsBoxModel> = [];
 
     constructor(
         private _globalNotificationService: GlobalNotificationService,
@@ -87,6 +89,7 @@ export class RouletteComponent extends Page implements OnDestroy {
                         });
                     }
                     this.isSpinning = false;
+                    this.updateStats();
                     this._globalNotificationService.sendGlobalNotification(notification);
                 }, 2000);
             }, err => {
@@ -99,12 +102,13 @@ export class RouletteComponent extends Page implements OnDestroy {
         return this._numbers;
     }
 
-    get stats(): StatsModel {
-        return this._data.stats;
-    }
-
     private onData(data: { data: RouletteModel }): void {
         this._data = data.data;
+        this.updateStats();
+    }
+
+    private updateStats(): void {
+        this.stats = getBettingStats(this._data.stats);
     }
 
     private getInitial(): Array<RouletteNumber> {

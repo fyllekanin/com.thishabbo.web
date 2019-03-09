@@ -397,11 +397,6 @@ details {
     font-weight: bold;
 }
 
-.templateSize {
-    font-size: 1.5rem;
-    padding: 0.5rem 0;
-}
-
 .useStats {
     text-align: center;
 }
@@ -419,12 +414,6 @@ details {
     font-style: italic;
  }
 
- .Stripes {
-    background-image: url(\assets\images\bargradient.png)!important;
-    background-repeat: repeat,no-repeat!important;
-}
-
-
 .input-group {
     position: relative;
     display: -ms-flexbox;
@@ -434,4 +423,47 @@ details {
     -ms-flex-align: stretch;
     align-items: stretch;
     width: 100%;
+}
+
+.generic-radio-button {
+    color: white;
+    background-image: url(/assets/images/bargradient.png) !important;
+    font-size: 11px;
+    height: 30px;
+    background: #dddddd;
+    padding: 8px 8px 0px 9px;
+    margin-right: 5px;
+    margin-top: 10px;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.25);
+    border-radius: 2px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0 0 0 1px inset, rgba(255, 255, 255, 0.18) 0 0 0 2px inset, rgba(0, 0, 0, 0.11) 0 2px 0;
+    float: left;
+    cursor: pointer;
+}
+
+.generic-pink-button {
+    background-image: url(/assets/images/bargradient.png)!important;
+    background: #9a9393;
+}
+
+.generic-blue-button {
+    cursor: pointer;
+    background-image: url(/assets/images/bargradient.png)!important;
+    background: #139bfb;
+}
+
+.generic-yellow-button {
+    cursor: pointer;
+    background-image: url(/assets/images/bargradient.png)!important;
+    background-color: #d5e028;
+}
+
+.generic-green-button {
+    background-image: url(/assets/images/bargradient.png)!important;
+    background: #79b554;
+}
+
+.generic-red-button {
+    background-image: url(/assets/images/bargradient.png)!important;
+    background-color: #c37070;
 }

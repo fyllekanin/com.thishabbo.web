@@ -40,6 +40,7 @@ import { IgnoredCategoriesComponent } from './ignored-categories/ignored-categor
 import { UsercpEmailService } from './services/usercp-email.service';
 import { EmailComponent } from './email/email.component';
 import { NicknameComponent } from './nickname/nickname.component';
+import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.module';
 
 @NgModule({
     imports: [
@@ -54,7 +55,8 @@ import { NicknameComponent } from './nickname/nickname.component';
         SafeHtmlModule,
         TableModule,
         SideMenuModule,
-        CoverPhotoWithAvatarModule
+        CoverPhotoWithAvatarModule,
+        StatsBoxesModule
     ],
     declarations: [
         UsercpDashboardComponent,

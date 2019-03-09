@@ -1,35 +1,4 @@
-<div class="grid-container full useStats">
-    <div class="grid-x margin-x margin-width">
-        <div class="cell small-3">
-            <app-content [top]="stat1Border">
-                <div><i class="templateSize fas fa-coins"></i></div>
-                <div class="amount">Template 1</div>
-                <div>Template 2</div>
-            </app-content>
-        </div>
-        <div class="cell small-3">
-            <app-content [top]="stat2Border">
-                <div><i class="templateSize fas fa-gem"></i></div>
-                <div class="amount">Template 1</div>
-                <div>Template 2</div>
-            </app-content>
-        </div>
-        <div class="cell small-3">
-            <app-content [top]="stat3Border">
-                <div><i class="templateSize fas fa-thumbs-up"></i></div>
-                <div class="amount">Template 1</div>
-                <div>Template 2</div>
-            </app-content>
-        </div>
-        <div class="cell small-3">
-            <app-content [top]="stat4Border">
-                <div><i class="templateSize fas fa-thumbs-down"></i></div>
-                <div class="amount">Template 1</div>
-                <div>Template 2</div>
-            </app-content>
-        </div>
-    </div>
-</div>
+<app-stats-boxes [stats]="stats"></app-stats-boxes>
 
 <app-title [title]="'Device Settings'"></app-title>
 <app-content>

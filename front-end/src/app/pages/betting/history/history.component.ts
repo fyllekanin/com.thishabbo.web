@@ -5,9 +5,10 @@ import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { BETTING_HUB } from '../betting.constants';
 import { TableCell, TableConfig, TableHeader, TableRow } from 'shared/components/table/table.model';
-import { StatsModel } from '../betting.model';
+import { getBettingStats } from '../betting.model';
 import { HistoryModel } from './history.model';
 import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
+import { StatsBoxModel } from 'shared/app-views/stats-boxes/stats-boxes.model';
 
 @Component({
     selector: 'app-betting-history',
@@ -18,6 +19,7 @@ export class HistoryComponent extends Page implements OnDestroy {
 
     tableConfig: TableConfig;
     paginationModel: PaginationModel;
+    stats: Array<StatsBoxModel> = [];
 
     constructor(
         elementRef: ElementRef,
@@ -38,13 +40,10 @@ export class HistoryComponent extends Page implements OnDestroy {
         super.destroy();
     }
 
-    get stats(): StatsModel {
-        return this._data.stats;
-    }
-
     private onData(data: { data: HistoryModel }): void {
         this._data = data.data;
         this.createOrUpdateTable();
+        this.stats = getBettingStats(this._data.stats);
 
         this.paginationModel = new PaginationModel({
             page: this._data.page,

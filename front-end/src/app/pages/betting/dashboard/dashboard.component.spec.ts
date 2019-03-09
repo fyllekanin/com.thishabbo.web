@@ -10,9 +10,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { Bet, BetCategory, BetDashboardListActions, DashboardModel } from './dashboard.model';
 import { Action } from 'shared/components/table/table.model';
-import { StatsModel } from '../betting.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
+import { StatsModel } from '../betting.model';
 
 describe('Dashboard Component', () => {
 

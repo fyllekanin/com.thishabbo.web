@@ -39,11 +39,9 @@
     float: left;
 }
 
-.searchButton {
-    margin-top: 0px !important;
-    margin-left: 3px;
+.search-button {
     padding: 7px !important;
-    margin-right: 2px !important;
+    margin: 0 2px 0 3px !important;
 }
 
 .item i {
@@ -190,7 +188,7 @@
     margin: 17px 0px 24px 0px;
 }
 
-.vxStats {
+.stats {
     margin-top: 10px;
     margin-right: 4px;
 }
@@ -255,19 +253,4 @@ input, optgroup, select, textarea {
     border-radius: 2px;
     padding: 6px;
     margin-right: -6px;
-}
-
-.logobarAddon {
-    font-size: 11px;
-    font-weight: normal;
-    line-height: 1;
-    color: #ffffff;
-    text-align: center;
-    box-shadow: inset 0 0 0 1px rgba(115, 115, 115, .23), inset 0 0 0 2px #41acf7, 0 2px 0 rgba(165, 165, 165, 0.14);
-    background-image: url(/assets/images/bargradient.png)!important;
-    height: 25px;
-    background: #139bfb;
-    border-radius: 2px;
-    padding: 6px;
-    margin: 0px 0px 0px 1px;
 }
