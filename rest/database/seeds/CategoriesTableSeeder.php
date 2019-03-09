@@ -92,7 +92,7 @@ class CategoriesTableSeeder extends Seeder
                 'link' => '',
                 'options' => 0,
                 'displayOrder' => 1,
-                'lastPostId' => -1,
+                'lastPostId' => 16,
                 'isDeleted' => 0,
                 'template' => 'MEDIA',
                 'isHidden' => 0,

@@ -28,7 +28,7 @@ describe('RouterStateService', () => {
             service.updateTitle(notificationAmount);
 
             // Then
-            expect(document.title).toEqual('ThisHabboVX');
+            expect(document.title).toEqual('THVX');
         });
         it('should add amount of notification before title if more then 0', () => {
             // Given
@@ -38,7 +38,7 @@ describe('RouterStateService', () => {
             service.updateTitle(notificationAmount);
 
             // Then
-            expect(document.title).toEqual('(5) ThisHabboVX');
+            expect(document.title).toEqual('(5) THVX');
         });
     });
 });
