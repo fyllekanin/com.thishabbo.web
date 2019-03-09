@@ -57,3 +57,7 @@ button {
 .filter {
     margin-bottom: 1rem;
 }
+
+.button-column {
+    width: 50px;
+}

@@ -8,7 +8,7 @@
     <app-content [isContracted]="isContracted">
         <div class="grid-container full position-relative filter" *ngIf="filterConfigs.length > 0">
             <div class="grid-x grid-margin-x">
-                <div class="cell small-6" *ngFor="let filterConfig of filterConfigs">
+                <div class="cell" [ngClass]="filterConfigs.length > 1 ? 'small-6' : 'small-12'" *ngFor="let filterConfig of filterConfigs">
                     <div class="label" *ngIf="filterConfig.title">{{filterConfig.title}}</div>
                     <input type="text" name="filter" placeholder="{{filterConfig.placeholder}}"
                            [(ngModel)]="filterConfig.value"
@@ -38,11 +38,12 @@
                         </div>
                     </div>
                 </td>
-                <td *ngIf="haveActions">
-                    <select (change)="onChange(row, $event)">
+                <td *ngIf="haveActions" [ngClass]="row.actions.length === 1 ? 'button-column' : ''">
+                    <select (change)="onChange(row, $event)" *ngIf="row.actions.length > 1">
                         <option [value]="null" disabled="disabled">{{ row.actionsPlaceholder || 'Choose' }}</option>
                         <option *ngFor="let item of row.actions" [value]="item.value">{{item.title}}</option>
                     </select>
+                    <button appButton *ngIf="row.actions.length === 1" [disabled]="row.actions[0].isDisabled">{{row.actions[0].title}}</button>
                 </td>
             </tr>
         </table>

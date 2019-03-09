@@ -1059,4 +1059,20 @@ class Action {
             'title' => 'Title of page'
         ]
     ];
+
+    const SUSPENDED_BET = [
+        'id' => 135,
+        'description' => 'Suspended bet',
+        'data' => [
+            'bet' => 'Title bet'
+        ]
+    ];
+
+    const UNSUSPENDED_BET = [
+        'id' => 136,
+        'description' => 'Unsuspended bet',
+        'data' => [
+            'bet' => 'Title bet'
+        ]
+    ];
 }
