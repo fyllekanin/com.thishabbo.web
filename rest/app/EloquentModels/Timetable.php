@@ -12,7 +12,7 @@ class Timetable extends DeletableModel {
     protected $primaryKey = 'timetableId';
     protected $fillable = ['userId', 'day', 'hour', 'isPerm', 'type', 'eventId', 'isActive'];
     protected $hidden = ['userId', 'eventId', 'permShow'];
-    protected $appends = ['user', 'event'];
+    protected $appends = ['user', 'event', 'name'];
 
     public function event () {
         return $this->hasMany('App\EloquentModels\Event', 'eventId', 'eventId');
@@ -24,6 +24,11 @@ class Timetable extends DeletableModel {
 
     public function getEventAttribute () {
         return Event::find($this->eventId);
+    }
+
+    public function getNameAttribute () {
+        $data = $this->timetableData()->first();
+        return $data ? $data->name : null;
     }
 
     public function timetableData () {

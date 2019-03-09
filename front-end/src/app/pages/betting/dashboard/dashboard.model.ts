@@ -14,6 +14,8 @@ export class Bet {
     rightSide: number;
     @primitive()
     name: string;
+    @primitive()
+    isSuspended: boolean;
 
     constructor(source: Partial<Bet>) {
         ClassHelper.assign(this, source);

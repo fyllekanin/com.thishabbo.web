@@ -95,7 +95,7 @@ export class WebsiteSettingsComponent extends Page implements OnDestroy, OnInit 
                     new TableCell({ title: page.description })
                 ],
                 actions: [
-                    new TableAction({ title: 'Go To', value: null })
+                    new TableAction({ title: 'Configure', value: null })
                 ]
             }))
         });

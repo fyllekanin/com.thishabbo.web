@@ -171,7 +171,7 @@ class Action {
         ]
     ];
 
-    const BOOKED_PERM_RADIO_SLOT = [
+    const BOOKED_PERM_SLOT = [
         'id' => 22,
         'description' => 'User booked permanent slot',
         'data' => [
@@ -179,7 +179,7 @@ class Action {
         ]
     ];
 
-    const EDITED_PERM_RADIO_SLOT = [
+    const EDITED_PERM_SLOT = [
         'id' => 23,
         'description' => 'User edited a permanent slot',
         'data' => [
@@ -187,7 +187,7 @@ class Action {
         ]
     ];
 
-    const DELETED_PERM_RADIO_SLOT = [
+    const DELETED_PERM_SLOT = [
         'id' => 24,
         'description' => 'User deleted a permanent slot',
         'data' => [
@@ -1057,6 +1057,22 @@ class Action {
         'description' => 'Deleted page',
         'data' => [
             'title' => 'Title of page'
+        ]
+    ];
+
+    const SUSPENDED_BET = [
+        'id' => 135,
+        'description' => 'Suspended bet',
+        'data' => [
+            'bet' => 'Title bet'
+        ]
+    ];
+
+    const UNSUSPENDED_BET = [
+        'id' => 136,
+        'description' => 'Unsuspended bet',
+        'data' => [
+            'bet' => 'Title bet'
         ]
     ];
 }

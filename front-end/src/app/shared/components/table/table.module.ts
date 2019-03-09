@@ -5,6 +5,7 @@ import { TitleModule } from 'shared/app-views/title/title.module';
 import { TableComponent } from 'shared/components/table/table.component';
 import { NgModule } from '@angular/core';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
+import {ButtonModule} from 'shared/directives/button/button.module';
 
 @NgModule({
     imports: [
@@ -12,7 +13,8 @@ import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
         ContentModule,
         CommonModule,
         FormsModule,
-        SafeHtmlModule
+        SafeHtmlModule,
+        ButtonModule
     ],
     declarations: [
         TableComponent

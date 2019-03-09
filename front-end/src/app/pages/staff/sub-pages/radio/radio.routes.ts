@@ -9,10 +9,6 @@ import { ConnectionResolver } from './services/connection.resolver';
 import { KickDjComponent } from './kick-dj/kick-dj.component';
 import { ManageConnectionComponent } from './manage-connection/manage-connection.component';
 import { ManageConnectionResolver } from './services/manage-connection.resolver';
-import { PermShowComponent } from './permshow/permshow.component';
-import { PermShowResolver } from './services/permshow.resolver';
-import { PermShowsListComponent } from './permshow/list/permshows-list.component';
-import { PermShowsListResolver } from './services/permshows-list.resolver';
 import { DjSaysComponent } from './dj-says/dj-says.component';
 import { DjSaysResolver } from './services/dj-says.resolver';
 import { BookingLogComponent } from '../shared/booking-log/booking-log.component';
@@ -76,20 +72,6 @@ export const radioRoutes: Routes = [
                 component: KickDjComponent,
                 resolve: {
                     ping: ContinuesInformationService
-                }
-            },
-            {
-                path: 'permanent-shows/page/:page',
-                component: PermShowsListComponent,
-                resolve: {
-                    data: PermShowsListResolver
-                }
-            },
-            {
-                path: 'permanent-shows/:permShowId',
-                component: PermShowComponent,
-                resolve: {
-                    data: PermShowResolver
                 }
             },
             {

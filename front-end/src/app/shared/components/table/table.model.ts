@@ -50,6 +50,8 @@ export class TableAction {
     value: number;
     @primitive()
     icon?: string;
+    @primitive()
+    isDisabled?: boolean;
 
     constructor(source: Partial<TableAction>) {
         ClassHelper.assign(this, source);

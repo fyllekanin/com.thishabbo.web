@@ -4,6 +4,11 @@
     <input name="perm-name" type="text" [(ngModel)]="perm.name" />
     <div class="label">Description:</div>
     <input name="perm-desc" type="text" [(ngModel)]="perm.description" />
+    <div class="label">Type</div>
+    <select name="perm-type" [(ngModel)]="perm.type">
+        <option [value]="0">Radio</option>
+        <option [value]="1">Events</option>
+    </select>
 
     <div class="label">Nickname:</div>
     <input name="perm-user" type="text" [(ngModel)]="perm.nickname" />

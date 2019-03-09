@@ -203,4 +203,6 @@ Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions-
     Route::put('/betting/bet/{betId}', 'Admin\Betting\BetsController@updateBet');
     Route::delete('/betting/bet/{betId}', 'Admin\Betting\BetsController@deleteBet');
     Route::put('/betting/bet/{betId}/result', 'Admin\Betting\BetsController@setResult');
+    Route::put('/betting/bet/{betId}/suspend', 'Admin\Betting\BetsController@suspendBet');
+    Route::put('/betting/bet/{betId}/unsuspend', 'Admin\Betting\BetsController@unsuspendBet');
 });

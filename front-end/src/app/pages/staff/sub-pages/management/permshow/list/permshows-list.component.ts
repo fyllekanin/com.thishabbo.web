@@ -7,7 +7,11 @@ import { GlobalNotificationService } from 'core/services/notification/global-not
 import { HttpService } from 'core/services/http/http.service';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
-import { STAFFCP_BREADCRUM_ITEM, STAFFCP_RADIO_BREADCRUM_ITEM } from 'app/pages/staff/staff.constants';
+import {
+    STAFFCP_BREADCRUM_ITEM,
+    STAFFCP_MANAGEMENT_BREADCRUMB_ITEM
+
+} from 'app/pages/staff/staff.constants';
 import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
 import {
     Action,
@@ -22,7 +26,7 @@ import { TimeHelper } from 'shared/helpers/time.helper';
 import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 
 @Component({
-    selector: 'app-staff-radio-permshow-list',
+    selector: 'app-staff-management-permshow-list',
     templateUrl: './permshows-list.component.html'
 })
 export class PermShowsListComponent extends Page implements OnDestroy {
@@ -32,7 +36,7 @@ export class PermShowsListComponent extends Page implements OnDestroy {
         new TableAction({ title: 'Delete', value: PermShowActions.DELETE_PERM_SHOW })
     ];
 
-    tabs: Array<TitleTab> = [new TitleTab({ title: 'New Permanent Show', link: '/staff/radio/permanent-shows/new' })];
+    tabs: Array<TitleTab> = [new TitleTab({ title: 'New Permanent Show', link: '/staff/management/permanent-shows/new' })];
     tableConfig: TableConfig;
     pagination: PaginationModel;
 
@@ -51,7 +55,7 @@ export class PermShowsListComponent extends Page implements OnDestroy {
             current: 'Manage perm shows',
             items: [
                 STAFFCP_BREADCRUM_ITEM,
-                STAFFCP_RADIO_BREADCRUM_ITEM
+                STAFFCP_MANAGEMENT_BREADCRUMB_ITEM
             ]
         });
     }
@@ -62,7 +66,7 @@ export class PermShowsListComponent extends Page implements OnDestroy {
                 this.delete(Number(action.rowId));
                 break;
             case PermShowActions.EDIT_PERM_SHOW:
-                this._router.navigateByUrl(`/staff/radio/permanent-shows/${action.rowId}`);
+                this._router.navigateByUrl(`/staff/management/permanent-shows/${action.rowId}`);
                 break;
         }
     }
@@ -117,7 +121,7 @@ export class PermShowsListComponent extends Page implements OnDestroy {
     }
 
     private onDelete(permShowId: number): void {
-        this._httpService.delete(`staff/radio/permanent-shows/${permShowId}`)
+        this._httpService.delete(`staff/management/permanent-shows/${permShowId}`)
             .subscribe(() => {
                 this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
                     title: 'Success',

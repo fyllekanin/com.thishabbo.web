@@ -1,4 +1,5 @@
 import { arrayOf, ClassHelper, primitive } from 'shared/helpers/class.helper';
+import {IdHelper} from 'shared/helpers/id.helper';
 
 export abstract class NavigationItem {
     @primitive()
@@ -19,6 +20,10 @@ export class ChildItem extends NavigationItem {
     constructor(source: Partial<ChildItem>) {
         super();
         ClassHelper.assign(this, source);
+
+        if (this.isDivider) {
+            this.label = IdHelper.newUuid();
+        }
     }
 }
 

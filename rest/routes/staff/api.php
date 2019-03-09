@@ -25,14 +25,6 @@ Route::prefix('radio')->group(function () use ($permissions) {
         Route::get('/current-listeners', 'Staff\ManagementController@getCurrentListeners');
     });
 
-    Route::group(['middleware' => PermissionHelper::getStaffMiddleware($permissions->canManagePermShows)], function () {
-        Route::get('/permanent-shows/{timetableId}', 'Staff\RadioController@getPermShow');
-        Route::get('/permanent-shows/page/{page}', 'Staff\RadioController@getPermShows');
-        Route::post('/permanent-shows', 'Staff\RadioController@createPermShow');
-        Route::put('/permanent-shows/{timetableId}', 'Staff\RadioController@updatePermShow');
-        Route::delete('/permanent-shows/{timetableId}', 'Staff\RadioController@deletePermShow');
-    });
-
     Route::group(['middleware' => PermissionHelper::getStaffMiddleware($permissions->canKickDjOffAir)], function () {
         Route::post('kick/dj', 'Staff\RadioController@kickOffDj');
     });
@@ -79,5 +71,13 @@ Route::prefix('management')->group(function () use ($permissions) {
         Route::delete('/do-not-hire/{nickname}', 'Staff\ManagementController@deleteDoNotHire');
         Route::post('/do-not-hire', 'Staff\ManagementController@createDoNotHire');
         Route::put('/do-not-hire/{nickname}', 'Staff\ManagementController@updateDoNotHire');
+    });
+
+    Route::group(['middleware' => PermissionHelper::getStaffMiddleware($permissions->canManagePermShows)], function () {
+        Route::get('/permanent-shows/{timetableId}', 'Staff\ManagementController@getPermShow');
+        Route::get('/permanent-shows/page/{page}', 'Staff\ManagementController@getPermShows');
+        Route::post('/permanent-shows', 'Staff\ManagementController@createPermShow');
+        Route::put('/permanent-shows/{timetableId}', 'Staff\ManagementController@updatePermShow');
+        Route::delete('/permanent-shows/{timetableId}', 'Staff\ManagementController@deletePermShow');
     });
 });

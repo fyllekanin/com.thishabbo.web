@@ -16,10 +16,6 @@ import { InfoBoxModule } from 'shared/app-views/info-box/info-box.module';
 import { KickDjComponent } from './kick-dj/kick-dj.component';
 import { ManageConnectionComponent } from './manage-connection/manage-connection.component';
 import { ManageConnectionResolver } from './services/manage-connection.resolver';
-import { PermShowComponent } from './permshow/permshow.component';
-import { PermShowResolver } from './services/permshow.resolver';
-import { PermShowsListComponent } from './permshow/list/permshows-list.component';
-import { PermShowsListResolver } from './services/permshows-list.resolver';
 import { TableModule } from 'shared/components/table/table.module';
 import { PaginationModule } from 'shared/app-views/pagination/pagination.module';
 import { DjSaysComponent } from './dj-says/dj-says.component';
@@ -45,8 +41,6 @@ import { BookingLogModule } from '../shared/booking-log/booking-log.module';
         ConnectionComponent,
         KickDjComponent,
         ManageConnectionComponent,
-        PermShowComponent,
-        PermShowsListComponent,
         DjSaysComponent
     ],
     providers: [
@@ -54,8 +48,6 @@ import { BookingLogModule } from '../shared/booking-log/booking-log.module';
         RequestsResolver,
         ConnectionResolver,
         ManageConnectionResolver,
-        PermShowResolver,
-        PermShowsListResolver,
         DjSaysResolver
     ],
     exports: [
