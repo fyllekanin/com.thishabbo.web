@@ -12,7 +12,7 @@ export class PermShowResolver implements Resolve<PermShow> {
 
     resolve(route: ActivatedRouteSnapshot): Observable<PermShow> {
         const permShowId = route.params['permShowId'];
-        return this._httpService.get(`staff/radio/permanent-shows/${permShowId}`)
+        return this._httpService.get(`staff/management/permanent-shows/${permShowId}`)
             .pipe(map(data => new PermShow(data)));
     }
 }

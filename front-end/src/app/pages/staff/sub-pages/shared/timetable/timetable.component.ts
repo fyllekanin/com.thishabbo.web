@@ -68,8 +68,7 @@ export class TimetableComponent extends Page implements OnDestroy {
 
     getNickname (hour: number): string {
         const timetable = this.getTimetableByHour(hour);
-        const eventName = this.isEvents() ? `(${timetable.event ? timetable.event.name : 'unknown'})` : '';
-        return `<span style="${timetable.user.styling}">${timetable.user.nickname}</span> ${eventName}`;
+        return `<span style="${timetable.user.styling}">${timetable.user.nickname}</span> ${this.getLogName(timetable)}`;
     }
 
     clickHour (hour: number): void {
@@ -89,6 +88,13 @@ export class TimetableComponent extends Page implements OnDestroy {
         }
 
         return hour === date.getHours();
+    }
+
+    private getLogName(timetable: TimetableModel): string {
+        if (!timetable.isPerm) {
+            return this.isEvents() ? `(${timetable.event ? timetable.event.name : 'unknown'})` : '';
+        }
+        return `(${timetable.name})`;
     }
 
     private book (hour: number): void {
@@ -153,7 +159,7 @@ export class TimetableComponent extends Page implements OnDestroy {
             timetableId: item.timetableId,
             day: day,
             hour: hour,
-            perm: false,
+            isPerm: false,
             user: item.user,
             createdAt: item.createdAt,
             event: item.event

@@ -10,9 +10,11 @@ export class TimetableModel {
     @primitive()
     hour: number;
     @primitive()
-    perm: boolean;
+    isPerm: boolean;
     @primitive()
     type: number;
+    @primitive()
+    name: string;
     @objectOf(EventType)
     event: EventType;
     @primitive()

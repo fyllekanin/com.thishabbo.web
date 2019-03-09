@@ -66,11 +66,6 @@ export class StaffComponent extends Page implements OnDestroy, OnInit {
                         isApplicable: this._authService.staffPermissions.canRadio
                     }),
                     new SideMenuItem({
-                        title: 'Manage Permanent Shows',
-                        link: '/staff/radio/permanent-shows/page/1',
-                        isApplicable: this._authService.staffPermissions.canManagePermShows
-                    }),
-                    new SideMenuItem({
                         title: 'Booking Logs',
                         link: '/staff/radio/booking/page/1',
                         isApplicable: this._authService.staffPermissions.canSeeBookingLogs
@@ -125,6 +120,11 @@ export class StaffComponent extends Page implements OnDestroy, OnInit {
                         link: '/staff/radio/kick-dj',
                         isApplicable: this._authService.staffPermissions.canKickDjOffAir
                     }),
+                    new SideMenuItem({
+                        title: 'Manage Permanent Shows',
+                        link: '/staff/management/permanent-shows/page/1',
+                        isApplicable: this._authService.staffPermissions.canManagePermShows
+                    })
                 ]
             })
         ];

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Staff;
 
+use App\EloquentModels\Timetable;
+use App\EloquentModels\TimetableData;
 use App\EloquentModels\User\Login;
 use App\EloquentModels\User\User;
 use App\EloquentModels\Log\LogStaff;
@@ -14,6 +16,7 @@ use App\Models\Logger\Action;
 use App\Models\Radio\RadioSettings;
 use App\Utils\Condition;
 use App\Utils\Iterables;
+use App\Utils\Value;
 use Illuminate\Http\Request;
 
 class ManagementController extends Controller {
@@ -182,5 +185,155 @@ class ManagementController extends Controller {
         $data = curl_exec($curl);
         curl_close($curl);
         return json_decode($data);
+    }
+
+    /**
+     * Post request for creating a perm show
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function createPermShow (Request $request) {
+        $user = UserHelper::getUserFromRequest($request);
+        $booking = (object)$request->input('booking');
+
+        Condition::precondition(!isset($booking), 400, 'Stupid developer');
+        Condition::precondition(!isset($booking->hour), 400, 'Hour missing');
+        Condition::precondition(!isset($booking->day), 400, 'Day missing');
+        Condition::precondition($booking->type < 0 || $booking->type > 1, 400, 'Invalid type');
+
+        $bookingForUser = User::withNickname(Value::objectProperty($booking, 'nickname', ''))->first();
+        Condition::precondition(!$bookingForUser, 404, 'There is no user with that nickname');
+
+        $isPermExisting = Timetable::where('day', $booking->day)->where('hour', $booking->hour)->where('type', $booking->type)->isPerm()->count() > 0;
+        Condition::precondition($isPermExisting, 400, 'Perm show already exists on this slot');
+
+        $existing = Timetable::where('day', $booking->day)->where('hour', $booking->hour)->where('type', $booking->type)->isActive()->first();
+        if ($existing) {
+            $existing->delete();
+        }
+
+        $timetable = new Timetable([
+            'userId' => $bookingForUser->userId,
+            'day' => $booking->day,
+            'hour' => $booking->hour,
+            'isPerm' => 1,
+            'type' => $booking->type
+        ]);
+        $timetable->save();
+
+        $timetableData = new TimetableData([
+            'timetableId' => $timetable->timetableId,
+            'name' => $booking->name,
+            'description' => $booking->description
+        ]);
+        $timetableData->save();
+
+        Logger::staff($user->userId, $request->ip(), Action::BOOKED_PERM_SLOT, [
+            'timetableId' => $timetable->timetableId
+        ]);
+        return response()->json();
+    }
+
+    /**
+     * @param Request $request
+     * @param         $timetableId
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updatePermShow (Request $request, $timetableId) {
+        $user = UserHelper::getUserFromRequest($request);
+
+        $booking = (object)$request->input('booking');
+
+        Condition::precondition(!isset($booking), 400, 'Stupid developer');
+        Condition::precondition(!isset($booking->hour), 400, 'Hour missing');
+        Condition::precondition(!isset($booking->day), 400, 'Day missing');
+        Condition::precondition($booking->type < 0 || $booking->type > 1, 400, 'Invalid type');
+
+        $existingPerm = Timetable::where('day', $booking->day)->where('hour', $booking->hour)->where('type', $booking->type)->isPerm()->first();
+        $existingCheck = isset($existingPerm) && $existingPerm->timetableId != $booking->timetableId;
+
+        Condition::precondition($existingCheck, 400, 'Perm show already exists on this slot');
+
+        $slot = Timetable::find($timetableId);
+        $bookingForUser = User::withNickname(Value::objectProperty($booking, 'nickname', ''))->value('userId');
+
+        Condition::precondition(!isset($bookingForUser), 400, $bookingForUser);
+
+        $existing = Timetable::where('day', $booking->day)->where('hour', $booking->hour)->where('type', $booking->type)->isActive()->first();
+        if ($existing) {
+            $existing->delete();
+        }
+
+        $slot->update([
+            'day' => $booking->day,
+            'hour' => $booking->hour,
+            'userId' => $bookingForUser
+        ]);
+
+        $slot->timetableData->update([
+            'name' => $booking->name,
+            'description' => $booking->description
+        ]);
+
+        Logger::staff($user->userId, $request->ip(), Action::EDITED_PERM_SLOT, [
+            'show' => $booking->name
+        ]);
+
+        return response()->json();
+    }
+
+    /**
+     * Delete request for removing a perm show
+     *
+     * @param Request $request
+     * @param $timetableId
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deletePermShow (Request $request, $timetableId) {
+        $user = UserHelper::getUserFromRequest($request);
+        $booking = Timetable::find($timetableId);
+        Condition::precondition(!$booking, 404, 'Booking does not exist');
+
+        $booking->isDeleted = true;
+        $booking->save();
+
+        Logger::staff($user->userId, $request->ip(), Action::DELETED_PERM_SLOT, [
+            'timetableId' => $booking->timetableId
+        ]);
+        return response()->json();
+    }
+
+    /**
+     * Get request for perm shows
+     *
+     * @param $page
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getPermShows ($page) {
+        $permShows = Timetable::isPerm()->take($this->perPage)->skip($this->getOffset($page))->get();
+        return response()->json([
+            'permShows' => $permShows->map(function ($item) {
+                return $item->permShow;
+            }),
+            'total' => ceil(Timetable::isPerm()->count() / $this->perPage),
+            'page' => $page
+        ]);
+    }
+
+    /**
+     * Get request for perm show
+     *
+     * @param $timetableId
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getPermShow ($timetableId) {
+        $permShow = $timetableId == 'new' ? new \stdClass() : Timetable::find($timetableId)->permShow;
+        return response()->json($permShow);
     }
 }

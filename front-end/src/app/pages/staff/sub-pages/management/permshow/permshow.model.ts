@@ -8,6 +8,8 @@ export class PermShow {
     @primitive()
     timetableId: number;
     @primitive()
+    type: number;
+    @primitive()
     name: string;
     @primitive()
     nickname: string;

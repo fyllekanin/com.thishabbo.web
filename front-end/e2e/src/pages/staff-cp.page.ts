@@ -31,6 +31,11 @@ export class StaffCpPage {
         InputUtil.fillInput(ele, value);
     }
 
+    static setPermanentType(value: string): void {
+        const ele = element(by.cssContainingText('select[name="perm-type"] option', value));
+        CommonUtil.click(ele);
+    }
+
     static setPermanentShowDescription(value: string): void {
         const ele = element(by.css('input[name="perm-desc"]'));
         InputUtil.fillInput(ele, value);

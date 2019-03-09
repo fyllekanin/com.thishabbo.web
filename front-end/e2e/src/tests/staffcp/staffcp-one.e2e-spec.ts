@@ -62,6 +62,7 @@ describe('StaffCP #1', () => {
         NavigationUtil.clickTab('New Permanent Show');
 
         StaffCpPage.setPermanentShowName('Rock Show');
+        StaffCpPage.setPermanentType('Radio');
         StaffCpPage.setPermanentShowDescription('This is a rock-n-roll show!');
         StaffCpPage.setPermanentShowNickname('Tovven');
         StaffCpPage.setPermanentShowDay('Monday');

@@ -12,7 +12,7 @@ export class PermShowsListResolver implements Resolve<PermShowsListPage> {
 
     resolve(route: ActivatedRouteSnapshot): Observable<PermShowsListPage> {
         const pageNr = route.params['page'];
-        return this._httpService.get(`staff/radio/permanent-shows/page/${pageNr}`)
+        return this._httpService.get(`staff/management/permanent-shows/page/${pageNr}`)
             .pipe(map(data => new PermShowsListPage(data)));
     }
 }
