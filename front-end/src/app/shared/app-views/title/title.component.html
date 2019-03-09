@@ -1,9 +1,7 @@
 <div class="wrapper" [ngClass]="topBorder">
     <span (click)="titleClick()" [ngClass]="titlePointer ? 'pointer' : ''">{{title}}</span>
 
-    <span class="sub-title" *ngIf="subTitle">
-        {{subTitle}}
-    </span>
+    <span class="sub-title" *ngIf="subTitle">{{subTitle}}</span>
 
     <span *ngFor="let item of tabs" class="tab" (click)="tabClick(item)" [ngClass]="item.isActive ? 'active' : ''">
         {{item.title}}

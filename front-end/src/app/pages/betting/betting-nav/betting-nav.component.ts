@@ -8,5 +8,6 @@ import { Component } from '@angular/core';
 })
 export class BettingNavComponent {
 
-    topBorder = TitleTopBorder.RED;
+    topBorderRed = TitleTopBorder.RED;
+    topBorderBlue = TitleTopBorder.BLUE;
 }

@@ -1,13 +1,13 @@
 <app-title [title]="'Update social networks'" [tabs]="tabs" (onTabClick)="update()"></app-title>
 <app-content>
     <div class="grid-container">
-        <div class="grid-x grid-margin-x">
-            <div class="cell small-6">
-                <div class="label">Twitter</div>
+        <div class="grid-x margin-x">
+            <div class="small-12">
+                <div class="label">Twitter:</div>
                 <input type="text" [(ngModel)]="model.twitter" name="twitter"/>
             </div>
-            <div class="cell small-6">
-                <div class="label">Discord</div>
+            <div class="small-12">
+                <div class="label">Discord:</div>
                 <input type="text" [(ngModel)]="model.discord" name="discord"/>
             </div>
         </div>

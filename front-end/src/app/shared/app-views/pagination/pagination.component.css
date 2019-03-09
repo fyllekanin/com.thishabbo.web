@@ -21,8 +21,7 @@ a {
 }
 
 button {
-    padding: 12.5px;
-    background: -webkit-linear-gradient(top, #fcfcfc 0, #eeeeee 100%);
+    padding: 12px;
     text-align: center;
     display: inline-block;
     box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .18), inset 0 0 0 2px rgba(255, 255, 255, .18), 0 2px 0 rgba(0, 0, 0, 0.09);

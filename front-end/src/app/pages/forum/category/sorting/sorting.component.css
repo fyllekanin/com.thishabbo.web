@@ -1,8 +1,10 @@
 .display-controller {
     display: inline-block;
-    margin-right: 4rem;
+    margin-right: 1rem;
 }
 
 .display-controller-button {
-    margin-bottom: -11px;
+    margin-top: 24px;
+    margin-right: 0px;
+    float: right;
 }

@@ -1,9 +1,10 @@
+<app-stats-boxes [stats]="stats"></app-stats-boxes>
+
 <app-title [title]="'Device Settings'"></app-title>
 <app-content>
-    <p>
-        <em>These are settings which are just bound to your current device. <br />
-        If you visit the site on another device these settings will be default until changed.</em>
-    </p>
+        <em>These are settings which are bound to the current device you are using. <br />
+        If you visit ThisHabbo on another device these settings will be default until changed. Once ticked, the page will automatically save your changes.</em>
+        <br /><br />
     <label class="checkbox-container">
         Default BBcode mode in editor
         <input type="checkbox" [(ngModel)]="editorSourceMode">

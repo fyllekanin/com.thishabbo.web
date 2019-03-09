@@ -59,17 +59,16 @@ a:hover {
     border-right: 1px solid #e5e5e5;
     border-top: 1px solid #e5e5e5;
     border-left: 1px solid #e5e5e5;
-    margin: 0 0 0 7px;
-    padding: 5px;
+    margin: -2px 0 0 7px;
+    padding: 6px;
     font-size: 11px;
-    float:right;
+    float: right;
     color: #757575;
     cursor: pointer;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
-    -khtml-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
@@ -86,7 +85,7 @@ a:hover {
 
 .active {
     font-weight: bold;
-    box-shadow: 1px 0 5px -1px rgba(0, 0, 0, 0.75);
+    box-shadow: 1px 0 5px -1px rgba(206, 202, 202, 0.75);
 }
 
 .blue-top {

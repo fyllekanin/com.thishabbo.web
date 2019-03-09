@@ -153,7 +153,7 @@ class BetsController extends Controller {
         $newBet = (object)$request->input('bet');
 
         $bet = Bet::find($betId);
-        Condition::precondition(!$bet, 404, 'The bet do not exist');
+        Condition::precondition(!$bet, 404, 'The bet does not exist!');
 
         $this->betConditionCollection($newBet);
 
@@ -177,7 +177,7 @@ class BetsController extends Controller {
         $user = UserHelper::getUserFromRequest($request);
 
         $bet = Bet::find($betId);
-        Condition::precondition(!$bet, 404, 'The bet do not exist');
+        Condition::precondition(!$bet, 404, 'The bet does not exist!');
 
         $bet->isDeleted = true;
         $bet->save();

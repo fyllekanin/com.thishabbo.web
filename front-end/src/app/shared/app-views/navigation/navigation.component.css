@@ -59,6 +59,7 @@ nav span {
     background-color: #e5e5e5;
     height: 1px;
     overflow: hidden;
+    margin:8px 0px 8px 0px !important;
 }
 
 .dropdown-content {

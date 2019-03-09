@@ -9,8 +9,8 @@ import { AuthService } from 'core/services/auth/auth.service';
     selector: 'app-usercp',
     template: `
     <div class="grid-container">
-        <div class="grid-x grid-margin-x">
-            <div class="cell small-12">
+        <div class="grid-x margin-x">
+            <div class="cell small-12 medium-8 position-relative">
                 <app-cover-photo-with-avatar [userId]="userId" [version]="version"></app-cover-photo-with-avatar>
             </div>
             <div class="cell small-12 medium-8 position-relative">
@@ -22,6 +22,7 @@ import { AuthService } from 'core/services/auth/auth.service';
         </div>
     </div>`
 })
+
 
 export class UsercpComponent extends Page implements OnDestroy, OnInit {
 
@@ -46,7 +47,7 @@ export class UsercpComponent extends Page implements OnDestroy, OnInit {
                     new SideMenuItem({ title: 'Edit Nickname', link: '/user/usercp/nickname' }),
                     new SideMenuItem({ title: 'Groups', link: '/user/usercp/groups' }),
                     new SideMenuItem({ title: 'Change Password', link: '/user/usercp/password' }),
-                    new SideMenuItem({ title: 'Change E-mail', link: '/user/usercp/email' }),
+                    new SideMenuItem({ title: 'Change E-Mail', link: '/user/usercp/email' }),
                     new SideMenuItem({ title: 'Edit Home Page', link: '/user/usercp/home-page' })
                 ]
             }),
@@ -79,5 +80,6 @@ export class UsercpComponent extends Page implements OnDestroy, OnInit {
 
     get userId(): number {
         return this._authService.isLoggedIn() ? this._authService.authUser.userId : 0;
+
     }
 }

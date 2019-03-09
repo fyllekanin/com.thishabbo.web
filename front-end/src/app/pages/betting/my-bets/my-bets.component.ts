@@ -1,12 +1,13 @@
 import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { TableCell, TableConfig, TableHeader, TableRow } from 'shared/components/table/table.model';
-import { StatsModel } from '../betting.model';
 import { MyBetsModel } from './my-bets.model';
 import { ActivatedRoute } from '@angular/router';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { BETTING_HUB } from '../betting.constants';
+import { getBettingStats } from '../betting.model';
+import { StatsBoxModel } from 'shared/app-views/stats-boxes/stats-boxes.model';
 
 @Component({
     selector: 'app-betting-my-bets',
@@ -16,6 +17,7 @@ export class MyBetsComponent extends Page implements OnDestroy {
     private _data: MyBetsModel = new MyBetsModel();
 
     tableConfig: TableConfig;
+    stats: Array<StatsBoxModel> = [];
 
     constructor(
         elementRef: ElementRef,
@@ -36,13 +38,10 @@ export class MyBetsComponent extends Page implements OnDestroy {
         super.destroy();
     }
 
-    get stats(): StatsModel {
-        return this._data.stats;
-    }
-
     private onData(data: { data: MyBetsModel }): void {
         this._data = data.data;
         this.createOrUpdateTable();
+        this.stats = getBettingStats(this._data.stats);
     }
 
     private createOrUpdateTable(): void {

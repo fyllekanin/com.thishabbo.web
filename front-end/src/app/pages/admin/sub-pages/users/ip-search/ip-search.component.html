@@ -3,12 +3,14 @@
     Tool to find IP address of a user or find users under the same IP address, you can search both by
     IP address and nickname, leave a field empty to not include it in  your search.
     <div class="grid-container content-margin">
-        <div class="grid-x grid-margin-x">
-            <div class="cell small-6">
+        <div class="grid-x margin-x">
+            <div class="small-12">
+                <div class="label">IP Address:</div>
                 <input type="text" placeholder="IP Address" [(ngModel)]="ipAddress" (ngModelChange)="onFilter()"/>
             </div>
-            <div class="cell small-6">
-                <input type="text" placeholder="nickname" [(ngModel)]="nickname" (ngModelChange)="onFilter()"/>
+            <div class="small-12">
+                <div class="label">Nickname:</div>
+                <input type="text" placeholder="Nickname" [(ngModel)]="nickname" (ngModelChange)="onFilter()"/>
             </div>
         </div>
     </div>

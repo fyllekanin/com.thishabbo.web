@@ -15,7 +15,7 @@
     background: -webkit-linear-gradient(top, #fefefe 0, #ececec 100%);
     color: white;
     box-shadow: 0 1px white, 0 1px 7px #00000042;
-    height: 59px;
+    height: 49px;
     position: relative;
     width: 100%;
 }
@@ -33,9 +33,15 @@
     border-radius: 3px;
 }
 
-.inner-bottom-bar {
-    margin-top: 11px;
-    position: absolute;
+.inner-search-bar {
+    margin-top: 10px;
+    width: 30%;
+    float: left;
+}
+
+.search-button {
+    padding: 7px !important;
+    margin: 0 2px 0 3px !important;
 }
 
 .item i {
@@ -166,6 +172,27 @@
     user-select: none;
 }
 
+.vxOnline {
+    background: url(/assets/images/users_online.png) no-repeat !important;
+    height: 20px;
+    width: 15px;
+    float: left;
+    z-index: 1;
+    margin: 14px 0px 0px 19px;
+}
+
+.vxDesc {
+    width: 65%;
+    color: #3183ad;
+    float: right;
+    margin: 17px 0px 24px 0px;
+}
+
+.stats {
+    margin-top: 10px;
+    margin-right: 4px;
+}
+
 @-moz-keyframes flare {
     100% {
         -moz-transform: rotate(360deg);
@@ -211,4 +238,19 @@
     color: #d2d2d2;
     font-size: 36px;
     left: 15px;
+}
+
+input, optgroup, select, textarea {
+    border: 0;
+    background: #fbfbfb;
+    color: gray;
+    display: block;
+    font-size: 10px;
+    height: 30px;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    width: 100%;
+    outline: 0;
+    border-radius: 2px;
+    padding: 6px;
+    margin-right: -6px;
 }

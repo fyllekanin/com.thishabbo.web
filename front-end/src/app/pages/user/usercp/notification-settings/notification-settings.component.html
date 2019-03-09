@@ -1,24 +1,24 @@
 <app-title [title]="'Update Notification Settings'" [tabs]="tabs" (onTabClick)="onSave()"></app-title>
 <app-content>
     <div class="grid-container">
-        <div class="grid-x grid-margin-x">
-            <div class="cell small-6">
+        <div class="grid-x margin-x">
+            <div class="small-12">
                 <label class="checkbox-container">
-                    Ignore mention notification <em>(Also includes when people mention userGroups)</em>
+                    Ignore mention notification <em>(Also includes when users mention usergroups)</em>
                     <input type="checkbox" [(ngModel)]="model.MENTION_NOTIFICATIONS">
                     <span class="checkmark"></span>
                 </label>
             </div>
-            <div class="cell small-6">
+            <div class="small-12">
                 <label class="checkbox-container">
                     Ignore notifications when someone quotes you
                     <input type="checkbox" [(ngModel)]="model.QUOTE_NOTIFICATIONS">
                     <span class="checkmark"></span>
                 </label>
             </div>
-            <div class="cell small-6">
+            <div class="small-12">
                 <label class="checkbox-container">
-                    Do not subscribe to new thread automatic
+                    Do not subscribe to new thread automatically
                     <input type="checkbox" [(ngModel)]="model.AUTO_SUBSCRIBE_THREAD">
                     <span class="checkmark"></span>
                 </label>

@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class CategoriesTableSeeder extends Seeder
 {
@@ -13,58 +12,58 @@ class CategoriesTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('categories')->delete();
-        DB::table('categories')->insert(array (
+        \DB::table('categories')->delete();
+        \DB::table('categories')->insert(array (
             0 =>
             array (
                 'categoryId' => 1,
                 'parentId' => -1,
                 'title' => 'General',
-                'description' => '',
+                'description' => 'ggg',
                 'link' => '',
                 'options' => 0,
                 'displayOrder' => 0,
-                'lastPostId' => 6,
+                'lastPostId' => 23,
                 'isDeleted' => 0,
                 'template' => 'DEFAULT',
                 'isHidden' => 0,
                 'isOpen' => 1,
                 'createdAt' => 1538578022,
-                'updatedAt' => 1547222172,
+                'updatedAt' => 1552158684,
             ),
             1 =>
             array (
                 'categoryId' => 2,
                 'parentId' => 1,
                 'title' => 'Announcements',
-                'description' => '',
+                'description' => 'Official announcements about ThisHabbo!',
                 'link' => '',
                 'options' => 0,
                 'displayOrder' => 1,
-                'lastPostId' => 3,
+                'lastPostId' => 21,
                 'isDeleted' => 0,
                 'template' => 'DEFAULT',
                 'isHidden' => 0,
                 'isOpen' => 1,
                 'createdAt' => 1538578022,
-                'updatedAt' => 1547222172,
+                'updatedAt' => 1552158758,
             ),
             2 =>
             array (
                 'categoryId' => 3,
                 'parentId' => 1,
                 'title' => 'Dev News',
-                'description' => '',
+                'description' => 'Check out all the latest development work on-goings here!',
                 'link' => '',
                 'options' => 0,
                 'displayOrder' => 2,
-                'lastPostId' => 4,
+                'lastPostId' => 23,
                 'isDeleted' => 0,
                 'template' => 'DEFAULT',
                 'isHidden' => 0,
                 'isOpen' => 1,
                 'createdAt' => 1538578022,
-                'updatedAt' => 1547222172,
+                'updatedAt' => 1552158788,
             ),
             3 =>
             array (
@@ -75,13 +74,13 @@ class CategoriesTableSeeder extends Seeder
                 'link' => '',
                 'options' => 0,
                 'displayOrder' => 3,
-                'lastPostId' => 16,
+                'lastPostId' => 34,
                 'isDeleted' => 0,
                 'template' => 'DEFAULT',
                 'isHidden' => 0,
                 'isOpen' => 1,
                 'createdAt' => 1538578022,
-                'updatedAt' => 1547222172,
+                'updatedAt' => 1552148693,
             ),
             4 =>
             array (
@@ -92,13 +91,13 @@ class CategoriesTableSeeder extends Seeder
                 'link' => '',
                 'options' => 0,
                 'displayOrder' => 1,
-                'lastPostId' => 16,
+                'lastPostId' => 34,
                 'isDeleted' => 0,
                 'template' => 'MEDIA',
                 'isHidden' => 0,
                 'isOpen' => 1,
                 'createdAt' => 1538578022,
-                'updatedAt' => 1547223565,
+                'updatedAt' => 1552148693,
             ),
             5 =>
             array (
@@ -109,20 +108,20 @@ class CategoriesTableSeeder extends Seeder
                 'link' => '',
                 'options' => 0,
                 'displayOrder' => 2,
-                'lastPostId' => 11,
+                'lastPostId' => 29,
                 'isDeleted' => 0,
                 'template' => 'QUEST',
                 'isHidden' => 0,
                 'isOpen' => 1,
                 'createdAt' => 1538578022,
-                'updatedAt' => 1547222172,
+                'updatedAt' => 1552145142,
             ),
             6 =>
             array (
                 'categoryId' => 7,
                 'parentId' => 1,
                 'title' => 'Welcome!',
-                'description' => '',
+                'description' => 'New? Introduce yourself! Leaving? Say goodbye!',
                 'link' => '',
                 'options' => 0,
                 'displayOrder' => 3,
@@ -132,7 +131,7 @@ class CategoriesTableSeeder extends Seeder
                 'isHidden' => 0,
                 'isOpen' => 1,
                 'createdAt' => 1538578022,
-                'updatedAt' => 1547222172,
+                'updatedAt' => 1552158798,
             ),
             7 =>
             array (

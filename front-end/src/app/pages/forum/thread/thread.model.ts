@@ -118,8 +118,8 @@ export class PostHistoryModel {
 
 export function getPostTools(forumPermissions: ForumPermissions) {
     return [
-        { title: 'Approve posts', value: ThreadActions.APPROVE_POSTS, condition: forumPermissions.canApprovePosts },
-        { title: 'Unapprove posts', value: ThreadActions.UNAPPROVE_POSTS, condition: forumPermissions.canApprovePosts },
+        { title: 'Approve Posts', value: ThreadActions.APPROVE_POSTS, condition: forumPermissions.canApprovePosts },
+        { title: 'Unapprove Posts', value: ThreadActions.UNAPPROVE_POSTS, condition: forumPermissions.canApprovePosts },
         { title: 'Merge Posts', value: ThreadActions.MERGE_POSTS, condition: forumPermissions.canMergePosts },
         { title: 'Edit History', value: ThreadActions.POST_HISTORY, condition: forumPermissions.canEditOthersPosts }
     ];

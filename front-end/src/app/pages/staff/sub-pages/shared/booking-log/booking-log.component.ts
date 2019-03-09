@@ -63,7 +63,7 @@ export class BookingLogComponent extends Page implements OnDestroy {
             return;
         }
         this.tableConfig = new TableConfig({
-            title: `${this._type} Booking Log`,
+            title: 'Booking Log',
             headers: BookingLogComponent.getTableHeaders(),
             rows: this.getTableRows()
         });

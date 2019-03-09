@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class UsersTableSeeder extends Seeder
 {
@@ -13,12 +12,12 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
+        
 
-
-        DB::table('users')->delete();
-
-        DB::table('users')->insert(array (
-            0 =>
+        \DB::table('users')->delete();
+        
+        \DB::table('users')->insert(array (
+            0 => 
             array (
                 'userId' => 1,
                 'username' => 'Tovven',
@@ -29,14 +28,14 @@ class UsersTableSeeder extends Seeder
                 'referralId' => 0,
                 'gdpr' => 1,
                 'likes' => 0,
-                'posts' => 16,
-                'threads' => 14,
+                'posts' => 30,
+                'threads' => 25,
                 'ignoredNotifications' => 0,
-                'lastActivity' => 1542060261,
+                'lastActivity' => 1552159896,
                 'createdAt' => 1538578022,
-                'updatedAt' => 1542060261,
+                'updatedAt' => 1552159896,
             ),
-            1 =>
+            1 => 
             array (
                 'userId' => 2,
                 'username' => 'test',
@@ -54,7 +53,7 @@ class UsersTableSeeder extends Seeder
                 'createdAt' => 1538578022,
                 'updatedAt' => 1538578022,
             ),
-            2 =>
+            2 => 
             array (
                 'userId' => 3,
                 'username' => 'test1234',
@@ -73,7 +72,7 @@ class UsersTableSeeder extends Seeder
                 'updatedAt' => 1542051979,
             ),
         ));
-
-
+        
+        
     }
 }

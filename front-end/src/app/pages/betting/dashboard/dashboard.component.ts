@@ -16,11 +16,12 @@ import { DashboardService } from '../services/dashboard.service';
 import { HttpService } from 'core/services/http/http.service';
 import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
 import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
-import { StatsModel } from '../betting.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { BETTING_HUB } from '../betting.constants';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
+import { StatsBoxModel } from 'shared/app-views/stats-boxes/stats-boxes.model';
+import { getBettingStats } from '../betting.model';
 
 @Component({
     selector: 'app-betting-dashboard',
@@ -41,6 +42,8 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
     toggleTab: Array<TitleTab> = [
         new TitleTab({ title: 'Toggle' })
     ];
+
+    stats: Array<StatsBoxModel> = [];
 
     constructor(
         private _httpService: HttpService,
@@ -105,10 +108,6 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
         return this._data.activeBets.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'displayOrder'));
     }
 
-    get stats(): StatsModel {
-        return this._data.stats;
-    }
-
     private onPlaceBetFinished(bet: Bet, credits: number): void {
         if (!credits) {
             return;
@@ -121,6 +120,7 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
                     message: 'You have now placed your bet!'
                 }));
                 this._data.stats.credits -= credits;
+                this.updateStats();
                 this.updateBackers(bet);
                 this.buildTrendingTable();
                 this.buildSectionTables();
@@ -145,8 +145,16 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
     private onData(data: { data: DashboardModel }): void {
         this._data = data.data || new DashboardModel();
 
+        this.updateStats();
         this.buildTrendingTable();
         this.buildSectionTables();
+    }
+
+    private updateStats(): void {
+        if (!this._data.stats) {
+            return;
+        }
+        this.stats = getBettingStats(this._data.stats);
     }
 
     private buildTrendingTable(): void {

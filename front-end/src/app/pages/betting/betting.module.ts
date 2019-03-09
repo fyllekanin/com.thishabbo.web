@@ -10,7 +10,6 @@ import { BettingNavComponent } from './betting-nav/betting-nav.component';
 import { BettingComponent } from './betting.component';
 import { bettingRoutes } from './betting.routes';
 import { InfoBoxModule } from 'shared/app-views/info-box/info-box.module';
-import { StatsComponent } from './stats/stats.component';
 import { DashboardResolver } from './services/dashboard.resolver';
 import { TableModule } from 'shared/components/table/table.module';
 import { CommonModule } from '@angular/common';
@@ -22,6 +21,7 @@ import { HistoryResolver } from './services/history.resolver';
 import { PaginationModule } from 'shared/app-views/pagination/pagination.module';
 import { RouletteComponent } from './roulette/roulette.component';
 import { RouletteResolver } from './services/roulette.resolver';
+import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.module';
 
 @NgModule({
     imports: [
@@ -33,10 +33,10 @@ import { RouletteResolver } from './services/roulette.resolver';
         TableModule,
         CommonModule,
         FormsModule,
-        PaginationModule
+        PaginationModule,
+        StatsBoxesModule
     ],
     declarations: [
-        StatsComponent,
         BettingNavComponent,
         BettingComponent,
         DashboardComponent,

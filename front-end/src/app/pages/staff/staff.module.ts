@@ -11,6 +11,7 @@ import { staffRoutes } from './staff.routes';
 import { RequestThcComponent } from './request-thc/request-thc.component';
 import { SideMenuModule } from 'shared/app-views/side-menu/side-menu.module';
 import { TableModule } from 'shared/components/table/table.module';
+import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.module';
 
 @NgModule({
     imports: [
@@ -21,7 +22,8 @@ import { TableModule } from 'shared/components/table/table.module';
         FormsModule,
         CommonModule,
         SideMenuModule,
-        TableModule
+        TableModule,
+        StatsBoxesModule
     ],
     declarations: [
         StaffComponent,

@@ -1,11 +1,8 @@
 .apply {
     color: rgb(24, 144, 241);
+    font-weight:bold;
 }
 
 .apply:hover {
     cursor: pointer;
-}
-
-.groups {
-    margin-top: 1rem;
 }

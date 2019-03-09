@@ -167,7 +167,7 @@ export class AdminComponent extends Page implements OnDestroy, OnInit {
                         isApplicable: this._authService.adminPermissions.canManageTHC
                     }),
                     new SideMenuItem({
-                        title: 'IP address search',
+                        title: 'IP Address Search',
                         link: '/admin/users/ip-search',
                         isApplicable: this._authService.adminPermissions.canSeeIps
                     })

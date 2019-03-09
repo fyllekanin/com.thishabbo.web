@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class PostsTableSeeder extends Seeder
 {
@@ -13,9 +12,12 @@ class PostsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('posts')->delete();
-        DB::table('posts')->insert(array (
-            0 =>
+        
+
+        \DB::table('posts')->delete();
+        
+        \DB::table('posts')->insert(array (
+            0 => 
             array (
                 'postId' => 1,
                 'threadId' => 1,
@@ -27,7 +29,7 @@ There is a new version in the making! Prepare yourself!',
                 'createdAt' => 1538578022,
                 'updatedAt' => 1538578022,
             ),
-            1 =>
+            1 => 
             array (
                 'postId' => 2,
                 'threadId' => 2,
@@ -39,7 +41,7 @@ Woooho!!',
                 'createdAt' => 1538578022,
                 'updatedAt' => 1538578022,
             ),
-            2 =>
+            2 => 
             array (
                 'postId' => 3,
                 'threadId' => 1,
@@ -50,7 +52,7 @@ Woooho!!',
                 'createdAt' => 1538578022,
                 'updatedAt' => 1538578022,
             ),
-            3 =>
+            3 => 
             array (
                 'postId' => 4,
                 'threadId' => 2,
@@ -62,7 +64,7 @@ But you need to also fix this fking spacing between lines when using the editor,
                 'createdAt' => 1538578022,
                 'updatedAt' => 1538578022,
             ),
-            4 =>
+            4 => 
             array (
                 'postId' => 5,
                 'threadId' => 3,
@@ -76,7 +78,7 @@ GG!',
                 'createdAt' => 1538578022,
                 'updatedAt' => 1538578022,
             ),
-            5 =>
+            5 => 
             array (
                 'postId' => 6,
                 'threadId' => 4,
@@ -88,7 +90,7 @@ Hope you will have a fun time here and join our team! ',
                 'createdAt' => 1538578022,
                 'updatedAt' => 1538578022,
             ),
-            6 =>
+            6 => 
             array (
                 'postId' => 7,
                 'threadId' => 5,
@@ -101,7 +103,7 @@ this is just a boiler template text should show that text is displayed when the 
                 'createdAt' => 1538672652,
                 'updatedAt' => 1538672652,
             ),
-            7 =>
+            7 => 
             array (
                 'postId' => 8,
                 'threadId' => 6,
@@ -116,7 +118,7 @@ this is just a boiler template text should show that text is displayed when the 
                 'createdAt' => 1538672679,
                 'updatedAt' => 1538672679,
             ),
-            8 =>
+            8 => 
             array (
                 'postId' => 9,
                 'threadId' => 7,
@@ -131,7 +133,7 @@ this is just a boiler template text should show that text is displayed when the 
                 'createdAt' => 1538672712,
                 'updatedAt' => 1538672712,
             ),
-            9 =>
+            9 => 
             array (
                 'postId' => 10,
                 'threadId' => 8,
@@ -146,7 +148,7 @@ this is just a boiler template text should show that text is displayed when the 
                 'createdAt' => 1538672751,
                 'updatedAt' => 1538672751,
             ),
-            10 =>
+            10 => 
             array (
                 'postId' => 11,
                 'threadId' => 9,
@@ -159,7 +161,7 @@ this is just a boiler template text should show that text is displayed when the 
                 'createdAt' => 1538672783,
                 'updatedAt' => 1538672783,
             ),
-            11 =>
+            11 => 
             array (
                 'postId' => 12,
                 'threadId' => 10,
@@ -187,7 +189,7 @@ this is just a boiler template text should show that text is displayed when the 
                 'createdAt' => 1538715429,
                 'updatedAt' => 1538715429,
             ),
-            12 =>
+            12 => 
             array (
                 'postId' => 13,
                 'threadId' => 11,
@@ -215,7 +217,7 @@ this is just a boiler template text should show that text is displayed when the 
                 'createdAt' => 1538715447,
                 'updatedAt' => 1538715447,
             ),
-            13 =>
+            13 => 
             array (
                 'postId' => 14,
                 'threadId' => 12,
@@ -243,7 +245,7 @@ this is just a boiler template text should show that text is displayed when the 
                 'createdAt' => 1538715462,
                 'updatedAt' => 1538715462,
             ),
-            14 =>
+            14 => 
             array (
                 'postId' => 15,
                 'threadId' => 13,
@@ -271,7 +273,7 @@ this is just a boiler template text should show that text is displayed when the 
                 'createdAt' => 1538715477,
                 'updatedAt' => 1538715477,
             ),
-            15 =>
+            15 => 
             array (
                 'postId' => 16,
                 'threadId' => 14,
@@ -299,7 +301,7 @@ this is just a boiler template text should show that text is displayed when the 
                 'createdAt' => 1538715493,
                 'updatedAt' => 1538715493,
             ),
-            16 =>
+            16 => 
             array (
                 'postId' => 17,
                 'threadId' => 15,
@@ -311,7 +313,7 @@ Hope you will have a fun time here and join our team! ',
                 'createdAt' => 1547223025,
                 'updatedAt' => 1547223728,
             ),
-            17 =>
+            17 => 
             array (
                 'postId' => 18,
                 'threadId' => 16,
@@ -323,7 +325,7 @@ Hope you will have a fun time here and join our team! ',
                 'createdAt' => 1547223151,
                 'updatedAt' => 1547223721,
             ),
-            18 =>
+            18 => 
             array (
                 'postId' => 19,
                 'threadId' => 17,
@@ -344,7 +346,7 @@ Hope you will have a fun time here and join our team! [/quote]',
                 'createdAt' => 1547223372,
                 'updatedAt' => 1547223716,
             ),
-            19 =>
+            19 => 
             array (
                 'postId' => 20,
                 'threadId' => 18,
@@ -365,6 +367,195 @@ Hope you will have a fun time here and join our team! [/quote]',
                 'createdAt' => 1547223761,
                 'updatedAt' => 1547223761,
             ),
+            20 => 
+            array (
+                'postId' => 21,
+                'threadId' => 1,
+                'userId' => 1,
+                'content' => 'ty',
+                'isDeleted' => 0,
+                'isApproved' => 1,
+                'createdAt' => 1551996694,
+                'updatedAt' => 1551996694,
+            ),
+            21 => 
+            array (
+                'postId' => 22,
+                'threadId' => 2,
+                'userId' => 1,
+                'content' => 'ggggggggg',
+                'isDeleted' => 0,
+                'isApproved' => 1,
+                'createdAt' => 1552092078,
+                'updatedAt' => 1552092078,
+            ),
+            22 => 
+            array (
+                'postId' => 23,
+                'threadId' => 2,
+                'userId' => 1,
+                'content' => 'test',
+                'isDeleted' => 0,
+                'isApproved' => 1,
+                'createdAt' => 1552092125,
+                'updatedAt' => 1552092125,
+            ),
+            23 => 
+            array (
+                'postId' => 24,
+                'threadId' => 19,
+                'userId' => 1,
+                'content' => '[color=#8e8e8e][size=2][font=Verdana, sans-serif]Another day, another match! Who will win in the England VS Panama game? Tell us now and get an easy badge in the Hotel![/font][/size][/color]
+',
+                'isDeleted' => 0,
+                'isApproved' => 1,
+                'createdAt' => 1552144959,
+                'updatedAt' => 1552144959,
+            ),
+            24 => 
+            array (
+                'postId' => 25,
+                'threadId' => 20,
+                'userId' => 1,
+                'content' => '[color=#8e8e8e][size=2][font=Verdana, sans-serif]Another day, another match! Who will win in the England VS Panama game? Tell us now and get an easy badge in the Hotel![/font][/size][/color]
+',
+                'isDeleted' => 0,
+                'isApproved' => 1,
+                'createdAt' => 1552145019,
+                'updatedAt' => 1552145019,
+            ),
+            25 => 
+            array (
+                'postId' => 26,
+                'threadId' => 21,
+                'userId' => 1,
+                'content' => '[color=#8e8e8e][size=2][font=Verdana, sans-serif]Another day, another match! Who will win in the England VS Panama game? Tell us now and get an easy badge in the Hotel![/font][/size][/color]
+',
+                'isDeleted' => 0,
+                'isApproved' => 1,
+                'createdAt' => 1552145036,
+                'updatedAt' => 1552145036,
+            ),
+            26 => 
+            array (
+                'postId' => 27,
+                'threadId' => 22,
+                'userId' => 1,
+                'content' => '[color=#8e8e8e][size=2][font=Verdana, sans-serif]Another day, another match! Who will win in the England VS Panama game? Tell us now and get an easy badge in the Hotel! [color=#8e8e8e][size=2][font=Verdana, sans-serif]Another day, another match! Who will win in the England VS Panama game? Tell us now and get an easy badge in the Hotel![/font][/size][/color][/font][/size][/color]
+',
+                'isDeleted' => 0,
+                'isApproved' => 1,
+                'createdAt' => 1552145054,
+                'updatedAt' => 1552145054,
+            ),
+            27 => 
+            array (
+                'postId' => 28,
+                'threadId' => 23,
+                'userId' => 1,
+                'content' => '[color=#8e8e8e][size=2][font=Verdana, sans-serif]Another day, another match! Who will win in the England VS Panama game? Tell us now and get an easy badge in the Hotel![/font][/size][/color]
+',
+                'isDeleted' => 0,
+                'isApproved' => 1,
+                'createdAt' => 1552145118,
+                'updatedAt' => 1552145118,
+            ),
+            28 => 
+            array (
+                'postId' => 29,
+                'threadId' => 24,
+                'userId' => 1,
+                'content' => '[color=#8e8e8e][size=2][font=Verdana, sans-serif]Another day, another match! Who will win in the England VS Panama game? Tell us now and get an easy badge in the Hotel![/font][/size][/color]
+',
+                'isDeleted' => 0,
+                'isApproved' => 1,
+                'createdAt' => 1552145142,
+                'updatedAt' => 1552145142,
+            ),
+            29 => 
+            array (
+                'postId' => 30,
+                'threadId' => 25,
+                'userId' => 1,
+                'content' => 'Etiam. Nulla sollicitudin consequat arcu dignissim eleifend risus amet consequat laoreet primis id a varius libero amet. Penatibus hendrerit nulla cubilia.
+
+Adipiscing fermentum cras primis. Auctor lacinia Aenean velit pulvinar rhoncus, habitant lorem faucibus. Duis et. Turpis turpis dignissim massa lectus. Hac vehicula proin lacus per. Lacinia tempor torquent vestibulum luctus nunc aenean natoque risus cras ut fringilla sed torquent.
+
+Praesent lacinia malesuada nisi mus erat magna nullam mus. Cras dui non. Eleifend diam luctus condimentum vitae sociosqu vestibulum ultricies tortor torquent cras quis porttitor maecenas lorem ut fringilla leo molestie. Praesent hymenaeos aliquet scelerisque sociosqu tortor commodo ac aliquet.
+',
+                'isDeleted' => 0,
+                'isApproved' => 1,
+                'createdAt' => 1552148604,
+                'updatedAt' => 1552148604,
+            ),
+            30 => 
+            array (
+                'postId' => 31,
+                'threadId' => 26,
+                'userId' => 1,
+                'content' => '[color=#7d7d7d][size=2][font=Verdana, sans-serif]Etiam. Nulla sollicitudin consequat arcu dignissim eleifend risus amet consequat laoreet primis id a varius libero amet. Penatibus hendrerit nulla cubilia.[/font][/size][/color]
+
+[color=#7d7d7d][size=2][font=Verdana, sans-serif]Adipiscing fermentum cras primis. Auctor lacinia Aenean velit pulvinar rhoncus, habitant lorem faucibus. Duis et. Turpis turpis dignissim massa lectus. Hac vehicula proin lacus per. Lacinia tempor torquent vestibulum luctus nunc aenean natoque risus cras ut fringilla sed torquent.[/font][/size][/color]
+
+[color=#7d7d7d][size=2][font=Verdana, sans-serif]Praesent lacinia malesuada nisi mus erat magna nullam mus. Cras dui non. Eleifend diam luctus condimentum vitae sociosqu vestibulum ultricies tortor torquent cras quis porttitor maecenas lorem ut fringilla leo molestie. Praesent hymenaeos aliquet scelerisque sociosqu tortor commodo ac aliquet.[/font][/size][/color]',
+                'isDeleted' => 0,
+                'isApproved' => 1,
+                'createdAt' => 1552148621,
+                'updatedAt' => 1552148621,
+            ),
+            31 => 
+            array (
+                'postId' => 32,
+                'threadId' => 27,
+                'userId' => 1,
+                'content' => '[color=#7d7d7d][size=2][font=Verdana, sans-serif]Etiam. Nulla sollicitudin consequat arcu dignissim eleifend risus amet consequat laoreet primis id a varius libero amet. Penatibus hendrerit nulla cubilia.[/font][/size][/color]
+
+[color=#7d7d7d][size=2][font=Verdana, sans-serif]Adipiscing fermentum cras primis. Auctor lacinia Aenean velit pulvinar rhoncus, habitant lorem faucibus. Duis et. Turpis turpis dignissim massa lectus. Hac vehicula proin lacus per. Lacinia tempor torquent vestibulum luctus nunc aenean natoque risus cras ut fringilla sed torquent.[/font][/size][/color]
+
+[color=#7d7d7d][size=2][font=Verdana, sans-serif]Praesent lacinia malesuada nisi mus erat magna nullam mus. Cras dui non. Eleifend diam luctus condimentum vitae sociosqu vestibulum ultricies tortor torquent cras quis porttitor maecenas lorem ut fringilla leo molestie. Praesent hymenaeos aliquet scelerisque sociosqu tortor commodo ac aliquet.[/font][/size][/color]
+
+
+',
+                'isDeleted' => 0,
+                'isApproved' => 1,
+                'createdAt' => 1552148637,
+                'updatedAt' => 1552148637,
+            ),
+            32 => 
+            array (
+                'postId' => 33,
+                'threadId' => 28,
+                'userId' => 1,
+                'content' => '[color=#7d7d7d][size=2][font=Verdana, sans-serif]Etiam. Nulla sollicitudin consequat arcu dignissim eleifend risus amet consequat laoreet primis id a varius libero amet. Penatibus hendrerit nulla cubilia.[/font][/size][/color]
+
+[color=#7d7d7d][size=2][font=Verdana, sans-serif]Adipiscing fermentum cras primis. Auctor lacinia Aenean velit pulvinar rhoncus, habitant lorem faucibus. Duis et. Turpis turpis dignissim massa lectus. Hac vehicula proin lacus per. Lacinia tempor torquent vestibulum luctus nunc aenean natoque risus cras ut fringilla sed torquent.[/font][/size][/color]
+
+[color=#7d7d7d][size=2][font=Verdana, sans-serif]Praesent lacinia malesuada nisi mus erat magna nullam mus. Cras dui non. Eleifend diam luctus condimentum vitae sociosqu vestibulum ultricies tortor torquent cras quis porttitor maecenas lorem ut fringilla leo molestie. Praesent hymenaeos aliquet scelerisque sociosqu tortor commodo ac aliquet.[/font][/size][/color]',
+                'isDeleted' => 0,
+                'isApproved' => 1,
+                'createdAt' => 1552148663,
+                'updatedAt' => 1552148663,
+            ),
+            33 => 
+            array (
+                'postId' => 34,
+                'threadId' => 29,
+                'userId' => 1,
+                'content' => '[color=#7d7d7d][size=2][font=Verdana, sans-serif]Etiam. Nulla sollicitudin consequat arcu dignissim eleifend risus amet consequat laoreet primis id a varius libero amet. Penatibus hendrerit nulla cubilia.[/font][/size][/color]
+
+[color=#7d7d7d][size=2][font=Verdana, sans-serif]Adipiscing fermentum cras primis. Auctor lacinia Aenean velit pulvinar rhoncus, habitant lorem faucibus. Duis et. Turpis turpis dignissim massa lectus. Hac vehicula proin lacus per. Lacinia tempor torquent vestibulum luctus nunc aenean natoque risus cras ut fringilla sed torquent.[/font][/size][/color]
+
+[color=#7d7d7d][size=2][font=Verdana, sans-serif]Praesent lacinia malesuada nisi mus erat magna nullam mus. Cras dui non. Eleifend diam luctus condimentum vitae sociosqu vestibulum ultricies tortor torquent cras quis porttitor maecenas lorem ut fringilla leo molestie. Praesent hymenaeos aliquet scelerisque sociosqu tortor commodo ac aliquet.[/font][/size][/color]
+
+
+',
+                'isDeleted' => 0,
+                'isApproved' => 1,
+                'createdAt' => 1552148693,
+                'updatedAt' => 1552148693,
+            ),
         ));
+        
+        
     }
 }

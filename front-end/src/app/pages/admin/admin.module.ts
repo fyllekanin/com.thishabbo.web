@@ -10,6 +10,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { NgModule } from '@angular/core';
 import { SideMenuModule } from 'shared/app-views/side-menu/side-menu.module';
 import { TableModule } from 'shared/components/table/table.module';
+import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.module';
 
 @NgModule({
     imports: [
@@ -20,7 +21,8 @@ import { TableModule } from 'shared/components/table/table.module';
         FormsModule,
         CommonModule,
         SideMenuModule,
-        TableModule
+        TableModule,
+        StatsBoxesModule
     ],
     declarations: [
         AdminComponent,
