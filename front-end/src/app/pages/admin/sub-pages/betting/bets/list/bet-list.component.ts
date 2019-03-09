@@ -93,6 +93,30 @@ export class BetListComponent extends Page implements OnDestroy {
                     this.doDelete.bind(this, model)
                 );
                 break;
+            case BetActions.SUSPEND_BET:
+                this._httpService.put(`admin/betting/bet/${action.rowId}/suspend`)
+                    .subscribe(() => {
+                        const bet = this._data.bets.find(item => item.betId === Number(action.rowId));
+                        bet.isSuspended = true;
+                        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                            title: 'Success',
+                            message: 'Bet is suspended'
+                        }));
+                        this.createOrUpdateTable();
+                    }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                break;
+            case BetActions.UNSUSPEND_BET:
+                this._httpService.put(`admin/betting/bet/${action.rowId}/unsuspend`)
+                    .subscribe(() => {
+                        const bet = this._data.bets.find(item => item.betId === Number(action.rowId));
+                        bet.isSuspended = false;
+                        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                            title: 'Success',
+                            message: 'Bet is unsuspended'
+                        }));
+                        this.createOrUpdateTable();
+                    }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                break;
         }
     }
 
@@ -179,13 +203,15 @@ export class BetListComponent extends Page implements OnDestroy {
             const actions = [
                 { title: 'Edit', value: BetActions.EDIT_BET, condition: true },
                 { title: 'Set Result', value: BetActions.SET_RESULT, condition: !bet.isFinished },
-                { title: 'Delete', value: BetActions.DELETE_BET, condition: true }
+                { title: 'Delete', value: BetActions.DELETE_BET, condition: true },
+                { title: 'Suspend', value: BetActions.SUSPEND_BET, condition: !bet.isSuspended },
+                { title: 'Unsuspend', value: BetActions.UNSUSPEND_BET, condition: bet.isSuspended }
             ];
             return new TableRow({
                 id: String(bet.betId),
                 cells: [
                     new TableCell({ title: bet.name }),
-                    new TableCell({ title: bet.isFinished ? 'Finished' : 'Ongoing' }),
+                    new TableCell({ title: bet.isFinished ? 'Finished' : (bet.isSuspended ? 'Suspended' : 'Ongoing') }),
                     new TableCell({ title: `${bet.leftSide}/${bet.rightSide}` })
                 ],
                 actions: actions.filter(action => action.condition)

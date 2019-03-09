@@ -20,6 +20,8 @@ export class BetModel {
     createdAt: number;
     @primitive()
     displayOrder: number;
+    @primitive()
+    isSuspended: boolean;
 
     constructor(source: Partial<BetModel>) {
         ClassHelper.assign(this, source);
@@ -59,5 +61,7 @@ export enum BetActions {
     SET_RESULT,
     SAVE,
     DELETE,
-    CANCEL
+    CANCEL,
+    SUSPEND_BET,
+    UNSUSPEND_BET
 }

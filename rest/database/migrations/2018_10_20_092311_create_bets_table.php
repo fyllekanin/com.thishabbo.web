@@ -22,6 +22,7 @@ class CreateBetsTable extends Migration
             $table->integer('isFinished')->default(0);
             $table->integer('result')->nullable();
             $table->integer('isDeleted')->default(0);
+            $table->integer('isSuspended')->default(0);
             $table->bigInteger('createdAt');
             $table->bigInteger('updatedAt');
 

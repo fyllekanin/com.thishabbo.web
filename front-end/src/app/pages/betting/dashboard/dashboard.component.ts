@@ -30,11 +30,14 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
     private _data: DashboardModel = new DashboardModel();
     private _contractedSections: Array<number> = [];
     private _sectionTables: Array<TableConfig> = [];
-
-    trendingTable: TableConfig;
-    actions: Array<TableAction> = [
+    private _placeBet: Array<TableAction> = [
         new TableAction({ title: 'Place Bet', value: BetDashboardListActions.PLACE_BET })
     ];
+    private _betSuspended: Array<TableAction> = [
+        new TableAction({ title: 'Suspended', isDisabled: true })
+    ];
+
+    trendingTable: TableConfig;
     toggleTab: Array<TitleTab> = [
         new TitleTab({ title: 'Toggle' })
     ];
@@ -159,7 +162,7 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
                             new TableCell({ title: `${bet.leftSide}/${bet.rightSide}` }),
                             new TableCell({ title: String(bet.backersCount) })
                         ],
-                        actions: this.actions
+                        actions: bet.isSuspended ? this._betSuspended : this._placeBet
                     });
                 })
         });
@@ -179,7 +182,7 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
                             new TableCell({ title: `${bet.leftSide}/${bet.rightSide}` }),
                             new TableCell({ title: String(bet.backersCount) })
                         ],
-                        actions: this.actions
+                        actions: bet.isSuspended ? this._betSuspended : this._placeBet
                     });
                 })
             });

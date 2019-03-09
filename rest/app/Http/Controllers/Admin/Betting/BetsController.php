@@ -14,6 +14,47 @@ use Illuminate\Http\Request;
 
 class BetsController extends Controller {
 
+
+    /**
+     * @param Request $request
+     * @param $betId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function suspendBet(Request $request, $betId) {
+        $user = UserHelper::getUserFromRequest($request);
+        $bet = Bet::find($betId);
+        Condition::precondition(!$bet, 404, 'The specific bet do not exist');
+        Condition::precondition($bet->isSuspended, 400, 'The bet is already suspended');
+
+        $bet->isSuspended = true;
+        $bet->save();
+
+        Logger::admin($user->userId, $request->ip(), Action::SUSPENDED_BET, [
+            'bet' => $bet->name
+        ]);
+        return response()->json();
+    }
+
+    /**
+     * @param Request $request
+     * @param $betId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function unsuspendBet(Request $request, $betId) {
+        $user = UserHelper::getUserFromRequest($request);
+        $bet = Bet::find($betId);
+        Condition::precondition(!$bet, 404, 'The specific bet do not exist');
+        Condition::precondition(!$bet->isSuspended, 400, 'The bet is not suspended');
+
+        $bet->isSuspended = false;
+        $bet->save();
+
+        Logger::admin($user->userId, $request->ip(), Action::UNSUSPENDED_BET, [
+            'bet' => $bet->name
+        ]);
+        return response()->json();
+    }
+
     /**
      * @param Request $request
      * @param         $betId

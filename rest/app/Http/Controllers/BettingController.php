@@ -87,6 +87,7 @@ class BettingController extends Controller {
         Condition::precondition(!$bet, 404, 'The bet do not exist');
         Condition::precondition(!is_numeric($amount), 400, 'Amount needs to be a number');
         Condition::precondition($amount > $userData->credits, 400, 'You do not have enough credits');
+        Condition::precondition($bet->isSuspended, 400, 'The bet is currently suspended');
 
         $userBet = new UserBet([
             'userId' => $user->userId,
