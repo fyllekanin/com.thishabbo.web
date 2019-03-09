@@ -58,6 +58,8 @@ describe('StaffCP #1', () => {
     });
 
     it('should be possible to create a permanent show', () => {
+        browser.executeScript('window.scrollTo(0, document.body.scrollHeight)');
+        browser.sleep(1000);
         NavigationUtil.clickStaffCpTool('Manage Permanent Shows');
         NavigationUtil.clickTab('New Permanent Show');
 
