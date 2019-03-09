@@ -36,6 +36,13 @@ export class TableComponent {
         item.target.value = null;
     }
 
+    onActionClick(rowId: string, value: number): void {
+        this.onAction.emit(new Action({
+            rowId: rowId,
+            value: value
+        }));
+    }
+
     onFilterChange(): void {
         const params: QueryParameters = this.filterConfigs.reduce((prev, curr) => {
             prev[curr.key] = curr.value;

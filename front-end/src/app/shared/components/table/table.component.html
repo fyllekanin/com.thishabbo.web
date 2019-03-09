@@ -43,7 +43,9 @@
                         <option [value]="null" disabled="disabled">{{ row.actionsPlaceholder || 'Choose' }}</option>
                         <option *ngFor="let item of row.actions" [value]="item.value">{{item.title}}</option>
                     </select>
-                    <button appButton *ngIf="row.actions.length === 1" [disabled]="row.actions[0].isDisabled">{{row.actions[0].title}}</button>
+                    <button appButton *ngIf="row.actions.length === 1" [disabled]="row.actions[0].isDisabled" (click)="onActionClick(row.id, row.actions[0].value)">
+                        {{row.actions[0].title}}
+                    </button>
                 </td>
             </tr>
         </table>
