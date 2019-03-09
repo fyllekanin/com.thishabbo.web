@@ -373,8 +373,9 @@ input:disabled , select:disabled , textarea:disabled {
 }
 
 button:disabled {
-    text-shadow: rgba(125, 125, 125, 0.85) 1px 1px 0px;
-    background: -webkit-linear-gradient(top, rgb(202, 202, 202) 0px, rgb(185, 181, 181) 100%) !important;
+    text-shadow: rgba(78, 76, 76, 0.85) 1px 1px 0px;
+    background: -webkit-linear-gradient(top, rgb(186, 78, 78) 0px, rgb(175, 95, 95) 100%) !important;
+    opacity:0.7;
 }
 
 details {

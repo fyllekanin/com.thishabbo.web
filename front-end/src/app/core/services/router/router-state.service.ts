@@ -4,7 +4,7 @@ import { NavigationEnd, Router } from '@angular/router';
 @Injectable()
 export class RouterStateService {
     private _urls: Array<string> = [];
-    private readonly _defaultTitle = 'ThisHabboVX';
+    private readonly _defaultTitle = 'THX';
 
     constructor(router: Router) {
         document.title = this._defaultTitle;
