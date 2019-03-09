@@ -12,12 +12,9 @@ class CategoriesTableSeeder extends Seeder
      */
     public function run()
     {
-        
-
         \DB::table('categories')->delete();
-        
         \DB::table('categories')->insert(array (
-            0 => 
+            0 =>
             array (
                 'categoryId' => 1,
                 'parentId' => -1,
@@ -34,7 +31,7 @@ class CategoriesTableSeeder extends Seeder
                 'createdAt' => 1538578022,
                 'updatedAt' => 1552158684,
             ),
-            1 => 
+            1 =>
             array (
                 'categoryId' => 2,
                 'parentId' => 1,
@@ -51,7 +48,7 @@ class CategoriesTableSeeder extends Seeder
                 'createdAt' => 1538578022,
                 'updatedAt' => 1552158758,
             ),
-            2 => 
+            2 =>
             array (
                 'categoryId' => 3,
                 'parentId' => 1,
@@ -68,7 +65,7 @@ class CategoriesTableSeeder extends Seeder
                 'createdAt' => 1538578022,
                 'updatedAt' => 1552158788,
             ),
-            3 => 
+            3 =>
             array (
                 'categoryId' => 4,
                 'parentId' => -1,
@@ -85,7 +82,7 @@ class CategoriesTableSeeder extends Seeder
                 'createdAt' => 1538578022,
                 'updatedAt' => 1552148693,
             ),
-            4 => 
+            4 =>
             array (
                 'categoryId' => 5,
                 'parentId' => 4,
@@ -102,7 +99,7 @@ class CategoriesTableSeeder extends Seeder
                 'createdAt' => 1538578022,
                 'updatedAt' => 1552148693,
             ),
-            5 => 
+            5 =>
             array (
                 'categoryId' => 6,
                 'parentId' => 4,
@@ -119,7 +116,7 @@ class CategoriesTableSeeder extends Seeder
                 'createdAt' => 1538578022,
                 'updatedAt' => 1552145142,
             ),
-            6 => 
+            6 =>
             array (
                 'categoryId' => 7,
                 'parentId' => 1,
@@ -136,7 +133,7 @@ class CategoriesTableSeeder extends Seeder
                 'createdAt' => 1538578022,
                 'updatedAt' => 1552158798,
             ),
-            7 => 
+            7 =>
             array (
                 'categoryId' => 8,
                 'parentId' => -1,
@@ -153,7 +150,7 @@ class CategoriesTableSeeder extends Seeder
                 'createdAt' => 1547220711,
                 'updatedAt' => 1547223762,
             ),
-            8 => 
+            8 =>
             array (
                 'categoryId' => 9,
                 'parentId' => 8,
@@ -170,7 +167,7 @@ class CategoriesTableSeeder extends Seeder
                 'createdAt' => 1547221324,
                 'updatedAt' => 1547223762,
             ),
-            9 => 
+            9 =>
             array (
                 'categoryId' => 10,
                 'parentId' => 9,
@@ -187,7 +184,7 @@ class CategoriesTableSeeder extends Seeder
                 'createdAt' => 1547221397,
                 'updatedAt' => 1547223762,
             ),
-            10 => 
+            10 =>
             array (
                 'categoryId' => 11,
                 'parentId' => 9,
@@ -205,7 +202,5 @@ class CategoriesTableSeeder extends Seeder
                 'updatedAt' => 1547222172,
             ),
         ));
-        
-        
     }
 }

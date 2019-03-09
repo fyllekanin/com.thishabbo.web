@@ -46,5 +46,5 @@ Route::prefix('moderation')->group(function () {
     Route::delete('/thread/delete/{threadId}', 'Moderation\ThreadController@deleteThread');
     Route::delete('/thread/poll/delete/{threadId}', 'Moderation\ThreadPollController@deletePoll');
 
-    Route::post('/post/report', 'Forum\PostController@createReportPost');
+    Route::post('/post/report', 'Forum\Post\PostCrudController@createReportPost');
 });
