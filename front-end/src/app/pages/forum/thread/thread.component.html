@@ -50,9 +50,9 @@
 
 <app-title [title]="'Last 20 users to read this thread'"></app-title>
 <app-content>
-    <span *ngFor="let reader of thread.readers; let index = index">
-        <div class="reader" [style]="reader.user.styling | safeStyle" [attr.tooltip]="reader.timeAgo">
-            {{reader.user.nickname}}{{index > 0 ? ',' : ''}}
-        </div>
+    <span *ngFor="let reader of thread.readers; let index = index;">
+        <span class="reader" [style]="reader.user.styling | safeStyle" [attr.tooltip]="reader.timeAgo">
+             {{index > 0 ? ', ' : ''}}{{reader.user.nickname}}
+        </span>
     </span>
 </app-content>
