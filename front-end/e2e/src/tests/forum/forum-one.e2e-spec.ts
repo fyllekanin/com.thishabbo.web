@@ -48,7 +48,7 @@ describe('Fourm #1', () => {
         NavigationUtil.clickThread('VX Ongoing!');
 
         NavigationUtil.clickTab('Toggle Tools');
-        NavigationUtil.clickFixedTools('Thread tools');
+        NavigationUtil.clickFixedTools('Thread Tools');
         NavigationUtil.clickFixedTools('Close Thread');
 
         NavigationUtil.clickNavigation('Forum');
@@ -57,7 +57,7 @@ describe('Fourm #1', () => {
         NavigationUtil.clickThread('VX Ongoing!');
 
         NavigationUtil.clickTab('Toggle Tools');
-        NavigationUtil.clickFixedTools('Thread tools');
+        NavigationUtil.clickFixedTools('Thread Tools');
         NavigationUtil.clickFixedTools('Open Thread');
 
         NavigationUtil.clickNavigation('Forum');
@@ -87,7 +87,7 @@ describe('Fourm #1', () => {
         NavigationUtil.clickThread('VX Ongoing!');
 
         NavigationUtil.clickTab('Toggle Tools');
-        NavigationUtil.clickFixedTools('Thread tools');
+        NavigationUtil.clickFixedTools('Thread Tools');
         NavigationUtil.clickFixedTools('Sticky');
 
         NavigationUtil.clickNavigation('Forum');
@@ -96,7 +96,7 @@ describe('Fourm #1', () => {
         NavigationUtil.clickThread('VX Ongoing!');
 
         NavigationUtil.clickTab('Toggle Tools');
-        NavigationUtil.clickFixedTools('Thread tools');
+        NavigationUtil.clickFixedTools('Thread Tools');
         NavigationUtil.clickFixedTools('Unsticky');
 
         NavigationUtil.clickNavigation('Forum');
@@ -111,7 +111,7 @@ describe('Fourm #1', () => {
         expect(ThreadPage.getPostOwner(0).getText()).toEqual('Tovven');
 
         NavigationUtil.clickTab('Toggle Tools');
-        NavigationUtil.clickFixedTools('Thread tools');
+        NavigationUtil.clickFixedTools('Thread Tools');
         NavigationUtil.clickFixedTools('Change Owner');
 
         InputUtil.fillInput(ThreadPage.getChangeOwnerInput(), 'test');
@@ -126,7 +126,7 @@ describe('Fourm #1', () => {
         NavigationUtil.clickThread('VX Ongoing!');
 
         NavigationUtil.clickTab('Toggle Tools');
-        NavigationUtil.clickFixedTools('Thread tools');
+        NavigationUtil.clickFixedTools('Thread Tools');
         NavigationUtil.clickFixedTools('Delete Thread');
         NavigationUtil.clickButton('Yes');
 
