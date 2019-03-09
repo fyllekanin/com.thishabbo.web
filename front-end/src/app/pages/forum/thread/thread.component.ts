@@ -319,12 +319,12 @@ export class ThreadComponent extends Page implements OnDestroy {
         this.fixedTools = new FixedTools({
             items: [
                 new FixedToolItem({
-                    title: 'Post tools',
+                    title: 'Post Tools',
                     children: getPostTools(this.forumPermissions).filter(action => action.condition)
                         .map(action => new FixedToolItem({ title: action.title, value: action.value }))
                 }),
                 new FixedToolItem({
-                    title: 'Thread tools',
+                    title: 'Thread Tools',
                     children: getThreadTools(this._authService.authUser.userId, this._threadPage, this.forumPermissions)
                         .filter(action => action.condition)
                         .map(action => new FixedToolItem({ title: action.title, value: action.value }))

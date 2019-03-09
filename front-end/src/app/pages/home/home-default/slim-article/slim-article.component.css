@@ -3,16 +3,18 @@
     border: 1px solid #cacaca !important;
     width: 100%;
     background: #ffffff;
-    margin-bottom: 1rem;
-    padding: 2px;
+    margin-bottom: 18px;
+    padding: 7px;
     box-shadow: 0 0 0 1px #0e0e0e00, 0 3px 0 0 rgba(0, 0, 0, 0.03);
-    min-height: 319px;
+    min-height: 309px;
+    border-radius:2px;
 }
 
 .image {
     background-repeat: no-repeat;
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
+    background-position: 100%;
 }
 
 .inner-image {
@@ -29,12 +31,13 @@
     bottom: -0.2rem;
     right: 0;
     padding: 0.5rem;
-    background-color: #ffffff;
+    background-color: #f9f7f7;
     border-top-left-radius: 0.2rem;
 }
 
 .container {
-    padding: 10px;
+    padding: 7px;
+    background: #f9f7f7;
     width: 100%;
     white-space: nowrap;
     overflow: hidden;
@@ -66,7 +69,9 @@
     padding: 6px;
     border-radius: 3px;
     margin: 0 4px 0 0;
-    background-image: url(/assets/images/boxtitlebg_trans.png);
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.24);
+    background-image: url(/assets/images/bargradient.png)!important;
+
 }
 
 .AVAILABLE {
@@ -91,7 +96,7 @@
     white-space: normal;
     overflow: hidden;
     text-overflow: ellipsis;
-    height: 67px;
+    height: 50px;
 }
 
 .information {
@@ -100,5 +105,4 @@
 }
 
 span {
-    margin-left: 0.2rem;
 }

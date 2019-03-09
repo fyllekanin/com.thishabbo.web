@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class ThreadsTableSeeder extends Seeder
 {
@@ -13,45 +12,48 @@ class ThreadsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('threads')->delete();
-        DB::table('threads')->insert(array (
-            0 =>
+        
+
+        \DB::table('threads')->delete();
+        
+        \DB::table('threads')->insert(array (
+            0 => 
             array (
                 'threadId' => 1,
                 'categoryId' => 2,
                 'title' => 'VX Ongoing!',
-                'isOpen' => 1,
+                'isOpen' => 0,
                 'isDeleted' => 0,
-                'posts' => 1,
+                'posts' => 2,
                 'views' => 0,
                 'isApproved' => 1,
                 'userId' => 1,
                 'firstPostId' => 1,
-                'lastPostId' => 3,
+                'lastPostId' => 21,
                 'isSticky' => 0,
                 'prefixId' => 1,
                 'createdAt' => 1538578022,
-                'updatedAt' => 1538578022,
+                'updatedAt' => 1551996694,
             ),
-            1 =>
+            1 => 
             array (
                 'threadId' => 2,
                 'categoryId' => 3,
                 'title' => 'New test data',
-                'isOpen' => 1,
+                'isOpen' => 0,
                 'isDeleted' => 0,
-                'posts' => 1,
+                'posts' => 3,
                 'views' => 0,
                 'isApproved' => 1,
                 'userId' => 1,
                 'firstPostId' => 2,
-                'lastPostId' => 4,
+                'lastPostId' => 23,
                 'isSticky' => 0,
                 'prefixId' => 1,
                 'createdAt' => 1538578022,
-                'updatedAt' => 1538578022,
+                'updatedAt' => 1552092125,
             ),
-            2 =>
+            2 => 
             array (
                 'threadId' => 3,
                 'categoryId' => 6,
@@ -69,7 +71,7 @@ class ThreadsTableSeeder extends Seeder
                 'createdAt' => 1538578022,
                 'updatedAt' => 1538578022,
             ),
-            3 =>
+            3 => 
             array (
                 'threadId' => 4,
                 'categoryId' => 7,
@@ -87,7 +89,7 @@ class ThreadsTableSeeder extends Seeder
                 'createdAt' => 1538578022,
                 'updatedAt' => 1538578022,
             ),
-            4 =>
+            4 => 
             array (
                 'threadId' => 5,
                 'categoryId' => 6,
@@ -105,7 +107,7 @@ class ThreadsTableSeeder extends Seeder
                 'createdAt' => 1538672652,
                 'updatedAt' => 1538672652,
             ),
-            5 =>
+            5 => 
             array (
                 'threadId' => 6,
                 'categoryId' => 6,
@@ -123,7 +125,7 @@ class ThreadsTableSeeder extends Seeder
                 'createdAt' => 1538672679,
                 'updatedAt' => 1538672679,
             ),
-            6 =>
+            6 => 
             array (
                 'threadId' => 7,
                 'categoryId' => 6,
@@ -141,7 +143,7 @@ class ThreadsTableSeeder extends Seeder
                 'createdAt' => 1538672712,
                 'updatedAt' => 1538672712,
             ),
-            7 =>
+            7 => 
             array (
                 'threadId' => 8,
                 'categoryId' => 6,
@@ -159,7 +161,7 @@ class ThreadsTableSeeder extends Seeder
                 'createdAt' => 1538672751,
                 'updatedAt' => 1538672751,
             ),
-            8 =>
+            8 => 
             array (
                 'threadId' => 9,
                 'categoryId' => 6,
@@ -177,7 +179,7 @@ class ThreadsTableSeeder extends Seeder
                 'createdAt' => 1538672783,
                 'updatedAt' => 1538672783,
             ),
-            9 =>
+            9 => 
             array (
                 'threadId' => 10,
                 'categoryId' => 5,
@@ -195,7 +197,7 @@ class ThreadsTableSeeder extends Seeder
                 'createdAt' => 1538715429,
                 'updatedAt' => 1538715429,
             ),
-            10 =>
+            10 => 
             array (
                 'threadId' => 11,
                 'categoryId' => 5,
@@ -213,7 +215,7 @@ class ThreadsTableSeeder extends Seeder
                 'createdAt' => 1538715447,
                 'updatedAt' => 1538715447,
             ),
-            11 =>
+            11 => 
             array (
                 'threadId' => 12,
                 'categoryId' => 5,
@@ -231,7 +233,7 @@ class ThreadsTableSeeder extends Seeder
                 'createdAt' => 1538715462,
                 'updatedAt' => 1538715462,
             ),
-            12 =>
+            12 => 
             array (
                 'threadId' => 13,
                 'categoryId' => 5,
@@ -249,7 +251,7 @@ class ThreadsTableSeeder extends Seeder
                 'createdAt' => 1538715477,
                 'updatedAt' => 1538715477,
             ),
-            13 =>
+            13 => 
             array (
                 'threadId' => 14,
                 'categoryId' => 5,
@@ -267,7 +269,7 @@ class ThreadsTableSeeder extends Seeder
                 'createdAt' => 1538715493,
                 'updatedAt' => 1538717246,
             ),
-            14 =>
+            14 => 
             array (
                 'threadId' => 15,
                 'categoryId' => 9,
@@ -285,7 +287,7 @@ class ThreadsTableSeeder extends Seeder
                 'createdAt' => 1547223025,
                 'updatedAt' => 1547223728,
             ),
-            15 =>
+            15 => 
             array (
                 'threadId' => 16,
                 'categoryId' => 9,
@@ -303,7 +305,7 @@ class ThreadsTableSeeder extends Seeder
                 'createdAt' => 1547223151,
                 'updatedAt' => 1547223721,
             ),
-            16 =>
+            16 => 
             array (
                 'threadId' => 17,
                 'categoryId' => 9,
@@ -321,7 +323,7 @@ class ThreadsTableSeeder extends Seeder
                 'createdAt' => 1547223372,
                 'updatedAt' => 1547223716,
             ),
-            17 =>
+            17 => 
             array (
                 'threadId' => 18,
                 'categoryId' => 10,
@@ -339,6 +341,206 @@ class ThreadsTableSeeder extends Seeder
                 'createdAt' => 1547223761,
                 'updatedAt' => 1547223761,
             ),
+            18 => 
+            array (
+                'threadId' => 19,
+                'categoryId' => 6,
+                'title' => 'Eurovision Poll 2018',
+                'isOpen' => 1,
+                'isDeleted' => 0,
+                'posts' => 1,
+                'views' => 0,
+                'isApproved' => 1,
+                'userId' => 1,
+                'firstPostId' => 24,
+                'lastPostId' => 24,
+                'isSticky' => 0,
+                'prefixId' => 0,
+                'createdAt' => 1552144959,
+                'updatedAt' => 1552144959,
+            ),
+            19 => 
+            array (
+                'threadId' => 20,
+                'categoryId' => 6,
+                'title' => 'Eurovision Poll',
+                'isOpen' => 1,
+                'isDeleted' => 0,
+                'posts' => 1,
+                'views' => 0,
+                'isApproved' => 1,
+                'userId' => 1,
+                'firstPostId' => 25,
+                'lastPostId' => 25,
+                'isSticky' => 0,
+                'prefixId' => 0,
+                'createdAt' => 1552145019,
+                'updatedAt' => 1552145019,
+            ),
+            20 => 
+            array (
+                'threadId' => 21,
+                'categoryId' => 6,
+                'title' => 'Eurovision Poll',
+                'isOpen' => 1,
+                'isDeleted' => 0,
+                'posts' => 1,
+                'views' => 0,
+                'isApproved' => 1,
+                'userId' => 1,
+                'firstPostId' => 26,
+                'lastPostId' => 26,
+                'isSticky' => 0,
+                'prefixId' => 0,
+                'createdAt' => 1552145036,
+                'updatedAt' => 1552145036,
+            ),
+            21 => 
+            array (
+                'threadId' => 22,
+                'categoryId' => 6,
+                'title' => 'Eurovision Poll',
+                'isOpen' => 1,
+                'isDeleted' => 0,
+                'posts' => 1,
+                'views' => 0,
+                'isApproved' => 1,
+                'userId' => 1,
+                'firstPostId' => 27,
+                'lastPostId' => 27,
+                'isSticky' => 0,
+                'prefixId' => 0,
+                'createdAt' => 1552145054,
+                'updatedAt' => 1552145054,
+            ),
+            22 => 
+            array (
+                'threadId' => 23,
+                'categoryId' => 6,
+                'title' => 'Eurovision Poll',
+                'isOpen' => 1,
+                'isDeleted' => 0,
+                'posts' => 1,
+                'views' => 0,
+                'isApproved' => 1,
+                'userId' => 1,
+                'firstPostId' => 28,
+                'lastPostId' => 28,
+                'isSticky' => 0,
+                'prefixId' => 0,
+                'createdAt' => 1552145118,
+                'updatedAt' => 1552145118,
+            ),
+            23 => 
+            array (
+                'threadId' => 24,
+                'categoryId' => 6,
+                'title' => 'Eurovision Poll',
+                'isOpen' => 1,
+                'isDeleted' => 0,
+                'posts' => 1,
+                'views' => 0,
+                'isApproved' => 1,
+                'userId' => 1,
+                'firstPostId' => 29,
+                'lastPostId' => 29,
+                'isSticky' => 0,
+                'prefixId' => 0,
+                'createdAt' => 1552145142,
+                'updatedAt' => 1552145142,
+            ),
+            24 => 
+            array (
+                'threadId' => 25,
+                'categoryId' => 5,
+                'title' => 'Test Article!',
+                'isOpen' => 1,
+                'isDeleted' => 0,
+                'posts' => 1,
+                'views' => 0,
+                'isApproved' => 1,
+                'userId' => 1,
+                'firstPostId' => 30,
+                'lastPostId' => 30,
+                'isSticky' => 0,
+                'prefixId' => 0,
+                'createdAt' => 1552148604,
+                'updatedAt' => 1552148604,
+            ),
+            25 => 
+            array (
+                'threadId' => 26,
+                'categoryId' => 5,
+                'title' => 'Test 2!',
+                'isOpen' => 1,
+                'isDeleted' => 0,
+                'posts' => 1,
+                'views' => 0,
+                'isApproved' => 1,
+                'userId' => 1,
+                'firstPostId' => 31,
+                'lastPostId' => 31,
+                'isSticky' => 0,
+                'prefixId' => 0,
+                'createdAt' => 1552148621,
+                'updatedAt' => 1552148621,
+            ),
+            26 => 
+            array (
+                'threadId' => 27,
+                'categoryId' => 5,
+                'title' => 'Test 4!',
+                'isOpen' => 1,
+                'isDeleted' => 0,
+                'posts' => 1,
+                'views' => 0,
+                'isApproved' => 1,
+                'userId' => 1,
+                'firstPostId' => 32,
+                'lastPostId' => 32,
+                'isSticky' => 0,
+                'prefixId' => 0,
+                'createdAt' => 1552148637,
+                'updatedAt' => 1552148637,
+            ),
+            27 => 
+            array (
+                'threadId' => 28,
+                'categoryId' => 5,
+                'title' => 'Test 5!',
+                'isOpen' => 1,
+                'isDeleted' => 0,
+                'posts' => 1,
+                'views' => 0,
+                'isApproved' => 1,
+                'userId' => 1,
+                'firstPostId' => 33,
+                'lastPostId' => 33,
+                'isSticky' => 0,
+                'prefixId' => 0,
+                'createdAt' => 1552148663,
+                'updatedAt' => 1552148663,
+            ),
+            28 => 
+            array (
+                'threadId' => 29,
+                'categoryId' => 5,
+                'title' => 'Test 7!',
+                'isOpen' => 1,
+                'isDeleted' => 0,
+                'posts' => 1,
+                'views' => 0,
+                'isApproved' => 1,
+                'userId' => 1,
+                'firstPostId' => 34,
+                'lastPostId' => 34,
+                'isSticky' => 0,
+                'prefixId' => 0,
+                'createdAt' => 1552148693,
+                'updatedAt' => 1552148693,
+            ),
         ));
+        
+        
     }
 }

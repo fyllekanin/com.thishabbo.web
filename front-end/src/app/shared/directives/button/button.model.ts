@@ -6,7 +6,7 @@ export interface ButtonColor {
 export class Button {
 
     static readonly BLUE: ButtonColor = {
-        background: '-webkit-linear-gradient(top,#3caafc 0,#0d90f2 100%)',
+        background: '#139bfb',
         color: '#ffffff'
     };
 

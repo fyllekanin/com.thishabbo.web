@@ -41,11 +41,10 @@
 .event-art {
     height: 89px;
     width: 89px;
-    background: url(http://puu.sh/BZVV1/acc322ebe2.png) center;
+    background: url(http://puu.sh/CXnBU/96f685f175.png) center;
     float: right;
     position: relative;
     background-position-x: 0;
-    background-size: 100%;
     margin: -89px 8px 0 42px;
     -webkit-box-shadow: rgba(0, 0, 0, 0.18) 0 3px 5px;
     border: 1px solid #ffffff;
@@ -200,14 +199,29 @@
     bottom: -28px;
 }
 
-.green-button {
-    background: -webkit-linear-gradient(top, #5ba52d 0, #5ba147 100%);
+.pink-button {
+    background-image: url(/assets/images/bargradient.png)!important;
+    background: #9a9393;
 }
 
-.red-button {
-    background: -webkit-linear-gradient(top, #bb4c4c 0, #ad6262 100%);
+.yellow-button {
+    cursor: pointer;
+    background-image: url(/assets/images/bargradient.png)!important;
+    background-color: #d5e028;
 }
 
 .blue-button {
-    background: -webkit-linear-gradient(top, #198CFF 0, #2f97ff 100%);
+    cursor: pointer;
+    background-image: url(/assets/images/bargradient.png)!important;
+    background: #139bfb;
+}
+
+.green-button {
+    background-image: url(/assets/images/bargradient.png)!important;
+    background: #79b554;
+}
+
+.red-button {
+    background-image: url(/assets/images/bargradient.png)!important;
+    background-color: #c37070;
 }
