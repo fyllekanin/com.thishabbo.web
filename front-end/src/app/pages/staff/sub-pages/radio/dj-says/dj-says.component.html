@@ -1,4 +1,4 @@
-<app-title [title]="'Dj Says'" [tabs]="tabs" (onTabClick)="onSave()"></app-title>
+<app-title [title]="'DJ Says'" [tabs]="tabs" (onTabClick)="onSave()"></app-title>
 <app-content>
     <app-info-box *ngIf="!model.canUpdate" [model]="infoModel"></app-info-box>
     <input [disabled]="!model.canUpdate" type="text" [(ngModel)]="model.says" />
