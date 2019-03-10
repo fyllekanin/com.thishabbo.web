@@ -59,6 +59,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
                 style: '/assets/editor/themes/content/default.min.css',
                 emoticonsCompat: true,
                 icons: 'material',
+                toolbarExclude: 'ltr,rtl',
                 emoticons: {
                     dropdown: this._emojis.slice(0, 12).reduce((prev, curr) => {
                         prev[curr.pattern] = `/rest/resources/images/emojis/${curr.bbcodeId}.gif`;
