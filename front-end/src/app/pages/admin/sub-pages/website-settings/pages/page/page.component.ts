@@ -122,7 +122,7 @@ export class PageComponent extends Page implements OnDestroy {
     private updateTabs(): void {
         const tabs = [
             { title: 'Cancel', value: PageActions.CANCEL, condition: true },
-            { title: 'Delete', value: PageActions.DELETE, condition: this._data.createdAt },
+            { title: 'Delete', value: PageActions.DELETE, condition: this._data.createdAt && !this._data.isSystem },
             { title: 'Save', value: PageActions.SAVE, condition: true }
         ];
         this.tabs = tabs.filter(item => item.condition).map(item => new TitleTab(item));

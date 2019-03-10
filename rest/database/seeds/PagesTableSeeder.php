@@ -14,7 +14,6 @@ class PagesTableSeeder extends Seeder
     public function run()
     {
         DB::table('pages')->delete();
-
         DB::table('pages')->insert(array (
             0 =>
             array (
@@ -96,9 +95,21 @@ Firstly, ThisHabbo takes absolutely no responsibility of things which happen on 
 
 [admin]Last modified: 04-29-2018[/admin]',
                 'isDeleted' => 0,
+                'isSystem' => 0,
                 'createdAt' => 1551197660,
                 'updatedAt' => 1551197660,
             ),
+            1 =>
+                array (
+                    'pageId' => 2,
+                    'path' => 'access',
+                    'title' => 'Access Denied',
+                    'content' => 'Access Denied',
+                    'isDeleted' => 0,
+                    'isSystem' => 1,
+                    'createdAt' => 1551197660,
+                    'updatedAt' => 1551197660,
+                ),
         ));
 
 

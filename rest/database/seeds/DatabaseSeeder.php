@@ -29,5 +29,6 @@ class DatabaseSeeder extends Seeder {
         $this->call(InfractionLevelsTableSeeder::class);
         $this->call(AutoBansTableSeeder::class);
         $this->call(NotificationsTableSeeder::class);
+        $this->call(PagesTableSeeder::class);
     }
 }

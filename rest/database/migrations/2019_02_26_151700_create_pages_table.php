@@ -19,6 +19,7 @@ class CreatePagesTable extends Migration
             $table->string('title');
             $table->text('content');
             $table->integer('isDeleted')->default(0);
+            $table->integer('isSystem')->default(0);
             $table->bigInteger('createdAt');
             $table->bigInteger('updatedAt');
         });
