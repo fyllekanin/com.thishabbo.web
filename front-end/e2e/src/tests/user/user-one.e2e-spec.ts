@@ -92,8 +92,6 @@ describe('User #1', () => {
         UserCpPage.acceptGdpr();
         NavigationUtil.clickButton('Register');
 
-        CommonUtil.login('erico', 'test1234');
-
         expect(CommonUtil.getNicknameElement().getText()).toEqual('erico');
     });
 });
