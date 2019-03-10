@@ -113,10 +113,8 @@ export class PagesComponent extends Page implements OnDestroy {
     }
 
     private getTableRows(): Array<TableRow> {
-        const actions = [
-            new TableAction({ title: 'Edit', value: PageActions.EDIT }),
-            new TableAction({ title: 'Delete', value: PageActions.DELETE })
-        ];
+        const editAction = new TableAction({ title: 'Edit', value: PageActions.EDIT });
+        const deleteAction = new TableAction({ title: 'Delete', value: PageActions.DELETE });
 
         return this._data.map(item => new TableRow({
             id: item.pageId.toString(),
@@ -124,7 +122,7 @@ export class PagesComponent extends Page implements OnDestroy {
                 new TableCell({ title: item.title }),
                 new TableCell({ title: `/page/${item.path}` })
             ],
-            actions: actions
+            actions: item.isSystem ? [editAction] : [editAction, deleteAction]
         }));
     }
 }

@@ -1,6 +1,5 @@
 import { PageModule } from 'shared/page/page.module';
 import { accessRoutes } from './access.routes';
-import { DefaultAcccessComponent } from './default/default-access.component';
 import { TitleModule } from 'shared/app-views/title/title.module';
 import { ContentModule } from 'shared/app-views/content/content.module';
 import { NgModule } from '@angular/core';
@@ -16,7 +15,6 @@ import { MaintenanceResolver } from './maintenance/maintenance.resolver';
         PageModule
     ],
     declarations: [
-        DefaultAcccessComponent,
         MaintenanceComponent
     ],
     providers: [

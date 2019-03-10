@@ -42,10 +42,6 @@ export const appRoutes: Routes = [
         loadChildren: './pages/custom/custom.module#CustomModule'
     },
     {
-        path: '**',
-        redirectTo: 'home'
-    },
-    {
         path: 'home',
         loadChildren: './pages/home/home.module#HomeModule'
     },
@@ -53,5 +49,9 @@ export const appRoutes: Routes = [
         path: '',
         pathMatch: 'full',
         redirectTo: 'home'
+    },
+    {
+        path: '**',
+        redirectTo: '/page/access'
     }
 ];

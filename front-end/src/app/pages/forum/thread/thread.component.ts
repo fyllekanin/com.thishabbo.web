@@ -271,6 +271,7 @@ export class ThreadComponent extends Page implements OnDestroy {
     private createOrUpdateTabs(): void {
         if (!this._authService.isLoggedIn()) {
             this.tabs = [];
+            return;
         }
         this.tabs = [
             new TitleTab({

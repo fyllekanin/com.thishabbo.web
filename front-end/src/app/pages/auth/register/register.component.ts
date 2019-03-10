@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { HttpService } from 'core/services/http/http.service';
@@ -8,6 +8,7 @@ import { RegisterModel, RegisterPage } from './register.model';
 import { Button } from 'shared/directives/button/button.model';
 import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
 import { GlobalNotification, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { AuthService } from 'core/services/auth/auth.service';
 
 @Component({
     selector: 'app-auth-register',
@@ -23,7 +24,7 @@ export class RegisterComponent extends Page implements OnDestroy {
     constructor(
         private _globalNotificationService: GlobalNotificationService,
         private _httpService: HttpService,
-        private _router: Router,
+        private _authService: AuthService,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService,
         activatedRoute: ActivatedRoute
@@ -46,7 +47,7 @@ export class RegisterComponent extends Page implements OnDestroy {
                 title: 'Success',
                 message: 'You are now registered!'
             }));
-            this._router.navigateByUrl('/auth/login');
+            this._authService.login(this.registerModel.username, this.registerModel.password);
         }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
     }
 

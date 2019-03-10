@@ -10,6 +10,8 @@ export class PageModel {
     @primitive()
     content: string;
     @primitive()
+    isSystem: boolean;
+    @primitive()
     createdAt: number;
     @primitive()
     updatedAt: number;
