@@ -215,7 +215,7 @@ class AuthController extends Controller {
         Condition::precondition(!isset($password) || empty($password), 400, 'Password is not set');
 
         $userId = $this->findUser($loginName, $password);
-        Condition::precondition(!$userId, 404, 'No user with that username');
+        Condition::precondition(!$userId, 404, 'Invalid username or Password');
 
         $user = User::where('users.userId', $userId)
             ->leftJoin('userdata', 'userdata.userId', '=', 'users.userId')
