@@ -99,12 +99,11 @@ export class TimeHelper {
      * @param time
      */
     static getLongDate(time: number): string {
-        const timezoneTime = time + (this.getTimeOffsetInHours() * 3600);
-        const date = new Date(timezoneTime * 1000);
+        const date = new Date(time * 1000);
 
-        const day = date.getUTCDate();
-        const year = date.getUTCFullYear();
-        return `${TimeHelper.getDayWithSuffix(day)} ${this.FULL_MONTHS[ date.getUTCMonth() ]} ${year}`;
+        const day = date.getDate();
+        const year = date.getFullYear();
+        return `${TimeHelper.getDayWithSuffix(day)} ${this.FULL_MONTHS[ date.getMonth() ]} ${year}`;
     }
 
     /**
@@ -114,8 +113,7 @@ export class TimeHelper {
      * @param time
      */
     static getLongDateWithTime(time: number): string {
-        const timezoneTime = time + (this.getTimeOffsetInHours() * 3600);
-        const date = new Date(timezoneTime * 1000);
+        const date = new Date(time * 1000);
 
         const timeOfDay = this.getTimeIncludingTimeOfDay(date);
         return `${TimeHelper.getLongDate(time)} - ${timeOfDay}`;
@@ -127,14 +125,14 @@ export class TimeHelper {
      * @return {string}
      */
     static getTimeIncludingTimeOfDay(date: Date): string {
-        const minutes = (date.getUTCMinutes() < 10 ? '0' : '') + date.getUTCMinutes();
+        const minutes = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
         let hour: number;
-        if (date.getUTCHours() < 12) {
-            hour = date.getUTCHours() === 0 ? 12 : date.getUTCHours();
+        if (date.getHours() < 12) {
+            hour = date.getHours() === 0 ? 12 : date.getHours();
             return `${hour}:${minutes} AM`;
         }
 
-        hour = date.getUTCHours() > 12 ? date.getUTCHours() - 12 : date.getUTCHours();
+        hour = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
         return `${hour}:${minutes} PM`;
     }
 
