@@ -226,7 +226,7 @@ export class ThreadComponent extends Page implements OnDestroy {
             message: 'Post updated!'
         }));
         this._threadPage.threadPosts = this._threadPage.threadPosts.map(post => {
-            return post.postId === postModel.postId ? postModel : post;
+            return post.postId === postModel.postId ? new PostModel(postModel) : post;
         });
     }
 
