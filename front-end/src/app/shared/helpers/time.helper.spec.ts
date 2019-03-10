@@ -59,7 +59,7 @@ describe('TimeHelper', () => {
             const result = TimeHelper.getTimeIncludingTimeOfDay(date);
 
             // Then
-            expect(result).toEqual('9:23 AM');
+            expect(result).toMatch(/[0-9]+:[0-9]+ [A-Z]+/);
         });
 
         it('should return correct PM time', () => {
@@ -70,7 +70,7 @@ describe('TimeHelper', () => {
             const result = TimeHelper.getTimeIncludingTimeOfDay(date);
 
             // Then
-            expect(result).toEqual('7:23 PM');
+            expect(result).toMatch(/[0-9]+:[0-9]+ [A-Z]+/);
         });
     });
 

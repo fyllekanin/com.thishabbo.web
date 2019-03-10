@@ -102,9 +102,9 @@ export class TimeHelper {
         const timezoneTime = time + (this.getTimeOffsetInHours() * 3600);
         const date = new Date(timezoneTime * 1000);
 
-        const day = date.getDate();
-        const year = date.getFullYear();
-        return `${TimeHelper.getDayWithSuffix(day)} ${this.FULL_MONTHS[ date.getMonth() ]} ${year}`;
+        const day = date.getUTCDate();
+        const year = date.getUTCFullYear();
+        return `${TimeHelper.getDayWithSuffix(day)} ${this.FULL_MONTHS[ date.getUTCMonth() ]} ${year}`;
     }
 
     /**
@@ -127,14 +127,14 @@ export class TimeHelper {
      * @return {string}
      */
     static getTimeIncludingTimeOfDay(date: Date): string {
-        const minutes = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+        const minutes = (date.getUTCMinutes() < 10 ? '0' : '') + date.getUTCMinutes();
         let hour: number;
-        if (date.getHours() < 12) {
-            hour = date.getHours() === 0 ? 12 : date.getHours();
+        if (date.getUTCHours() < 12) {
+            hour = date.getUTCHours() === 0 ? 12 : date.getUTCHours();
             return `${hour}:${minutes} AM`;
         }
 
-        hour = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
+        hour = date.getUTCHours() > 12 ? date.getUTCHours() - 12 : date.getUTCHours();
         return `${hour}:${minutes} PM`;
     }
 
