@@ -79,27 +79,27 @@
         </div>
         <div class="tools">
             <div class="user-tools">
-                <div *ngIf="canInteractWithPost" (click)="reportPost()" tooltip="Report Post">
+                <div *ngIf="canInteractWithPost" (click)="reportPost()" tooltip="Report">
                     <i class="fas fa-exclamation-triangle"></i>
                 </div>
-                <div *ngIf="canInteractWithPost" tooltip="Message User">
+                <div *ngIf="canInteractWithPost" tooltip="Message">
                     <i class="fa fa-envelope"></i>
                 </div>
-                <div *ngIf="canInfractUser" (click)="infract()" tooltip="Give Warning / Infraction">
+                <div *ngIf="canInfractUser" (click)="infract()" tooltip="Warn / Infract">
                     <i class="fa fa-bell"></i>
                 </div>
             </div>
             <div class="post-tools">
-                <div *ngIf="canInteractWithPost && !haveLiked" (click)="likePost()" tooltip="Like the post!">
+                <div *ngIf="canInteractWithPost && !haveLiked" (click)="likePost()" tooltip="Like">
                     <i class="fa fa-thumbs-up"></i>
                 </div>
-                <div *ngIf="canInteractWithPost && haveLiked" (click)="unlikePost()" tooltip="Unlike the post!">
+                <div *ngIf="canInteractWithPost && haveLiked" (click)="unlikePost()" tooltip="Unlike">
                     <i class="fa fa-thumbs-down"></i>
                 </div>
-                <div *ngIf="canEditPost" (click)="editPost()" tooltip="Edit post">
+                <div *ngIf="canEditPost" (click)="editPost()" tooltip="Edit">
                     <i class="fas fa-edit"></i>
                 </div>
-                <div *ngIf="canPost" (click)="quotePost()" tooltip="Quote the post">
+                <div *ngIf="canPost" (click)="quotePost()" tooltip="Quote">
                     <i class="fa fa-quote-right"></i>
                 </div>
             </div>

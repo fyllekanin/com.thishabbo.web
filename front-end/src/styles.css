@@ -27,6 +27,7 @@ html, body {
 
 a {
     text-decoration: none;
+    color: #139af9;
 }
 
 h2 {
@@ -258,6 +259,10 @@ select {
     border-width: 6px;
     margin-left: 0;
 }
+summary {
+    outline: 0;
+    cursor: pointer;
+}
 
 .dropdown-content:before {
     border-color: rgba(194, 225, 245, 0);
@@ -389,7 +394,7 @@ button:disabled {
 }
 
 details {
-    margin: 10px 0;
+    width:100%;
 }
 
 .amount {
@@ -412,6 +417,10 @@ details {
  }
  :-ms-input-placeholder {
     font-style: italic;
+ }
+
+ .permission-container {
+    margin:10px 0 10px 0;
  }
 
 .input-group {

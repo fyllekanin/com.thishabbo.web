@@ -1,6 +1,6 @@
 <div class="grid-container margin-bottom forum-home">
     <div class="grid-x grid-margin-x">
-        <div class="cell small-6">
+        <div class="cell small-7">
             <div class="title" [routerLink]="['/forum', 'category', categoryId, 'page', 1]">{{title}}</div>
             <div class="description">{{description}}</div>
             <div *ngIf="children.length > 0" class="children">
@@ -12,7 +12,7 @@
         <div *ngIf="lastPost">
             <img appUserProfile [info]="lastPostInfo"/>
         </div>
-        <div *ngIf="lastPost" class="cell small-4">
+        <div *ngIf="lastPost" class="cell small-3 small-width">
             <a class="thread-name" [routerLink]="['/forum', 'thread', lastPost.threadId, 'page', 1]">
                 <span *ngIf="lastPost.prefix" [style]="lastPost.prefix.style | safeStyle">
                     {{lastPost.prefix.text}} &#xbb;
