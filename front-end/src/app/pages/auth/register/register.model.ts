@@ -7,6 +7,7 @@ export class RegisterModel {
     password: string;
     repassword: string;
     gdpr: boolean;
+    habbo: string;
 
     constructor(source?: Partial<RegisterModel>) {
         ClassHelper.assign(this, source);
