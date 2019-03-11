@@ -58,6 +58,6 @@ class HabboServiceTest extends TestCase {
         $result = $this->habboService->isHabboMotto($name, $habbo->motto);
 
         // Then
-        $this->assertFalse($result);
+        $this->assertTrue($result);
     }
 }

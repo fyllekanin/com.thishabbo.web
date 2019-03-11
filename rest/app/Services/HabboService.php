@@ -24,7 +24,7 @@ class HabboService {
      * @return mixed|null
      */
     public function getHabboByName($name) {
-        return json_decode($this->getData($this->habboApi . 'users?name=' . $name));
+        return $this->getData($this->habboApi . 'users?name=' . $name);
     }
 
     /**
@@ -40,6 +40,8 @@ class HabboService {
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
-        return curl_getinfo($curl, CURLINFO_HTTP_CODE) != 200 ? null : json_decode(curl_exec($curl));
+
+        $data = json_decode(curl_exec($curl));
+        return isset($data) && is_object($data) && !isset($data->error) ? $data : null;
     }
 }
