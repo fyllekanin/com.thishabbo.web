@@ -39,6 +39,8 @@ import { UsercpIgnoredThreadsResolver } from './services/usercp-ignored-threads.
 import { IgnoredCategoriesComponent } from './ignored-categories/ignored-categories.component';
 import { NicknameComponent } from './nickname/nickname.component';
 import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.module';
+import { HabboComponent } from './habbo/habbo.component';
+import { UsercpHabboService } from './services/usercp-habbo.service';
 
 @NgModule({
     imports: [
@@ -72,7 +74,8 @@ import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.modul
         CoverPhotoComponent,
         IgnoredThreadsComponent,
         IgnoredCategoriesComponent,
-        NicknameComponent
+        NicknameComponent,
+        HabboComponent
     ],
     providers: [
         UsercpGroupsService,
@@ -84,7 +87,8 @@ import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.modul
         UsercpThreadSubscriptionsService,
         UsercpCategorySubscriptionsService,
         UsercpIgnoredCategoriesResolver,
-        UsercpIgnoredThreadsResolver
+        UsercpIgnoredThreadsResolver,
+        UsercpHabboService
     ],
     exports: [
         RouterModule

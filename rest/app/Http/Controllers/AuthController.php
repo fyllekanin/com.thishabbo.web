@@ -269,8 +269,12 @@ class AuthController extends Controller {
      */
     private function findUser ($loginName, $password) {
         $userWithUsername = User::withUsername($loginName)->first();
+        $userWithHabbo = User::withHabbo($loginName)->first();
+
         if ($userWithUsername && Hash::check($password, $userWithUsername->password)) {
             return $userWithUsername->userId;
+        } else if ($userWithHabbo && Hash::check($password, $userWithHabbo->password)) {
+            return $userWithHabbo->userId;
         }
         return null;
     }

@@ -25,6 +25,8 @@ import { UsercpIgnoredThreadsResolver } from './services/usercp-ignored-threads.
 import { UsercpIgnoredCategoriesResolver } from './services/usercp-ignored-categories.resolver';
 import { IgnoredCategoriesComponent } from './ignored-categories/ignored-categories.component';
 import { NicknameComponent } from './nickname/nickname.component';
+import { UsercpHabboService } from './services/usercp-habbo.service';
+import { HabboComponent } from './habbo/habbo.component';
 
 export const usercpRoutes: Routes = [
     {
@@ -121,7 +123,14 @@ export const usercpRoutes: Routes = [
             {
                 path: 'nickname',
                 component: NicknameComponent
-            }
+            },
+            {
+                path: 'habbo',
+                component: HabboComponent,
+                resolve: {
+                    data: UsercpHabboService
+                }
+            },
         ]
     }
 ];

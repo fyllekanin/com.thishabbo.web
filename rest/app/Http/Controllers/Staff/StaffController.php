@@ -27,7 +27,8 @@ class StaffController extends Controller {
 
         foreach ($requests as $thcRequest) {
             $nickname = Value::arrayProperty($thcRequest, 'nickname', '');
-            $account = User::withNickname($nickname)->first();
+            $habbo = Value::arrayProperty($thcRequest, 'habbo', '');
+            $account = $this->findAccount($nickname, $habbo);
             if ($account->lastActivity < strtotime('-1 month')) {
                 continue;
             }
@@ -46,14 +47,32 @@ class StaffController extends Controller {
     }
 
     /**
+     * Find an account based on nickname if not try habbo name
+     *
+     * @param $nickname
+     * @param $habbo
+     *
+     * @return null|object
+     */
+    private function findAccount ($nickname, $habbo) {
+        $account = User::withNickname($nickname)->first();
+        if ($account) {
+            return $account;
+        }
+        return User::withHabbo($habbo)->first();
+    }
+
+    /**
      * Validates all the requests so they can be processed
      *
      * @param $requests
      */
     private function validateRequests ($requests) {
         foreach ($requests as $request) {
-            Condition::precondition(!isset($request['nickname']) || empty($request['nickname']),
-                400, 'nickname needs to be set');
+            Condition::precondition(!isset($request['nickname']) && !isset($request['habbo']),
+                400, 'nickname or habbo needs to be set');
+            Condition::precondition(empty($request['nickname']) && empty($request['habbo']),
+                400, 'nickname or habbo needs to be set');
             Condition::precondition(!is_numeric($request['amount']) || $request['amount'] < 1, 400,
                 'The amount is not valid, 1 or more number is mandatory');
             Condition::precondition(!isset($request['reason']) || empty($request['reason']),

@@ -85,14 +85,18 @@ class UserController extends Controller {
      */
     public function getUsers (Request $request, $page) {
         $nickname = $request->input('nickname');
+        $habbo = $request->input('habbo');
         $user = UserHelper::getUserFromRequest($request);
 
-        $getUserSql = User::select('users.nickname', 'users.userId', 'users.updatedAt')
-            ->leftJoin('userdata', 'userdata.userId', '=', 'users.userId')
+        $getUserSql = User::select('nickname', 'userId', 'updatedAt', 'habbo')
             ->orderBy('nickname', 'ASC');
 
         if ($nickname) {
-            $getUserSql->where('users.nickname', 'LIKE', '%' . $nickname . '%');
+            $getUserSql->where('nickname', 'LIKE', '%' . $nickname . '%');
+        }
+
+        if ($habbo) {
+            $getUserSql->where('habbo', 'LIKE', '%' . $habbo . '%');
         }
 
         $users = array_map(function ($user) {
@@ -127,7 +131,8 @@ class UserController extends Controller {
         return response()->json([
             'user' => [
                 'userId' => $current->userId,
-                'nickname' => $current->nickname
+                'nickname' => $current->nickname,
+                'habbo' => $current->habbo
             ]
         ]);
     }
@@ -155,6 +160,7 @@ class UserController extends Controller {
             400, 'Password not valid');
         Condition::precondition($shouldCheckPassword && !$this->authService->isRePasswordValid($newUser->repassword, $newUser->password),
             400, 'Re-password not valid');
+        Condition::precondition(!isset($newUser->habbo) || empty($newUser->habbo), 400, 'Habbo needs to be set');
 
         if ($shouldCheckPassword) {
             $current->password = Hash::make($newUser->password);
@@ -162,8 +168,7 @@ class UserController extends Controller {
 
         if (PermissionHelper::haveAdminPermission($user->userId, ConfigHelper::getAdminConfig()->canEditUserBasic)) {
             $current->nickname = $newUser->nickname;
-            $userData = UserHelper::getUserDataOrCreate($current->userId);
-            $userData->save();
+            $current->habbo = $newUser->habbo;
         }
         $current->save();
 

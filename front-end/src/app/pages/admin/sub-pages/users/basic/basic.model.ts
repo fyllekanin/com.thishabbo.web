@@ -11,6 +11,8 @@ export class BasicModel {
     @primitive()
     repassword: string;
     @primitive()
+    habbo: string;
+    @primitive()
     createdAt: number;
     @primitive()
     updatedAt: number;
