@@ -997,12 +997,6 @@ class Action {
         ]
     ];
 
-    const UPDATE_EMAIL = [
-        'id' => 127,
-        'description' => 'Updated Email',
-        'data' => []
-    ];
-
     const CREATED_SITE_MESSAGE = [
         'id' => 128,
         'description' => 'Created site message',

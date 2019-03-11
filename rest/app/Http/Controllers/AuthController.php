@@ -44,8 +44,7 @@ class AuthController extends Controller {
     public function getRegisterPage () {
         return response()->json([
             'nicknames' => User::pluck('nickname'),
-            'usernames' => User::pluck('username'),
-            'emails' => User::pluck('email')
+            'usernames' => User::pluck('username')
         ]);
     }
 
@@ -90,7 +89,6 @@ class AuthController extends Controller {
         $user = new User([
             'username' => $data->username,
             'nickname' => $data->nickname,
-            'email' => $data->email,
             'gdpr' => true,
             'password' => $password,
             'referralId' => $referralId,
@@ -316,8 +314,6 @@ class AuthController extends Controller {
      */
     private function registerValidation ($data) {
         Condition::precondition(!isset($data->gdpr) || !$data->gdpr, 400, 'You need to accept GDPR to sign up');
-        Condition::precondition(!$this->authService->isEmailValid($data->email),
-                400, 'Email is not valid');
         Condition::precondition(!$this->authService->isNicknameValid($data->nickname),
             400, 'Nickname is not valid');
         Condition::precondition(!$this->authService->isUsernamevalid($data->username),
