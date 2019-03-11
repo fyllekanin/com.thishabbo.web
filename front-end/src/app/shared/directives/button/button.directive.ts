@@ -1,4 +1,3 @@
-
 import { DomSanitizer } from '@angular/platform-browser';
 import { Directive, HostBinding, Input } from '@angular/core';
 import { Button, ButtonColor } from 'shared/directives/button/button.model';
@@ -26,7 +25,7 @@ export class ButtonDirective {
     constructor(
         private _sanitizer: DomSanitizer
     ) {
-        this.backgroundImage = this._sanitizer.bypassSecurityTrustStyle('url(/assets/images/bargradient.png)')
+        this.backgroundImage = this._sanitizer.bypassSecurityTrustStyle('url(/assets/images/bargradient.png)');
         this.textShadow = this._sanitizer.bypassSecurityTrustStyle('1px 1px 0 rgba(125, 125, 125, 0.85)');
         this.background = this._sanitizer.bypassSecurityTrustStyle(this._color.background);
         this.boxShadow = this._sanitizer.bypassSecurityTrustStyle(`inset 0 0 0 1px rgba(0,0,0,.18),
