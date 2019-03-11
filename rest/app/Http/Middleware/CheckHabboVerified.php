@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Middleware;
+use App\EloquentModels\User\User;
 use App\Utils\Condition;
 use Closure;
 class CheckHabboVerified {
