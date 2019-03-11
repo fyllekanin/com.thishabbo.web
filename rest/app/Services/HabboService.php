@@ -24,7 +24,7 @@ class HabboService {
      * @return mixed|null
      */
     public function getHabboByName($name) {
-        return $this->getData($this->habboApi . 'users?name=' . $name);
+        return json_decode($this->getData($this->habboApi . 'users?name=' . $name));
     }
 
     /**
