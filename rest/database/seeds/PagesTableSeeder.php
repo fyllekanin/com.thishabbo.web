@@ -57,7 +57,7 @@ ThisHabbo prohibits users misusing and/or abusing the likes, mentioning, quotes 
 Users are not permitted to post an inappropriate signature. This includes but is not limited to images/usernames that stretch the skin or cause a nuisance such as excessive flashing. Failure to comply by this rule will result in the distribution of warnings/infractions. This rule also extends to avatars, no nudity or excessive flashing is permitted. Usernames are also prohibited from containing explicit language, or language that may offend others, usernames should also not contain an excessive amount of characters in which it would attempt to alter or change the regular skin limits. This rule must also be respected when it comes to the décor of profiles - inappropriate pieces of artwork will not be accepted.
 
 [b]11. Unauthorised Radio Access[/b]
-Only ThisHabbo Administrators, Management & Radio Staff have authorised access to ThisHabbo Radio.  An unauthorised connection to ThisHabbo Radio will be investigated and dealt with accordingly.  Please note, if you were once staff and are no longer, this does indeed mean you no longer have authorised access to the radio - whether you have the encoder details or not. 
+Only ThisHabbo Administrators, Management & Radio Staff have authorised access to ThisHabbo Radio.  An unauthorised connection to ThisHabbo Radio will be investigated and dealt with accordingly.  Please note, if you were once staff and are no longer, this does indeed mean you no longer have authorised access to the radio - whether you have the encoder details or not.
 
 [b]12. [/b][b]Selling Habbo Accounts/Coins[/b]
 It is prohibited to use the forum to advertise the selling of Habbo coins, accounts, furniture or anything of a similar nature in exchange for real money. Anyone doing so will be sanctioned appropriately.
@@ -104,7 +104,17 @@ Firstly, ThisHabbo takes absolutely no responsibility of things which happen on 
                     'pageId' => 2,
                     'path' => 'access',
                     'title' => 'Access Denied',
-                    'content' => 'Access Denied',
+                    'content' => 'You\'ve been denied access to this page! This could mean several things:
+
+[ol]
+[li]Your user account may not have sufficient privileges to access this page. Are you trying to do or access something you shouldn\'t?[/li]
+[li]If you are trying to post, the administrator may have disabled your account, or it may be awaiting activation.[/li]
+[li]You aren\'t registered to the site at all - please register. You won\'t be able to view threads/posts until you do so.[/li]
+[li]You could be banned from the website, but this is very rare.[/li]
+[li]If you\'ve already registered then log in as some features are disabled to users who aren\'t logged in![/li]
+[/ol]
+
+If you\'re still having problems - tweet us [b]@[url=https://twitter.com/thishabbo]ThisHabbo[/url][/b]!',
                     'isDeleted' => 0,
                     'isSystem' => 1,
                     'createdAt' => 1551197660,
