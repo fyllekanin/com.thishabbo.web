@@ -1,12 +1,17 @@
 .post-nickname {
     text-align: center;
-    padding-bottom: 6px;
     font-size: 0.9rem;
 }
 
 .post-content {
     width: 100%;
     padding: 0px 0px 10px 10px;
+}
+
+.avatar img {
+    border-radius: 2px;
+    box-shadow: 0 0 16px 0 rgba(0,0,0,0.04);
+    margin: 3px 0 0;
 }
 
 .signature {
@@ -91,7 +96,7 @@ img {
     background: rgba(165, 161, 161, 0.04);
     box-shadow: inset 0 1px 4px rgba(0, 0, 0, .02);
     color: #8c8a8a;
-    padding: 0.4rem;
+    padding: 7px;
     text-shadow: #fff 1px 1px 0;
 }
 

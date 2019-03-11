@@ -1,8 +1,8 @@
 <app-title [title]="'Latest Posts'"></app-title>
 
 <app-content>
-    <div class="grid-container">
-        <div class="grid-x grid-margin-y grid-margin-x">
+    <div class="grid-container full">
+        <div class="grid-x margin-x">
             <div class="cell small-6 latest-post" *ngFor="let item of items">
                 <img appUserProfile appLazyLoad [float]="'left'"
                      [image]="'/rest/resources/images/users/' + item.user.userId + '.gif'" />
@@ -14,8 +14,8 @@
                     By
                     <a [routerLink]="['/user/profile/', (item.user ? item.user.nickname : '')]">
                         <span [style]="(item.user ? item.user.styling : '') | safeStyle">{{(item.user ? item.user.nickname : '')}}</span>
-                    </a>
-                    - {{item.time}}
+                    </a><br />
+                    {{item.time}}
                 </span>
             </div>
         </div>
