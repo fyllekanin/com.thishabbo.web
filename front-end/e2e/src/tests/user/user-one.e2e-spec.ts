@@ -87,12 +87,10 @@ describe('User #1', () => {
         UserCpPage.fillRegisterInformation({
             username: 'erico',
             password: 'test1234',
-            email: 'erico@thishabbo.com'
+            habbo: 'psyyduck'
         });
         UserCpPage.acceptGdpr();
         NavigationUtil.clickButton('Register');
-
-        CommonUtil.login('erico', 'test1234');
 
         expect(CommonUtil.getNicknameElement().getText()).toEqual('erico');
     });

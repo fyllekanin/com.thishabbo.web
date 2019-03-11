@@ -33,12 +33,12 @@ class PageController extends Controller {
     }
 
     /**
-     * @param $page
+     * @param $path
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getCustomPage($page) {
-        $page = Page::whereRaw('lower(path) = ?', [strtolower($page)])->first();
+    public function getCustomPage($path) {
+        $page = Page::whereRaw('lower(path) = ?', [strtolower($path)])->first();
 
         return response()->json([
             'title' => $page ? $page->title : 'Not found',

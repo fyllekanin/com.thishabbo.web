@@ -32,7 +32,8 @@ class PageSettingsController extends Controller {
             return [
                 'pageId' => $page->pageId,
                 'path' => $page->path,
-                'title' => $page->title
+                'title' => $page->title,
+                'isSystem' => $page->isSystem
             ];
         }));
     }
@@ -119,6 +120,7 @@ class PageSettingsController extends Controller {
         $page = Page::find($pageId);
 
         Condition::precondition(!$page, 404, 'No page with that ID exists');
+        Condition::precondition($page->isSystem, 400, 'Can not delete a system page');
 
         $page->isDeleted = true;
         $page->save();

@@ -15,19 +15,60 @@ use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
 use App\Services\AuthService;
+use App\Services\HabboService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AccountController extends Controller {
     private $authService;
+    private $habboService;
 
     /**
      * AccountController constructor.
+     * @param AuthService $authService
      */
-    public function __construct (AuthService $authService) {
+    public function __construct (AuthService $authService, HabboService $habboService) {
         parent::__construct();
         $this->authService = $authService;
+        $this->habboService = $habboService;
+    }
+
+    /**
+     * Get request for fetching users current verified habbo
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getHabbo (Request $request) {
+        $user = UserHelper::getUserFromRequest($request);
+        return response()->json([
+            'habbo' => $user->habbo
+        ]);
+    }
+    /**
+     * Put request to update the habbo, checks motto on habbo API to match
+     * with the supplied string used in FE. "thishabbo-{userId}"
+     * Validation for one month at least since creation date is in place
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateHabbo (Request $request) {
+        $user = UserHelper::getUserFromRequest($request);
+        $habbo = $request->input('habbo');
+        Condition::precondition(!$habbo, 400, 'You did not fill anything in');
+        Condition::precondition(User::withHabbo($habbo)->count() > 0, 400, 'Habbo already taken');
+
+        $this->habboService->isHabboMotto($habbo, 'thishabbo-' . $user->userId);
+        $oldHabbo = $user->habbo;
+        $user->habbo = $habbo;
+        $user->save();
+
+        Logger::user($user->userId, $request->ip(), Action::UPDATED_HABBO, ['from' => $oldHabbo, 'to' => $habbo]);
+        return response()->json();
     }
 
     /**
@@ -69,37 +110,6 @@ class AccountController extends Controller {
             'new' => $nickname
         ]);
 
-        return response()->json();
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getEmail(Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
-        return response()->json(['email' => $user->email]);
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function updateEmail(Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
-        $data = (object)$request->input('data');
-
-        Condition::precondition(!$this->authService->isEmailValid($data->email), 400,
-            'E-mail is not valid or taken');
-        Condition::precondition(!Hash::check($data->password, $user->password), 400,
-            'Incorrect password');
-
-        $user->email = $data->email;
-        $user->save();
-
-        Logger::user($user->userId, $request->ip(), Action::UPDATE_EMAIL);
         return response()->json();
     }
 

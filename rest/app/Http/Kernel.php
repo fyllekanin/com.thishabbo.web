@@ -2,6 +2,14 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\CheckAdminPermission;
+use App\Http\Middleware\CheckHabboVerified;
+use App\Http\Middleware\CheckMaintenance;
+use App\Http\Middleware\CheckStaffPermission;
+use App\Http\Middleware\CheckToken;
+use App\Http\Middleware\RedirectIfAuthenticated;
+use App\Http\Middleware\TrimStrings;
+use App\Http\Middleware\TrustProxies;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -15,9 +23,9 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
-        \App\Http\Middleware\TrimStrings::class,
+        TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-        \App\Http\Middleware\TrustProxies::class
+        TrustProxies::class
     ];
 
     /**
@@ -47,12 +55,13 @@ class Kernel extends HttpKernel
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
-        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'guest' => RedirectIfAuthenticated::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'token.check' => \App\Http\Middleware\CheckToken::class,
-        'admin_permission.check' => \App\Http\Middleware\CheckAdminPermission::class,
-        'staff_permission.check' => \App\Http\Middleware\CheckStaffPermission::class,
-        'maintenance' => \App\Http\Middleware\CheckMaintenance::class
+        'token.check' => CheckToken::class,
+        'admin_permission.check' => CheckAdminPermission::class,
+        'staff_permission.check' => CheckStaffPermission::class,
+        'maintenance' => CheckMaintenance::class,
+        'habbo_verify.check' => CheckHabboVerified::class
     ];
 }

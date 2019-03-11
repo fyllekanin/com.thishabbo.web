@@ -60,13 +60,6 @@ class AuthService {
             ctype_alnum($username);
     }
 
-    public function isEmailValid ($email) {
-        return isset($email) &&
-            !empty($email) &&
-            filter_var($email, FILTER_VALIDATE_EMAIL) &&
-            User::withEmail($email)->count() == 0;
-    }
-
     /**
      * Check if nickname is unique or not
      *

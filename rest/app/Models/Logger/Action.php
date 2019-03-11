@@ -997,10 +997,13 @@ class Action {
         ]
     ];
 
-    const UPDATE_EMAIL = [
+    const UPDATED_HABBO = [
         'id' => 127,
-        'description' => 'Updated Email',
-        'data' => []
+        'description' => 'Updated habbo',
+        'data' => [
+            'from' => 'had habbo name',
+            'to' => 'new habbo name'
+        ]
     ];
 
     const CREATED_SITE_MESSAGE = [

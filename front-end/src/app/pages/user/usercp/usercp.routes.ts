@@ -24,9 +24,9 @@ import { IgnoredThreadsComponent } from './ignored-threads/ignored-threads.compo
 import { UsercpIgnoredThreadsResolver } from './services/usercp-ignored-threads.resolver';
 import { UsercpIgnoredCategoriesResolver } from './services/usercp-ignored-categories.resolver';
 import { IgnoredCategoriesComponent } from './ignored-categories/ignored-categories.component';
-import { EmailComponent } from './email/email.component';
-import { UsercpEmailService } from './services/usercp-email.service';
 import { NicknameComponent } from './nickname/nickname.component';
+import { UsercpHabboService } from './services/usercp-habbo.service';
+import { HabboComponent } from './habbo/habbo.component';
 
 export const usercpRoutes: Routes = [
     {
@@ -121,16 +121,16 @@ export const usercpRoutes: Routes = [
                 }
             },
             {
-                path: 'email',
-                component: EmailComponent,
-                resolve: {
-                    data: UsercpEmailService
-                }
-            },
-            {
                 path: 'nickname',
                 component: NicknameComponent
-            }
+            },
+            {
+                path: 'habbo',
+                component: HabboComponent,
+                resolve: {
+                    data: UsercpHabboService
+                }
+            },
         ]
     }
 ];

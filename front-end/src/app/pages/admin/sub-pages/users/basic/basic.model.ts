@@ -11,7 +11,7 @@ export class BasicModel {
     @primitive()
     repassword: string;
     @primitive()
-    email: string;
+    habbo: string;
     @primitive()
     createdAt: number;
     @primitive()

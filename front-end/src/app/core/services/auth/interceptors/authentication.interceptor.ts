@@ -49,7 +49,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
                                 title: 'Oops!',
                                 message: error.error.message
                             }));
-                            this._router.navigateByUrl('/access');
+                            this._router.navigateByUrl('/page/access');
                             return observableThrowError(error);
                         case 503:
                             this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
