@@ -86,7 +86,8 @@ describe('User #1', () => {
         NavigationUtil.clickRegisterPage();
         UserCpPage.fillRegisterInformation({
             username: 'erico',
-            password: 'test1234'
+            password: 'test1234',
+            habbo: 'psyyduck'
         });
         UserCpPage.acceptGdpr();
         NavigationUtil.clickButton('Register');

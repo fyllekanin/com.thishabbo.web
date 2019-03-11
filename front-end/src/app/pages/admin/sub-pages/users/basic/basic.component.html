@@ -6,6 +6,10 @@
                 <div class="label">nickname</div>
                 <input type="text" [(ngModel)]="user.nickname" />
             </div>
+            <div class="cell small-6" *ngIf="canDoBasic">
+                <div class="label">Habbo</div>
+                <input type="text" [(ngModel)]="user.habbo" />
+            </div>
             <div class="cell small-6" *ngIf="canDoAdvanced">
                 <div class="label">Password <em>(Leave empty to not change)</em></div>
                 <input type="password" [(ngModel)]="user.password" />

@@ -13,6 +13,7 @@ use App\Helpers\UserHelper;
 use App\Logger;
 use App\Models\Logger\Action;
 use App\Services\AuthService;
+use App\Services\HabboService;
 use App\Services\WelcomeBotService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
@@ -25,17 +26,20 @@ class AuthController extends Controller {
 
     private $welcomeBotService;
     private $authService;
+    private $habboService;
 
     /**
      * AuthController constructor.
      *
      * @param WelcomeBotService $welcomeBotService
-     * @param AuthService       $authService
+     * @param AuthService $authService
+     * @param HabboService $habboService
      */
-    public function __construct (WelcomeBotService $welcomeBotService, AuthService $authService) {
+    public function __construct (WelcomeBotService $welcomeBotService, AuthService $authService, HabboService $habboService) {
         parent::__construct();
         $this->welcomeBotService = $welcomeBotService;
         $this->authService = $authService;
+        $this->habboService = $habboService;
     }
 
     /**
@@ -89,6 +93,7 @@ class AuthController extends Controller {
         $user = new User([
             'username' => $data->username,
             'nickname' => $data->nickname,
+            'habbo' => $data->habbo,
             'gdpr' => true,
             'password' => $password,
             'referralId' => $referralId,
@@ -264,8 +269,12 @@ class AuthController extends Controller {
      */
     private function findUser ($loginName, $password) {
         $userWithUsername = User::withUsername($loginName)->first();
+        $userWithHabbo = User::withHabbo($loginName)->first();
+
         if ($userWithUsername && Hash::check($password, $userWithUsername->password)) {
             return $userWithUsername->userId;
+        } else if ($userWithHabbo && Hash::check($password, $userWithHabbo->password)) {
+            return $userWithHabbo->userId;
         }
         return null;
     }
@@ -322,6 +331,15 @@ class AuthController extends Controller {
             400, 'Password must be at least 8 characters long');
         Condition::precondition(!$this->authService->isRePasswordValid($data->repassword, $data->password),
             400, 'The passwords entered do not match');
+        Condition::precondition(!isset($data->habbo) || empty($data->habbo), 400, 'Habbo needs to be set');
+
+        $habbo = $this->habboService->getHabboByName($data->habbo);
+        Condition::precondition(!$habbo, 404, 'There is no habbo with that name');
+        Condition::precondition($habbo->motto != 'thishabbo-register', 400, 'Your motto needs to be "thishabbo-register"');
+        Condition::precondition(User::withHabbo($data->habbo)->count() > 0, 400, 'The habbo name is already taken');
+
+        $oneMonthAgo = time() - 2419200;
+        Condition::precondition(strtotime($habbo->memberSince) > $oneMonthAgo, 400, 'Your habbo needs to be at least one month old');
     }
 
     /**

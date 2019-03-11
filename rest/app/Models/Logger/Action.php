@@ -997,6 +997,15 @@ class Action {
         ]
     ];
 
+    const UPDATED_HABBO = [
+        'id' => 127,
+        'description' => 'Updated habbo',
+        'data' => [
+            'from' => 'had habbo name',
+            'to' => 'new habbo name'
+        ]
+    ];
+
     const CREATED_SITE_MESSAGE = [
         'id' => 128,
         'description' => 'Created site message',
