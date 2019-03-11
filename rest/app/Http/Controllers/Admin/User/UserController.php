@@ -127,8 +127,7 @@ class UserController extends Controller {
         return response()->json([
             'user' => [
                 'userId' => $current->userId,
-                'nickname' => $current->nickname,
-                'email' => $current->email
+                'nickname' => $current->nickname
             ]
         ]);
     }
@@ -163,7 +162,6 @@ class UserController extends Controller {
 
         if (PermissionHelper::haveAdminPermission($user->userId, ConfigHelper::getAdminConfig()->canEditUserBasic)) {
             $current->nickname = $newUser->nickname;
-            $current->email = $newUser->email;
             $userData = UserHelper::getUserDataOrCreate($current->userId);
             $userData->save();
         }
@@ -188,7 +186,6 @@ class UserController extends Controller {
         Condition::precondition(!$user, 404, 'Given user do not exist');
         Condition::precondition(!$newUser, 404, 'No data supplied');
 
-        Condition::precondition(!$this->authService->isEmailValid($newUser->email), 400, 'Email is not valid or taken');
         Condition::precondition(!isset($newUser->nickname) || ($user->nickname != $newUser->nickname && !$this->authService->isNicknameValid($newUser->nickname)),
             400, 'nickname is not valid');
     }

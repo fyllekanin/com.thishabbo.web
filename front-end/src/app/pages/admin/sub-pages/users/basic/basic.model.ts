@@ -11,8 +11,6 @@ export class BasicModel {
     @primitive()
     repassword: string;
     @primitive()
-    email: string;
-    @primitive()
     createdAt: number;
     @primitive()
     updatedAt: number;

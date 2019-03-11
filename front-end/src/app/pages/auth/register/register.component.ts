@@ -68,20 +68,7 @@ export class RegisterComponent extends Page implements OnDestroy {
             }));
             return false;
         }
-        if (!this.isEmailValid()) {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
-                title: 'Error - Email',
-                message: 'Email is either taken or not valid',
-                type: NotificationType.ERROR
-            }));
-            return false;
-        }
         return true;
-    }
-
-    private isEmailValid(): boolean {
-        return !this._data.emails
-            .some(item => item.toLowerCase() === this.registerModel.email.toLowerCase());
     }
 
     private isNicknameTaken(): boolean {

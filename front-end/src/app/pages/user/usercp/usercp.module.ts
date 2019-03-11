@@ -37,8 +37,6 @@ import { IgnoredThreadsComponent } from './ignored-threads/ignored-threads.compo
 import { UsercpIgnoredCategoriesResolver } from './services/usercp-ignored-categories.resolver';
 import { UsercpIgnoredThreadsResolver } from './services/usercp-ignored-threads.resolver';
 import { IgnoredCategoriesComponent } from './ignored-categories/ignored-categories.component';
-import { UsercpEmailService } from './services/usercp-email.service';
-import { EmailComponent } from './email/email.component';
 import { NicknameComponent } from './nickname/nickname.component';
 import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.module';
 
@@ -74,7 +72,6 @@ import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.modul
         CoverPhotoComponent,
         IgnoredThreadsComponent,
         IgnoredCategoriesComponent,
-        EmailComponent,
         NicknameComponent
     ],
     providers: [
@@ -87,8 +84,7 @@ import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.modul
         UsercpThreadSubscriptionsService,
         UsercpCategorySubscriptionsService,
         UsercpIgnoredCategoriesResolver,
-        UsercpIgnoredThreadsResolver,
-        UsercpEmailService
+        UsercpIgnoredThreadsResolver
     ],
     exports: [
         RouterModule

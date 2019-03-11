@@ -24,8 +24,6 @@ import { IgnoredThreadsComponent } from './ignored-threads/ignored-threads.compo
 import { UsercpIgnoredThreadsResolver } from './services/usercp-ignored-threads.resolver';
 import { UsercpIgnoredCategoriesResolver } from './services/usercp-ignored-categories.resolver';
 import { IgnoredCategoriesComponent } from './ignored-categories/ignored-categories.component';
-import { EmailComponent } from './email/email.component';
-import { UsercpEmailService } from './services/usercp-email.service';
 import { NicknameComponent } from './nickname/nickname.component';
 
 export const usercpRoutes: Routes = [
@@ -118,13 +116,6 @@ export const usercpRoutes: Routes = [
                 component: IgnoredCategoriesComponent,
                 resolve: {
                     data: UsercpIgnoredCategoriesResolver
-                }
-            },
-            {
-                path: 'email',
-                component: EmailComponent,
-                resolve: {
-                    data: UsercpEmailService
                 }
             },
             {

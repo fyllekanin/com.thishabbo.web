@@ -32,7 +32,4 @@ Route::get('category-subscriptions', 'Usercp\AccountController@getCategorySubscr
 Route::get('ignored-threads', 'Usercp\AccountController@getIgnoredThreads');
 Route::get('ignored-categories', 'Usercp\AccountController@getIgnoredCategories');
 
-Route::get('email', 'Usercp\AccountController@getEmail');
-Route::put('email', 'Usercp\AccountController@updateEmail');
-
 Route::put('nickname', 'Usercp\AccountController@updateNickname');

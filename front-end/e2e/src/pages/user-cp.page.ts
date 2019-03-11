@@ -11,26 +11,22 @@ export class UserCpPage {
 
     static fillRegisterInformation(data: {
         username,
-        password,
-        email
+        password
     }) {
         const username = element(by.css('app-auth-register input[name="username"]'));
         const nickname = element(by.css('app-auth-register input[name="nickname"]'));
         const password = element(by.css('app-auth-register input[name="password"]'));
         const repassword = element(by.css('app-auth-register input[name="repassword"]'));
-        const email = element(by.css('app-auth-register input[name="email"]'));
 
         browser.wait(ExpectedConditions.presenceOf(username), 10000, 'Expected username input to be present');
         browser.wait(ExpectedConditions.presenceOf(nickname), 10000, 'Expected nickname input to be present');
         browser.wait(ExpectedConditions.presenceOf(password), 10000, 'Expected password input to be present');
         browser.wait(ExpectedConditions.presenceOf(repassword), 10000, 'Expected repassword input to be present');
-        browser.wait(ExpectedConditions.presenceOf(email), 10000, 'Expected email input to be present');
 
         InputUtil.fillInput(username, data.username);
         InputUtil.fillInput(nickname, data.username);
         InputUtil.fillInput(password, data.password);
         InputUtil.fillInput(repassword, data.password);
-        InputUtil.fillInput(email, data.email);
     }
 
     static getChangePasswordInputs(): Array<ElementFinder> {

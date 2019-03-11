@@ -10,7 +10,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable {
     use Notifiable;
 
-    protected $fillable = ['username', 'nickname', 'email', 'gdpr', 'password', 'likes', 'displayGroupId', 'posts', 'threads', 'lastActivity', 'referralId'];
+    protected $fillable = ['username', 'nickname', 'gdpr', 'password', 'likes', 'displayGroupId', 'posts', 'threads', 'lastActivity', 'referralId'];
     protected $hidden = ['username', 'password'];
     protected $primaryKey = 'userId';
     const CREATED_AT = 'createdAt';
@@ -50,10 +50,6 @@ class User extends Authenticatable {
 
     public function scopeWithUsername (Builder $query, $username) {
         return $query->whereRaw('lower(username) = ?', [strtolower($username)]);
-    }
-
-    public function scopeWithEmail (Builder $query, $email) {
-        return $query->whereRaw('lower(email) = ?', [strtolower($email)]);
     }
 
     public static function getImmunity ($userId) {

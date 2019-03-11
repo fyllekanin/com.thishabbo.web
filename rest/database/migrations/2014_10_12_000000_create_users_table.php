@@ -15,7 +15,6 @@ class CreateUsersTable extends Migration {
             $table->bigIncrements('userId');
             $table->string('username')->unique();
             $table->string('nickname')->unique();
-            $table->string('email')->unique();
             $table->string('password');
             $table->integer('displayGroupId')->default(0);
             $table->bigInteger('referralId')->default(0);

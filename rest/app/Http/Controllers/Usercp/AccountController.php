@@ -75,37 +75,6 @@ class AccountController extends Controller {
     /**
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getEmail(Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
-        return response()->json(['email' => $user->email]);
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function updateEmail(Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
-        $data = (object)$request->input('data');
-
-        Condition::precondition(!$this->authService->isEmailValid($data->email), 400,
-            'E-mail is not valid or taken');
-        Condition::precondition(!Hash::check($data->password, $user->password), 400,
-            'Incorrect password');
-
-        $user->email = $data->email;
-        $user->save();
-
-        Logger::user($user->userId, $request->ip(), Action::UPDATE_EMAIL);
-        return response()->json();
-    }
-
-    /**
-     * @param Request $request
-     *
      * @return mixed
      */
     public function getIgnoredThreads(Request $request) {
