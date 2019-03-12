@@ -49,6 +49,7 @@ class ForumValidatorService {
 
         if ($category->template == $categoryTemplates->QUEST) {
             Condition::precondition(empty($threadSkeleton->badge), 400, 'Badge can not be empty');
+            Condition::precondition(!isset($threadSkeleton->tags) || count($threadSkeleton->tags) == 0, 400, 'You need at least one tag set');
             Condition::precondition(!ctype_alnum($threadSkeleton->badge), 400, 'Badge can only be name, numbers & letters!');
         }
 
