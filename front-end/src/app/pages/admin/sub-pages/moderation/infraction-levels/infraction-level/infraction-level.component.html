@@ -3,18 +3,20 @@
     <div class="grid-container full">
         <div class="grid-x margin-x">
             <div class="cell small-6">
-                <div class="label">Title:</div>
+                <label>Title:</label>
                 <input name="title" [(ngModel)]="model.title" type="text" placeholder="">
             </div>
             <div class="cell small-6">
-                <div class="label">Points:</div>
+                <label>Points:</label>
                 <input name="ponts" [(ngModel)]="model.points" type="number" placeholder="">
             </div>
             <div class="cell small-6">
-                <div class="label">Life Time: <em>(days)</em></div>
+                <label>Life Time: <em>(days)</em></label>
                 <input name="password" [(ngModel)]="model.lifeTime" type="number" [disabled]="isPersisted">
             </div>
             <div class="cell small-6">
+                <br />
+                <br />
                 <label class="checkbox-container">
                     Is Persisted <em>(One year)</em>:
                     <input type="checkbox" [ngModel]="isPersisted" (ngModelChange)="onIsPersistedToggle()">

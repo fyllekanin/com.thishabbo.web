@@ -6,11 +6,11 @@
             </app-title>
             <app-content>
                 <div class="small-12 cell">
-                    <div class="label">Username or Habbo:</div>
+                    <label>Username or Habbo:</label>
                     <input (keydown)="keyDownFunction($event)" [(ngModel)]="loginName" type="text" name="loginName">
                 </div>
                 <div class="small-12 cell">
-                    <div class="label">Password:</div>
+                    <label>Password:</label>
                     <input (keydown)="keyDownFunction($event)" [(ngModel)]="password" type="password" name="password">
                 </div>
                 <div class="small-12 cell" *ngIf="showError">

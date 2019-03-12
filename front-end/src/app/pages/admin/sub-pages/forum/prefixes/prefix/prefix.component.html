@@ -3,15 +3,15 @@
     <div class="grid-container full">
         <div class="grid-x grid-margin-x">
             <div class="cell small-6">
-                <div class="label">Text</div>
+                <label>Text</label>
                 <input name="prefix-text" type="text" [(ngModel)]="prefix.text" />
             </div>
             <div class="cell small-6">
-                <div class="label">Style</div>
+                <label>Style</label>
                 <textarea name="prefix-style" type="text" [(ngModel)]="prefix.style"></textarea>
             </div>
             <div class="cell small-6">
-                <div class="label">Preview of Prefix:</div>
+                <label>Preview of Prefix:</label>
                 <div [innerHTML]="preview | safeHtml"></div>
             </div>
         </div>
@@ -23,8 +23,7 @@
     <div class="grid-container full">
         <div class="grid-x margin-x">
             <div class="cell small-12">
-                <div
-                    *ngFor="let category of categories"
+                <div *ngFor="let category of categories"
                     class="category"
                     (click)="toggle(category.categoryId)"
                     [ngClass]="isSelected(category.categoryId) ? 'selected' : ''">

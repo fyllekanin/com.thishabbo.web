@@ -6,23 +6,23 @@
     <div class="grid-container full">
         <div class="grid-x margin-x">
             <div class="cell small-6">
-                <div class="label">Name</div>
+                <label>Name</label>
                 <input type="text" name="name" [(ngModel)]="badge.name"/>
             </div>
             <div class="cell small-6">
-                <div class="label">Description</div>
+                <label>Description</label>
                 <input type="text" name="description" [(ngModel)]="badge.description"/>
             </div>
             <div class="cell small-6">
-                <div class="label">Points</div>
+                <label>Points</label>
                 <input type="number" name="points" [(ngModel)]="badge.points" min="0"/>
             </div>
             <div class="cell small-6">
-                <div class="label">Badge Image:</div>
+                <label>Badge Image:</label>
                 <input type="file" accept="image/*" #file name="badgeImage">
             </div>
             <div class="cell small-12" *ngIf="badge.badgeId"><br>
-                <div><strong>Preview:</strong></div>
+                <label>Preview:</label>
                 <img appLazyLoad [image]="'/rest/resources/images/badges/' + badgesImage"/>
             </div>
         </div>

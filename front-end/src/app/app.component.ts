@@ -16,7 +16,7 @@ import { fadeAnimation } from 'shared/animations/fade.animation';
         <div class="wrapper">
             <div class="grid-container content-margin">
                 <app-site-messages></app-site-messages>
-                <div class="grid-x height-100">
+                <div class="grid-x">
                     <div class="cell small-12" [@fadeAnimation]="o.isActivated ? o.activatedRoute : ''">
                         <router-outlet #o="outlet"></router-outlet>
                     </div>

@@ -91,7 +91,7 @@ export class GroupComponent extends Page implements OnDestroy {
         }
     }
 
-    get userbarStyle(): string {
+    get userBarStyle(): string {
         return this._group.userBarStyling;
     }
 

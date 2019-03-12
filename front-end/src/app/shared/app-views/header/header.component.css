@@ -2,6 +2,17 @@
     width: 100%;
 }
 
+.input-group {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    font-size: 10px !important;
+    -ms-flex-wrap: wrap;
+    -ms-flex-align: stretch;
+    align-items: stretch;
+    width: 100%;
+}
+
 .big-header {
     width: 100%;
     max-width: 100%;

@@ -1,68 +1,68 @@
 <app-title [title]="'Updating Staff of the Week'" [tabs]="tabs" (onTabClick)="onSave()"></app-title>
 <app-content>
-    <div class="label">Start Date (e.g. 8th)</div>
+    <label>Start Date (e.g. 8th)</label>
     <input name="info-startDay" type="text" [(ngModel)]="model.startDay" />
 
-    <div class="label">End Date (e.g. 8th)</div>
+    <label>End Date (e.g. 8th)</label>
     <input name="info-endDay" type="text" [(ngModel)]="model.endDay" />
 
-    <div class="label">Month (e.g. January)</div>
+    <label>Month (e.g. January)</label>
     <select name="info-month" [(ngModel)]="model.month">
         <option *ngFor="let month of months" [value]="month">
             {{ month }}
         </option>
     </select>
 
-    <div class="label">Global Management</div>
+    <label>Global Management</label>
     <input name="info-glob-management" type="text" [(ngModel)]="model.globalManagement" />
 
     <br /><br />
 
-    <div class="label">EU Management</div>
+    <label>EU Management</label>
     <input name="info-eu-management" type="text" [(ngModel)]="model.europeManagement" />
 
-    <div class="label">EU Radio</div>
+    <label>EU Radio</label>
     <input name="info-eu-radio" type="text" [(ngModel)]="model.europeRadio" />
 
-    <div class="label">EU Events</div>
+    <label>EU Events</label>
     <input name="info-eu-events" type="text" [(ngModel)]="model.europeEvents" />
 
     <br /><br />
 
-    <div class="label">OC Management</div>
+    <label>OC Management</label>
     <input name="info-oc-management" type="text" [(ngModel)]="model.oceaniaManagement" />
 
-    <div class="label">OC Radio</div>
+    <label>OC Radio</label>
     <input name="info-oc-radio" type="text" [(ngModel)]="model.oceaniaRadio" />
 
-    <div class="label">OC Events</div>
+    <label>OC Events</label>
     <input name="info-oc-events" type="text" [(ngModel)]="model.oceaniaEvents" />
 
     <br /><br />
 
-    <div class="label">NA Management</div>
+    <label>NA Management</label>
     <input name="info-na-management" type="text" [(ngModel)]="model.northAmericanManagement" />
 
-    <div class="label">NA Radio</div>
+    <label>NA Radio</label>
     <input name="info-na-radio" type="text" [(ngModel)]="model.northAmericanRadio" />
 
-    <div class="label">NA Events</div>
+    <label>NA Events</label>
     <input name="info-na-events" type="text" [(ngModel)]="model.northAmericanEvents" />
 
     <br /><br />
 
-    <div class="label">Moderation</div>
+    <label>Moderation</label>
     <input name="info-moderation" type="text" [(ngModel)]="model.moderation" />
 
-    <div class="label">Media</div>
+    <label>Media</label>
     <input name="info-media" type="text" [(ngModel)]="model.media" />
 
-    <div class="label">Quests</div>
+    <label>Quests</label>
     <input name="info-quests" type="text" [(ngModel)]="model.quests" />
 
-    <div class="label">Graphics</div>
+    <label>Graphics</label>
     <input name="info-graphics" type="text" [(ngModel)]="model.graphics" />
 
-    <div class="label">Audio Producers</div>
+    <label>Audio Producers</label>
     <input name="info-audio-producer" type="text" [(ngModel)]="model.audioProducer" />
 </app-content>

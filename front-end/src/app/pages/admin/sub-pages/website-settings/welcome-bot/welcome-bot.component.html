@@ -3,11 +3,11 @@
     <div class="grid-container full">
         <div class="grid-x margin-x">
             <div class="cell small-6">
-                <div class="label">User Account <em>(Account to be the Welcome Bot)</em></div>
+                <label>User Account <em>(Account to be the Welcome Bot)</em></label>
                 <input name="welcome-bot-name" type="text" [(ngModel)]="user.nickname" />
             </div>
             <div class="small-6">
-                <div class="label">Forum Category</div>
+                <label>Forum Category</label>
                 <select [(ngModel)]="category.categoryId">
                     <option value="0">None</option>
                     <option *ngFor="let category of categories" [value]="category.categoryId">
@@ -16,8 +16,8 @@
                 </select>
             </div>
             <div class="cell small-12">
-                <div class="label">Content Supported </div>
-                <li><b>:nickname:</b> will be replaced with the users nickname and will tag that user</li>
+                <label>Content Supported </label>
+                <li><strong>:nickname:</strong> will be replaced with the users nickname and will tag that user</li>
             </div>
         </div>
     </div>

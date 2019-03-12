@@ -3,23 +3,23 @@
     <div class="grid-container full">
         <div class="grid-x grid-margin-x">
             <div class="cell small-6">
-                <div class="label">Title:</div>
+                <label>Title:</label>
                 <input [(ngModel)]="notice.title" (ngModelChange)="onChange()" type="text" name="notice-title">
             </div>
             <div class="cell small-6">
-                <div class="label">Background color:</div>
+                <label>Background color:</label>
                 <input [(ngModel)]="notice.backgroundColor" (ngModelChange)="onChange()" type="text" name="notice-backgroundColor">
             </div>
             <div class="cell small-6">
-                <div class="label">Text:</div>
+                <label>Text:</label>
                 <textarea [(ngModel)]="notice.text" type="text" (ngModelChange)="onChange()" name="notice-text"></textarea>
             </div>
             <div class="cell small-6">
-                <div class="label">Background image:</div>
+                <label>Background image:</label>
                 <input type="file" accept="image/*" #file name="notice-backgroundImage" (change)="onImage($event)">
             </div>
             <div class="cell small-12">
-                <div><strong>Preview:</strong></div>
+                <label>Preview:</label>
                 <app-notice [notice]="previewNotice" [configuring]="true"></app-notice>
             </div>
         </div>
