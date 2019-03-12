@@ -5,7 +5,7 @@
                 <app-title
                     [title]="category.title"
                     [titlePointer]="true"
-                    [tabs]="toggleTab"
+                    [tabs]="[toggleTab]"
                     (onTabClick)="toggleCategory(category)"
                     (onTitleClick)="onTitleClick(category)">
                 </app-title>
@@ -24,10 +24,13 @@
             </div>
         </div>
         <div class="cell small-12 medium-4">
-            <app-title [title]="'Latest Posts'" [top]="latestPostersTop"></app-title>
+            <app-title [title]="'Latest Posts'" [top]="latestPostersTop" [tabs]="[refreshTab]" (onTabClick)="updateForumStats()"></app-title>
             <app-content>
-                <div *ngIf="latestPosts.length === 0">
+                <div *ngIf="!latestPosts">
                     Loading...
+                </div>
+                <div *ngIf="latestPosts && latestPosts.length === 0">
+                    No posts as of now...
                 </div>
                 <div *ngFor="let latestPost of latestPosts; let i = index;">
                     <div class="latest-post-icon"><i class="fas fa-comment"></i></div>
@@ -43,15 +46,15 @@
                         </a>
                     </div>
                 </div>
-                <div class="divider"></div>
-                <button appButton [color]="refreshButton" [float]="'right'">Refresh</button>
             </app-content>
-
 
             <app-title [title]="'Top Posters Today'"></app-title>
             <app-content>
-                <div *ngIf="topPostersToday.length === 0">
+                <div *ngIf="!topPostersToday">
                     Loading...
+                </div>
+                <div *ngIf="topPostersToday && topPostersToday.length === 0">
+                    No top posters today as of now...
                 </div>
                 <div class="latest-post" *ngFor="let topPoster of topPostersToday; let i = index;">
                     {{i + 1}}.
@@ -65,8 +68,11 @@
 
             <app-title [title]="'Top Posters'"></app-title>
             <app-content>
-                <div *ngIf="topPosters.length === 0">
+                <div *ngIf="!topPosters">
                     Loading...
+                </div>
+                <div *ngIf="topPosters && topPosters.length === 0">
+                    No top posters as of now...
                 </div>
                 <div class="latest-post" *ngFor="let topPoster of topPosters; let i = index;">
                     {{i + 1}}.
