@@ -7,7 +7,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ForumLatestPost, SlimCategory } from '../forum.model';
 import { ElementRef } from '@angular/core';
 import { TitleTab, TitleTopBorder } from 'shared/app-views/title/title.model';
-import { Button } from 'shared/directives/button/button.model';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { HttpService } from 'core/services/http/http.service';
 
@@ -23,10 +22,8 @@ export class ForumHomeComponent extends Page implements OnInit, OnDestroy {
     private _contractedCategories: Array<number> = [];
 
     latestPostersTop = TitleTopBorder.RED;
-    refreshButton = Button.BLUE;
-    toggleTab: Array<TitleTab> = [
-        new TitleTab({ title: 'Toggle' })
-    ];
+    refreshTab = new TitleTab({ title: 'Refresh' });
+    toggleTab = new TitleTab({ title: 'Toggle' });
 
     constructor(
         private _router: Router,
@@ -42,11 +39,7 @@ export class ForumHomeComponent extends Page implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        const todayMidnight = new Date().setHours(0, 0, 0, 0) / 1000;
-        this._httpService.get(`page/forum/stats/${todayMidnight}`)
-            .subscribe(res => {
-                this._forumStats = new ForumStats(res);
-            });
+        this.updateForumStats();
     }
 
     ngOnDestroy(): void {
@@ -90,41 +83,29 @@ export class ForumHomeComponent extends Page implements OnInit, OnDestroy {
         return 0;
     }
 
+    updateForumStats(): void {
+        this._forumStats = new ForumStats();
+        const todayMidnight = new Date().setHours(0, 0, 0, 0) / 1000;
+        this._httpService.get(`page/forum/stats/${todayMidnight}`)
+            .subscribe(res => {
+                this._forumStats = new ForumStats(res);
+            });
+    }
+
     get categories(): Array<SlimCategory> {
         return this._forumHomePage.sort(this.sortCategories);
     }
 
     get latestPosts(): Array<ForumLatestPost> {
-        return this._forumStats.latestPosts.sort((a, b) => {
-            if (a.postId > b.postId) {
-                return -1;
-            } else if (a.postId < b.postId) {
-                return 1;
-            }
-            return 0;
-        });
+        return this._forumStats.latestPosts;
     }
 
     get topPostersToday(): Array<ForumTopPoster> {
-        return this._forumStats.topPostersToday.sort((a, b) => {
-            if (a.posts > b.posts) {
-                return -1;
-            } else if (a.posts < b.posts) {
-                return 1;
-            }
-            return 0;
-        });
+        return this._forumStats.topPostersToday;
     }
 
     get topPosters(): Array<ForumTopPoster> {
-        return this._forumStats.topPosters.sort((a, b) => {
-            if (a.posts > b.posts) {
-                return -1;
-            } else if (a.posts < b.posts) {
-                return 1;
-            }
-            return 0;
-        });
+        return this._forumStats.topPosters;
     }
 
     private onPage(data: { data: Array<SlimCategory> }): void {
