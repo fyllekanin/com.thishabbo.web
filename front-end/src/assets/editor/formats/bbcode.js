@@ -860,6 +860,7 @@
                     'data-post-id': null
                 }
             },
+            isInline: false,
             quoteType: QuoteType.never,
             html: function (token, attrs, content) {
                 return '<div class="quotepost" data-post-id="' + (escapeEntities(attrs.defaultattr, true) || content) + '">' + content + '</div>';
