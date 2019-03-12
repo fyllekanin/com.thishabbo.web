@@ -12,12 +12,12 @@ class SettingsTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('settings')->delete();
-        
+
         \DB::table('settings')->insert(array (
-            0 => 
+            0 =>
             array (
                 'settingId' => 1,
                 'key' => 'welcome_bot_userId',
@@ -25,7 +25,7 @@ class SettingsTableSeeder extends Seeder
                 'createdAt' => 1537887624,
                 'updatedAt' => 1537887624,
             ),
-            1 => 
+            1 =>
             array (
                 'settingId' => 2,
                 'key' => 'welcome_bot_message',
@@ -34,7 +34,7 @@ Hope you will have a fun time here and join our team! ',
                 'createdAt' => 1537887624,
                 'updatedAt' => 1537887624,
             ),
-            2 => 
+            2 =>
             array (
                 'settingId' => 3,
                 'key' => 'welcome_bot_categoryId',
@@ -42,7 +42,7 @@ Hope you will have a fun time here and join our team! ',
                 'createdAt' => 1537887624,
                 'updatedAt' => 1537887624,
             ),
-            3 => 
+            3 =>
             array (
                 'settingId' => 4,
                 'key' => 'radio',
@@ -50,7 +50,7 @@ Hope you will have a fun time here and join our team! ',
                 'createdAt' => 1548703886,
                 'updatedAt' => 1548703886,
             ),
-            4 => 
+            4 =>
             array (
                 'settingId' => 5,
                 'key' => 'do_not_hire',
@@ -58,7 +58,7 @@ Hope you will have a fun time here and join our team! ',
                 'createdAt' => 1537888069,
                 'updatedAt' => 1537888854,
             ),
-            5 => 
+            5 =>
             array (
                 'settingId' => 6,
                 'key' => 'ban_on_sight',
@@ -66,15 +66,15 @@ Hope you will have a fun time here and join our team! ',
                 'createdAt' => 1537888069,
                 'updatedAt' => 1537888854,
             ),
-            6 => 
+            6 =>
             array (
                 'settingId' => 7,
                 'key' => 'navigation',
-                'value' => '[{"children":[{"label":"Home Page","url":"\\/home"},{"isDivider":true},{"label":"History","url":"\\/"},{"label":"Staff Members","url":"\\/"},{"isDivider":true},{"label":"Habbo Imager","url":"\\/goodies\\/habbo-imager"},{"isDivider":true},{"label":"Contact Us","url":"\\/"},{"label":"Rules","url":"\\/page\\/rules","loginRequired":false,"isOnMobile":false,"icon":null,"isDivider":false},{"label":"test","url":"\\/page\\/test","loginRequired":false,"isOnMobile":false,"icon":null,"isDivider":false}],"label":"TH","icon":"fas fa-home"},{"children":[{"label":"Quests Hub","url":"\\/"},{"isDivider":true},{"label":"Badge Guides","url":"\\/"},{"isDivider":true},{"label":"Badge Scanner","url":"\\/"},{"label":"Top 25 Collected","url":"\\/"},{"isDivider":true},{"label":"Apply","url":"\\/"}],"label":"Quests","icon":"fa fa-book"},{"children":[{"label":"Around the World","url":"\\/"},{"isDivider":true},{"label":"Entertainment & Lifestyle","url":"\\/"},{"label":"Happy Hour","url":"\\/"},{"label":"Columns Corner","url":"\\/"},{"label":"In the community","url":"\\/"},{"label":"Debates Corner","url":"\\/"},{"isDivider":true},{"label":"Apply","url":"\\/"}],"label":"Media","icon":"fas fa-newspaper"},{"children":[],"label":"Seasons","url":"\\/pages\\/seasons","loginRequired":false,"isOnMobile":false,"icon":"fas fa-users","isDivider":false},{"children":[],"label":"Betting Hub","url":"\\/betting\\/dashboard","loginRequired":false,"isOnMobile":false,"icon":"fas fa-ticket-alt","isDivider":false},{"children":[{"label":"Clan Hub","url":"\\/"},{"isDivider":true},{"label":"Clan Leaderboard","url":"\\/"},{"isDivider":true},{"label":"Create a Clan","url":"\\/"}],"label":"Clans","icon":"fas fa-shield-alt"},{"children":[{"label":"Latest Posts","url":"\\/forum\\/latest-posts\\/page\\/1"},{"label":"Latest Threads","url":"\\/forum\\/latest-threads\\/page\\/1"},{"isDivider":true},{"label":"Shop","url":"\\/"},{"isDivider":true},{"label":"Public Groups","url":"\\/"}],"label":"Forum","icon":"far fa-comment-alt","url":"\\/forum"},{"children":[{"label":"Recruitment Hub","url":"\\/"},{"isDivider":true},{"label":"Apply","url":"\\/"}],"label":"Jobs","icon":"fas fa-bookmark"},{"children":[],"label":"Logout","icon":"fas fa-sign-out-alt","loginRequired":true,"isLogout":true,"isOnMobile":true}]',
+                'value' => '[{"children":[{"label":"Home Page","url":"\\/home"},{"isDivider":true},{"label":"History","url":"\\/"},{"label":"Staff Members","url":"\\/"},{"isDivider":true},{"label":"Habbo Imager","url":"\\/goodies\\/habbo-imager"},{"isDivider":true},{"label":"Contact Us","url":"\\/"},{"label":"Rules","url":"\\/page\\/rules","loginRequired":false,"isOnMobile":false,"icon":null,"isDivider":false},{"label":"test","url":"\\/page\\/test","loginRequired":false,"isOnMobile":false,"icon":null,"isDivider":false}],"label":"TH", "isHomePage": true,"icon":"fas fa-home"},{"children":[{"label":"Quests Hub","url":"\\/"},{"isDivider":true},{"label":"Badge Guides","url":"\\/"},{"isDivider":true},{"label":"Badge Scanner","url":"\\/"},{"label":"Top 25 Collected","url":"\\/"},{"isDivider":true},{"label":"Apply","url":"\\/"}],"label":"Quests","icon":"fa fa-book"},{"children":[{"label":"Around the World","url":"\\/"},{"isDivider":true},{"label":"Entertainment & Lifestyle","url":"\\/"},{"label":"Happy Hour","url":"\\/"},{"label":"Columns Corner","url":"\\/"},{"label":"In the community","url":"\\/"},{"label":"Debates Corner","url":"\\/"},{"isDivider":true},{"label":"Apply","url":"\\/"}],"label":"Media","icon":"fas fa-newspaper"},{"children":[],"label":"Seasons","url":"\\/pages\\/seasons","loginRequired":false,"isOnMobile":false,"icon":"fas fa-users","isDivider":false},{"children":[],"label":"Betting Hub","url":"\\/betting\\/dashboard","loginRequired":false,"isOnMobile":false,"icon":"fas fa-ticket-alt","isDivider":false},{"children":[{"label":"Clan Hub","url":"\\/"},{"isDivider":true},{"label":"Clan Leaderboard","url":"\\/"},{"isDivider":true},{"label":"Create a Clan","url":"\\/"}],"label":"Clans","icon":"fas fa-shield-alt"},{"children":[{"label":"Latest Posts","url":"\\/forum\\/latest-posts\\/page\\/1"},{"label":"Latest Threads","url":"\\/forum\\/latest-threads\\/page\\/1"},{"isDivider":true},{"label":"Shop","url":"\\/"},{"isDivider":true},{"label":"Public Groups","url":"\\/"}],"label":"Forum","icon":"far fa-comment-alt","url":"\\/forum"},{"children":[{"label":"Recruitment Hub","url":"\\/"},{"isDivider":true},{"label":"Apply","url":"\\/"}],"label":"Jobs","icon":"fas fa-bookmark"},{"children":[],"label":"Logout","icon":"fas fa-sign-out-alt","loginRequired":true,"isLogout":true,"isOnMobile":true}]',
                 'createdAt' => 1549751879,
                 'updatedAt' => 1552085033,
             ),
-            7 => 
+            7 =>
             array (
                 'settingId' => 8,
                 'key' => 'staff_of_the_week',
@@ -83,7 +83,7 @@ Hope you will have a fun time here and join our team! ',
                 'updatedAt' => 1550518041,
             ),
         ));
-        
-        
+
+
     }
 }

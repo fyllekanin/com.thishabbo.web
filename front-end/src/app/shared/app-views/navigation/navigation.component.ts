@@ -26,6 +26,10 @@ export class NavigationComponent {
         return this._authService.isLoggedIn();
     }
 
+    get homePage(): string {
+        return this.isLoggedIn ? this._authService.authUser.homePage : 'home';
+    }
+
     get routes(): Array<MainItem> {
         return this._navigation
             .filter(item => !item.isLogout)

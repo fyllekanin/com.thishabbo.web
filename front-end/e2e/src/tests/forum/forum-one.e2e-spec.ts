@@ -71,8 +71,8 @@ describe('Fourm #1', () => {
         NavigationUtil.clickThread('VX Ongoing!');
 
         InputUtil.fillEditor(ThreadPage.getPostEditor(), 'VX is fun to work on!');
-        browser.sleep(1000);
         browser.executeScript('window.scrollTo(0, document.body.scrollHeight)');
+        browser.sleep(3000);
         NavigationUtil.clickButton('Post');
 
         CommonUtil.open('/forum');

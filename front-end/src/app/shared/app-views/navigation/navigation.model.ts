@@ -1,7 +1,9 @@
-import { arrayOf, ClassHelper, primitive } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, primitive, primitiveOf } from 'shared/helpers/class.helper';
 import {IdHelper} from 'shared/helpers/id.helper';
 
 export abstract class NavigationItem {
+    @primitiveOf(String)
+    id = IdHelper.newUuid();
     @primitive()
     label: string;
     @primitive()
@@ -14,6 +16,8 @@ export abstract class NavigationItem {
     isOnMobile: boolean;
     @primitive()
     isDivider: boolean;
+    @primitive()
+    isHomePage: boolean;
 }
 
 export class ChildItem extends NavigationItem {
