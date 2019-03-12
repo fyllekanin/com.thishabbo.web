@@ -98,7 +98,7 @@ export class PostComponent extends Page implements OnDestroy {
 
     quotePost(): void {
         this.onQuotePost.emit(`[quotepost=${this._postModel.postId}]Originally Posted by [b]${this.user.nickname}[/b]
-${this._postModel.content}[/quotepost]`);
+${this._postModel.content}[/quotepost]\n\n`);
     }
 
     onButtonClick(button: EditorAction): void {
