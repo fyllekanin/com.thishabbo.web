@@ -22,7 +22,7 @@ import { EditorModule } from 'shared/components/editor/editor.module';
 import { NoticeModule } from 'shared/components/notice/notice.module';
 import { NavigationService } from './services/navigation.service';
 import { NavigationComponent } from './navigation/navigation.component';
-import { AddItemComponent } from './navigation/add-item/add-item.component';
+import { NavigationItemComponent } from './navigation/navigation-item/navigation-item.component';
 import { SiteMessagesComponent } from './site-messages/list/site-messages.component';
 import { SiteMessageComponent } from './site-messages/site-message/site-message.component';
 import { SiteMessagesResolver } from './services/site-messages.resolver';
@@ -52,14 +52,14 @@ import { PageResolver } from './services/page.resolver';
         MaintenanceComponent,
         WebsiteSettingsComponent,
         NavigationComponent,
-        AddItemComponent,
+        NavigationItemComponent,
         SiteMessagesComponent,
         SiteMessageComponent,
         PagesComponent,
         PageComponent
     ],
     entryComponents: [
-        AddItemComponent
+        NavigationItemComponent
     ],
     providers: [
         MaintenanceResolver,

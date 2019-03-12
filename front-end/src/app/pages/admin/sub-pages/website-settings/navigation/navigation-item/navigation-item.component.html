@@ -2,7 +2,7 @@
 <input type="text" [(ngModel)]="data.label" />
 
 <strong>Url</strong> <br />
-<input type="text" [(ngModel)]="data.url" />
+<input type="text" [(ngModel)]="data.url" [disabled]="data.isHomePage"/>
 
 <div *ngIf="isMainItem">
     <strong>Icon <em>(full font-awesome class)</em></strong> <br />
@@ -24,5 +24,11 @@
 <label class="checkbox-container" *ngIf="!isMainItem">
     Is a divider
     <input type="checkbox" [(ngModel)]="data.isDivider">
+    <span class="checkmark"></span>
+</label>
+
+<label class="checkbox-container">
+    Goes to home page? <em>(If user is logged out it goes to /home)</em>
+    <input type="checkbox" [(ngModel)]="data.isHomePage">
     <span class="checkmark"></span>
 </label>
