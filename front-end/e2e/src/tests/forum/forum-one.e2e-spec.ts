@@ -73,7 +73,7 @@ describe('Fourm #1', () => {
         InputUtil.fillEditor(ThreadPage.getPostEditor(), 'VX is fun to work on!');
         browser.executeScript('window.scrollTo(0, document.body.scrollHeight)');
         browser.sleep(3000);
-        NavigationUtil.clickButton('Post');
+        NavigationUtil.clickTab('Post');
 
         CommonUtil.open('/forum');
 
