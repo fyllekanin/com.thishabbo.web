@@ -1,19 +1,19 @@
 <app-title [title]="'Display Options'"></app-title>
 <app-content>
     <div class="display-controller">
-        <div class="label">Sorted By</div>
+        <label>Sorted By</label>
         <select [(ngModel)]="options.sortedBy">
             <option *ngFor="let item of sortedByOptions" [value]="item">{{prettifyString(item)}}</option>
         </select>
     </div>
     <div class="display-controller">
-        <div class="label">Sort Order</div>
+        <label>Sort Order</label>
         <select [(ngModel)]="options.sortOrder">
             <option *ngFor="let item of sortOrderOptions" [value]="item">{{prettifyString(item)}}</option>
         </select>
     </div>
     <div class="display-controller">
-        <div class="label">From The</div>
+        <label>From The</label>
         <select [(ngModel)]="options.fromThe">
             <option *ngFor="let item of fromTheOptions" [value]="item.value">{{item.label}}</option>
         </select>

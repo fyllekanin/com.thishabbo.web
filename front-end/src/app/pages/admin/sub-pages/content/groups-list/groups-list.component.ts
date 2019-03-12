@@ -22,8 +22,7 @@ import { SelectItem } from 'shared/components/form/select/select.model';
 
 @Component({
     selector: 'app-admin-content-groups-list',
-    templateUrl: 'groups-list.component.html',
-    styleUrls: ['groups-list.component.css']
+    templateUrl: 'groups-list.component.html'
 })
 export class GroupsListComponent extends Page implements OnDestroy {
     private _groupsList: Array<GroupList> = [];

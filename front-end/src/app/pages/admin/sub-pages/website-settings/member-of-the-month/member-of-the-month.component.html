@@ -1,12 +1,12 @@
 <app-title [title]="'Updating Staff of the Week'" [tabs]="tabs" (onTabClick)="onSave()"></app-title>
 <app-content>
-    <div class="label">Month (e.g. January)</div>
+    <label>Month (e.g. January)</label>
     <select name="info-month" [(ngModel)]="model.month">
         <option *ngFor="let month of months" [value]="month">
             {{ month }}
         </option>
     </select>
 
-    <div class="label">Member of the Month</div>
+    <label>Member of the Month</label>
     <input name="info-member" type="text" [(ngModel)]="model.member" />
 </app-content>

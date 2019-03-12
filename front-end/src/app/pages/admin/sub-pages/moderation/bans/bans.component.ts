@@ -27,8 +27,7 @@ import { ReasonComponent } from 'shared/components/reason/reason.component';
 
 @Component({
     selector: 'app-admin-bans',
-    templateUrl: './bans.component.html',
-    styleUrls: ['./bans.component.css']
+    templateUrl: './bans.component.html'
 })
 export class BansComponent extends Page implements OnDestroy {
     private _bansPage = new BansPage();

@@ -13,7 +13,6 @@ import { TitleTopBorder } from 'shared/app-views/title/title.model';
 })
 
 export class DashboardComponent extends Page implements OnInit, OnDestroy {
-
     tableConfig: TableConfig;
     stats: Array<StatsBoxModel> = [
         new StatsBoxModel({
