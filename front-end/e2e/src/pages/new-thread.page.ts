@@ -10,7 +10,7 @@ export class NewThreadPage {
     }
 
     static getThreadEditor(): ElementFinder {
-        const ele = element(by.css('app-forum-thread .new-post-editor app-editor .wysibb-text-editor'));
+        const ele = element(by.css('app-forum-thread-controller app-editor .wysibb-text-editor'));
         browser.wait(ExpectedConditions.presenceOf(ele), 10000, 'Expected new thread editor to be present');
 
         return ele;
