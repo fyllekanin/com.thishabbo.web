@@ -1,4 +1,4 @@
-import { browser, by, element, ElementFinder, ExpectedConditions, Key } from 'protractor';
+import { browser, ElementFinder, ExpectedConditions, Key } from 'protractor';
 
 export class InputUtil {
 
