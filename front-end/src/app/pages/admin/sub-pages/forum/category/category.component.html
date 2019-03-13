@@ -3,26 +3,26 @@
     <div class="grid-container full">
         <div class="grid-x margin-x">
             <div class="cell small-6">
-                <div class="label">Title</div>
+                <label>Title</label>
                 <input name="category-text" type="text" [(ngModel)]="category.title"/>
             </div>
             <div class="cell small-6">
-                <div class="label">Parent</div>
+                <label>Parent</label>
                 <select [(ngModel)]="parentId" name="parent">
                     <option selected="selected" value="-1">None</option>
                     <option *ngFor="let item of categories" value="{{item.categoryId}}">{{item.title}}</option>
                 </select>
             </div>
             <div class="cell small-6">
-                <div class="label">Description</div>
+                <label>Description</label>
                 <input type="text" [(ngModel)]="category.description"/>
             </div>
             <div class="cell small-6">
-                <div class="label">Display Order <em>(Lower = higher up)</em></div>
+                <label>Display Order <em>(Lower = higher up)</em></label>
                 <input type="number" [(ngModel)]="category.displayOrder"/>
             </div>
             <div class="cell small-6">
-                <div class="label">Template</div>
+                <label>Template</label>
                 <select [(ngModel)]="template" name="template">
                     <option selected="selected" value="DEFAULT">Default</option>
                     <option value="QUEST">Quest</option>
@@ -30,21 +30,21 @@
                 </select>
             </div>
             <div class="cell small-6">
-                <div class="label">Is Hidden</div>
+                <label>Is Hidden</label>
                 <select [(ngModel)]="category.isHidden" name="isHidden">
                     <option [ngValue]="false">No</option>
                     <option [ngValue]="true">Yes</option>
                 </select>
             </div>
             <div class="cell small-6">
-                <div class="label">Is Open</div>
+                <label>Is Open</label>
                 <select [(ngModel)]="category.isOpen" name="isOpen">
                     <option [ngValue]="false">No</option>
                     <option [ngValue]="true">Yes</option>
                 </select>
             </div>
             <div class="cell small-6">
-                <div class="label">Link <em>(Clicking the category header leads here)</em></div>
+                <label>Link <em>(Clicking the category header leads here)</em></label>
                 <input type="text" [(ngModel)]="category.link"/>
             </div>
         </div>
@@ -64,7 +64,7 @@
         Threads need a prefix? <em>(Tick if yes)</em>
         <input type="checkbox" [(ngModel)]="options.prefixMandatory">
         <span class="checkmark"></span>
-    </label>    
+    </label>
     <label class="checkbox-container">
        Posts don't count <em>(Tick if yes)</em>
         <input type="checkbox" [(ngModel)]="options.postsDontCount">

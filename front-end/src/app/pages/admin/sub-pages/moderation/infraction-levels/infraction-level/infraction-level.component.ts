@@ -10,8 +10,7 @@ import { GlobalNotification } from 'shared/app-views/global-notification/global-
 
 @Component({
     selector: 'app-admin-moderation-infraction-level',
-    templateUrl: 'infraction-level.component.html',
-    styleUrls: ['infraction-level.component.css']
+    templateUrl: 'infraction-level.component.html'
 })
 export class InfractionLevelComponent extends Page implements OnDestroy {
     private _page = new InfractionLevel();

@@ -7,7 +7,7 @@
     <app-title [title]="answer.answer" [subTitle]="answer.users.length + ' vote(s)'"></app-title>
     <app-content>
         <div class="grid-container content-margin">
-            <div class="grid-x height-100">
+            <div class="grid-x">
                 <div class="cell small-2" *ngFor="let user of answer.users">
                     {{user.nickname}}
                 </div>

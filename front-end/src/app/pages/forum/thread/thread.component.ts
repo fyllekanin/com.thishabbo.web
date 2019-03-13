@@ -9,7 +9,7 @@ import { AuthService } from 'core/services/auth/auth.service';
 import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 import { PostModel } from '../post/post.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import {getPostTools, getThreadTools, ThreadActions, ThreadPage} from './thread.model';
+import { getPostTools, getThreadTools, ThreadActions, ThreadPage } from './thread.model';
 import { Component, ComponentFactoryResolver, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { EditorAction } from 'shared/components/editor/editor.model';
@@ -114,9 +114,8 @@ export class ThreadComponent extends Page implements OnDestroy {
     }
 
     onQuotePost(content: string): void {
-        this.editor.content = this.editor.getEditorValue().length > 0 ?
-            `${this.editor.getEditorValue()}\n\n${content}` :
-            content;
+        const editorValue = this.editor.getEditorValue();
+        this.editor.content = editorValue.length > 0 ? `${editorValue}${content}` : content;
         this.onKeyUp(this.editor.getEditorValue());
         this.scrollToEditor();
     }

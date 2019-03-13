@@ -1,23 +1,25 @@
 <app-title [title]="title" [tabs]="tabs" (onTabClick)="onTabClick($event)"></app-title>
 <app-content>
-    <div class="label">Name:</div>
+    <label>Name:</label>
     <input name="perm-name" type="text" [(ngModel)]="perm.name" />
-    <div class="label">Description:</div>
+
+    <label>Description:</label>
     <input name="perm-desc" type="text" [(ngModel)]="perm.description" />
-    <div class="label">Type</div>
+
+    <label>Type</label>
     <select name="perm-type" [(ngModel)]="perm.type">
         <option [value]="0">Radio</option>
         <option [value]="1">Events</option>
     </select>
 
-    <div class="label">Nickname:</div>
+    <label>Nickname:</label>
     <input name="perm-user" type="text" [(ngModel)]="perm.nickname" />
-    <div class="label">Day:</div>
+    <label>Day:</label>
     <select name="perm-day" [(ngModel)]="perm.day">
         <option *ngFor="let day of days" [value]="day.number">{{ day.label }}</option>
     </select>
 
-    <div class="label">Hour:</div>
+    <label>Hour:</label>
     <select name="perm-hour" [(ngModel)]="perm.hour">
         <option *ngFor="let hour of hours" [value]="hour.number">
             {{ hour.label }}

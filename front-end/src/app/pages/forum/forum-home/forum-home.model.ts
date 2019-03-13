@@ -16,11 +16,11 @@ export class ForumTopPoster {
 
 export class ForumStats {
     @arrayOf(ForumLatestPost)
-    latestPosts: Array<ForumLatestPost> = [];
+    latestPosts: Array<ForumLatestPost>;
     @arrayOf(ForumTopPoster)
-    topPosters: Array<ForumTopPoster> = [];
+    topPosters: Array<ForumTopPoster>;
     @arrayOf(ForumTopPoster)
-    topPostersToday: Array<ForumTopPoster> = [];
+    topPostersToday: Array<ForumTopPoster>;
 
     constructor(source?: Partial<ForumStats>) {
         ClassHelper.assign(this, source);

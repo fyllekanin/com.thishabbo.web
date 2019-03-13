@@ -3,7 +3,7 @@
     <div class="grid-container full">
         <div class="grid-x grid-margin-x">
             <div class="cell small-6">
-                <div class="label">Name</div>
+                <label>Name</label>
                 <input name="bbcode-name" type="text" [(ngModel)]="bbcode.name" />
             </div>
             <div class="cell small-6">
@@ -16,23 +16,23 @@
                 </label>
             </div>
             <div class="cell small-6" *ngIf="!bbcode.isEmoji">
-                <div class="label">Example</div>
+                <label>Example</label>
                 <input name="bbcode-example" type="text" [(ngModel)]="bbcode.example" />
             </div>
             <div class="cell small-6">
-                <div class="label">Pattern</div>
+                <label>Pattern</label>
                 <input name="bbcode-pattern" type="text" [(ngModel)]="bbcode.pattern" />
             </div>
             <div class="cell small-6" *ngIf="bbcode.isEmoji">
-                <div class="label">Image <em>(22x22px size)</em></div>
+                <label>Image <em>(22x22px size)</em></label>
                 <input #image accept="image/*" type="file"/>
             </div>
             <div class="cell small-6" *ngIf="!bbcode.isEmoji">
-                <div class="label">Replace</div>
+                <label>Replace</label>
                 <input name="bbcode-replace" type="text" [(ngModel)]="bbcode.replace" />
             </div>
             <div class="cell small-6" *ngIf="!bbcode.isEmoji">
-                <div class="label">Content</div>
+                <label>Content</label>
                 <input name="bbcode-content" type="text" [(ngModel)]="bbcode.content" />
             </div>
         </div>

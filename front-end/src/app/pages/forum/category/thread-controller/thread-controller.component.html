@@ -3,26 +3,26 @@
     <div class="grid-container full">
         <div class="grid-x grid-margin-x">
             <div class="cell small-6">
-                <div class="label">Title:</div>
+                <label>Title:</label>
                 <input [(ngModel)]="thread.title" placeholder="New Thread" type="text" name="thread-title">
             </div>
             <div class="cell small-6">
-                <div class="label">Prefix:</div>
+                <label>Prefix:</label>
                 <select [(ngModel)]="thread.prefixId">
                     <option value="0">None</option>
                     <option *ngFor="let prefix of thread.prefixes" value="{{prefix.prefixId}}">{{prefix.text}}</option>
                 </select>
             </div>
-            <div *ngIf="shouldHaveTumbnail" class="cell small-6">
-                <div class="label">Thumbnail:</div>
+            <div *ngIf="shouldHaveThumbnail" class="cell small-6">
+                <label>Thumbnail:</label>
                 <input type="file" accept="image/*" #file name="thread-thumbnail">
             </div>
             <div *ngIf="isQuestTemplate" class="cell small-6">
-                <div class="label">Badge: <em *ngIf="badeHaveError" class="error">Only name!</em></div>
+                <label>Badge: <em *ngIf="badeHaveError" class="error">Only name!</em></label>
                 <input [(ngModel)]="thread.badge" type="text" name="thread-badge"> <br/>
             </div>
             <div *ngIf="isQuestTemplate" class="cell small-6">
-                <div class="label">Tags:</div>
+                <label>Tags:</label>
                 <div class="grid-container full">
                     <div class="grid-x grid-margin-x">
                         <div class="cell small-6">
@@ -67,7 +67,7 @@
         <div class="grid-container full poll-answer">
             <div class="grid-x">
                 <div class="cell small-11">
-                    <div class="label">Question:</div>
+                    <label>Question:</label>
                     <input [(ngModel)]="thread.poll.question" type="text" [disabled]="thread.createdAt && !thread.poll.isNew" name="thread-poll-question">
                 </div>
             </div>
@@ -76,7 +76,7 @@
             <div class="grid-container full poll-answer">
                 <div class="grid-x">
                     <div class="cell small-11">
-                        <div class="label">Answer #{{index+1}}</div>
+                        <label>Answer #{{index+1}}</label>
                         <input [(ngModel)]="answer.label" type="text" [disabled]="thread.createdAt && !thread.poll.isNew" name="thread-poll-answer">
                     </div>
                     <div class="cell small-1 remove-answer" *ngIf="!thread.createdAt && thread.poll.isNew">

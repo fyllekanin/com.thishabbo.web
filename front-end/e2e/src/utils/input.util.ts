@@ -1,4 +1,4 @@
-import { browser, by, element, ElementFinder, ExpectedConditions, Key } from 'protractor';
+import { browser, ElementFinder, ExpectedConditions, Key } from 'protractor';
 
 export class InputUtil {
 
@@ -15,14 +15,6 @@ export class InputUtil {
 
     static fillEditor(ele: ElementFinder, value: string | number): void {
         browser.wait(ExpectedConditions.presenceOf(ele), 10000, 'Expected element to be present');
-        browser.waitForAngularEnabled(false);
-        browser.switchTo().frame(ele.getWebElement());
-
-        const body = element(by.css('body'));
-        body.sendKeys(value);
-
-        browser.switchTo().defaultContent();
-        browser.waitForAngularEnabled(true);
-        browser.waitForAngular();
+        ele.sendKeys(value);
     }
 }

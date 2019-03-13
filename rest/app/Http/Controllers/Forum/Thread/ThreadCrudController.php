@@ -131,7 +131,7 @@ class ThreadCrudController extends Controller {
         $thread->save();
 
         NotifyMentionsInPost::dispatch($threadSkeleton->content, $thread->firstPostId, $user->userId);
-        if ($category->template !== $this->categoryTemplates->DEFAULT && $request->hasFile('thumbnail')) {
+        if ($category->template !== $this->categoryTemplates->DEFAULT) {
             $this->uploadFileAndCreateTemplateData($threadSkeleton, $thumbnail, $threadId, $request->hasFile('thumbnail'));
         }
 

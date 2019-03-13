@@ -132,7 +132,7 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
         return !Boolean(this._threadSkeleton && this._threadSkeleton.createdAt);
     }
 
-    get shouldHaveTumbnail(): boolean {
+    get shouldHaveThumbnail(): boolean {
         return CategoryTemplates.DEFAULT !== this._threadSkeleton.template;
     }
 

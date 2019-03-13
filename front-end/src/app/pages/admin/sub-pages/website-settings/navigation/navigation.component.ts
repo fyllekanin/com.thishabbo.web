@@ -1,7 +1,7 @@
 import { Component, ComponentFactoryResolver, ElementRef, OnDestroy } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { ActivatedRoute } from '@angular/router';
-import { ChildItem, MainItem } from 'shared/app-views/navigation/navigation.model';
+import { ChildItem, MainItem, NavigationItem } from 'shared/app-views/navigation/navigation.model';
 import {
     Action,
     TableAction,
@@ -12,7 +12,7 @@ import {
 } from 'shared/components/table/table.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { DialogService } from 'core/services/dialog/dialog.service';
-import { AddItemComponent } from './add-item/add-item.component';
+import { NavigationItemComponent } from './navigation-item/navigation-item.component';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
 import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
 import { GlobalNotification, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
@@ -57,8 +57,8 @@ export class NavigationComponent extends Page implements OnDestroy {
         } else {
             this._dialogService.openDialog({
                 title: 'Adding main item',
-                component: this._componentResolver.resolveComponentFactory(AddItemComponent),
-                data: true,
+                component: this._componentResolver.resolveComponentFactory(NavigationItemComponent),
+                data: { isMainItem: true },
                 buttons: [
                     new DialogCloseButton('Close'),
                     new DialogButton({
@@ -78,6 +78,9 @@ export class NavigationComponent extends Page implements OnDestroy {
 
     onTableAction(action: Action): void {
         switch (action.value) {
+            case NavigationActions.EDIT:
+                this.editItem(action.rowId);
+                break;
             case NavigationActions.REMOVE:
                 this.removeItem(action.rowId);
                 break;
@@ -95,8 +98,8 @@ export class NavigationComponent extends Page implements OnDestroy {
         const mainItem = this._data.find(item => item.label === config.title);
         this._dialogService.openDialog({
             title: 'Adding child',
-            component: this._componentResolver.resolveComponentFactory(AddItemComponent),
-            data: false,
+            component: this._componentResolver.resolveComponentFactory(NavigationItemComponent),
+            data: { isMainItem: false },
             buttons: [
                 new DialogCloseButton('Close'),
                 new DialogButton({
@@ -121,8 +124,43 @@ export class NavigationComponent extends Page implements OnDestroy {
         return this._tableConfigs;
     }
 
+    private editItem(rowId: string): void {
+        const item = this.getAllItems().find(nav => nav.id === rowId);
+        this._dialogService.openDialog({
+            title: 'Adding child',
+            component: this._componentResolver.resolveComponentFactory(NavigationItemComponent),
+            data: { isMainItem: item instanceof MainItem, item: item },
+            buttons: [
+                new DialogCloseButton('Close'),
+                new DialogButton({
+                    title: 'Save',
+                    callback: newItem => {
+                        if (this.isValid(newItem)) {
+                            this.updateItem(newItem);
+                            this._dialogService.closeDialog();
+                            this.buildTableConfigs();
+                            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                                title: 'Success',
+                                message: 'Item updated, do not forget to save!'
+                            }));
+                        }
+                    }
+                })
+            ]
+        });
+    }
+
+    private updateItem(newItem: NavigationItem): void {
+        this._data = this._data.map(main => {
+            const children = main.children.map(child => child.id === newItem.id ? <ChildItem>newItem : child);
+            const newMain = main.id === newItem.id ? <MainItem>newItem : main;
+            newMain.children = children;
+            return newMain;
+        });
+    }
+
     private moveItemUp(rowId: string): void {
-        let mainItemIndex = this._data.findIndex(item => item.label === rowId);
+        let mainItemIndex = this._data.findIndex(item => item.id === rowId);
         if (mainItemIndex > 0) {
             this._data = ArrayHelper.move(this._data, mainItemIndex, mainItemIndex - 1);
             this.buildTableConfigs();
@@ -132,11 +170,11 @@ export class NavigationComponent extends Page implements OnDestroy {
         }
 
         mainItemIndex = this._data.findIndex(item => {
-            const childLabels = item.children.map(child => child.label);
+            const childLabels = item.children.map(child => child.id);
             return childLabels.indexOf(rowId) > -1;
         });
         if (mainItemIndex > -1) {
-            const childItemIndex = this._data[mainItemIndex].children.findIndex(child => child.label === rowId);
+            const childItemIndex = this._data[mainItemIndex].children.findIndex(child => child.id === rowId);
             if (childItemIndex > 0) {
                 this._data[mainItemIndex].children =
                     ArrayHelper.move(this._data[mainItemIndex].children, childItemIndex, childItemIndex - 1);
@@ -147,8 +185,8 @@ export class NavigationComponent extends Page implements OnDestroy {
     }
 
     private moveItemDown(rowId: string): void {
-        let mainItemIndex = this._data.findIndex(item => item.label === rowId);
-        if (mainItemIndex < (this._data.length - 1)) {
+        let mainItemIndex = this._data.findIndex(item => item.id === rowId);
+        if (mainItemIndex < (this._data.length - 1) && mainItemIndex > -1) {
             this._data = ArrayHelper.move(this._data, mainItemIndex, mainItemIndex + 1);
             this.buildTableConfigs();
             return;
@@ -157,11 +195,11 @@ export class NavigationComponent extends Page implements OnDestroy {
         }
 
         mainItemIndex = this._data.findIndex(item => {
-            const childLabels = item.children.map(child => child.label);
+            const childLabels = item.children.map(child => child.id);
             return childLabels.indexOf(rowId) > -1;
         });
         if (mainItemIndex > -1) {
-            const childItemIndex = this._data[mainItemIndex].children.findIndex(child => child.label === rowId);
+            const childItemIndex = this._data[mainItemIndex].children.findIndex(child => child.id === rowId);
             if (childItemIndex < (this._data[mainItemIndex].children.length - 1)) {
                 this._data[mainItemIndex].children =
                     ArrayHelper.move(this._data[mainItemIndex].children, childItemIndex, childItemIndex + 1);
@@ -183,8 +221,8 @@ export class NavigationComponent extends Page implements OnDestroy {
 
     private removeItem(rowId: string): void {
         this._data = this._data.filter(mainItem => {
-            mainItem.children = mainItem.children.filter(childItem => childItem.label !== rowId);
-            return mainItem.label !== rowId;
+            mainItem.children = mainItem.children.filter(childItem => childItem.id !== rowId);
+            return mainItem.id !== rowId;
         });
         this.buildTableConfigs();
     }
@@ -197,6 +235,7 @@ export class NavigationComponent extends Page implements OnDestroy {
 
     private buildTableConfigs(): void {
         const actions = [
+            new TableAction({ title: 'Edit', value: NavigationActions.EDIT }),
             new TableAction({ title: 'Move Up', value: NavigationActions.MOVE_UP }),
             new TableAction({ title: 'Move Down', value: NavigationActions.MOVE_DOWN }),
             new TableAction({ title: 'Remove', value: NavigationActions.REMOVE })
@@ -207,18 +246,18 @@ export class NavigationComponent extends Page implements OnDestroy {
                 title: item.label,
                 headers: NavigationComponent.getTableHeaders(),
                 rows: [new TableRow({
-                    id: item.label,
+                    id: item.id,
                     cells: [
                         new TableCell({ title: item.label }),
-                        new TableCell({ title: item.url }),
+                        new TableCell({ title: item.isHomePage ? 'Custom Home' : item.url }),
                         new TableCell({ title: `<i class="fas ${item.icon}"></i>`, innerHTML: true })
                     ],
                     actions: actions
                 })].concat(item.children.map(child => new TableRow({
-                    id:  child.label,
+                    id:  child.id,
                     cells: [
                         new TableCell({ title: child.isDivider ? 'Divider' : child.label }),
-                        new TableCell({ title: child.isDivider ? '' : child.url }),
+                        new TableCell({ title: child.isDivider ? '' : (child.isHomePage ? 'Custom Home' : child.url) }),
                         new TableCell({ title: '' })
                     ],
                     actions: actions
@@ -240,7 +279,7 @@ export class NavigationComponent extends Page implements OnDestroy {
             return true;
         }
         const allItems = this.getAllItems();
-        const urlExists = allItems.findIndex(data => data.url === item.url) > -1;
+        const urlExists = allItems.findIndex(data => data.url === item.url && data.id !== item.id) > -1;
         if (urlExists) {
             this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
                 title: 'Error',
@@ -250,7 +289,7 @@ export class NavigationComponent extends Page implements OnDestroy {
             return false;
         }
 
-        const labelExists = allItems.findIndex(data => data.label === item.label) > -1;
+        const labelExists = allItems.findIndex(data => data.label === item.label && data.id !== item.id) > -1;
         if (labelExists) {
             this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
                 title: 'Error',
@@ -262,9 +301,9 @@ export class NavigationComponent extends Page implements OnDestroy {
         return  Boolean(item.url) && Boolean(item.label);
     }
 
-    private getAllItems(): Array<ChildItem> {
+    private getAllItems(): Array<NavigationItem> {
         return this._data.reduce((prev, curr) => {
-            return prev.concat([<ChildItem>curr].concat(curr.children));
+            return prev.concat([<NavigationItem>curr].concat(curr.children));
         }, []);
     }
 }

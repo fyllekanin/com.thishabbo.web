@@ -3,11 +3,11 @@
     <div class="grid-container full">
         <div class="grid-x margin-x">
             <div class="cell small-6">
-                <div class="label">Name</div>
+                <label>Name</label>
                 <input type="text" name="name" [(ngModel)]="model.bet.name"/>
             </div>
             <div class="cell small-6">
-                <div class="label">Category</div>
+                <label>Category</label>
                 <select [(ngModel)]="model.bet.betCategoryId">
                     <option disabled="disabled" [value]="0">Choose..</option>
                     <option *ngFor="let item of model.categories" [value]="item.betCategoryId">
@@ -16,18 +16,18 @@
                 </select>
             </div>
             <div class="cell small-12">
-                <div class="label">Display Order</div>
+                <label>Display Order</label>
                 <input type="text" name="name" [(ngModel)]="model.bet.displayOrder"/>
             </div>
             <div class="cell small-5">
-                <div class="label">Numerator</div>
+                <label>Numerator</label>
                 <input type="number" name="name" [(ngModel)]="model.bet.leftSide"/>
             </div>
             <div class="cell small-2 divide">
                 <strong><i class="fas fa-divide"></i></strong>
             </div>
             <div class="cell small-5">
-                <div class="label">Denominator</div>
+                <label>Denominator</label>
                 <input type="number" name="name" [(ngModel)]="model.bet.rightSide"/>
             </div>
         </div>

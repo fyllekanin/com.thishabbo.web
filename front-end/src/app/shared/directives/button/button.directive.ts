@@ -21,6 +21,7 @@ export class ButtonDirective {
     @HostBinding('style.color') textColor = '#ffffff';
     @HostBinding('style.outline') outline = 'none';
     @HostBinding('style.margin') margin = '0 0 0 5px';
+    @HostBinding('style.height') height = '35px';
 
     constructor(
         private _sanitizer: DomSanitizer

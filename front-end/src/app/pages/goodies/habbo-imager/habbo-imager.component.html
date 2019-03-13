@@ -9,11 +9,11 @@
                     </div>
                     <div class="cell small-4">
                         <div>
-                            <div class="label">Habbo Name:</div>
+                            <label>Habbo Name:</label>
                             <input [(ngModel)]="habbo" (input)="urlBuilder()"/>
                         </div>
                         <div>
-                            <div class="label">Expression:</div>
+                            <label>Expression:</label>
                             <select [(ngModel)]="expression" (change)="urlBuilder()">
                                 <option *ngFor="let emotion of emotions" [value]="emotion.value">
                                     {{emotion.label}}
@@ -21,7 +21,7 @@
                             </select>
                         </div>
                         <div>
-                            <div class="label">Size:</div>
+                            <label>Size:</label>
                             <select [(ngModel)]="size" (change)="urlBuilder()">
                                 <option *ngFor="let size of sizes" [value]="size.value">
                                     {{size.label}}
@@ -29,7 +29,7 @@
                             </select>
                         </div>
                         <div>
-                            <div class="label">Item:</div>
+                            <label>Item:</label>
                             <select [(ngModel)]="item" (change)="urlBuilder()">
                                 <option *ngFor="let item of items" [value]="item.value">
                                     {{item.label}}
@@ -102,15 +102,15 @@
             <app-title [title]="'Links'"></app-title>
             <app-content>
                 <div>
-                    <div class="label">Direct link:</div>
+                    <label>Direct link:</label>
                     <input [ngModel]="directLink" />
                 </div>
                 <div>
-                    <div class="label">BBcode:</div>
+                    <label>BBcode:</label>
                     <input [ngModel]="bbcode" />
                 </div>
                 <div>
-                    <div class="label">HTML:</div>
+                    <label>HTML:</label>
                     <input [ngModel]="html" />
                 </div>
             </app-content>
