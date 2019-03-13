@@ -5,7 +5,7 @@ import { FastTyperComponent } from './fast-typer/fast-typer.component';
 import { FastTyperResolver } from './services/fast-typer.resolver';
 import { SnakeComponent } from './snake/snake.component';
 import { SnakeResolver } from './services/snake.resolver';
-import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
+import { ArcadeDefaultResolver } from './services/arcade-default.resolver';
 
 export const arcadeRoutes: Routes = [
     {
@@ -16,7 +16,7 @@ export const arcadeRoutes: Routes = [
                 path: '',
                 component: ArcadeDefaultComponent,
                 resolve: {
-                    ping: ContinuesInformationService
+                    data: ArcadeDefaultResolver
                 }
             },
             {

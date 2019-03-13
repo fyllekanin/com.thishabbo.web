@@ -4,11 +4,11 @@
 }
 
 * >>> .bar {
-    fill: #003060;
+    fill: #1698f2;
 }
 
 * >>> .bar:hover {
-    fill: #0f4b88;
+    fill: #1076bd;
 }
 
 * >>> .axis {

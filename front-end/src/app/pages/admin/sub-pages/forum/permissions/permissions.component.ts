@@ -60,7 +60,7 @@ export class PermissionsComponent extends Page implements OnDestroy {
             .subscribe(() => {
                 this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
                     title: 'Success',
-                    message: 'Group forum permissions updated!'
+                    message: 'Group Forum Permissions Updated!'
                 }));
             }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
     }
@@ -71,7 +71,7 @@ export class PermissionsComponent extends Page implements OnDestroy {
 
     get title(): string {
         return this._permissionsPage ?
-            `Forum permissions for category: ${this._permissionsPage.category.title}` : '';
+            `Forum Permissions for Category: ${this._permissionsPage.category.title}` : '';
     }
 
     get group(): PermissionGroup {
@@ -83,7 +83,7 @@ export class PermissionsComponent extends Page implements OnDestroy {
     }
 
     get groupTitle(): string {
-        return `Editing group: ${this._permissionsPage.group.name} forum permissions`;
+        return `Editing Group: ${this._permissionsPage.group.name} Forum Permissions`;
     }
 
     get leftHalf(): Array<PermissionGroup> {
@@ -96,7 +96,7 @@ export class PermissionsComponent extends Page implements OnDestroy {
 
     get additionalGroupsTitle(): string {
         const selectedGroups = this._permissionsPage.groups.filter(item => item.isChecked);
-        return `Additional groups to include in update (${selectedGroups.length} selected)`;
+        return `Additional Groups to include in update (${selectedGroups.length} selected)`;
     }
 
     private onPage(data: { data: PermissionsPage }): void {

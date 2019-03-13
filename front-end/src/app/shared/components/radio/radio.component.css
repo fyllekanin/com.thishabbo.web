@@ -5,20 +5,16 @@
 }
 
 .events-box {
-    margin: 131px 0 0 99px;
+    margin: 131px 0 0 -8px;
     position: absolute;
 }
 
 .event-buttons {
-    width: 10%;
+    width: 10.7%;
     float: right;
-    margin: 0 2px 0 0;
 }
 
 .radio-buttons {
-    width: 10%;
-    float: left;
-    margin: 0 5px 0 0;
 }
 
 .icon-position-events {
@@ -26,7 +22,7 @@
 }
 
 .event-name {
-    background: #fbfbfb;
+    background: #f7f7f7;
     padding: 5px;
     margin-bottom: 1px;
     font-size: 11px;
@@ -38,47 +34,20 @@
     margin: 0 0 0 1px;
 }
 
-.event-art {
-    height: 89px;
-    width: 89px;
-    background: url(http://puu.sh/CXnBU/96f685f175.png) center;
-    float: right;
-    position: relative;
-    background-position-x: 0;
-    margin: -89px 8px 0 42px;
-    -webkit-box-shadow: rgba(0, 0, 0, 0.18) 0 3px 5px;
-    border: 1px solid #ffffff;
-    border-radius: 2px;
-}
-
 .radio-box {
-    margin: 0 0 0 57px;
+    margin: 0 0 0 -43px;
     position: absolute;
-}
-
-.album-art {
-    background-image: url(http://puu.sh/CJn9s/81b152a283.jpg);
-    height: 89px;
-    width: 89px;
-    float: right;
-    position: relative;
-    background-position-x: 0;
-    background-size: 100%;
-    margin: 33px 309px 0 42px;
-    -webkit-box-shadow: rgba(0, 0, 0, 0.18) 0 3px 5px;
-    border: 1px solid #ffffff;
-    border-radius: 2px;
 }
 
 .radio-info {
     float: right;
     background: white;
     color: #7d7d7d;
-    margin: 34px -430px 0 0;
+    margin: 34px -429px 0 0;
     font-size: 13px;
-    height: 88px;
-    padding: 3px;
-    width: 293px;
+    height: 89px;
+    padding: 1px;
+    width: 288px;
     -webkit-box-shadow: rgba(0, 0, 0, 0.18) 0 3px 5px;
     border: 1px solid #fffbfb;
     border-radius: 2px;
@@ -88,11 +57,11 @@
     float: right;
     background: white;
     color: #7d7d7d;
-    margin: 0px 103px 0 0;
+    margin: 0 0 0 106px;
     font-size: 13px;
     height: 89px;
-    padding: 3px;
-    width: 293px;
+    padding: 1px;
+    width: 288px;
     -webkit-box-shadow: rgba(0, 0, 0, 0.18) 0 3px 5px;
     border: 1px solid #fffbfb;
     border-radius: 2px;
@@ -100,13 +69,13 @@
 
 .next-dj {
     display: inline-block;
-    width: 54.6%;
+    width: 54.8%;
     margin: 0 0 0 1px;
 }
 
 .dj-position {
-    background: #fbfbfb;
-    padding: 4.8px;
+    background: #f7f7f7;
+    padding: 5.6px;
     margin-bottom: 1px;
     font-size: 11px;
 }
@@ -119,8 +88,8 @@
 }
 
 .current-event {
-    background: #fbfbfb;
-    padding: 10.7px;
+    background: #f7f7f7;
+    padding: 12.6px;
     margin-bottom: 1px;
     font-size: 11px;
 }
@@ -129,25 +98,26 @@
     color: white;
     display: inline-block;
     font-size: 13px;
-    padding: 9px;
-    width: 30px;
-    margin-bottom: 4px;
+    padding: 11px 0 0 10px;
+    height: 41.1px;
+    width: 31px;
+    margin: 0 0 2px 0;
     text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.25);
     border-radius: 3px;
-    box-shadow: rgba(0, 0, 0, 0.15) 0 0 0 1px inset, rgba(255, 255, 255, 0.18) 0 0 0 2px inset, rgba(0, 0, 0, 0.11) 0 2px 0;
-    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.15) 0 0 0 1px inset, rgba(255, 255, 255, 0.18) 0 0 0 2px inset, rgba(0, 0, 0, 0.06) 0 1px 0;
 }
 
 .events-box-button {
     color: white;
     display: inline-block;
     font-size: 13px;
-    padding: 9.2px;
-    width: 30px;
-    margin-bottom: 4px;
+    padding: 11px 0 0 10px;
+    height: 41.1px;
+    width: 31px;
+    margin: 0 0 2px 0;
     text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.25);
     border-radius: 3px;
-    box-shadow: rgba(0, 0, 0, 0.15) 0 0 0 1px inset, rgba(255, 255, 255, 0.18) 0 0 0 2px inset, rgba(0, 0, 0, 0.11) 0 2px 0;
+    box-shadow: rgba(0, 0, 0, 0.15) 0 0 0 1px inset, rgba(255, 255, 255, 0.18) 0 0 0 2px inset, rgba(0, 0, 0, 0.06) 0 1px 0;
 }
 
 .icon-position {
@@ -155,20 +125,27 @@
 }
 
 .song {
-    width: 45%;
+    width: 44.7%;
     display: inline-block;
 }
 
 .marquee-chat {
     margin: 0 0 0 5px;
-    width: 89px;
+    width: 76px;
     position: absolute;
 }
 
 .inner-box {
     display: inline-block;
-    width: 88.2%;
+    width: 88.4%;
 }
+
+.inner-box-radio {
+    display: inline-block;
+    width: 88.4%;
+    float: right;
+}
+
 
 .marquee-chat-radio {
     margin: 0 0 0 5px;

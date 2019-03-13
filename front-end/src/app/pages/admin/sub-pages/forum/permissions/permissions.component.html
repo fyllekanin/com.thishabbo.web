@@ -2,11 +2,27 @@
 <app-content>
     <div class="grid-container full">
         <div class="grid-x grid-margin-x">
-            <div class="cell small-6">
+            <div class="cell small-12">
                 <select [ngModel]="group ? group.groupId : -1" (ngModelChange)="onGroupChange($event)">
                     <option *ngFor="let grp of groups" value="{{grp.groupId}}">{{grp.name}}</option>
                 </select>
             </div>
+
+            <div class="cell small-6 permission-container">
+                <label class="checkbox-container" *ngFor="let group of leftHalf">
+                    {{group.name}}
+                    <input type="checkbox" [(ngModel)]="group.isChecked">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div class="cell small-6 permission-container">
+                <label class="checkbox-container" *ngFor="let group of rightHalf">
+                    {{group.name}}
+                    <input type="checkbox" [(ngModel)]="group.isChecked">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+
             <div class="cell small-12">
                 <button appButton (click)="save(false)">Save Permissions</button>
                 <button appButton (click)="save(true)">Save Permissions & Cascade to Child Categories</button>
@@ -21,7 +37,7 @@
     <div class="grid-container full">
         <div class="grid-x grid-margin-x">
             <div class="cell small-6">
-                <b>General Permissions</b> <br/><br/>
+                <div class="label">General Permissions</div>
                 <label class="checkbox-container">
                     Access to this Category?
                     <input type="checkbox" [(ngModel)]="permissions.canRead">
@@ -48,13 +64,13 @@
                     <span class="checkmark"></span>
                 </label>
                 <label class="checkbox-container">
-                    Can close and open own Threads?
+                    Can Open / Close Own Threads?
                     <input type="checkbox" [(ngModel)]="permissions.canOpenCloseOwnThread">
                     <span class="checkmark"></span>
                 </label>
             </div>
             <div class="cell small-6">
-                <b>Moderation Permissions</b> <br/><br/>
+                <div class="label">Moderation Permissions</div>
                 <label class="checkbox-container">
                     Can Edit Others Posts & Threads?
                     <input type="checkbox" [(ngModel)]="permissions.canEditOthersPosts">
@@ -71,7 +87,7 @@
                     <span class="checkmark"></span>
                 </label>
                 <label class="checkbox-container">
-                    Can manage polls? <em>(Delete & View votes)</em>
+                    Can Manage Polls? <em>(View & Delete Votes)</em>
                     <input type="checkbox" [(ngModel)]="permissions.canManagePolls">
                     <span class="checkmark"></span>
                 </label>
@@ -91,40 +107,18 @@
                     <span class="checkmark"></span>
                 </label>
                 <label class="checkbox-container">
-                    Can change owner of thread?
+                    Can Change Owner of Thread?
                     <input type="checkbox" [(ngModel)]="permissions.canChangeThreadOwner">
                     <span class="checkmark"></span>
                 </label>
                 <label class="checkbox-container">
-                    Can merge posts in a thread?
+                    Can Merge Posts in a Thread?
                     <input type="checkbox" [(ngModel)]="permissions.canMergePosts">
                     <span class="checkmark"></span>
                 </label>
                 <label class="checkbox-container">
-                    Can move threads?
+                    Can Move Threads?
                     <input type="checkbox" [(ngModel)]="permissions.canMoveThreads">
-                    <span class="checkmark"></span>
-                </label>
-            </div>
-        </div>
-    </div>
-</app-content>
-
-<app-title [title]="additionalGroupsTitle"></app-title>
-<app-content>
-    <div class="grid-container full">
-        <div class="grid-x grid-margin-x">
-            <div class="cell small-6">
-                <label class="checkbox-container" *ngFor="let group of leftHalf">
-                    {{group.name}}
-                    <input type="checkbox" [(ngModel)]="group.isChecked">
-                    <span class="checkmark"></span>
-                </label>
-            </div>
-            <div class="cell small-6">
-                <label class="checkbox-container" *ngFor="let group of rightHalf">
-                    {{group.name}}
-                    <input type="checkbox" [(ngModel)]="group.isChecked">
                     <span class="checkmark"></span>
                 </label>
             </div>

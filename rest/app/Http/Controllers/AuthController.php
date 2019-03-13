@@ -214,8 +214,8 @@ class AuthController extends Controller {
         $loginName = $request->input('loginName');
         $password = $request->input('password');
 
-        Condition::precondition(!isset($loginName) || empty($loginName), 400, 'Login name is not set');
-        Condition::precondition(!isset($password) || empty($password), 400, 'Password is not set');
+        Condition::precondition(!isset($loginName) || empty($loginName), 400, 'Please input your Username or Habbo Name!');
+        Condition::precondition(!isset($password) || empty($password), 400, 'Please input your Password!');
 
         $userId = $this->findUser($loginName, $password);
         Condition::precondition(!$userId, 404, 'Invalid username or Password');
@@ -334,12 +334,12 @@ class AuthController extends Controller {
         Condition::precondition(!isset($data->habbo) || empty($data->habbo), 400, 'Habbo needs to be set');
 
         $habbo = $this->habboService->getHabboByName($data->habbo);
-        Condition::precondition(!$habbo, 404, 'There is no habbo with that name');
+        Condition::precondition(!$habbo, 404, 'There is no Habbo with that name!');
         Condition::precondition($habbo->motto != 'thishabbo-register', 400, 'Your motto needs to be "thishabbo-register"');
-        Condition::precondition(User::withHabbo($data->habbo)->count() > 0, 400, 'The habbo name is already taken');
+        Condition::precondition(User::withHabbo($data->habbo)->count() > 0, 400, 'The Habbo Name is already taken. Contact Support!');
 
         $oneMonthAgo = time() - 2419200;
-        Condition::precondition(strtotime($habbo->memberSince) > $oneMonthAgo, 400, 'Your habbo needs to be at least one month old');
+        Condition::precondition(strtotime($habbo->memberSince) > $oneMonthAgo, 400, 'Your Habbo needs to be at least one month old! Contact Support!');
     }
 
     /**

@@ -44,7 +44,6 @@
     position: relative;
     height: 53px;
     margin: -2px 8px 0 0;
-    background: url(/assets/images/unknown.png) no-repeat right;
     background-position-y: 12px
 }
 
@@ -52,7 +51,7 @@
     color: #ffffff;
     font-size: 12px;
     float: right;
-    margin: 0 254px 9px 0;
+    margin: 0 155px 9px 0;
 }
 
 .logo-bar-underline {
@@ -92,15 +91,24 @@
     position: relative;
 }
 
-.unregistered, .logged-in {
+.unregistered {
     font-size: 11px;
-    width: 268px;
+    width: 256px;
     padding-top: 0.7rem;
     display: inline-block;
-    padding-left: 4px;
     padding-bottom: 1rem;
     position: absolute;
-    margin: 1px 0 0 0;
+    margin: 1px 0 0 -134px;
+}
+
+.logged-in {
+    font-size: 11px;
+    width: 256px;
+    padding-top: 0.7rem;
+    display: inline-block;
+    padding-bottom: 1rem;
+    position: absolute;
+    margin: 1px 0 0 5px;
 }
 
 .under-welcome {

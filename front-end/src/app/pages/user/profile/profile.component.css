@@ -6,6 +6,106 @@
     background: rgba(165, 161, 161, .02);
     box-shadow: inset 0 1px 4px rgba(0, 0, 0, .02);
     color: #8c8a8a;
-    padding: 0.4rem;
+    padding: 7px;
     text-shadow: #fff 1px 1px 0;
+}
+
+.profile-friends {
+    width: 78%;
+    float: right;
+}
+
+.visitor-information-left {
+    width: 55%;
+    display: -webkit-inline-box;
+}
+
+.visitor-information-left i {
+    margin: 0 0.5rem;
+}
+
+.visitor-information-text {
+    float:right;
+}
+
+.visitor-information {
+    padding: 9px;
+    width: 100%;
+    background: #fbfbfb;
+    box-shadow: inset 0 1px 2px rgba(197,197,197,0.19);
+}
+
+.vistor-message-info {
+    width: 89.5%;
+    float: right;
+    margin: 6px 0 0 0;
+}
+
+.vistor-reply-info {
+    width: 89%;
+    float: right;
+    margin: 6px 0 0 0;
+}
+
+.visitor-reply-container {
+    width: 100%;
+    float: right;
+    margin: 6px 0px 0 0;
+    margin-bottom: 1px;
+    background: #fbfbfb;
+    box-shadow: inset 0 1px 2px rgba(197,197,197,0.19);
+    padding: 10px;
+}
+
+.visitor-message-desc {
+    padding: 10px 5px 10px 5px;
+}
+
+.visitor-message-nickname {
+    font-size: 13px;
+    font-weight: bold;
+    color: #cf8989;
+}
+
+.profile-name {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #cc8989;
+    font-weight: bold;
+}
+
+.cover-photo {
+    width: 100%;
+    height: 15rem;
+    background: no-repeat center;
+    background-size: cover;
+    float: left;
+}
+
+.profile-joined {
+    text-align: center;
+    font-size: 11px;
+    margin: 0px 0 5px 0;
+    font-style: italic;
+}
+
+.profile-avatar {
+    width: 100%;
+    background: #fbfbfb;
+    border-radius: 2px;
+    border-top: none!important;
+    box-shadow: inset 0 1px 2px rgba(197,197,197,0.19);
+    float: left;
+    margin-bottom: 2px;
+    margin-top: 2px;
+    padding: 15px;
+    position: relative;
+    text-align: center;
+    margin-bottom:3px;
+}
+
+.profile-avatar img {
+    border-radius: 2px;
+    box-shadow: 0 0 16px 0 rgba(0,0,0,0.04);
+    margin: 3px 0 0;
 }

@@ -10,15 +10,18 @@
 }
 
 :host(.warning) {
-    background: -webkit-linear-gradient(top, #bb4c4c 0, #ad6262 100%);
+    background: #c37070;
+    background-image: url(/assets/images/boxtitlebg_trans.png);
 }
 
 :host(.alert) {
-    background: -webkit-linear-gradient(top,#f9ab81 0,#e29976 100%);;
+    background: #79b554;
+    background-image: url(/assets/images/boxtitlebg_trans.png);
 }
 
 :host(.info) {
-    background: -webkit-linear-gradient(top,#6398fd 0,#658bd4 100%);
+    background: #139af9;
+    background-image: url(/assets/images/boxtitlebg_trans.png);
 }
 
 .closable {

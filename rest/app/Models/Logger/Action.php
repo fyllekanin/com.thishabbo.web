@@ -790,9 +790,9 @@ class Action {
 
     const UNIGNORED_CATEGORY = [
         'id' => 101,
-        'description' => 'User un-ignored category',
+        'description' => 'User unignored category',
         'data' => [
-            'categoryId' => 'ID of category that the user un-ignored'
+            'categoryId' => 'ID of category that the user unignored'
         ]
     ];
 
@@ -806,9 +806,9 @@ class Action {
 
     const UNIGNORED_THREAD = [
         'id' => 103,
-        'description' => 'User un-ignored thread',
+        'description' => 'User unignored thread',
         'data' => [
-            'threadId' => 'ID of thread that the user un-ignored'
+            'threadId' => 'ID of thread that the user unignored'
         ]
     ];
     const MOVE_THREADS = [

@@ -116,8 +116,8 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
 
     get pageTitle(): string {
         return !this.isNew ?
-            `Edit thread: ${this._threadSkeleton.title}` :
-            `Creating new thread: ${this._threadSkeleton.title}`;
+            `Edit Thread: ${this._threadSkeleton.title}` :
+            `Creating New Thread: ${this._threadSkeleton.title}`;
     }
 
     get badge(): string {
@@ -174,7 +174,7 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
 
         if (AutoSaveHelper.exists(AutoSave.THREAD, this._threadSkeleton.categoryId)) {
             this.editorButtons.push(new EditorAction({
-                title: 'Open auto-save',
+                title: 'Open Auto-Save',
                 value: ThreadControllerActions.AUTO_SAVE,
                 asButton: true, buttonColor: Button.YELLOW
             }));
@@ -235,9 +235,9 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
         AutoSaveHelper.remove(AutoSave.THREAD, this._threadSkeleton.categoryId);
         if (this._threadSkeleton.contentApproval) {
             this._dialogService.openDialog({
-                title: 'You thread is awaiting approval',
+                title: 'You thread is currently awaiting approval!',
                 content: `Your thread is placed under the category of "unapproved" threads,
-                    it will be waiting approval from a moderator before visible`,
+                    and it await approval from the Moderators before being visible!`,
                 buttons: [
                     new DialogButton({ title: 'Ok', callback: () => {
                         this._dialogService.closeDialog();

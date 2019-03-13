@@ -145,7 +145,7 @@
     -webkit-animation:flare 20s linear infinite;
     -moz-animation:flare 20s linear infinite;
     animation:flare 20s linear infinite;
-    margin: -100px 0 0 -300px;
+    margin: -100px 0 0 -325px;
 }
 
 .logo h3 {
@@ -256,7 +256,6 @@ input, optgroup, select, textarea {
     background: #fbfbfb;
     color: gray;
     display: block;
-    font-size: 10px;
     height: 30px;
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     width: 100%;
@@ -264,4 +263,8 @@ input, optgroup, select, textarea {
     border-radius: 2px;
     padding: 6px;
     margin-right: -6px;
+}
+
+.radio-controls {
+    margin: 0 0 0 0;
 }

@@ -278,7 +278,7 @@ export class ThreadComponent extends Page implements OnDestroy {
                 value: this._threadPage.isSubscribed ? ThreadActions.UNSUBSCRIBE : ThreadActions.SUBSCRIBE
             }),
             new TitleTab({
-                title: this._threadPage.isIgnored ? 'Un-ignore' : 'Ignore',
+                title: this._threadPage.isIgnored ? 'Unignore' : 'Ignore',
                 value: this._threadPage.isIgnored ? ThreadActions.UNIGNORE : ThreadActions.IGNORE
             }),
         ];
