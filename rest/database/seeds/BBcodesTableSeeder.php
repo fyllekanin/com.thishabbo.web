@@ -601,6 +601,19 @@ class BBcodesTableSeeder extends Seeder
                 'createdAt' => 1547139924,
                 'updatedAt' => 1547139924,
             ),
+            45 =>
+            array (
+                'bbcodeId' => 46,
+                'name' => 'Horizontal Line',
+                'example' => '[hr]',
+                'pattern' => '/\\[hr\\]/si',
+                'replace' => '<div style="border-bottom: 1px solid #eaecef;"></div>',
+                'content' => '',
+                'isEmoji' => 0,
+                'isSystem' => 1,
+                'createdAt' => 1547139924,
+                'updatedAt' => 1547139924,
+            )
         ));
 
         // https?:\/\/(www.)?[a-zA-Z0-9]+.[a-zA-Z]+
