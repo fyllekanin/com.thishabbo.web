@@ -52,6 +52,7 @@ Route::group(['middleware' => ['maintenance']], function () {
 
         Route::prefix('betting')->group(function () {
             Route::get('dashboard', 'BettingController@getDashboardPage');
+            Route::get('stats', 'BettingController@getBettingStats');
             Route::post('bet/{betId}', 'BettingController@createPlaceBet');
             Route::post('roulette', 'BettingController@createRoulette');
             Route::get('roulette', 'BettingController@getRoulette');

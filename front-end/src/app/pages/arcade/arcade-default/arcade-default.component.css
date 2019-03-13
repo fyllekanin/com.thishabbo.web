@@ -32,7 +32,7 @@ h2 {
 }
 
 .inner-image {
-    background-image: url("http://puu.sh/CZkwx/360547b5ac.jpg");
+    background-image: url('http://puu.sh/CZkwx/360547b5ac.jpg');
     height: 9rem;
     width: 100%;
     box-shadow: rgba(0, 0, 0, 0.22) 0 0 0 1px inset, rgba(255, 255, 255, 0.34) 0 0 0 2px inset, rgba(0, 0, 0, 0.07) 0 2px 0;

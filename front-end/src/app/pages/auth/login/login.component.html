@@ -5,11 +5,11 @@
                 [title]="'Login'">
             </app-title>
             <app-content>
-                <div class="small-12 cell">
                 <div class="small-12 cell" *ngIf="showError">
                     <span class="error">Incorrect Username/Habbo Name and/or Password. Please try again!</span>
                 </div>
-                    <div class="label">Username or Habbo Name:</div>
+                <div class="small-12 cell" *ngIf="showError">
+                    <label>Username or Habbo Name:</label>
                     <input (keydown)="keyDownFunction($event)" [(ngModel)]="loginName" type="text" name="loginName">
                 </div>
                 <div class="small-12 cell">
