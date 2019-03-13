@@ -15,14 +15,6 @@ export class InputUtil {
 
     static fillEditor(ele: ElementFinder, value: string | number): void {
         browser.wait(ExpectedConditions.presenceOf(ele), 10000, 'Expected element to be present');
-        browser.waitForAngularEnabled(false);
-        browser.switchTo().frame(ele.getWebElement());
-
-        const body = element(by.css('body'));
-        body.sendKeys(value);
-
-        browser.switchTo().defaultContent();
-        browser.waitForAngularEnabled(true);
-        browser.waitForAngular();
+        ele.sendKeys(value);
     }
 }

@@ -25,16 +25,16 @@
                         "styles": [
                             "src/assets/css/pre-loader.css",
                             "src/assets/css/all.min.css",
-                            "src/assets/editor/themes/default.min.css",
                             "src/assets/css/foundation.min.css",
                             "src/assets/css/tooltip.css",
                             "src/assets/css/dropdown.css",
                             "src/assets/css/forms.css",
+                            "src/assets/editor/theme/default/wbbtheme.css",
                             "src/styles.css"
                         ],
                         "scripts": [
-                            "src/assets/editor/sceditor.js",
-                            "src/assets/editor/formats/bbcode.js"
+                            "node_modules/jquery/dist/jquery.min.js",
+                            "src/assets/editor/jquery.wysibb.js"
                         ]
                     },
                     "configurations": {
@@ -84,16 +84,16 @@
                         "styles": [
                             "src/assets/css/pre-loader.css",
                             "src/assets/css/all.min.css",
-                            "src/assets/editor/themes/default.min.css",
                             "src/assets/css/foundation.min.css",
                             "src/assets/css/tooltip.css",
                             "src/assets/css/dropdown.css",
                             "src/assets/css/forms.css",
+                            "src/assets/editor/theme/default/wbbtheme.css",
                             "src/styles.css"
                         ],
                         "scripts": [
-                            "src/assets/editor/sceditor.js",
-                            "src/assets/editor/formats/bbcode.js"
+                            "node_modules/jquery/dist/jquery.min.js",
+                            "src/assets/editor/jquery.wysibb.js"
                         ],
                         "assets": [
                             "src/favicon.ico",

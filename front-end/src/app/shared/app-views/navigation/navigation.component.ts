@@ -27,7 +27,7 @@ export class NavigationComponent {
     }
 
     get homePage(): string {
-        return this.isLoggedIn ? this._authService.authUser.homePage : 'home';
+        return this.isLoggedIn ? this._authService.authUser.homePage || 'home' : 'home';
     }
 
     get routes(): Array<MainItem> {
