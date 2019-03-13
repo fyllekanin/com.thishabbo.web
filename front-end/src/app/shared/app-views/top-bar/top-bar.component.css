@@ -139,8 +139,11 @@ input {
 
 .top-login {
     height: 31px;
+    width: 105px;
 }
 
-button {
-    margin-top: 0 !important;
+.top-login-button {
+    height: 25px !important;
+    padding-top: 6.5px !important;
+    margin-top: 2px !important;
 }
