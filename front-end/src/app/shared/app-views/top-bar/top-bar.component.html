@@ -8,7 +8,7 @@
                 </a>
                 <span [innerHTML]="current | safeHtml"></span>
             </div>
-            <div class="cell small-4 medium-4 login-pc" *ngIf="!loggedIn">
+            <div class="small-4 medium-4 login-pc" *ngIf="!loggedIn">
                 <div class="login-wrapper">
                     <input type="text" class="top-login" (keydown)="keyDownFunction($event)" [(ngModel)]="loginName"
                            placeholder="Username/Habbo"
@@ -19,7 +19,7 @@
                     <button appButton [float]="'right'" class="top-login" (click)="login()">Login</button>
                 </div>
             </div>
-            <div class="cell small-5 medium-4 login-phone" *ngIf="!loggedIn">
+            <div class="small-5 medium-4 login-phone" *ngIf="!loggedIn">
                 <div class="login-wrapper">
                     <a [routerLink]="['/auth/login']">Login</a> or <a [routerLink]="['/auth/register']">Register</a>
                 </div>

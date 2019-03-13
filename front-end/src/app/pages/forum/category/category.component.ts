@@ -65,7 +65,7 @@ export class CategoryComponent extends Page implements OnDestroy {
                         this.setTabs();
                         this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
                             title: 'Success',
-                            message: 'You are now subscribed'
+                            message: 'You are now subscribed!'
                         }));
                     }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
                 break;
@@ -76,7 +76,7 @@ export class CategoryComponent extends Page implements OnDestroy {
                         this.setTabs();
                         this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
                             title: 'Success',
-                            message: 'You are now unsubscribed'
+                            message: 'You are now unsubscribed!'
                         }));
                     }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
                 break;
@@ -87,7 +87,7 @@ export class CategoryComponent extends Page implements OnDestroy {
                         this.setTabs();
                         this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
                             title: 'Success',
-                            message: 'You ignored the category'
+                            message: 'You ignored the Category!'
                         }));
                     }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
                 break;
@@ -98,7 +98,7 @@ export class CategoryComponent extends Page implements OnDestroy {
                         this.setTabs();
                         this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
                             title: 'Success',
-                            message: 'You un-ignored the category'
+                            message: 'You unignored the Category!'
                         }));
                     }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
                 break;
@@ -172,7 +172,7 @@ export class CategoryComponent extends Page implements OnDestroy {
             { title: 'Subscribe', value: CategoryActions.SUBSCRIBE, condition: !this._categoryPage.isSubscribed },
             { title: 'Unsubscribe', value: CategoryActions.UNSUBSCRIBE, condition: this._categoryPage.isSubscribed },
             { title: 'Ignore', value: CategoryActions.IGNORE, condition: !this._categoryPage.isIgnored },
-            { title: 'Un-ignore', value: CategoryActions.UNIGNORE, condition: this._categoryPage.isIgnored }
+            { title: 'Unignore', value: CategoryActions.UNIGNORE, condition: this._categoryPage.isIgnored }
         ];
 
         actions.push({

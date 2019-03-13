@@ -18,13 +18,13 @@
                 <input type="number" [(ngModel)]="amount"/>
             </div>
             <div [ngClass]="isSpinning ? 'disabled' : ''" class="cell small-4 bet bet-black" (click)="spin('black')">
-                <h3>Black</h3>
+                Black
             </div>
             <div [ngClass]="isSpinning ? 'disabled' : ''" class="cell small-4 bet bet-green" (click)="spin('green')">
-                <h3>Green</h3>
+                Green
             </div>
             <div [ngClass]="isSpinning ? 'disabled' : ''" class="cell small-4 bet bet-red" (click)="spin('red')">
-                <h3>Red</h3>
+                Red
             </div>
         </div>
     </div>

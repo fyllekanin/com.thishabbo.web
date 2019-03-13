@@ -6,7 +6,7 @@
 
 .bad , .good {
     display: inline-block;
-    padding: 30px;
+    padding: 16px;
     text-align: center;
     border-radius: 3px;
 }

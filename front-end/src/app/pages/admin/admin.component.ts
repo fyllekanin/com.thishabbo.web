@@ -10,10 +10,10 @@ import { AuthService } from 'core/services/auth/auth.service';
     template: `
     <div class="grid-container">
         <div class="grid-x margin-x">
-            <div class="cell small-12 medium-8 position-relative">
+            <div class="cell small-12 medium-9 position-relative">
                 <router-outlet></router-outlet>
             </div>
-            <div class="cell small-12 medium-4">
+            <div class="cell small-12 medium-3">
                 <app-side-menu [blocks]="blocks"></app-side-menu>
             </div>
         </div>

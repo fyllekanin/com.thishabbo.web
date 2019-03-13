@@ -476,3 +476,15 @@ details {
     background-image: url(/assets/images/bargradient.png)!important;
     background-color: #c37070;
 }
+
+.gold-trophy {
+        color: #efcf23;
+}
+
+.silver-trophy {
+    color: #C0C0C0;
+}
+
+.bronze-trophy {
+    color: #cd7f32;
+}

@@ -44,7 +44,7 @@ export class IgnoredThreadsComponent extends Page implements OnDestroy {
                 this.buildTableConfig();
                 this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
                     title: 'Success',
-                    message: 'Thread un-ignored'
+                    message: 'Thread unignored'
                 }));
             }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
     }
@@ -64,7 +64,7 @@ export class IgnoredThreadsComponent extends Page implements OnDestroy {
                 return new TableRow({
                     id: String(item.threadId),
                     cells: [new TableCell({ title: item.title })],
-                    actions: [new TableAction({ title: 'Un-ignore', value: null })]
+                    actions: [new TableAction({ title: 'Unignore', value: null })]
                 });
             })
         });

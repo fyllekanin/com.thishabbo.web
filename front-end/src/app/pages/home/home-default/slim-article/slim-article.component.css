@@ -4,9 +4,9 @@
     width: 100%;
     background: #ffffff;
     margin-bottom: 18px;
-    padding: 7px;
+    padding: 2px;
     box-shadow: 0 0 0 1px #0e0e0e00, 0 3px 0 0 rgba(0, 0, 0, 0.03);
-    min-height: 309px;
+    min-height: 283px;
     border-radius:2px;
 }
 
@@ -45,7 +45,7 @@
 }
 
 .title {
-    color: #274351 !important;
+    color: #c16f6f !important;
     font-weight: bold;
     display: inline-block;
     font-size: 13px;
@@ -91,7 +91,7 @@
 }
 
 .content {
-    margin: 5px 0px 5px 0px;
+    margin: 5px 0 5px 0;
     width: 100%;
     white-space: normal;
     overflow: hidden;
