@@ -24,7 +24,7 @@ class CheckSpam {
         }
         $ipAddress = $request->ip();
         $logTables = ['log_admin', 'log_staff', 'log_mod', 'log_user'];
-        $minimumTime = time() - 5;
+        $minimumTime = time() - 1;
         foreach ($logTables as $table) {
             $isSpamming = DB::table($table)
                     ->where('ip', $ipAddress)
