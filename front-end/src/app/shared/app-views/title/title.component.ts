@@ -10,6 +10,7 @@ import { TitleTab, TitleTopBorder } from 'shared/app-views/title/title.model';
 
 export class TitleComponent {
     private _tabs: Array<TitleTab> = [];
+    private _lastClick = 0;
 
     @Output() onTitleClick: EventEmitter<void> = new EventEmitter();
     @Output() onTabClick: EventEmitter<number> = new EventEmitter();
@@ -38,7 +39,10 @@ export class TitleComponent {
     }
 
     titleClick (): void {
-        this.onTitleClick.emit();
+        if (this._lastClick < (new Date().getTime() - 5000)) {
+            this._lastClick = new Date().getTime();
+            this.onTitleClick.emit();
+        }
     }
 
     tabClick (tab: TitleTab): void {

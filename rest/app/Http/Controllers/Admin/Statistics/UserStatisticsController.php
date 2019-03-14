@@ -11,7 +11,9 @@ class UserStatisticsController extends Controller {
     /**
      * @param $year
      * @param $month
+     *
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function getUsersLoggedIn($year, $month) {
         Condition::precondition(!is_numeric($month), 400, 'Month needs to be a number!');
@@ -36,10 +38,13 @@ class UserStatisticsController extends Controller {
 
     /**
      * Get the statistics for the year and month
+     *
      * @param $year
      * @param $month
      * @param $days
+     *
      * @return array
+     * @throws \Exception
      */
     private function getUserStatistics($year, $month, $days) {
         $statistics = [];

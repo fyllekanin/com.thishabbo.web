@@ -5,6 +5,7 @@ namespace App\Http;
 use App\Http\Middleware\CheckAdminPermission;
 use App\Http\Middleware\CheckHabboVerified;
 use App\Http\Middleware\CheckMaintenance;
+use App\Http\Middleware\CheckSpam;
 use App\Http\Middleware\CheckStaffPermission;
 use App\Http\Middleware\CheckToken;
 use App\Http\Middleware\RedirectIfAuthenticated;
