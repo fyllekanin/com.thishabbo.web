@@ -295,9 +295,11 @@ class ThreadCrudController extends Controller {
         $post->threadId = $thread->threadId;
         $post->save();
 
-        $user->threads++;
-        $user->posts++;
-        $user->save();
+        if ($user->userId > 0) {
+            $user->threads++;
+            $user->posts++;
+            $user->save();
+        }
 
         NotifyMentionsInPost::dispatch($threadSkeleton->content, $post->postId, $user->userId);
         NotifyThreadSubscribers::dispatch($category->categoryId, $thread->userId, $thread->threadId);

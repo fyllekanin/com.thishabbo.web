@@ -10,15 +10,28 @@ use App\EloquentModels\Models\DeletableModel;
 use App\EloquentModels\User\Token;
 use App\EloquentModels\User\User;
 use App\Factories\Notification\NotificationFactory;
+use App\Helpers\ConfigHelper;
+use App\Helpers\SettingsHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Forum\Thread\ThreadCrudController;
 use App\Logger;
 use App\Models\Logger\Action;
+use App\Services\ForumService;
+use App\Services\ForumValidatorService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
 
 class InfractionController extends Controller {
+    private $forumService;
+    private $validatorService;
     private $oneYear = 31449600;
+
+    public function __construct(ForumService $forumService, ForumValidatorService $validatorService) {
+        parent::__construct();
+        $this->forumService = $forumService;
+        $this->validatorService = $validatorService;
+    }
 
     /**
      * @param Request $request
@@ -95,7 +108,11 @@ class InfractionController extends Controller {
         ]);
         $infraction->save();
 
-        NotificationFactory::newInfractionGiven($data->userId, $user->userId, $infraction->infractionId);
+        if (isset($infractionLevel->categoryId) && $infractionLevel->categoryId > 0 && $this->botAccountExists()) {
+            $this->createInfractionThread($infractionLevel, $infraction);
+        } else {
+            NotificationFactory::newInfractionGiven($data->userId, $user->userId, $infraction->infractionId);
+        }
         $this->checkAutomaticBan($user, $data->userId);
         Logger::mod($user->userId, $request->ip(), Action::CREATED_INFRACTION, [
             'userId' => $data->userId,
@@ -126,6 +143,45 @@ class InfractionController extends Controller {
         ]);
     }
 
+    /**
+     * @param $infractionLevel
+     * @param $infraction
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    private function createInfractionThread($infractionLevel, $infraction) {
+        $threadController = new ThreadCrudController($this->forumService, $this->validatorService);
+        $threadSkeleton = new \stdClass();
+        $infracted = UserHelper::getUserFromId($infraction->infractedId);
+        $points = Infraction::isActive()
+            ->where('infractedId', $infracted->userId)
+            ->get()
+            ->reduce(function($prev, $curr) {
+                return $prev + $curr->level()->value('points');
+            }, 0);
+
+        $threadSkeleton->content = "Hey [mention]@" . $infracted->nickname . "[/mention] 
+Below you can find information regarding the infraction you were just given.
+[i]Use this thead if you wanna appeal your infraction[/i]
+        
+[quote]
+[b]Infraction Type:[/b] " . $infractionLevel->title . "
+[b]Reason:[/b] " . $infraction->reason . "
+            
+[b]Current infraction points:[/b] " . $points . "
+[/quote]";
+        $threadSkeleton->title = $infracted->nickname . " received an infraction";
+        $threadSkeleton->categoryId = $infractionLevel->categoryId;
+
+        $botId = SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->welcomeBotUserId);
+        $bot = UserHelper::getUserFromId($botId);
+        $threadController->doThread($bot, null, $threadSkeleton, null, true);
+    }
+
+    private function botAccountExists() {
+        return UserHelper::getUserFromId(SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->welcomeBotUserId));
+    }
+
     private function validateInfraction($infraction) {
         Condition::precondition(!isset($infraction->reason) || empty($infraction->reason), 400,
             'Reason needs to be set');
@@ -149,7 +205,7 @@ class InfractionController extends Controller {
             }, 0);
 
         $autoBan = AutoBan::where('amount', '<=', $points)->orderBy('amount', 'DESC')->first();
-        if ($autoBan && User::getImmunity($user) > User::getImmunity($userId)) {
+        if ($autoBan && User::getImmunity($user->userId) > User::getImmunity($userId)) {
             $ban = new Ban([
                 'bannedId' => $userId,
                 'userId' => $user->userId,

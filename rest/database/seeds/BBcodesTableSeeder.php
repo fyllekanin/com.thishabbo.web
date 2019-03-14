@@ -397,7 +397,7 @@ class BBcodesTableSeeder extends Seeder
             array (
                 'bbcodeId' => 30,
                 'name' => 'mention',
-                'example' => '[mention]nickname[/mention]',
+                'example' => '[mention]@nickname[/mention]',
                 'pattern' => '/\\[mention\\](((?R)|.)*?)\\[\\/mention\\]/si',
                 'replace' => '<a class="mention-user">$1</a>',
                 'content' => '$1',

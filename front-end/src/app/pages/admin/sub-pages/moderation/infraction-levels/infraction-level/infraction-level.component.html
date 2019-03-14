@@ -7,21 +7,31 @@
                 <input name="title" [(ngModel)]="model.title" type="text" placeholder="">
             </div>
             <div class="cell small-6">
+                <label>
+                    Category:
+                    <span tooltip="If selected, a thread will be made when infraction given IF welcome bot is set" class="checkbox-info">
+                        <i class="fas fa-question-circle"></i>
+                    </span>
+                </label>
+                <app-form-select [(value)]="selectedCategory" [items]="selectableCategories"></app-form-select>
+            </div>
+            <div class="cell small-4">
                 <label>Points:</label>
                 <input name="ponts" [(ngModel)]="model.points" type="number" placeholder="">
             </div>
-            <div class="cell small-6">
+            <div class="cell small-4">
                 <label>Life Time: <em>(days)</em></label>
                 <input name="password" [(ngModel)]="model.lifeTime" type="number" [disabled]="isPersisted">
             </div>
-            <div class="cell small-6">
-                <br />
-                <br />
-                <label class="checkbox-container">
-                    Is Persisted <em>(One year)</em>:
+            <div class="cell small-2">
+                <label class="checkbox-container checkbox-align-with-input">
+                    Is Persisted?
                     <input type="checkbox" [ngModel]="isPersisted" (ngModelChange)="onIsPersistedToggle()">
                     <span class="checkmark"></span>
                 </label>
+                <span tooltip="If checked, the infractions life time is 1 year" class="checkbox-info">
+                    <i class="fas fa-question-circle"></i>
+                </span>
             </div>
         </div>
     </div>

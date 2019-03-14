@@ -40,6 +40,8 @@
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     outline: 0;
     z-index: 9;
+    max-height: 150px;
+    overflow-y: scroll;
 }
 
 .values div {

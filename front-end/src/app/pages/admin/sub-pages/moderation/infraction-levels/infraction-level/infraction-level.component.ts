@@ -7,6 +7,8 @@ import { DialogService } from 'core/services/dialog/dialog.service';
 import { HttpService } from 'core/services/http/http.service';
 import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
 import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { SelectItem } from 'shared/components/form/select/select.model';
+import { CategoryLeaf } from '../../../forum/category/category.model';
 
 @Component({
     selector: 'app-admin-moderation-infraction-level',
@@ -16,6 +18,8 @@ export class InfractionLevelComponent extends Page implements OnDestroy {
     private _page = new InfractionLevel();
 
     tabs: Array<TitleTab>;
+    selectedCategory: SelectItem = null;
+    selectableCategories: Array<SelectItem> = [];
 
     constructor(
         private _dialogService: DialogService,
@@ -68,6 +72,8 @@ export class InfractionLevelComponent extends Page implements OnDestroy {
     }
 
     private onSave(): void {
+        delete this._page.categories;
+        this._page.categoryId = this.selectedCategory ? this.selectedCategory.value.categoryId : null;
         if (this._page.createdAt) {
             this._httpService.put(`admin/moderation/infraction-levels/${this._page.infractionLevelId}`,
                 { infractionLevel: this._page })
@@ -119,7 +125,31 @@ export class InfractionLevelComponent extends Page implements OnDestroy {
             { title: 'Save', value: InfractionLevelActions.SAVE, condition: true }
         ];
 
+        this.setSelectableItems();
         this.tabs = tabs.filter(tab => tab.condition)
             .map(tab => new TitleTab(tab));
+    }
+
+    private setSelectableItems(): void {
+        this.selectableCategories = this.flat(this._page.categories, '').map(item => {
+            return {
+                label: item.title,
+                value: item
+            };
+        });
+        this.selectedCategory = this.selectableCategories
+            .find(item => item.value.categoryId === this._page.categoryId);
+    }
+
+    private flat (array: Array<CategoryLeaf>, prefix = '', shouldAppend = true) {
+        let result = [];
+        (array || []).forEach((item: CategoryLeaf) => {
+            item.title = `${prefix} ${item.title}`;
+            result.push(item);
+            if (Array.isArray(item.children)) {
+                result = result.concat(this.flat(item.children, shouldAppend ? `${prefix}--` : ''));
+            }
+        });
+        return result;
     }
 }

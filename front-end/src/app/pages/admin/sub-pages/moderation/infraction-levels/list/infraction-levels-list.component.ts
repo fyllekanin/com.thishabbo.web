@@ -144,7 +144,8 @@ export class InfractionLevelsListComponent extends Page implements OnDestroy {
             cells: [
                 new TableCell({ title: item.title }),
                 new TableCell({ title: String(item.points) }),
-                new TableCell({ title: InfractionLevelsListComponent.getTime(item.lifeTime) })
+                new TableCell({ title: InfractionLevelsListComponent.getTime(item.lifeTime) }),
+                new TableCell({ title: item.categoryId ? 'Thread' : 'Notification Only' })
             ],
             actions: actions
         }));
@@ -168,7 +169,8 @@ export class InfractionLevelsListComponent extends Page implements OnDestroy {
         return [
             new TableHeader({ title: 'Title' }),
             new TableHeader({ title: 'Points' }),
-            new TableHeader({ title: 'Life Time' })
+            new TableHeader({ title: 'Life Time' }),
+            new TableHeader({ title: 'Type' })
         ];
     }
 }
