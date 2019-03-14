@@ -142,7 +142,7 @@ h2 {
 }
 
 .gold-trophy {
-        color: #efcf23;
+    color: #efcf23;
 }
 
 .silver-trophy {
@@ -151,4 +151,9 @@ h2 {
 
 .bronze-trophy {
     color: #cd7f32;
+}
+
+.not-clickable {
+    cursor: default;
+    pointer-events: none;
 }

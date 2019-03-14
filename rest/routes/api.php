@@ -48,6 +48,7 @@ Route::group(['middleware' => ['maintenance']], function () {
         Route::get('/bbcode/emojis', 'PageController@getEmojis');
         Route::post('/radio/like', 'Staff\RadioController@createDjLike');
 
+        Route::put('puller/notifications/read/all', 'Puller\NotificationController@readAllNotifications');
         Route::put('puller/notifications/read/{notificationId}', 'Puller\NotificationController@readNotification');
 
         Route::prefix('betting')->group(function () {
