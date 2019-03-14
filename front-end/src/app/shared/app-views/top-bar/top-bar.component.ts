@@ -8,6 +8,8 @@ import { NotificationModel } from 'shared/app-views/top-bar/top-bar.model';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 import { RouterStateService } from 'core/services/router/router-state.service';
 import { ArrayHelper } from 'shared/helpers/array.helper';
+import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-top-bar',
@@ -28,6 +30,7 @@ export class TopBarComponent {
         private _httpService: HttpService,
         private _routerStateService: RouterStateService,
         private _continuesInformationService: ContinuesInformationService,
+        private _globalNotificationService: GlobalNotificationService,
         breadcrumbService: BreadcrumbService
     ) {
         breadcrumbService.onBreadcrumb.subscribe(breadcrum => {
@@ -56,6 +59,19 @@ export class TopBarComponent {
                 this._continuesInformationService.removeNotification(notificationId);
                 this._notifications = this._notifications.filter(noti => noti.notificationId !== notificationId);
                 this._routerStateService.updateTitle(this._notifications.length);
+            });
+    }
+
+    readAll(): void {
+        this._httpService.put('puller/notifications/read/all')
+            .subscribe(() => {
+                this._continuesInformationService.removeAllNotifications();
+                this._notifications = [];
+                this._routerStateService.updateTitle(this._notifications.length);
+                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                    title: 'Success',
+                    message: 'All notifications marked as read!'
+                }));
             });
     }
 

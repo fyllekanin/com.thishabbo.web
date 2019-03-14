@@ -31,7 +31,9 @@
                         <div class="notif-top">
                             <b>Notifications</b>
                             <div class="pull-right">
-                                Mark all as read - Mute - Settings
+                                <a class="notification-tool" (click)="readAll()" *ngIf="notifications.length > 0">Mark all as read</a>
+                                <a class="notification-tool not-clickable" *ngIf="notifications.length > 0">-</a>
+                                <a class="notification-tool" [routerLink]="['/user/usercp/notification-settings']">Settings</a>
                             </div>
                         </div>
                         <div class="notif-overflow">
