@@ -19,6 +19,9 @@ class CheckSpam {
      */
     public function handle(Request $request, Closure $next)
     {
+        if ($request->isMethod('get')) {
+            return $next($request);
+        }
         $ipAddress = $request->ip();
         $logTables = ['log_admin', 'log_staff', 'log_mod', 'log_user'];
         $minimumTime = time() - 5;
