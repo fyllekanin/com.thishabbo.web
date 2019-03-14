@@ -10,21 +10,23 @@
                 <label>Immunity</label>
                 <input type="number" [(ngModel)]="group.immunity" (keyup)="onImmunityChange()" min="0"/>
             </div>
-            <div class="cell small-6">
-                <br />
-                <label class="checkbox-container">
+            <div class="cell small-4">
+                <label>Avatar width</label>
+                <input type="number" [(ngModel)]="group.avatarWidth" min="0"/>
+            </div>
+            <div class="cell small-4">
+                <label>Avatar height</label>
+                <input type="number" [(ngModel)]="group.avatarHeight" min="0"/>
+            </div>
+            <div class="cell small-2">
+                <label class="checkbox-container checkbox-align-with-input">
                     Is public
                     <input type="checkbox" [(ngModel)]="group.isPublic">
                     <span class="checkmark"></span>
                 </label>
-            </div>
-            <div class="cell small-3">
-                <label>Avatar width</label>
-                <input type="number" [(ngModel)]="group.avatarWidth" min="0"/>
-            </div>
-            <div class="cell small-3">
-                <label>Avatar height</label>
-                <input type="number" [(ngModel)]="group.avatarHeight" min="0"/>
+                <span tooltip="Is it possible to apply to join this group?" class="checkbox-info">
+                    <i class="fas fa-question-circle"></i>
+                </span>
             </div>
         </div>
     </div>
@@ -37,104 +39,141 @@
     <div class="grid-container full">
         <div class="grid-x margin-x">
             <div class="cell small-6">
-                <label class="checkbox-container">
-                    Access to manage BBCodes
-                    <input type="checkbox" [(ngModel)]="adminPermissions.canManageBBcodes">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Access to manage Staff List
-                    <input type="checkbox" [(ngModel)]="adminPermissions.canManageGroupsList">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Can edit website settings <em>(maintenance, pages, welcome bot, SOTW and MOTM)</em>
-                    <input type="checkbox" [(ngModel)]="adminPermissions.canEditWebsiteSettings">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Can manage prefixes
-                    <input type="checkbox" [(ngModel)]="adminPermissions.canManagePrefixes">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Access to manage Betting Hub <em>(create, update, delete etc)</em>
-                    <input type="checkbox" [(ngModel)]="adminPermissions.canManageBetting">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Access to approve Group Requests from Public Groups
-                    <input type="checkbox" [(ngModel)]="adminPermissions.canApprovePublicGroups">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Can manage AutoBans & infraction levels
-                    <input type="checkbox" [(ngModel)]="adminPermissions.canManageInfractions">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Can give infractions & see infraction history
-                    <input type="checkbox" [(ngModel)]="adminPermissions.canDoInfractions">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Can manage shop <em>(Add/Remove items/categories and give users items)</em>
-                    <input type="checkbox" [(ngModel)]="adminPermissions.canManageShop">
-                    <span class="checkmark"></span>
-                </label>
+                <div>
+                    <label class="checkbox-container">
+                        Access to manage BBCodes
+                        <input type="checkbox" [(ngModel)]="adminPermissions.canManageBBcodes">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to manage Staff List
+                        <input type="checkbox" [(ngModel)]="adminPermissions.canManageGroupsList">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can edit website settings <em>(maintenance, pages, welcome bot, SOTW and MOTM)</em>
+                        <input type="checkbox" [(ngModel)]="adminPermissions.canEditWebsiteSettings">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can manage prefixes
+                        <input type="checkbox" [(ngModel)]="adminPermissions.canManagePrefixes">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to manage Betting Hub <em>(create, update, delete etc)</em>
+                        <input type="checkbox" [(ngModel)]="adminPermissions.canManageBetting">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to approve Group Requests from Public Groups
+                        <input type="checkbox" [(ngModel)]="adminPermissions.canApprovePublicGroups">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can manage AutoBans & infraction levels
+                        <input type="checkbox" [(ngModel)]="adminPermissions.canManageInfractions">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can give infractions & see infraction history
+                        <input type="checkbox" [(ngModel)]="adminPermissions.canDoInfractions">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can manage shop <em>(Add/Remove items/categories and give users items)</em>
+                        <input type="checkbox" [(ngModel)]="adminPermissions.canManageShop">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
             </div>
             <div class="small-6">
+                <div>
+                    <label class="checkbox-container">
+                        Access to manage the Forum <em>(add, edit, delete forum categories)</em>
+                        <input type="checkbox" [(ngModel)]="adminPermissions.canManageForum">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to manage Forum Permissions <em>(in forum categories)</em>
+                        <input type="checkbox" [(ngModel)]="adminPermissions.canManageForumPermissions">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to manage Usergroups
+                        <input type="checkbox" [(ngModel)]="adminPermissions.canManageGroups">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to basic editing of a User <em>(name, verify Habbo etc)</em>
+                        <input type="checkbox" [(ngModel)]="adminPermissions.canEditUserBasic">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to advanced editing of a User <em>(password, user groups, display group etc)</em>
+                        <input type="checkbox" [(ngModel)]="adminPermissions.canEditUserAdvanced">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to edit a users Profile Images <em>(avatar, signature, images etc)</em>
+                        <input type="checkbox" [(ngModel)]="adminPermissions.canEditUserProfile">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to Ban/Unban a User
+                        <input type="checkbox" [(ngModel)]="adminPermissions.canBanUser">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can manage THC <em>(accept requests and give thc)</em>
+                        <input type="checkbox" [(ngModel)]="adminPermissions.canManageTHC">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can see IP:s on the site, search etc
+                        <input type="checkbox" [(ngModel)]="adminPermissions.canSeeIps">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
                 <label class="checkbox-container">
-                    Access to manage the Forum <em>(add, edit, delete forum categories)</em>
-                    <input type="checkbox" [(ngModel)]="adminPermissions.canManageForum">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Access to manage Forum Permissions <em>(in forum categories)</em>
-                    <input type="checkbox" [(ngModel)]="adminPermissions.canManageForumPermissions">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Access to manage Usergroups
-                    <input type="checkbox" [(ngModel)]="adminPermissions.canManageGroups">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Access to basic editing of a User <em>(name, verify Habbo etc)</em>
-                    <input type="checkbox" [(ngModel)]="adminPermissions.canEditUserBasic">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Access to advanced editing of a User <em>(password, user groups, display group etc)</em>
-                    <input type="checkbox" [(ngModel)]="adminPermissions.canEditUserAdvanced">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Access to edit a users Profile Images <em>(avatar, signature, images etc)</em>
-                    <input type="checkbox" [(ngModel)]="adminPermissions.canEditUserProfile">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Access to Ban/Unban a User
-                    <input type="checkbox" [(ngModel)]="adminPermissions.canBanUser">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Can manage THC <em>(accept requests and give thc)</em>
-                    <input type="checkbox" [(ngModel)]="adminPermissions.canManageTHC">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Can see IP:s on the site, search etc
-                    <input type="checkbox" [(ngModel)]="adminPermissions.canSeeIps">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Can merge users
-                    <input type="checkbox" [(ngModel)]="adminPermissions.canMergeUsers">
-                    <span class="checkmark"></span>
-                </label>
-
+                        Can merge users
+                        <input type="checkbox" [(ngModel)]="adminPermissions.canMergeUsers">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
             </div>
         </div>
     </div>
@@ -147,73 +186,99 @@
     <div class="grid-container full">
         <div class="grid-x grid-margin-x">
             <div class="cell small-6">
-                <label class="checkbox-container">
-                    Access to Radio (booking, radio info, requests etc)
-                    <input type="checkbox" [(ngModel)]="staffPermissions.canRadio">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Access to Book/Unbook other users on Radio Timetable
-                    <input type="checkbox" [(ngModel)]="staffPermissions.canBookRadioForOthers">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Access to see IP on Radio Requests
-                    <input type="checkbox" [(ngModel)]="staffPermissions.canSeeIpOnRequests">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Can override DJ says without being on air
-                    <input type="checkbox" [(ngModel)]="staffPermissions.canOverrideDjSays">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Can see events & radio bookings logs
-                    <input type="checkbox" [(ngModel)]="staffPermissions.canSeeBookingLogs">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Access to Kick a DJ Off Air
-                    <input type="checkbox" [(ngModel)]="staffPermissions.canKickDjOffAir">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Access to change Connection Information
-                    <input type="checkbox" [(ngModel)]="staffPermissions.canEditRadioInfo">
-                    <span class="checkmark"></span>
-                </label>
+                <div>
+                    <label class="checkbox-container">
+                        Access to Radio (booking, radio info, requests etc)
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canRadio">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to Book/Unbook other users on Radio Timetable
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canBookRadioForOthers">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to see IP on Radio Requests
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canSeeIpOnRequests">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can override DJ says without being on air
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canOverrideDjSays">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can see events & radio bookings logs
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canSeeBookingLogs">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to Kick a DJ Off Air
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canKickDjOffAir">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to change Connection Information
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canEditRadioInfo">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
             </div>
             <div class="cell small-6">
-                <label class="checkbox-container">
-                    Access to Events (booking, ban on sight)
-                    <input type="checkbox" [(ngModel)]="staffPermissions.canEvent">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Access to Book/Unbook other users on Events Timetable
-                    <input type="checkbox" [(ngModel)]="staffPermissions.canBookEventForOthers">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Access to Add/Remove Event Types
-                    <input type="checkbox" [(ngModel)]="staffPermissions.canManageEvents">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Access to Do Not Hire list
-                    <input type="checkbox" [(ngModel)]="staffPermissions.canSeeDoNotHire">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Manage Ban on Sight List
-                    <input type="checkbox" [(ngModel)]="staffPermissions.canManageBanOnSight">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Can see current listeners (ip and relative user)
-                    <input type="checkbox" [(ngModel)]="staffPermissions.canSeeListeners">
-                    <span class="checkmark"></span>
-                </label>
+                <div>
+                    <label class="checkbox-container">
+                        Access to Events (booking, ban on sight)
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canEvent">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to Book/Unbook other users on Events Timetable
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canBookEventForOthers">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to Add/Remove Event Types
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canManageEvents">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to Do Not Hire list
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canSeeDoNotHire">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Manage Ban on Sight List
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canManageBanOnSight">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can see current listeners (ip and relative user)
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canSeeListeners">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
             </div>
         </div>
     </div>

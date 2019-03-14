@@ -117,14 +117,14 @@ class PostCrudController extends Controller {
         $threadSkeleton = new \stdClass();
         $threadSkeleton->content = "[mention=" . $user->userId . "]" . $user->nickname . "[/mention] reported a post.
 
-        [b]User reported:[/b] [mention=" . $post->user->userId . "]" . $post->user->nickname . "[/mention]
-        [b]Thread:[/b] [url=/forum/thread/1/page/1]Click here to go to thread.[/url]
+[b]User reported:[/b] [mention]@" . $post->user->nickname . "[/mention]
+[b]Thread:[/b] [url=/forum/thread/1/page/1]Click here to go to thread.[/url]
 
-        [b]Reason:[/b]
-        [quote]" . $message . "[/quote]
+[b]Reason:[/b]
+[quote]" . $message . "[/quote]
 
-        [b]Original post:[/b]
-        [quote]" . $post->content . "[/quote]";
+[b]Original post:[/b]
+[quote]" . $post->content . "[/quote]";
         $threadSkeleton->title = 'Report by ' . $user->nickname;
 
         $reportCategories = Category::whereRaw('(options & ' . ConfigHelper::getForumOptionsConfig()->reportPostsGoHere . ')')->get();

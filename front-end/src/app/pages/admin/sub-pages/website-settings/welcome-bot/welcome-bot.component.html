@@ -3,7 +3,12 @@
     <div class="grid-container full">
         <div class="grid-x margin-x">
             <div class="cell small-6">
-                <label>User Account <em>(Account to be the Welcome Bot)</em></label>
+                <label>
+                    User Account <em>(Account to be the Welcome Bot)</em>
+                    <span tooltip="This account is also used for infraction threads, if not set it do not work" class="checkbox-info">
+                        <i class="fas fa-question-circle"></i>
+                    </span>
+                </label>
                 <input name="welcome-bot-name" type="text" [(ngModel)]="user.nickname" />
             </div>
             <div class="small-6">
@@ -16,7 +21,7 @@
                 </select>
             </div>
             <div class="cell small-12">
-                <label>Content Supported </label>
+                <label>Content Supported</label>
                 <li><strong>:nickname:</strong> will be replaced with the users nickname and will tag that user</li>
             </div>
         </div>

@@ -31,6 +31,7 @@ import { InfractionsComponent } from './infractions/infractions.component';
 import { BansComponent } from './bans/bans.component';
 import { BansPageService } from './services/bans.service';
 import { ReasonModule } from 'shared/components/reason/reason.module';
+import { SelectModule } from 'shared/components/form/select/select.module';
 
 @NgModule({
     imports: [
@@ -42,7 +43,8 @@ import { ReasonModule } from 'shared/components/reason/reason.module';
         ContentModule,
         CommonModule,
         FormsModule,
-        ReasonModule
+        ReasonModule,
+        SelectModule
     ],
     declarations: [
         ThreadsModerationComponent,

@@ -25,7 +25,6 @@ export class SelectComponent {
 
     @Input()
     set value(item: SelectItem) {
-        console.log(item);
         this._value = item;
     }
 
@@ -51,17 +50,21 @@ export class SelectComponent {
     onFocus() {
         if (!this.disabled && this._items.length > 0) {
             this.isOpen = true;
+            this.filter = this.filter === this.placeholder ? '' : this.filter;
         }
-    }
-
-    onBlur() {
-        this.isOpen = false;
     }
 
     onValueChanged(item: SelectItem) {
         this.value = item;
         this.isOpen = false;
         this.valueChange.emit(this.value);
+    }
+
+    checkIfEmpty(): void {
+        if (this.filter === '') {
+            this.value = null;
+            this.valueChange.emit(this.value);
+        }
     }
 
     @HostListener('blur')

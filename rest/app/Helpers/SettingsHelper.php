@@ -13,7 +13,7 @@ class SettingsHelper {
     }
 
     public static function getSetting ($key) {
-        return Setting::where('key', $key)->first();
+        return Setting::where('key', $key)->getQuery()->first();
     }
 
     public static function createOrUpdateSetting ($key, $value) {
