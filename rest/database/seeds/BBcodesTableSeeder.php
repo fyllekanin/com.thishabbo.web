@@ -384,6 +384,7 @@ class BBcodesTableSeeder extends Seeder
             array (
                 'bbcodeId' => 29,
                 'name' => 'notice',
+
                 'example' => '[notice]Hey[/notice]',
                 'pattern' => '/\\[notice\\](((?R)|.)*?)\\[\\/notice\\]/si',
                 'replace' => '<div style="width: 97.5%; display: inline;float: left; font-family: Verdana;font-size: 14px;background: rgba(237, 237, 237, 1);border: 1px solid rgb(224, 224, 224);box-shadow: 0px 2px 0px 0px rgb(234, 234, 234);padding: 9px;color: rgb(134, 134, 134);margin: 0px 0px 6px;border-radius: 2px;font-weight: 600;text-shadow: rgb(255, 255, 255) 0px 1px;clear: both;}  br { margin: 0; padding: 0; }"><strong>$1</strong> </div>',

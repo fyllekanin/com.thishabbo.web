@@ -58,7 +58,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapApiRoutes()
     {
         Route::prefix('api')
-             ->middleware('api')
+             ->middleware(['api', 'spam.check'])
              ->namespace($this->namespace)
              ->group(base_path('routes/api.php'));
     }
@@ -73,7 +73,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapApiAdminRoutes()
     {
         Route::prefix('api/admin')
-            ->middleware(['api', 'maintenance', 'token.check'])
+            ->middleware(['api', 'maintenance', 'token.check', 'spam.check'])
             ->namespace($this->namespace)
             ->group(base_path('routes/admin/api.php'));
     }
@@ -88,7 +88,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapApiForumRoutes()
     {
         Route::prefix('api/forum')
-            ->middleware(['api', 'maintenance', 'token.check', 'habbo_verify.check'])
+            ->middleware(['api', 'maintenance', 'token.check', 'habbo_verify.check', 'spam.check'])
             ->namespace($this->namespace)
             ->group(base_path('routes/forum/api.php'));
     }
@@ -103,7 +103,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapApiStaffRoutes()
     {
         Route::prefix('api/staff')
-            ->middleware(['api', 'maintenance', 'token.check'])
+            ->middleware(['api', 'maintenance', 'token.check', 'spam.check'])
             ->namespace($this->namespace)
             ->group(base_path('routes/staff/api.php'));
     }
@@ -118,7 +118,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapApiUsercpRoutes()
     {
         Route::prefix('api/usercp')
-            ->middleware(['api', 'maintenance', 'token.check'])
+            ->middleware(['api', 'maintenance', 'token.check', 'spam.check'])
             ->namespace($this->namespace)
             ->group(base_path('routes/usercp/api.php'));
     }
@@ -133,7 +133,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapApiArcadeRoutes()
     {
         Route::prefix('api/arcade')
-            ->middleware(['api', 'maintenance', 'token.check'])
+            ->middleware(['api', 'maintenance', 'token.check', 'spam.check'])
             ->namespace($this->namespace)
             ->group(base_path('routes/arcade/api.php'));
     }

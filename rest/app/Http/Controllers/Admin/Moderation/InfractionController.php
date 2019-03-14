@@ -149,7 +149,7 @@ class InfractionController extends Controller {
             }, 0);
 
         $autoBan = AutoBan::where('amount', '<=', $points)->orderBy('amount', 'DESC')->first();
-        if ($autoBan && User::getImmunity($user) > User::getImmunity($userId)) {
+        if ($autoBan && User::getImmunity($user->userId) > User::getImmunity($userId)) {
             $ban = new Ban([
                 'bannedId' => $userId,
                 'userId' => $user->userId,

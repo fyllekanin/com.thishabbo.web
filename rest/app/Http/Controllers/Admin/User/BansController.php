@@ -99,7 +99,7 @@ class BansController extends Controller {
      * @param Request $request
      * @param         $page
      *
-     * @return /Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function getBannedUsers (Request $request, $page) {
         $user = UserHelper::getUserFromRequest($request);
