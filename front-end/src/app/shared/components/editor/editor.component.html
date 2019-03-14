@@ -7,7 +7,7 @@
 <app-content>
     <textarea #editor rows="55" cols="50"></textarea>
 
-    <button *ngFor="let button of bottomButtons" appButton [float]="'right'" [color]="button.buttonColor" (click)="onClick(button.value)">
+    <button *ngFor="let button of bottomButtons" appButton [float]="'right'" [color]="button.buttonColor" (onClick)="onClick(button.value)">
         {{button.title}}
     </button>
 </app-content>

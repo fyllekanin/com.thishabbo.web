@@ -1,5 +1,5 @@
 import { DomSanitizer } from '@angular/platform-browser';
-import { Directive, HostBinding, Input } from '@angular/core';
+import { Directive, EventEmitter, HostBinding, HostListener, Input, Output } from '@angular/core';
 import { Button, ButtonColor } from 'shared/directives/button/button.model';
 
 @Directive({
@@ -7,6 +7,8 @@ import { Button, ButtonColor } from 'shared/directives/button/button.model';
 })
 export class ButtonDirective {
     private _color: ButtonColor = Button.BLUE;
+    private _lastClick = 0;
+
     private _float: 'left' | 'center' | 'right' = 'left';
 
     @HostBinding('style.font-size') fontSize = '11px';
@@ -22,6 +24,8 @@ export class ButtonDirective {
     @HostBinding('style.margin') margin = '0 0 0 5px';
     @HostBinding('style.height') height = '35px';
 
+    @Output() onClick: EventEmitter<void> = new EventEmitter();
+
     constructor(
         private _sanitizer: DomSanitizer
     ) {
@@ -30,6 +34,14 @@ export class ButtonDirective {
         this.boxShadow = this._sanitizer.bypassSecurityTrustStyle(`inset 0 0 0 1px rgba(0,0,0,.18),
             inset 0 0 0 2px rgba(255,255,255,.18),
             0 2px 0 rgba(0, 0, 0, 0.09)`);
+    }
+
+    @HostListener('click', ['$event, $event.target'])
+    click() {
+        if (this._lastClick < (new Date().getTime() - 5000)) {
+            this._lastClick = new Date().getTime();
+            this.onClick.emit();
+        }
     }
 
     @Input()

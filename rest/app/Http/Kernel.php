@@ -63,7 +63,6 @@ class Kernel extends HttpKernel
         'admin_permission.check' => CheckAdminPermission::class,
         'staff_permission.check' => CheckStaffPermission::class,
         'maintenance' => CheckMaintenance::class,
-        'habbo_verify.check' => CheckHabboVerified::class,
-        'spam.check' => CheckSpam::class
+        'habbo_verify.check' => CheckHabboVerified::class
     ];
 }

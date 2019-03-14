@@ -16,7 +16,7 @@
                     <input type="password" class="top-login" (keydown)="keyDownFunction($event)" [(ngModel)]="password"
                            placeholder="Password"
                            name="password"/>
-                    <button appButton [float]="'right'" class="top-login-button" (click)="login()">Login</button>
+                    <button appButton [float]="'right'" class="top-login-button" (onClick)="login()">Login</button>
                 </div>
             </div>
             <div class="small-5 medium-4 login-phone" *ngIf="!loggedIn">
