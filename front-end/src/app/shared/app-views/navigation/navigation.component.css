@@ -16,10 +16,6 @@ nav {
     background-color: transparent;
 }
 
-li.nav-item:hover {
-    color: white;
-}
-
 li.nav-first-item:hover {
     color: white;
 }
@@ -31,12 +27,6 @@ li.nav-first-item:hover {
     padding-left: 15px;
     padding-right: 15px;
     border-left: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-li.nav-item {
-    display: inline-block;
-    margin-left: -1px;
-    border-right: 1px solid rgba(255, 255, 255, 0.11);
 }
 
 li.nav-first-item {
@@ -59,7 +49,7 @@ nav span {
     background-color: #e5e5e5;
     height: 1px;
     overflow: hidden;
-    margin:8px 0px 8px 0px !important;
+    margin: 8px 0 8px 0 !important;
 }
 
 .dropdown-content {

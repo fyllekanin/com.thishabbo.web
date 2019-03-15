@@ -5,8 +5,7 @@ import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 
 @Component({
     selector: 'app-site-messages',
-    templateUrl: 'site-messages.component.html',
-    styleUrls: ['site-messages.component.css']
+    templateUrl: 'site-messages.component.html'
 })
 export class SiteMessagesComponent {
 

@@ -14,9 +14,6 @@
     float: right;
 }
 
-.radio-buttons {
-}
-
 .icon-position-events {
     margin: 2px 0 0 0.2px;
 }
@@ -151,40 +148,6 @@
     margin: 0 0 0 5px;
     width: 219px;
     position: absolute;
-}
-
-.button:hover {
-    cursor: pointer;
-}
-
-.like {
-    background: -webkit-linear-gradient(top, #e660bf 0, #c32ba2 100%);
-    width: 3.4rem;
-}
-
-.podium {
-    position: absolute;
-    right: 8.5rem;
-    bottom: -37px;
-    z-index: 1;
-}
-
-.habbo {
-    position: absolute;
-    right: 8.3rem;
-    z-index: 5;
-    bottom: -28px;
-}
-
-.pink-button {
-    background-image: url(/assets/images/bargradient.png)!important;
-    background: #9a9393;
-}
-
-.yellow-button {
-    cursor: pointer;
-    background-image: url(/assets/images/bargradient.png)!important;
-    background-color: #d5e028;
 }
 
 .blue-button {

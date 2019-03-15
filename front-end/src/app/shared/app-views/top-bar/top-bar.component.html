@@ -1,7 +1,7 @@
 <div class="wrapper">
     <div class="grid-container">
         <div class="grid-x grid-margin-x">
-            <div class="cell small-7 medium-8 breadcrum">
+            <div class="cell small-7 medium-8 breadcrumb">
                 <a [routerLink]="homePage">ThisHabbo VX</a> &#187;
                 <a *ngFor="let item of breadcrumbItems" [routerLink]="[item.url]">
                     {{item.title}} &#187;
@@ -24,7 +24,7 @@
                     <a [routerLink]="['/auth/login']">Login</a> or <a [routerLink]="['/auth/register']">Register</a>
                 </div>
             </div>
-            <div class="cell small-5 medium-offset-1 medium-3 notification-wrapper" *ngIf="loggedIn">
+            <div class="cell small-5 medium-offset-1 medium-3" *ngIf="loggedIn">
                 <div class="notification dropdown">
                     <em class="fa fa-bell" [ngClass]="notifications.length > 0 ? 'new' : ''"></em>
                     <div class="dropdown-content notif-size">
@@ -58,13 +58,10 @@
                     <em class="fa fa-comment"></em>
                     <div class="dropdown-content notif-size">
                         <div class="notif-top">
-
                             <b>Inbox</b> (7)
-
                             <div class="pull-right">
                                 Mark all as read - New Message - Settings
                             </div>
-
                         </div>
 
                         <div class="notif-overflow">

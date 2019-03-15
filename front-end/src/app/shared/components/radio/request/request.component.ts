@@ -3,8 +3,7 @@ import { InnerDialogComponent } from 'shared/app-views/dialog/dialog.model';
 
 @Component({
     selector: 'app-radio-request',
-    templateUrl: 'request.component.html',
-    styleUrls: ['request.component.css']
+    templateUrl: 'request.component.html'
 })
 export class RequestComponent extends InnerDialogComponent {
     private _isLoggedIn: boolean;
