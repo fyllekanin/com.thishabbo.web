@@ -1,6 +1,5 @@
 import { DialogModule } from 'shared/app-views/dialog/dialog.module';
 import { GlobalNotificationModule } from 'shared/app-views/global-notification/global-notification.module';
-import { FooterModule } from 'shared/app-views/footer/footer.module';
 import { HeaderModule } from 'shared/app-views/header/header.module';
 import { CoreModule } from 'core/core.module';
 import { appRoutes } from './app.routes';
@@ -33,7 +32,6 @@ export function init_user(appLoadService: AppLoadService) {
         BrowserModule,
         BrowserAnimationsModule,
         HeaderModule,
-        FooterModule,
         GlobalNotificationModule,
         DialogModule,
         TopBarModule,
