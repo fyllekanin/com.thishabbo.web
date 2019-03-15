@@ -607,7 +607,7 @@ class BBcodesTableSeeder extends Seeder
                 'name' => 'Horizontal Line',
                 'example' => '[hr]',
                 'pattern' => '/\\[hr\\]/si',
-                'replace' => '<div style="border-bottom: 1px solid #eaecef;"></div>',
+                'replace' => '<hr />',
                 'content' => '',
                 'isEmoji' => 0,
                 'isSystem' => 1,
