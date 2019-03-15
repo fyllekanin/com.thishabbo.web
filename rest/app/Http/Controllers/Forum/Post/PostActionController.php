@@ -90,8 +90,9 @@ class PostActionController extends Controller {
         PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumConfig()->canRead, $post->thread->categoryId,
             'You do not have access to unlike this post');
 
-        $user->likes--;
-        $user->save();
+        $postUser = $post->user()->first();
+        $postUser->likes--;
+        $postUser->save();
 
         PostLike::where('postId', $postId)
             ->where('userId', $user->userId)
