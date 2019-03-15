@@ -1,0 +1,12 @@
+<app-title [title]="'Choose log type'"></app-title>
+<app-content>
+    In here you can choose which log you wanna see. Choose in the dropdown below.
+    <label>Log Type</label>
+    <select [(ngModel)]="logType" (ngModelChange)="onTypeChange()">
+        <option *ngFor="let option of options" [value]="option.value">{{option.label}}</option>
+    </select>
+</app-content>
+
+<app-table [config]="tableConfig" (onFilter)="onFilter($event)"></app-table>
+
+<app-pagination [paginationModel]="null"></app-pagination>

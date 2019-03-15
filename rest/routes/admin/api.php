@@ -11,6 +11,10 @@ Route::prefix('statistics')->group(function () {
     Route::get('/posts/{year}/{month}', 'Admin\Statistics\ForumStatisticsController@getPosts');
 });
 
+Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canSeeLogs)], function () {
+    Route::get('/logs/{type}/page/{page}', 'Admin\LogsController@getLogs');
+});
+
 Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canManageTHC)], function () {
     Route::get('/thc/requests', 'Admin\User\UserThcController@getThcRequests');
     Route::put('/thc/requests', 'Admin\User\UserThcController@updateThcRequests');

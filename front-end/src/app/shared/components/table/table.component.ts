@@ -52,6 +52,13 @@ export class TableComponent {
         this.onFilter.emit(params);
     }
 
+    toggleRow(row: TableRow): void {
+        if (!row.isExpandable || !row.data) {
+            return;
+        }
+        row.isOpen = !row.isOpen;
+    }
+
     @Input()
     set config(config: TableConfig) {
         this._config = config;
@@ -91,6 +98,9 @@ export class TableComponent {
     }
 
     private getColumnSize(): ColumnSize {
+        if (!this._config || !this._config.headers) {
+            return null;
+        }
         switch (this._config.headers.length) {
             case 1:
                 return {
