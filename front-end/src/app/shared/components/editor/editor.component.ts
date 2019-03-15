@@ -52,7 +52,6 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
     }
 
     ngAfterViewInit(): void {
-        console.log(this._emojis.length);
         this.editorEle.nativeElement.id = this._id;
         // @ts-ignore
         $(document).ready(() => {

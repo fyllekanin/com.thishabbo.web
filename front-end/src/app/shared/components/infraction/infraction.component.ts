@@ -6,8 +6,7 @@ import { TimeHelper } from 'shared/helpers/time.helper';
 
 @Component({
     selector: 'app-infraction',
-    templateUrl: 'infraction.component.html',
-    styleUrls: ['infraction.component.css']
+    templateUrl: 'infraction.component.html'
 })
 export class InfractionComponent extends InnerDialogComponent {
     private _data: InfractionContext;
