@@ -12,6 +12,7 @@ A webserver is needed which includes Apache, PHP and MySQL server
 ### Database
 
 You need either a MySQL (v5+) or MariaDB (10.2+)
+- If you are using xampp, the database will be included and no need to think about it.
 
 ### NodeJS
 
