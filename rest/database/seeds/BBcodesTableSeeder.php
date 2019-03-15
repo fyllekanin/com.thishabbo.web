@@ -604,7 +604,7 @@ class BBcodesTableSeeder extends Seeder
             ),
             45 =>
             array (
-                'bbcodeId' => 46,
+                'bbcodeid' => 46,
                 'name' => 'orderedlistnumerical',
                 'example' => '[list=1]Hey[/list]',
                 'pattern' => '/\[list=1\](.*?)\[\/list\]/s',
@@ -636,6 +636,19 @@ class BBcodesTableSeeder extends Seeder
                 'pattern' => '/\[\*\](.*)/',
                 'replace' => '<li>$1</li>',
                 'content' => '$1',
+                'isEmoji' => 0,
+                'isSystem' => 1,
+                'createdAt' => 1547139924,
+                'updatedAt' => 1547139924,
+            ),
+            48 =>
+            array (
+                'bbcodeid' => 49,
+                'name' => 'Horizontal Line',
+                'example' => '[hr]',
+                'pattern' => '/\\[hr\\]/si',
+                'replace' => '<hr />',
+                'content' => '',
                 'isEmoji' => 0,
                 'isSystem' => 1,
                 'createdAt' => 1547139924,
