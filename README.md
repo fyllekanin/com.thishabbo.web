@@ -76,7 +76,7 @@ We got 3 different types of tests in this project, we got:
 If you have passed all the previous steps, what you have to do when you wanna run
 the application is the following.
 
-1) Set the "localhost" of your webserver to the root of the project (not inside rest)
+1) Set the "localhost" of your webserver to the root of the project in the rest/public catalog
 2) Start the webserver
 2.1) This will be the host for the back-end stuff (the REST API)
 3) Open front-end and run the following command "npm run start"
