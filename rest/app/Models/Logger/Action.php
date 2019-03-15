@@ -17,9 +17,9 @@ class Action {
         return $action['id'];
     }
 
-    public static function getActionFromId ($id) {
-        return Iterables::find(self::getAllConsts(), function($action) use ($id) {
-            return $action['id'] == $id;
+    public static function getActionFromId ($actionId) {
+        return Iterables::find(self::getAllConsts(), function($action) use ($actionId) {
+            return $action['id'] == $actionId;
         });
     }
 
