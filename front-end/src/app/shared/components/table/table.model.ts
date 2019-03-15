@@ -2,6 +2,11 @@ import { IdHelper } from 'shared/helpers/id.helper';
 import { arrayOf, ClassHelper, primitive, primitiveOf } from 'shared/helpers/class.helper';
 import { TitleTopBorder } from 'shared/app-views/title/title.model';
 
+export interface ColumnSize {
+    column: string;
+    actions?: string;
+}
+
 export class Action {
     @primitive()
     rowId: string;

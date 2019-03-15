@@ -60,7 +60,7 @@ export class UserCpPage {
     }
 
     static getThreadSubscription(value: string): ElementFinder {
-        return element(by.cssContainingText('app-usercp-thread-subscriptions table td', value));
+        return element(by.cssContainingText('app-usercp-thread-subscriptions cell-content', value));
     }
 
     static applyToGroup(value: string): void {

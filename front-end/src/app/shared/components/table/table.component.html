@@ -6,8 +6,8 @@
         (onTabClick)="tabClick($event)">
     </app-title>
     <app-content [isContracted]="isContracted">
-        <div class="grid-container full position-relative filter" *ngIf="filterConfigs.length > 0">
-            <div class="grid-x grid-margin-x">
+        <div class="grid-container full position-relative">
+            <div class="grid-x grid-margin-x filter" *ngIf="filterConfigs.length > 0">
                 <div class="cell" [ngClass]="filterConfigs.length > 1 ? 'small-6' : 'small-12'" *ngFor="let filterConfig of filterConfigs">
                     <div class="label" *ngIf="filterConfig.title">{{filterConfig.title}}</div>
                     <input type="text" name="filter" placeholder="{{filterConfig.placeholder}}"
@@ -15,14 +15,19 @@
                            (input)="onFilterChange()"/>
                 </div>
             </div>
-        </div>
-        <table>
-            <tr>
-                <th *ngFor="let header of headers" [ngStyle]="{'width': header.width || 'auto'}">{{header.title}}</th>
-                <th *ngIf="haveActions" style="min-width: 150px;">Actions</th>
-            </tr>
-            <tr *ngFor="let row of rows">
-                <td *ngFor="let cell of row.cells">
+
+            <div class="grid-x header">
+                <div class="cell" [ngClass]="columnSize.column" *ngFor="let header of headers">
+                    {{header.title}}
+                </div>
+
+                <div class="cell" [ngClass]="columnSize.actions" *ngIf="haveActions">
+                    Actions
+                </div>
+            </div>
+
+            <div class="grid-x row" *ngFor="let row of rows">
+                <div class="cell cell-content" [ngClass]="columnSize.column" *ngFor="let cell of row.cells">
                     <div *ngIf="cell.statusBox">
                         <span [ngClass]="cell.status ? 'status-good' : 'status-bad'">
                             {{cell.title}}
@@ -37,8 +42,9 @@
                             {{cell.title}}
                         </div>
                     </div>
-                </td>
-                <td *ngIf="haveActions" [ngClass]="row.actions.length === 1 ? 'button-column' : ''">
+                </div>
+
+                <div class="cell action" [ngClass]="row.actions.length === 1 ? columnSize.actions + ' button-column' : columnSize.actions" *ngIf="haveActions">
                     <select (change)="onChange(row, $event)" *ngIf="row.actions.length > 1">
                         <option [value]="null" disabled="disabled">{{ row.actionsPlaceholder || 'Choose' }}</option>
                         <option *ngFor="let item of row.actions" [value]="item.value">{{item.title}}</option>
@@ -46,8 +52,8 @@
                     <button appButton *ngIf="row.actions.length === 1" [disabled]="row.actions[0].isDisabled" (onClick)="onActionClick(row.id, row.actions[0].value)">
                         {{row.actions[0].title}}
                     </button>
-                </td>
-            </tr>
-        </table>
+                </div>
+            </div>
+        </div>
     </app-content>
 </div>

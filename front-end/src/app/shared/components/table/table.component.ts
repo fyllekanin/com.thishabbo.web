@@ -1,6 +1,6 @@
 import { TitleTab, TitleTopBorder } from 'shared/app-views/title/title.model';
 import {
-    Action,
+    Action, ColumnSize,
     FilterConfig,
     TableConfig,
     TableHeader,
@@ -17,6 +17,7 @@ import { QueryParameters } from 'core/services/http/http.model';
 
 export class TableComponent {
     private _config: TableConfig;
+    private _columnSize: ColumnSize = { column: '', actions: '' };
 
     @Output() onAction: EventEmitter<Action> = new EventEmitter();
     @Output() onFilter: EventEmitter<QueryParameters> = new EventEmitter();
@@ -54,6 +55,11 @@ export class TableComponent {
     @Input()
     set config(config: TableConfig) {
         this._config = config;
+        this._columnSize = this.getColumnSize();
+    }
+
+    get columnSize(): ColumnSize {
+        return this._columnSize;
     }
 
     get topBorder(): TitleTopBorder {
@@ -82,5 +88,31 @@ export class TableComponent {
 
     get filterConfigs(): Array<FilterConfig> {
         return this._config.filterConfigs;
+    }
+
+    private getColumnSize(): ColumnSize {
+        switch (this._config.headers.length) {
+            case 1:
+                return {
+                    column: this.haveActions ? 'small-9 medium-10' : 'small-12',
+                    actions: this.haveActions ? 'small-3 medium-2' : ''
+                };
+            case 2:
+                return {
+                    column: this.haveActions ? 'small-4 medium-5' : 'small-6',
+                    actions: this.haveActions ? 'small-4 medium-2' : ''
+                };
+            case 3:
+                return {
+                    column: this.haveActions ? 'small-3' : 'small-4',
+                    actions: this.haveActions ? 'small-3' : ''
+                };
+            case 4:
+            default:
+                return {
+                    column: this.haveActions ? 'small-2' : 'small-3',
+                    actions: this.haveActions ? 'small-2' : ''
+                };
+        }
     }
 }
