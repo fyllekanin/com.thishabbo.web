@@ -1,5 +1,5 @@
 import { TitleTopBorder } from './../title/title.model';
-import { Component, HostBinding, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
     selector: 'app-content',
@@ -8,7 +8,7 @@ import { Component, HostBinding, Input } from '@angular/core';
 })
 
 export class ContentComponent {
-    @HostBinding('class.contracted') @Input() isContracted = false;
+    @Input() isContracted = false;
 
     topBorder: TitleTopBorder = '';
 

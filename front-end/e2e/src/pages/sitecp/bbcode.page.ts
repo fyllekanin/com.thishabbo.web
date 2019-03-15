@@ -5,7 +5,7 @@ import { CommonUtil } from '../../utils/common.util';
 export class BbcodePage {
 
     static edit(index: number): void {
-        const selector = element.all(by.css('tr')).get(index);
+        const selector = element.all(by.css('.row')).get(index);
 
         const option = selector.element(by.cssContainingText('option', 'Edit BBCode'));
         CommonUtil.click(option);
