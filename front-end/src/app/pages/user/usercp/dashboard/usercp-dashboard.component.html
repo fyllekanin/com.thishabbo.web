@@ -5,14 +5,26 @@
         <em>These are settings which are bound to the current device you are using. <br />
         If you visit ThisHabbo on another device these settings will be default until changed. Once ticked, the page will automatically save your changes.</em>
         <br /><br />
-    <label class="checkbox-container">
-        Default BBcode mode in editor
-        <input type="checkbox" [(ngModel)]="editorSourceMode">
-        <span class="checkmark"></span>
-    </label>
-    <label class="checkbox-container">
-        Ignore Signatures
-        <input type="checkbox" [(ngModel)]="ignoreSignatures">
-        <span class="checkmark"></span>
-    </label>
+    <div>
+        <label class="checkbox-container">
+            Default BBcode mode in editor
+            <input type="checkbox" [(ngModel)]="editorSourceMode">
+            <span class="checkmark"></span>
+        </label>
+    </div>
+    <div>
+        <label class="checkbox-container">
+            Ignore Signatures
+            <input type="checkbox" [(ngModel)]="ignoreSignatures">
+            <span class="checkmark"></span>
+        </label>
+    </div>
+
+    <div>
+        <label class="checkbox-container">
+            Fixed menu <em>Should the menu follow you when you scroll? (needs reload after checking this)</em>
+            <input type="checkbox" [(ngModel)]="fixedMenu">
+            <span class="checkmark"></span>
+        </label>
+    </div>
 </app-content>

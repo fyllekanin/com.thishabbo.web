@@ -77,6 +77,18 @@ export class UsercpDashboardComponent extends Page implements OnDestroy {
         return Boolean(localStorage.getItem(LOCAL_STORAGE.IGNORE_SIGNATURES));
     }
 
+    set fixedMenu(value: boolean) {
+        if (value) {
+            localStorage.setItem(LOCAL_STORAGE.FIXED_MENU, 'true');
+        } else {
+            localStorage.removeItem(LOCAL_STORAGE.FIXED_MENU);
+        }
+    }
+
+    get fixedMenu(): boolean {
+        return Boolean(localStorage.getItem(LOCAL_STORAGE.FIXED_MENU));
+    }
+
     ngOnDestroy (): void {
         super.destroy();
     }

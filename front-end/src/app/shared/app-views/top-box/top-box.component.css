@@ -288,3 +288,9 @@
 .children {
     padding: 0.5rem 0;
 }
+
+.fixed-menu {
+    position: fixed;
+    width: 100%;
+    margin-top: -39px;
+}
