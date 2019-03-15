@@ -44,7 +44,7 @@ export class IgnoredCategoriesComponent extends Page implements OnDestroy {
                 this.buildTableConfig();
                 this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
                     title: 'Success',
-                    message: 'Category un-ignored'
+                    message: 'Category unignored!'
                 }));
             }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
     }
@@ -64,7 +64,7 @@ export class IgnoredCategoriesComponent extends Page implements OnDestroy {
                 return new TableRow({
                     id: String(item.categoryId),
                     cells: [new TableCell({ title: item.title })],
-                    actions: [new TableAction({ title: 'Un-ignore', value: null })]
+                    actions: [new TableAction({ title: 'Unignore', value: null })]
                 });
             })
         });

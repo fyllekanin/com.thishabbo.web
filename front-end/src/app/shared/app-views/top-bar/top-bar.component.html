@@ -8,7 +8,7 @@
                 </a>
                 <span [innerHTML]="current | safeHtml"></span>
             </div>
-            <div class="cell small-4 medium-4 login-pc" *ngIf="!loggedIn">
+            <div class="small-4 medium-4 login-pc" *ngIf="!loggedIn">
                 <div class="login-wrapper">
                     <input type="text" class="top-login" (keydown)="keyDownFunction($event)" [(ngModel)]="loginName"
                            placeholder="Username/Habbo"
@@ -16,10 +16,10 @@
                     <input type="password" class="top-login" (keydown)="keyDownFunction($event)" [(ngModel)]="password"
                            placeholder="Password"
                            name="password"/>
-                    <button appButton [float]="'right'" class="top-login" (click)="login()">Login</button>
+                    <button appButton [float]="'right'" class="top-login-button" (onClick)="login()">Login</button>
                 </div>
             </div>
-            <div class="cell small-5 medium-4 login-phone" *ngIf="!loggedIn">
+            <div class="small-5 medium-4 login-phone" *ngIf="!loggedIn">
                 <div class="login-wrapper">
                     <a [routerLink]="['/auth/login']">Login</a> or <a [routerLink]="['/auth/register']">Register</a>
                 </div>
@@ -31,7 +31,9 @@
                         <div class="notif-top">
                             <b>Notifications</b>
                             <div class="pull-right">
-                                Mark all as read - Mute - Settings
+                                <a class="notification-tool" (click)="readAll()" *ngIf="notifications.length > 0">Mark all as read</a>
+                                <a class="notification-tool not-clickable" *ngIf="notifications.length > 0">-</a>
+                                <a class="notification-tool" [routerLink]="['/user/usercp/notification-settings']">Settings</a>
                             </div>
                         </div>
                         <div class="notif-overflow">

@@ -8,10 +8,10 @@ import { Component, ElementRef, OnDestroy } from '@angular/core';
     template: `
     <div class="grid-container full">
         <div class="grid-x margin-x">
-            <div class="cell small-12 medium-8">
+            <div class="cell small-12 medium-9">
                 <router-outlet></router-outlet>
             </div>
-            <div class="cell small-12 medium-4">
+            <div class="cell small-12 medium-3">
                 <app-betting-nav></app-betting-nav>
             </div>
         </div>

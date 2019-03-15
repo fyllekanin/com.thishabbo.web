@@ -1,4 +1,5 @@
-import { ClassHelper, primitive } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, primitive } from 'shared/helpers/class.helper';
+import { CategoryLeaf } from '../../forum/category/category.model';
 
 export class InfractionLevel {
     @primitive()
@@ -11,6 +12,11 @@ export class InfractionLevel {
     lifeTime: number;
     @primitive()
     createdAt: number;
+    @primitive()
+    categoryId: number;
+
+    @arrayOf(CategoryLeaf)
+    categories: Array<CategoryLeaf> = [];
 
     constructor(source?: Partial<InfractionLevel>) {
         ClassHelper.assign(this, source);

@@ -3,3 +3,85 @@
     text-align: center;
     border-radius: 5px;
 }
+
+h2 {
+    font-size: 12px;
+    color: #635b5b;
+}
+
+.betting-box {
+    text-align: center;
+    padding: 10px;
+}
+
+.betting-icon {
+    font-size: 1.5rem;
+}
+
+.betting-box .fa {
+    font-size:12px;
+}
+
+.container {
+    padding: 7px;
+    background: #f9f7f7;
+    width: 100%;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.inner-image {
+    background-image: url('http://puu.sh/CZkwx/360547b5ac.jpg');
+    height: 9rem;
+    width: 100%;
+    box-shadow: rgba(0, 0, 0, 0.22) 0 0 0 1px inset, rgba(255, 255, 255, 0.34) 0 0 0 2px inset, rgba(0, 0, 0, 0.07) 0 2px 0;
+    position: relative;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+}
+
+.information {
+    padding-top: 0.4rem;
+    border-top: 1px solid #dcdcdc;
+}
+
+.title {
+    color: #c16f6f !important;
+    font-weight: bold;
+    display: inline-block;
+    font-size: 13px;
+    padding-bottom: 3px;
+}
+
+.image {
+    background-repeat: no-repeat;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    background-position: 100%;
+}
+
+.content {
+    margin: 0 0 5px 0;
+    width: 100%;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 65px;
+}
+
+.article-container {
+    display: block;
+    border: 1px solid #cacaca !important;
+    width: 100%;
+    background: #ffffff;
+    margin-bottom: 18px;
+    padding: 2px;
+    box-shadow: 0 0 0 1px #0e0e0e00, 0 3px 0 0 rgba(0, 0, 0, 0.03);
+    min-height: 283px;
+    border-radius: 2px;
+}
+
+.highscore {
+    margin: 0 0 0.6rem 0;
+}

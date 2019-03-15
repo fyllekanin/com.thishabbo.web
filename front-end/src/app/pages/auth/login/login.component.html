@@ -5,20 +5,20 @@
                 [title]="'Login'">
             </app-title>
             <app-content>
+                <div class="small-12 cell" *ngIf="showError">
+                    <span class="error">Incorrect Username/Habbo Name and/or Password. Please try again!</span>
+                </div>
                 <div class="small-12 cell">
-                    <label>Username or Habbo:</label>
+                    <label>Username or Habbo Name:</label>
                     <input (keydown)="keyDownFunction($event)" [(ngModel)]="loginName" type="text" name="loginName">
                 </div>
                 <div class="small-12 cell">
                     <label>Password:</label>
                     <input (keydown)="keyDownFunction($event)" [(ngModel)]="password" type="password" name="password">
                 </div>
-                <div class="small-12 cell" *ngIf="showError">
-                    <br />
-                    <span class="error">Incorrect username/habbo and/or password</span>
-                </div>
+                <br />
                 <div class="small-12 cell align-right">
-                    <button appButton [float]="'right'" (click)="doLogin()">Login</button>
+                    <button appButton [float]="'right'" (onClick)="doLogin()">Login</button>
                     <button appButton [float]="'right'" [color]="registerButton" [routerLink]="['/auth/register']">Register</button>
                     <button appButton [float]="'right'" [color]="registerButton" [routerLink]="['/auth/forgot-password']">Forgot Password?</button>
                 </div>

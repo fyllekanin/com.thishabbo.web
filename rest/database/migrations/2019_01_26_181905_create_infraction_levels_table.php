@@ -19,6 +19,7 @@ class CreateInfractionLevelsTable extends Migration
             $table->integer('points');
             $table->integer('lifeTime');
             $table->integer('isDeleted')->default(0);
+            $table->integer('categoryId')->nullable();
             $table->bigInteger('createdAt');
             $table->bigInteger('updatedAt');
 

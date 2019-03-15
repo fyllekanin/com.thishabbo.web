@@ -217,7 +217,7 @@ class BBcodesTableSeeder extends Seeder
                 'name' => 'quotepost',
                 'example' => '[quotepost=5]Quote[/quotepost]',
                 'pattern' => '/\\[quotepost=(.*?)\\](((?R)|.)*?)\\[\\/quotepost\\]/si',
-                'replace' => '<div class="post-quote">$2</div>',
+                'replace' => '<div class="quotepost" data-post-id="$1">$2</div>',
                 'content' => '$2',
                 'isEmoji' => 0,
                 'isSystem' => 1,
@@ -384,6 +384,7 @@ class BBcodesTableSeeder extends Seeder
             array (
                 'bbcodeId' => 29,
                 'name' => 'notice',
+
                 'example' => '[notice]Hey[/notice]',
                 'pattern' => '/\\[notice\\](((?R)|.)*?)\\[\\/notice\\]/si',
                 'replace' => '<div style="width: 97.5%; display: inline;float: left; font-family: Verdana;font-size: 14px;background: rgba(237, 237, 237, 1);border: 1px solid rgb(224, 224, 224);box-shadow: 0px 2px 0px 0px rgb(234, 234, 234);padding: 9px;color: rgb(134, 134, 134);margin: 0px 0px 6px;border-radius: 2px;font-weight: 600;text-shadow: rgb(255, 255, 255) 0px 1px;clear: both;}  br { margin: 0; padding: 0; }"><strong>$1</strong> </div>',
@@ -397,9 +398,9 @@ class BBcodesTableSeeder extends Seeder
             array (
                 'bbcodeId' => 30,
                 'name' => 'mention',
-                'example' => '[mention]nickname[/mention]',
+                'example' => '[mention]@nickname[/mention]',
                 'pattern' => '/\\[mention\\](((?R)|.)*?)\\[\\/mention\\]/si',
-                'replace' => '<a class="mention-user" data-user="$1">$1</a>',
+                'replace' => '<a class="mention-user">$1</a>',
                 'content' => '$1',
                 'isEmoji' => 0,
                 'isSystem' => 1,
@@ -412,7 +413,7 @@ class BBcodesTableSeeder extends Seeder
                 'name' => 'group',
                 'example' => '[taggroup]GroupName[/taggroup]',
                 'pattern' => '/\\[taggroup\\](((?R)|.)*?)\\[\\/taggroup\\]/si',
-                'replace' => '<a class="mention-group" data-group="$1">$1</a>',
+                'replace' => '<a class="mention-group">$1</a>',
                 'content' => '$1',
                 'isEmoji' => 0,
                 'isSystem' => 1,
@@ -603,7 +604,46 @@ class BBcodesTableSeeder extends Seeder
             ),
             45 =>
             array (
-                'bbcodeId' => 46,
+                'bbcodeid' => 46,
+                'name' => 'orderedlistnumerical',
+                'example' => '[list=1]Hey[/list]',
+                'pattern' => '/\[list=1\](.*?)\[\/list\]/s',
+                'replace' => '<ol>$1</ol>',
+                'content' => '$1',
+                'isEmoji' => 0,
+                'isSystem' => 1,
+                'createdAt' => 1547139924,
+                'updatedAt' => 1547139924,
+            ),
+            46 =>
+            array (
+                'bbcodeId' => 47,
+                'name' => 'unorderedlist',
+                'example' => '[list]Hey[/list]',
+                'pattern' => '/\[list\](.*?)\[\/list\]/s',
+                'replace' => '<ul>$1</ul>',
+                'content' => '$1',
+                'isEmoji' => 0,
+                'isSystem' => 1,
+                'createdAt' => 1547139924,
+                'updatedAt' => 1547139924,
+            ),
+            47 =>
+            array (
+                'bbcodeId' => 48,
+                'name' => 'listitem',
+                'example' => '',
+                'pattern' => '/\[\*\](.*)/',
+                'replace' => '<li>$1</li>',
+                'content' => '$1',
+                'isEmoji' => 0,
+                'isSystem' => 1,
+                'createdAt' => 1547139924,
+                'updatedAt' => 1547139924,
+            ),
+            48 =>
+            array (
+                'bbcodeid' => 49,
                 'name' => 'Horizontal Line',
                 'example' => '[hr]',
                 'pattern' => '/\\[hr\\]/si',
@@ -613,7 +653,7 @@ class BBcodesTableSeeder extends Seeder
                 'isSystem' => 1,
                 'createdAt' => 1547139924,
                 'updatedAt' => 1547139924,
-            )
+            ),
         ));
 
         // https?:\/\/(www.)?[a-zA-Z0-9]+.[a-zA-Z]+

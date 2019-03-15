@@ -22,6 +22,20 @@ class NotificationController extends Controller {
     }
 
     /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function readAllNotifications(Request $request) {
+        $user = UserHelper::getUserFromRequest($request);
+        DB::table('notifications')
+            ->where('readAt', 0)
+            ->where('userId', $user->userId)
+            ->update(['readAt' => time()]);
+        return response()->json();
+    }
+
+    /**
      * Performs a read action on the specific notification
      * and mark it as read.
      *

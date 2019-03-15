@@ -33,11 +33,11 @@
 }
 
 .red {
-    background-color: #af5f5f;
+    background-color: #c37070;
 }
 
 .green {
-    background-color: #5ba23e;
+    background-color: #79b554;
 }
 
 .disabled {
@@ -49,6 +49,9 @@
     color: #ffff;
     transition: 2s;
     margin-top: -4px;
+    font-weight: bold;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.19);
+    padding: 8px;
 }
 
 .bet:hover {
@@ -62,11 +65,13 @@
 }
 
 .bet-green {
+    background-image: url(/assets/images/bargradient.png)!important;
     box-shadow: rgba(0, 0, 0, 0.15) 0 0 0 1px inset, rgba(255, 255, 255, 0.18) 0 0 0 2px inset, rgba(0, 0, 0, 0.11) 0 2px 0;
     background-color: #5ba23e;
 }
 
 .bet-red {
+    background-image: url(/assets/images/bargradient.png)!important;
     box-shadow: rgba(0, 0, 0, 0.15) 0 0 0 1px inset, rgba(255, 255, 255, 0.18) 0 0 0 2px inset, rgba(0, 0, 0, 0.11) 0 2px 0;
     background-color: #af5f5f;
 }

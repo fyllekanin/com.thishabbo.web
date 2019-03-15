@@ -1,22 +1,134 @@
 <div class="grid-container full">
-    <div class="grid-x margin-x">
-        <div class="cell small-12 medium-8">
-            <app-title [title]="'The Arcade'"></app-title>
-            <app-content>
-                <div class="grid-container">
-                    <div class="grid-x margin-x">
-                        <div class="cell small-3 game" (click)="game('fast-typer')">
-                            <h3>Fast Typer</h3>
-                        </div>
-                        <div class="cell small-3 game" (click)="game('snake')">
-                            <h3>Snake</h3>
+        <div class="grid-x margin-x">
+            <div class="small-12 medium-9">
+                <div class="games">
+                    <div class="grid-container full">
+                        <div class="grid-x margin-x">
+                            <div class="cell small-12">
+                                <app-stats-boxes [stats]="stats"></app-stats-boxes>
+                            </div>
+                            <div class="cell small-6 medium-4">
+                                <div class="article-container">
+                                    <div class="image">
+                                        <div class="inner-image"></div>
+                                    </div>
+                                    <div class="container">
+                                        <div class="author">
+                                            <a class="title" (click)="game('fast-typer')"><i class="fas fa-gamepad"></i> Fastest Typer</a>
+                                            <div class="content">
+                                                How fast do YOU type?! Copy the paragraph given word by word to win! Any mistakes and you'll be penalised though... so focus up!
+                                                The faster you type, the more you win!
+                                            </div>
+                                            <div class="information">
+                                                <div class="highscore">
+                                                    <em class="fas fa-pencil-alt"></em> Created by <b>Eric</b> <br />
+                                                    <em class="fas fa-trophy gold-trophy"></em> <b> Dez</b> <i> (54 wpm)</i><br />
+                                                    <em class="fas fa-trophy silver-trophy"></em> <b> Eric</b> <i> (52 wpm)</i><br />
+                                                    <em class="fas fa-trophy bronze-trophy"></em> <b> Jesse</b> <i> (51 wpm)</i><br />
+                                                </div>
+                                            </div>
+                                            <div class="information">
+                                                <div class="highscore">
+                                                    <em class="fas fa-trophy gold-trophy"></em><b> Dez</b> has been <b>champion</b> since <b>12/03/2019</b> <br >
+                                                    <em class="fas fa-gamepad"></em> <b> 14,000</b> total plays <br >
+                                                    <em class="fas fa-gamepad"></em> <b> 53</b> this season Plays
+                                                </div>
+                                            </div>
+                                            <div class="information">
+                                                <i class="fas fa-ticket-alt"></i> <b> 20 THC</b> Per Play<br />
+                                                <em class="fas fa-trophy gold-trophy"></em> Win up to <b>1,000 THC</b> based on your words per minute score!
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="cell small-6 medium-4">
+                                <div class="article-container">
+                                    <div class="image">
+                                        <div class="inner-image"></div>
+                                    </div>
+                                    <div class="container">
+                                        <div class="author">
+                                            <a class="title" (click)="game('snake')"><i class="fas fa-gamepad"></i> "Erico" the Spannish Snake</a>
+                                            <div class="content">
+                                                Control Erico, the deadly poisonous snake, through various obstacles.
+                                                The more you dodge and eat the apple, the higher your score, and the more you win!
+                                            </div>
+                                            <div class="information">
+                                                    <div class="highscore">
+                                                    <em class="fas fa-pencil-alt"></em> Created by <b>Eric</b> <br />
+                                                    <em class="fas fa-trophy gold-trophy"></em> <b> Dez</b> <i> (54 pts)</i><br />
+                                                    <em class="fas fa-trophy silver-trophy"></em> <b> Eric</b> <i> (52 pts)</i><br />
+                                                    <em class="fas fa-trophy bronze-trophy"></em> <b> Jesse</b> <i> (51 pts)</i><br />
+                                                </div>
+                                            </div>
+                                            <div class="information">
+                                                <div class="highscore">
+                                                    <em class="fas fa-trophy gold-trophy"></em><b> Dez</b> has been <b>champion</b> since <b>12/03/2019</b> <br >
+                                                    <em class="fas fa-gamepad"></em> <b> 14,000</b> total plays <br >
+                                                    <em class="fas fa-gamepad"></em> <b> 53</b> this season Plays
+                                                </div>
+                                            </div>
+                                            <div class="information">
+                                                <i class="fas fa-ticket-alt"></i> <b> 20 THC</b> Per Play<br />
+                                                <em class="fas fa-trophy gold-trophy"></em> Win up to <b>1,000 THC</b> based on your in-game snake score!<br />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="cell small-6 medium-4">
+                                <div class="article-container">
+                                    <div class="image">
+                                        <div class="inner-image"></div>
+                                    </div>
+                                    <div class="container">
+                                        <div class="author">
+                                            <a class="title" [routerLink]="['/betting/roulette']"><i class="fas fa-gamepad"></i> Roulette</a>
+                                            <div class="content">
+                                                    Stake your THC on either black, green or red. If the roulette lands on your chosen colour you will win!
+                                                550 Numbers. 250 Red. 250 Black. 10 Green. 100% Random!
+                                            </div>
+                                            <div class="information">
+                                                <div class="highscore">
+                                                    <em class="fas fa-pencil-alt"></em> Created by <b>Eric</b> <br />
+                                                    <em class="fas fa-trophy gold-trophy"></em> <b> Dez</b> <i> (won 1,400 THC)</i><br />
+                                                    <em class="fas fa-trophy silver-trophy"></em> <b> Eric</b> <i> (won 1,300 THC)</i><br />
+                                                    <em class="fas fa-trophy bronze-trophy"></em> <b> Jesse</b> <i> (won 1,200 THC))</i><br />
+                                                </div>
+                                            </div>
+                                            <div class="information">
+                                                <div class="highscore">
+                                                    <em class="fas fa-trophy gold-trophy"></em><b> Dez</b> has been <b>champion</b> since <b>12/03/2019</b> <br >
+                                                    <em class="fas fa-gamepad"></em> <b> 14,000</b> total plays <br >
+                                                    <em class="fas fa-gamepad"></em> <b> 53</b> this season Plays
+                                                </div>
+                                            </div>
+                                            <div class="information">
+                                                <i class="fas fa-ticket-alt"></i> <b> 20 THC</b> Per Play<br />
+                                                <em class="fas fa-trophy gold-trophy"></em> Correctly picking Black or Red is Double THC and picking Green is quintuple (x5) THC.<br />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+
+        <div class="cell small-12 medium-3">
+            <app-title [top]="highscoreTop" [title]="'My Arcade Profile'"></app-title>
+            <app-content>
+                speak to dez
             </app-content>
-        </div>
-        <div class="cell small-12 medium-4">
-            <app-title [top]="highscoreTop" [title]="'Highscores'"></app-title>
+
+            <app-title [top]="highscoreTop" [title]="'Season 23 Highscores'"></app-title>
+            <app-content>
+                speak to dez
+            </app-content>
         </div>
     </div>
 </div>

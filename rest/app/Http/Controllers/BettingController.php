@@ -112,6 +112,17 @@ class BettingController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
+    public function getBettingStats (Request $request) {
+        $user = UserHelper::getUserFromRequest($request);
+
+        return response()->json($this->getStats($user));
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getDashboardPage (Request $request) {
         $user = UserHelper::getUserFromRequest($request);
 

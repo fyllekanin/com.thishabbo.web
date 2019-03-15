@@ -1,3 +1,4 @@
+import { EditorModule } from './../../shared/components/editor/editor.module';
 import { ProfileComponent } from './profile/profile.component';
 import { PageModule } from 'shared/page/page.module';
 import { RouterModule } from '@angular/router';
@@ -16,7 +17,8 @@ import { CommonModule } from '@angular/common';
         CoverPhotoWithAvatarModule,
         TitleModule,
         ContentModule,
-        CommonModule
+        CommonModule,
+        EditorModule
     ],
     declarations: [
         ProfileComponent

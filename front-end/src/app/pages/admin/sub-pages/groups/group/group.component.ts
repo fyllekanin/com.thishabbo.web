@@ -101,8 +101,8 @@ export class GroupComponent extends Page implements OnDestroy {
 
     get title (): string {
         return this._group.createdAt ?
-            `Editing group: ${this._group.name}` :
-            `Creating group: ${this._group.name}`;
+            `Editing Group: ${this._group.name}` :
+            `Creating Group: ${this._group.name}`;
     }
 
     get group (): Group {

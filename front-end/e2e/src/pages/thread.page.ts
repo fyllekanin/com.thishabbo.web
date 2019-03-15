@@ -7,7 +7,7 @@ export class ThreadPage {
     }
 
     static getPostEditor(): ElementFinder {
-        const ele = element(by.css('app-forum-thread .new-post-editor app-editor iframe'));
+        const ele = element(by.css('app-forum-thread .new-post-editor app-editor .wysibb-text-editor'));
         browser.wait(ExpectedConditions.presenceOf(ele), 10000, 'Expected new post editor to be present');
         browser.sleep(3000);
         browser.executeScript('window.scrollTo(0, document.body.scrollHeight)');

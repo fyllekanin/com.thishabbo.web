@@ -1,4 +1,4 @@
-import { EditorAction } from 'shared/components/editor/editor.model';
+import { EditorAction, getEditorSettings } from 'shared/components/editor/editor.model';
 import {
     AfterViewInit,
     Component,
@@ -10,9 +10,10 @@ import {
     ViewEncapsulation
 } from '@angular/core';
 import { TitleTab } from 'shared/app-views/title/title.model';
-import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { HttpService } from 'core/services/http/http.service';
 import { BBcodeModel } from '../../../pages/admin/sub-pages/content/bbcodes/bbcode.model';
+import { IdHelper } from 'shared/helpers/id.helper';
+import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 
 @Component({
     selector: 'app-editor',
@@ -22,6 +23,7 @@ import { BBcodeModel } from '../../../pages/admin/sub-pages/content/bbcodes/bbco
 })
 
 export class EditorComponent implements AfterViewInit, OnDestroy {
+    private _id = IdHelper.newUuid();
     private _editorActions: Array<EditorAction> = [];
     private _editorInstance = null;
     private _content: string;
@@ -50,40 +52,19 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
     }
 
     ngAfterViewInit(): void {
-        if (this._haveLoaded) {
-            window['sceditor'].create(this.editorEle.nativeElement, {
-                format: 'bbcode',
-                emoticonsEnabled: true,
-                autoExpand: true,
-                spellcheck: false,
-                style: '/assets/editor/themes/content/default.min.css',
-                emoticonsCompat: true,
-                icons: 'material',
-                toolbarExclude: 'ltr,rtl',
-                emoticons: {
-                    dropdown: this._emojis.slice(0, 12).reduce((prev, curr) => {
-                        prev[curr.pattern] = `/rest/resources/images/emojis/${curr.bbcodeId}.gif`;
-                        return prev;
-                    }, {}),
-                    more: this._emojis.slice(0, 36).reduce((prev, curr) => {
-                        prev[curr.pattern] = `/rest/resources/images/emojis/${curr.bbcodeId}.gif`;
-                        return prev;
-                    }, {}),
-                    hidden: this._emojis.reduce((prev, curr) => {
-                        prev[curr.pattern] = `/rest/resources/images/emojis/${curr.bbcodeId}.gif`;
-                        return prev;
-                    }, {})
-                }
-            });
-
-            this._editorInstance = window['sceditor'].instance(this.editorEle.nativeElement);
-            this._editorInstance.keyUp(() => {
-                this.onKeyUp.emit(this.getEditorValue());
-            });
-            this.setShortcuts();
-            this.setMode();
-            this.content = this._content;
-        }
+        console.log(this._emojis.length);
+        this.editorEle.nativeElement.id = this._id;
+        // @ts-ignore
+        $(document).ready(() => {
+            if (this._haveLoaded) {
+                const settings = getEditorSettings(this._emojis);
+                // @ts-ignore
+                this._editorInstance = $(`#${this._id}`).wysibb(settings);
+                this.setMode();
+                this.setShortcuts();
+                this.content = this._content;
+            }
+        });
     }
 
     ngOnDestroy(): void {
@@ -93,7 +74,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
     }
 
     getEditorValue(): string {
-        const value = this._editorInstance ? this._editorInstance.val() : '';
+        const value = this._editorInstance ? this._editorInstance.getBBCode() : '';
         return value.replace(new RegExp(/@([a-zA-Z0-9]+)/gi), '[mention]@$1[/mention]');
     }
 
@@ -103,10 +84,13 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 
     @Input()
     set content(content: string) {
-        this._content = content || '';
-        if (this._editorInstance) {
-            this._editorInstance.val(content);
-        }
+        // @ts-ignore
+        $(document).ready(() => {
+            this._content = content || '';
+            if (this._editorInstance) {
+                this._editorInstance.bbcode(content);
+            }
+        });
     }
 
     @Input()
@@ -127,7 +111,9 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 
     private setMode(): void {
         const isSourceMode = Boolean(localStorage.getItem(LOCAL_STORAGE.EDITOR_MODE));
-        this._editorInstance.sourceMode(isSourceMode);
+        if (isSourceMode && !this._editorInstance.isBBMode()) {
+            this._editorInstance.modeSwitch();
+        }
     }
 
     private setShortcuts(): void {
@@ -137,6 +123,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
         this._editorInstance.unbind('keydown');
         this._editorActions.filter(button => button.saveCallback).forEach(button => {
             this._editorInstance.bind('keydown', e => {
+                this.onKeyUp.emit(this.getEditorValue());
                 if (e.ctrlKey && e.keyCode === 83) {
                     e.preventDefault();
                     button.saveCallback();

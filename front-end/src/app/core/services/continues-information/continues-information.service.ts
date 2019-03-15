@@ -46,6 +46,10 @@ export class ContinuesInformationService implements Resolve<void> {
         this._notifications = this._notifications.filter(item => item.notificationId !== notificationId);
     }
 
+    removeAllNotifications(): void {
+        this._notifications = [];
+    }
+
     get onNotifications(): Observable<Array<NotificationModel<any>>> {
         return this._notificationsSubject.asObservable();
     }

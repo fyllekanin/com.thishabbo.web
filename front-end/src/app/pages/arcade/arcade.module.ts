@@ -13,6 +13,8 @@ import { SnakeComponent } from './snake/snake.component';
 import { SnakeResolver } from './services/snake.resolver';
 import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
+import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.module';
+import { ArcadeDefaultResolver } from './services/arcade-default.resolver';
 
 @NgModule({
     imports: [
@@ -23,7 +25,8 @@ import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
         CommonModule,
         FormsModule,
         SafeStyleModule,
-        SafeHtmlModule
+        SafeHtmlModule,
+        StatsBoxesModule
     ],
     declarations: [
         ArcadeDefaultComponent,
@@ -32,7 +35,8 @@ import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
     ],
     providers: [
         FastTyperResolver,
-        SnakeResolver
+        SnakeResolver,
+        ArcadeDefaultResolver
     ],
     exports: [
         RouterModule

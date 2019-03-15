@@ -12,6 +12,10 @@
     cursor: pointer;
 }
 
+.small-width {
+    width: 28% !important;
+}
+
 .description {
 }
 

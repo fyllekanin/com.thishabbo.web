@@ -44,7 +44,7 @@ export class ThreadService implements Resolve<ThreadPage> {
         return call.pipe(map(() => {
             this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
                 title: 'Success',
-                message: `You ${thread.isIgnored ? 'un-ignored' : 'ignored'} the thread`
+                message: `You ${thread.isIgnored ? 'unignored' : 'ignored'} the thread`
             }));
             return !thread.isIgnored;
         }), catchError(this._globalNotificationService.failureNotification.bind(this._globalNotificationService)));

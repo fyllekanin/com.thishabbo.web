@@ -109,7 +109,7 @@ class PageController extends Controller {
         $user = UserHelper::getUserFromRequest($request);
 
         return response()->json([
-            'articles' => $this->getArticles($user, 6, $this->categoryTemplates->QUEST),
+            'articles' => $this->getArticles($user, 8, $this->categoryTemplates->QUEST),
             'mediaArticles' => $this->getArticles($user, 5, $this->categoryTemplates->MEDIA),
             'notices' => $this->getNotices()
         ]);

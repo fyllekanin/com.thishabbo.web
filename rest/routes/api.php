@@ -48,10 +48,12 @@ Route::group(['middleware' => ['maintenance']], function () {
         Route::get('/bbcode/emojis', 'PageController@getEmojis');
         Route::post('/radio/like', 'Staff\RadioController@createDjLike');
 
+        Route::put('puller/notifications/read/all', 'Puller\NotificationController@readAllNotifications');
         Route::put('puller/notifications/read/{notificationId}', 'Puller\NotificationController@readNotification');
 
         Route::prefix('betting')->group(function () {
             Route::get('dashboard', 'BettingController@getDashboardPage');
+            Route::get('stats', 'BettingController@getBettingStats');
             Route::post('bet/{betId}', 'BettingController@createPlaceBet');
             Route::post('roulette', 'BettingController@createRoulette');
             Route::get('roulette', 'BettingController@getRoulette');
