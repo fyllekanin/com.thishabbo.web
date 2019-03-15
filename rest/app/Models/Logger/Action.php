@@ -2,6 +2,7 @@
 
 namespace App\Models\Logger;
 
+use App\Utils\Iterables;
 use ReflectionClass;
 
 /**
@@ -14,6 +15,12 @@ class Action {
 
     public static function getAction ($action) {
         return $action['id'];
+    }
+
+    public static function getActionFromId ($id) {
+        return Iterables::find(self::getAllConsts(), function($action) use ($id) {
+            return $action['id'] == $id;
+        });
     }
 
     /**

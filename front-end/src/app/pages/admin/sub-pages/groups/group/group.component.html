@@ -168,9 +168,16 @@
                     </label>
                 </div>
                 <div>
-                <label class="checkbox-container">
+                    <label class="checkbox-container">
                         Can merge users
                         <input type="checkbox" [(ngModel)]="adminPermissions.canMergeUsers">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can see user, mod and admin logs?
+                        <input type="checkbox" [(ngModel)]="adminPermissions.canSeeLogs">
                         <span class="checkmark"></span>
                     </label>
                 </div>

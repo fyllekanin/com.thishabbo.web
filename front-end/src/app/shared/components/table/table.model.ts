@@ -72,6 +72,16 @@ export class TableRow {
     actions: Array<TableAction> = [];
     @primitive()
     actionsPlaceholder?: string;
+    @primitive()
+    isExpandable: boolean;
+
+    @primitive()
+    dataTitle: string;
+    @primitive()
+    data: string;
+
+    @primitive()
+    isOpen: boolean;
 
     constructor(source: Partial<TableRow>) {
         ClassHelper.assign(this, source);

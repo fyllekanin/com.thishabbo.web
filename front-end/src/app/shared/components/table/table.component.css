@@ -19,14 +19,11 @@
     border: 1px solid #fffbfb;
     text-transform: uppercase;
     font-weight: bold;
+    margin-bottom: 4px;
 }
 
 .row {
     padding: 0.5rem;
-}
-
-.cell-content {
-    padding-top: 10px;
 }
 
 .editable {
@@ -45,4 +42,35 @@ button {
 
 .button-column {
     width: 50px;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.clickable i {
+    padding-left: 5px;
+    font-size: 13px;
+}
+
+.clickable:hover {
+    background: #efefef;
+}
+
+.row-data {
+    padding: 0.5rem;
+    background-color: #ececec;
+
+    overflow: hidden;
+    max-height: 500px; /* approximate max height */
+    box-sizing: border-box;
+
+    transition-property: all;
+    transition-duration: .5s;
+    transition-timing-function: ease;
+}
+
+.closed {
+    max-height: 0;
+    padding: 0;
 }
