@@ -54,7 +54,7 @@ describe('StaffCP #1', () => {
         NavigationUtil.clickButton('Create');
 
         CommonUtil.enterTableFilter('Search for event types', 'Bank Game');
-        expect(CommonUtil.getTableRows().count()).toEqual(2);
+        expect(CommonUtil.getTableRows().count()).toEqual(1);
     });
 
     it('should be possible to create a permanent show', () => {
@@ -71,7 +71,7 @@ describe('StaffCP #1', () => {
         StaffCpPage.setPermanentShowHour('12:00 PM');
 
         NavigationUtil.clickTab('Save');
-        expect(CommonUtil.getTableRows().count()).toEqual(2);
+        expect(CommonUtil.getTableRows().count()).toEqual(1);
     });
 
     it('should be possible to update connection information', () => {
