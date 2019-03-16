@@ -22,6 +22,10 @@ import { PagesComponent } from './pages/list/pages.component';
 import { PagesResolver } from './services/pages.resolver';
 import { PageComponent } from './pages/page/page.component';
 import { PageResolver } from './services/page.resolver';
+import { ThemesComponent } from './themes/list/themes.component';
+import { ThemesResolver } from './services/themes.resolver';
+import { ThemeComponent } from './themes/theme/theme.component';
+import { ThemeResolver } from './services/theme.resolver';
 
 export const websiteSettingsRoutes: Routes = [
     {
@@ -106,6 +110,21 @@ export const websiteSettingsRoutes: Routes = [
         component: PageComponent,
         resolve: {
             data: PageResolver
+        }
+    },
+    {
+        path: 'themes',
+        component: ThemesComponent,
+        resolve: {
+            data: ThemesResolver
+        }
+    }
+    ,
+    {
+        path: 'themes/:themeId',
+        component: ThemeComponent,
+        resolve: {
+            data: ThemeResolver
         }
     }
 ];

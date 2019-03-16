@@ -158,6 +158,13 @@ Route::prefix('content')->group(function () use ($permissions) {
         Route::post('/site-messages', 'Admin\Settings\GeneralSettingsController@createSiteMessage');
         Route::put('/site-messages/{siteMessageId}', 'Admin\Settings\GeneralSettingsController@updateSiteMessage');
         Route::delete('/site-messages/{siteMessageId}', 'Admin\Settings\GeneralSettingsController@deleteSiteMessage');
+
+        Route::get('/themes', 'Admin\Settings\ThemeController@getThemes');
+        Route::get('/themes/{themeId}', 'Admin\Settings\ThemeController@getTheme');
+        Route::post('/themes', 'Admin\Settings\ThemeController@createTheme');
+        Route::put('/themes/{themeId}', 'Admin\Settings\ThemeController@updateTheme');
+        Route::delete('/themes/{themeId}', 'Admin\Settings\ThemeController@deleteTheme');
+        Route::put('/themes/default/{themeId}', 'Admin\Settings\ThemeController@makeThemeDefault');
     });
 
     Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canManageBBcodes)], function () {

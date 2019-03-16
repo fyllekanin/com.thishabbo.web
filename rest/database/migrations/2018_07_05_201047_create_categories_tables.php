@@ -30,6 +30,7 @@ class CreateCategoriesTables extends Migration
             $table->bigInteger('updatedAt');
 
             // Indexes
+            $table->index('title');
             $table->index('parentId');
             $table->index('lastPostId');
             $table->index('isDeleted');
