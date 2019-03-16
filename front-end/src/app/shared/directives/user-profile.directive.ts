@@ -38,6 +38,12 @@ export class UserProfileDirective extends LazyLoadDirective {
         this.floatStyle = float;
     }
 
+    @Input()
+    set isSmall(value: boolean) {
+        this.height = value ? '50px' : '70px';
+        this.width = value ? '50px' : '70px';
+    }
+
     protected setImage(): void {
         this._elementRef.nativeElement.style.backgroundImage =
             `url(/rest/resources/images/users/${this._info.userId}.gif?${this._info.avatarUpdatedAt})`;

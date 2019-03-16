@@ -3,7 +3,7 @@ import { browser, by, element, ElementFinder, ExpectedConditions } from 'protrac
 export class ForumPage {
 
     static verifyLatestPost(value: string, index: number): void {
-        const ele = element.all((by.css('.latest-post-content'))).get(0).element(by.cssContainingText('a', value));
+        const ele = element.all((by.css('.latest-post-row .data .title'))).get(0);
         browser.wait(ExpectedConditions.presenceOf(ele), 10000, `Expected latest post at index ${index} to be ${value}`);
     }
 

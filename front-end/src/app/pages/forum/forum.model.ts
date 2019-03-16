@@ -5,7 +5,7 @@ import { TimeHelper } from 'shared/helpers/time.helper';
 
 export class ForumLatestPost {
     @primitive()
-    categoryId: number;
+    category: string;
     @primitive()
     page: number;
     @primitive()

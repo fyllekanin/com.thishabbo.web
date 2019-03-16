@@ -60,7 +60,6 @@ export class ContinuesInformationService implements Resolve<void> {
     }
 
     private onUserActivityChange(isUserActive): void {
-        console.log(isUserActive);
         if (this._event && isUserActive) {
             return;
         }

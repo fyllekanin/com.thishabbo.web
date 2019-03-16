@@ -64,16 +64,6 @@ export class ForumHomeComponent extends Page implements OnInit, OnDestroy {
         this._router.navigateByUrl(url);
     }
 
-    getPostLink(latestPost: ForumLatestPost): string {
-        return `/forum/thread/${latestPost.threadId}/page/${latestPost.page}`;
-    }
-
-    getPostQueryParameters(latestPost: ForumLatestPost): { scrollTo: string } {
-        return {
-            scrollTo: `post-${latestPost.postId}`
-        };
-    }
-
     sortCategories(a: SlimCategory, b: SlimCategory): number {
         if (a.displayOrder > b.displayOrder) {
             return 1;
