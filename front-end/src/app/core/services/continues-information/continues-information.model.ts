@@ -29,6 +29,17 @@ export class SlimSiteMessage {
     }
 }
 
+export class ActiveUser {
+    @primitive()
+    userId: number;
+    @primitive()
+    nickname: string;
+
+    constructor(source: Partial<ActiveUser>) {
+        ClassHelper.assign(this, source);
+    }
+}
+
 export class ContinuesInformationModel {
     @objectOf(RadioModel)
     radio: RadioModel;
@@ -36,6 +47,8 @@ export class ContinuesInformationModel {
     unreadNotifications: number;
     @arrayOf(SlimSiteMessage)
     siteMessages: Array<SlimSiteMessage> = [];
+    @arrayOf(ActiveUser)
+    activeUsers: Array<ActiveUser> = [];
 
     constructor(source?: Partial<ContinuesInformationModel>) {
         ClassHelper.assign(this, source);

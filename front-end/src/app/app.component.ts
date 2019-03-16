@@ -23,6 +23,7 @@ import { fadeAnimation } from 'shared/animations/fade.animation';
                 </div>
             </div>
         </div>
+        <app-footer></app-footer>
     `,
     styleUrls: ['app.component.css'],
     animations: [fadeAnimation]
@@ -82,24 +83,12 @@ export class AppComponent extends Page implements OnDestroy {
     }
 
     private addActivityListener(): void {
-        let isHidden, visibilityChange;
-        if (typeof document.hidden !== 'undefined') {
-            isHidden = 'hidden';
-            visibilityChange = 'visibilitychange';
-        } else if (typeof document['msHidden'] !== 'undefined') {
-            isHidden = 'msHidden';
-            visibilityChange = 'msvisibilitychange';
-        } else if (typeof document['webkitHidden'] !== 'undefined') {
-            isHidden = 'webkitHidden';
-            visibilityChange = 'webkitvisibilitychange';
-        }
-
-        if (!isHidden) {
-            return;
-        }
-        document.addEventListener(visibilityChange, () => {
-            this._userService.isUserActive = !document[isHidden];
-        }, false);
+        window.addEventListener('focus', () => {
+            this._userService.isUserActive = true;
+        });
+        window.addEventListener('blur', () => {
+            this._userService.isUserActive = false;
+        });
     }
 
     private static getUrl(ele): string {

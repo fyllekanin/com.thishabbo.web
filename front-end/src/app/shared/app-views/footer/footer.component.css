@@ -1,0 +1,25 @@
+.members {
+    background-color: rgba(255,255,255,0.32);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.05);
+    font-size: 11px;
+    height: 148px;
+    margin-top: 10px;
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.44);
+
+    padding-top: 0.5rem;
+}
+
+.copyright {
+    float: left;
+    padding: 0.5rem 0;
+}
+
+.quick-links {
+    float: right;
+    padding: 0.5rem 0;
+}
+
+.quick-links a {
+    padding: 0 0.5rem;
+    color: #7aa0a9 !important;
+}
