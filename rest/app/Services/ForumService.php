@@ -146,7 +146,7 @@ class ForumService {
 
                 return (object) [
                     'title' => $thread->title,
-                    'categoryId' => $thread->categoryId,
+                    'category' => $thread->category->title,
                     'threadId' => $thread->threadId,
                     'text' => $thread->prefix ? $thread->prefix->text : null,
                     'style' => $thread->prefix ? $thread->prefix->style : null,

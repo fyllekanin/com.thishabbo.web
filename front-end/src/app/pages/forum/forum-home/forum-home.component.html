@@ -32,8 +32,26 @@
                 <div *ngIf="latestPosts && latestPosts.length === 0">
                     No posts as of now...
                 </div>
-                <div *ngFor="let latestPost of latestPosts; let i = index;">
-                    <div class="latest-post-content">
+                <div *ngFor="let latestPost of latestPosts;" class="latest-post-row">
+                    <span class="image">
+                        <img appUserProfile [isSmall]="true" [info]="{ userId: latestPost.user.userId, avatarUpdatedAt: latestPost.user.avatarUpdatedAt }"/>
+                    </span>
+                    <span class="data">
+                        <a class="title" [routerLink]="['/forum', 'thread', latestPost.threadId, 'page', latestPost.page]" [queryParams]="{ scrollTo: 'post-' + latestPost.postId}">
+                                <span *ngIf="latestPost.text" [style]="latestPost.style | safeStyle">
+                                    {{latestPost.text}} &#xbb;
+                                </span>
+                            {{latestPost.title}}
+                        </a>
+                        <br />
+                        Latest: <a [routerLink]="['/user/profile/', (latestPost.user ? latestPost.user.nickname : '')]">
+                                <span [style]="(latestPost.user ? latestPost.user.styling : '') | safeStyle">{{(latestPost.user ? latestPost.user.nickname : '')}}</span>
+                            </a>
+                        - {{latestPost.time}}
+                        <br />
+                        In {{latestPost.category}}
+                    </span>
+                    <!--<div class="latest-post-content">
                         <a class="title" [routerLink]="['/forum', 'thread', latestPost.threadId, 'page', latestPost.page]" [queryParams]="{ scrollTo: 'post-' + latestPost.postId}">
                             <span *ngIf="latestPost.text" [style]="latestPost.style | safeStyle">
                                 {{latestPost.text}} &#xbb;
@@ -43,7 +61,7 @@
                         <a [routerLink]="['/user/profile/', (latestPost.user ? latestPost.user.nickname : '')]">
                             <span [style]="(latestPost.user ? latestPost.user.styling : '') | safeStyle" class="name">{{(latestPost.user ? latestPost.user.nickname : '')}}</span>
                         </a>
-                    </div>
+                    </div>-->
                 </div>
             </app-content>
 

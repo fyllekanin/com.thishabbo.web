@@ -24,9 +24,5 @@ div {
     width: 100%;
     padding: 6px;
     font-size: 11px;
-    display: table;
-}
-
-.contracted {
-    max-height: 0;
+    display: inline-block;
 }

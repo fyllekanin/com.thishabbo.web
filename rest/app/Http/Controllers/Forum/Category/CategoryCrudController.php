@@ -313,7 +313,7 @@ class CategoryCrudController extends Controller {
         $ignoredThreadIds = IgnoredThread::where('userId', $user->userId)->pluck('threadId');
 
         return $this->forumService
-            ->getLatestPosts($categoryIds, $ignoredThreadIds, $ignoredCategoryIds, 15)
+            ->getLatestPosts($categoryIds, $ignoredThreadIds, $ignoredCategoryIds, 10)
             ->data;
     }
 
