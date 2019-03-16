@@ -1,5 +1,5 @@
 <div class="content-wrapper" [ngClass]="topBorder">
-    <div [ngClass]="isContracted ? 'contracted' : ''">
+    <div #content>
         <ng-content></ng-content>
     </div>
 </div>

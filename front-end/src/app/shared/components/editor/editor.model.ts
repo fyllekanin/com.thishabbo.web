@@ -33,7 +33,8 @@ export function getEditorSettings(emojis: Array<BBcodeModel>) {
                         '[taggroup]{SELTEXT}[/taggroup]',
                     '<ol>{DATA}</ol>': '[ol]{DATA}[/ol]',
                     '<li>{DATA}</li>': '[li]{DATA}[/li]',
-                    '<ul>{DATA}</ul>': '[ul]{DATA}[/ul]'
+                    '<ul>{DATA}</ul>': '[ul]{DATA}[/ul]',
+                    '<font size="{SIZE}">{SELTEXT}</font>': '[size={SIZE}]{SELTEXT}[/size]'
                 }
             }
         },

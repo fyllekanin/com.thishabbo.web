@@ -1,16 +1,6 @@
 :host {
     width: 100%;
-    display: block !important;
-}
-
-div {
-    overflow: hidden;
-    max-height: 500px; /* approximate max height */
-    box-sizing: border-box;
-
-    transition-property: all;
-    transition-duration: .5s;
-    transition-timing-function: ease;
+    display: block;
 }
 
 .content-wrapper {
@@ -24,9 +14,4 @@ div {
     width: 100%;
     padding: 6px;
     font-size: 11px;
-    display: table;
-}
-
-.contracted {
-    max-height: 0;
 }
