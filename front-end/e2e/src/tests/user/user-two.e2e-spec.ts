@@ -11,13 +11,13 @@ describe('User #2', () => {
         CommonUtil.open('/home');
         NavigationUtil.clickUserNavigation('Logout');
         CommonUtil.login(USERNAME, PASSWORD);
+        CommonUtil.open('/user/usercp');
     });
 
     it('should be possible to update habbo', () => {
         const oldHabbo = 'bear94';
         const newHabbo = 'keys3r';
 
-        NavigationUtil.clickUserNavigation('UserCP');
         NavigationUtil.clickUserCpTool('Edit Habbo');
         expect(UserCpPage.getCurrentHabbo().getText()).toEqual(oldHabbo);
 
