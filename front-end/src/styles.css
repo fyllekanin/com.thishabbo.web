@@ -157,3 +157,7 @@ h2 {
     cursor: default;
     pointer-events: none;
 }
+
+.grid-container {
+    padding: 0;
+}

@@ -13,7 +13,7 @@ export class TopBoxComponent {
     private _user: AuthUser;
     private _navigation: Array<MainItem> = [];
 
-
+    isFixed: boolean;
     showMenu: boolean;
 
     constructor(
@@ -24,6 +24,7 @@ export class TopBoxComponent {
         this._navigation = (navigation ? JSON.parse(localStorage.getItem(LOCAL_STORAGE.NAVIGATION)) : [])
             .map(item => new MainItem(item));
         this._authService.onUserChange.subscribe(this.setUser.bind(this));
+        this.isFixed = Boolean(localStorage.getItem(LOCAL_STORAGE.FIXED_MENU));
     }
 
     logout(): void {
