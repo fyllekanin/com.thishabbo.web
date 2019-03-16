@@ -12,6 +12,7 @@ import { TopBarModule } from 'shared/app-views/top-bar/top-bar.module';
 import { TopBoxModule } from 'shared/app-views/top-box/top-box.module';
 import { AppLoadService } from 'core/loader/app-load.service';
 import { SiteMessagesModule } from 'shared/app-views/site-messages/site-messages.module';
+import { FooterModule } from 'shared/app-views/footer/Footer.module';
 
 export function init_nav(appLoadService: AppLoadService) {
     return () => appLoadService.initializeNavigation();
@@ -36,7 +37,8 @@ export function init_user(appLoadService: AppLoadService) {
         DialogModule,
         TopBarModule,
         TopBoxModule,
-        SiteMessagesModule
+        SiteMessagesModule,
+        FooterModule
     ],
     declarations: [
         AppComponent

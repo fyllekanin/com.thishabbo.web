@@ -15,6 +15,11 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class UserHelper {
 
+    /**
+     * @param $userId
+     *
+     * @return mixed|null
+     */
     public static function getSlimUser ($userId) {
         if (!$userId && $userId != 0) {
             return null;

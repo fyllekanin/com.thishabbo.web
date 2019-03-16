@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Puller;
 
 use App\EloquentModels\SiteMessage;
+use App\EloquentModels\User\User;
 use App\Helpers\ConfigHelper;
 use App\Helpers\SettingsHelper;
 use App\Http\Controllers\Controller;
@@ -46,7 +47,7 @@ class StreamController extends Controller {
         $response->headers->set('Cache-Control', 'no-cache');
 
         $response->setCallback(function () use ($request) {
-            $finish = time() + 30;
+            $activeUsers = User::orderBy('lastActivity', 'DESC')->take(28)->get(['nickname', 'userId']);
             $siteMessages = SiteMessage::isActive()->orderBy('createdAt', 'DESC')->get(['title', 'content', 'type', 'siteMessageId'])
                 ->map(function($siteMessage) {
                     return [
@@ -56,19 +57,16 @@ class StreamController extends Controller {
                         'content' => BBcodeUtil::bbcodeParser($siteMessage->content)
                     ];
                 });
-            while (true) {
+            for ($i = 0; $i < 6; $i++) {
                 $stats = [
                     'radio' => $this->getRadioStats(),
                     'unreadNotifications' => $this->getAmountOfUnreadNotifications($request->input('userId')),
-                    'siteMessages' => $siteMessages
+                    'siteMessages' => $siteMessages,
+                    'activeUsers' => $activeUsers
                 ];
                 echo 'data: ' . json_encode($stats) . "\n\n";
                 ob_flush();
                 flush();
-
-                if (time() > $finish) {
-                    break;
-                }
 
                 sleep(5);
             }
