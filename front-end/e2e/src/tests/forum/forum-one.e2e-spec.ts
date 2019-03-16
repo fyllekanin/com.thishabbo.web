@@ -28,6 +28,8 @@ describe('Fourm #1', () => {
         NavigationUtil.clickTab('Save');
 
         NavigationUtil.clickUserNavigation('UserCP');
+        browser.executeScript('window.scrollTo(0, document.body.scrollHeight)');
+        browser.sleep(3000);
         NavigationUtil.clickUserCpTool('Edit Thread Subscriptions');
         expect(UserCpPage.getThreadSubscription('New Tests').isPresent()).toBeTruthy();
 
@@ -37,6 +39,8 @@ describe('Fourm #1', () => {
         NavigationUtil.clickTab('Unsubscribe');
 
         NavigationUtil.clickUserNavigation('UserCP');
+        browser.executeScript('window.scrollTo(0, document.body.scrollHeight)');
+        browser.sleep(3000);
         NavigationUtil.clickUserCpTool('Edit Thread Subscriptions');
         expect(UserCpPage.getThreadSubscription('New Tests').isPresent()).toBeFalsy();
     });
