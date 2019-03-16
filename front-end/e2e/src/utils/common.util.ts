@@ -20,9 +20,9 @@ export class CommonUtil {
 
         const loginButton = element(by.cssContainingText('app-top-bar button', 'Login'));
         CommonUtil.click(loginButton);
-        browser.sleep(250);
+        browser.sleep(1000);
         browser.actions().mouseMove(element(by.css('app-top-bar')), { y: 0, x: 0 });
-        browser.sleep(250);
+        browser.sleep(1000);
 
         const experience = element(by.css('app-top-box .experience'));
         browser.wait(ExpectedConditions.presenceOf(experience), 10000, 'Expected user to be logged in');

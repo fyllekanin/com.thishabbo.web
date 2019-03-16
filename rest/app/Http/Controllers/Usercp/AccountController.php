@@ -23,15 +23,19 @@ use Illuminate\Support\Facades\Hash;
 class AccountController extends Controller {
     private $authService;
     private $habboService;
+    private $monthAgo;
 
     /**
      * AccountController constructor.
+     *
      * @param AuthService $authService
+     * @param HabboService $habboService
      */
     public function __construct (AuthService $authService, HabboService $habboService) {
         parent::__construct();
         $this->authService = $authService;
         $this->habboService = $habboService;
+        $this->monthAgo = time() - 2419200;
     }
 
     /**
@@ -58,16 +62,23 @@ class AccountController extends Controller {
      */
     public function updateHabbo (Request $request) {
         $user = UserHelper::getUserFromRequest($request);
-        $habbo = $request->input('habbo');
-        Condition::precondition(!$habbo, 400, 'You did not fill anything in');
-        Condition::precondition(User::withHabbo($habbo)->count() > 0, 400, 'Habbo already taken');
+        $requiredMotto = 'thishabbo-' . $user->userId;
 
-        $this->habboService->isHabboMotto($habbo, 'thishabbo-' . $user->userId);
+        $name = $request->input('habbo');
+        Condition::precondition(!$name, 400, 'You did not fill anything in');
+        Condition::precondition(User::withHabbo($name)->count() > 0, 400, 'Habbo already taken');
+
+        $habbo = $this->habboService->getHabboByName($name);
+        Condition::precondition(!$habbo, 404, 'No habbo with that name');
+        Condition::precondition(strtotime($habbo->memberSince) > $this->monthAgo, 400, 'Your habbo is to young!');
+        Condition::precondition($habbo->motto != $requiredMotto, 400,
+            'Incorrect motto, you current motto is "' . $habbo->motto . '" but it needs to be "' . $requiredMotto . '"');
+
         $oldHabbo = $user->habbo;
-        $user->habbo = $habbo;
+        $user->habbo = $name;
         $user->save();
 
-        Logger::user($user->userId, $request->ip(), Action::UPDATED_HABBO, ['from' => $oldHabbo, 'to' => $habbo]);
+        Logger::user($user->userId, $request->ip(), Action::UPDATED_HABBO, ['from' => $oldHabbo, 'to' => $name]);
         return response()->json();
     }
 

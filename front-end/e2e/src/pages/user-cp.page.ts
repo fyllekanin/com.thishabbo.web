@@ -73,4 +73,12 @@ export class UserCpPage {
         return element(by.cssContainingText('.groups', value)).element(by.xpath('..'))
             .element(by.css('span'));
     }
+
+    static getHabboInput(): ElementFinder {
+        return element(by.css('app-usercp-habbo input[name="habbo"]'));
+    }
+
+    static getCurrentHabbo(): ElementFinder {
+        return element(by.css('app-usercp-habbo .habbo'));
+    }
 }
