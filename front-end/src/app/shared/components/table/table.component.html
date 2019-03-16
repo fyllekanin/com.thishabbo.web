@@ -1,13 +1,13 @@
 <div *ngIf="isSet">
-    <app-title
+    <app-title *ngIf="!isSlim"
         [title]="title"
         [tabs]="tabs"
         [top]="topBorder"
         (onTabClick)="tabClick($event)">
     </app-title>
     <app-content [isContracted]="isContracted">
-        <div class="grid-container full position-relative filter" *ngIf="filterConfigs.length > 0">
-            <div class="grid-x grid-margin-x">
+        <div class="grid-container full position-relative">
+            <div class="grid-x grid-margin-x filter" *ngIf="filterConfigs.length > 0">
                 <div class="cell" [ngClass]="filterConfigs.length > 1 ? 'small-6' : 'small-12'" *ngFor="let filterConfig of filterConfigs">
                     <div class="label" *ngIf="filterConfig.title">{{filterConfig.title}}</div>
                     <input type="text" name="filter" placeholder="{{filterConfig.placeholder}}"
@@ -15,39 +15,55 @@
                            (input)="onFilterChange()"/>
                 </div>
             </div>
-        </div>
-        <table>
-            <tr>
-                <th *ngFor="let header of headers" [ngStyle]="{'width': header.width || 'auto'}">{{header.title}}</th>
-                <th *ngIf="haveActions" style="min-width: 150px;">Actions</th>
-            </tr>
-            <tr *ngFor="let row of rows">
-                <td *ngFor="let cell of row.cells">
-                    <div *ngIf="cell.statusBox">
-                        <span [ngClass]="cell.status ? 'status-good' : 'status-bad'">
-                            {{cell.title}}
-                        </span>
-                    </div>
-                    <div *ngIf="cell.isEditable">
-                        <input class="editable" [(ngModel)]="cell.value">
-                    </div>
-                    <div *ngIf="!cell.statusBox && !cell.isEditable">
-                        <div *ngIf="cell.innerHTML" [innerHTML]="cell.title | safeHtml"></div>
-                        <div *ngIf="!cell.innerHTML">
-                            {{cell.title}}
+
+            <div class="grid-x header">
+                <div class="cell" [ngClass]="columnSize.column" *ngFor="let header of headers">
+                    {{header.title}}
+                </div>
+
+                <div class="cell" [ngClass]="columnSize.actions" *ngIf="haveActions">
+                    Actions
+                </div>
+            </div>
+
+            <div *ngFor="let row of rows" [ngClass]="row.isExpandable && row.data ? 'clickable' : ''" (click)="toggleRow(row)">
+                <div class="grid-x row">
+                    <div class="cell" [ngClass]="columnSize.column" *ngFor="let cell of row.cells; let index = index">
+                        <div *ngIf="cell.statusBox">
+                            <span [ngClass]="cell.status ? 'status-good' : 'status-bad'">
+                                {{cell.title}}
+                            </span>
+                        </div>
+                        <div *ngIf="cell.isEditable">
+                            <input class="editable" [(ngModel)]="cell.value">
+                        </div>
+                        <div *ngIf="!cell.statusBox && !cell.isEditable">
+                            <span *ngIf="cell.innerHTML" [innerHTML]="cell.title | safeHtml"></span>
+                            <span *ngIf="!cell.innerHTML">
+                                {{cell.title}}
+                            </span>
+                            <span *ngIf="row.isExpandable && row.data && index === 0">
+                                <i class="fas fa-arrow-alt-circle-right" *ngIf="!row.isOpen"></i>
+                                <i class="fas fa-arrow-alt-circle-down" *ngIf="row.isOpen"></i>
+                            </span>
                         </div>
                     </div>
-                </td>
-                <td *ngIf="haveActions" [ngClass]="row.actions.length === 1 ? 'button-column' : ''">
-                    <select (change)="onChange(row, $event)" *ngIf="row.actions.length > 1">
-                        <option [value]="null" disabled="disabled">{{ row.actionsPlaceholder || 'Choose' }}</option>
-                        <option *ngFor="let item of row.actions" [value]="item.value">{{item.title}}</option>
-                    </select>
-                    <button appButton *ngIf="row.actions.length === 1" [disabled]="row.actions[0].isDisabled" (onClick)="onActionClick(row.id, row.actions[0].value)">
-                        {{row.actions[0].title}}
-                    </button>
-                </td>
-            </tr>
-        </table>
+
+                    <div class="cell action" [ngClass]="row.actions.length === 1 ? columnSize.actions + ' button-column' : columnSize.actions" *ngIf="haveActions">
+                        <select (change)="onChange(row, $event)" *ngIf="row.actions.length > 1">
+                            <option [value]="null" disabled="disabled">{{ row.actionsPlaceholder || 'Choose' }}</option>
+                            <option *ngFor="let item of row.actions" [value]="item.value">{{item.title}}</option>
+                        </select>
+                        <button appButton *ngIf="row.actions.length === 1" [disabled]="row.actions[0].isDisabled" (onClick)="onActionClick(row.id, row.actions[0].value)">
+                            {{row.actions[0].title}}
+                        </button>
+                    </div>
+                </div>
+                <div class="row-data" [ngClass]="!row.isOpen ? 'closed' : ''">
+                    {{row.dataTitle}}
+                    <div [innerHTML]="row.data | safeHtml"></div>
+                </div>
+            </div>
+        </div>
     </app-content>
 </div>

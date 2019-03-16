@@ -45,7 +45,7 @@ export class CommonUtil {
     }
 
     static getTableRows() {
-        return element.all(by.css('app-table tr'));
+        return element.all(by.css('app-table .row'));
     }
 
     static enterTableFilter(placeholder: string, value: string): void {

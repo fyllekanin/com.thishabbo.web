@@ -1,5 +1,5 @@
 import { PaginationModel, PaginationItem } from 'shared/app-views/pagination/pagination.model';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 export class PaginationComponent {
     private _paginationModel: PaginationModel = new PaginationModel();
 
+    @Output() onPageSwitch: EventEmitter<number> = new EventEmitter();
+
     constructor(private _router: Router) {}
 
     getUrl(item: PaginationItem): string {
@@ -17,18 +19,34 @@ export class PaginationComponent {
     }
 
     goToPrevious(): void {
-        const url = this.getUrl({ value: this._paginationModel.page - 1 });
-        this._router.navigateByUrl(url);
+        if (this._paginationModel.url) {
+            const url = this.getUrl({value: this._paginationModel.page - 1});
+            this._router.navigateByUrl(url);
+        } else {
+            this.onPageSwitch.emit(this._paginationModel.page - 1);
+        }
     }
 
     goToNext(): void {
-        const url = this.getUrl({ value: this._paginationModel.page + 1 });
-        this._router.navigateByUrl(url);
+        if (this._paginationModel.url) {
+            const url = this.getUrl({value: this._paginationModel.page + 1});
+            this._router.navigateByUrl(url);
+        } else {
+            this.onPageSwitch.emit(this._paginationModel.page + 1);
+        }
+    }
+
+    switchPage(page: number): void {
+        this.onPageSwitch.emit(page);
     }
 
     @Input()
     set paginationModel(paginationModel: PaginationModel) {
         this._paginationModel = paginationModel || new PaginationModel();
+    }
+
+    get isUrlSet(): boolean {
+        return Boolean(this._paginationModel.url);
     }
 
     get fillBackwardItems(): Array<PaginationItem> {

@@ -12,6 +12,7 @@ import { Resolve } from '@angular/router';
 export class ContinuesInformationService implements Resolve<void> {
     private _event: EventSource;
     private _onContinuesInformationSubject: Subject<ContinuesInformationModel> = new Subject();
+    private _lastStreamError = 0;
 
     private _lastNotificationCheck = 0;
     private _notificationsSubject: Subject<Array<NotificationModel<any>>> = new Subject();
@@ -59,6 +60,7 @@ export class ContinuesInformationService implements Resolve<void> {
     }
 
     private onUserActivityChange(isUserActive): void {
+        console.log(isUserActive);
         if (this._event && isUserActive) {
             return;
         }
@@ -83,8 +85,12 @@ export class ContinuesInformationService implements Resolve<void> {
         this._event = new EventSource(`/rest/api/puller/stream${query}`);
         this._event.onmessage = this.onContinuesInformationData.bind(this);
         this._event.onerror = () => {
+            const current = new Date().getTime();
             this.stopEventStream();
-            this.startEventStream();
+            if (this._lastStreamError < (current - 5000)) {
+                this.startEventStream();
+            }
+            this._lastStreamError = current;
         };
     }
 

@@ -2,6 +2,11 @@ import { IdHelper } from 'shared/helpers/id.helper';
 import { arrayOf, ClassHelper, primitive, primitiveOf } from 'shared/helpers/class.helper';
 import { TitleTopBorder } from 'shared/app-views/title/title.model';
 
+export interface ColumnSize {
+    column: string;
+    actions?: string;
+}
+
 export class Action {
     @primitive()
     rowId: string;
@@ -67,6 +72,16 @@ export class TableRow {
     actions: Array<TableAction> = [];
     @primitive()
     actionsPlaceholder?: string;
+    @primitive()
+    isExpandable: boolean;
+
+    @primitive()
+    dataTitle: string;
+    @primitive()
+    data: string;
+
+    @primitive()
+    isOpen: boolean;
 
     constructor(source: Partial<TableRow>) {
         ClassHelper.assign(this, source);
@@ -101,6 +116,8 @@ export class TableConfig {
     rows: Array<TableRow> = [];
     @arrayOf(FilterConfig)
     filterConfigs: Array<FilterConfig> = [];
+    @primitive()
+    isSlim: boolean;
 
     constructor(source: Partial<TableConfig>) {
         ClassHelper.assign(this, source);

@@ -3,6 +3,16 @@
     display: block !important;
 }
 
+div {
+    overflow: hidden;
+    max-height: 500px; /* approximate max height */
+    box-sizing: border-box;
+
+    transition-property: all;
+    transition-duration: .5s;
+    transition-timing-function: ease;
+}
+
 .content-wrapper {
     background-color: #fff;
     border-right: 1px solid #cacaca;
@@ -18,9 +28,5 @@
 }
 
 .contracted {
-    display: none;
-}
-
-ng-content {
-    padding-left: 1rem;
+    max-height: 0;
 }

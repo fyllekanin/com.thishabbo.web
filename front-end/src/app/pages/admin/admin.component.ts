@@ -135,6 +135,11 @@ export class AdminComponent extends Page implements OnDestroy, OnInit {
                         title: 'Manage Polls',
                         link: '/admin/moderation/polls/page/1',
                         isApplicable: this._authService.adminPermissions.canManagePolls
+                    }),
+                    new SideMenuItem({
+                        title: 'Logs (user, staff, mod and admin)',
+                        link: '/admin/moderation/logs/user/page/1',
+                        isApplicable: this._authService.adminPermissions.canSeeLogs
                     })
                 ]
             }),

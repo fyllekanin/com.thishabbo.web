@@ -1,6 +1,5 @@
 import { DialogModule } from 'shared/app-views/dialog/dialog.module';
 import { GlobalNotificationModule } from 'shared/app-views/global-notification/global-notification.module';
-import { FooterModule } from 'shared/app-views/footer/footer.module';
 import { HeaderModule } from 'shared/app-views/header/header.module';
 import { CoreModule } from 'core/core.module';
 import { appRoutes } from './app.routes';
@@ -13,6 +12,7 @@ import { TopBarModule } from 'shared/app-views/top-bar/top-bar.module';
 import { TopBoxModule } from 'shared/app-views/top-box/top-box.module';
 import { AppLoadService } from 'core/loader/app-load.service';
 import { SiteMessagesModule } from 'shared/app-views/site-messages/site-messages.module';
+import { FooterModule } from 'shared/app-views/footer/Footer.module';
 
 export function init_nav(appLoadService: AppLoadService) {
     return () => appLoadService.initializeNavigation();
@@ -33,12 +33,12 @@ export function init_user(appLoadService: AppLoadService) {
         BrowserModule,
         BrowserAnimationsModule,
         HeaderModule,
-        FooterModule,
         GlobalNotificationModule,
         DialogModule,
         TopBarModule,
         TopBoxModule,
-        SiteMessagesModule
+        SiteMessagesModule,
+        FooterModule
     ],
     declarations: [
         AppComponent

@@ -32,6 +32,8 @@ import { BansComponent } from './bans/bans.component';
 import { BansPageService } from './services/bans.service';
 import { ReasonModule } from 'shared/components/reason/reason.module';
 import { SelectModule } from 'shared/components/form/select/select.module';
+import { LogsComponent } from './logs/logs.component';
+import { LogsService } from './services/logs.service';
 
 @NgModule({
     imports: [
@@ -57,7 +59,8 @@ import { SelectModule } from 'shared/components/form/select/select.module';
         InfractionLevelsListComponent,
         InfractionLevelComponent,
         InfractionsComponent,
-        BansComponent
+        BansComponent,
+        LogsComponent
     ],
     providers: [
         ThreadsModerationResolver,
@@ -70,7 +73,8 @@ import { SelectModule } from 'shared/components/form/select/select.module';
         InfractionLevelsService,
         InfractionLevelService,
         InfractionsResolver,
-        BansPageService
+        BansPageService,
+        LogsService
     ],
     exports: [
         RouterModule

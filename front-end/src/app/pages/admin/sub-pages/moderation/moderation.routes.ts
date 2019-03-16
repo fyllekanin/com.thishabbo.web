@@ -22,6 +22,8 @@ import { InfractionsComponent } from './infractions/infractions.component';
 import { InfractionsResolver } from './services/infractions.resolver';
 import { BansComponent } from './bans/bans.component';
 import { BansPageService } from './services/bans.service';
+import { LogsComponent } from './logs/logs.component';
+import { LogsService } from './services/logs.service';
 
 export const moderationRoutes: Routes = [
     {
@@ -107,6 +109,13 @@ export const moderationRoutes: Routes = [
                 component: BansComponent,
                 resolve: {
                     data: BansPageService
+                }
+            },
+            {
+                path: 'logs/:type/page/:page',
+                component: LogsComponent,
+                resolve: {
+                    data: LogsService
                 }
             }
         ]
