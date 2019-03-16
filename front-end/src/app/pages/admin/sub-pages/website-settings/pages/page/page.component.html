@@ -8,7 +8,7 @@
             </div>
             <div class="cell small-6">
                 <label>Path of page <em>(Only text A to Z)</em></label>
-                <input type="text" [(ngModel)]="model.path"/>
+                <input type="text" [(ngModel)]="model.path" [disabled]="model.isSystem"/>
             </div>
             <div class="cell small-6">
                 <label>Path to page:</label>

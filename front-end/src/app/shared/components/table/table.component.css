@@ -15,7 +15,7 @@
 .header {
     background: #ffffff;
     padding: 0.5rem;
-    box-shadow: 0 1px #ffffff30, 0 1px 5px #a5a5a591;
+    box-shadow: 0 1px #ffffff30, 0 3px 2px #a5a5a591;
     border: 1px solid #fffbfb;
     text-transform: uppercase;
     font-weight: bold;

@@ -97,7 +97,9 @@ class PageSettingsController extends Controller {
         Condition::precondition(!preg_match('/[a-zA-Z]+/', $data->path), 400,
             'Path is not valid, it can only be text');
 
-        $page->path = $data->path;
+        if (!$page->isSystem) {
+            $page->path = $data->path;
+        }
         $page->title = $data->title;
         $page->content = $data->content;
         $page->save();
