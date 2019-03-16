@@ -9,22 +9,26 @@
             <div class="grid-x numbers">
                 <div class="items" *ngFor="let item of backwardItems"
                      [ngClass]="item.value < 0 ? 'page-no-click' : ''">
-                    <a [routerLink]="[getUrl(item)]">{{item.title}}</a>
+                    <a *ngIf="isUrlSet" [routerLink]="[getUrl(item)]">{{item.title}}</a>
+                    <a *ngIf="!isUrlSet" (click)="switchPage(item.value)">{{item.title}}</a>
                 </div>
                 <div class="items" *ngFor="let item of fillBackwardItems"
                      [ngClass]="item.value < 0 ? 'page-no-click' : ''">
-                    <a [routerLink]="[getUrl(item)]">{{item.title}}</a>
+                    <a *ngIf="isUrlSet" [routerLink]="[getUrl(item)]">{{item.title}}</a>
+                    <a *ngIf="!isUrlSet" (click)="switchPage(item.value)">{{item.title}}</a>
                 </div>
                 <div class="page-no-click current bold">
                     {{currentPage}}
                 </div>
                 <div class="items" *ngFor="let item of fillForwardItems"
                      [ngClass]="item.value < 0 ? 'page-no-click' : ''">
-                    <a [routerLink]="[getUrl(item)]">{{item.title}}</a>
+                    <a *ngIf="isUrlSet" [routerLink]="[getUrl(item)]">{{item.title}}</a>
+                    <a *ngIf="!isUrlSet" (click)="switchPage(item.value)">{{item.title}}</a>
                 </div>
                 <div class="items" *ngFor="let item of forwardItems"
                      [ngClass]="item.value < 0 ? 'page-no-click' : ''">
-                    <a [routerLink]="[getUrl(item)]">{{item.title}}</a>
+                    <a *ngIf="isUrlSet" [routerLink]="[getUrl(item)]">{{item.title}}</a>
+                    <a *ngIf="!isUrlSet" (click)="switchPage(item.value)">{{item.title}}</a>
                 </div>
             </div>
         </div>

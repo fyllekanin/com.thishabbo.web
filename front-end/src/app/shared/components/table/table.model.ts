@@ -116,6 +116,8 @@ export class TableConfig {
     rows: Array<TableRow> = [];
     @arrayOf(FilterConfig)
     filterConfigs: Array<FilterConfig> = [];
+    @primitive()
+    isSlim: boolean;
 
     constructor(source: Partial<TableConfig>) {
         ClassHelper.assign(this, source);

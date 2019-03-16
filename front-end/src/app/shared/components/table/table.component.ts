@@ -65,6 +65,10 @@ export class TableComponent {
         this._columnSize = this.getColumnSize();
     }
 
+    get isSlim(): boolean {
+        return this._config.isSlim;
+    }
+
     get columnSize(): ColumnSize {
         return this._columnSize;
     }

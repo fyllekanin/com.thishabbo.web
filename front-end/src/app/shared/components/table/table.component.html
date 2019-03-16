@@ -1,5 +1,5 @@
 <div *ngIf="isSet">
-    <app-title
+    <app-title *ngIf="!isSlim"
         [title]="title"
         [tabs]="tabs"
         [top]="topBorder"
