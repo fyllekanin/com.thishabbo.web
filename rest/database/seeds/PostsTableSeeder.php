@@ -83,7 +83,7 @@ GG!',
                 'postId' => 6,
                 'threadId' => 4,
                 'userId' => 1,
-                'content' => 'Welcome [mention=2]test[/mention] to thishabbo!
+                'content' => 'Welcome [mention]@test[/mention] to thishabbo!
 Hope you will have a fun time here and join our team! ',
                 'isDeleted' => 0,
                 'isApproved' => 1,
@@ -306,7 +306,7 @@ this is just a boiler template text should show that text is displayed when the 
                 'postId' => 17,
                 'threadId' => 15,
                 'userId' => 2,
-                'content' => '2test1TovvenHe said welcome to me!Welcome [mention=2]test[/mention] to thishabbo!
+                'content' => '2test1TovvenHe said welcome to me!Welcome [mention]@test[/mention] to thishabbo!
 Hope you will have a fun time here and join our team! ',
                 'isDeleted' => 1,
                 'isApproved' => 1,
@@ -318,7 +318,7 @@ Hope you will have a fun time here and join our team! ',
                 'postId' => 18,
                 'threadId' => 16,
                 'userId' => 2,
-                'content' => '2test1TovvenI wanna report tovven!Welcome [mention=2]test[/mention] to thishabbo!
+                'content' => '2test1TovvenI wanna report tovven!Welcome [mention]@test[/mention] to thishabbo!
 Hope you will have a fun time here and join our team! ',
                 'isDeleted' => 1,
                 'isApproved' => 1,
@@ -330,7 +330,7 @@ Hope you will have a fun time here and join our team! ',
                 'postId' => 19,
                 'threadId' => 17,
                 'userId' => 2,
-                'content' => '[mention=2]test[/mention] reported a post.
+                'content' => '[mention]@test[/mention] reported a post.
 
 [b]User reported:[/b] [mention=1]Tovven[/mention]
 [b]Thread:[/b] [url=/forum/thread/1/page/1]Click here to go to thread.[/url]
@@ -339,7 +339,7 @@ Hope you will have a fun time here and join our team! ',
 [quote]Reporting you again![/quote]
 
 [b]Original post:[/b]
-[quote]Welcome [mention=2]test[/mention] to thishabbo!
+[quote]Welcome [mention]@test[/mention] to thishabbo!
 Hope you will have a fun time here and join our team! [/quote]',
                 'isDeleted' => 1,
                 'isApproved' => 1,
@@ -351,7 +351,7 @@ Hope you will have a fun time here and join our team! [/quote]',
                 'postId' => 20,
                 'threadId' => 18,
                 'userId' => 2,
-                'content' => '[mention=2]test[/mention] reported a post.
+                'content' => '[mention]@test[/mention] reported a post.
 
 [b]User reported:[/b] [mention=1]Tovven[/mention]
 [b]Thread:[/b] [url=/forum/thread/1/page/1]Click here to go to thread.[/url]
@@ -360,7 +360,7 @@ Hope you will have a fun time here and join our team! [/quote]',
 [quote]I did not say he could welcome me! I don\'t like him, please help[/quote]
 
 [b]Original post:[/b]
-[quote]Welcome [mention=2]test[/mention] to thishabbo!
+[quote]Welcome [mention]@test[/mention] to thishabbo!
 Hope you will have a fun time here and join our team! [/quote]',
                 'isDeleted' => 0,
                 'isApproved' => 1,

@@ -29,6 +29,8 @@ Route::delete('/category/{categoryId}/ignore', 'Forum\Category\CategoryActionCon
 Route::post('/thread/{threadId}/ignore', 'Forum\Thread\ThreadActionController@createIgnore');
 Route::delete('/thread/{threadId}/ignore', 'Forum\Thread\ThreadActionController@deleteIgnore');
 
+Route::get('/thread/{threadId}/posters/page/{page}', 'Forum\Thread\ThreadCrudController@getPosters');
+
 Route::prefix('moderation')->group(function () {
     Route::put('/thread/approve/posts', 'Moderation\PostController@approvePosts');
     Route::put('/thread/unapprove/posts', 'Moderation\PostController@unApprovePosts');

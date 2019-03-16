@@ -24,6 +24,7 @@ import { ArrayHelper } from 'shared/helpers/array.helper';
 import { AutoSaveHelper } from 'shared/helpers/auto-save.helper';
 import { ThreadService } from '../services/thread.service';
 import { ThreadActionExecutor } from './thread.helper';
+import { ThreadPostersComponent } from './thread-posters/thread-posters.component';
 
 @Component({
     selector: 'app-forum-thread',
@@ -142,6 +143,9 @@ export class ThreadComponent extends Page implements OnDestroy {
             case ThreadActions.TOGGLE_TOOLS:
                 this._isToolsVisible = !this._isToolsVisible;
                 this.buildModerationTools();
+                break;
+            case ThreadActions.THREAD_POSTERS:
+                this.showThreadPosters();
                 break;
         }
     }
@@ -274,13 +278,17 @@ export class ThreadComponent extends Page implements OnDestroy {
         }
         this.tabs = [
             new TitleTab({
+                title: 'Posters',
+                value: ThreadActions.THREAD_POSTERS
+            }),
+            new TitleTab({
                 title: this._threadPage.isSubscribed ? 'Unsubscribe' : 'Subscribe',
                 value: this._threadPage.isSubscribed ? ThreadActions.UNSUBSCRIBE : ThreadActions.SUBSCRIBE
             }),
             new TitleTab({
                 title: this._threadPage.isIgnored ? 'Unignore' : 'Ignore',
                 value: this._threadPage.isIgnored ? ThreadActions.UNIGNORE : ThreadActions.IGNORE
-            }),
+            })
         ];
 
         if (this.haveAnyTools()) {
@@ -377,5 +385,16 @@ export class ThreadComponent extends Page implements OnDestroy {
         }
 
         this.editorButtons = buttons;
+    }
+
+    private showThreadPosters(): void {
+        this._dialogService.openDialog({
+            title: 'Thread Posters',
+            buttons: [
+                new DialogCloseButton('Close')
+            ],
+            data: this._threadPage.threadId,
+            component: this._componentFactory.resolveComponentFactory(ThreadPostersComponent)
+        });
     }
 }

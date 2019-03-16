@@ -26,6 +26,7 @@ use App\Services\ForumValidatorService;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ThreadCrudController extends Controller {
     private $categoryTemplates = null;
@@ -45,6 +46,33 @@ class ThreadCrudController extends Controller {
         $this->categoryTemplates = ConfigHelper::getCategoryTemplatesConfig();
         $this->forumService = $forumService;
         $this->validatorService = $validatorService;
+    }
+
+    /**
+     * @param $threadId
+     * @param $page
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getPosters($threadId, $page) {
+        $query = Post::where('posts.threadId', $threadId)
+            ->join('users', 'users.userId', '=', 'posts.userId')
+            ->select('users.userId', DB::raw('COUNT(*) as amount'))
+            ->groupBy('users.userId');
+
+        return response()->json([
+            'total' => ceil($query->count() / $this->perPage),
+            'page' => $page,
+            'items' => $query->take($this->perPage)
+                ->skip($this->getOffset($page))
+                ->get()
+                ->map(function($item) {
+                    return [
+                        'user' => UserHelper::getSlimUser($item->userId),
+                        'posts' => $item->amount
+                    ];
+                })
+        ]);
     }
 
     public function getLatestThreads (Request $request, $page) {

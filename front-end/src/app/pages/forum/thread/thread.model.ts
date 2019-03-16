@@ -98,7 +98,8 @@ export enum ThreadActions {
     UNIGNORE,
     THREAD_HISTORY,
     POST_HISTORY,
-    TOGGLE_TOOLS
+    TOGGLE_TOOLS,
+    THREAD_POSTERS
 }
 
 export class PostHistoryModel {

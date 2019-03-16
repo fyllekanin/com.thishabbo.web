@@ -37,6 +37,8 @@ import { LatestPostsResolver } from './services/latest-posts.resolver';
 import { LatestPostsComponent } from './latest-posts/latest-posts.component';
 import { LatestThreadsResolver } from './services/latest-threads.resolver';
 import { LatestThreadsComponent } from './latest-threads/latest-threads.component';
+import { ThreadPostersComponent } from './thread/thread-posters/thread-posters.component';
+import { TableModule } from 'shared/components/table/table.module';
 
 @NgModule({
     imports: [
@@ -54,7 +56,8 @@ import { LatestThreadsComponent } from './latest-threads/latest-threads.componen
         LazyLoadModule,
         SafeHtmlModule,
         SafeStyleModule,
-        InfractionModule
+        InfractionModule,
+        TableModule
     ],
     declarations: [
         ForumHomeComponent,
@@ -71,7 +74,8 @@ import { LatestThreadsComponent } from './latest-threads/latest-threads.componen
         MoveThreadComponent,
         EditHistoryComponent,
         LatestPostsComponent,
-        LatestThreadsComponent
+        LatestThreadsComponent,
+        ThreadPostersComponent
     ],
     providers: [
         ForumHomeResolver,
@@ -86,7 +90,8 @@ import { LatestThreadsComponent } from './latest-threads/latest-threads.componen
         ReportComponent,
         ChangeOwnerComponent,
         MoveThreadComponent,
-        EditHistoryComponent
+        EditHistoryComponent,
+        ThreadPostersComponent
     ],
     exports: []
 })
