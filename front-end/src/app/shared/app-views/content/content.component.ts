@@ -1,5 +1,5 @@
 import { TitleTopBorder } from './../title/title.model';
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 
 @Component({
     selector: 'app-content',
@@ -8,12 +8,22 @@ import { Component, Input } from '@angular/core';
 })
 
 export class ContentComponent {
-    @Input() isContracted = false;
-
+    @ViewChild('content') contentEle;
     topBorder: TitleTopBorder = '';
 
     @Input()
     set top(top: TitleTopBorder) {
         this.topBorder = top || '';
+    }
+
+    @Input()
+    set isContracted(value: boolean) {
+        if (value) {
+            // @ts-ignore
+            $(this.contentEle.nativeElement).slideUp('slow');
+        } else {
+            // @ts-ignore
+            $(this.contentEle.nativeElement).slideDown('slow');
+        }
     }
 }
