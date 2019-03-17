@@ -48,7 +48,8 @@ export class UsercpComponent extends Page implements OnDestroy, OnInit {
                     new SideMenuItem({ title: 'Groups', link: '/user/usercp/account/groups' }),
                     new SideMenuItem({ title: 'Change Password', link: '/user/usercp/account/password' }),
                     new SideMenuItem({ title: 'Edit Habbo', link: '/user/usercp/account/habbo' }),
-                    new SideMenuItem({ title: 'Edit Home Page', link: '/user/usercp/account/home-page' })
+                    new SideMenuItem({ title: 'Edit Home Page', link: '/user/usercp/account/home-page' }),
+                    new SideMenuItem({ title: 'Edit Theme', link: '/user/usercp/account/theme' })
                 ]
             }),
             new SideMenuBlock({

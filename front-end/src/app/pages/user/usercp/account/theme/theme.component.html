@@ -1,0 +1,13 @@
+<app-title [title]="'Selected the theme you wish to use'" [tabs]="tabs" (onTabClick)="onSave()"></app-title>
+<app-content>
+    Select the theme below which you wish to use on the website.<br/>
+    When selecting, the theme will be applied directly, but to make sure it stays the same you need to save.
+    <br />
+    <br />
+    <select [(ngModel)]="themeId" (ngModelChange)="applyTheme()">
+        <option [value]="0">Default</option>
+        <option *ngFor="let theme of themes" [value]="theme.themeId">
+            {{theme.title}}
+        </option>
+    </select>
+</app-content>

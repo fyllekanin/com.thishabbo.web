@@ -7,6 +7,8 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { NicknameComponent } from './nickname/nickname.component';
 import { HabboComponent } from './habbo/habbo.component';
 import { UsercpHabboService } from './services/usercp-habbo.service';
+import { ThemeComponent } from './theme/theme.component';
+import { UsercpThemeResolver } from './services/usercp-theme.resolver';
 
 export const accountRoutes: Routes = [
     {
@@ -37,6 +39,13 @@ export const accountRoutes: Routes = [
         component: HabboComponent,
         resolve: {
             data: UsercpHabboService
+        }
+    },
+    {
+        path: 'theme',
+        component: ThemeComponent,
+        resolve: {
+            data: UsercpThemeResolver
         }
     }
 ];

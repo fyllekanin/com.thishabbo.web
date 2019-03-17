@@ -1,6 +1,6 @@
 
 export class ThemeHelper {
-    private static readonly THEME_STYLE_ID = 'custom-theme-style-element';
+    static readonly THEME_STYLE_ID = 'custom-theme-style-element';
 
     static applyTheme(theme: string): void {
         let element;
@@ -24,8 +24,7 @@ export class ThemeHelper {
 
     private static createStyleElement(): HTMLStyleElement {
         const css = document.createElement('style');
-        css.id = 'theme';
-        css.type = 'text/css';
+        css.id = ThemeHelper.THEME_STYLE_ID;
 
         document.head.appendChild(css);
         return css;

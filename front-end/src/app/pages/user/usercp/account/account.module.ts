@@ -14,6 +14,8 @@ import { PasswordComponent } from './password/password.component';
 import { UsercpGroupsService } from './services/usercp-groups.service';
 import { UsercpHabboService } from './services/usercp-habbo.service';
 import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.module';
+import { UsercpThemeResolver } from './services/usercp-theme.resolver';
+import { ThemeComponent } from './theme/theme.component';
 
 @NgModule({
     imports: [
@@ -30,11 +32,13 @@ import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.modul
         HabboComponent,
         HomePageComponent,
         NicknameComponent,
-        PasswordComponent
+        PasswordComponent,
+        ThemeComponent
     ],
     providers: [
         UsercpGroupsService,
-        UsercpHabboService
+        UsercpHabboService,
+        UsercpThemeResolver
     ],
     exports: [
         RouterModule

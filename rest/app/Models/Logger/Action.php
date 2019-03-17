@@ -1123,4 +1123,12 @@ class Action {
         'description' => 'Cleared default theme',
         'data' => []
     ];
+
+    const SELECTED_THEME = [
+        'id' => 142,
+        'description' => 'User selected theme',
+        'data' => [
+            'theme' => 'Title of the theme'
+        ]
+    ];
 }
