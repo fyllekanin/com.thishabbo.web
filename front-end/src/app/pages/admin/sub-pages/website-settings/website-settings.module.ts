@@ -31,6 +31,10 @@ import { PagesComponent } from './pages/list/pages.component';
 import { PagesResolver } from './services/pages.resolver';
 import { PageComponent } from './pages/page/page.component';
 import { PageResolver } from './services/page.resolver';
+import { ThemesComponent } from './themes/list/themes.component';
+import { ThemesResolver } from './services/themes.resolver';
+import { ThemeResolver } from './services/theme.resolver';
+import { ThemeComponent } from './themes/theme/theme.component';
 
 @NgModule({
     imports: [
@@ -56,7 +60,9 @@ import { PageResolver } from './services/page.resolver';
         SiteMessagesComponent,
         SiteMessageComponent,
         PagesComponent,
-        PageComponent
+        PageComponent,
+        ThemesComponent,
+        ThemeComponent
     ],
     entryComponents: [
         NavigationItemComponent
@@ -71,7 +77,9 @@ import { PageResolver } from './services/page.resolver';
         SiteMessagesResolver,
         SiteMessageResolver,
         PagesResolver,
-        PageResolver
+        PageResolver,
+        ThemesResolver,
+        ThemeResolver
     ],
     exports: [
         RouterModule

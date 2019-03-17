@@ -1,0 +1,15 @@
+<app-title [title]="title" [tabs]="tabs" (onTabClick)="onTabClick($event)"></app-title>
+<app-content>
+    <div class="grid-container">
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-12">
+                <label>Title</label>
+                <input type="text" [(ngModel)]="model.title"/>
+            </div>
+            <div class="cell small-12">
+                <label>CSS</label>
+                <textarea [(ngModel)]="model.css" rows="10" ></textarea>
+            </div>
+        </div>
+    </div>
+</app-content>

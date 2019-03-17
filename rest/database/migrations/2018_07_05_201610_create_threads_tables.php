@@ -16,7 +16,7 @@ class CreateThreadsTables extends Migration
         Schema::create('threads', function (Blueprint $table) {
             $table->bigIncrements('threadId');
             $table->bigInteger('categoryId');
-            $table->string('title', 255);
+            $table->string('title');
             $table->integer('isOpen')->default(1);
             $table->integer('isDeleted')->default(0);
             $table->bigInteger('posts')->default(1);
@@ -31,6 +31,7 @@ class CreateThreadsTables extends Migration
             $table->bigInteger('updatedAt');
 
             // Indexes
+            $table->index('title');
             $table->index('categoryId');
             $table->index('isDeleted');
             $table->index('isApproved');

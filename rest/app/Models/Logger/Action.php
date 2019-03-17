@@ -1085,4 +1085,36 @@ class Action {
             'bet' => 'Title bet'
         ]
     ];
+
+    const CREATED_THEME = [
+        'id' => 137,
+        'description' => 'Created Theme',
+        'data' => [
+            'theme' => 'Title of theme'
+        ]
+    ];
+
+    const UPDATED_THEME = [
+        'id' => 138,
+        'description' => 'Updated Theme',
+        'data' => [
+            'theme' => 'Title of theme'
+        ]
+    ];
+
+    const DELETED_THEME = [
+        'id' => 139,
+        'description' => 'Deleted Theme',
+        'data' => [
+            'theme' => 'Title of theme'
+        ]
+    ];
+
+    const MADE_THEME_DEFAULT = [
+        'id' => 140,
+        'description' => 'Made theme default',
+        'data' => [
+            'theme' => 'Title of theme'
+        ]
+    ];
 }

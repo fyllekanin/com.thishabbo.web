@@ -2,6 +2,7 @@ import { ClassHelper, objectOf, arrayOf } from 'shared/helpers/class.helper';
 import { primitive } from 'shared/helpers/class.helper';
 import { SlimUser } from 'core/services/auth/auth.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
+import { IUserProfile } from 'shared/directives/user-profile.directive';
 
 export class ForumLatestPost {
     @primitive()
@@ -29,6 +30,13 @@ export class ForumLatestPost {
 
     get time(): string {
         return TimeHelper.getTime(this.createdAt);
+    }
+
+    getUserProfile(): IUserProfile {
+        return {
+            userId: this.user.userId,
+            avatarUpdatedAt: this.user.avatarUpdatedAt
+        };
     }
 }
 

@@ -64,6 +64,12 @@ export class WebsiteSettingsComponent extends Page implements OnDestroy, OnInit 
             path: '/admin/website-settings/pages',
             name: 'Pages',
             description: 'Manage the pages'
+        },
+        {
+            id: 'themes',
+            path: '/admin/website-settings/themes',
+            name: 'Themes',
+            description: 'Manage the themes'
         }
     ];
 

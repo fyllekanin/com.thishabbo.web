@@ -34,7 +34,7 @@
                 </div>
                 <div *ngFor="let latestPost of latestPosts;" class="latest-post-row">
                     <span class="image">
-                        <img appUserProfile [isSmall]="true" [info]="{ userId: latestPost.user.userId, avatarUpdatedAt: latestPost.user.avatarUpdatedAt }"/>
+                        <img appUserProfile [isSmall]="true" [info]="latestPost.getUserProfile()"/>
                     </span>
                     <span class="data">
                         <a class="title" [routerLink]="['/forum', 'thread', latestPost.threadId, 'page', latestPost.page]" [queryParams]="{ scrollTo: 'post-' + latestPost.postId}">
