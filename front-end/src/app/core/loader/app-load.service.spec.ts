@@ -35,11 +35,13 @@ describe('AppLoadService', () => {
         it('should fetch navigation from BE and set to localStorage', done => {
             // Given
             const httpService = TestBed.get(HttpService);
-            spyOn(httpService, 'get').and.returnValue(of([
-                {
-                    label: 'navigation'
-                }
-            ]));
+            spyOn(httpService, 'get').and.returnValue(of({
+                navigation: [
+                    {
+                        label: 'navigation'
+                    }
+                ]
+            }));
 
             // When
             service.initializeNavigation().then(() => {

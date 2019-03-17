@@ -24,5 +24,6 @@ export enum ThemeActions {
     SAVE,
     DELETE,
     CANCEL,
-    DEFAULT
+    DEFAULT,
+    CLEAR_DEFAULT
 }

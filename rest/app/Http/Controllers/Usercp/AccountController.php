@@ -6,6 +6,7 @@ use App\EloquentModels\CategorySubscription;
 use App\EloquentModels\Forum\IgnoredCategory;
 use App\EloquentModels\Forum\IgnoredThread;
 use App\EloquentModels\Log\LogUser;
+use App\EloquentModels\Theme;
 use App\EloquentModels\ThreadSubscription;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserData;
@@ -36,6 +37,43 @@ class AccountController extends Controller {
         $this->authService = $authService;
         $this->habboService = $habboService;
         $this->monthAgo = time() - 2419200;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getThemes(Request $request) {
+        $user = UserHelper::getUserFromRequest($request);
+
+        return response()->json(Theme::get()->map(function($item) use ($user) {
+            return [
+                'themeId' => $item->themeId,
+                'title' => $item->title,
+                'minified' => $item->minified,
+                'isSelected' => $user->theme ? $item->themeId == $user->theme : $item->isDefault
+            ];
+        }));
+    }
+
+    /**
+     * @param Request $request
+     * @param $themeId
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateTheme(Request $request) {
+        $themeId = $request->input('themeId');
+        $user = UserHelper::getUserFromRequest($request);
+        $theme = Theme::find($themeId);
+        Condition::precondition(!$theme, 404, 'No theme with that ID');
+
+        $user->theme = $themeId;
+        $user->save();
+
+        Logger::user($user->userId, $request->ip(), Action::SELECTED_THEME, ['theme' => $theme->title]);
+        return response()->json();
     }
 
     /**

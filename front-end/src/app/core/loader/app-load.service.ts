@@ -5,6 +5,7 @@ import { HttpService } from 'core/services/http/http.service';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { AuthService } from 'core/services/auth/auth.service';
 import { AuthUser } from 'core/services/auth/auth.model';
+import { ThemeHelper } from 'shared/helpers/theme.helper';
 
 @Injectable()
 export class AppLoadService {
@@ -17,8 +18,11 @@ export class AppLoadService {
         const httpService = this._injector.get(HttpService);
         this.clearAutoSaves();
         return new Promise(resolve => {
-            httpService.get('settings/navigation').subscribe(res => {
-                localStorage.setItem(LOCAL_STORAGE.NAVIGATION, JSON.stringify(res));
+            httpService.get('load/initial').subscribe(res => {
+                localStorage.setItem(LOCAL_STORAGE.NAVIGATION, JSON.stringify(res.navigation));
+                if (res.theme) {
+                    ThemeHelper.applyTheme(res.theme);
+                }
                 resolve();
             }, resolve);
         });

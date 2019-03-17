@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration {
             $table->integer('posts')->default(0);
             $table->integer('threads')->default(0);
             $table->integer('ignoredNotifications')->default(0);
+            $table->integer('theme')->default(0);
 
             // Dates
             $table->bigInteger('lastActivity')->default(0);

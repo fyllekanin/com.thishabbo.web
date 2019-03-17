@@ -9,6 +9,7 @@ use App\EloquentModels\Forum\Thread;
 use App\EloquentModels\Log\LogMod;
 use App\EloquentModels\Notice;
 use App\EloquentModels\Page;
+use App\EloquentModels\Theme;
 use App\EloquentModels\User\User;
 use App\Helpers\ConfigHelper;
 use App\Helpers\PermissionHelper;
@@ -30,6 +31,24 @@ class PageController extends Controller {
     public function __construct () {
         parent::__construct();
         $this->categoryTemplates = ConfigHelper::getCategoryTemplatesConfig();
+    }
+
+    public function loadInitial (Request $request) {
+        $user = UserHelper::getUserFromRequest($request);
+
+        $navigation = null;
+        try {
+            $navigation = json_decode(SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->navigation));
+        } catch (\Exception $e) {
+            $navigation = [];
+        }
+
+        $theme = Theme::where('themeId', Value::objectProperty($user, 'theme', 0))->orWhere('isDefault', true)->first();
+
+        return response()->json([
+            'navigation' => is_array($navigation) ? $navigation :  [],
+            'theme' => $theme ? $theme->minified : ''
+        ]);
     }
 
     /**

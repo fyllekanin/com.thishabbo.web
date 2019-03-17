@@ -79,7 +79,7 @@ export class ThemeComponent extends Page implements OnDestroy {
                         title: 'Success',
                         message: 'Theme is created!'
                     }));
-                });
+                }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
         } else {
             this._httpService.post('admin/content/themes', { theme: this._data })
                 .subscribe(() => {
@@ -89,7 +89,7 @@ export class ThemeComponent extends Page implements OnDestroy {
                         title: 'Success',
                         message: 'Theme is created!'
                     }));
-                });
+                }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
         }
     }
 

@@ -1117,4 +1117,18 @@ class Action {
             'theme' => 'Title of theme'
         ]
     ];
+
+    const CLEARED_THEME_DEFAULT = [
+        'id' => 141,
+        'description' => 'Cleared default theme',
+        'data' => []
+    ];
+
+    const SELECTED_THEME = [
+        'id' => 142,
+        'description' => 'User selected theme',
+        'data' => [
+            'theme' => 'Title of the theme'
+        ]
+    ];
 }

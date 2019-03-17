@@ -36,3 +36,6 @@ Route::get('habbo', 'Usercp\AccountController@getHabbo');
 Route::put('habbo', 'Usercp\AccountController@updateHabbo');
 
 Route::put('nickname', 'Usercp\AccountController@updateNickname');
+
+Route::get('themes', 'Usercp\AccountController@getThemes');
+Route::put('themes', 'Usercp\AccountController@updateTheme');

@@ -36,7 +36,8 @@ export class ThemesComponent extends Page implements OnDestroy {
     ];
 
     tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Create New', link: '/admin/website-settings/themes/new' })
+        new TitleTab({ title: 'Create New', link: '/admin/website-settings/themes/new' }),
+        new TitleTab({ title: 'Clear Default', value: ThemeActions.CLEAR_DEFAULT })
     ];
     tableConfig: TableConfig;
 
@@ -62,6 +63,23 @@ export class ThemesComponent extends Page implements OnDestroy {
 
     ngOnDestroy () {
         super.destroy();
+    }
+
+    onTabClick(value: number): void {
+        if (value !== ThemeActions.CLEAR_DEFAULT) {
+            return;
+        }
+        this._httpService.put('/admin/content/themes/default/clear')
+            .subscribe(() => {
+                this._data.forEach(item => {
+                    item.isDefault = false;
+                });
+                this.createOrUpdateTable();
+                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                    title: 'Success',
+                    message: 'No theme is default'
+                }));
+            });
     }
 
     onAction(action: Action): void {

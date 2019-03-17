@@ -10,7 +10,8 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable {
     use Notifiable;
 
-    protected $fillable = ['username', 'nickname', 'habbo', 'gdpr', 'password', 'likes', 'displayGroupId', 'posts', 'threads', 'lastActivity', 'referralId'];
+    protected $fillable = ['username','nickname', 'habbo', 'gdpr', 'password',
+        'likes', 'displayGroupId', 'posts', 'threads', 'theme', 'lastActivity', 'referralId'];
     protected $hidden = ['username', 'password'];
     protected $primaryKey = 'userId';
     const CREATED_AT = 'createdAt';
