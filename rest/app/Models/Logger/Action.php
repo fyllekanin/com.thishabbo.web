@@ -1117,4 +1117,10 @@ class Action {
             'theme' => 'Title of theme'
         ]
     ];
+
+    const CLEARED_THEME_DEFAULT = [
+        'id' => 141,
+        'description' => 'Cleared default theme',
+        'data' => []
+    ];
 }

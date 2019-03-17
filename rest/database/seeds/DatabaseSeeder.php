@@ -30,5 +30,6 @@ class DatabaseSeeder extends Seeder {
         $this->call(AutoBansTableSeeder::class);
         $this->call(NotificationsTableSeeder::class);
         $this->call(PagesTableSeeder::class);
+        $this->call(ThemesTableSeeder::class);
     }
 }

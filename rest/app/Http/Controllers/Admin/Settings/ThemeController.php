@@ -125,6 +125,20 @@ class ThemeController extends Controller {
         return response()->json();
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function clearDefault(Request $request) {
+        $user = UserHelper::getUserFromRequest($request);
+
+        Theme::where('isDefault', true)->update(['isDefault' => 0 ]);
+
+        Logger::admin($user->userId, $request->ip(), Action::CLEARED_THEME_DEFAULT);
+        return response()->json();
+    }
+
     private function validateTheme($theme) {
         Condition::precondition(!isset($theme->title) || empty($theme->title), 400,
             'Title needs to be set');

@@ -164,6 +164,7 @@ Route::prefix('content')->group(function () use ($permissions) {
         Route::post('/themes', 'Admin\Settings\ThemeController@createTheme');
         Route::put('/themes/{themeId}', 'Admin\Settings\ThemeController@updateTheme');
         Route::delete('/themes/{themeId}', 'Admin\Settings\ThemeController@deleteTheme');
+        Route::put('/themes/default/clear', 'Admin\Settings\ThemeController@clearDefault');
         Route::put('/themes/default/{themeId}', 'Admin\Settings\ThemeController@makeThemeDefault');
     });
 

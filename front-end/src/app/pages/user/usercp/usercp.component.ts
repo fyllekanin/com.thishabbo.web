@@ -10,7 +10,7 @@ import { AuthService } from 'core/services/auth/auth.service';
     template: `
     <div class="grid-container">
         <div class="grid-x margin-x">
-            <div class="cell small-12 medium-9 position-relative">
+            <div class="cell small-12 position-relative">
                 <app-cover-photo-with-avatar [userId]="userId" [version]="version"></app-cover-photo-with-avatar>
             </div>
             <div class="cell small-12 medium-9 position-relative">
@@ -44,31 +44,31 @@ export class UsercpComponent extends Page implements OnDestroy, OnInit {
                 title: 'Account',
                 items: [
                     new SideMenuItem({ title: 'Account Overview', link: '/user/usercp' }),
-                    new SideMenuItem({ title: 'Edit Nickname', link: '/user/usercp/nickname' }),
-                    new SideMenuItem({ title: 'Groups', link: '/user/usercp/groups' }),
-                    new SideMenuItem({ title: 'Change Password', link: '/user/usercp/password' }),
-                    new SideMenuItem({ title: 'Edit Habbo', link: '/user/usercp/habbo' }),
-                    new SideMenuItem({ title: 'Edit Home Page', link: '/user/usercp/home-page' })
+                    new SideMenuItem({ title: 'Edit Nickname', link: '/user/usercp/account/nickname' }),
+                    new SideMenuItem({ title: 'Groups', link: '/user/usercp/account/groups' }),
+                    new SideMenuItem({ title: 'Change Password', link: '/user/usercp/account/password' }),
+                    new SideMenuItem({ title: 'Edit Habbo', link: '/user/usercp/account/habbo' }),
+                    new SideMenuItem({ title: 'Edit Home Page', link: '/user/usercp/account/home-page' })
                 ]
             }),
             new SideMenuBlock({
                 title: 'Essentials',
                 items: [
-                    new SideMenuItem({ title: 'Edit Signature', link: '/user/usercp/signature' }),
-                    new SideMenuItem({ title: 'Edit Avatar', link: '/user/usercp/avatar' }),
-                    new SideMenuItem({ title: 'Edit Cover Photo', link: '/user/usercp/cover' }),
-                    new SideMenuItem({ title: 'Edit Postbit', link: '/user/usercp/post-bit' }),
-                    new SideMenuItem({ title: 'Edit Social Networks', link: '/user/usercp/social-networks' })
+                    new SideMenuItem({ title: 'Edit Signature', link: '/user/usercp/essentials/signature' }),
+                    new SideMenuItem({ title: 'Edit Avatar', link: '/user/usercp/essentials/avatar' }),
+                    new SideMenuItem({ title: 'Edit Cover Photo', link: '/user/usercp/essentials/cover' }),
+                    new SideMenuItem({ title: 'Edit Postbit', link: '/user/usercp/essentials/post-bit' }),
+                    new SideMenuItem({ title: 'Edit Social Networks', link: '/user/usercp/essentials/social-networks' })
                 ]
             }),
             new SideMenuBlock({
                 title: 'Subscriptions & Notifications',
                 items: [
-                    new SideMenuItem({ title: 'Edit Notification Settings', link: '/user/usercp/notification-settings' }),
-                    new SideMenuItem({ title: 'Edit Thread Subscriptions', link: '/user/usercp/thread-subscriptions' }),
-                    new SideMenuItem({ title: 'Edit Category Subscriptions', link: '/user/usercp/category-subscriptions' }),
-                    new SideMenuItem({ title: 'Edit Ignored Threads', link: '/user/usercp/ignored-threads' }),
-                    new SideMenuItem({ title: 'Edit Ignored Categories', link: '/user/usercp/ignored-categories' })
+                    new SideMenuItem({ title: 'Edit Notification Settings', link: '/user/usercp/subscriptions/notification-settings' }),
+                    new SideMenuItem({ title: 'Edit Thread Subscriptions', link: '/user/usercp/subscriptions/thread-subscriptions' }),
+                    new SideMenuItem({ title: 'Edit Category Subscriptions', link: '/user/usercp/subscriptions/category-subscriptions' }),
+                    new SideMenuItem({ title: 'Edit Ignored Threads', link: '/user/usercp/subscriptions/ignored-threads' }),
+                    new SideMenuItem({ title: 'Edit Ignored Categories', link: '/user/usercp/subscriptions/ignored-categories' })
                 ]
             })
         ];

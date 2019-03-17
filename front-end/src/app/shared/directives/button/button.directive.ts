@@ -23,6 +23,7 @@ export class ButtonDirective {
     @HostBinding('style.outline') outline = 'none';
     @HostBinding('style.margin') margin = '0 0 0 5px';
     @HostBinding('style.height') height = '35px';
+    @HostBinding('class') class = Button.BLUE.class;
 
     @Output() onClick: EventEmitter<void> = new EventEmitter();
 
@@ -49,6 +50,7 @@ export class ButtonDirective {
         this._color = color || Button.BLUE;
         this.background = this._sanitizer.bypassSecurityTrustStyle(`url(/assets/images/bargradient.png) , ${this._color.background}`);
         this.textColor = this._color.color;
+        this.class = color.class;
     }
 
     @Input()
