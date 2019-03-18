@@ -21,7 +21,7 @@ class CreateCategoriesTables extends Migration
             $table->string('link')->default('');
             $table->integer('options')->default(0);
             $table->integer('displayOrder')->default(0);
-            $table->bigInteger('lastPostId')->default(0);
+            $table->bigInteger('lastPostId')->unqiue();
             $table->integer('isDeleted')->default(0);
             $table->string('template')->default('DEFAULT');
             $table->integer('isHidden')->default(0);
@@ -32,7 +32,6 @@ class CreateCategoriesTables extends Migration
             // Indexes
             $table->index('title');
             $table->index('parentId');
-            $table->index('lastPostId');
             $table->index('isDeleted');
             $table->index('isHidden');
             $table->index('isOpen');

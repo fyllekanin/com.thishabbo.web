@@ -23,8 +23,8 @@ class CreateThreadsTables extends Migration
             $table->bigInteger('views')->default(0);
             $table->integer('isApproved')->default(1);
             $table->bigInteger('userId');
-            $table->bigInteger('firstPostId');
-            $table->bigInteger('lastPostId')->default(-1);
+            $table->bigInteger('firstPostId')->unique();
+            $table->bigInteger('lastPostId')->unique();
             $table->integer('isSticky')->default(0);
             $table->integer('prefixId')->default(0);
             $table->bigInteger('createdAt');
@@ -35,8 +35,6 @@ class CreateThreadsTables extends Migration
             $table->index('categoryId');
             $table->index('isDeleted');
             $table->index('isApproved');
-            $table->index('firstPostId');
-            $table->index('lastPostId');
             $table->index('prefixId');
             $table->index('createdAt');
             $table->index('updatedAt');
