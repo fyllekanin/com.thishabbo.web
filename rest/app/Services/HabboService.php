@@ -8,18 +8,6 @@ class HabboService {
     private $habboApi = 'http://www.habbo.com/api/public/';
 
     /**
-     * Check if a certain habbo's motto is according to argument
-     *
-     * @param $name
-     * @param $motto
-     * @return bool
-     */
-    public function isHabboMotto($name, $motto) {
-        $habbo = $this->getHabboByName($name);
-        return $habbo && $habbo->motto == $motto;
-    }
-
-    /**
      * @param $name
      * @return mixed|null
      */

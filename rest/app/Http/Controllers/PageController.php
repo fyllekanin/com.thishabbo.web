@@ -33,6 +33,11 @@ class PageController extends Controller {
         $this->categoryTemplates = ConfigHelper::getCategoryTemplatesConfig();
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function loadInitial (Request $request) {
         $user = UserHelper::getUserFromRequest($request);
 

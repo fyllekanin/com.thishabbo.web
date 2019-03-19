@@ -6,6 +6,7 @@ import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { AuthService } from 'core/services/auth/auth.service';
 import { AuthUser } from 'core/services/auth/auth.model';
 import { ThemeHelper } from 'shared/helpers/theme.helper';
+import { RouterStateService } from 'core/services/router/router-state.service';
 
 @Injectable()
 export class AppLoadService {
@@ -31,6 +32,8 @@ export class AppLoadService {
     initializeUser(): Promise<any> {
         const httpService = this._injector.get(HttpService);
         const authService = this._injector.get(AuthService);
+        const routerStateService = this._injector.get(RouterStateService);
+        routerStateService.pushUrl(location.pathname);
 
         return new Promise(resolve => {
             if (!authService.getAuthUser()) {

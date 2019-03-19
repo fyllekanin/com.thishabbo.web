@@ -30,12 +30,6 @@ class ForumService {
         $this->updateLastPostIdOnCategory($category->parentId);
     }
 
-    public function getSlimCategories($categoryIds, $fields) {
-        return Category::nonHidden()
-            ->whereIn('categoryId', $categoryIds)
-            ->get($fields)->toArray();
-    }
-
     public function getLastPostIdForCategory($categoryId) {
         $lastThreadPostId = Value::objectProperty(Thread::isApproved()->where('categoryId', $categoryId)->select('lastPostId')->orderBy('lastPostId', 'DESC')->first(),
             'lastPostId', -1);
@@ -53,6 +47,10 @@ class ForumService {
         return $threadRead && $threadRead->updatedAt->timestamp > $threadUpdatedAt;
     }
 
+    /**
+     * @param $threadId
+     * @param $userId
+     */
     public function updateReadThread ($threadId, $userId) {
         if (!$userId) {
             return;
@@ -72,11 +70,22 @@ class ForumService {
         }
     }
 
+    /**
+     * @param $template
+     *
+     * @return bool
+     */
     public function isValidTemplate ($template) {
         $templates = (array)ConfigHelper::getCategoryTemplatesConfig();
         return in_array($template, $templates);
     }
 
+    /**
+     * @param $userId
+     * @param null $permission
+     *
+     * @return array|mixed
+     */
     public function getAccessibleCategories ($userId, $permission = null) {
         if (Cache::has('accessible-categories')) {
             return Cache::get('accessible-categories');
@@ -96,6 +105,11 @@ class ForumService {
         return $ids;
     }
 
+    /**
+     * @param $userId
+     *
+     * @return array
+     */
     public function getCategoriesUserCantSeeOthersThreadsIn ($userId) {
         $forumPermissions = ConfigHelper::getForumConfig();
         $categories = Category::select('categoryId')->where('isDeleted', 0)->get();
@@ -106,20 +120,6 @@ class ForumService {
                 $categoryIds[] = $category->categoryId;
             }
         }
-        return $categoryIds;
-    }
-
-    public function getCategoryIdsChainUpStream ($categoryId) {
-        $categoryIds = [];
-        $parentId = $categoryId;
-
-        while ($parentId > 0) {
-            $parent = Category::where('categoryId', $parentId)
-                ->first(['categoryId', 'parentId']);
-            $categoryIds[] = $parent->categoryId;
-            $parentId = $parent->parentId;
-        }
-
         return $categoryIds;
     }
 
@@ -134,7 +134,7 @@ class ForumService {
      */
     public function getLatestPosts($categoryIds, $ignoredThreadIds, $ignoredCategoryIds, $amount, $skip = 0) {
         $threadsSql = Thread::select('title', 'categoryId', 'threadId', 'lastPostId')
-            ->where('isApproved', true)
+            ->isApproved()
             ->whereIn('categoryId', $categoryIds)
             ->whereNotIn('threadId', $ignoredThreadIds)
             ->whereNotIn('categoryId', $ignoredCategoryIds);
@@ -159,6 +159,11 @@ class ForumService {
         ];
     }
 
+    /**
+     * @param $categoryId
+     *
+     * @return array
+     */
     public function getCategoryIdsDownStream ($categoryId) {
         $categoryIds = [$categoryId];
         $childIds = Category::where('parentId', $categoryId)->pluck('categoryId');
@@ -171,6 +176,12 @@ class ForumService {
         return $categoryIds;
     }
 
+    /**
+     * @param $userId
+     * @param $categoryId
+     *
+     * @return object
+     */
     public function getForumPermissionsForUserInCategory ($userId, $categoryId) {
         $forumPermissions = ConfigHelper::getForumConfig();
         $permissions = [];
@@ -182,6 +193,11 @@ class ForumService {
         return (object)$permissions;
     }
 
+    /**
+     * @param $postId
+     *
+     * @return array|null
+     */
     public function getSlimPost ($postId) {
         $post = Post::with(['thread'])->where('posts.postId', $postId)
             ->first();
@@ -201,6 +217,11 @@ class ForumService {
         ];
     }
 
+    /**
+     * @param $item
+     *
+     * @return array
+     */
     public function getCategoryParents ($item) {
         $parents = [];
         $parentId = Value::objectProperty($item, 'parentId', $item->categoryId);
@@ -217,6 +238,12 @@ class ForumService {
         return $parents;
     }
 
+    /**
+     * @param $category
+     * @param $categoryIds
+     *
+     * @return mixed
+     */
     public function getChildren ($category, $categoryIds) {
         $children = Category::where('parentId', $category->categoryId)
             ->whereIn('categoryId', $categoryIds)
@@ -229,6 +256,13 @@ class ForumService {
         return $children;
     }
 
+    /**
+     * @param $user
+     * @param array $ignoreIds
+     * @param int $parentId
+     *
+     * @return mixed
+     */
     public function getCategoryTree ($user, $ignoreIds = [], $parentId = -1) {
         $forumPermissions = ConfigHelper::getForumConfig();
         $categories = Category::where('parentId', $parentId)->select('categoryId', 'title')->getQuery()->get();

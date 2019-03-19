@@ -5,7 +5,7 @@
     (onTabClick)="onClick($event)">
 </app-title>
 <app-content>
-    <textarea #editor rows="55" cols="50"></textarea>
+    <textarea #editor></textarea>
 
     <button *ngFor="let button of bottomButtons" appButton [float]="'right'" [color]="button.buttonColor" (onClick)="onClick(button.value)">
         {{button.title}}

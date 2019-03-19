@@ -55,10 +55,6 @@ export const adminRoutes: Routes = [
             {
                 path: 'website-settings',
                 loadChildren: './sub-pages/website-settings/website-settings.module#WebsiteSettingsModule'
-            },
-            {
-                path: 'shop',
-                loadChildren: './sub-pages/shop/shop.module#ShopModule'
             }
         ]
     }

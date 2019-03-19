@@ -59,16 +59,6 @@ export class AdminComponent extends Page implements OnDestroy, OnInit {
                 ]
             }),
             new SideMenuBlock({
-                title: 'Shop',
-                items: [
-                    new SideMenuItem({
-                        title: 'Shop Categories',
-                        link: '/admin/shop/categories/page/1',
-                        isApplicable: this._authService.adminPermissions.canManageShop
-                    })
-                ]
-            }),
-            new SideMenuBlock({
                 title: 'Betting',
                 items: [
                     new SideMenuItem({

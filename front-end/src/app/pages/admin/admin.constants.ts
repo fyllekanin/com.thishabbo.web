@@ -50,11 +50,6 @@ export const WEBSITE_SETTINGS_BREADCRUMB_ITEM = new BreadcrumbItem({
     url: '/admin/website-settings'
 });
 
-export const SHOP_CATEGORIES_BREADCRUMB_ITEM = new BreadcrumbItem({
-    title: 'Shop Categories List',
-    url: '/admin/shop/categories/page/1'
-});
-
 export const SITE_MESSAGES_BREADCRUMB_ITEM = new BreadcrumbItem({
     title: 'Site Messages List',
     url: '/admin/website-settings/site-messages'

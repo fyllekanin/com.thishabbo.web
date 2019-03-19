@@ -971,30 +971,6 @@ class Action {
         ]
     ];
 
-    const CREATED_SHOP_CATEGORY = [
-        'id' => 123,
-        'description' => 'Created a shop category',
-        'data' => [
-            'title' => 'Created shop category with title'
-        ]
-    ];
-
-    const UPDATED_SHOP_CATEGORY = [
-        'id' => 124,
-        'description' => 'Updated shop category',
-        'data' => [
-            'title' => 'Updated shop category with title'
-        ]
-    ];
-
-    const DELETED_SHOP_CATEGORY = [
-        'id' => 125,
-        'description' => 'Deleted shop category',
-        'data' => [
-            'title' => 'Deleted shop category with title'
-        ]
-    ];
-
     const UPDATED_NAVIGATION = [
         'id' => 126,
         'description' => 'Updated navigation',
