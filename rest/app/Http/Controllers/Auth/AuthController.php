@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use App\EloquentModels\Ban;
 use App\EloquentModels\Forum\ForumPermission;
 use App\EloquentModels\User\Token;
 use App\EloquentModels\User\User;
-use App\EloquentModels\User\UserData;
 use App\Helpers\ConfigHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
+use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
 use App\Services\AuthService;

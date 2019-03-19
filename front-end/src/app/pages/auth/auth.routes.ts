@@ -5,6 +5,7 @@ import { RegisterComponent } from './register/register.component';
 import { RegisterResolver } from './services/register.resolver';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 export const authRoutes: Routes = [
     {
@@ -32,6 +33,10 @@ export const authRoutes: Routes = [
             {
                 path: 'forgot-password',
                 component: ForgotPasswordComponent
+            },
+            {
+                path: 'change-password/:userId/:code',
+                component: ChangePasswordComponent
             }
         ]
     }

@@ -11,6 +11,7 @@ import { RegisterComponent } from './register/register.component';
 import { RegisterResolver } from './services/register.resolver';
 import { ButtonModule } from 'shared/directives/button/button.module';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 @NgModule({
     imports: [
@@ -25,7 +26,8 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     declarations: [
         LoginComponent,
         RegisterComponent,
-        ForgotPasswordComponent
+        ForgotPasswordComponent,
+        ChangePasswordComponent
     ],
     providers: [
         RegisterResolver
