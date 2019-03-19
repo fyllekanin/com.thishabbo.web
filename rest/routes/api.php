@@ -18,17 +18,20 @@ Route::get('/load/initial', 'PageController@loadInitial');
 
 Route::get('/puller/stream', 'Puller\StreamController@getStream');
 Route::post('/radio/request', 'Staff\RadioController@createRequest');
-Route::post('/auth/login', 'AuthController@login');
-Route::post('/auth/logout', 'AuthController@logout');
-Route::get('/auth/refresh', 'AuthController@refresh');
-Route::put('/auth/accept/gdpr', 'AuthController@acceptGdpr');
+Route::post('/auth/login', 'Auth\AuthController@login');
+Route::post('/auth/logout', 'Auth\AuthController@logout');
+Route::get('/auth/refresh', 'Auth\AuthController@refresh');
+Route::put('/auth/accept/gdpr', 'Auth\AuthController@acceptGdpr');
 
 Route::get('/maintenance/content', 'PageController@getMaintenanceMessage');
 
 Route::group(['middleware' => ['maintenance']], function () {
 
-    Route::post('/auth/register', 'AuthController@register');
-    Route::get('/auth/register', 'AuthController@getRegisterPage');
+    Route::post('/auth/register', 'Auth\AuthController@register');
+    Route::get('/auth/register', 'Auth\AuthController@getRegisterPage');
+
+    Route::get('/auth/forgot-password/code/{habbo}', 'Auth\ForgotPasswordController@getCodeForHabbo');
+    Route::put('/auth/forgot-password', 'Auth\ForgotPasswordController@changePassword');
 
     Route::get('/page/profile/{nickname}', 'PageController@getProfile');
     Route::get('/page/custom/{page}', 'PageController@getCustomPage');
@@ -44,7 +47,7 @@ Route::group(['middleware' => ['maintenance']], function () {
     Route::get('puller/notifications/unread/{createdAfter}', 'Puller\NotificationController@getUnreadNotifications');
 
     Route::group(['middleware' => ['token.check']], function () {
-        Route::get('/auth/user', 'AuthController@getUser');
+        Route::get('/auth/user', 'Auth\AuthController@getUser');
         Route::get('/bbcode/emojis', 'PageController@getEmojis');
         Route::post('/radio/like', 'Staff\RadioController@createDjLike');
 

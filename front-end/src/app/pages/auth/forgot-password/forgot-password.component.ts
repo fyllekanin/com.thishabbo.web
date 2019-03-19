@@ -1,18 +1,40 @@
 import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { Page } from 'shared/page/page.model';
+import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
+import { HttpService } from 'core/services/http/http.service';
+import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-auth-forgot-password',
-    templateUrl: 'forgot-password.component.html',
-    styleUrls: ['forgot-password.component.css']
+    templateUrl: 'forgot-password.component.html'
 })
 export class ForgotPasswordComponent extends Page implements OnDestroy {
 
-    constructor(elementRef: ElementRef) {
+    habbo: string;
+
+    constructor(
+        private _httpService: HttpService,
+        private _globalNotificationService: GlobalNotificationService,
+        private _router: Router,
+        elementRef: ElementRef,
+        breadcrumbService: BreadcrumbService
+    ) {
         super(elementRef);
+        breadcrumbService.breadcrumb = new Breadcrumb({
+            current: 'Forgot Password'
+        });
     }
 
     ngOnDestroy(): void {
         super.destroy();
+    }
+
+    onClick(): void {
+        this._httpService.get(`auth/forgot-password/code/${this.habbo}`)
+            .subscribe((item: { userId: number, code: string }) => {
+                this._router.navigateByUrl(`/auth/change-password/${item.userId}/${item.code}`);
+            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
     }
 }
