@@ -26,8 +26,7 @@ $adminPermissions->canManageTHC = 65536;
 $adminPermissions->canSeeIps = 131072;
 $adminPermissions->canManageInfractions = 262144;
 $adminPermissions->canDoInfractions = 524288;
-$adminPermissions->canManageShop = 1048576;
-$adminPermissions->canSeeLogs = 2097152;
+$adminPermissions->canSeeLogs = 1048576;
 
 $staffPermissions = new \stdClass();
 $staffPermissions->canRadio = 1;

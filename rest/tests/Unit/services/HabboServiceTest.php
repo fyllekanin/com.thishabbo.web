@@ -36,28 +36,4 @@ class HabboServiceTest extends TestCase {
         $this->assertNotNull($result);
         $this->assertEquals('bear94', $result->name);
     }
-
-    public function testThatIsHabboMottoReturnsFalseIfMottoIsNotCorrect() {
-        // Given
-        $name = 'bear94';
-        $habbo = $this->habboService->getHabboByName($name);
-
-        // When
-        $result = $this->habboService->isHabboMotto($name, $habbo->motto . '+1');
-
-        // Then
-        $this->assertFalse($result);
-    }
-
-    public function testThatIsHabboMottoReturnsTrueIfMottoIsCorrect() {
-        // Given
-        $name = 'bear94';
-        $habbo = $this->habboService->getHabboByName($name);
-
-        // When
-        $result = $this->habboService->isHabboMotto($name, $habbo->motto);
-
-        // Then
-        $this->assertTrue($result);
-    }
 }

@@ -34,15 +34,6 @@ Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions-
     });
 });
 
-Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canManageShop)], function () {
-
-    Route::get('/shop/categories/page/{page}', 'Admin\Shop\CategoryCrudController@getCategories');
-    Route::get('/shop/categories/{shopCategoryId}', 'Admin\Shop\CategoryCrudController@getCategory');
-    Route::post('/shop/categories', 'Admin\Shop\CategoryCrudController@createCategory');
-    Route::put('/shop/categories/{shopCategoryId}', 'Admin\Shop\CategoryCrudController@updateCategory');
-    Route::delete('/shop/categories/{shopCategoryId}', 'Admin\Shop\CategoryCrudController@deleteCategory');
-});
-
 Route::prefix('moderation')->group(function () use ($permissions) {
     Route::get('threads', 'Admin\Moderation\ForumController@getModerateThreads');
     Route::get('posts', 'Admin\Moderation\ForumController@getModeratePosts');

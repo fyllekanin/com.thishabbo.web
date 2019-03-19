@@ -11,11 +11,6 @@ class ConfigHelper {
     private static $SETTINGS = 'settings';
     private static $ARCADE = 'arcade';
     private static $ITEMS = 'items';
-    private static $PROXIES = 'proxies';
-
-    public static function getProxies() {
-        return Config::get(self::$PROXIES . '.PROXIES');
-    }
 
     public static function getForumConfig () {
         return Config::get(self::$PERMISSIONS . '.FORUM');

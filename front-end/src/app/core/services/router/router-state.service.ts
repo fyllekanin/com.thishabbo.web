@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationStart, Router } from '@angular/router';
 
 @Injectable()
 export class RouterStateService {
@@ -9,7 +9,7 @@ export class RouterStateService {
     constructor(router: Router) {
         document.title = this._defaultTitle;
         router.events.subscribe(ev => {
-            if (ev instanceof NavigationEnd) {
+            if (ev instanceof NavigationStart) {
                 this._urls.push(ev.url);
             }
         });
@@ -21,6 +21,10 @@ export class RouterStateService {
         } else {
             document.title = this._defaultTitle;
         }
+    }
+
+    pushUrl(url: string): void {
+        this._urls.push(url);
     }
 
     getPreviousUrl(): string {
