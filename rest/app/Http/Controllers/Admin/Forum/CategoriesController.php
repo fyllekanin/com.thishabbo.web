@@ -73,6 +73,7 @@ class CategoriesController extends Controller {
             'description' => Value::objectProperty($newCategory, 'description', ''),
             'options' => $newCategory->options,
             'displayOrder' => Value::objectProperty($newCategory, 'displayOrder', 0),
+            'lastPostId' => 0,
             'template' => $newCategory->template,
             'isHidden' => $newCategory->isHidden,
             'isOpen' => $newCategory->isOpen,
