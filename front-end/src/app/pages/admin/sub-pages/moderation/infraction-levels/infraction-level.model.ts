@@ -14,6 +14,8 @@ export class InfractionLevel {
     createdAt: number;
     @primitive()
     categoryId: number;
+    @primitive()
+    penalty: number;
 
     @arrayOf(CategoryLeaf)
     categories: Array<CategoryLeaf> = [];

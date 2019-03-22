@@ -16,6 +16,7 @@ use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
 use App\Services\AuthService;
+use App\Services\CreditsService;
 use App\Services\HabboService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
@@ -24,6 +25,8 @@ use Illuminate\Support\Facades\Hash;
 class AccountController extends Controller {
     private $authService;
     private $habboService;
+    private $creditsService;
+
     private $monthAgo;
 
     /**
@@ -32,10 +35,11 @@ class AccountController extends Controller {
      * @param AuthService $authService
      * @param HabboService $habboService
      */
-    public function __construct (AuthService $authService, HabboService $habboService) {
+    public function __construct (AuthService $authService, HabboService $habboService, CreditsService $creditsService) {
         parent::__construct();
         $this->authService = $authService;
         $this->habboService = $habboService;
+        $this->creditsService = $creditsService;
         $this->monthAgo = time() - 2419200;
     }
 
@@ -134,7 +138,7 @@ class AccountController extends Controller {
         $gotTimeout = LogUser::where('action', Action::getAction(Action::CHANGED_NICKNAME))->where('userId', $user->userId)
                 ->where('createdAt', '>', (time() - $oneWeek))->count() > 0;
         Condition::precondition($gotTimeout,400, 'You need to wait one week until you can change nickname again');
-        Condition::precondition($user->userdata->credits < 300, 400, 'You do not have enough credits');
+        Condition::precondition(!$this->creditsService->haveEnoughCredits($user->userId, 300), 400, 'You do not have enough credits');
         Condition::precondition(!isset($nickname) || empty($nickname) || strlen($nickname) < 3, 400,
             'Nickname is not valid');
 
@@ -146,9 +150,7 @@ class AccountController extends Controller {
             $userWithNickname->save();
         }
 
-        $user->userdata->credits -= 300;
-        $user->userdata->save();
-
+        $this->creditsService->takeCredits($user->userId, 300);
         $oldNickname = $user->nickname;
         $user->nickname = $nickname;
         $user->save();

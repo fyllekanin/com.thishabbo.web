@@ -47,7 +47,7 @@ Route::prefix('moderation')->group(function () use ($permissions) {
     });
 
     Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canDoInfractions)], function () {
-        Route::get('infract/{userId}', 'Admin\Moderation\InfractionController@getInfractContext');
+        Route::get('infract/{userId}', 'Admin\Moderation\InfractionController@getInfractionContext');
         Route::post('infract', 'Admin\Moderation\InfractionController@createInfraction');
 
         Route::get('infractions/page/{page}', 'Admin\Moderation\InfractionController@getInfractions');

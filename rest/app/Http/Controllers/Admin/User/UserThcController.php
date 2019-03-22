@@ -7,10 +7,22 @@ use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
+use App\Services\CreditsService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
 
 class UserThcController extends Controller {
+    private $creditsService;
+
+    /**
+     * UserThcController constructor.
+     *
+     * @param CreditsService $creditsService
+     */
+    public function __construct(CreditsService $creditsService) {
+        parent::__construct();
+        $this->creditsService = $creditsService;
+    }
 
     /**
      * @param Request $request
@@ -24,15 +36,10 @@ class UserThcController extends Controller {
         $credits = $request->input('credits');
 
         Condition::precondition($current->userId == 0, 404, 'User do not exist');
-        Condition::precondition(!is_numeric($credits), 400, 'credits need to be a number');
-        Condition::precondition($credits < 0, 'You can not have negative amount in credits');
         Condition::precondition(!UserHelper::canManageUser($user, $userId),
             400, 'Can not edit a user with same or higher immunity');
 
-        $userData = UserHelper::getUserDataOrCreate($current->userId);
-        $userData->credits = $credits;
-        $userData->save();
-
+        $this->creditsService->setUserCredits($current->userId, $credits);
         Logger::admin($user->userId, $request->ip(), Action::UPDATED_USERS_CREDITS, [
             'name' => $current->nickname,
             'amount' => $credits
@@ -72,9 +79,7 @@ class UserThcController extends Controller {
             }
 
             if ($thcRequest['isApproved']) {
-                $receiverUserData = UserHelper::getUserDataOrCreate($requestThc->receiverId);
-                $receiverUserData->credits += $requestThc->amount;
-                $receiverUserData->save();
+                $this->creditsService->giveCredits($requestThc->receiverId, $requestThc->amount);
             }
             $requestThc->isDeleted = true;
             $requestThc->save();

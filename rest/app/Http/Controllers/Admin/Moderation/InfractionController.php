@@ -6,7 +6,6 @@ use App\EloquentModels\Ban;
 use App\EloquentModels\Infraction\AutoBan;
 use App\EloquentModels\Infraction\Infraction;
 use App\EloquentModels\Infraction\InfractionLevel;
-use App\EloquentModels\Models\DeletableModel;
 use App\EloquentModels\User\Token;
 use App\EloquentModels\User\User;
 use App\Factories\Notification\NotificationFactory;
@@ -17,6 +16,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Forum\Thread\ThreadCrudController;
 use App\Logger;
 use App\Models\Logger\Action;
+use App\Services\CreditsService;
 use App\Services\ForumService;
 use App\Services\ForumValidatorService;
 use App\Utils\Condition;
@@ -25,12 +25,22 @@ use Illuminate\Http\Request;
 class InfractionController extends Controller {
     private $forumService;
     private $validatorService;
+    private $creditsService;
+
     private $oneYear = 31449600;
 
-    public function __construct(ForumService $forumService, ForumValidatorService $validatorService) {
+    /**
+     * InfractionController constructor.
+     *
+     * @param ForumService $forumService
+     * @param ForumValidatorService $validatorService
+     * @param CreditsService $creditsService
+     */
+    public function __construct(ForumService $forumService, ForumValidatorService $validatorService, CreditsService $creditsService) {
         parent::__construct();
         $this->forumService = $forumService;
         $this->validatorService = $validatorService;
+        $this->creditsService = $creditsService;
     }
 
     /**
@@ -91,6 +101,7 @@ class InfractionController extends Controller {
      * @param Request $request
      *
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function createInfraction(Request $request) {
         $user = UserHelper::getUserFromRequest($request);
@@ -113,7 +124,10 @@ class InfractionController extends Controller {
         } else {
             NotificationFactory::newInfractionGiven($data->userId, $user->userId, $infraction->infractionId);
         }
+
         $this->checkAutomaticBan($user, $data->userId);
+        $this->creditsService->takeCredits($data->userId, $infractionLevel->penalty);
+
         Logger::mod($user->userId, $request->ip(), Action::CREATED_INFRACTION, [
             'userId' => $data->userId,
             'reason' => $data->reason
@@ -126,7 +140,7 @@ class InfractionController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getInfractContext($userId) {
+    public function getInfractionContext($userId) {
         $user = UserHelper::getSlimUser($userId);
         Condition::precondition(!$user, 404, 'No user with that ID');
 
@@ -166,6 +180,7 @@ Below you can find information regarding the infraction you were just given.
         
 [quote]
 [b]Infraction Type:[/b] " . $infractionLevel->title . "
+[b]Penalty in credits:[/b] " . $infractionLevel->penalty . " credits was taken
 [b]Reason:[/b] " . $infraction->reason . "
             
 [b]Current infraction points:[/b] " . $points . "

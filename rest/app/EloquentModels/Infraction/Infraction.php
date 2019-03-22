@@ -5,6 +5,15 @@ namespace App\EloquentModels\Infraction;
 use App\EloquentModels\Models\DeletableModel;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * @property mixed infractionId
+ * @property mixed infractionLevelId
+ * @property mixed infractedId
+ * @property mixed reason
+ * @property mixed userId
+ * @property mixed expiresAt
+ * @property mixed isDeleted
+ */
 class Infraction extends DeletableModel {
     protected $table = 'infractions';
     protected $primaryKey = 'infractionId';
