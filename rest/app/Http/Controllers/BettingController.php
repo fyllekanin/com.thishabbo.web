@@ -8,10 +8,23 @@ use App\EloquentModels\User\UserBet;
 use App\Helpers\UserHelper;
 use App\Logger;
 use App\Models\Logger\Action;
+use App\Services\CreditsService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
 
 class BettingController extends Controller {
+    private $creditsService;
+
+    /**
+     * BettingController constructor.
+     *
+     * @param CreditsService $creditsService
+     */
+    public function __construct(CreditsService $creditsService) {
+        parent::__construct();
+        $this->creditsService = $creditsService;
+    }
+
 
     public function getRoulette (Request $request) {
         $user = UserHelper::getUserFromRequest($request);
@@ -26,10 +39,9 @@ class BettingController extends Controller {
         $color = $request->input('color');
         $amount = $request->input('amount');
 
-        $userData = UserHelper::getUserDataOrCreate($user->userId);
         Condition::precondition(!is_numeric($amount), 400, 'Needs to be a number!');
         Condition::precondition($amount <= 0, 400, 'Needs to be a positive number!');
-        Condition::precondition($userData->credits < $amount, 400, 'Not enough credits!');
+        Condition::precondition(!$this->creditsService->haveEnoughCredits($user->userId, $amount), 'Not enough credits!');
 
         $numbers = [];
         for ($i = 0; $i < 500; $i++) {
@@ -53,13 +65,10 @@ class BettingController extends Controller {
         $profit = $color == 'green' ? $amount * 5 : $amount * 2;
 
         if ($isWin) {
-            $userData->credits += $profit;
-            $userData->save();
-
+            $this->creditsService->giveCredits($user->userId, $profit);
             Logger::user($user->userId, $request->ip(), Action::WON_ROULETTE, ['profit' => $profit]);
         } else {
-            $userData->credits -= $amount;
-            $userData->save();
+            $this->creditsService->takeCredits($user->userId, $amount);
             Logger::user($user->userId, $request->ip(), Action::LOST_ROULETTE, ['amount' => $amount]);
         }
 
@@ -80,13 +89,12 @@ class BettingController extends Controller {
      */
     public function createPlaceBet (Request $request, $betId) {
         $user = UserHelper::getUserFromRequest($request);
-        $userData = UserHelper::getUserDataOrCreate($user->userId);
         $amount = $request->input('amount');
         $bet = Bet::find($betId);
 
         Condition::precondition(!$bet, 404, 'The bet does not exist!');
         Condition::precondition(!is_numeric($amount), 400, 'Amount needs to be a number!');
-        Condition::precondition($amount > $userData->credits, 400, 'You do not have enough credits!');
+        Condition::precondition(!$this->creditsService->haveEnoughCredits($user->userId, $amount), 400, 'You do not have enough credits!');
         Condition::precondition($bet->isSuspended, 400, 'The bet is currently suspended!');
 
         $userBet = new UserBet([
@@ -97,8 +105,7 @@ class BettingController extends Controller {
             'amount' => $amount
         ]);
         $userBet->save();
-        $userData->credits -= $amount;
-        $userData->save();
+        $this->creditsService->takeCredits($user->userId, $amount);
 
         Logger::user($user->userId, $request->ip(), Action::PLACED_BET, [
             'bet' => $bet->name,
@@ -214,8 +221,6 @@ class BettingController extends Controller {
      * @return array
      */
     private function getStats ($user) {
-        $userData = UserHelper::getUserDataOrCreate($user->userId);
-
         $betsWon = UserBet::where('userId', $user->userId)
             ->join('bets', 'bets.betId', '=', 'user_bets.betId')
             ->where('bets.isFinished', 1)
@@ -229,7 +234,7 @@ class BettingController extends Controller {
             ->count();
 
         return [
-            'credits' => $userData->credits,
+            'credits' => $this->creditsService->getUserCredits($user->userId),
             'diamonds' => 0,
             'betsWon' => $betsWon,
             'betsLost' => $betsLost

@@ -1,6 +1,5 @@
 #!/bin/bash
-# Setup project (installation)
-if [ -f setup_reviewer.sh ]; then
+if [[ -f build-prod.sh ]]; then
     cd ./..
 fi
 

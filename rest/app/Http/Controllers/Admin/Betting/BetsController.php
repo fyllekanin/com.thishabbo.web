@@ -9,11 +9,22 @@ use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
+use App\Services\CreditsService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
 
 class BetsController extends Controller {
+    private $creditsService;
 
+    /**
+     * BetsController constructor.
+     *
+     * @param CreditsService $creditsService
+     */
+    public function __construct(CreditsService $creditsService) {
+        parent::__construct();
+        $this->creditsService = $creditsService;
+    }
 
     /**
      * @param Request $request
@@ -197,10 +208,7 @@ class BetsController extends Controller {
         $userBets = UserBet::where('betId', $betId)->get();
 
         foreach ($userBets as $userBet) {
-            $userData = UserHelper::getUserDataOrCreate($userBet->userId);
-            $userData->credits += $userBet->amount;
-            $userData->save();
-
+            $this->creditsService->giveCredits($userBet->userId, $userBet->amount);
             $userBet->isDeleted = true;
             $userBet->save();
         }
@@ -230,9 +238,7 @@ class BetsController extends Controller {
             $rightSide = round($bet->amount / $bet->rightSide);
             $profit = $bet->leftSide * $rightSide;
 
-            $userData = UserHelper::getUserDataOrCreate($bet->userId);
-            $userData->credits += ($profit + $bet->amount);
-            $userData->save();
+            $this->creditsService->giveCredits($bet->userId, ($profit + $bet->amount));
         }
     }
 }

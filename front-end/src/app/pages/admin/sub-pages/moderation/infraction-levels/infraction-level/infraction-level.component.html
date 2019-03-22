@@ -2,11 +2,20 @@
 <app-content>
     <div class="grid-container full">
         <div class="grid-x margin-x">
-            <div class="cell small-6">
+            <div class="cell small-12 medium-3">
                 <label>Title:</label>
                 <input name="title" [(ngModel)]="model.title" type="text" placeholder="">
             </div>
-            <div class="cell small-6">
+            <div class="cell small-12 medium-3">
+                <label>
+                    Penalty:
+                    <span tooltip="Amount of credits to be taken from user when given this infraction" class="checkbox-info">
+                        <i class="fas fa-question-circle"></i>
+                    </span>
+                </label>
+                <input name="penalty" [(ngModel)]="model.penalty" type="number" placeholder="">
+            </div>
+            <div class="cell small-12 medium-6">
                 <label>
                     Category:
                     <span tooltip="If selected, a thread will be made when infraction given IF welcome bot is set" class="checkbox-info">

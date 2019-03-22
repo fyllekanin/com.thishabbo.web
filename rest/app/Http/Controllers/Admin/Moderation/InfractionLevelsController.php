@@ -62,6 +62,7 @@ class InfractionLevelsController extends Controller {
             'lifeTime' => $isNew ? null : ($infractionLevel->lifeTime / 86400),
             'createdAt' => $isNew ? null : $infractionLevel->createdAt->timestamp,
             'categoryId' => $isNew ? null : $infractionLevel->categoryId,
+            'penalty' => $isNew ? 0 : $infractionLevel->penalty,
             'categories' => $this->forumService->getCategoryTree($user)
         ]);
     }
@@ -84,6 +85,7 @@ class InfractionLevelsController extends Controller {
         $infractionLevel->points = $newInfractionLevel->points;
         $infractionLevel->lifeTime = $newInfractionLevel->lifeTime  * 86400;
         $infractionLevel->categoryId = Value::objectProperty($newInfractionLevel, 'categoryId', null);
+        $infractionLevel->penalty = Value::objectProperty($newInfractionLevel, 'penalty', 0);
         $infractionLevel->save();
 
         Logger::admin($user->userId, $request->ip(), Action::UPDATED_INFRACTION_LEVEL, [
@@ -127,7 +129,8 @@ class InfractionLevelsController extends Controller {
             'title' => $newInfractionLevel->title,
             'points' => $newInfractionLevel->points,
             'lifeTime' => $newInfractionLevel->lifeTime * 86400,
-            'categoryId' => Value::objectProperty($newInfractionLevel, 'categoryId', null)
+            'categoryId' => Value::objectProperty($newInfractionLevel, 'categoryId', null),
+            'penalty' => Value::objectProperty($newInfractionLevel, 'penalty', 0)
         ]);
         $infractionLevel->save();
 
@@ -137,6 +140,9 @@ class InfractionLevelsController extends Controller {
         return $this->getInfractionLevel($request, $infractionLevel->infractionLevelId);
     }
 
+    /**
+     * @param $infractionLevel
+     */
     private function validateInfractionLevel($infractionLevel) {
         Condition::precondition(!isset($infractionLevel->title) || empty($infractionLevel->title),
             400, 'Title needs to be set');
@@ -146,5 +152,9 @@ class InfractionLevelsController extends Controller {
             400, 'Life time needs to be set as a number');
         Condition::precondition(isset($infractionLevel->categoryId) && Category::where('categoryId',
                 $infractionLevel->categoryId)->count() == 0, 400, 'Category with that ID do not exist');
+        Condition::precondition(isset($infractionLevel->penalty) && !is_numeric($infractionLevel->penalty), 400,
+            'Penalty needs to be numeric.');
+        Condition::precondition(isset($infractionLevel->penalty) && $infractionLevel->penalty < 0, 400,
+            'Penalty needs to be a positive number!');
     }
 }
