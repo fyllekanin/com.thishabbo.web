@@ -20,6 +20,7 @@ import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 import { CommunityPollComponent } from './home-default/community-poll/community-poll.component';
 import { StaffSpotlightComponent } from './home-default/staff-spotlight/staff-spotlight.component';
+import { LeaderBoardComponent } from './leader-board/leader-board.component';
 
 @NgModule({
     imports: [
@@ -43,7 +44,8 @@ import { StaffSpotlightComponent } from './home-default/staff-spotlight/staff-sp
         LoginBoxComponent,
         MediaArticlesComponent,
         CommunityPollComponent,
-        StaffSpotlightComponent
+        StaffSpotlightComponent,
+        LeaderBoardComponent
     ],
     providers: [
         HomeDefaultResolver
