@@ -34,7 +34,7 @@ class WelcomeBotController extends Controller {
         $this->forumService = $forumService;
         $this->settingKeys = ConfigHelper::getKeyConfig();
         $this->welcomeBotKeys = [
-            $this->settingKeys->welcomeBotUserId,
+            $this->settingKeys->botUserId,
             $this->settingKeys->welcomeBotMessage,
             $this->settingKeys->welcomeBotCategoryId
         ];
@@ -52,7 +52,7 @@ class WelcomeBotController extends Controller {
 
         foreach ($this->welcomeBotKeys as $key) {
             switch ($key) {
-                case $this->settingKeys->welcomeBotUserId:
+                case $this->settingKeys->botUserId:
                     $botUser = (object)$request->input('user');
                     $userId = Value::objectProperty($botUser, 'userId', 0);
                     Condition::precondition(!User::find($userId), 400, 'No user with that userId');
@@ -94,7 +94,7 @@ class WelcomeBotController extends Controller {
         $welcomeBot = new \stdClass();
         foreach (Setting::whereIn('key', $this->welcomeBotKeys)->get() as $setting) {
             switch ($setting->key) {
-                case $this->settingKeys->welcomeBotUserId:
+                case $this->settingKeys->botUserId:
                     $welcomeBot->user = User::where('userId', $setting->value)->select('userId', 'nickname')->first();
                     break;
                 case $this->settingKeys->welcomeBotMessage:

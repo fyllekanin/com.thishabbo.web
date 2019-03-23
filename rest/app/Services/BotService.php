@@ -7,7 +7,7 @@ use App\EloquentModels\User\User;
 use App\Helpers\ConfigHelper;
 use App\Http\Controllers\Forum\Thread\ThreadCrudController;
 
-class WelcomeBotService {
+class BotService {
     private $forumService;
     private $validatorService;
 
@@ -26,7 +26,7 @@ class WelcomeBotService {
     public function triggerWelcomeBot ($user) {
         $settingKeys = ConfigHelper::getKeyConfig();
         $welcomeBotKeys = [
-            $settingKeys->welcomeBotUserId,
+            $settingKeys->botUserId,
             $settingKeys->welcomeBotMessage,
             $settingKeys->welcomeBotCategoryId
         ];
@@ -39,7 +39,7 @@ class WelcomeBotService {
 
         foreach (Setting::whereIn('key', $welcomeBotKeys)->get() as $setting) {
             switch ($setting->key) {
-                case $settingKeys->welcomeBotUserId:
+                case $settingKeys->botUserId:
                     $welcomeBotSettings->userId = $setting->value;
                     break;
                 case $settingKeys->welcomeBotMessage:

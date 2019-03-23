@@ -188,13 +188,13 @@ Below you can find information regarding the infraction you were just given.
         $threadSkeleton->title = $infracted->nickname . " received an infraction";
         $threadSkeleton->categoryId = $infractionLevel->categoryId;
 
-        $botId = SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->welcomeBotUserId);
+        $botId = SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->botUserId);
         $bot = UserHelper::getUserFromId($botId);
         $threadController->doThread($bot, null, $threadSkeleton, null, true);
     }
 
     private function botAccountExists() {
-        return UserHelper::getUserFromId(SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->welcomeBotUserId));
+        return UserHelper::getUserFromId(SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->botUserId));
     }
 
     private function validateInfraction($infraction) {
