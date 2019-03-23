@@ -12,6 +12,9 @@
 .breadcrumb {
     padding-top: 11px;
     height: 34px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .notification {

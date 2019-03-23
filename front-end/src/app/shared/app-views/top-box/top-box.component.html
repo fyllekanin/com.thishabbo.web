@@ -1,5 +1,5 @@
 <div class="menu-overlay" [ngClass]="showMenu ? 'menu-overlay-show' : ''" (click)="showMenu = false"></div>
-<div class="menu" [ngClass]="showMenu ? 'menu-show' : ''">
+<div class="menu" [ngClass]="menuClasses">
     <span class="close" (click)="showMenu = false"><i class="fas fa-times"></i> Close</span>
     <div class="user" *ngIf="isLoggedIn">
         <img class="avatar" [style.backgroundImage]="'url(' + avatar + ')'" />
@@ -13,7 +13,7 @@
     <div class="menu-item" *ngFor="let item of routes">
         <a *ngIf="!item.isLogout" [routerLink]="[item.url]" (click)="showMenu = false"><i [ngClass]="item.icon"></i> {{item.label}}</a>
         <a *ngIf="item.isLogout" (click)="showMenu = false; logout()"><i [ngClass]="item.icon"></i> {{item.label}}</a>
-        <i *ngIf="item.haveChildren" nicknameclass="fas fa-plus-square expand" (click)="item.isExpanded = !item.isExpanded"></i>
+        <i *ngIf="item.haveChildren" class="fas fa-plus-square expand" (click)="item.isExpanded = !item.isExpanded"></i>
         <div *ngIf="item.isExpanded" class="children">
             <div *ngFor="let child of item.children" class="child">
                 <a *ngIf="!child.isDivider" [routerLink]="[child.url]" (click)="showMenu = false"><i [ngClass]="child.icon"></i> {{child.label}}</a>

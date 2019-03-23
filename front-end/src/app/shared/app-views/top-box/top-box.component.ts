@@ -31,6 +31,17 @@ export class TopBoxComponent {
         this._authService.logout(false);
     }
 
+    get menuClasses(): string {
+        const classes = [];
+        if (this.showMenu) {
+            classes.push('menu-show');
+        }
+        if (this.isFixed) {
+            classes.push('fixed-menu-margin');
+        }
+        return classes.join(' ');
+    }
+
     get routes(): Array<MainItem> {
         return this._navigation
             .filter(item => item.loginRequired ? this._authService.isLoggedIn() : true);

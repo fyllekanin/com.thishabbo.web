@@ -3,6 +3,7 @@ import { NavigationStart, ResolveEnd, Router, Scroll } from '@angular/router';
 import { Page } from 'shared/page/page.model';
 import { UserService } from 'core/services/user/user.service';
 import { fadeAnimation } from 'shared/animations/fade.animation';
+import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 
 @Component({
     selector: 'app-root',
@@ -17,7 +18,8 @@ import { fadeAnimation } from 'shared/animations/fade.animation';
             <div class="grid-container content-margin">
                 <app-site-messages></app-site-messages>
                 <div class="grid-x">
-                    <div class="cell small-12" [@fadeAnimation]="o.isActivated ? o.activatedRoute : ''">
+                    <div class="cell small-12" [@fadeAnimation]="o.isActivated ? o.activatedRoute : ''"
+                         [ngClass]="isFixed ? 'fixed-menu' : ''">
                         <router-outlet #o="outlet"></router-outlet>
                     </div>
                 </div>
@@ -31,6 +33,7 @@ import { fadeAnimation } from 'shared/animations/fade.animation';
 export class AppComponent extends Page implements OnDestroy {
     loadingProgress = 0;
     isLoading = false;
+    isFixed = false;
 
     constructor(
         private _router: Router,
@@ -40,6 +43,7 @@ export class AppComponent extends Page implements OnDestroy {
         super(_elementRef);
         this.addCustomListeners();
         this.addActivityListener();
+        this.isFixed = Boolean(localStorage.getItem(LOCAL_STORAGE.FIXED_MENU));
         this._router.events.subscribe(ev => {
             if (ev instanceof NavigationStart) {
                 this.loadingProgress = 10;
