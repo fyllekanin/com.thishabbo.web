@@ -120,7 +120,7 @@ class AdminBadgesController extends Controller {
 
         Logger::admin($user->userId, $request->ip(), Action::CREATED_BADGE, ['badge' => $badge->name]);
 
-        return $this->getBadge($request, $badge->badgeId);
+        return $this->getBadge($badge->badgeId);
     }
 
     /**
@@ -164,7 +164,7 @@ class AdminBadgesController extends Controller {
 
         Logger::admin($user->userId, $request->ip(), Action::UPDATED_BADGE, ['badge' => $badge->name]);
 
-        return $this->getBadge($request, $badgeId);
+        return $this->getBadge($badgeId);
     }
 
     /**
