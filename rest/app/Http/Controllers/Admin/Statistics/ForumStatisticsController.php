@@ -9,6 +9,13 @@ use App\Utils\Condition;
 
 class ForumStatisticsController extends Controller {
 
+    /**
+     * @param $year
+     * @param $month
+     *
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
     public function getPosts($year, $month) {
         Condition::precondition(!is_numeric($month), 400, 'Month needs to be a number!');
         Condition::precondition($month > 12 || $month < 1, 400, 'Not a correct month!');
@@ -30,6 +37,14 @@ class ForumStatisticsController extends Controller {
         ]);
     }
 
+    /**
+     * @param $year
+     * @param $month
+     * @param $days
+     *
+     * @return array
+     * @throws \Exception
+     */
     private function getPostsStatistics($year, $month, $days) {
         $statistics = [];
 

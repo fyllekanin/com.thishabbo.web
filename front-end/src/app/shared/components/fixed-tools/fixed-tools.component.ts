@@ -31,10 +31,9 @@ export class FixedToolsComponent {
 
     get items(): Array<FixedToolItem> {
         if (this._currentItem) {
-            const items = this._currentItem.children.concat([
+            return this._currentItem.children.concat([
                 new FixedToolItem({ title: 'Back', value: this._BACK })
             ]);
-            return items;
         }
         return this._tools.items;
     }

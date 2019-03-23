@@ -46,7 +46,7 @@ class NotifyMentionsInPost implements ShouldQueue {
      * Executes the job
      */
     public function handle () {
-        $quotedPostIds = $this->getQuotedUserIds($this->content, $this->quoteRegex);
+        $quotedPostIds = $this->getQuotedUserIds($this->content);
         $content = preg_replace($this->quoteRegex, '', $this->content);
         $mentionedIds = $this->getMentionedIds($content, $this->mentionTypeUser);
         $mentionedIds = $this->addTaggedGroupMembers($content, $mentionedIds);

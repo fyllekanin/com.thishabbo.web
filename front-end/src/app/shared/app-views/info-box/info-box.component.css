@@ -10,18 +10,15 @@
 }
 
 :host(.warning) {
-    background: #c37070;
-    background-image: url(/assets/images/boxtitlebg_trans.png);
+    background: #c37070 url(/assets/images/boxtitlebg_trans.png);
 }
 
 :host(.alert) {
-    background: #79b554;
-    background-image: url(/assets/images/boxtitlebg_trans.png);
+    background: #79b554 url(/assets/images/boxtitlebg_trans.png);
 }
 
 :host(.info) {
-    background: #139af9;
-    background-image: url(/assets/images/boxtitlebg_trans.png);
+    background: #139af9 url(/assets/images/boxtitlebg_trans.png);
 }
 
 .closable {

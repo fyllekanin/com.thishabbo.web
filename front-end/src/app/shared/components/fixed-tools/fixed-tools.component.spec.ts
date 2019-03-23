@@ -69,8 +69,7 @@ describe('FixedToolsComponent', () => {
             // Given
             const child = new FixedToolItem({ title: 'back', value: -1 });
             const parent = new FixedToolItem({ title: 'test', value: 1, children: [child]});
-            const tools = new FixedTools({ items: [parent] });
-            component.tools = tools;
+            component.tools = new FixedTools({ items: [parent] });
             component.onClick(parent);
 
             // When

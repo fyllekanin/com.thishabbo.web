@@ -10,7 +10,7 @@
     margin-bottom: 1rem;
     padding: 0.3rem 0 0 0.5rem;
     color: #ffffff;
-    box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 1px inset, rgba(255, 255, 255, 0.09) 0px 0px 0px 2px inset, rgba(0, 0, 0, 0.11) 0px 2px 0px;
+    box-shadow: rgba(0, 0, 0, 0) 0 0px 0px 1px inset, rgba(255, 255, 255, 0.09) 0px 0px 0px 2px inset, rgba(0, 0, 0, 0.11) 0px 2px 0px;
     text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.33);
     background-image: url(/assets/images/boxtitlebg_trans.png);
 }
