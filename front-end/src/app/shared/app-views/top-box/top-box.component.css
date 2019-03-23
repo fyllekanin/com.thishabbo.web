@@ -131,12 +131,21 @@
     margin: -3px 0 0 0;
 }
 
+.fixed-menu {
+    position: fixed;
+    width: 100%;
+    margin-top: -39px;
+}
+
 @media screen and (max-width: 1200px) {
     .pc {
         display: none;
     }
     .mobile {
         display: block;
+    }
+    .fixed-menu {
+        margin-top: 15px;
     }
 }
 
@@ -146,13 +155,17 @@
     position: fixed;
     height: 100vh;
     z-index: 9;
-    -moz-transition:all 200ms ease-in;
-    -webkit-transition:all 200ms ease-in;
-    -o-transition:all 200ms ease-in;
-    transition:all 200ms ease-in;
+    -moz-transition: all 200ms ease-in;
+    -webkit-transition: all 200ms ease-in;
+    -o-transition: all 200ms ease-in;
+    transition: all 200ms ease-in;
     width: 18rem;
     padding-top: 0.7rem;
     margin-left: -18rem;
+}
+
+.fixed-menu-margin {
+    margin-top: 15px;
 }
 
 .menu-overlay {
@@ -224,10 +237,4 @@
 
 .children {
     padding: 0.5rem 0;
-}
-
-.fixed-menu {
-    position: fixed;
-    width: 100%;
-    margin-top: -39px;
 }

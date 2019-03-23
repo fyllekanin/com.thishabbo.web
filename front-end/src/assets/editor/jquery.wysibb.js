@@ -385,7 +385,7 @@ wbbdebug=false;
 					excmd: 'fontSize',
 					exvalue: "1",
 					transform: {
-						'<font size="1">{SELTEXT}</font>':'[size=50]{SELTEXT}[/size]'
+						'<font size="1">{SELTEXT}</font>':'[size=1]{SELTEXT}[/size]'
 					}
 				},
 				fs_small: {
@@ -394,7 +394,7 @@ wbbdebug=false;
 					excmd: 'fontSize',
 					exvalue: "2",
 					transform: {
-						'<font size="2">{SELTEXT}</font>':'[size=85]{SELTEXT}[/size]'
+						'<font size="2">{SELTEXT}</font>':'[size=2]{SELTEXT}[/size]'
 					}
 				},
 				fs_normal: {
@@ -403,7 +403,7 @@ wbbdebug=false;
 					excmd: 'fontSize',
 					exvalue: "3",
 					transform: {
-						'<font size="3">{SELTEXT}</font>':'[size=100]{SELTEXT}[/size]'
+						'<font size="3">{SELTEXT}</font>':'[size=3]{SELTEXT}[/size]'
 					}
 				},
 				fs_big: {
@@ -412,16 +412,16 @@ wbbdebug=false;
 					excmd: 'fontSize',
 					exvalue: "4",
 					transform: {
-						'<font size="4">{SELTEXT}</font>':'[size=150]{SELTEXT}[/size]'
+						'<font size="4">{SELTEXT}</font>':'[size=4]{SELTEXT}[/size]'
 					}
 				},
 				fs_verybig: {
 					title: CURLANG.fs_verybig,
 					buttonText: "fs5",
 					excmd: 'fontSize',
-					exvalue: "6",
+					exvalue: "5",
 					transform: {
-						'<font size="6">{SELTEXT}</font>':'[size=200]{SELTEXT}[/size]'
+						'<font size="5">{SELTEXT}</font>':'[size=5]{SELTEXT}[/size]'
 					}
 				},
 				
