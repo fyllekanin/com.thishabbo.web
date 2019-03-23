@@ -31,7 +31,7 @@ class GeneralSettingsController extends Controller {
         $this->forumService = $forumService;
         $this->settingKeys = ConfigHelper::getKeyConfig();
         $this->welcomeBotKeys = [
-            $this->settingKeys->welcomeBotUserId,
+            $this->settingKeys->botUserId,
             $this->settingKeys->welcomeBotMessage,
             $this->settingKeys->welcomeBotCategoryId
         ];

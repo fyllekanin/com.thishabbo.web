@@ -14,7 +14,7 @@ use App\Logger;
 use App\Models\Logger\Action;
 use App\Services\AuthService;
 use App\Services\HabboService;
-use App\Services\WelcomeBotService;
+use App\Services\BotService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -24,20 +24,20 @@ class AuthController extends Controller {
     private $accessTokenLifetime = 5400;
     private $refreshTokenLifetime = 86400;
 
-    private $welcomeBotService;
+    private $botService;
     private $authService;
     private $habboService;
 
     /**
      * AuthController constructor.
      *
-     * @param WelcomeBotService $welcomeBotService
+     * @param BotService $botService
      * @param AuthService $authService
      * @param HabboService $habboService
      */
-    public function __construct (WelcomeBotService $welcomeBotService, AuthService $authService, HabboService $habboService) {
+    public function __construct (BotService $botService, AuthService $authService, HabboService $habboService) {
         parent::__construct();
-        $this->welcomeBotService = $welcomeBotService;
+        $this->botService = $botService;
         $this->authService = $authService;
         $this->habboService = $habboService;
     }
@@ -105,7 +105,7 @@ class AuthController extends Controller {
         $userData = UserHelper::getUserDataOrCreate($user->userId);
         $userData->save();
 
-        $this->welcomeBotService->triggerWelcomeBot($user);
+        $this->botService->triggerWelcomeBot($user);
         Logger::user($user->userId, $request->ip(), Action::REGISTERED, ['name' => $user->nickname]);
         return response()->json();
     }

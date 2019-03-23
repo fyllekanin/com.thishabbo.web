@@ -14,7 +14,7 @@ use App\Utils\Value;
 use Illuminate\Http\Request;
 
 class StaffSpotlightController extends Controller {
-    private $welcomeBotKeys = [];
+    private $botKeys = [];
     private $settingKeys;
 
     /**
@@ -24,8 +24,8 @@ class StaffSpotlightController extends Controller {
     public function __construct () {
         parent::__construct();
         $this->settingKeys = ConfigHelper::getKeyConfig();
-        $this->welcomeBotKeys = [
-            $this->settingKeys->welcomeBotUserId,
+        $this->botKeys = [
+            $this->settingKeys->botUserId,
             $this->settingKeys->welcomeBotMessage,
             $this->settingKeys->welcomeBotCategoryId
         ];

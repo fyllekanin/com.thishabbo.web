@@ -1,7 +1,7 @@
 <?php
 
 $settingKeys = new \stdClass();
-$settingKeys->welcomeBotUserId = 'welcome_bot_userId';
+$settingKeys->botUserId = 'welcome_bot_userId';
 $settingKeys->welcomeBotMessage = 'welcome_bot_message';
 $settingKeys->welcomeBotCategoryId = 'welcome_bot_categoryId';
 
