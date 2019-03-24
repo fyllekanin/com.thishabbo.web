@@ -49,21 +49,42 @@ both with PHP and Angular/Typescript.
 More of light weight editor, not the greatest support for a lot of stuff but they are quick
 and easy to use!
 
-## Installing
-Before running the installations, you need to setup the database!
-The database currently is named "thsite" and uses nickname "root" without a password.
+## Short but quick setup
+### Clone
+As you are reading this file you do have access to the repository, so start with cloning this project
+down to whatever location on your computer as you wish. In this example I will be putting it at:
 
-Installing the project is not harder then running a simple script.
-For the easiest possible way to install, just get into the scripts folder and run
-the install.sh script!
+C:/users/{user}/Desktop/repos which would become -> C:/users/{user}/Desktop/repos/com.thishabbo.web
 
-Otherwise these are the steps to take:
-1) Inside the rest folder
-1.1) composer install
-1.2) php artisan migrate
-1.3) php artisan seed
-2) Inside front-end
-2.1) npm install
+### Installing
+In the project we got 3 folders, one for the back-end (rest), one for front-end (same name) and we got
+a scripts folder which contain some goodies, including a installation script which will install both
+the back-end and front-end dependencies.
+
+For the database, you need to create a new one in your local SQL server named "thsite".
+By default our code uses "root" as username and no password. If you got a different setup
+you will have to change it.
+
+After this you will have to use your xampp or whatever web server you got, and point your http://localhost
+to (using the example) C:/users/{user}/Desktop/repos/com.thishabbo.web/rest/public
+
+And finally, you need the global angular CLI, so run "npm install -g @angular/cli"
+
+### Starting it
+
+Get your database & web server up and running first!
+After this, in the scripts folder you can run the "refresh.sh" script
+to fill up the databse with testdata. 
+
+Now start the front-end by going into the folder and run "npm start".
+
+Now if you visit http://localhost:4200 you should have the project running!
+Default logins are:
+* Tovven / test1234
+* test / test1234
+* test1234 / test1234
+
+Tovven is the super admin account for easier development
 
 ## Running the tests
 
