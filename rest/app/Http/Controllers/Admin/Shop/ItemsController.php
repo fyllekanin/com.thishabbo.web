@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class ItemsController extends Controller {
 
-    public function getItems(Request $request, $page) {
+    public function getItems() {
         return response()->json([
             'total' => 1,
             'page' => 1,
