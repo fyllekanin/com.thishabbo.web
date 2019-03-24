@@ -15,7 +15,7 @@ use App\Utils\Condition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class AdminBadgesController extends Controller {
+class BadgesController extends Controller {
 
     /**
      * @param $badgeId

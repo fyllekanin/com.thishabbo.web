@@ -9,7 +9,7 @@ import { EditorAction } from 'shared/components/editor/editor.model';
 import { Page } from 'shared/page/page.model';
 import { USERCP_BREADCRUM_ITEM } from '../../usercp.constants';
 import { Signature } from './signature.model';
-import { UsercpSignatureService } from '../services/usercp-signature.service';
+import { SignatureService } from '../services/signature.service';
 
 @Component({
     selector: 'app-usercp-signature',
@@ -24,7 +24,7 @@ export class SignatureComponent extends Page implements OnDestroy {
 
     constructor(
         private _globalNotificationService: GlobalNotificationService,
-        private _service: UsercpSignatureService,
+        private _service: SignatureService,
         activatedRoute: ActivatedRoute,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService

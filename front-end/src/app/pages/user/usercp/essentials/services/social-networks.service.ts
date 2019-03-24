@@ -8,7 +8,7 @@ import { GlobalNotificationService } from 'core/services/notification/global-not
 import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
 
 @Injectable()
-export class UsercpSocialNetworksService implements Resolve<SocialNetworksModel> {
+export class SocialNetworksService implements Resolve<SocialNetworksModel> {
 
     constructor(
         private _httpService: HttpService,

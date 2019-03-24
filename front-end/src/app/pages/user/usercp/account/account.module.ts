@@ -1,20 +1,20 @@
 import { NgModule } from '@angular/core';
-import { UsercpDashboardComponent } from './dashboard/usercp-dashboard.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TitleModule } from 'shared/app-views/title/title.module';
 import { ContentModule } from 'shared/app-views/content/content.module';
 import { accountRoutes } from './account.routes';
-import { UsercpGroupsComponent } from './groups/usercp-groups.component';
+import { GroupsComponent } from './groups/groups.component';
 import { HabboComponent } from './habbo/habbo.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { NicknameComponent } from './nickname/nickname.component';
 import { PasswordComponent } from './password/password.component';
-import { UsercpGroupsService } from './services/usercp-groups.service';
-import { UsercpHabboService } from './services/usercp-habbo.service';
+import { GroupsService } from './services/groups.service';
+import { HabboService } from './services/habbo.service';
 import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.module';
-import { UsercpThemeResolver } from './services/usercp-theme.resolver';
+import { ThemeResolver } from './services/theme.resolver';
 import { ThemeComponent } from './theme/theme.component';
 
 @NgModule({
@@ -27,8 +27,8 @@ import { ThemeComponent } from './theme/theme.component';
         StatsBoxesModule
     ],
     declarations: [
-        UsercpDashboardComponent,
-        UsercpGroupsComponent,
+        DashboardComponent,
+        GroupsComponent,
         HabboComponent,
         HomePageComponent,
         NicknameComponent,
@@ -36,9 +36,9 @@ import { ThemeComponent } from './theme/theme.component';
         ThemeComponent
     ],
     providers: [
-        UsercpGroupsService,
-        UsercpHabboService,
-        UsercpThemeResolver
+        GroupsService,
+        HabboService,
+        ThemeResolver
     ],
     exports: [
         RouterModule

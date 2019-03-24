@@ -7,7 +7,7 @@ import { Signature } from '../signature/signature.model';
 import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
 
 @Injectable()
-export class UsercpSignatureService implements Resolve<Signature> {
+export class SignatureService implements Resolve<Signature> {
 
     constructor(
         private _httpService: HttpService,

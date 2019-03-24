@@ -3,12 +3,12 @@ import { Resolve } from '@angular/router';
 import { HttpService } from 'core/services/http/http.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { NotificationSettingsModel } from '../notification-settings/notification-settings.model';
+import { PostBitModel } from '../post-bit/post-bit.model';
 import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
 import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
 
 @Injectable()
-export class UsercpNotificationSettingsService implements Resolve<NotificationSettingsModel> {
+export class PostBitService implements Resolve<PostBitModel> {
 
     constructor(
         private _httpService: HttpService,
@@ -16,17 +16,17 @@ export class UsercpNotificationSettingsService implements Resolve<NotificationSe
     ) {
     }
 
-    resolve(): Observable<NotificationSettingsModel> {
-        return this._httpService.get('usercp/notification-settings')
-            .pipe(map(res => new NotificationSettingsModel(res)));
+    resolve(): Observable<PostBitModel> {
+        return this._httpService.get('usercp/post-bit')
+            .pipe(map((res => new PostBitModel(res))));
     }
 
-    save(data: NotificationSettingsModel): void {
-        this._httpService.put('usercp/notification-settings', { ignoredNotificationTypes: data })
+    save(data: PostBitModel): void {
+        this._httpService.put('usercp/post-bit', { postBitOptions: data })
             .subscribe(() => {
                 this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
                     title: 'Success',
-                    message: 'Notification settings updated'
+                    message: 'PostBit Settings Updated'
                 }));
             }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
     }

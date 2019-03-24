@@ -6,7 +6,7 @@ import { catchError, map } from 'rxjs/operators';
 import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
 
 @Injectable()
-export class UsercpHabboService implements Resolve<string> {
+export class HabboService implements Resolve<string> {
 
     constructor(
         private _httpService: HttpService,

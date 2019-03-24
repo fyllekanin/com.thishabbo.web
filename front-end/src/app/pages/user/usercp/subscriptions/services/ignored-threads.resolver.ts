@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable()
-export class UsercpIgnoredThreadsResolver implements Resolve<Array<IgnoredThread>> {
+export class IgnoredThreadsResolver implements Resolve<Array<IgnoredThread>> {
 
     constructor(private _httpService: HttpService) {}
 

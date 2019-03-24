@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 import { IgnoredCategory } from '../ignored-categories/ignored-categories.model';
 
 @Injectable()
-export class UsercpIgnoredCategoriesResolver implements Resolve<Array<IgnoredCategory>> {
+export class IgnoredCategoriesResolver implements Resolve<Array<IgnoredCategory>> {
 
     constructor(private _httpService: HttpService) {}
 

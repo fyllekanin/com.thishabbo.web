@@ -9,7 +9,7 @@ import { GlobalNotificationService } from 'core/services/notification/global-not
 import { map } from 'rxjs/operators';
 
 @Injectable()
-export class UsercpAvatarService implements Resolve<{ height: number; width: number }> {
+export class AvatarService implements Resolve<{ height: number; width: number }> {
 
     constructor(
         private _httpService: HttpService,

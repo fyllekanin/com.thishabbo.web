@@ -182,14 +182,18 @@ Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions-
 });
 
 Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canManageBadges)], function () {
-    Route::post('/badges', 'Admin\AdminBadgesController@createBadge');
-    Route::post('/badges/{badgeId}', 'Admin\AdminBadgesController@updateBadge');
-    Route::get('/badges/list/page/{page}', 'Admin\AdminBadgesController@getBadges');
-    Route::get('/badges/{badgeId}', 'Admin\AdminBadgesController@getBadge');
-    Route::delete('/badges/{badgeId}', 'Admin\AdminBadgesController@deleteBadge');
+    Route::post('/badges', 'Admin\BadgesController@createBadge');
+    Route::post('/badges/{badgeId}', 'Admin\BadgesController@updateBadge');
+    Route::get('/badges/list/page/{page}', 'Admin\BadgesController@getBadges');
+    Route::get('/badges/{badgeId}', 'Admin\BadgesController@getBadge');
+    Route::delete('/badges/{badgeId}', 'Admin\BadgesController@deleteBadge');
 
-    Route::get('/badges/{badgeId}/users', 'Admin\AdminBadgesController@getUsersWithBadge');
-    Route::put('/badges/{badgeId}/users', 'Admin\AdminBadgesController@updateUsersWithBadge');
+    Route::get('/badges/{badgeId}/users', 'Admin\BadgesController@getUsersWithBadge');
+    Route::put('/badges/{badgeId}/users', 'Admin\BadgesController@updateUsersWithBadge');
+});
+
+Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canManageShop)], function () {
+    Route::post('/shop/items/page/{page}', 'Admin\Shop\ItemsController@getItems');
 });
 
 Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canManageBetting)], function () {

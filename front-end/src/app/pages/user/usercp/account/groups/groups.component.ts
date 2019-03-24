@@ -5,18 +5,18 @@ import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { USERCP_BREADCRUM_ITEM } from '../../usercp.constants';
-import { UserCpGroup, UserCpGroupsPage } from './usercp-groups.model';
+import { UserCpGroup, UserCpGroupsPage } from './groups.model';
 import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
 import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
-import { UsercpGroupsService } from '../services/usercp-groups.service';
+import { GroupsService } from '../services/groups.service';
 import { TitleTab } from 'shared/app-views/title/title.model';
 
 @Component({
     selector: 'app-usercp-groups',
-    templateUrl: 'usercp-groups.component.html',
-    styleUrls: ['usercp-groups.component.css']
+    templateUrl: 'groups.component.html',
+    styleUrls: ['groups.component.css']
 })
-export class UsercpGroupsComponent extends Page implements OnDestroy {
+export class GroupsComponent extends Page implements OnDestroy {
     private _data: UserCpGroupsPage;
 
     tabs: Array<TitleTab> = [
@@ -26,7 +26,7 @@ export class UsercpGroupsComponent extends Page implements OnDestroy {
     constructor(
         private _globalNotificationService: GlobalNotificationService,
         private _dialogService: DialogService,
-        private _service: UsercpGroupsService,
+        private _service: GroupsService,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService,
         activatedRoute: ActivatedRoute

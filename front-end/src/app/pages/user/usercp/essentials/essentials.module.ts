@@ -9,10 +9,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TitleModule } from 'shared/app-views/title/title.module';
 import { ContentModule } from 'shared/app-views/content/content.module';
-import { UsercpAvatarService } from './services/usercp-avatar.service';
-import { UsercpPostBitService } from './services/usercp-post-bit.service';
-import { UsercpSignatureService } from './services/usercp-signature.service';
-import { UsercpSocialNetworksService } from './services/usercp-social-networks.service';
+import { AvatarService } from './services/avatar.service';
+import { PostBitService } from './services/post-bit.service';
+import { SignatureService } from './services/signature.service';
+import { SocialNetworksService } from './services/social-networks.service';
 import { essentialsRoutes } from './essentials.routes';
 import { EditorModule } from 'shared/components/editor/editor.module';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
@@ -35,10 +35,10 @@ import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
         SocialNetworksComponent
     ],
     providers: [
-        UsercpAvatarService,
-        UsercpPostBitService,
-        UsercpSignatureService,
-        UsercpSocialNetworksService
+        AvatarService,
+        PostBitService,
+        SignatureService,
+        SocialNetworksService
     ],
     exports: [
         RouterModule

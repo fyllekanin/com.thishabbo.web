@@ -1,15 +1,15 @@
-import { UsercpGroupsComponent } from './usercp-groups.component';
+import { GroupsComponent } from './groups.component';
 import { TestBed } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
-import { UsercpGroupsService } from '../services/usercp-groups.service';
+import { GroupsService } from '../services/groups.service';
 import { Subject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 
-describe('UsercpGroupsComponent', () => {
+describe('GroupsComponent', () => {
 
     class ActivatedRouteMock {
         subject = new Subject();
@@ -19,7 +19,7 @@ describe('UsercpGroupsComponent', () => {
         }
     }
 
-    let component: UsercpGroupsComponent;
+    let component: GroupsComponent;
     let activatedRoute;
 
     beforeEach(() => {
@@ -29,24 +29,24 @@ describe('UsercpGroupsComponent', () => {
                 CommonModule
             ],
             declarations: [
-                UsercpGroupsComponent
+                GroupsComponent
             ],
             providers: [
                 { provide: GlobalNotificationService, useValue: {} },
                 { provide: DialogService, useValue: {} },
-                { provide: UsercpGroupsService, useValue: { updateDisplayGroup() {} } },
+                { provide: GroupsService, useValue: { updateDisplayGroup() {} } },
                 { provide: BreadcrumbService, useValue: { set breadcrum(_data) {} } },
                 { provide: ActivatedRoute, useValue: activatedRoute }
             ],
             schemas: [NO_ERRORS_SCHEMA]
         });
 
-        component = TestBed.createComponent(UsercpGroupsComponent).componentInstance;
+        component = TestBed.createComponent(GroupsComponent).componentInstance;
     });
 
     it('updateDisplayGroup should update it to back-end', done => {
         // Given
-        const service = TestBed.get(UsercpGroupsService);
+        const service = TestBed.get(GroupsService);
         spyOn(service, 'updateDisplayGroup').and.callFake(displayGroup => {
             expect(displayGroup).toEqual(1);
             done();

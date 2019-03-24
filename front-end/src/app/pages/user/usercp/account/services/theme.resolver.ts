@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable()
-export class UsercpThemeResolver implements Resolve<Array<ThemeModel>> {
+export class ThemeResolver implements Resolve<Array<ThemeModel>> {
 
     constructor(private _httpService: HttpService) {}
 

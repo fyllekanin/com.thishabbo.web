@@ -8,7 +8,7 @@ import { USERCP_BREADCRUM_ITEM } from '../../usercp.constants';
 import { SocialNetworksModel } from './social-networks.model';
 import { GlobalNotification, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
-import { UsercpSocialNetworksService } from '../services/usercp-social-networks.service';
+import { SocialNetworksService } from '../services/social-networks.service';
 
 @Component({
     selector: 'app-usercp-social-networks',
@@ -23,7 +23,7 @@ export class SocialNetworksComponent extends Page implements OnDestroy {
 
     constructor(
         private _globalNotificationService: GlobalNotificationService,
-        private _service: UsercpSocialNetworksService,
+        private _service: SocialNetworksService,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService,
         activatedRoute: ActivatedRoute

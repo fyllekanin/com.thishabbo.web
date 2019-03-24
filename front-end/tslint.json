@@ -60,6 +60,8 @@
             "timeEnd",
             "trace"
         ],
+        "array-type": [true, "generic"],
+        "unnecessary-bind": true,
         "no-construct": false,
         "no-debugger": true,
         "no-duplicate-super": true,

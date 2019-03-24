@@ -9,11 +9,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TitleModule } from 'shared/app-views/title/title.module';
 import { ContentModule } from 'shared/app-views/content/content.module';
-import { UsercpCategorySubscriptionsService } from './services/usercp-category-subscriptions.service';
-import { UsercpIgnoredCategoriesResolver } from './services/usercp-ignored-categories.resolver';
-import { UsercpIgnoredThreadsResolver } from './services/usercp-ignored-threads.resolver';
-import { UsercpNotificationSettingsService } from './services/usercp-notification-settings.service';
-import { UsercpThreadSubscriptionsService } from './services/usercp-thread-subscriptions.service';
+import { CategorySubscriptionsService } from './services/category-subscriptions.service';
+import { IgnoredCategoriesResolver } from './services/ignored-categories.resolver';
+import { IgnoredThreadsResolver } from './services/ignored-threads.resolver';
+import { NotificationSettingsService } from './services/notification-settings.service';
+import { ThreadSubscriptionsService } from './services/thread-subscriptions.service';
 import { subscriptionRoutes } from './subscriptions.routes';
 import { TableModule } from 'shared/components/table/table.module';
 
@@ -34,11 +34,11 @@ import { TableModule } from 'shared/components/table/table.module';
         ThreadSubscriptionsComponent
     ],
     providers: [
-        UsercpCategorySubscriptionsService,
-        UsercpIgnoredCategoriesResolver,
-        UsercpIgnoredThreadsResolver,
-        UsercpNotificationSettingsService,
-        UsercpThreadSubscriptionsService
+        CategorySubscriptionsService,
+        IgnoredCategoriesResolver,
+        IgnoredThreadsResolver,
+        NotificationSettingsService,
+        ThreadSubscriptionsService
     ],
     exports: [
         RouterModule

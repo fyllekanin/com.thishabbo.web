@@ -6,7 +6,7 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 import { Page } from 'shared/page/page.model';
 import { USERCP_BREADCRUM_ITEM } from '../../usercp.constants';
 import { PostBitModel } from './post-bit.model';
-import { UsercpPostBitService } from '../services/usercp-post-bit.service';
+import { PostBitService } from '../services/post-bit.service';
 
 @Component({
     selector: 'app-usercp-post-bit',
@@ -20,7 +20,7 @@ export class PostBitComponent extends Page implements OnDestroy {
     ];
 
     constructor(
-        private _service: UsercpPostBitService,
+        private _service: PostBitService,
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute,
         breadcrumbService: BreadcrumbService
