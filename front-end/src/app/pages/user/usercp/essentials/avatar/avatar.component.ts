@@ -5,7 +5,7 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 import { Page } from 'shared/page/page.model';
 import { ActivatedRoute } from '@angular/router';
 import { USERCP_BREADCRUM_ITEM } from '../../usercp.constants';
-import { UsercpAvatarService } from '../services/usercp-avatar.service';
+import { AvatarService } from '../services/avatar.service';
 import { UsercpAvatarCoverPreviewService } from '../../../cover/usercp-avatar-cover-preview.service';
 import { GlobalNotification, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
@@ -23,7 +23,7 @@ export class AvatarComponent extends Page implements OnDestroy {
     ];
 
     constructor(
-        private _service: UsercpAvatarService,
+        private _service: AvatarService,
         private _previewService: UsercpAvatarCoverPreviewService,
         private _globalNotificationService: GlobalNotificationService,
         activatedRoute: ActivatedRoute,

@@ -64,3 +64,8 @@ export const THEMES_BREADCRUMB_ITEM = new BreadcrumbItem({
     title: 'Themes List',
     url: '/admin/website-settings/themes'
 });
+
+export const SHOP_ITEMS_BREADCRUMB_ITEMS = new BreadcrumbItem({
+    title: 'Shop Items',
+    url: '/admin/shop/items/page/1'
+});

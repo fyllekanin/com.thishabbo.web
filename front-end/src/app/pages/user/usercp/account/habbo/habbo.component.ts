@@ -8,7 +8,7 @@ import { AuthService } from 'core/services/auth/auth.service';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
 import { GlobalNotification, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
-import { UsercpHabboService } from '../services/usercp-habbo.service';
+import { HabboService } from '../services/habbo.service';
 
 @Component({
     selector: 'app-usercp-habbo',
@@ -24,7 +24,7 @@ export class HabboComponent extends Page implements OnDestroy {
 
     constructor(
         private _globalNotificationService: GlobalNotificationService,
-        private _service: UsercpHabboService,
+        private _service: HabboService,
         private _authService: AuthService,
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute,

@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\EloquentModels\BBcode;
 use App\EloquentModels\Forum\Category;
-use App\EloquentModels\Forum\Post;
 use App\EloquentModels\Forum\Thread;
-use App\EloquentModels\Log\LogMod;
 use App\EloquentModels\Notice;
 use App\EloquentModels\Page;
 use App\EloquentModels\Theme;

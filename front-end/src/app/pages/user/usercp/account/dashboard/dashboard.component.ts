@@ -9,9 +9,9 @@ import { TitleTopBorder } from 'shared/app-views/title/title.model';
 
 @Component({
     selector: 'app-user-usercp-dashboard',
-    templateUrl: 'usercp-dashboard.component.html'
+    templateUrl: 'dashboard.component.html'
 })
-export class UsercpDashboardComponent extends Page implements OnDestroy {
+export class DashboardComponent extends Page implements OnDestroy {
 
     stats: Array<StatsBoxModel> = [
         new StatsBoxModel({

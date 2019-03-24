@@ -6,7 +6,7 @@ import { NotificationSettingsModel } from './notification-settings.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { USERCP_BREADCRUM_ITEM } from '../../usercp.constants';
 import { TitleTab } from 'shared/app-views/title/title.model';
-import { UsercpNotificationSettingsService } from '../services/usercp-notification-settings.service';
+import { NotificationSettingsService } from '../services/notification-settings.service';
 
 @Component({
     selector: 'app-usercp-notification-settings',
@@ -20,7 +20,7 @@ export class NotificationSettingsComponent extends Page implements OnDestroy {
     ];
 
     constructor(
-        private _service: UsercpNotificationSettingsService,
+        private _service: NotificationSettingsService,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService,
         activatedRoute: ActivatedRoute

@@ -15,7 +15,7 @@ import {
 import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
 import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
 import { CategorySubscription, CategorySubscriptionActions } from './category-subscriptions.model';
-import { UsercpCategorySubscriptionsService } from '../services/usercp-category-subscriptions.service';
+import { CategorySubscriptionsService } from '../services/category-subscriptions.service';
 
 @Component({
     selector: 'app-usercp-category-subscriptions',
@@ -27,7 +27,7 @@ export class CategorySubscriptionsComponent extends Page implements OnDestroy {
     tableConfig: TableConfig;
 
     constructor(
-        private _service: UsercpCategorySubscriptionsService,
+        private _service: CategorySubscriptionsService,
         private _globalNotificationService: GlobalNotificationService,
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute,

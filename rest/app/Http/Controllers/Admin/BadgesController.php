@@ -15,7 +15,7 @@ use App\Utils\Condition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class AdminBadgesController extends Controller {
+class BadgesController extends Controller {
 
     /**
      * @param $badgeId
@@ -215,7 +215,7 @@ class AdminBadgesController extends Controller {
                 continue;
             }
             $item = new UserItem([
-                'type' => $itemTypes->badge->id,
+                'type' => $itemTypes->badge,
                 'itemId' => $badgeId,
                 'userId' => $userId
             ]);

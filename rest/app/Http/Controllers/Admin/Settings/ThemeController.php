@@ -10,7 +10,6 @@ use App\Models\Logger\Action;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
 use MatthiasMullie\Minify\CSS;
-use function Sodium\add;
 
 class ThemeController extends Controller {
 

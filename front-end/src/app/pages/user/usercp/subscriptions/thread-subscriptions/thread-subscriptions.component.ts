@@ -13,7 +13,7 @@ import {
     TableHeader,
     TableRow
 } from 'shared/components/table/table.model';
-import { UsercpThreadSubscriptionsService } from '../services/usercp-thread-subscriptions.service';
+import { ThreadSubscriptionsService } from '../services/thread-subscriptions.service';
 import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
 import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
 
@@ -27,7 +27,7 @@ export class ThreadSubscriptionsComponent extends Page implements OnDestroy {
     tableConfig: TableConfig;
 
     constructor(
-        private _service: UsercpThreadSubscriptionsService,
+        private _service: ThreadSubscriptionsService,
         private _globalNotificationService: GlobalNotificationService,
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute,

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin\Statistics;
 
 use App\EloquentModels\Forum\Post;
-use App\EloquentModels\User\Login;
 use App\Http\Controllers\Controller;
 use App\Utils\Condition;
 
