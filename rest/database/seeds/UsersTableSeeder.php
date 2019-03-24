@@ -126,6 +126,24 @@ class UsersTableSeeder extends Seeder
                 'createdAt' => 1542051979,
                 'updatedAt' => 1542051979,
             ),
+            6 =>
+            array (
+                'userId' => 7,
+                'username' => 'heidi',
+                'nickname' => 'heidi',
+                'habbo' => 'zalophus',
+                'password' => Hash::make('abc123'),
+                'displayGroupId' => 0,
+                'referralId' => 0,
+                'gdpr' => 1,
+                'likes' => 0,
+                'posts' => 0,
+                'threads' => 0,
+                'ignoredNotifications' => 0,
+                'lastActivity' => 0,
+                'createdAt' => 1542051979,
+                'updatedAt' => 1542051979,
+            ),
         ));
 
 

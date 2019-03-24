@@ -1,12 +1,17 @@
 <?php
 
 $itemTypes = new \stdClass();
-$itemTypes->badge = (object)[
-    'id' => 1,
-    'isExpiring' => false,
-    'length' => 0
-];
+$itemTypes->badge = 1;
+$itemTypes->nameIcon = 2;
+$itemTypes->nameEffect = 3;
+
+$rarities = new \stdClass();
+$rarities->common = 80;
+$rarities->rare = 50;
+$rarities->epic = 30;
+$rarities->legendary = 10;
 
 return [
-    'TYPES' => $itemTypes
+    'TYPES' => $itemTypes,
+    'RARITIES' => $rarities
 ];

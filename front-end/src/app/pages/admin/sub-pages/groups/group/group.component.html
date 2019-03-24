@@ -96,7 +96,7 @@
                     </label>
                 </div>
             </div>
-            <div class="small-6">
+            <div class="cell small-6">
                 <div>
                     <label class="checkbox-container">
                         Access to manage the Forum <em>(add, edit, delete forum categories)</em>
@@ -171,6 +171,13 @@
                     <label class="checkbox-container">
                         Can see user, mod and admin logs?
                         <input type="checkbox" [(ngModel)]="adminPermissions.canSeeLogs">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can create items & loot boxes
+                        <input type="checkbox" [(ngModel)]="adminPermissions.canManageShop">
                         <span class="checkmark"></span>
                     </label>
                 </div>

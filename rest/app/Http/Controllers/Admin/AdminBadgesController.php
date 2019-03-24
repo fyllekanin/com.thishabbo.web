@@ -215,7 +215,7 @@ class AdminBadgesController extends Controller {
                 continue;
             }
             $item = new UserItem([
-                'type' => $itemTypes->badge->id,
+                'type' => $itemTypes->badge,
                 'itemId' => $badgeId,
                 'userId' => $userId
             ]);

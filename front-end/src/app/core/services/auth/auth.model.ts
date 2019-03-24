@@ -173,6 +173,8 @@ export class AdminPermissions {
     canDoInfractions: boolean;
     @primitive()
     canSeeLogs: boolean;
+    @primitive()
+    canManageShop: boolean;
 
     constructor(source?: Partial<AdminPermissions>) {
         ClassHelper.assign(this, source);
