@@ -21,6 +21,10 @@
         margin-top: -1px
     }
 
+    input[type='range']:disabled {
+        background-color: #c3bec3;
+    }
+
     input[type='range']::-webkit-slider-runnable-track , input[type='range']::-moz-range-track {
         -webkit-appearance: none;
         margin-top: -5px;
