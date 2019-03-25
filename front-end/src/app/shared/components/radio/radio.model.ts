@@ -15,6 +15,10 @@ export class RadioModel {
     albumArt: string;
     @primitive()
     djSays: string;
+    @primitive()
+    ip: string;
+    @primitive()
+    port: string;
 
     constructor(source: Partial<RadioModel>) {
         ClassHelper.assign(this, source);

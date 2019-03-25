@@ -46,7 +46,7 @@ Hope you will have a fun time here and join our team! ',
             array (
                 'settingId' => 4,
                 'key' => 'radio',
-                'value' => '{"ip":"sc.thishabbo.com","port":"8080","password":"c6354K3AzhTUDhC","adminPassword":"THAdminbC9asoLk","nickname":"","likes":0,"userId":0,"listeners":0,"song":"","albumArt":"","djSays":""}',
+                'value' => '{"ip":"http://sc.thishabbo.com","port":"8080","password":"c6354K3AzhTUDhC","adminPassword":"THAdminbC9asoLk","nickname":"","likes":0,"userId":0,"listeners":0,"song":"","albumArt":"","djSays":""}',
                 'createdAt' => 1548703886,
                 'updatedAt' => 1548703886,
             ),
