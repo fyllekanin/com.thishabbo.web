@@ -3,6 +3,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { StaffComponent } from './staff.component';
 import { RequestThcComponent } from './request-thc/request-thc.component';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
+import { DashboardService } from './dashboard/dashboard.service';
 
 export const staffRoutes: Routes = [
     {
@@ -17,7 +18,7 @@ export const staffRoutes: Routes = [
                 path: 'dashboard',
                 component: DashboardComponent,
                 resolve: {
-                    ping: ContinuesInformationService
+                    data: DashboardService
                 }
             },
             {

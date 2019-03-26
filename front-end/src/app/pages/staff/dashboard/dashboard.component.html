@@ -1,7 +1,9 @@
 <app-stats-boxes [stats]="stats"></app-stats-boxes>
 
 <app-title
-    [title]="'Dashboard'">
+    [title]="'Dashboard'"
+    [tabs]="tabs"
+    (onTabClick)="onTabClick($event)">
 </app-title>
 <app-content>
     Statistics etc should be shown here

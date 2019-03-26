@@ -12,6 +12,7 @@ import { RequestThcComponent } from './request-thc/request-thc.component';
 import { SideMenuModule } from 'shared/app-views/side-menu/side-menu.module';
 import { TableModule } from 'shared/components/table/table.module';
 import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.module';
+import { DashboardService } from './dashboard/dashboard.service';
 
 @NgModule({
     imports: [
@@ -31,6 +32,7 @@ import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.modul
         RequestThcComponent
     ],
     providers: [
+        DashboardService
     ],
     exports: [
         RouterModule

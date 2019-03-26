@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Staff;
 
+use App\EloquentModels\RadioRequest;
 use App\EloquentModels\RequestThc;
+use App\EloquentModels\Timetable;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserData;
 use App\Helpers\UserHelper;
@@ -14,6 +16,23 @@ use App\Utils\Value;
 use Illuminate\Http\Request;
 
 class StaffController extends Controller {
+
+    public function getDashboardStats(Request $request, $startOfWeek) {
+        $user = UserHelper::getUserFromRequest($request);
+
+        return response()->json([
+            'general' => [
+                'events' => Timetable::isActive()->events()->count(),
+                'radio' => Timetable::isActive()->radio()->count(),
+                'requests' => RadioRequest::where('createdAt', '>', $startOfWeek)->count(),
+                'thc' => RequestThc::where('createdAt', '>', $startOfWeek)->count()
+            ],
+            'personal' => [
+                'events' => $this->getNextEventsSlot($user),
+                'radio' => $this->getNextRadioSlot($user)
+            ]
+        ]);
+    }
 
     /**
      * @param Request $request
@@ -83,5 +102,41 @@ class StaffController extends Controller {
             Condition::precondition(!$account, 404, sprintf('There is no account related with %s',
                 $nickname));
         }
+    }
+
+    private function getNextEventsSlot($user) {
+        $slot = Timetable::isActive()
+            ->orderBy('day', 'ASC')
+            ->orderBy('hour', 'ASC')
+            ->where('userId', $user->userId)
+            ->events()
+            ->first();
+
+        if (!$slot) {
+            return null;
+        }
+
+        return [
+            'day' => $slot->day,
+            'hour' => $slot->hour
+        ];
+    }
+
+    private function getNextRadioSlot($user) {
+        $slot = Timetable::isActive()
+            ->orderBy('day', 'ASC')
+            ->orderBy('hour', 'ASC')
+            ->where('userId', $user->userId)
+            ->radio()
+            ->first();
+
+        if (!$slot) {
+            return null;
+        }
+
+        return [
+            'day' => $slot->day,
+            'hour' => $slot->hour
+        ];
     }
 }
