@@ -39,6 +39,16 @@ export class TimeHelper {
         return this.DAYS.find(day => day.number === number);
     }
 
+    static getStartOfWeek(): number {
+        const date = new Date();
+        const day = date.getDay();
+        const diff = date.getDate() - day + (day === 0 ? -6 : 1);
+
+        const mondayDate = new Date(date.setDate(diff));
+        mondayDate.setHours(0, 0, 0, 0);
+        return (mondayDate.getTime() / 1000) + (this.getTimeOffsetInHours() * 60 * 60);
+    }
+
     static getDayWithSuffix(day: number): string {
         const j = day % 10,
             k = day % 100;

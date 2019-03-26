@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 $permissions = ConfigHelper::getStaffConfig();
 
 Route::post('request-thc', 'Staff\StaffController@createRequestThc');
+Route::get('dashboard/{start}', 'Staff\StaffController@getDashboardStats');
 
 Route::prefix('radio')->group(function () use ($permissions) {
     Route::group(['middleware' => PermissionHelper::getStaffMiddleware($permissions->canRadio)], function () {
