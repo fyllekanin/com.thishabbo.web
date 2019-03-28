@@ -76,7 +76,7 @@ export class DashboardComponent extends Page implements OnDestroy {
                 borderColor: TitleTopBorder.GREEN,
                 icon: 'fas fa-headphones',
                 title: radio || 'Not Booked',
-                breadText: radio ? 'Upcoming Events Slot' : '¯\\_(ツ)_/¯'
+                breadText: radio ? 'Upcoming Radio Slot' : '¯\\_(ツ)_/¯'
             })
         ];
     }

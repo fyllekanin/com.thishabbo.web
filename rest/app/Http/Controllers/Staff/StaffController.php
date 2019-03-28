@@ -106,6 +106,8 @@ class StaffController extends Controller {
 
     private function getNextEventsSlot($user) {
         $slot = Timetable::isActive()
+            ->where('day', '>=', date('N'))
+            ->where('hour', '>', date('G'))
             ->orderBy('day', 'ASC')
             ->orderBy('hour', 'ASC')
             ->where('userId', $user->userId)
@@ -124,6 +126,8 @@ class StaffController extends Controller {
 
     private function getNextRadioSlot($user) {
         $slot = Timetable::isActive()
+            ->where('day', '>=', date('N'))
+            ->where('hour', '>', date('G'))
             ->orderBy('day', 'ASC')
             ->orderBy('hour', 'ASC')
             ->where('userId', $user->userId)
