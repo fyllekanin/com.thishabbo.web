@@ -80,10 +80,6 @@ export class LogsComponent extends Page implements OnDestroy {
     }
 
     private createOrUpdateTable(): void {
-        if (this.tableConfig) {
-            this.tableConfig.rows = this.getTableRows();
-            return;
-        }
         this.tableConfig = new TableConfig({
             title: `${StringHelper.firstCharUpperCase(this.logType)} log`,
             headers: this.getTableHeaders(),

@@ -117,10 +117,6 @@ export class AutoBansListComponent extends Page implements OnDestroy {
     }
 
     private buildTableConfig(): void {
-        if (this.tableConfig) {
-            this.tableConfig.rows = this.getTableRows();
-            return;
-        }
         this.tableConfig = new TableConfig({
             title: 'Automatic Bans',
             headers: AutoBansListComponent.getTableHeaders(),

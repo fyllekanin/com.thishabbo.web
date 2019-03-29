@@ -173,10 +173,6 @@ export class TypesComponent extends Page implements OnDestroy {
     }
 
     private createOrUpdateTable(): void {
-        if (this.tableConfig) {
-            this.tableConfig.rows = this.getTableRows();
-            return;
-        }
         this.tableConfig = new TableConfig({
             title: 'Event Types',
             headers: this.getTableHeaders(),
