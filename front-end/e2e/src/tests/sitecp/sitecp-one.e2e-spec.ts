@@ -49,14 +49,14 @@ describe('SiteCP #1', () => {
         expect(CommonUtil.getTableRows().count()).toBe(2);
 
         NavigationUtil.clickTab('Save');
-        NavigationUtil.clickSiteCpTool('manage BBCode');
+        NavigationUtil.clickSiteCpTool('Manage BBCode');
         NavigationUtil.clickSiteCpTool('Manage Staff List');
         expect(CommonUtil.getTableRows().count()).toBe(2);
 
         StaffListPage.removeGroup('Male');
         expect(CommonUtil.getTableRows().count()).toBe(1);
         NavigationUtil.clickTab('Save');
-        NavigationUtil.clickSiteCpTool('manage BBCode');
+        NavigationUtil.clickSiteCpTool('Manage BBCode');
         NavigationUtil.clickSiteCpTool('Manage Staff List');
         expect(CommonUtil.getTableRows().count()).toBe(1);
     });
