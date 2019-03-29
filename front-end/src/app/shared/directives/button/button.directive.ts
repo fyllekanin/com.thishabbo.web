@@ -22,7 +22,6 @@ export class ButtonDirective {
     @HostBinding('style.color') textColor = '#ffffff';
     @HostBinding('style.outline') outline = 'none';
     @HostBinding('style.margin') margin = '0 0 0 5px';
-    @HostBinding('style.height') height = '35px';
     @HostBinding('class') class = Button.BLUE.class;
 
     @Output() onClick: EventEmitter<void> = new EventEmitter();

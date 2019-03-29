@@ -18,10 +18,8 @@ html{height:100% !important;}
 
 /* RESPONSIBLE */
 .wysibb{
-	border:1px solid #ddd;
 	position:relative;
 	background:#fff;
-	font-size:12px;
 }
 
 .wysibb button:focus,.wysibb button:active,#wbbmodal button:focus, #wbbmodal button:active{
@@ -85,7 +83,6 @@ html{height:100% !important;}
   padding:0 1px;
   cursor:pointer;
   margin:0 0 0 1px;
-  font-size: 12px;
   border:1px solid transparent;
   box-sizing:border-box;
 }
@@ -690,7 +687,6 @@ html{height:100% !important;}
 	  padding:0 1px;
 	  cursor:pointer;
 	  margin:0 0 0 1px;
-	  font-size: 12px;
 	  border:1px solid transparent;
 	  width:auto;
 	}
