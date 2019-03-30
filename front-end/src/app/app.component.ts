@@ -14,14 +14,12 @@ import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
         <app-top-bar></app-top-bar>
         <app-top-box></app-top-box>
         <app-header></app-header>
-        <div class="wrapper">
-            <div class="grid-container content-margin">
-                <app-site-messages></app-site-messages>
-                <div class="grid-x">
-                    <div class="cell small-12" [@fadeAnimation]="o.isActivated ? o.activatedRoute : ''"
-                         [ngClass]="isFixed ? 'fixed-menu' : ''">
-                        <router-outlet #o="outlet"></router-outlet>
-                    </div>
+        <div class="grid-container content-margin">
+            <app-site-messages></app-site-messages>
+            <div class="grid-x">
+                <div class="cell small-12" [@fadeAnimation]="o.isActivated ? o.activatedRoute : ''"
+                     [ngClass]="isFixed ? 'fixed-menu' : ''">
+                    <router-outlet #o="outlet"></router-outlet>
                 </div>
             </div>
         </div>

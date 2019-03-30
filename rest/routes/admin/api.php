@@ -86,13 +86,9 @@ Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions-
 });
 
 Route::group(['middleware' => PermissionHelper::getAdminMiddleware([$permissions->canEditUserBasic, $permissions->canEditUserAdvanced, $permissions->canEditUserProfile,
-    $permissions->canBanUser || $permissions->canManageTHC])], function () use ($permissions) {
+    $permissions->canBanUser])], function () use ($permissions) {
 
     Route::get('/users/list/page/{page}', 'Admin\User\UserController@getUsers');
-
-    Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canManageTHC)], function () {
-        Route::put('/users/{userId}/thc', 'Admin\User\UserThcController@updateThc');
-    });
 
     Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canMergeUsers)], function () {
         Route::post('/users/merge/source/{srcUserId}/destination/{destUserId}', 'Admin\User\UserController@mergeUsers');

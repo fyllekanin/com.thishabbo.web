@@ -1,4 +1,4 @@
-import { browser, ElementFinder, ExpectedConditions, Key } from 'protractor';
+import { browser, ElementFinder, ExpectedConditions, Key, protractor } from 'protractor';
 
 export class InputUtil {
 
@@ -16,5 +16,15 @@ export class InputUtil {
     static fillEditor(ele: ElementFinder, value: string | number): void {
         browser.wait(ExpectedConditions.presenceOf(ele), 10000, 'Expected element to be present');
         ele.sendKeys(value);
+    }
+
+    static searchInSelect(ele: ElementFinder, value: string) {
+        browser.wait(ExpectedConditions.presenceOf(ele), 10000, 'Expected element to be present');
+        return browser.actions().mouseMove(ele)
+            .click()
+            .sendKeys(protractor.Key.chord(protractor.Key.CONTROL, 'a'))
+            .sendKeys(protractor.Key.BACK_SPACE)
+            .sendKeys(value)
+            .perform();
     }
 }

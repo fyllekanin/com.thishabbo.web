@@ -377,7 +377,7 @@ export class ThreadComponent extends Page implements OnDestroy {
 
         if (AutoSaveHelper.exists(AutoSave.POST, this._threadPage.threadId)) {
             buttons.push(new EditorAction({
-                title: 'Open auto-save',
+                title: 'Open Auto-Save',
                 value: ThreadActions.AUTO_SAVE,
                 asButton: true,
                 buttonColor: Button.YELLOW

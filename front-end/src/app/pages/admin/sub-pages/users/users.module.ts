@@ -18,7 +18,6 @@ import { BanService } from './services/ban.service';
 import { BanComponent } from './ban/ban.component';
 import { ThcRequestsService } from './services/thc-requests.service';
 import { ThcRequestsComponent } from './thc-requests/thc-requests.component';
-import { ManageThcComponent } from './list/manage-thc/manage-thc.component';
 import { IpSearchComponent } from './ip-search/ip-search.component';
 import { MergeUsersComponent } from './list/merge-users/merge-users.component';
 import { ReasonModule } from 'shared/components/reason/reason.module';
@@ -41,7 +40,6 @@ import { ReasonModule } from 'shared/components/reason/reason.module';
         GroupsComponent,
         BanComponent,
         ThcRequestsComponent,
-        ManageThcComponent,
         MergeUsersComponent,
         IpSearchComponent
     ],
@@ -53,7 +51,6 @@ import { ReasonModule } from 'shared/components/reason/reason.module';
         ThcRequestsService
     ],
     entryComponents: [
-        ManageThcComponent,
         MergeUsersComponent
     ],
     exports: [

@@ -34,6 +34,5 @@ export enum UserListAction {
     EDIT_USER_BASIC,
     EDIT_USER_GROUPS,
     MANAGE_BANS,
-    MANAGE_THC,
     MERGE_USER
 }

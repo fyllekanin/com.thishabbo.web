@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
 use App\Services\CreditsService;
-use App\Utils\Condition;
 use Illuminate\Http\Request;
 
 class UserThcController extends Controller {
@@ -22,29 +21,6 @@ class UserThcController extends Controller {
     public function __construct(CreditsService $creditsService) {
         parent::__construct();
         $this->creditsService = $creditsService;
-    }
-
-    /**
-     * @param Request $request
-     * @param         $userId
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function updateThc (Request $request, $userId) {
-        $user = UserHelper::getUserFromRequest($request);
-        $current = UserHelper::getUserFromId($userId);
-        $credits = $request->input('credits');
-
-        Condition::precondition($current->userId == 0, 404, 'User do not exist');
-        Condition::precondition(!UserHelper::canManageUser($user, $userId),
-            400, 'Can not edit a user with same or higher immunity');
-
-        $this->creditsService->setUserCredits($current->userId, $credits);
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_USERS_CREDITS, [
-            'name' => $current->nickname,
-            'amount' => $credits
-        ]);
-        return response()->json();
     }
 
     /**

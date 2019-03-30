@@ -58,7 +58,7 @@
                         </div>
                     </div>
 
-                    <div class="cell action" [ngClass]="row.actions.length === 1 ? columnSize.actions + ' button-column' : columnSize.actions" *ngIf="haveActions">
+                    <div class="cell action" [ngClass]="row.actions.length === 1 ? columnSize.actions : columnSize.actions" *ngIf="haveActions">
                         <select (change)="onChange(row, $event)" *ngIf="row.actions.length > 1">
                             <option [value]="null" disabled="disabled">{{ row.actionsPlaceholder || 'Choose' }}</option>
                             <option *ngFor="let item of row.actions" [value]="item.value">{{item.title}}</option>

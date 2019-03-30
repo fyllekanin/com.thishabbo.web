@@ -85,7 +85,7 @@ a:hover {
 
 .active {
     font-weight: bold;
-    box-shadow: 1px 0 5px -1px rgba(206, 202, 202, 0.75);
+    box-shadow: 1px 0 5px -1px rgba(81, 79, 79, 0.1)
 }
 
 .blue-top {

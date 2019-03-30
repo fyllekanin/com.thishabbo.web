@@ -48,7 +48,7 @@
 }
 
 .checkbox-container input:checked ~ .checkmark {
-    background-color: #139bfb;
+    background-color: #2ea1f3;
 }
 
 .checkmark:after {
@@ -103,7 +103,7 @@ input , select , textarea {
     height: 35px;
     line-height: 1.42857143;
     margin-bottom: 2px !important;
-    padding: 8px 12px;
+    padding: 5px 5px;
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     width: 100%;
     outline: 0;
