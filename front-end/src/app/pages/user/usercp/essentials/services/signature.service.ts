@@ -23,6 +23,9 @@ export class SignatureService implements Resolve<Signature> {
     save(signature: string): Observable<Signature> {
         return this._httpService.put('usercp/signature', { signature: signature })
             .pipe(catchError(this._globalNotificationService.failureNotification.bind(this._globalNotificationService)));
+    }
 
+    parse(signature: string): Observable<string> {
+        return this._httpService.post('bbcode/parse', { content: signature });
     }
 }
