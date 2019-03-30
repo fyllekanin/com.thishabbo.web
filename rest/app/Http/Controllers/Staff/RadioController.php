@@ -36,6 +36,7 @@ class RadioController extends Controller {
 
         $logSql = LogStaff::whereIn('action', [$bookAction, $unbookAction, $bookedPermAction, $deletedPermAction]);
 
+        $total = ceil($logSql->count() / $this->perPage);
         $items = $logSql->orderBy('logId', 'DESC')
             ->take($this->perPage)
             ->skip($this->getOffset($page))
@@ -56,7 +57,7 @@ class RadioController extends Controller {
         return response()->json([
             'items' => $items,
             'page' => $page,
-            'total' => ceil($logSql->count() / $this->perPage)
+            'total' => $total
         ]);
     }
 

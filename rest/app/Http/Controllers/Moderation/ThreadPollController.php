@@ -79,6 +79,7 @@ class ThreadPollController extends Controller {
             ->orderBy('threads.title', 'ASC')
             ->select('threads.title', 'threads.threadId', 'thread_polls.*');
 
+        $total = ceil($getPollsSql->count() / $this->perPage);
         $polls = $getPollsSql->take($this->perPage)->skip($this->getOffset($page))->get()->map(function ($poll) {
             return [
                 'threadPollId' => $poll->threadPollId,
@@ -90,7 +91,7 @@ class ThreadPollController extends Controller {
         });
 
         return response()->json([
-            'total' => ceil($getPollsSql->count() / $this->perPage),
+            'total' => $total,
             'page' => $page,
             'polls' => $polls
         ]);

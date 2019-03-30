@@ -25,6 +25,7 @@ class AutoBanController extends Controller {
             ->skip($this->getOffset($page))
             ->take($this->perPage);
 
+        $total = ceil($autoBansSql->count() / $this->perPage);
         $items = $autoBansSql->get()->map(function($item) {
             return [
                 'autoBanId' => $item->autoBanId,
@@ -38,7 +39,7 @@ class AutoBanController extends Controller {
         return response()->json([
             'items' => $items,
             'page' => $page,
-            'total' => ceil($autoBansSql->count() / $this->perPage)
+            'total' => $total
         ]);
     }
 
