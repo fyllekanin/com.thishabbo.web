@@ -31,5 +31,6 @@ class DatabaseSeeder extends Seeder {
         $this->call(NotificationsTableSeeder::class);
         $this->call(PagesTableSeeder::class);
         $this->call(ThemesTableSeeder::class);
+        $this->call(UsergroupsTableSeeder::class);
     }
 }
