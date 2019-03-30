@@ -63,7 +63,11 @@ class PostActionController extends Controller {
             'userId' => $user->userId
         ]);
 
-        Logger::user($user->userId, $request->ip(), Action::LIKED_POST);
+        Logger::user($user->userId, $request->ip(), Action::LIKED_POST, [
+            'thread' => $post->thread->title,
+            'threadId' => $post->threadId,
+            'categoryId' => $post->thread->categoryId
+        ]);
         return response()->json();
     }
 

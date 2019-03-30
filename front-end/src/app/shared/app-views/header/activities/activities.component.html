@@ -1,0 +1,39 @@
+<div class="bulletin-details">
+    <div class="bulletin-board" *ngFor="let activity of activities" [ngSwitch]="activity.type">
+        <div *ngSwitchCase="40">
+            <i class="fas fa-comment"></i>
+            <strong>{{activity.user.nickname}}</strong> have posted in
+            <strong>{{activity.thread}}</strong>
+        </div>
+        <div *ngSwitchCase="88">
+            <i class="fas fa-comment"></i>
+            <strong>{{activity.user.nickname}}</strong> created thread
+            <strong>{{activity.thread}}</strong>
+        </div>
+        <div *ngSwitchCase="41">
+            <i class="fas fa-thumbs-up"></i>
+            <strong>{{activity.user.nickname}}</strong> have liked a post in
+            <strong>{{activity.thread}}</strong>
+        </div>
+        <div *ngSwitchCase="18">
+            <i class="fas fa-thumbs-up"></i>
+            <strong>{{activity.user.nickname}}</strong> have liked the DJ!
+        </div>
+        <div *ngSwitchCase="45">
+            <i class="fas fa-gamepad"></i>
+            <strong>{{activity.user.nickname}}</strong> started a game of fastest typer!
+        </div>
+        <div *ngSwitchCase="43">
+            <i class="fas fa-gamepad"></i>
+            <strong>{{activity.user.nickname}}</strong> started a game of snake!
+        </div>
+        <div *ngSwitchCase="1">
+            <i class="fas fa-gamepad"></i>
+            <strong>{{activity.user.nickname}}</strong> won a game of roulette!
+        </div>
+        <div *ngSwitchCase="2">
+            <i class="fas fa-gamepad"></i>
+            <strong>{{activity.user.nickname}}</strong> lost a game of roulette...
+        </div>
+    </div>
+</div>

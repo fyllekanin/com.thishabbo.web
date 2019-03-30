@@ -55,29 +55,39 @@
     [title]="'Options'">
 </app-title>
 <app-content>
-    <label class="checkbox-container">
-        Threads need approval? <em>(Tick if yes)</em>
-        <input type="checkbox" [(ngModel)]="options.threadsNeedApproval">
-        <span class="checkmark"></span>
-    </label>
-    <label class="checkbox-container">
-        Threads need a prefix? <em>(Tick if yes)</em>
-        <input type="checkbox" [(ngModel)]="options.prefixMandatory">
-        <span class="checkmark"></span>
-    </label>
-    <label class="checkbox-container">
-       Posts don't count <em>(Tick if yes)</em>
-        <input type="checkbox" [(ngModel)]="options.postsDontCount">
-        <span class="checkmark"></span>
-    </label>
-    <label class="checkbox-container">
-        Threads can have polls <em>(Tick if yes)</em>
-        <input type="checkbox" [(ngModel)]="options.threadsCanHavePolls">
-        <span class="checkmark"></span>
-    </label>
-    <label class="checkbox-container">
-        Is landing place for report posts <em>(Tick if yes)</em>
-        <input type="checkbox" [(ngModel)]="options.reportPostsGoHere">
-        <span class="checkmark"></span>
-    </label>
+    <div>
+        <label class="checkbox-container">
+            Threads need approval? <em>(Tick if yes)</em>
+            <input type="checkbox" [(ngModel)]="options.threadsNeedApproval">
+            <span class="checkmark"></span>
+        </label>
+    </div>
+    <div>
+        <label class="checkbox-container">
+            Threads need a prefix? <em>(Tick if yes)</em>
+            <input type="checkbox" [(ngModel)]="options.prefixMandatory">
+            <span class="checkmark"></span>
+        </label>
+    </div>
+    <div>
+        <label class="checkbox-container">
+           Posts don't count <em>(Tick if yes)</em>
+            <input type="checkbox" [(ngModel)]="options.postsDontCount">
+            <span class="checkmark"></span>
+        </label>
+    </div>
+    <div>
+        <label class="checkbox-container">
+            Threads can have polls <em>(Tick if yes)</em>
+            <input type="checkbox" [(ngModel)]="options.threadsCanHavePolls">
+            <span class="checkmark"></span>
+        </label>
+    </div>
+    <div>
+        <label class="checkbox-container">
+            Is landing place for report posts <em>(Tick if yes)</em>
+            <input type="checkbox" [(ngModel)]="options.reportPostsGoHere">
+            <span class="checkmark"></span>
+        </label>
+    </div>
 </app-content>

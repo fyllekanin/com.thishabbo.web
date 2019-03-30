@@ -12,8 +12,6 @@ class PostsTableSeeder extends Seeder
      */
     public function run()
     {
-        
-
         \DB::table('posts')->delete();
         
         \DB::table('posts')->insert(array (
@@ -138,28 +136,26 @@ this is just a boiler template text should show that text is displayed when the 
                 'postId' => 10,
                 'threadId' => 8,
                 'userId' => 1,
-                'content' => '[color=#7d7d7d][size=1][font=Verdana, sans-serif]This is a test![/font][/size][/color]
+                'content' => 'This is a test!
 
-[color=#7d7d7d][size=1][font=Verdana, sans-serif]this is just a boiler template text should show that text is displayed when the slim article is showed![/font][/size][/color]
-
-',
+this is just a boiler template text should show that text is displayed when the slim article is showed!',
                 'isDeleted' => 0,
                 'isApproved' => 1,
                 'createdAt' => 1538672751,
-                'updatedAt' => 1538672751,
+                'updatedAt' => 1553981639,
             ),
             10 => 
             array (
                 'postId' => 11,
                 'threadId' => 9,
                 'userId' => 1,
-                'content' => '[color=#7d7d7d][size=1][font=Verdana, sans-serif]This is a test![/font][/size][/color]
+                'content' => 'This is a test!
 
-[color=#7d7d7d][size=1][font=Verdana, sans-serif]this is just a boiler template text should show that text is displayed when the slim article is showed![/font][/size][/color]',
+this is just a boiler template text should show that text is displayed when the slim article is showed!',
                 'isDeleted' => 0,
                 'isApproved' => 1,
                 'createdAt' => 1538672783,
-                'updatedAt' => 1538672783,
+                'updatedAt' => 1553981617,
             ),
             11 => 
             array (
@@ -405,72 +401,68 @@ Hope you will have a fun time here and join our team! [/quote]',
                 'postId' => 24,
                 'threadId' => 19,
                 'userId' => 1,
-                'content' => '[color=#8e8e8e][size=2][font=Verdana, sans-serif]Another day, another match! Who will win in the England VS Panama game? Tell us now and get an easy badge in the Hotel![/font][/size][/color]
-',
+                'content' => 'Another day, another match! Who will win in the England VS Panama game? Tell us now and get an easy badge in the Hotel!',
                 'isDeleted' => 0,
                 'isApproved' => 1,
                 'createdAt' => 1552144959,
-                'updatedAt' => 1552144959,
+                'updatedAt' => 1553981568,
             ),
             24 => 
             array (
                 'postId' => 25,
                 'threadId' => 20,
                 'userId' => 1,
-                'content' => '[color=#8e8e8e][size=2][font=Verdana, sans-serif]Another day, another match! Who will win in the England VS Panama game? Tell us now and get an easy badge in the Hotel![/font][/size][/color]
-',
+                'content' => 'Another day, another match! Who will win in the England VS Panama game? Tell us now and get an easy badge in the Hotel!',
                 'isDeleted' => 0,
                 'isApproved' => 1,
                 'createdAt' => 1552145019,
-                'updatedAt' => 1552145019,
+                'updatedAt' => 1553982467,
             ),
             25 => 
             array (
                 'postId' => 26,
                 'threadId' => 21,
                 'userId' => 1,
-                'content' => '[color=#8e8e8e][size=2][font=Verdana, sans-serif]Another day, another match! Who will win in the England VS Panama game? Tell us now and get an easy badge in the Hotel![/font][/size][/color]
-',
+                'content' => 'Another day, another match! Who will win in the England VS Panama game? Tell us now and get an easy badge in the Hotel!',
                 'isDeleted' => 0,
                 'isApproved' => 1,
                 'createdAt' => 1552145036,
-                'updatedAt' => 1552145036,
+                'updatedAt' => 1553982494,
             ),
             26 => 
             array (
                 'postId' => 27,
                 'threadId' => 22,
                 'userId' => 1,
-                'content' => '[color=#8e8e8e][size=2][font=Verdana, sans-serif]Another day, another match! Who will win in the England VS Panama game? Tell us now and get an easy badge in the Hotel! [color=#8e8e8e][size=2][font=Verdana, sans-serif]Another day, another match! Who will win in the England VS Panama game? Tell us now and get an easy badge in the Hotel![/font][/size][/color][/font][/size][/color]
-',
+                'content' => 'Another day, another match! Who will win in the England VS Panama game? Tell us now and get an easy badge in the Hotel!
+
+Another day, another match! Who will win in the England VS Panama game? Tell us now and get an easy badge in the Hotel!',
                 'isDeleted' => 0,
                 'isApproved' => 1,
                 'createdAt' => 1552145054,
-                'updatedAt' => 1552145054,
+                'updatedAt' => 1553982527,
             ),
             27 => 
             array (
                 'postId' => 28,
                 'threadId' => 23,
                 'userId' => 1,
-                'content' => '[color=#8e8e8e][size=2][font=Verdana, sans-serif]Another day, another match! Who will win in the England VS Panama game? Tell us now and get an easy badge in the Hotel![/font][/size][/color]
-',
+                'content' => 'Another day, another match! Who will win in the England VS Panama game? Tell us now and get an easy badge in the Hotel',
                 'isDeleted' => 0,
                 'isApproved' => 1,
                 'createdAt' => 1552145118,
-                'updatedAt' => 1552145118,
+                'updatedAt' => 1553982551,
             ),
             28 => 
             array (
                 'postId' => 29,
                 'threadId' => 24,
                 'userId' => 1,
-                'content' => '[color=#8e8e8e][size=2][font=Verdana, sans-serif]Another day, another match! Who will win in the England VS Panama game? Tell us now and get an easy badge in the Hotel![/font][/size][/color]
-',
+                'content' => 'Another day, another match! Who will win in the England VS Panama game? Tell us now and get an easy badge in the Hotel!',
                 'isDeleted' => 0,
                 'isApproved' => 1,
                 'createdAt' => 1552145142,
-                'updatedAt' => 1552145142,
+                'updatedAt' => 1553982575,
             ),
             29 => 
             array (
@@ -553,6 +545,39 @@ Praesent lacinia malesuada nisi mus erat magna nullam mus. Cras dui non. Eleifen
                 'isApproved' => 1,
                 'createdAt' => 1552148693,
                 'updatedAt' => 1552148693,
+            ),
+            34 => 
+            array (
+                'postId' => 35,
+                'threadId' => 30,
+                'userId' => 1,
+                'content' => 'We can now see working activity in the header!',
+                'isDeleted' => 0,
+                'isApproved' => 1,
+                'createdAt' => 1553981453,
+                'updatedAt' => 1553981453,
+            ),
+            35 => 
+            array (
+                'postId' => 36,
+                'threadId' => 1,
+                'userId' => 1,
+                'content' => 'It is for sure on going!',
+                'isDeleted' => 0,
+                'isApproved' => 1,
+                'createdAt' => 1553981474,
+                'updatedAt' => 1553981474,
+            ),
+            36 => 
+            array (
+                'postId' => 37,
+                'threadId' => 9,
+                'userId' => 1,
+                'content' => 'Test',
+                'isDeleted' => 0,
+                'isApproved' => 1,
+                'createdAt' => 1553981590,
+                'updatedAt' => 1553981590,
             ),
         ));
         

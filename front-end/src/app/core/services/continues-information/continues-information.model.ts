@@ -1,6 +1,7 @@
 import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
 import { RadioModel } from 'shared/components/radio/radio.model';
 import { INFO_BOX_TYPE } from 'shared/app-views/info-box/info-box.model';
+import { SlimUser } from 'core/services/auth/auth.model';
 
 export class SlimSiteMessage {
     @primitive()
@@ -40,6 +41,21 @@ export class ActiveUser {
     }
 }
 
+export class Activity {
+    @primitive()
+    logId: number;
+    @objectOf(SlimUser)
+    user: SlimUser;
+    @primitive()
+    type: number;
+    @primitive()
+    thread: string;
+
+    constructor(source: Partial<Activity>) {
+        ClassHelper.assign(this, source);
+    }
+}
+
 export class ContinuesInformationModel {
     @objectOf(RadioModel)
     radio: RadioModel;
@@ -49,6 +65,8 @@ export class ContinuesInformationModel {
     siteMessages: Array<SlimSiteMessage> = [];
     @arrayOf(ActiveUser)
     activeUsers: Array<ActiveUser> = [];
+    @arrayOf(Activity)
+    activities: Array<Activity> = [];
 
     constructor(source?: Partial<ContinuesInformationModel>) {
         ClassHelper.assign(this, source);

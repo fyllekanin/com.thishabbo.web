@@ -7,6 +7,9 @@ use App\Helpers\UserHelper;
 use App\Utils\BBcodeUtil;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * @property mixed postId
+ */
 class Post extends DeletableModel
 {
     protected $fillable = ['threadId', 'userId', 'content', 'isApproved'];

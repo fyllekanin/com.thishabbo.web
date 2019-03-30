@@ -382,7 +382,9 @@ class Action {
         'id' => 40,
         'description' => 'User created post',
         'data' => [
-            'thread' => 'Name of thread'
+            'thread' => 'Name of thread',
+            'threadId' => 'Id of thread',
+            'categoryId' => 'Id of category'
         ],
         'log' => 'log_user'
     ];
@@ -390,7 +392,11 @@ class Action {
     const LIKED_POST = [
         'id' => 41,
         'description' => 'User liked post',
-        'data' => [],
+        'data' => [
+            'thread' => 'Name of thread',
+            'threadId' => 'Id of thread',
+            'categoryId' => 'Id of category'
+        ],
         'log' => 'log_user'
     ];
 
@@ -780,7 +786,9 @@ class Action {
         'id' => 88,
         'description' => 'User created thread',
         'data' => [
-            'thread' => 'Name of thread'
+            'thread' => 'Name of thread',
+            'threadId' => 'Id of thread',
+            'categoryId' => 'Id of category'
         ],
         'log' => 'log_user'
     ];

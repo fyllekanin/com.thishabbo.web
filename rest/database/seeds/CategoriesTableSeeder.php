@@ -13,8 +13,9 @@ class CategoriesTableSeeder extends Seeder
     public function run()
     {
         \DB::table('categories')->delete();
+        
         \DB::table('categories')->insert(array (
-            0 =>
+            0 => 
             array (
                 'categoryId' => 1,
                 'parentId' => -1,
@@ -23,32 +24,32 @@ class CategoriesTableSeeder extends Seeder
                 'link' => '',
                 'options' => 0,
                 'displayOrder' => 0,
-                'lastPostId' => 23,
+                'lastPostId' => 36,
                 'isDeleted' => 0,
                 'template' => 'DEFAULT',
                 'isHidden' => 0,
                 'isOpen' => 1,
                 'createdAt' => 1538578022,
-                'updatedAt' => 1552158684,
+                'updatedAt' => 1553981474,
             ),
-            1 =>
+            1 => 
             array (
                 'categoryId' => 2,
                 'parentId' => 1,
                 'title' => 'Announcements',
                 'description' => 'Official announcements about ThisHabbo!',
                 'link' => '',
-                'options' => 0,
+                'options' => 8,
                 'displayOrder' => 1,
-                'lastPostId' => 21,
+                'lastPostId' => 36,
                 'isDeleted' => 0,
                 'template' => 'DEFAULT',
                 'isHidden' => 0,
                 'isOpen' => 1,
                 'createdAt' => 1538578022,
-                'updatedAt' => 1552158758,
+                'updatedAt' => 1553982205,
             ),
-            2 =>
+            2 => 
             array (
                 'categoryId' => 3,
                 'parentId' => 1,
@@ -57,15 +58,15 @@ class CategoriesTableSeeder extends Seeder
                 'link' => '',
                 'options' => 0,
                 'displayOrder' => 2,
-                'lastPostId' => 23,
+                'lastPostId' => 35,
                 'isDeleted' => 0,
                 'template' => 'DEFAULT',
                 'isHidden' => 0,
                 'isOpen' => 1,
                 'createdAt' => 1538578022,
-                'updatedAt' => 1552158788,
+                'updatedAt' => 1553981453,
             ),
-            3 =>
+            3 => 
             array (
                 'categoryId' => 4,
                 'parentId' => -1,
@@ -74,15 +75,15 @@ class CategoriesTableSeeder extends Seeder
                 'link' => '',
                 'options' => 0,
                 'displayOrder' => 3,
-                'lastPostId' => 34,
+                'lastPostId' => 37,
                 'isDeleted' => 0,
                 'template' => 'DEFAULT',
                 'isHidden' => 0,
                 'isOpen' => 1,
                 'createdAt' => 1538578022,
-                'updatedAt' => 1552148693,
+                'updatedAt' => 1553981590,
             ),
-            4 =>
+            4 => 
             array (
                 'categoryId' => 5,
                 'parentId' => 4,
@@ -99,7 +100,7 @@ class CategoriesTableSeeder extends Seeder
                 'createdAt' => 1538578022,
                 'updatedAt' => 1552148693,
             ),
-            5 =>
+            5 => 
             array (
                 'categoryId' => 6,
                 'parentId' => 4,
@@ -108,15 +109,15 @@ class CategoriesTableSeeder extends Seeder
                 'link' => '',
                 'options' => 0,
                 'displayOrder' => 2,
-                'lastPostId' => 29,
+                'lastPostId' => 37,
                 'isDeleted' => 0,
                 'template' => 'QUEST',
                 'isHidden' => 0,
                 'isOpen' => 1,
                 'createdAt' => 1538578022,
-                'updatedAt' => 1552145142,
+                'updatedAt' => 1553981590,
             ),
-            6 =>
+            6 => 
             array (
                 'categoryId' => 7,
                 'parentId' => 1,
@@ -133,7 +134,7 @@ class CategoriesTableSeeder extends Seeder
                 'createdAt' => 1538578022,
                 'updatedAt' => 1552158798,
             ),
-            7 =>
+            7 => 
             array (
                 'categoryId' => 8,
                 'parentId' => -1,
@@ -150,7 +151,7 @@ class CategoriesTableSeeder extends Seeder
                 'createdAt' => 1547220711,
                 'updatedAt' => 1547223762,
             ),
-            8 =>
+            8 => 
             array (
                 'categoryId' => 9,
                 'parentId' => 8,
@@ -167,7 +168,7 @@ class CategoriesTableSeeder extends Seeder
                 'createdAt' => 1547221324,
                 'updatedAt' => 1547223762,
             ),
-            9 =>
+            9 => 
             array (
                 'categoryId' => 10,
                 'parentId' => 9,
@@ -184,7 +185,7 @@ class CategoriesTableSeeder extends Seeder
                 'createdAt' => 1547221397,
                 'updatedAt' => 1547223762,
             ),
-            10 =>
+            10 => 
             array (
                 'categoryId' => 11,
                 'parentId' => 9,
@@ -202,5 +203,7 @@ class CategoriesTableSeeder extends Seeder
                 'updatedAt' => 1547222172,
             ),
         ));
+        
+        
     }
 }

@@ -26,28 +26,36 @@
                 <div class="grid-container full">
                     <div class="grid-x grid-margin-x">
                         <div class="cell small-6">
-                            <label class="checkbox-container" (click)="toggleTag($event, 'AVAILABLE')">
-                                Available
-                                <input type="checkbox" [checked]="haveTag('AVAILABLE')">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label class="checkbox-container" (click)="toggleTag($event, 'EASY')">
-                                Easy
-                                <input type="checkbox" [checked]="haveTag('EASY')">
-                                <span class="checkmark"></span>
-                            </label>
+                            <div>
+                                <label class="checkbox-container" (click)="toggleTag($event, 'AVAILABLE')">
+                                    Available
+                                    <input type="checkbox" [checked]="haveTag('AVAILABLE')">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div>
+                                <label class="checkbox-container" (click)="toggleTag($event, 'EASY')">
+                                    Easy
+                                    <input type="checkbox" [checked]="haveTag('EASY')">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
                         </div>
                         <div class="cell small-6">
-                            <label class="checkbox-container" (click)="toggleTag($event, 'FREE')">
-                                Free
-                                <input type="checkbox" [checked]="haveTag('FREE')">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label class="checkbox-container" (click)="toggleTag($event, 'CLOSED')">
-                                Closed
-                                <input type="checkbox" [checked]="haveTag('CLOSED')">
-                                <span class="checkmark"></span>
-                            </label>
+                            <div>
+                                <label class="checkbox-container" (click)="toggleTag($event, 'FREE')">
+                                    Free
+                                    <input type="checkbox" [checked]="haveTag('FREE')">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div>
+                                <label class="checkbox-container" (click)="toggleTag($event, 'CLOSED')">
+                                    Closed
+                                    <input type="checkbox" [checked]="haveTag('CLOSED')">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
