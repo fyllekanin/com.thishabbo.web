@@ -45,19 +45,18 @@ describe('SiteCP #1', () => {
         NavigationUtil.clickSiteCpTool('Manage Staff List');
 
         StaffListPage.addGroup('Female');
-        StaffListPage.addGroup('Male');
-        expect(CommonUtil.getTableRows().count()).toBe(2);
+        expect(CommonUtil.getTableRows().count()).toBe(1);
 
         NavigationUtil.clickTab('Save');
         NavigationUtil.clickSiteCpTool('Manage BBCode');
         NavigationUtil.clickSiteCpTool('Manage Staff List');
-        expect(CommonUtil.getTableRows().count()).toBe(2);
-
-        StaffListPage.removeGroup('Male');
         expect(CommonUtil.getTableRows().count()).toBe(1);
+
+        StaffListPage.removeGroup('Female');
+        expect(CommonUtil.getTableRows().count()).toBe(0);
         NavigationUtil.clickTab('Save');
         NavigationUtil.clickSiteCpTool('Manage BBCode');
         NavigationUtil.clickSiteCpTool('Manage Staff List');
-        expect(CommonUtil.getTableRows().count()).toBe(1);
+        expect(CommonUtil.getTableRows().count()).toBe(0);
     });
 });
