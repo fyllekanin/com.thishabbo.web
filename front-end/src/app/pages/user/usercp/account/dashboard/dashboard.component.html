@@ -28,3 +28,41 @@
         </label>
     </div>
 </app-content>
+
+<app-title [title]="'Device Tabs'"></app-title>
+<app-content>
+    <em>These are the device locked tabs in the header, you can only remove them from here. If you wanna add a new one you need to click in the header</em>
+    <br /><br />
+    <div *ngIf="tabs.length > 0">
+        <div class="grid-container">
+            <div class="grid-x">
+                <div class="cell small-5">
+                    <strong>Label</strong>
+                </div>
+                <div class="cell small-5">
+                    <strong>URL</strong>
+                </div>
+                <div class="cell small-2">
+                    <strong>Remove</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-container" *ngFor="let tab of tabs">
+            <div class="grid-x grid-margin-y">
+                <div class="cell small-5">
+                    {{tab.label}}
+                </div>
+                <div class="cell small-5">
+                    {{tab.url}}
+                </div>
+                <div class="cell small-2">
+                    <button appButton (onClick)="onRemove(tab)">Remove</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="tabs.length === 0" style="text-align: center;">
+        You don't have any tabs created ¯\_(ツ)_/¯
+    </div>
+</app-content>

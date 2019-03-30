@@ -16,6 +16,7 @@ import { HabboService } from './services/habbo.service';
 import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.module';
 import { ThemeResolver } from './services/theme.resolver';
 import { ThemeComponent } from './theme/theme.component';
+import { ButtonModule } from 'shared/directives/button/button.module';
 
 @NgModule({
     imports: [
@@ -24,7 +25,8 @@ import { ThemeComponent } from './theme/theme.component';
         FormsModule,
         TitleModule,
         ContentModule,
-        StatsBoxesModule
+        StatsBoxesModule,
+        ButtonModule
     ],
     declarations: [
         DashboardComponent,

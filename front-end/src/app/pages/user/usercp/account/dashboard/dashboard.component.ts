@@ -6,12 +6,15 @@ import { USERCP_BREADCRUM_ITEM } from '../../usercp.constants';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { StatsBoxModel } from 'shared/app-views/stats-boxes/stats-boxes.model';
 import { TitleTopBorder } from 'shared/app-views/title/title.model';
+import { TabModel } from 'shared/app-views/header/tabs/tabs.model';
+import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 
 @Component({
     selector: 'app-user-usercp-dashboard',
     templateUrl: 'dashboard.component.html'
 })
 export class DashboardComponent extends Page implements OnDestroy {
+    private _tabs: Array<TabModel> = [];
 
     stats: Array<StatsBoxModel> = [
         new StatsBoxModel({
@@ -41,6 +44,7 @@ export class DashboardComponent extends Page implements OnDestroy {
     ];
 
     constructor (
+        private _continuesInformation: ContinuesInformationService,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService
     ) {
@@ -51,6 +55,22 @@ export class DashboardComponent extends Page implements OnDestroy {
                 USERCP_BREADCRUM_ITEM
             ]
         });
+        try {
+            this._tabs = JSON.parse(localStorage.getItem(LOCAL_STORAGE.TABS))
+                .map(item => new TabModel(item));
+        } catch (e) {
+            this._tabs = [];
+        }
+    }
+
+    onRemove(tab: TabModel): void {
+        this._tabs = this._tabs.filter(item => item.label.toLowerCase() !== tab.label.toLowerCase());
+        localStorage.setItem(LOCAL_STORAGE.TABS, JSON.stringify(this._tabs));
+        this._continuesInformation.tabsUpdated();
+    }
+
+    ngOnDestroy (): void {
+        super.destroy();
     }
 
     set editorSourceMode(value: boolean) {
@@ -89,7 +109,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         return Boolean(localStorage.getItem(LOCAL_STORAGE.FIXED_MENU));
     }
 
-    ngOnDestroy (): void {
-        super.destroy();
+    get tabs(): Array<TabModel> {
+        return this._tabs;
     }
 }
