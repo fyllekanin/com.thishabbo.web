@@ -195,15 +195,15 @@ class GroupsTableSeeder extends Seeder
                 'nameStyling' => 'color:#437682; font-weight:bold;',
                 'userBarStyling' => 'background-color:#437682; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px border-radius:3px;',
                 'immunity' => 65,
-                'adminPermissions' => 1,
-                'staffPermissions' => 1,
+                'adminPermissions' => 4194271,
+                'staffPermissions' => 16319,
                 'isDeleted' => 0,
                 'options' => 2,
                 'isPublic' => 0,
                 'avatarWidth' => 0,
                 'avatarHeight' => 0,
                 'createdAt' => 1542051937,
-                'updatedAt' => 1542051937,
+                'updatedAt' => 1553957519,
             ),
             11 =>
             array(
@@ -213,14 +213,14 @@ class GroupsTableSeeder extends Seeder
                 'userBarStyling' => 'background-color:#a16ead; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
-                'staffPermissions' => 2,
+                'staffPermissions' => 514,
                 'isDeleted' => 0,
                 'options' => 2,
                 'isPublic' => 0,
                 'avatarWidth' => 0,
                 'avatarHeight' => 0,
                 'createdAt' => 1542051937,
-                'updatedAt' => 1542051937,
+                'updatedAt' => 1553957519,
             ),
             12 =>
             array(
@@ -237,7 +237,7 @@ class GroupsTableSeeder extends Seeder
                 'avatarWidth' => 0,
                 'avatarHeight' => 0,
                 'createdAt' => 1542051937,
-                'updatedAt' => 1542051937,
+                'updatedAt' => 1553957519,
             ),
             13 =>
             array(
@@ -247,7 +247,7 @@ class GroupsTableSeeder extends Seeder
                 'userBarStyling' => 'background-color:#a16ead; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
-                'staffPermissions' => 1,
+                'staffPermissions' => 0,
                 'isDeleted' => 0,
                 'options' => 2,
                 'isPublic' => 0,
@@ -264,14 +264,14 @@ class GroupsTableSeeder extends Seeder
                 'userBarStyling' => 'background-color:#a16ead; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
-                'staffPermissions' => 2,
+                'staffPermissions' => 514,
                 'isDeleted' => 0,
                 'options' => 2,
                 'isPublic' => 0,
                 'avatarWidth' => 0,
                 'avatarHeight' => 0,
                 'createdAt' => 1542051937,
-                'updatedAt' => 1542051937,
+                'updatedAt' => 1553957519,
             ),
             15 =>
             array(
@@ -288,7 +288,7 @@ class GroupsTableSeeder extends Seeder
                 'avatarWidth' => 0,
                 'avatarHeight' => 0,
                 'createdAt' => 1542051937,
-                'updatedAt' => 1542051937,
+                'updatedAt' => 1553957519,
             ),
             16 =>
             array(
@@ -298,14 +298,14 @@ class GroupsTableSeeder extends Seeder
                 'userBarStyling' => 'background-color:#a16ead; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
-                'staffPermissions' => 2,
+                'staffPermissions' => 514,
                 'isDeleted' => 0,
                 'options' => 2,
                 'isPublic' => 0,
                 'avatarWidth' => 0,
                 'avatarHeight' => 0,
                 'createdAt' => 1542051937,
-                'updatedAt' => 1542051937,
+                'updatedAt' => 1553957519,
             ),
             17 =>
             array(
@@ -322,7 +322,7 @@ class GroupsTableSeeder extends Seeder
                 'avatarWidth' => 0,
                 'avatarHeight' => 0,
                 'createdAt' => 1542051937,
-                'updatedAt' => 1542051937,
+                'updatedAt' => 1553957519,
             ),
             18 =>
             array(
@@ -587,14 +587,14 @@ class GroupsTableSeeder extends Seeder
                 'userBarStyling' => 'background-color:#3092c3; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
-                'staffPermissions' => 1,
+                'staffPermissions' => 2,
                 'isDeleted' => 0,
                 'options' => 2,
                 'isPublic' => 0,
                 'avatarWidth' => 0,
                 'avatarHeight' => 0,
                 'createdAt' => 1542051937,
-                'updatedAt' => 1542051937,
+                'updatedAt' => 1553957519,
             ),
             34 =>
             array(
@@ -611,7 +611,7 @@ class GroupsTableSeeder extends Seeder
                 'avatarWidth' => 0,
                 'avatarHeight' => 0,
                 'createdAt' => 1542051937,
-                'updatedAt' => 1542051937,
+                'updatedAt' => 1553957519,
             ),
             35 =>
             array(
@@ -621,14 +621,14 @@ class GroupsTableSeeder extends Seeder
                 'userBarStyling' => 'background-color:#3092c3; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
-                'staffPermissions' => 1,
+                'staffPermissions' => 2,
                 'isDeleted' => 0,
                 'options' => 2,
                 'isPublic' => 0,
                 'avatarWidth' => 0,
                 'avatarHeight' => 0,
                 'createdAt' => 1542051937,
-                'updatedAt' => 1542051937,
+                'updatedAt' => 1553957519,
             ),
             36 =>
             array(
@@ -645,7 +645,7 @@ class GroupsTableSeeder extends Seeder
                 'avatarWidth' => 0,
                 'avatarHeight' => 0,
                 'createdAt' => 1542051937,
-                'updatedAt' => 1542051937,
+                'updatedAt' => 1553957519,
             ),
             37 =>
             array(
@@ -655,14 +655,14 @@ class GroupsTableSeeder extends Seeder
                 'userBarStyling' => 'background-color:#3092c3; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
-                'staffPermissions' => 1,
+                'staffPermissions' => 2,
                 'isDeleted' => 0,
                 'options' => 2,
                 'isPublic' => 0,
                 'avatarWidth' => 0,
                 'avatarHeight' => 0,
                 'createdAt' => 1542051937,
-                'updatedAt' => 1542051937,
+                'updatedAt' => 1553957519,
             ),
             38 =>
             array(
@@ -679,7 +679,7 @@ class GroupsTableSeeder extends Seeder
                 'avatarWidth' => 0,
                 'avatarHeight' => 0,
                 'createdAt' => 1542051937,
-                'updatedAt' => 1542051937,
+                'updatedAt' => 1553957519,
             ),
             39 =>
             array(
@@ -696,7 +696,7 @@ class GroupsTableSeeder extends Seeder
                 'avatarWidth' => 0,
                 'avatarHeight' => 0,
                 'createdAt' => 1542051937,
-                'updatedAt' => 1542051937,
+                'updatedAt' => 1553957519,
             ),
             40 =>
             array(
@@ -713,7 +713,7 @@ class GroupsTableSeeder extends Seeder
                 'avatarWidth' => 0,
                 'avatarHeight' => 0,
                 'createdAt' => 1542051937,
-                'updatedAt' => 1542051937,
+                'updatedAt' => 1553957519,
             ),
             41 =>
             array(
@@ -723,14 +723,14 @@ class GroupsTableSeeder extends Seeder
                 'userBarStyling' => '',
                 'immunity' => 0,
                 'adminPermissions' => 0,
-                'staffPermissions' => 1,
+                'staffPermissions' => 0,
                 'isDeleted' => 0,
                 'options' => 0,
                 'isPublic' => 0,
                 'avatarWidth' => 0,
                 'avatarHeight' => 0,
                 'createdAt' => 1542051937,
-                'updatedAt' => 1542051937,
+                'updatedAt' => 1553957519,
             ),
             42 =>
             array(
@@ -740,14 +740,14 @@ class GroupsTableSeeder extends Seeder
                 'userBarStyling' => '',
                 'immunity' => 0,
                 'adminPermissions' => 0,
-                'staffPermissions' => 1,
+                'staffPermissions' => 0,
                 'isDeleted' => 0,
                 'options' => 0,
                 'isPublic' => 0,
                 'avatarWidth' => 0,
                 'avatarHeight' => 0,
                 'createdAt' => 1542051937,
-                'updatedAt' => 1542051937,
+                'updatedAt' => 1553957519,
             ),
             43 =>
             array(
@@ -757,14 +757,14 @@ class GroupsTableSeeder extends Seeder
                 'userBarStyling' => '',
                 'immunity' => 0,
                 'adminPermissions' => 0,
-                'staffPermissions' => 1,
+                'staffPermissions' => 0,
                 'isDeleted' => 0,
                 'options' => 0,
                 'isPublic' => 0,
                 'avatarWidth' => 0,
                 'avatarHeight' => 0,
                 'createdAt' => 1542051937,
-                'updatedAt' => 1542051937,
+                'updatedAt' => 1553957519,
             ),
             44 =>
             array(
@@ -777,11 +777,11 @@ class GroupsTableSeeder extends Seeder
                 'staffPermissions' => 0,
                 'isDeleted' => 0,
                 'options' => 0,
-                'isPublic' => 0,
+                'isPublic' => 1,
                 'avatarWidth' => 0,
                 'avatarHeight' => 0,
                 'createdAt' => 1542051937,
-                'updatedAt' => 1542051937,
+                'updatedAt' => 1553957519,
             ),
             45 =>
             array(
@@ -794,11 +794,11 @@ class GroupsTableSeeder extends Seeder
                 'staffPermissions' => 0,
                 'isDeleted' => 0,
                 'options' => 0,
-                'isPublic' => 0,
+                'isPublic' => 1,
                 'avatarWidth' => 0,
                 'avatarHeight' => 0,
                 'createdAt' => 1542051937,
-                'updatedAt' => 1542051937,
+                'updatedAt' => 1553957519,
             ),
         ));
     }
