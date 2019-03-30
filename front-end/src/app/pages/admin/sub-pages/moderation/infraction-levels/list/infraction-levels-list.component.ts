@@ -119,9 +119,6 @@ export class InfractionLevelsListComponent extends Page implements OnDestroy {
     }
 
     private buildTableConfig(): void {
-        if (this.tableConfig) {
-            this.tableConfig.rows = this.getTableRows();
-        }
         this.tableConfig = new TableConfig({
             title: 'Infraction Levels',
             headers: InfractionLevelsListComponent.getTableHeaders(),

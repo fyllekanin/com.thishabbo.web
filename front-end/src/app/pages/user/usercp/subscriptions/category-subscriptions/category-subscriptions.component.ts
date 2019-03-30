@@ -69,10 +69,6 @@ export class CategorySubscriptionsComponent extends Page implements OnDestroy {
     }
 
     private createOrUpdateTable(): void {
-        if (this.tableConfig) {
-            this.tableConfig.rows = this.getTableRows();
-            return;
-        }
         this.tableConfig = new TableConfig({
             title: 'Category Subscriptions',
             headers: CategorySubscriptionsComponent.getTableHeaders(),

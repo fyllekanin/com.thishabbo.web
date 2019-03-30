@@ -1,6 +1,7 @@
 import { CommonUtil } from '../../utils/common.util';
 import { NavigationUtil } from '../../utils/navigation.util';
 import { BbcodePage } from '../../pages/sitecp/bbcode.page';
+import { StaffListPage } from '../../pages/sitecp/staff-list.page';
 
 describe('SiteCP #1', () => {
     const USERNAME = 'tovven';
@@ -38,5 +39,24 @@ describe('SiteCP #1', () => {
         BbcodePage.edit(5);
         NavigationUtil.clickTab('Delete');
         NavigationUtil.clickButton('Yes');
+    });
+
+    it('should be possible to add and remove groups from the staff list', () => {
+        NavigationUtil.clickSiteCpTool('Manage Staff List');
+
+        StaffListPage.addGroup('Female');
+        expect(CommonUtil.getTableRows().count()).toBe(1);
+
+        NavigationUtil.clickTab('Save');
+        NavigationUtil.clickSiteCpTool('Manage BBCode');
+        NavigationUtil.clickSiteCpTool('Manage Staff List');
+        expect(CommonUtil.getTableRows().count()).toBe(1);
+
+        StaffListPage.removeGroup('Female');
+        expect(CommonUtil.getTableRows().count()).toBe(0);
+        NavigationUtil.clickTab('Save');
+        NavigationUtil.clickSiteCpTool('Manage BBCode');
+        NavigationUtil.clickSiteCpTool('Manage Staff List');
+        expect(CommonUtil.getTableRows().count()).toBe(0);
     });
 });
