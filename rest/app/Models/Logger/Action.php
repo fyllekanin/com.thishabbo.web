@@ -623,16 +623,6 @@ class Action {
         'log' => 'log_admin'
     ];
 
-    const UPDATED_USERS_CREDITS = [
-        'id' => 69,
-        'description' => 'Updated users credits',
-        'data' => [
-            'name' => 'Name of user',
-            'amount' => 'Amount set'
-        ],
-        'log' => 'log_admin'
-    ];
-
     const MANAGED_THC_REQUESTS = [
         'id' => 70,
         'description' => 'Dealt with THC reqeusts',

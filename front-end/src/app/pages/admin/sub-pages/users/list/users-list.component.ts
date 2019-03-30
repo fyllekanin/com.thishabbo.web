@@ -17,7 +17,6 @@ import { Component, ComponentFactoryResolver, ElementRef, OnDestroy } from '@ang
 import { Page } from 'shared/page/page.model';
 import { AuthService } from 'core/services/auth/auth.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
-import { ManageThcComponent } from './manage-thc/manage-thc.component';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
 import { UsersListService } from '../services/users-list.service';
 import { MergeUsersComponent } from './merge-users/merge-users.component';
@@ -81,9 +80,6 @@ export class UsersListComponent extends Page implements OnDestroy {
             case UserListAction.MANAGE_BANS:
                 this._router.navigateByUrl(`/admin/users/${action.rowId}/bans`);
                 break;
-            case UserListAction.MANAGE_THC:
-                this.openThcDialog(action.rowId);
-                break;
             case UserListAction.MERGE_USER:
                 this.openMergeDialog(action.rowId);
                 break;
@@ -115,26 +111,6 @@ export class UsersListComponent extends Page implements OnDestroy {
         });
     }
 
-
-    private openThcDialog(userId: string): void {
-        this.createOrUpdateTable();
-        const user = this._usersListPage.users.find(item => item.userId === Number(userId));
-        this._dialogService.openDialog({
-            title: `Manage ${user.nickname} thc`,
-            component: this._componentFactory.resolveComponentFactory(ManageThcComponent),
-            buttons: [
-                new DialogCloseButton('Close'),
-                new DialogButton({
-                    title: 'Save',
-                    callback: credits => {
-                        this._service.updateUsersThc(user, this._dialogService, credits);
-                    }
-                })
-            ],
-            data: user.credits
-        });
-    }
-
     private onPage(data: { data: UsersListPage }): void {
         this._usersListPage = data.data;
 
@@ -163,7 +139,6 @@ export class UsersListComponent extends Page implements OnDestroy {
                 condition: adminPermissions.canEditUserAdvanced
             },
             { title: 'Manage Bans', value: UserListAction.MANAGE_BANS, condition: adminPermissions.canBanUser },
-            { title: 'Manage THC', value: UserListAction.MANAGE_THC, condition: adminPermissions.canManageTHC },
             { title: 'Merge User', value: UserListAction.MERGE_USER, condition: adminPermissions.canMergeUsers }
         ];
 

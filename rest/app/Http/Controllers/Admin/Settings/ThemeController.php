@@ -83,7 +83,7 @@ class ThemeController extends Controller {
         $theme->css = $newTheme->css;
         $theme->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::CREATED_THEME, ['theme' => $theme->title]);
+        Logger::admin($user->userId, $request->ip(), Action::UPDATED_THEME, ['theme' => $theme->title]);
         return response()->json();
     }
 
