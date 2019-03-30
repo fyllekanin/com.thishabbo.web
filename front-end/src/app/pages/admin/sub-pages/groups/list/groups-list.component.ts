@@ -80,11 +80,11 @@ export class GroupsListComponent extends Page implements OnDestroy {
 
     onFilter(filter: QueryParameters): void {
         clearTimeout(this._filterTimer);
+        this._filter = filter;
 
         this._filterTimer = setTimeout(() => {
             this._httpService.get(`admin/groups/list/page/1`, filter)
                 .pipe(map(data => {
-                    this._filter = filter;
                     return { data: new GroupsListPage(data) };
                 })).subscribe(this.onPage.bind(this));
         }, 200);

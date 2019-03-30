@@ -72,11 +72,11 @@ export class ListComponent extends Page implements OnDestroy {
 
     onFilter(filter: QueryParameters): void {
         clearTimeout(this._filterTimer);
+        this._filter = filter;
 
         this._filterTimer = setTimeout(() => {
             this._service.getPolls(filter, 1)
                 .subscribe(data => {
-                    this._filter = filter;
                     this.onData({ data: data });
                 });
         }, 200);

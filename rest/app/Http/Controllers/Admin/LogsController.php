@@ -24,20 +24,27 @@ class LogsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function getLogs(Request $request, $type, $page) {
-        $nickname = $request->input('filter');
+        $nickname = $request->input('user');
+        $action = $request->input('action');
+
         $log = null;
+        $actions = [];
         switch ($type) {
             case 'user':
                 $log = LogUser::orderBy('createdAt', 'desc');
+                $actions = Action::getActionsByLog('log_user');
                 break;
             case 'mod':
                 $log = LogMod::orderBy('createdAt', 'desc');
+                $actions = Action::getActionsByLog('log_mod');
                 break;
             case 'admin':
                 $log = LogAdmin::orderBy('createdAt', 'desc');
+                $actions = Action::getActionsByLog('log_admin');
                 break;
             case 'staff':
                 $log = LogStaff::orderBy('createdAt', 'desc');
+                $actions = Action::getActionsByLog('log_staff');
                 break;
             default:
                 Condition::precondition(true, 404,
@@ -45,12 +52,16 @@ class LogsController extends Controller {
                 break;
         }
 
+        if ($action) {
+            $log->where('action', $action);
+        }
+
         if ($nickname) {
             $userIds = User::withNicknameLike($nickname)->pluck('userId');
             $log->whereIn('userId', $userIds);
         }
 
-        $total = $log->count();
+        $total = ceil($log->count / $this->perPage);
         $items = $log->take($this->perPage)->skip($this->getOffset($page))->get()->map(function($item) {
             $data = null;
             try {
@@ -68,7 +79,10 @@ class LogsController extends Controller {
         });
 
         return response()->json([
-            'total' => ceil($total / $this->perPage),
+            'total' => $total,
+            'actions' => array_map(function($action) {
+                return [ 'id' => $action['id'], 'description' => $action['description'] ];
+            }, $actions),
             'page' => $page,
             'items' => $items
         ]);

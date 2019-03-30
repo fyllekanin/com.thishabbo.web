@@ -38,7 +38,7 @@ export class HttpService {
         }
 
         return '?' + Object.keys(params)
-            .filter(key => params[key])
+            .filter(key => params[key] && params[key] !== 'null' && params[key] !== 'undefined')
             .map(key => `${key}=${encodeURI(params[key])}`)
             .join('&');
     }

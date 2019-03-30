@@ -62,11 +62,11 @@ export class TypesComponent extends Page implements OnDestroy {
 
     onFilter(filter: QueryParameters): void {
         clearTimeout(this._filterTimer);
+        this._filter = filter;
 
         this._filterTimer = setTimeout(() => {
             this._httpService.get(`staff/events/types/page/1`, filter)
                 .subscribe(res => {
-                    this._filter = filter;
                     this.onData({ data: new EventTypesPage(res) });
                 });
         }, 200);

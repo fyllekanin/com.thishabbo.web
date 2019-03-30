@@ -184,6 +184,7 @@ class BettingController extends Controller {
             ->where('bets.isFinished', 1)
             ->select('user_bets.*', 'bets.name', 'bets.isFinished', 'bets.result');
 
+        $total = ceil($betsSql->count() / $this->perPage);
         $bets = $betsSql->orderBy('user_bets.userBetId', 'DESC')->get()->map(function ($bet) {
             return [
                 'name' => $bet->name,
@@ -197,7 +198,7 @@ class BettingController extends Controller {
             'stats' => $this->getStats($user),
             'history' => $bets,
             'page' => $page,
-            'total' => ceil($betsSql->count() / $this->perPage)
+            'total' => $total
         ]);
     }
 

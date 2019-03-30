@@ -23,9 +23,22 @@ export class LogItem {
     }
 }
 
+export class LogAction {
+    @primitive()
+    id: number;
+    @primitive()
+    description: string;
+
+    constructor(source: Partial<LogAction>) {
+        ClassHelper.assign(this, source);
+    }
+}
+
 export class LogPage {
     @primitive()
     total: number;
+    @arrayOf(LogAction)
+    actions: Array<LogAction> = [];
     @primitive()
     page: number;
     @arrayOf(LogItem)

@@ -4,7 +4,14 @@ import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { SITECP_BREADCRUMB_ITEM } from '../../../admin.constants';
 import { LOG_TYPES, LogPage } from './logs.model';
-import { FilterConfig, TableCell, TableConfig, TableHeader, TableRow } from 'shared/components/table/table.model';
+import {
+    FilterConfig, FilterConfigItem,
+    FilterConfigType,
+    TableCell,
+    TableConfig,
+    TableHeader,
+    TableRow
+} from 'shared/components/table/table.model';
 import { StringHelper } from 'shared/helpers/string.helper';
 import { TimeHelper } from 'shared/helpers/time.helper';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -58,6 +65,7 @@ export class LogsComponent extends Page implements OnDestroy {
 
     onFilter(filter: QueryParameters): void {
         clearTimeout(this._filterTimer);
+        this._filter = filter;
 
         this._filterTimer = setTimeout(() => {
             this._httpService.get(`admin/logs/${this.logType}/page/1`, filter)
@@ -88,11 +96,22 @@ export class LogsComponent extends Page implements OnDestroy {
             title: `${StringHelper.firstCharUpperCase(this.logType)} log`,
             headers: this.getTableHeaders(),
             rows: this.getTableRows(),
-            filterConfigs: [new FilterConfig({
-                title: 'User',
-                placeholder: 'Search for specific user',
-                key: 'filter'
-            })]
+            filterConfigs: [
+                new FilterConfig({
+                    title: 'User',
+                    placeholder: 'Search for specific user',
+                    key: 'user'
+                }),
+                new FilterConfig({
+                    title: 'Action',
+                    key: 'action',
+                    type: FilterConfigType.SELECT,
+                    items: this._data.actions.map(action => new FilterConfigItem({
+                        label: action.description,
+                        value: String(action.id)
+                    }))
+                })
+            ]
         });
     }
 

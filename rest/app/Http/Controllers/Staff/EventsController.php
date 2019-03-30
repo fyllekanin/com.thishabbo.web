@@ -155,6 +155,7 @@ class EventsController extends Controller {
 
         $logSql = LogStaff::whereIn('action', [$bookAction, $unbookAction]);
 
+        $total = ceil($logSql->count() / $this->perPage);
         $items = $logSql->orderBy('logId', 'DESC')
             ->take($this->perPage)
             ->skip($this->getOffset($page))
@@ -174,7 +175,7 @@ class EventsController extends Controller {
         return response()->json([
             'items' => $items,
             'page' => $page,
-            'total' => ceil($logSql->count() / $this->perPage)
+            'total' => $total
         ]);
     }
 
@@ -193,12 +194,13 @@ class EventsController extends Controller {
         $eventsSql = Event::where('name', 'LIKE', '%' . $filter . '%')
             ->orderBy('name', 'ASC');
 
+        $total = ceil($eventsSql->count() / $this->perPage);
         $events = $eventsSql->take($this->perPage)->skip($this->getOffset($page))->get();
 
         return response()->json([
             'events' => $events,
             'page' => $page,
-            'total' => ceil($eventsSql->count() / $this->perPage)
+            'total' => $total
         ]);
     }
 

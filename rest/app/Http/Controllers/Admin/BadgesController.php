@@ -195,6 +195,7 @@ class BadgesController extends Controller {
         $getBadgeSql = Badge::where('name', 'LIKE', '%' . $filter . '%')
             ->orderBy('name', 'ASC');
 
+        $total = ceil($getBadgeSql->count() / $this->perPage);
         $badges = $getBadgeSql->take($this->perPage)
             ->skip($this->getOffset($page))
             ->get();
@@ -202,7 +203,7 @@ class BadgesController extends Controller {
         return response()->json([
             'badges' => $badges,
             'page' => $page,
-            'total' => ceil($getBadgeSql->count() / $this->perPage)
+            'total' => $total
         ]);
     }
 

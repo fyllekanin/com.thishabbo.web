@@ -6,7 +6,7 @@ import {
     TableHeader,
     TableRow
 } from 'shared/components/table/table.model';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, DoCheck, EventEmitter, Input, Output } from '@angular/core';
 import { QueryParameters } from 'core/services/http/http.model';
 
 @Component({
@@ -15,7 +15,7 @@ import { QueryParameters } from 'core/services/http/http.model';
     styleUrls: ['table.component.css']
 })
 
-export class TableComponent {
+export class TableComponent implements DoCheck {
     private _config: TableConfig;
     private _columnSize: ColumnSize = { column: '', actions: '' };
 
@@ -57,6 +57,12 @@ export class TableComponent {
             return;
         }
         row.isOpen = !row.isOpen;
+    }
+
+    ngDoCheck (): void {
+        if (this._columnSize !== this.getColumnSize()) {
+            this._columnSize = this.getColumnSize();
+        }
     }
 
     @Input()

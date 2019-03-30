@@ -82,10 +82,11 @@ export class BadgesListComponent extends Page implements OnDestroy {
 
     onFilter(filter: QueryParameters): void {
         clearTimeout(this._filterTimer);
+        this._filter = filter;
+
         this._filterTimer = setTimeout(() => {
             this._httpService.get(`admin/badges/list/page/1`, filter)
                 .subscribe(data => {
-                    this._filter = filter;
                     this.onPage({ data: new BadgesListPage(data) });
                 });
         }, 200);

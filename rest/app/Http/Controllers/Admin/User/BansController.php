@@ -105,13 +105,14 @@ class BansController extends Controller {
         $user = UserHelper::getUserFromRequest($request);
         $filter = $request->input('nickname');
         $bansSql = Ban::active()->withImmunityLessThan(User::getImmunity($user->userId))->withNicknameLike($filter);
+        $total = ceil($bansSql->count() / $this->perPage);
         $bans = $bansSql->take($this->perPage)->skip($this->getOffset($page))->get()->map(function ($ban) {
             return $this->mapBan($ban);
         });
 
         return response()->json([
             'page' => $page,
-            'total' => ceil($bansSql->count() / $this->perPage),
+            'total' => $total,
             'bans' => $bans
         ]);
     }

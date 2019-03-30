@@ -88,6 +88,22 @@ export class TableRow {
     }
 }
 
+export enum FilterConfigType {
+    TEXT,
+    SELECT
+}
+
+export class FilterConfigItem {
+    @primitive()
+    label: string;
+    @primitive()
+    value: string;
+
+    constructor(source: Partial<FilterConfigItem>) {
+        ClassHelper.assign(this, source);
+    }
+}
+
 export class FilterConfig {
     @primitive()
     title: string;
@@ -97,9 +113,15 @@ export class FilterConfig {
     key: string;
     @primitive()
     value: string;
+    type: FilterConfigType = FilterConfigType.TEXT;
+    items: Array<FilterConfigItem> = [];
 
     constructor(source: Partial<FilterConfig>) {
         ClassHelper.assign(this, source);
+    }
+
+    isSelect(): boolean {
+        return this.type === FilterConfigType.SELECT;
     }
 }
 

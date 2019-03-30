@@ -66,11 +66,11 @@ export class BetListComponent extends Page implements OnDestroy {
 
     onFilter(filter: QueryParameters): void {
         clearTimeout(this._filterTimer);
+        this._filter = filter;
 
         this._filterTimer = setTimeout(() => {
             this._httpService.get(`admin/betting/bets/1`, filter)
                 .subscribe(res => {
-                    this._filter = filter;
                     this.onData({ data: new BetsListPage(res) });
                 });
         }, 200);

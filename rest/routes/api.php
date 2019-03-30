@@ -27,6 +27,9 @@ Route::get('/maintenance/content', 'PageController@getMaintenanceMessage');
 
 Route::group(['middleware' => ['maintenance']], function () {
 
+    Route::post('/bbcode/parse', 'PageController@parseContent');
+        Route::get('/bbcode/emojis', 'PageController@getEmojis');
+
     Route::post('/auth/register', 'Auth\AuthController@register');
     Route::get('/auth/register', 'Auth\AuthController@getRegisterPage');
 
@@ -48,7 +51,6 @@ Route::group(['middleware' => ['maintenance']], function () {
 
     Route::group(['middleware' => ['token.check']], function () {
         Route::get('/auth/user', 'Auth\AuthController@getUser');
-        Route::get('/bbcode/emojis', 'PageController@getEmojis');
         Route::post('/radio/like', 'Staff\RadioController@createDjLike');
 
         Route::put('puller/notifications/read/all', 'Puller\NotificationController@readAllNotifications');

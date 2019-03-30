@@ -20,8 +20,8 @@ import { DialogService } from 'core/services/dialog/dialog.service';
 import { ManageThcComponent } from './manage-thc/manage-thc.component';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
 import { UsersListService } from '../services/users-list.service';
-import { QueryParameters } from 'core/services/http/http.model';
 import { MergeUsersComponent } from './merge-users/merge-users.component';
+import { QueryParameters } from 'core/services/http/http.model';
 
 @Component({
     selector: 'app-admin-users-list',
@@ -60,11 +60,11 @@ export class UsersListComponent extends Page implements OnDestroy {
 
     onFilter(filter: QueryParameters): void {
         clearTimeout(this._filterTimer);
+        this._filter = filter;
 
         this._filterTimer = setTimeout(() => {
             this._service.getUsers(filter)
                 .subscribe(data => {
-                    this._filter = filter;
                     this.onPage(data);
                 });
         }, 200);

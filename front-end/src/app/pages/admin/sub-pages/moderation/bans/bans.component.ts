@@ -1,6 +1,5 @@
 import { Component, OnDestroy, ElementRef, ComponentFactoryResolver } from '@angular/core';
 import { BansPage, BansPageAction } from './bans.model';
-import { QueryParameters } from 'core/services/http/http.model';
 import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Page } from 'shared/page/page.model';
@@ -24,6 +23,7 @@ import { DialogService } from 'core/services/dialog/dialog.service';
 import { IReason } from 'shared/components/reason/reason.model';
 import { DialogCloseButton, DialogButton } from 'shared/app-views/dialog/dialog.model';
 import { ReasonComponent } from 'shared/components/reason/reason.component';
+import { QueryParameters } from 'core/services/http/http.model';
 
 @Component({
     selector: 'app-admin-bans',
@@ -65,11 +65,11 @@ export class BansComponent extends Page implements OnDestroy {
 
     onFilter(filter: QueryParameters): void {
         clearTimeout(this._filterTimer);
+        this._filter = filter;
 
         this._filterTimer = setTimeout(() => {
             this._service.getBans(filter, 1)
                 .subscribe(data => {
-                    this._filter = filter;
                     this.onPage(data);
                 });
         }, 200);

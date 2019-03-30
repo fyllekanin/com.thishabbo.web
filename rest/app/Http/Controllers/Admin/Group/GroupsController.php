@@ -237,13 +237,13 @@ class GroupsController extends Controller {
         $filter = $request->input('filter');
         $user = UserHelper::getUserFromRequest($request);
         $immunity = User::getImmunity($user->userId);
-        $offset = $page >= 2 ? ($this->perPage * $page) - $this->perPage : 0;
 
         $getGroupSql = Group::where('immunity', '<', $immunity)
             ->where('name', 'LIKE', '%' . $filter . '%')
             ->orderBy('name', 'ASC');
 
-        $groups = $getGroupSql->take($this->perPage)->skip($offset)->get();
+        $total = ceil($getGroupSql->count() / $this->perPage);
+        $groups = $getGroupSql->take($this->perPage)->skip($this->getOffset($page))->get();
 
         foreach ($groups as $group) {
             $group->adminPermissions = $this->buildAdminPermissions($group);
@@ -252,7 +252,7 @@ class GroupsController extends Controller {
         return response()->json([
             'groups' => $groups,
             'page' => $page,
-            'total' => ceil($getGroupSql->count() / $this->perPage)
+            'total' => $total
         ]);
     }
 

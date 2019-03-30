@@ -38,6 +38,7 @@ class ForumController extends Controller {
             ->skip($this->getOffset($page))
             ->take($this->perPage);
 
+        $total = ceil($autoBansSql->count() / $this->perPage);
         $items = $autoBansSql->map(function($item) {
             return [
                 'autoBanId' => $item->autoBanId,
@@ -51,7 +52,7 @@ class ForumController extends Controller {
         return response()->json([
             'items' => $items,
             'page' => $page,
-            'total' => ceil($autoBansSql->count() / $this->perPage)
+            'total' => $total
         ]);
     }
 

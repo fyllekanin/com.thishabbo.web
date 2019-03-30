@@ -316,11 +316,13 @@ class ManagementController extends Controller {
      */
     public function getPermShows ($page) {
         $permShows = Timetable::isPerm()->take($this->perPage)->skip($this->getOffset($page))->get();
+        $total = ceil(Timetable::isPerm()->count() / $this->perPage);
+
         return response()->json([
             'permShows' => $permShows->map(function ($item) {
                 return $item->permShow;
             }),
-            'total' => ceil(Timetable::isPerm()->count() / $this->perPage),
+            'total' => $total,
             'page' => $page
         ]);
     }

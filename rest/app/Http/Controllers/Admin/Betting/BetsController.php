@@ -107,12 +107,13 @@ class BetsController extends Controller {
         $getBadgeSql = Bet::where('name', 'LIKE', '%' . $filter . '%')
             ->orderBy('leftSide', 'ASC')->orderBy('rightSide', 'DESC');
 
+        $total = ceil($getBadgeSql->count() / $this->perPage);
         $bets = $getBadgeSql->take($this->perPage)->skip($this->getOffset($page))->get();
 
         return response()->json([
             'bets' => $bets,
             'page' => $page,
-            'total' => ceil($getBadgeSql->count() / $this->perPage)
+            'total' => $total
         ]);
     }
 

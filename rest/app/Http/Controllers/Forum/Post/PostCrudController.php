@@ -56,10 +56,11 @@ class PostCrudController extends Controller {
 
         $latestPosts = $this->forumService->getLatestPosts($categoryIds, $ignoredThreadIds,
             $ignoredCategoryIds, $this->perPage, $this->getOffset($page));
+        $total = ceil($latestPosts->total / $this->perPage);
 
         return response()->json([
             'page' => $page,
-            'total' => ceil($latestPosts->total / $this->perPage),
+            'total' => $total,
             'items' => $latestPosts->data
         ]);
     }

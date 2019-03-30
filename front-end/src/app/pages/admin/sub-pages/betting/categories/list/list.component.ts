@@ -58,11 +58,11 @@ export class ListComponent extends Page implements OnDestroy {
 
     onFilter(filter: QueryParameters): void {
         clearTimeout(this._filterTimer);
+        this._filter = filter;
 
         this._filterTimer = setTimeout(() => {
             this._httpService.get(`admin/betting/categories/1`, filter)
                 .subscribe(res => {
-                    this._filter = filter;
                     this.onData({ data: new CategoriesListPage(res) });
                 });
         }, 200);
