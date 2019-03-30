@@ -5,8 +5,7 @@ import { InputUtil } from '../../utils/input.util';
 export class StaffListPage {
 
     static addGroup(group: string): void {
-        InputUtil.clearInput(element(by.css('app-form-select')));
-        InputUtil.fillInput(element(by.css('app-form-select')), group);
+        InputUtil.searchInSelect(element(by.css('app-form-select')), group);
 
         CommonUtil.click(element(by.css('app-form-select')));
         CommonUtil.click(element(by.cssContainingText('app-form-select div', group)));
