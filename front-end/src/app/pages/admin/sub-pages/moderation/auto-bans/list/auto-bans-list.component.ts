@@ -12,7 +12,6 @@ import {
 import { AutoBansActions, AutoBansListPage } from './auto-bans.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
-import { QueryParameters } from 'core/services/http/http.model';
 import { AutoBansService } from '../../services/auto-bans.service';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
@@ -22,6 +21,7 @@ import { DialogService } from 'core/services/dialog/dialog.service';
 import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
 import { HttpService } from 'core/services/http/http.service';
 import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { QueryParameters } from 'core/services/http/http.model';
 
 @Component({
     selector: 'app-admin-auto-bans-list',
@@ -68,11 +68,11 @@ export class AutoBansListComponent extends Page implements OnDestroy {
 
     onFilter(filter: QueryParameters): void {
         clearTimeout(this._filterTimer);
+        this._filter = filter;
 
         this._filterTimer = setTimeout(() => {
             this._service.getData(filter, 1)
                 .subscribe(data => {
-                    this._filter = filter;
                     this.onData({ data: data });
                 });
         }, 200);
@@ -117,6 +117,10 @@ export class AutoBansListComponent extends Page implements OnDestroy {
     }
 
     private buildTableConfig(): void {
+        if (this.tableConfig) {
+            this.tableConfig.rows = this.getTableRows();
+            return;
+        }
         this.tableConfig = new TableConfig({
             title: 'Automatic Bans',
             headers: AutoBansListComponent.getTableHeaders(),

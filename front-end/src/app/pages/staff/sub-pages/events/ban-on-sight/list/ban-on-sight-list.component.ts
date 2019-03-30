@@ -98,6 +98,10 @@ export class BanOnSightListComponent extends Page implements OnDestroy, OnInit {
     }
 
     private createOrUpdateTable(): void {
+        if (this.tableConfig) {
+            this.tableConfig.rows = this.getTableRows();
+            return;
+        }
         this.tableConfig = new TableConfig({
             title: `Ban On Sight List`,
             headers: BanOnSightListComponent.getTableHeaders(),

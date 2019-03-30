@@ -16,12 +16,12 @@ import { SITECP_BREADCRUMB_ITEM } from '../../../admin.constants';
 import { InfractionsPage, InfractionsPageActions } from './infractions.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
 import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
-import { QueryParameters } from 'core/services/http/http.model';
 import { HttpService } from 'core/services/http/http.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
 import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
 import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { QueryParameters } from 'core/services/http/http.model';
 
 @Component({
     selector: 'app-admin-moderation-infractions',
@@ -68,11 +68,11 @@ export class InfractionsComponent extends Page implements OnDestroy {
 
     onFilter(filter: QueryParameters): void {
         clearTimeout(this._filterTimer);
+        this._filter = filter;
 
         this._filterTimer = setTimeout(() => {
             this._httpService.get(`admin/moderation/infractions/page/1`, filter)
                 .subscribe(res => {
-                    this._filter = filter;
                     this.onPage({ data: new InfractionsPage(res) });
                 });
         }, 200);
@@ -95,6 +95,10 @@ export class InfractionsComponent extends Page implements OnDestroy {
     }
 
     private createOrUpdateTable(): void {
+        if (this.tableConfig) {
+            this.tableConfig.rows = this.getTableRows();
+            return;
+        }
         this.tableConfig = new TableConfig({
             title: 'Infractions',
             headers: InfractionsComponent.getTableHeaders(),

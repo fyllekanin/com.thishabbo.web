@@ -65,6 +65,10 @@ export class ThreadSubscriptionsComponent extends Page implements OnDestroy {
     }
 
     private createOrUpdateTable(): void {
+        if (this.tableConfig) {
+            this.tableConfig.rows = this.getTableRows();
+            return;
+        }
         this.tableConfig = new TableConfig({
             title: 'Thread Subscriptions',
             headers: ThreadSubscriptionsComponent.getTableHeaders(),

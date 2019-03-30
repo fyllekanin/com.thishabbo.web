@@ -12,18 +12,22 @@
                 <br /><br />
             </div>
             <div class="cell small-6">
-                <label class="checkbox-container" *ngFor="let item of getHalfOfPossibleGroups(true)">
-                    {{item.name}}
-                    <input type="checkbox" [checked]="haveUserGroup(item)" (click)="toggleGroup(item)" />
-                    <span class="checkmark"></span>
-                </label>
+                <div *ngFor="let item of getHalfOfPossibleGroups(true)">
+                    <label class="checkbox-container">
+                        {{item.name}}
+                        <input type="checkbox" [checked]="haveUserGroup(item)" (click)="toggleGroup(item)" />
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
             </div>
             <div class="cell small-6">
-                <label class="checkbox-container" *ngFor="let item of getHalfOfPossibleGroups(false)">
-                    {{item.name}}
-                    <input type="checkbox" [checked]="haveUserGroup(item)" (click)="toggleGroup(item)" />
-                    <span class="checkmark"></span>
-                </label>
+                <div *ngFor="let item of getHalfOfPossibleGroups(false)">
+                    <label class="checkbox-container">
+                        {{item.name}}
+                        <input type="checkbox" [checked]="haveUserGroup(item)" (click)="toggleGroup(item)" />
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
             </div>
         </div>
     </div>
