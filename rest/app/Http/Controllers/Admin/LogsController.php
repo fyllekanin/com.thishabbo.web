@@ -61,7 +61,7 @@ class LogsController extends Controller {
             $log->whereIn('userId', $userIds);
         }
 
-        $total = $log->count();
+        $total = ceil($log->count / $this->perPage);
         $items = $log->take($this->perPage)->skip($this->getOffset($page))->get()->map(function($item) {
             $data = null;
             try {
@@ -79,7 +79,7 @@ class LogsController extends Controller {
         });
 
         return response()->json([
-            'total' => ceil($total / $this->perPage),
+            'total' => $total,
             'actions' => array_map(function($action) {
                 return [ 'id' => $action['id'], 'description' => $action['description'] ];
             }, $actions),

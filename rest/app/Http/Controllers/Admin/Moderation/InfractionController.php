@@ -57,6 +57,7 @@ class InfractionController extends Controller {
             ->withoutGlobalScope('nonHardDeleted')
             ->orderBy('createdAt', 'DESC');
 
+        $total = ceil($infractionsSql->count() / $this->perPage);
         $items = $infractionsSql->take($this->perPage)->skip($this->getOffset($page))
             ->get()->map(function($infraction) {
                 return [
@@ -72,7 +73,7 @@ class InfractionController extends Controller {
 
         return response()->json([
             'page' => $page,
-            'total' => ceil($infractionsSql->count() / $this->perPage),
+            'total' => $total,
             'items' => $items
         ]);
     }

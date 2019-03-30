@@ -59,9 +59,10 @@ class ThreadCrudController extends Controller {
             ->join('users', 'users.userId', '=', 'posts.userId')
             ->select('users.userId', DB::raw('COUNT(*) as amount'))
             ->groupBy('users.userId');
+        $total = ceil($query->count() / $this->perPage);
 
         return response()->json([
-            'total' => ceil($query->count() / $this->perPage),
+            'total' => $total,
             'page' => $page,
             'items' => $query->take($this->perPage)
                 ->skip($this->getOffset($page))
@@ -87,10 +88,11 @@ class ThreadCrudController extends Controller {
             ->whereNotIn('categoryId', $ignoredCategoryIds)
             ->whereNotIn('threadId', $ignoredThreadIds)
             ->orderBy('createdAt', 'DESC');
+        $total = ceil($threadSql->count() / $this->perPage);
 
         return response()->json([
             'page' => $page,
-            'total' => ceil($threadSql->count() / $this->perPage),
+            'total' => $total,
             'items' => $threadSql->take($this->perPage)->skip($this->getOffset($page))->get()->map(function($thread) {
                 return [
                     'categoryId' => $thread->categoryId,

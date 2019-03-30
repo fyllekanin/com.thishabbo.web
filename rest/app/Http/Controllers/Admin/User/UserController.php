@@ -99,6 +99,7 @@ class UserController extends Controller {
             $getUserSql->where('habbo', 'LIKE', '%' . $habbo . '%');
         }
 
+        $total = ceil($getUserSql->count() / $this->perPage);
         $users = array_map(function ($user) {
             $user['credits'] = UserHelper::getUserDataOrCreate($user['userId'])->credits;
             return $user;
@@ -109,7 +110,7 @@ class UserController extends Controller {
         return response()->json([
             'users' => $users,
             'page' => $page,
-            'total' => ceil($getUserSql->count() / $this->perPage)
+            'total' => $total
         ]);
     }
 

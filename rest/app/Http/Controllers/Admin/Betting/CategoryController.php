@@ -40,11 +40,12 @@ class CategoryController extends Controller {
 
         $getBetCategorySql = BetCategory::where('name', 'LIKE', '%' . $filter . '%')
             ->orderBy('name', 'ASC');
+        $total = ceil($getBetCategorySql->count() / $this->perPage);
 
         return response()->json([
             'betCategories' => $getBetCategorySql->take($this->perPage)->skip($this->getOffset($page))->get(),
             'page' => $page,
-            'total' => ceil($getBetCategorySql->count() / $this->perPage)
+            'total' => $total
         ]);
     }
 
