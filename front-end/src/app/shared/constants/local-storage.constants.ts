@@ -9,5 +9,6 @@ export const LOCAL_STORAGE = {
     // Device settings
     EDITOR_MODE: 'is-editor-source-mode',
     IGNORE_SIGNATURES: 'ignore-signatures',
-    FIXED_MENU: 'fixed-menu'
+    FIXED_MENU: 'fixed-menu',
+    TABS: 'tabs'
 };

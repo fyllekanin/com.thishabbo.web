@@ -21,6 +21,8 @@ export class ContinuesInformationService implements Resolve<void> {
     private _intervalSubscription;
     private _intervalSpeed = (1000 * 60) * 5;
 
+    private _onTabsUpdatedSubject: Subject<void> = new Subject();
+
     constructor(
         private _httpService: HttpService,
         private _ngZone: NgZone,
@@ -49,6 +51,14 @@ export class ContinuesInformationService implements Resolve<void> {
 
     removeAllNotifications(): void {
         this._notifications = [];
+    }
+
+    tabsUpdated(): void {
+        this._onTabsUpdatedSubject.next();
+    }
+
+    get onTabsUpdated(): Observable<void> {
+        return this._onTabsUpdatedSubject.asObservable();
     }
 
     get onNotifications(): Observable<Array<NotificationModel<any>>> {
