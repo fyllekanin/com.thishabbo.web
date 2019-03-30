@@ -5,15 +5,14 @@ import { InputUtil } from '../../utils/input.util';
 export class StaffListPage {
 
     static addGroup(group: string): void {
-        InputUtil.searchInSelect(element(by.css('app-form-select')), group);
+        InputUtil.searchInSelect(element(by.css('app-form-select')), group).then(() => {
+            CommonUtil.click(element(by.cssContainingText('app-form-select .values div', group)));
 
-        CommonUtil.click(element(by.css('app-form-select')));
-        CommonUtil.click(element(by.cssContainingText('app-form-select div', group)));
+            CommonUtil.click(element(by.cssContainingText('button', 'Add Group')));
 
-        CommonUtil.click(element(by.cssContainingText('button', 'Add Group')));
-
-        const row = element(by.cssContainingText('app-table .row', group));
-        browser.wait(ExpectedConditions.presenceOf(row), 10000, `Expected group ${group} to be in the list`);
+            const row = element(by.cssContainingText('app-table .row', group));
+            browser.wait(ExpectedConditions.presenceOf(row), 10000, `Expected group ${group} to be in the list`);
+        });
     }
 
     static removeGroup(group: string): void {

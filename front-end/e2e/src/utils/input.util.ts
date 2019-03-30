@@ -18,10 +18,13 @@ export class InputUtil {
         ele.sendKeys(value);
     }
 
-    static searchInSelect(ele: ElementFinder, value: string): void {
+    static searchInSelect(ele: ElementFinder, value: string) {
         browser.wait(ExpectedConditions.presenceOf(ele), 10000, 'Expected element to be present');
-        ele.sendKeys(protractor.Key.chord(protractor.Key.COMMAND, 'a'));
-        ele.sendKeys(protractor.Key.BACK_SPACE);
-        ele.sendKeys(value);
+        return browser.actions().mouseMove(ele)
+            .click()
+            .sendKeys(protractor.Key.chord(protractor.Key.CONTROL, 'a'))
+            .sendKeys(protractor.Key.BACK_SPACE)
+            .sendKeys(value)
+            .perform();
     }
 }
