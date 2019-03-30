@@ -10,6 +10,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\App;
 
 /**
+ * @property mixed title
+ * @property mixed threadId
+ * @property mixed categoryId
+ * @property mixed userId
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class Thread extends DeletableModel {

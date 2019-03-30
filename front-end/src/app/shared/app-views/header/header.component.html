@@ -2,28 +2,7 @@
     <div class="grid-container height-100">
         <div class="grid-x margin-x">
             <div class="cell small-4">
-                <div class="bulletin-details">
-                    <div class="bulletin-board"><i class="fas fa-comment"></i> <strong> Dez</strong> has posted a new thread: <strong>Do
-                        you
-                        think
-                        VX is...</strong>
-                    </div>
-                    <div class="bulletin-board"><i class="fas fa-headphones"></i> <strong>RADIO: Stevey</strong> is live on
-                        air.
-                    </div>
-                    <div class="bulletin-board"><i class="fas fa-comment"></i> <strong> Con</strong> has liked a post in <strong>Do you
-                        think
-                        VX
-                        is...</strong>
-                    </div>
-                    <div class="bulletin-board"><i class="fas fa-users"></i> <strong> EVENT: irDez</strong> is hosting - click
-                        <b>here</b>!
-                    </div>
-                    <div class="bulletin-board"><i class="fas fa-comment"></i> <strong> ANNOUNCEMENT:</strong> A new Staff member: <strong>Chan
-                        is
-                        no...</strong>
-                    </div>
-                </div>
+                <app-header-activities [activities]="activities"></app-header-activities>
             </div>
             <div class="cell small-4 align-center">
                 <a class="logo" [routerLink]="[homePage]">

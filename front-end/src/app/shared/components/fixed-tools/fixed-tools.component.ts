@@ -10,12 +10,14 @@ export class FixedToolsComponent {
     private _currentItem: FixedToolItem = null;
     private _tools: FixedTools = new FixedTools();
     private _BACK = -1;
+    private _items: Array<FixedToolItem> = [];
 
     @Output() onAction: EventEmitter<number> = new EventEmitter();
 
     @Input()
     set tools(tools: FixedTools) {
-        this._tools = tools || new FixedTools();
+        this._tools = tools;
+        this.setItems();
     }
 
     onClick(item: FixedToolItem): void {
@@ -27,15 +29,27 @@ export class FixedToolsComponent {
             this.onAction.emit(item.value);
             this._currentItem = null;
         }
+        this.setItems();
     }
 
     get items(): Array<FixedToolItem> {
+        return this._items;
+    }
+
+    private setItems(): void {
+        if (!this._tools) {
+            this._items = [];
+            this._currentItem = null;
+            return;
+        }
+
         if (this._currentItem) {
-            return this._currentItem.children.concat([
+            this._items = this._currentItem.children.concat([
                 new FixedToolItem({ title: 'Back', value: this._BACK })
             ]);
+            return;
         }
-        return this._tools.items;
+        this._items = this._tools.items;
     }
 
     private findParent(): FixedToolItem {

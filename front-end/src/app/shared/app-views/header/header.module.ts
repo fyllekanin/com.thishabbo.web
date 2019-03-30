@@ -6,6 +6,7 @@ import { RadioModule } from 'shared/components/radio/radio.module';
 import { RouterModule } from '@angular/router';
 import { TabsComponent } from 'shared/app-views/header/tabs/tabs.component';
 import { TabComponent } from 'shared/app-views/header/tabs/tab/tab.component';
+import { ActivitiesComponent } from 'shared/app-views/header/activities/activities.component';
 
 @NgModule({
     imports: [
@@ -17,7 +18,8 @@ import { TabComponent } from 'shared/app-views/header/tabs/tab/tab.component';
     declarations: [
         HeaderComponent,
         TabsComponent,
-        TabComponent
+        TabComponent,
+        ActivitiesComponent
     ],
     entryComponents: [
         TabComponent

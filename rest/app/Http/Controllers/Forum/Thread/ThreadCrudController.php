@@ -120,7 +120,6 @@ class ThreadCrudController extends Controller {
         $thumbnail = $request->file('thumbnail');
         $threadSkeleton = json_decode($request->input('thread'));
 
-        Logger::user($user->userId, $request->ip(), Action::CREATED_THREAD, ['thread' => $threadSkeleton->title]);
         return $this->doThread($user, $thumbnail, $threadSkeleton, $request);
     }
 
@@ -346,8 +345,13 @@ class ThreadCrudController extends Controller {
             $newSubscription->save();
         }
 
-        $this->createThreadPoll($thread, $threadSkeleton);
+        Logger::user($user->userId, ($request ? $request->ip() : ''), Action::CREATED_THREAD, [
+            'thread' => $thread->title,
+            'threadId' => $thread->threadId,
+            'categoryId' => $thread->categoryId
+        ]);
 
+        $this->createThreadPoll($thread, $threadSkeleton);
         $this->forumService->updateLastPostIdOnCategory($thread->categoryId);
         return response()->json(['threadId' => $thread->threadId], 201);
     }

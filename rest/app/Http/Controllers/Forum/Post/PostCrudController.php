@@ -245,7 +245,11 @@ class PostCrudController extends Controller {
         $this->forumService->updateReadThread($thread->threadId, $user->userId);
         $this->forumService->updateLastPostIdOnCategory($thread->categoryId);
 
-        Logger::user($user->userId, $request->ip(), Action::CREATED_POST, ['thread' => $thread->title]);
+        Logger::user($user->userId, $request->ip(), Action::CREATED_POST, [
+            'thread' => $thread->title,
+            'threadId' => $thread->threadId,
+            'categoryId' => $thread->categoryId
+        ]);
         return response()->json($post, 201);
     }
 }

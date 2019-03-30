@@ -1,0 +1,28 @@
+.bulletin-board {
+    margin-top: 1px;
+    padding: 4px;
+    margin-bottom: 0;
+    font-size: 11px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.bulletin-details {
+    position: absolute;
+    width: 355px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 1.5rem 0 0 0;
+    background: #00000017;
+    padding: 5px;
+    color: #ffffff;
+    height: 137px;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.02) 0 3px 5px;
+    border-radius: 2px;
+}
+
+i {
+    margin-right: 5px;
+}
