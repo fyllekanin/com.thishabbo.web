@@ -2860,6 +2860,9 @@ wbbdebug=false;
 	},
 	
 	//API
+	$.fn.keybind = function(event, callback) {
+		this.data('wbb').$body.bind(event, callback);
+	}
 	$.fn.isBBMode = function() {
 		return this.data('wbb').options.bbmode;
 	}

@@ -16,7 +16,7 @@ import { SignatureService } from '../services/signature.service';
     templateUrl: 'signature.component.html'
 })
 export class SignatureComponent extends Page implements OnDestroy {
-    private _signature: Signature = new Signature();
+    private _signature = new Signature();
 
     @ViewChild('editor') editor: EditorComponent;
 
@@ -50,6 +50,12 @@ export class SignatureComponent extends Page implements OnDestroy {
                 message: 'Signature updated'
             }));
             this.onData({ data: new Signature(res) });
+        });
+    }
+
+    onKeyUp(content: string): void {
+        this._service.parse(content).subscribe(parsed => {
+            this._signature.parsedSignature = parsed;
         });
     }
 

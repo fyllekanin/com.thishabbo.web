@@ -76,6 +76,17 @@ class PageController extends Controller {
     }
 
     /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function parseContent(Request $request) {
+        $content = $request->input('content');
+
+        return response()->json(BBcodeUtil::bbcodeParser($content));
+    }
+
+    /**
      * Used for pages that don't load data to still see if they got connection
      *
      * @return \Illuminate\Http\JsonResponse

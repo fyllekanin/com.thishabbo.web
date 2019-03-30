@@ -119,15 +119,14 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
         if (!this._editorInstance) {
             return;
         }
-        this._editorInstance.unbind('keydown');
-        this._editorActions.filter(button => button.saveCallback).forEach(button => {
-            this._editorInstance.bind('keydown', e => {
-                this.onKeyUp.emit(this.getEditorValue());
-                if (e.ctrlKey && e.keyCode === 83) {
-                    e.preventDefault();
+        this._editorInstance.keybind('DOMSubtreeModified', e => {
+            this.onKeyUp.emit(this.getEditorValue());
+            if (e.ctrlKey && e.keyCode === 83) {
+                e.preventDefault();
+                this._editorActions.filter(button => button.saveCallback).forEach(button => {
                     button.saveCallback();
-                }
-            });
+                });
+            }
         });
     }
 }
