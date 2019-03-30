@@ -58,11 +58,11 @@ export class ListComponent extends Page implements OnDestroy {
 
     onFilter(filter: QueryParameters): void {
         clearTimeout(this._filterTimer);
+        this._filter = filter;
 
         this._filterTimer = setTimeout(() => {
             this._httpService.get(`admin/betting/categories/1`, filter)
                 .subscribe(res => {
-                    this._filter = filter;
                     this.onData({ data: new CategoriesListPage(res) });
                 });
         }, 200);
@@ -116,6 +116,10 @@ export class ListComponent extends Page implements OnDestroy {
     }
 
     private createOrUpdateTable(): void {
+        if (this.tableConfig) {
+            this.tableConfig.rows = this.getTableRows();
+            return;
+        }
         this.tableConfig = new TableConfig({
             title: 'Betting Categories',
             headers: ListComponent.getTableHeaders(),

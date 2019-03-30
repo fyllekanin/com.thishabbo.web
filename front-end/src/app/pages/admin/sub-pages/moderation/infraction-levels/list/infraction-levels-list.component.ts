@@ -68,11 +68,11 @@ export class InfractionLevelsListComponent extends Page implements OnDestroy {
 
     onFilter(filter: QueryParameters): void {
         clearTimeout(this._filterTimer);
+        this._filter = filter;
 
         this._filterTimer = setTimeout(() => {
             this._service.getData(filter, 1)
                 .subscribe(data => {
-                    this._filter = filter;
                     this.onData({ data: data });
                 });
         }, 200);
@@ -119,6 +119,10 @@ export class InfractionLevelsListComponent extends Page implements OnDestroy {
     }
 
     private buildTableConfig(): void {
+        if (this.tableConfig) {
+            this.tableConfig.rows = this.getTableRows();
+            return;
+        }
         this.tableConfig = new TableConfig({
             title: 'Infraction Levels',
             headers: InfractionLevelsListComponent.getTableHeaders(),

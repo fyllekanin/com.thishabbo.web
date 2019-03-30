@@ -13,7 +13,7 @@ class LoggerActionsTest extends TestCase {
     public function testThatActionsHaveCorrectFieldsAndNoDuplicates () {
         $usedIds = [];
         try {
-            $actions = Action::getAllConsts();
+            $actions = Action::getAllConstants();
 
             foreach ($actions as $value) {
                 $this->assertTrue(!in_array($value['id'], $usedIds), $value['id'] . ' Is duplicated');

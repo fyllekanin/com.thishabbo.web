@@ -47,6 +47,10 @@ export class ThreadPostersComponent extends InnerDialogComponent {
     }
 
     private createOrUpdateTable(): void {
+        if (this.tableConfig) {
+            this.tableConfig.rows = this.getTableRows();
+            return;
+        }
         this.tableConfig = new TableConfig({
             title: 'Thread Posters',
             headers: this.getTableHeaders(),

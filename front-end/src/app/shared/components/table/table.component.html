@@ -9,10 +9,19 @@
         <div class="grid-container full position-relative">
             <div class="grid-x grid-margin-x filter" *ngIf="filterConfigs.length > 0">
                 <div class="cell" [ngClass]="filterConfigs.length > 1 ? 'small-6' : 'small-12'" *ngFor="let filterConfig of filterConfigs">
-                    <div class="label" *ngIf="filterConfig.title">{{filterConfig.title}}</div>
-                    <input type="text" name="filter" placeholder="{{filterConfig.placeholder}}"
-                           [(ngModel)]="filterConfig.value"
-                           (input)="onFilterChange()"/>
+                    <div *ngIf="!filterConfig.isSelect()">
+                        <div class="label" *ngIf="filterConfig.title">{{filterConfig.title}}</div>
+                        <input type="text" name="filter" placeholder="{{filterConfig.placeholder}}"
+                               [(ngModel)]="filterConfig.value"
+                               (input)="onFilterChange()"/>
+                    </div>
+                    <div *ngIf="filterConfig.isSelect()">
+                        <div class="label" *ngIf="filterConfig.title">{{filterConfig.title}}</div>
+                        <select [(ngModel)]="filterConfig.value" (change)="onFilterChange()">
+                            <option [value]="undefined">All</option>
+                            <option *ngFor="let item of filterConfig.items" [value]="item.value">{{item.label}}</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 

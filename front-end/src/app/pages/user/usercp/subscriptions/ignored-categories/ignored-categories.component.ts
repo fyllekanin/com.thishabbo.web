@@ -55,18 +55,26 @@ export class IgnoredCategoriesComponent extends Page implements OnDestroy {
     }
 
     private buildTableConfig(): void {
+        if (this.tableConfig) {
+            this.tableConfig.rows = this.getTableRows();
+            return;
+        }
         this.tableConfig = new TableConfig({
             title: 'Ignored Categories',
             headers: [
                 new TableHeader({ title: 'Category '})
             ],
-            rows: this._data.map(item => {
-                return new TableRow({
-                    id: String(item.categoryId),
-                    cells: [new TableCell({ title: item.title })],
-                    actions: [new TableAction({ title: 'Unignore', value: null })]
-                });
-            })
+            rows: this.getTableRows()
+        });
+    }
+
+    private getTableRows(): Array<TableRow> {
+        return this._data.map(item => {
+            return new TableRow({
+                id: String(item.categoryId),
+                cells: [new TableCell({ title: item.title })],
+                actions: [new TableAction({ title: 'Unignore', value: null })]
+            });
         });
     }
 }
