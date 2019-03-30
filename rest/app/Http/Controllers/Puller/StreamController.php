@@ -73,7 +73,7 @@ class StreamController extends Controller {
 
                 if ($i == 5) {
                     sleep(3);
-                    exit;
+                    break;
                 }
 
                 sleep(5);

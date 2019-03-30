@@ -345,15 +345,18 @@ class ThreadCrudController extends Controller {
             $newSubscription->save();
         }
 
+        $this->logThreadCreation($thread, $request, $user);
+        $this->createThreadPoll($thread, $threadSkeleton);
+        $this->forumService->updateLastPostIdOnCategory($thread->categoryId);
+        return response()->json(['threadId' => $thread->threadId], 201);
+    }
+
+    private function logThreadCreation($thread, $request, $user) {
         Logger::user($user->userId, ($request ? $request->ip() : ''), Action::CREATED_THREAD, [
             'thread' => $thread->title,
             'threadId' => $thread->threadId,
             'categoryId' => $thread->categoryId
         ]);
-
-        $this->createThreadPoll($thread, $threadSkeleton);
-        $this->forumService->updateLastPostIdOnCategory($thread->categoryId);
-        return response()->json(['threadId' => $thread->threadId], 201);
     }
 
     /**
