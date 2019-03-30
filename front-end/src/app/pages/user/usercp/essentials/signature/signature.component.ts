@@ -16,8 +16,7 @@ import { SignatureService } from '../services/signature.service';
     templateUrl: 'signature.component.html'
 })
 export class SignatureComponent extends Page implements OnDestroy {
-    private _signature: Signature = new Signature();
-    private _timerTimeout: NodeJS.Timer;
+    private _signature = new Signature();
 
     @ViewChild('editor') editor: EditorComponent;
 
@@ -55,13 +54,9 @@ export class SignatureComponent extends Page implements OnDestroy {
     }
 
     onKeyUp(content: string): void {
-        clearInterval(this._timerTimeout);
-
-        this._timerTimeout = setTimeout(() => {
-            this._service.parse(content).subscribe(parsed => {
-                this._signature.parsedSignature = parsed;
-            });
-        }, 200);
+        this._service.parse(content).subscribe(parsed => {
+            this._signature.parsedSignature = parsed;
+        });
     }
 
     get signature(): string {

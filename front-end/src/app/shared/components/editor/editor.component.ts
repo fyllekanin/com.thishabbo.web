@@ -119,7 +119,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
         if (!this._editorInstance) {
             return;
         }
-        this._editorInstance.keybind('keydown', e => {
+        this._editorInstance.keybind('DOMSubtreeModified', e => {
             this.onKeyUp.emit(this.getEditorValue());
             if (e.ctrlKey && e.keyCode === 83) {
                 e.preventDefault();
