@@ -35,7 +35,7 @@ export class DialogComponent {
 
     @HostListener('click', [ '$event' ])
     onClose (event): void {
-        const isInsideWrapper = event.path.some(item => item.classList && item.classList.contains('wrapper'));
+        const isInsideWrapper = event.path.some(item => item.classList && item.classList.indexOf('wrapper') > -1);
         if (!isInsideWrapper) {
             this.isVisible = false;
         }
