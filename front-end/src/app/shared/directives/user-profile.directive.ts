@@ -46,7 +46,7 @@ export class UserProfileDirective extends LazyLoadDirective {
 
     protected setImage(): void {
         this._elementRef.nativeElement.style.backgroundImage =
-            `url(/rest/resources/images/users/${this._info.userId}.gif?${this._info.avatarUpdatedAt})`;
+            `url(/rest/resources/images/users/${this._info.userId}.gif?updatedAt=${this._info.avatarUpdatedAt})`;
     }
 }
 

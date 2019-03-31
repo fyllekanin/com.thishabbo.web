@@ -10,5 +10,6 @@ export const LOCAL_STORAGE = {
     EDITOR_MODE: 'is-editor-source-mode',
     IGNORE_SIGNATURES: 'ignore-signatures',
     FIXED_MENU: 'fixed-menu',
-    TABS: 'tabs'
+    TABS: 'tabs',
+    VOLUME: 'volume'
 };

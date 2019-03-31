@@ -5,7 +5,6 @@
 
 .wrapper {
     width: 100%;
-    padding: 0.65rem 0.75rem;
     color: #081016;
     font-weight: bold;
     font-size: 11px;
@@ -16,6 +15,12 @@
     border-top-right-radius: 0.2rem;
     border-bottom: 1px solid #e5e5e5;
     margin-bottom: -1px;
+    height: 40px;
+}
+
+.title {
+    margin: 9px 10px 5px;
+    float: left;
 }
 
 .sub-title::before {
@@ -30,6 +35,8 @@
     font-size: 0.7rem;
     font-weight: normal;
     font-style: italic;
+    float: left;
+    margin-top: 8px;
 }
 
 a {
@@ -56,17 +63,13 @@ a:hover {
 }
 
 .tab {
-    border-right: 1px solid #e5e5e5;
-    border-top: 1px solid #e5e5e5;
     border-left: 1px solid #e5e5e5;
-    margin: -2px 0 0 7px;
-    padding: 6px;
+    padding: 9px 6px;
+    height: 100%;
     font-size: 11px;
     float: right;
     color: #757575;
     cursor: pointer;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -84,8 +87,7 @@ a:hover {
 }
 
 .active {
-    font-weight: bold;
-    box-shadow: 1px 0 5px -1px rgba(81, 79, 79, 0.1)
+    background-color: rgb(245, 245, 245);
 }
 
 .blue-top {
@@ -102,4 +104,8 @@ a:hover {
 
 .red-top {
     border-top: 3px solid #ad6262;
+}
+
+.checkbox {
+    margin: 5px;
 }

@@ -31,7 +31,9 @@ class UserHelper {
 
         $slimUser = User::where('users.userId', $userId)
             ->leftJoin('groups', 'groups.groupId', '=', 'users.displayGroupId')
-            ->select('users.userId', 'users.nickname', 'users.createdAt', 'users.displayGroupId', 'groups.nameStyling as styling')
+            ->leftJoin('userdata', 'userdata.userId', '=', 'users.userId')
+            ->select('users.userId', 'users.nickname', 'users.createdAt',
+                'users.displayGroupId', 'groups.nameStyling as styling', 'userdata.avatarUpdatedAt')
             ->first();
 
         if (!$slimUser) {
