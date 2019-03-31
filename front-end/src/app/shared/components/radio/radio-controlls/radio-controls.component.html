@@ -11,7 +11,7 @@
 </div>
 <div class="generic-radio-button listen-button"><i class="fas fa-headphones"></i> {{listeners}}</div>
 <div class="slider desktop-button">
-    <input type="range" (input)="onVolumeChange($event)" [disabled]="!isPlaying"/>
+    <input type="range" [value]="volume" (input)="onVolumeChange($event)" [disabled]="!isPlaying"/>
 </div>
 <div class="generic-radio-button generic-pink-button desktop-button"><i class="fas fa-sync-alt"></i></div>
 <div class="generic-radio-button generic-pink-button mobile-button" (click)="openInfo()"><i class="fas fa-info"></i></div>

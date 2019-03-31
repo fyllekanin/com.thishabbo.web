@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { RadioModel } from 'shared/components/radio/radio.model';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 import { RadioService } from '../services/radio.service';
+import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 
 @Component({
     selector: 'app-radio-controls',
@@ -14,11 +15,14 @@ export class RadioControlsComponent {
 
     @ViewChild('player') player: ElementRef<HTMLAudioElement>;
     isPlaying = false;
+    volume = '0.5';
 
     constructor(
         private _radioService: RadioService,
         continuesInformationService: ContinuesInformationService
     ) {
+        this.volume = localStorage.getItem(LOCAL_STORAGE.VOLUME);
+        console.log(this.volume);
         continuesInformationService.onContinuesInformation.subscribe(continuesInformation => {
             this._data = continuesInformation.radio;
             this._radioUrl = `${this._data.ip}:${this._data.port}/;stream.nsv`;
@@ -34,8 +38,10 @@ export class RadioControlsComponent {
     }
 
     onVolumeChange(event): void {
-        const volume = Number(event.target.value) / 100;
-        this.player.nativeElement.volume = volume;
+        const volume = event.target.value;
+        localStorage.setItem(LOCAL_STORAGE.VOLUME, String(volume));
+
+        this.player.nativeElement.volume = Number(volume / 100);
     }
 
     toggleAudio(): void {

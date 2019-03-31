@@ -44,22 +44,34 @@ describe('DialogComponent', () => {
     });
 
     describe('onClose', () => {
-        it('should not close dialog if element clicked is not APP-DIALOG', () => {
+        it('should not close dialog if element clicked is inside wrapper', () => {
             // Given
             component.isVisible = true;
 
             // When
-            component.onClose({ target: { tagName: 'test' } });
+            component.onClose({
+                path: [
+                    {
+                        classList: ['something', 'nothing', 'wrapper']
+                    }
+                ]
+            });
 
             // Then
             expect(component.isVisible).toBeTruthy();
         });
-        it('should close dialog if element clicked is APP-DIALOG', () => {
+        it('should close dialog if element clicked is not inside wrapper', () => {
             // Given
             component.isVisible = true;
 
             // When
-            component.onClose({ target: { tagName: 'APP-DIALOG' } });
+            component.onClose({
+                path: [
+                    {
+                        classList: ['something', 'nothing']
+                    }
+                ]
+            });
 
             // Then
             expect(component.isVisible).toBeFalsy();

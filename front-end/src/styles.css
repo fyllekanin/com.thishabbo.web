@@ -28,7 +28,6 @@ html, body {
 .quotepost {
     background: #fbfbfb;
     border: 1px solid #f1f1f1;
-    float: left;
     margin-bottom: .5rem;
     padding: 11px;
     width: 100%;

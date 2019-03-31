@@ -1,8 +1,5 @@
 <div class="grid-container">
     <div class="tab-content">
-        <div class="tab">
-            Home
-        </div>
         <a class="tab" *ngFor="let tab of tabs" [routerLink]="[tab.url]">
             {{tab.label}}
         </a>
