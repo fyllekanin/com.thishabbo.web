@@ -78,6 +78,8 @@ class User extends Authenticatable {
     }
 
     public function getGroupsAttribute () {
-        return $this->userGroups()->getResults();
+        return $this->userGroups()->getResults()->map(function($group) {
+            return $group->group;
+        });
     }
 }

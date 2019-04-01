@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { HttpService } from 'core/services/http/http.service';
 import { RouterStateService } from 'core/services/router/router-state.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { GlobalNotification, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
@@ -124,12 +124,28 @@ export class AuthService {
         }));
 
         if (this._activatedRoute.snapshot.queryParams['redirected']) {
-            this._router.navigateByUrl(this._routerState.getPreviousUrl());
+            this._router.navigateByUrl(this._routerState.getPreviousUrl())
+                .catch(() => {
+                    this.navigateToHome();
+                    this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                        title: 'Warning',
+                        message: 'Your previous page is not a valid page',
+                        type: NotificationType.WARNING
+                    }));
+                });
             return;
         }
 
         if (this._user.homePage) {
-            this._router.navigateByUrl(this._user.homePage);
+            this._router.navigateByUrl(this._user.homePage)
+                .catch(() => {
+                    this.navigateToHome();
+                    this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                        title: 'Warning',
+                        message: 'Your previous page is not a valid page',
+                        type: NotificationType.WARNING
+                    }));
+                });
         } else {
             this.navigateToHome();
         }
