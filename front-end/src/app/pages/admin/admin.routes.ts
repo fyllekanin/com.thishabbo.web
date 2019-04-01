@@ -2,6 +2,7 @@ import { AdminComponent } from './admin.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { Routes } from '@angular/router';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
+import { PING_TYPES } from 'core/services/continues-information/continues-information.model';
 
 
 export const adminRoutes: Routes = [
@@ -18,6 +19,9 @@ export const adminRoutes: Routes = [
                 component: DashboardComponent,
                 resolve: {
                     ping: ContinuesInformationService
+                },
+                data: {
+                    type: PING_TYPES.ADMIN
                 }
             },
             {

@@ -26,6 +26,7 @@ import { ThemesComponent } from './themes/list/themes.component';
 import { ThemesResolver } from './services/themes.resolver';
 import { ThemeComponent } from './themes/theme/theme.component';
 import { ThemeResolver } from './services/theme.resolver';
+import { PING_TYPES } from 'core/services/continues-information/continues-information.model';
 
 export const websiteSettingsRoutes: Routes = [
     {
@@ -47,6 +48,9 @@ export const websiteSettingsRoutes: Routes = [
         component: CreateNoticeComponent,
         resolve: {
             ping: ContinuesInformationService
+        },
+        data: {
+            type: PING_TYPES.ADMIN
         }
     },
     {

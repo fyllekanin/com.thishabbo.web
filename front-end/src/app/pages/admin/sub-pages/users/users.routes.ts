@@ -12,6 +12,7 @@ import { ThcRequestsService } from './services/thc-requests.service';
 import { ThcRequestsComponent } from './thc-requests/thc-requests.component';
 import { IpSearchComponent } from './ip-search/ip-search.component';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
+import { PING_TYPES } from 'core/services/continues-information/continues-information.model';
 
 export const usersRoutes: Routes = [
     {
@@ -62,6 +63,9 @@ export const usersRoutes: Routes = [
                 component: IpSearchComponent,
                 resolve: {
                     ping: ContinuesInformationService
+                },
+                data: {
+                    type: PING_TYPES.STAFF
                 }
             }
         ]

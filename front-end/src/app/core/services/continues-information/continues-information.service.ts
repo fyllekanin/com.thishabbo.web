@@ -5,8 +5,8 @@ import { NotificationModel } from 'shared/app-views/top-bar/top-bar.model';
 import { UserService } from 'core/services/user/user.service';
 import { ArrayHelper } from 'shared/helpers/array.helper';
 import { AuthService } from 'core/services/auth/auth.service';
-import { ContinuesInformationModel } from 'core/services/continues-information/continues-information.model';
-import { Resolve } from '@angular/router';
+import { ContinuesInformationModel, PING_TYPES } from 'core/services/continues-information/continues-information.model';
+import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 
 @Injectable()
 export class ContinuesInformationService implements Resolve<void> {
@@ -41,8 +41,12 @@ export class ContinuesInformationService implements Resolve<void> {
         });
     }
 
-    resolve(): Observable<void> {
-        return this._httpService.get('ping');
+    resolve(activatedRouteSnapshot: ActivatedRouteSnapshot): Observable<void> {
+        let prefix = '';
+        if (activatedRouteSnapshot.data['type']) {
+            prefix = activatedRouteSnapshot.data['type'] === PING_TYPES.ADMIN ? 'admin/' : 'staff/';
+        }
+        return this._httpService.get(prefix + 'ping');
     }
 
     removeNotification(notificationId: number): void {
