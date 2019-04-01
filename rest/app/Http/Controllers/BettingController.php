@@ -41,7 +41,7 @@ class BettingController extends Controller {
 
         Condition::precondition(!is_numeric($amount), 400, 'Needs to be a number!');
         Condition::precondition($amount <= 0, 400, 'Needs to be a positive number!');
-        Condition::precondition(!$this->creditsService->haveEnoughCredits($user->userId, $amount), 'Not enough credits!');
+        Condition::precondition(!$this->creditsService->haveEnoughCredits($user->userId, $amount),400,  'Not enough credits!');
 
         $numbers = [];
         for ($i = 0; $i < 500; $i++) {
