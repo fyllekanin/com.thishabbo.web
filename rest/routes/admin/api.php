@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 
 $permissions = ConfigHelper::getAdminConfig();
 
+Route::get('/ping', 'PageController@getPing');
+
 Route::prefix('statistics')->group(function () {
     Route::get('/users/{year}/{month}', 'Admin\Statistics\UserStatisticsController@getUsersLoggedIn');
     Route::get('/posts/{year}/{month}', 'Admin\Statistics\ForumStatisticsController@getPosts');

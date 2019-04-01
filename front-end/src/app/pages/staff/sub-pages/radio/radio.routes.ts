@@ -14,6 +14,7 @@ import { DjSaysResolver } from './services/dj-says.resolver';
 import { BookingLogComponent } from '../shared/booking-log/booking-log.component';
 import { BookingLogResolver } from '../shared/booking-log/booking-log.resolver';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
+import { PING_TYPES } from 'core/services/continues-information/continues-information.model';
 
 
 export const radioRoutes: Routes = [
@@ -72,6 +73,9 @@ export const radioRoutes: Routes = [
                 component: KickDjComponent,
                 resolve: {
                     ping: ContinuesInformationService
+                },
+                data: {
+                    type: PING_TYPES.STAFF
                 }
             },
             {

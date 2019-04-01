@@ -72,3 +72,9 @@ export class ContinuesInformationModel {
         ClassHelper.assign(this, source);
     }
 }
+
+export enum PING_TYPES {
+    ADMIN = 'admin',
+    STAFF = 'staff',
+    USER = 'user'
+}

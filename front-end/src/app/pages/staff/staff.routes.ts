@@ -4,6 +4,7 @@ import { StaffComponent } from './staff.component';
 import { RequestThcComponent } from './request-thc/request-thc.component';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 import { DashboardService } from './dashboard/dashboard.service';
+import { PING_TYPES } from 'core/services/continues-information/continues-information.model';
 
 export const staffRoutes: Routes = [
     {
@@ -26,6 +27,9 @@ export const staffRoutes: Routes = [
                 component: RequestThcComponent,
                 resolve: {
                     ping: ContinuesInformationService
+                },
+                data: {
+                    type: PING_TYPES.STAFF
                 }
             },
             {
