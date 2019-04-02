@@ -166,7 +166,7 @@ class AuthController extends Controller {
         $accessToken = isset($parts) && count($parts) > 1 ? $parts[1] : '';
         $token = Token::where('accessToken', $accessToken)->where('ip', $request->ip())->first();
         if (!$token) {
-            return response()->json(null);
+            return response()->json();
         }
 
         $expiresAt = time() + $this->accessTokenLifetime;
