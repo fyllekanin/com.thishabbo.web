@@ -88,7 +88,7 @@ export class AuthService {
 
     getAccessToken(): string {
         const user = this.getAuthUser();
-        return user ? user.oauth.accessToken : '';
+        return user && user.oauth ? user.oauth.accessToken : '';
     }
 
     get onUserChange(): Observable<void> {
