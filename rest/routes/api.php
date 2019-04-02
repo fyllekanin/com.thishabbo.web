@@ -24,7 +24,6 @@ Route::get('/auth/refresh', 'Auth\AuthController@refresh');
 Route::put('/auth/accept/gdpr', 'Auth\AuthController@acceptGdpr');
 
 Route::get('/maintenance/content', 'PageController@getMaintenanceMessage');
-Route::get('/auth/user', 'Auth\AuthController@getUser');
 
 Route::group(['middleware' => ['maintenance']], function () {
 
@@ -52,6 +51,7 @@ Route::group(['middleware' => ['maintenance']], function () {
     Route::get('puller/notifications/unread/{createdAfter}', 'Puller\NotificationController@getUnreadNotifications');
 
     Route::group(['middleware' => ['token.check']], function () {
+        Route::get('/auth/user', 'Auth\AuthController@getUser');
         Route::post('/radio/like', 'Staff\RadioController@createDjLike');
 
         Route::put('puller/notifications/read/all', 'Puller\NotificationController@readAllNotifications');

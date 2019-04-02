@@ -16,9 +16,9 @@ class CreateLaravelLogsTable extends Migration
         Schema::create('laravel_logs', function (Blueprint $table) {
             $table->bigIncrements('laravelLogId');
             $table->longText('message');
-            $table->string('code');
+            $table->integer('code');
             $table->longText('file');
-            $table->string('line');
+            $table->integer('line');
             $table->longText('trace');
             $table->bigInteger('createdAt');
             $table->bigInteger('updatedAt');
