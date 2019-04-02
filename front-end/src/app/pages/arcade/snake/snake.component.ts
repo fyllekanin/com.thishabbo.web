@@ -148,7 +148,7 @@ export class SnakeComponent extends Page implements AfterViewInit, OnDestroy {
         this._context.fillRect(0, 0, SnakeSettings.SIZE, SnakeSettings.SIZE);
 
         this._context.fillStyle = '#eee8d5';
-        this._context.font = '25px serif';
+        this._context.font = '10px serif';
         this._context.textAlign = 'center';
         this._context.fillText('Click "Start Game" to play!', SnakeSettings.SIZE / 2, SnakeSettings.SIZE / 2);
     }
