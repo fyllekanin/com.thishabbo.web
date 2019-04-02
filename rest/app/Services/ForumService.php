@@ -108,6 +108,17 @@ class ForumService {
     /**
      * @param $userId
      *
+     * @return mixed
+     */
+    public function getAccessibleThreads($userId) {
+        $categoryIds = $this->getAccessibleCategories($userId);
+
+        return Thread::whereIn('categoryId', $categoryIds)->pluck('threadId');
+    }
+
+    /**
+     * @param $userId
+     *
      * @return array
      */
     public function getCategoriesUserCantSeeOthersThreadsIn ($userId) {

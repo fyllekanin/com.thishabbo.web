@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { PageModel } from '../../admin/sub-pages/website-settings/pages/page.model';
+import { StringHelper } from 'shared/helpers/string.helper';
 
 @Component({
     selector: 'app-home-custom-page',
@@ -20,7 +21,7 @@ export class CustomPageComponent extends Page implements OnDestroy {
         super(elementRef);
         this.addSubscription(activatedRoute.data, this.onData.bind(this));
         breadcrumbService.breadcrumb = new Breadcrumb({
-            current: activatedRoute.snapshot.params['page'],
+            current: StringHelper.firstCharUpperCase(activatedRoute.snapshot.params['page']),
             items: []
         });
     }

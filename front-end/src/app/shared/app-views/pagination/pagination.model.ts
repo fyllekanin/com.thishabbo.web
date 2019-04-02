@@ -1,7 +1,6 @@
-import {ClassHelper, isPresent, primitiveOf} from 'shared/helpers/class.helper';
+import {ClassHelper, primitiveOf} from 'shared/helpers/class.helper';
 import { primitive } from 'shared/helpers/class.helper';
 import { QueryParameters } from 'core/services/http/http.model';
-import { HttpService } from 'core/services/http/http.service';
 
 export class PaginationModel {
     @primitiveOf(Number)
@@ -14,9 +13,6 @@ export class PaginationModel {
 
     constructor(source?: Partial<PaginationModel>) {
         ClassHelper.assign(this, source);
-        if (isPresent(this.params)) {
-            this.url += HttpService.buildParameters(this.params);
-        }
     }
 }
 

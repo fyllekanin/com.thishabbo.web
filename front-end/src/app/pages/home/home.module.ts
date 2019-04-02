@@ -21,6 +21,9 @@ import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 import { CommunityPollComponent } from './home-default/community-poll/community-poll.component';
 import { StaffSpotlightComponent } from './home-default/staff-spotlight/staff-spotlight.component';
 import { LeaderBoardComponent } from './leader-board/leader-board.component';
+import { SearchComponent } from './search/search.component';
+import { SearchResolver } from './services/search.resolver';
+import { PaginationModule } from 'shared/app-views/pagination/pagination.module';
 
 @NgModule({
     imports: [
@@ -36,7 +39,8 @@ import { LeaderBoardComponent } from './leader-board/leader-board.component';
         InfoBoxModule,
         LazyLoadModule,
         SafeStyleModule,
-        SafeHtmlModule
+        SafeHtmlModule,
+        PaginationModule
     ],
     declarations: [
         HomeDefaultComponent,
@@ -45,10 +49,12 @@ import { LeaderBoardComponent } from './leader-board/leader-board.component';
         MediaArticlesComponent,
         CommunityPollComponent,
         StaffSpotlightComponent,
-        LeaderBoardComponent
+        LeaderBoardComponent,
+        SearchComponent
     ],
     providers: [
-        HomeDefaultResolver
+        HomeDefaultResolver,
+        SearchResolver
     ],
     exports: [
         RouterModule
