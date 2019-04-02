@@ -643,7 +643,7 @@ class BBcodesTableSeeder extends Seeder
             ),
             48 =>
             array (
-                'bbcodeId' => 49,
+                'bbcodeid' => 49,
                 'name' => 'Horizontal Line',
                 'example' => '[hr]',
                 'pattern' => '/\\[hr\\]/si',
@@ -656,7 +656,7 @@ class BBcodesTableSeeder extends Seeder
             ),
             49 =>
             array (
-                'bbcodeId' => 50,
+                'bbcodeid' => 50,
                 'name' => 'Administrator Notice',
                 'example' => '[admin]My text goes here![/admin]',
                 'pattern' => '/\[admin\](.*?)\[\/admin\]/si',
@@ -669,7 +669,7 @@ class BBcodesTableSeeder extends Seeder
             ),
             50 =>
             array (
-                'bbcodeId' => 51,
+                'bbcodeid' => 51,
                 'name' => 'Community Admin Notice',
                 'example' => '[ca]My text goes here![/ca]',
                 'pattern' => '/\[ca\](.*?)\[\/ca\]/si',
@@ -682,7 +682,7 @@ class BBcodesTableSeeder extends Seeder
             ),
             51 =>
             array (
-                'bbcodeId' => 52,
+                'bbcodeid' => 52,
                 'name' => 'Moderator Notice',
                 'example' => '[mod]My text goes here![/mod]',
                 'pattern' => '/\[mod\](.*?)\[\/mod\]/si',
@@ -695,7 +695,7 @@ class BBcodesTableSeeder extends Seeder
             ),
             52 =>
             array (
-                'bbcodeId' => 53,
+                'bbcodeid' => 53,
                 'name' => 'Senior Staff Notice',
                 'example' => '[snr]My text goes here![/snr]',
                 'pattern' => '/\[snr\](.*?)\[\/snr\]/si',
@@ -708,7 +708,7 @@ class BBcodesTableSeeder extends Seeder
             ),
             53 =>
             array (
-                'bbcodeId' => 54,
+                'bbcodeid' => 54,
                 'name' => 'Soundcloud Embedding',
                 'example' => '[soundcloud]https://soundcloud.com/forss/lux-aeterna[/soundcloud]',
                 'pattern' => '/\[soundcloud\](.*?)\[\/soundcloud\]/si',
@@ -721,7 +721,7 @@ class BBcodesTableSeeder extends Seeder
             ),
             54 =>
             array (
-                'bbcodeId' => 55,
+                'bbcodeid' => 55,
                 'name' => 'Twitter Embedding',
                 'example' => '[tweet]883203931370926080[/tweet]',
                 'pattern' => '/\[tweet\](.*?)\[\/tweet\]/si',
@@ -734,7 +734,7 @@ class BBcodesTableSeeder extends Seeder
             ),
             55 =>
             array (
-                'bbcodeId' => 56,
+                'bbcodeid' => 56,
                 'name' => 'Facebook Video Embedding',
                 'example' => '[fbvideo]https://www.facebook.com/MacRumors/videos/10155794335253923/[/fbvideo]',
                 'pattern' => '/\[fbvideo\](.*?)\[\/fbvideo\]/si',
@@ -747,7 +747,7 @@ class BBcodesTableSeeder extends Seeder
             ),
             56 =>
             array (
-                'bbcodeId' => 57,
+                'bbcodeid' => 57,
                 'name' => 'Spotify Song Embedding',
                 'example' => '[spotify]3tW6NhWt9RgFpZxJBWYA3U[/spotify]',
                 'pattern' => '/\[spotify\](.*?)\[\/spotify\]/si',
@@ -760,7 +760,7 @@ class BBcodesTableSeeder extends Seeder
             ),
             57 =>
             array (
-                'bbcodeId' => 58,
+                'bbcodeid' => 58,
                 'name' => 'Instagram Embedding',
                 'example' => '[instagram]Bn8dnk8A8FJ[/instagram]',
                 'pattern' => '/\[instagram\](.*?)\[\/instagram\]/si',
@@ -773,7 +773,7 @@ class BBcodesTableSeeder extends Seeder
             ),
             58 =>
             array (
-                'bbcodeId' => 59,
+                'bbcodeid' => 59,
                 'name' => 'Jingle House Embedding',
                 'example' => '[jingle]163[/jingle]',
                 'pattern' => '/\[jingle\](.*?)\[\/jingle\]/si',
@@ -785,5 +785,8 @@ class BBcodesTableSeeder extends Seeder
                 'updatedAt' => 1547139924,
             ),
         ));
+
+        // https?:\/\/(www.)?[a-zA-Z0-9]+.[a-zA-Z]+
+
     }
 }
