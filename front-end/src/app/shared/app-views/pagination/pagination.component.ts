@@ -1,6 +1,7 @@
 import { PaginationModel, PaginationItem } from 'shared/app-views/pagination/pagination.model';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { QueryParameters } from 'core/services/http/http.model';
 
 @Component({
     selector: 'app-pagination',
@@ -43,6 +44,10 @@ export class PaginationComponent {
     @Input()
     set paginationModel(paginationModel: PaginationModel) {
         this._paginationModel = paginationModel || new PaginationModel();
+    }
+
+    get queryParameters(): QueryParameters {
+        return this._paginationModel.params;
     }
 
     get isUrlSet(): boolean {

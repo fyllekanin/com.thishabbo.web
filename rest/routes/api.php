@@ -28,7 +28,8 @@ Route::get('/maintenance/content', 'PageController@getMaintenanceMessage');
 Route::group(['middleware' => ['maintenance']], function () {
 
     Route::post('/bbcode/parse', 'PageController@parseContent');
-        Route::get('/bbcode/emojis', 'PageController@getEmojis');
+    Route::get('/bbcode/emojis', 'PageController@getEmojis');
+    Route::get('/search/type/{type}/page/{page}', 'SearchController@getSearch');
 
     Route::post('/auth/register', 'Auth\AuthController@register');
     Route::get('/auth/register', 'Auth\AuthController@getRegisterPage');

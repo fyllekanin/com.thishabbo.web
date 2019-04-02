@@ -1,0 +1,79 @@
+<div class="grid-x grid-margin-x">
+    <div class="cell small-12 medium-9">
+        <app-title [title]="'Result'"></app-title>
+        <app-content>
+            <div class="grid-x grid-margin-y" *ngFor="let item of items">
+                <div class="cell small-12">
+                    <img appUserProfile [info]="item.getUserProfile()" />
+                    <div class="data">
+                        <div *ngIf="parameters.type === 'threads'">
+                            <a [routerLink]="['/forum/thread/' + item.id + '/page/1']" class="title">{{item.title}}</a>
+                            <br />
+                            {{timeAgo(item.createdAt)}}
+                            <br />
+                            by
+                            <a [routerLink]="['/user/profile/' + item.user.nickname]" class="title">
+                                <span [style]="item.user.styling | safeStyle">{{item.user.nickname}}</span>
+                            </a>
+                        </div>
+                        <div *ngIf="parameters.type === 'posts'">
+                            <a [routerLink]="['/forum/thread/' + item.parentId + '/page/' + item.page]" [queryParams]="{ scrollTo: item.id }" class="title">{{item.title}}</a>
+                            <br />
+                            {{timeAgo(item.createdAt)}}
+                            <br />
+                            by
+                            <a [routerLink]="['/user/profile/' + item.user.nickname]" class="title">
+                                <span [style]="item.user.styling | safeStyle">{{item.user.nickname}}</span>
+                            </a>
+                        </div>
+                        <div *ngIf="parameters.type === 'users'">
+                            <a [routerLink]="['/user/profile/' + item.user.nickname]" class="title">
+                                <span [style]="item.user.styling | safeStyle">{{item.user.nickname}}</span>
+                            </a>
+                            <br />
+                            Joined at {{timeAgo(item.user.createdAt)}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </app-content>
+        <app-pagination [paginationModel]="pagination"></app-pagination>
+    </div>
+    <div class="cell small-12 medium-3">
+        <app-title [title]="'Filters'" [tabs]="tabs" (onTabClick)="onSearch()"></app-title>
+        <app-content>
+            <em>Clicking enter in any field will also trigger the search</em>
+            <div>
+                <label>What are you looking for?</label>
+                <select [(ngModel)]="parameters.type" (keyup)="onKeyUp($event)">
+                    <option [value]="'threads'">Threads</option>
+                    <option [value]="'posts'">Posts</option>
+                    <option [value]="'users'">Users</option>
+                </select>
+            </div>
+            <div>
+                <label>Free Text:</label>
+                <input [(ngModel)]="parameters.text" (keyup)="onKeyUp($event)" />
+            </div>
+            <div *ngIf="parameters.type !== 'users'">
+                <label>By User:</label>
+                <input [(ngModel)]="parameters.byUser" (keyup)="onKeyUp($event)" />
+            </div>
+            <div>
+                <label>Created after:</label>
+                <input [ngModel]="parameters.from | date:'yyyy-MM-dd'" (ngModelChange)="parameters.from = $event" type="date" (keyup)="onKeyUp($event)" />
+            </div>
+            <div>
+                <label>Created before:</label>
+                <input [ngModel]="parameters.to | date:'yyyy-MM-dd'" (ngModelChange)="parameters.to = $event" type="date" (keyup)="onKeyUp($event)" />
+            </div>
+            <div>
+                <label>Order?</label>
+                <select [(ngModel)]="parameters.order" (keyup)="onKeyUp($event)">
+                    <option [value]="'desc'">Newest first</option>
+                    <option [value]="'asc'">Oldest first</option>
+                </select>
+            </div>
+        </app-content>
+    </div>
+</div>

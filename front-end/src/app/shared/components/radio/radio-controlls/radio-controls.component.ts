@@ -22,7 +22,6 @@ export class RadioControlsComponent {
         continuesInformationService: ContinuesInformationService
     ) {
         this.volume = localStorage.getItem(LOCAL_STORAGE.VOLUME);
-        console.log(this.volume);
         continuesInformationService.onContinuesInformation.subscribe(continuesInformation => {
             this._data = continuesInformation.radio;
             this._radioUrl = `${this._data.ip}:${this._data.port}/;stream.nsv`;
