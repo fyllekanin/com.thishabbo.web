@@ -161,9 +161,18 @@ class AuthController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function getUser(Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $authorization = $request->header('Authorization');
+        $parts = explode(' ', $authorization);
+        $accessToken = isset($parts) && count($parts) > 1 ? $parts[1] : '';
+        $token = Token::where('accessToken', $accessToken)->where('ip', $request->ip())->first();
+        if (!$token) {
+            return response()->json(null);
+        }
 
-        $token = Token::where('userId', $user->userId)->where('ip', $request->ip())->first();
+        $expiresAt = time() + $this->accessTokenLifetime;
+        $token = $this->updateOrSetUserToken($token->userId, $this->generateToken(), $this->generateToken(), $expiresAt, $request);
+
+        $user = User::find($token->userId);
         return response()->json([
             'adminPermissions' => self::buildAdminPermissions($user),
             'staffPermissions' => self::buildStaffPermissions($user),
@@ -298,6 +307,8 @@ class AuthController extends Controller {
      * @param $refreshToken
      * @param $expiresAt
      * @param $request
+     *
+     * @return Token
      */
     private function updateOrSetUserToken ($userId, $accessToken, $refreshToken, $expiresAt, $request) {
         Token::where('userId', $userId)
@@ -313,6 +324,7 @@ class AuthController extends Controller {
                 'expiresAt' => $expiresAt
             ]);
             $token->save();
+            return $token;
         } catch (\Exception $e) {
             $this->updateOrSetUserToken($userId, $accessToken, $refreshToken, $expiresAt, $request);
         }
