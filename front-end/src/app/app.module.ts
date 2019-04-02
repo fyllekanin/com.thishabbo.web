@@ -45,8 +45,8 @@ export function init_user(appLoadService: AppLoadService) {
     ],
     providers: [
         AppLoadService,
-        { provide: APP_INITIALIZER, useFactory: init_nav, deps: [AppLoadService], multi: true },
-        { provide: APP_INITIALIZER, useFactory: init_user, deps: [AppLoadService], multi: true }
+        { provide: APP_INITIALIZER, useFactory: init_user, deps: [AppLoadService], multi: true },
+        { provide: APP_INITIALIZER, useFactory: init_nav, deps: [AppLoadService], multi: true }
     ],
     bootstrap: [AppComponent]
 })

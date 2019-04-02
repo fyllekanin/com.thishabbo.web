@@ -5,7 +5,7 @@ export interface Coordinates {
 }
 
 export class SnakeSettings {
-    static readonly SIZE = 300;
+    static readonly SIZE = 150;
     static readonly GRID_SIZE = SnakeSettings.SIZE / 50;
 
     static setCanvasSettings(canvas: HTMLCanvasElement): void {
