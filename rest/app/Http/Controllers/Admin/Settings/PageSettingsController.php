@@ -11,6 +11,7 @@ use App\Logger;
 use App\Models\Logger\Action;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class PageSettingsController extends Controller {
     private $settingKeys;
@@ -56,7 +57,7 @@ class PageSettingsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createPage(Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $data = (object) $request->input('data');
 
         Condition::precondition(!isset($data->path) || empty($data->path), 400, 'Path can not be empty');
@@ -86,7 +87,7 @@ class PageSettingsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updatePage(Request $request, $pageId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $page = Page::find($pageId);
         $data = (object) $request->input('data');
 
@@ -118,7 +119,7 @@ class PageSettingsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deletePage(Request $request, $pageId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $page = Page::find($pageId);
 
         Condition::precondition(!$page, 404, 'No page with that ID exists');
@@ -152,7 +153,8 @@ class PageSettingsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateNavigation (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
+
         $navigation = json_encode($request->input('navigation'));
         $oldNavigation = json_decode(SettingsHelper::getSettingValue($this->settingKeys->navigation));
 

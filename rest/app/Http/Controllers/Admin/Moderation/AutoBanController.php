@@ -9,6 +9,7 @@ use App\Logger;
 use App\Models\Logger\Action;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class AutoBanController extends Controller {
 
@@ -68,7 +69,7 @@ class AutoBanController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createAutoBan(Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $autoBan = (object) $request->input('autoBan');
         $this->validateAutoBanInput($autoBan);
 
@@ -93,7 +94,7 @@ class AutoBanController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateAutoBan(Request $request, $autoBanId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $newAutoBan = (object) $request->input('autoBan');
         $autoBan = AutoBan::find($autoBanId);
         Condition::precondition(!$autoBan, 404, 'No autoban with this ID exist');
@@ -118,7 +119,7 @@ class AutoBanController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteAutoBan(Request $request, $autoBanId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $autoBan = AutoBan::find($autoBanId);
 
         Condition::precondition(!$autoBan, 404, 'No autoban with this ID exist');

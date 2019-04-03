@@ -9,6 +9,7 @@ use App\Helpers\UserHelper;
 use App\Services\ForumService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class SearchController extends Controller {
     private $TYPES = ['threads', 'posts', 'users'];
@@ -31,7 +32,7 @@ class SearchController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function getSearch(Request $request, $type, $page) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $result = null;
         switch ($type) {
             case $this->TYPES[0]:

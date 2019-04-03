@@ -9,6 +9,7 @@ use App\Logger;
 use App\Models\Logger\Action;
 use App\Services\CreditsService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class UserThcController extends Controller {
     private $creditsService;
@@ -45,7 +46,7 @@ class UserThcController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateThcRequests (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $requests = $request->input('requests');
 
         foreach ($requests as $thcRequest) {

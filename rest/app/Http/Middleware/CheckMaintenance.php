@@ -5,8 +5,8 @@ namespace App\Http\Middleware;
 use App\Helpers\ConfigHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\SettingsHelper;
-use App\Helpers\UserHelper;
 use Closure;
+use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class CheckMaintenance {
@@ -15,16 +15,17 @@ class CheckMaintenance {
         $settingKeys = ConfigHelper::getKeyConfig();
         $isMaintenance = SettingsHelper::getSettingValue($settingKeys->isMaintenance);
 
-        if ($isMaintenance && !$this->canPassMaintenance($request)) {
+        if ($isMaintenance && !$this->canPassMaintenance()) {
             throw new HttpException(503);
         }
 
         return $next($request);
     }
 
-    private function canPassMaintenance ($request) {
+    private function canPassMaintenance () {
         $adminPermissions = ConfigHelper::getAdminConfig();
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
+
         return PermissionHelper::haveAdminPermission($user->userId, $adminPermissions->canEditWebsiteSettings);
     }
 }

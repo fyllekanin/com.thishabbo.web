@@ -98,35 +98,6 @@ class UserHelper {
     }
 
     /**
-     * @param Request $request
-     *
-     * @return object
-     */
-    public static function getUserFromRequest (Request $request) {
-        $token = $request->token;
-
-        if (!$token) {
-            $authorization = $request->header('Authorization');
-            $parts = explode(' ', $authorization);
-            $accessToken = isset($parts) && count($parts) > 1 ? $parts[1] : '';
-            $token = Token::where('ip', $request->ip())
-                ->where('accessToken', $accessToken)
-                ->first();
-
-            if (!$token) {
-                return self::getUserFromId(0);
-            } else if ($token->expiresAt < time()) {
-                throw new HttpException(419);
-            }
-        }
-
-        $user = UserHelper::getUserFromId($token->userId);
-        $user->lastActivity = time();
-        $user->save();
-        return $user;
-    }
-
-    /**
      * @param $userId
      *
      * @return object
@@ -138,7 +109,9 @@ class UserHelper {
             'nickname' => 'no-one',
             'createdAt' => (object)['timestamp' => 0],
             'posts' => 0,
-            'likes' => 0
+            'likes' => 0,
+            'lastActivity' => 0,
+            'save' => function() {}
         ];
 
         if ($userId == 0) {

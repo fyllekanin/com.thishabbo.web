@@ -11,6 +11,7 @@ use App\Models\Logger\Action;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class CategoryController extends Controller {
 
@@ -57,7 +58,7 @@ class CategoryController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createBetCategory (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $betCategory = (object)$request->input('betCategory');
 
         $this->betCategoryConditionCollection($betCategory);
@@ -81,7 +82,7 @@ class CategoryController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateBetCategory (Request $request, $betCategoryId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $newBetCategory = (object)$request->input('betCategory');
 
         $betCategory = BetCategory::find($betCategoryId);
@@ -106,7 +107,7 @@ class CategoryController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteBetCategory (Request $request, $betCategoryId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $betCategory = BetCategory::find($betCategoryId);
         Condition::precondition(!$betCategory, 404, 'Bet category do not exist');
 

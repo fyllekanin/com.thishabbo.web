@@ -21,6 +21,7 @@ use App\Services\ForumService;
 use App\Services\ForumValidatorService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class InfractionController extends Controller {
     private $forumService;
@@ -85,7 +86,7 @@ class InfractionController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteInfraction(Request $request, $infractionId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $infraction = Infraction::find($infractionId);
 
         Condition::precondition(!$infraction, 404, 'No infraction with that ID exists');
@@ -105,7 +106,7 @@ class InfractionController extends Controller {
      * @throws \Illuminate\Validation\ValidationException
      */
     public function createInfraction(Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $data = (object) $request->input('infraction');
         $this->validateInfraction($data);
 

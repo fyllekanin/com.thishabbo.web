@@ -18,6 +18,7 @@ use App\Utils\Condition;
 use App\Utils\Iterables;
 use App\Utils\Value;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ManagementController extends Controller {
     private $settingKeys;
@@ -87,7 +88,7 @@ class ManagementController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateDoNotHire (Request $request, $nickname) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
 
         $information = (object)$request->input('information');
         $oldEntries = json_decode(SettingsHelper::getSettingValue($this->settingKeys->doNotHire));
@@ -124,7 +125,7 @@ class ManagementController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createDoNotHire (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
 
         $information = (object)$request->input('information');
         $entries = json_decode(SettingsHelper::getSettingValue($this->settingKeys->doNotHire));
@@ -149,12 +150,13 @@ class ManagementController extends Controller {
     /**
      * Delete request for do not hire entry
      *
+     * @param Request $request
      * @param $nickname
      *
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteDoNotHire (Request $request, $nickname) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $oldEntries = json_decode(SettingsHelper::getSettingValue($this->settingKeys->doNotHire));
 
         $entries = Iterables::filter($oldEntries, function($entry) use ($nickname) {
@@ -195,7 +197,7 @@ class ManagementController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createPermShow (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $booking = (object)$request->input('booking');
 
         Condition::precondition(!isset($booking), 400, 'Stupid developer');
@@ -243,7 +245,7 @@ class ManagementController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updatePermShow (Request $request, $timetableId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
 
         $booking = (object)$request->input('booking');
 
@@ -294,7 +296,7 @@ class ManagementController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deletePermShow (Request $request, $timetableId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $booking = Timetable::find($timetableId);
         Condition::precondition(!$booking, 404, 'Booking does not exist');
 

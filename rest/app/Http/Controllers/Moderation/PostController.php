@@ -16,6 +16,7 @@ use App\Services\ForumService;
 use App\Utils\Condition;
 use App\Utils\Iterables;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller {
@@ -38,7 +39,7 @@ class PostController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function mergePosts(Request $request, $threadId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $thread = Thread::find($threadId);
         $postIds = $request->input('postIds');
 
@@ -90,7 +91,7 @@ class PostController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deletePosts (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $postIds = $request->input('postIds');
 
         foreach ($postIds as $postId) {
@@ -108,7 +109,7 @@ class PostController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function approvePosts (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $postIds = $request->input('postIds');
 
         foreach ($postIds as $postId) {
@@ -147,7 +148,7 @@ class PostController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function unApprovePosts (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $postIds = $request->input('postIds');
 
         foreach ($postIds as $postId) {

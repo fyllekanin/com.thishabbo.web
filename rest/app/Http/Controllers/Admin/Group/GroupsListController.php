@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class GroupsListController extends Controller {
 
@@ -33,7 +34,7 @@ class GroupsListController extends Controller {
      * @throws \Exception
      */
     public function updateGroupsList (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         GroupList::truncate();
         $groups = $request->input('groups');
 

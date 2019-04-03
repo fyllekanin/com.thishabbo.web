@@ -5,6 +5,9 @@ namespace App\EloquentModels;
 use App\EloquentModels\Models\DeletableModel;
 use App\EloquentModels\User\UserBet;
 
+/**
+ * @property mixed betId
+ */
 class Bet extends DeletableModel {
     protected $table = 'bets';
     protected $primaryKey = 'betId';

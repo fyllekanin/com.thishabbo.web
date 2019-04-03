@@ -9,6 +9,7 @@ use App\Logger;
 use App\Models\Logger\Action;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use MatthiasMullie\Minify\CSS;
 
 class ThemeController extends Controller {
@@ -44,7 +45,7 @@ class ThemeController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createTheme(Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $newTheme = (object) $request->input('theme');
         $this->validateTheme($newTheme);
 
@@ -69,7 +70,7 @@ class ThemeController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateTheme(Request $request, $themeId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $newTheme = (object) $request->input('theme');
         $this->validateTheme($newTheme);
 
@@ -94,7 +95,7 @@ class ThemeController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteTheme(Request $request, $themeId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $theme = Theme::find($themeId);
         Condition::precondition(!$theme, 404, 'No theme with that ID');
 
@@ -112,7 +113,7 @@ class ThemeController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function makeThemeDefault(Request $request, $themeId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $theme = Theme::find($themeId);
         Condition::precondition(!$theme, 404, 'No theme with that ID');
 
@@ -130,7 +131,7 @@ class ThemeController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function clearDefault(Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
 
         Theme::where('isDefault', true)->update(['isDefault' => 0 ]);
 

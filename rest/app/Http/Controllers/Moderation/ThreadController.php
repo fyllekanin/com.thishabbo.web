@@ -15,6 +15,7 @@ use App\Models\Logger\Action;
 use App\Services\ForumService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use App\Utils\Iterables;
 
@@ -38,7 +39,7 @@ class ThreadController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function moveThreads(Request$request, $categoryId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $threadIds = $request->input('threadIds');
         Condition::precondition(count($threadIds) < 1, 400, 'No threads selected!');
         $category = Category::find($categoryId);
@@ -89,7 +90,7 @@ class ThreadController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function changeOwner(Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $threadIds = $request->input('threadIds');
 
         $forumPermissions = ConfigHelper::getForumConfig();
@@ -161,7 +162,7 @@ class ThreadController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function closeThread(Request $request, $threadId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $thread = Thread::find($threadId);
 
         Condition::precondition(!$thread, 404, 'Thread do not exist');
@@ -185,7 +186,7 @@ class ThreadController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function openThread(Request $request, $threadId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $thread = Thread::find($threadId);
 
         Condition::precondition(!$thread, 404, 'Thread do not exist');
@@ -211,7 +212,7 @@ class ThreadController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function stickyThread (Request $request, $threadId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $thread = Thread::find($threadId);
         Condition::precondition(!$thread, 404, 'Thread does not exist');
         PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumConfig()->canStickyThread, $thread->categoryId,
@@ -233,7 +234,7 @@ class ThreadController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function unstickyThread (Request $request, $threadId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $thread = Thread::find($threadId);
         Condition::precondition(!$thread, 404, 'Thread does not exist');
         PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumConfig()->canStickyThread, $thread->categoryId,
@@ -255,7 +256,7 @@ class ThreadController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function unapproveThread (Request $request, $threadId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $thread = Thread::find($threadId);
         Condition::precondition(!$thread, 404, 'Thread does not exist!');
         Condition::precondition(!$thread->isApproved, 400, 'Thread is already unapproved');
@@ -287,7 +288,7 @@ class ThreadController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function approveThread (Request $request, $threadId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $thread = Thread::find($threadId);
         Condition::precondition(!$thread, 404, 'Thread does not exist!');
         Condition::precondition($thread->isApproved, 400, 'Thread is already approved');
@@ -319,7 +320,7 @@ class ThreadController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteThread (Request $request, $threadId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $thread = Thread::find($threadId);
 
         Condition::precondition(!$thread, 404, 'Thread does not exist!');

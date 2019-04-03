@@ -12,6 +12,7 @@ use App\Services\ForumService;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class InfractionLevelsController extends Controller {
     private $forumService;
@@ -41,13 +42,12 @@ class InfractionLevelsController extends Controller {
     }
 
     /**
-     * @param Request $request
      * @param         $infractionLevelId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getInfractionLevel(Request $request, $infractionLevelId) {
-        $user = UserHelper::getUserFromRequest($request);
+    public function getInfractionLevel($infractionLevelId) {
+        $user = Cache::get('auth');
         $infractionLevel = InfractionLevel::find($infractionLevelId);
         $isNew = $infractionLevelId == 'new';
 
@@ -74,7 +74,7 @@ class InfractionLevelsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateInfractionLevel(Request $request, $infractionLevelId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $newInfractionLevel = (object) $request->input('infractionLevel');
         $infractionLevel = InfractionLevel::find($infractionLevelId);
         Condition::precondition(!$infractionLevel, 404, 'No infraction level with that ID exists');
@@ -101,7 +101,7 @@ class InfractionLevelsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteInfractionLevel(Request $request, $infractionLevelId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
 
         $infractionLevel = InfractionLevel::find($infractionLevelId);
         Condition::precondition(!$infractionLevel, 404, 'No infraction level with this ID exists');
@@ -121,7 +121,7 @@ class InfractionLevelsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createInfractionLevel(Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $newInfractionLevel = (object) $request->input('infractionLevel');
         $this->validateInfractionLevel($newInfractionLevel);
 

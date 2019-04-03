@@ -16,7 +16,9 @@ use App\Services\AuthService;
 use App\Services\HabboService;
 use App\Services\BotService;
 use App\Utils\Condition;
+use App\Utils\RequestUtil;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -53,12 +55,10 @@ class AuthController extends Controller {
     }
 
     /**
-     * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function acceptGdpr(Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+    public function acceptGdpr() {
+        $user = Cache::get('auth');
 
         $user->gdpr = 1;
         $user->save();
@@ -120,10 +120,8 @@ class AuthController extends Controller {
      */
     public function refresh (Request $request) {
         $refreshToken = $request->header('RefreshAuthorization');
-        $authorization = $request->header('Authorization');
-        $parts = explode(' ', $authorization);
-        Condition::precondition(count($parts) < 2, 400);
-        $accessToken = $parts[1];
+        $accessToken = RequestUtil::getAccessToken($request);
+        Condition::precondition(!$accessToken, 400);
 
         $token = Token::where('accessToken', $accessToken)
             ->where('ip', $request->ip())
@@ -161,7 +159,7 @@ class AuthController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function getUser(Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
 
         $token = Token::where('userId', $user->userId)->where('ip', $request->ip())->first();
         return response()->json([
@@ -187,12 +185,7 @@ class AuthController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function logout (Request $request) {
-        $authorization = $request->header('Authorization');
-        $parts = explode(' ', $authorization);
-        if (count($parts) < 2) {
-            return response()->json(['status' => 'success']);
-        }
-        $accessToken = $parts[1];
+        $accessToken = RequestUtil::getAccessToken($request);
         $token = Token::where('accessToken', $accessToken)->where('ip', $request->ip())->first();
 
         if (!$token) {

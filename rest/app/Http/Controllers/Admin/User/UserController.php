@@ -13,6 +13,7 @@ use App\Services\AuthService;
 use App\Utils\Condition;
 use App\Utils\Iterables;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use App\EloquentModels\Forum\Thread;
 use App\EloquentModels\Forum\Post;
@@ -41,7 +42,7 @@ class UserController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function mergeUsers (Request $request, $srcNickname, $destNickname) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
 
         Condition::precondition(!PermissionHelper::haveAdminPermission($user->userId, ConfigHelper::getAdminConfig()->canMergeUsers), 400, 'You do not have permission!');
 
@@ -86,7 +87,7 @@ class UserController extends Controller {
     public function getUsers (Request $request, $page) {
         $nickname = $request->input('nickname');
         $habbo = $request->input('habbo');
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
 
         $getUserSql = User::select('nickname', 'userId', 'updatedAt', 'habbo')
             ->orderBy('nickname', 'ASC');
@@ -117,13 +118,12 @@ class UserController extends Controller {
     /**
      * Get request to fetch the given user
      *
-     * @param Request $request
      * @param         $userId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getUserBasic (Request $request, $userId) {
-        $user = UserHelper::getUserFromRequest($request);
+    public function getUserBasic ($userId) {
+        $user = Cache::get('auth');
         $current = UserHelper::getUserFromId($userId);
 
         Condition::precondition(!UserHelper::canManageUser($user, $userId),
@@ -147,7 +147,7 @@ class UserController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateUserBasic (Request $request, $userId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $current = User::find($userId);
         $newUser = (object)$request->input('user');
 

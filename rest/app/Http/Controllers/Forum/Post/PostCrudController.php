@@ -22,6 +22,7 @@ use App\Services\ForumValidatorService;
 use App\Utils\BBcodeUtil;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class PostCrudController extends Controller {
@@ -41,13 +42,12 @@ class PostCrudController extends Controller {
     }
 
     /**
-     * @param Request $request
      * @param         $page
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getLatestPosts(Request $request, $page) {
-        $user = UserHelper::getUserFromRequest($request);
+    public function getLatestPosts($page) {
+        $user = Cache::get('auth');
 
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
         $ignoredCategoryIds = array_merge(IgnoredCategory::where('userId', $user->userId)->pluck('categoryId')->toArray(),
@@ -66,13 +66,12 @@ class PostCrudController extends Controller {
     }
 
     /**
-     * @param Request $request
      * @param         $postId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getEditHistory(Request $request, $postId) {
-        $user = UserHelper::getUserFromRequest($request);
+    public function getEditHistory($postId) {
+        $user = Cache::get('auth');
         $forumPermissions = ConfigHelper::getForumConfig();
         $post = Post::find($postId);
 
@@ -107,7 +106,7 @@ class PostCrudController extends Controller {
      * @throws \Illuminate\Validation\ValidationException
      */
     public function createReportPost(Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $postId = $request->input('postId');
         $message = $request->input('message');
 
@@ -148,7 +147,7 @@ class PostCrudController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updatePost (Request $request, $postId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $postModel = (object)$request->input('post');
 
         $post = Post::where('postId', $postId)->first();
@@ -188,7 +187,7 @@ class PostCrudController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createPost (Request $request, $threadId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $content = $request->input('content');
         $toggleThread = $request->input('toggleThread');
         $contentNeedApproval = PermissionHelper::haveGroupOption($user->userId, ConfigHelper::getGroupOptionsConfig()->contentNeedApproval);
