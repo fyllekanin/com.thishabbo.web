@@ -20,6 +20,7 @@ use App\Services\CreditsService;
 use App\Services\HabboService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 
 class AccountController extends Controller {
@@ -48,8 +49,8 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getThemes(Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+    public function getThemes() {
+        $user = Cache::get('auth');
 
         return response()->json(Theme::get()->map(function($item) use ($user) {
             return [
@@ -63,13 +64,12 @@ class AccountController extends Controller {
 
     /**
      * @param Request $request
-     * @param $themeId
      *
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateTheme(Request $request) {
         $themeId = $request->input('themeId');
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $theme = Theme::find($themeId);
         Condition::precondition(!$theme, 404, 'No theme with that ID');
 
@@ -83,12 +83,10 @@ class AccountController extends Controller {
     /**
      * Get request for fetching users current verified habbo
      *
-     * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getHabbo (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+    public function getHabbo () {
+        $user = Cache::get('auth');
         return response()->json([
             'habbo' => $user->habbo
         ]);
@@ -103,7 +101,7 @@ class AccountController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateHabbo (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $requiredMotto = 'thishabbo-' . $user->userId;
 
         $name = $request->input('habbo');
@@ -130,7 +128,7 @@ class AccountController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateNickname(Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $nickname = $request->input('nickname');
         $oneWeek = 604800;
         $oneMonth = 2419200;
@@ -165,36 +163,30 @@ class AccountController extends Controller {
     }
 
     /**
-     * @param Request $request
-     *
      * @return mixed
      */
-    public function getIgnoredThreads(Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+    public function getIgnoredThreads() {
+        $user = Cache::get('auth');
         return IgnoredThread::where('userId', $user->userId)->get()->map(function($ignoredThread) {
             return [ 'threadId' => $ignoredThread->threadId, 'title' => $ignoredThread->thread->title ];
         });
     }
 
     /**
-     * @param Request $request
-     *
      * @return mixed
      */
-    public function getIgnoredCategories(Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+    public function getIgnoredCategories() {
+        $user = Cache::get('auth');
         return IgnoredCategory::where('userId', $user->userId)->get()->map(function($ignoredCategory) {
             return [ 'categoryId' => $ignoredCategory->categoryId, 'title' => $ignoredCategory->category->title ];
         });
     }
 
     /**
-     * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getNotificationSettings (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+    public function getNotificationSettings () {
+        $user = Cache::get('auth');
 
         return response()->json($this->buildIgnoredNotificationTypes($user));
     }
@@ -205,7 +197,7 @@ class AccountController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateNotificationSettings (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $ignoredNotifications = $this->convertIgnoredNotificationTypes($request->input('ignoredNotificationTypes'));
 
         $user->ignoredNotifications = $ignoredNotifications;
@@ -221,7 +213,7 @@ class AccountController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateHomePage (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $homePage = $request->input('homePage');
 
         $userData = UserHelper::getUserDataOrCreate($user->userId);
@@ -241,7 +233,7 @@ class AccountController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updatePassword (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $password = $request->input('password');
         $repassword = $request->input('repassword');
         $currentPassword = $request->input('currentPassword');
@@ -262,14 +254,12 @@ class AccountController extends Controller {
     }
 
     /**
-     * Get request for fetching users current post bit options
-     *
-     * @param Request $request
+     * Get request for fetching users current post bit option
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPostBit (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+    public function getPostBit () {
+        $user = Cache::get('auth');
 
         return response()->json($this->buildPostBitOptions($user));
     }
@@ -282,7 +272,7 @@ class AccountController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updatePostBit (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $postBitOptions = $request->input('postBitOptions');
         $userData = UserHelper::getUserDataOrCreate($user->userId);
 
@@ -294,12 +284,10 @@ class AccountController extends Controller {
     }
 
     /**
-     * @param Request $request
-     *
      * @return mixed
      */
-    public function getThreadSubscriptions (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+    public function getThreadSubscriptions () {
+        $user = Cache::get('auth');
 
         return ThreadSubscription::where('userId', $user->userId)->get()->map(function($subscription) {
             return [
@@ -310,12 +298,10 @@ class AccountController extends Controller {
     }
 
     /**
-     * @param Request $request
-     *
      * @return mixed
      */
-    public function getCategorySubscriptions (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+    public function getCategorySubscriptions () {
+        $user = Cache::get('auth');
 
         return CategorySubscription::where('userId', $user->userId)->get()->map(function($subscription) {
             return [

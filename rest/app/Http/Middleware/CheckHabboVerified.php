@@ -1,8 +1,10 @@
 <?php
 namespace App\Http\Middleware;
-use App\EloquentModels\User\User;
+
 use App\Utils\Condition;
 use Closure;
+use Illuminate\Support\Facades\Cache;
+
 class CheckHabboVerified {
     /**
      * Handle an incoming request.
@@ -13,7 +15,7 @@ class CheckHabboVerified {
      */
     public function handle($request, Closure $next)
     {
-        $user = User::find($request->token->userId);
+        $user = Cache::get('auth');
         Condition::precondition(!$user->habbo, 400, 'You need to verify habbo');
         return $next($request);
     }

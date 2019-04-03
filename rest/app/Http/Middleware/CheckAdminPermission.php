@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 
 use App\Helpers\PermissionHelper;
+use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class CheckAdminPermission {
@@ -18,9 +19,10 @@ class CheckAdminPermission {
      */
     public function handle($request, Closure $next, $permission)
     {
+        $user = Cache::get('auth');
         $haveAccess = strpos($permission, '|') !== false ?
-            $this->anyGroupHaveAcess($request, $permission) :
-            PermissionHelper::haveAdminPermission($request->token->userId, $permission);
+            $this->anyGroupHaveAccess($user, $permission) :
+            PermissionHelper::haveAdminPermission($user->userId, $permission);
 
         if (!$haveAccess) {
             throw new HttpException(403);
@@ -28,10 +30,10 @@ class CheckAdminPermission {
         return $next($request);
     }
 
-    private function anyGroupHaveAcess($request, $permission) {
+    private function anyGroupHaveAccess($user, $permission) {
         $permissions = explode('|', $permission);
         foreach ($permissions as $permission) {
-            if (PermissionHelper::haveAdminPermission($request->token->userId, $permission)) {
+            if (PermissionHelper::haveAdminPermission($user->userId, $permission)) {
                 return true;
             }
         }

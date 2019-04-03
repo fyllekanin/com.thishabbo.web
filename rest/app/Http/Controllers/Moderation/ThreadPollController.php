@@ -15,6 +15,7 @@ use App\Models\Logger\Action;
 use App\Services\ForumService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ThreadPollController extends Controller {
     private $forumService;
@@ -30,13 +31,12 @@ class ThreadPollController extends Controller {
     }
 
     /**
-     * @param Request $request
      * @param         $threadId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPoll(Request $request, $threadId) {
-        $user = UserHelper::getUserFromRequest($request);
+    public function getPoll($threadId) {
+        $user = Cache::get('auth');
         $thread = Thread::find($threadId);
         $permission = ConfigHelper::getForumConfig()->canManagePolls;
 
@@ -69,7 +69,7 @@ class ThreadPollController extends Controller {
      */
     public function getPolls(Request $request, $page) {
         $filter = $request->input('filter');
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId, ConfigHelper::getForumConfig()->canManagePolls);
         $threadIds = Thread::whereIn('categoryId', $categoryIds)->pluck('threadId');
 
@@ -105,7 +105,7 @@ class ThreadPollController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deletePoll (Request $request, $threadId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $thread = Thread::find($threadId);
         $threadPoll = ThreadPoll::where('threadId', $thread->threadId)->first();
 

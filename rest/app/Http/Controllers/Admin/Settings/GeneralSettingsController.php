@@ -13,6 +13,7 @@ use App\Services\ForumService;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class GeneralSettingsController extends Controller {
     private $welcomeBotKeys = [];
@@ -62,7 +63,7 @@ class GeneralSettingsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createSiteMessage(Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $data = (object) $request->input('data');
 
         Condition::precondition(!isset($data->title) || empty($data->title), 400,
@@ -93,7 +94,7 @@ class GeneralSettingsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateSiteMessage(Request $request, $siteMessageId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $siteMessage = SiteMessage::find($siteMessageId);
         $data = (object) $request->input('data');
 
@@ -124,7 +125,7 @@ class GeneralSettingsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteSiteMessage(Request $request, $siteMessageId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $siteMessage = SiteMessage::find($siteMessageId);
 
         $siteMessage->isDeleted = true;
@@ -155,7 +156,7 @@ class GeneralSettingsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateNavigation (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $navigation = json_encode($request->input('navigation'));
         $oldNavigation = json_decode(SettingsHelper::getSettingValue($this->settingKeys->navigation));
 
@@ -186,7 +187,7 @@ class GeneralSettingsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateMaintenance (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $maintenance = (object)$request->input('maintenance');
 
         SettingsHelper::createOrUpdateSetting($this->settingKeys->maintenanceContent, $maintenance->content);

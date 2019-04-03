@@ -11,16 +11,15 @@ use App\Utils\BBcodeUtil;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ProfileController extends Controller {
 
     /**
-     * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getSocialNetworks (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+    public function getSocialNetworks () {
+        $user = Cache::get('auth');
         $userData = UserHelper::getUserDataOrCreate($user->userId);
 
         return response()->json([
@@ -33,7 +32,7 @@ class ProfileController extends Controller {
      * @param Request $request
      */
     public function updateSocialNetworks (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $twitter = $request->input('twitter');
         $discord = $request->input('discord');
 
@@ -54,12 +53,10 @@ class ProfileController extends Controller {
      * Get request for getting the maximum size of avatar the
      * requested user can use.
      *
-     * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getAvatarSize (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+    public function getAvatarSize () {
+        $user = Cache::get('auth');
         $avatarHeight = $this->getMaxAvatarHeight($user);
         $avatarWidth = $this->getMaxAvatarWidth($user);
 
@@ -76,7 +73,7 @@ class ProfileController extends Controller {
      * @throws \Illuminate\Validation\ValidationException
      */
     public function updateCover (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $cover = $request->file('cover');
 
         $this->validate($request, [
@@ -101,7 +98,7 @@ class ProfileController extends Controller {
      * @throws \Illuminate\Validation\ValidationException
      */
     public function updateAvatar (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $avatar = $request->file('avatar');
         $avatarHeight = $this->getMaxAvatarHeight($user);
         $avatarWidth = $this->getMaxAvatarWidth($user);
@@ -124,12 +121,10 @@ class ProfileController extends Controller {
     /**
      * Get request to fetch the users current signature
      *
-     * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getSignature (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+    public function getSignature () {
+        $user = Cache::get('auth');
         $userdata = UserData::where('userId', $user->userId)->first();
 
         return response()->json([
@@ -146,7 +141,7 @@ class ProfileController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateSignature (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $signature = $request->input('signature');
 
         $userData = UserHelper::getUserDataOrCreate($user->userId);

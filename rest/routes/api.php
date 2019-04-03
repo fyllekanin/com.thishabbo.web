@@ -50,7 +50,7 @@ Route::group(['middleware' => ['maintenance']], function () {
 
     Route::get('puller/notifications/unread/{createdAfter}', 'Puller\NotificationController@getUnreadNotifications');
 
-    Route::group(['middleware' => ['token.check']], function () {
+    Route::group(['middleware' => ['auth.check']], function () {
         Route::get('/auth/user', 'Auth\AuthController@getUser');
         Route::post('/radio/like', 'Staff\RadioController@createDjLike');
 

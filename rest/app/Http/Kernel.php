@@ -3,11 +3,13 @@
 namespace App\Http;
 
 use App\Http\Middleware\CheckAdminPermission;
+use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\CheckHabboVerified;
 use App\Http\Middleware\CheckMaintenance;
 use App\Http\Middleware\CheckSpam;
 use App\Http\Middleware\CheckStaffPermission;
 use App\Http\Middleware\CheckToken;
+use App\Http\Middleware\CheckUser;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustProxies;
@@ -59,10 +61,11 @@ class Kernel extends HttpKernel
         'guest' => RedirectIfAuthenticated::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'token.check' => CheckToken::class,
         'admin_permission.check' => CheckAdminPermission::class,
         'staff_permission.check' => CheckStaffPermission::class,
         'maintenance' => CheckMaintenance::class,
-        'habbo_verify.check' => CheckHabboVerified::class
+        'habbo_verify.check' => CheckHabboVerified::class,
+        'user.check' => CheckUser::class,
+        'auth.check' => CheckAuth::class
     ];
 }

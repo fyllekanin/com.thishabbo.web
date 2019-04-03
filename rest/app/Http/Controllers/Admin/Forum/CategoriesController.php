@@ -14,6 +14,7 @@ use App\Services\ForumService;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class CategoriesController extends Controller {
     private $forumService;
@@ -31,7 +32,7 @@ class CategoriesController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateCategoryOrders (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $orders = $request->input('updates');
 
         foreach ($orders as $order) {
@@ -57,7 +58,7 @@ class CategoriesController extends Controller {
         $newCategory->template = Value::objectProperty($newCategory, 'template', ConfigHelper::getCategoryTemplatesConfig()->DEFAULT);
 
         $parent = Category::find($newCategory->parentId);
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
 
         $cantAddChildren = $newCategory->parentId > 0 && !PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canRead, $parent->categoryId);
         Condition::precondition($newCategory->parentId > 0 && !$parent, 400, 'Invalid parent');
@@ -96,7 +97,7 @@ class CategoriesController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteCategory (Request $request, $categoryId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $category = Category::find($categoryId);
 
         PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumConfig()->canRead, $categoryId,
@@ -123,7 +124,7 @@ class CategoriesController extends Controller {
         $newCategory = (object)$request->category;
         $category = Category::find($categoryId);
         $parent = Category::find($newCategory->parentId);
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
 
         Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canRead, $categoryId), 400, 'You do not have access to this category');
         Condition::precondition($newCategory->parentId > 0 && !$parent, 400, 'Invalid parent');
@@ -163,14 +164,13 @@ class CategoriesController extends Controller {
     /**
      * Get request to get given category
      *
-     * @param Request $request
      * @param         $categoryId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getCategory (Request $request, $categoryId) {
+    public function getCategory ($categoryId) {
         $category = Category::find($categoryId);
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $category = $categoryId == 'new' ? new \stdClass() : $category;
 
         Condition::precondition(!$category, 404, 'Category does not exist');
@@ -185,12 +185,10 @@ class CategoriesController extends Controller {
     /**
      * Get request to get all available categories
      *
-     * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getCategories (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+    public function getCategories () {
+        $user = Cache::get('auth');
 
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
 

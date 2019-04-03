@@ -13,6 +13,7 @@ use App\Models\Logger\Action;
 use App\Models\Notification\Type;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class BadgesController extends Controller {
@@ -47,7 +48,7 @@ class BadgesController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateUsersWithBadge (Request $request, $badgeId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $badge = Badge::find($badgeId);
         $userIds = $request->input('userIds');
 
@@ -70,7 +71,7 @@ class BadgesController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteBadge (Request $request, $badgeId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $badge = Badge::find($badgeId);
 
         Condition::precondition(!$badge, 404, 'Badge does not exist');
@@ -93,7 +94,7 @@ class BadgesController extends Controller {
      * @throws \Illuminate\Validation\ValidationException
      */
     public function createBadge (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $badge = (object)json_decode($request->input('badge'));
         $badgeImage = $request->file('badgeImage');
 
@@ -131,7 +132,7 @@ class BadgesController extends Controller {
      * @throws \Illuminate\Validation\ValidationException
      */
     public function updateBadge (Request $request, $badgeId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $newBadge = (object)json_decode($request->input('badge'));
         $badgeImage = $request->file('badgeImage');
 

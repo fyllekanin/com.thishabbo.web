@@ -5,6 +5,9 @@ namespace App\EloquentModels;
 use App\EloquentModels\Models\DeletableModel;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * @property mixed badgeId
+ */
 class Badge extends DeletableModel {
     protected $primaryKey = 'badgeId';
     protected $fillable = ['name', 'description', 'points', 'isSystem'];

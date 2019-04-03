@@ -5,6 +5,9 @@ namespace App\EloquentModels\Forum;
 use App\EloquentModels\Models\DeletableModel;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * @property mixed prefixId
+ */
 class Prefix extends DeletableModel {
     protected $table = 'prefixes';
     protected $primaryKey = 'prefixId';

@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 
 use App\Helpers\PermissionHelper;
+use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class CheckStaffPermission {
@@ -18,7 +19,8 @@ class CheckStaffPermission {
      */
     public function handle($request, Closure $next, $permission)
     {
-        if (!PermissionHelper::haveStaffPermission($request->token->userId, $permission)) {
+        $user = Cache::get('auth');
+        if (!PermissionHelper::haveStaffPermission($user->userId, $permission)) {
             throw new HttpException(403);
         }
         return $next($request);

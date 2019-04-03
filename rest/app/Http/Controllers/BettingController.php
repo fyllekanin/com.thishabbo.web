@@ -11,6 +11,7 @@ use App\Models\Logger\Action;
 use App\Services\CreditsService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class BettingController extends Controller {
     private $creditsService;
@@ -25,17 +26,24 @@ class BettingController extends Controller {
         $this->creditsService = $creditsService;
     }
 
-
-    public function getRoulette (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getRoulette () {
+        $user = Cache::get('auth');
 
         return response()->json([
             'stats' => $this->getStats($user)
         ]);
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function createRoulette (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $color = $request->input('color');
         $amount = $request->input('amount');
 
@@ -88,7 +96,7 @@ class BettingController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createPlaceBet (Request $request, $betId) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
         $amount = $request->input('amount');
         $bet = Bet::find($betId);
 
@@ -115,23 +123,19 @@ class BettingController extends Controller {
     }
 
     /**
-     * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getBettingStats (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+    public function getBettingStats () {
+        $user = Cache::get('auth');
 
         return response()->json($this->getStats($user));
     }
 
     /**
-     * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getDashboardPage (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+    public function getDashboardPage () {
+        $user = Cache::get('auth');
 
         return response()->json([
             'stats' => $this->getStats($user),
@@ -141,12 +145,10 @@ class BettingController extends Controller {
     }
 
     /**
-     * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getMyActiveBets (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+    public function getMyActiveBets () {
+        $user = Cache::get('auth');
 
         $bets = UserBet::where('userId', $user->userId)
             ->join('bets', 'bets.betId', '=', 'user_bets.betId')
@@ -168,14 +170,12 @@ class BettingController extends Controller {
     }
 
     /**
-     * @param Request $request
-     *
      * @param         $page
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getHistoryPage (Request $request, $page) {
-        $user = UserHelper::getUserFromRequest($request);
+    public function getHistoryPage ($page) {
+        $user = Cache::get('auth');
 
         $betsSql = UserBet::where('userId', $user->userId)
             ->take($this->perPage)

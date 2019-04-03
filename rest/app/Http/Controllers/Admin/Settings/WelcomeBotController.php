@@ -16,6 +16,7 @@ use App\Utils\Condition;
 use App\Utils\Iterables;
 use App\Utils\Value;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class WelcomeBotController extends Controller {
     private $welcomeBotKeys = [];
@@ -48,7 +49,7 @@ class WelcomeBotController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateWelcomeBotSettings (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+        $user = Cache::get('auth');
 
         foreach ($this->welcomeBotKeys as $key) {
             switch ($key) {
@@ -75,12 +76,10 @@ class WelcomeBotController extends Controller {
     /**
      * Get request to get the current settings of the welcome bot
      *
-     * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getWelcomeBotSettings (Request $request) {
-        $user = UserHelper::getUserFromRequest($request);
+    public function getWelcomeBotSettings () {
+        $user = Cache::get('auth');
 
         $availableCategories = $this->forumService->getAccessibleCategories($user->userId);
         $categories = Category::whereIn('categoryId', $availableCategories)

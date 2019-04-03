@@ -6,6 +6,9 @@ use App\EloquentModels\Models\DeletableModel;
 use App\Helpers\UserHelper;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * @property mixed timetableId
+ */
 class Timetable extends DeletableModel {
 
     protected $table = 'timetable';
