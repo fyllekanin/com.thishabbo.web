@@ -271,7 +271,7 @@ class ThreadCrudController extends Controller {
         $thread->poll =$this->getThreadPoll($thread->threadId, $user->userId);
         $thread->isIgnored = IgnoredThread::where('userId', $user->userId)->where('threadId', $thread->threadId)->count() > 0;
         $thread->readers = ThreadRead::where('threadId', $thread->threadId)->take(20)->orderBy('updatedAt', 'DESC')
-            ->get(['userId', 'createdAt'])->map(function($read) {
+            ->get(['userId', 'updatedAt'])->map(function($read) {
                 return [
                     'user' => UserHelper::getSlimUser($read->userId),
                     'time' => $read->updatedAt->timestamp
