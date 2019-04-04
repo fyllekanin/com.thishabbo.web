@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class CheckUser {
-    private $REFRESH_ROUTE = '/api/auth/refresh';
+    private $refreshRoute = '/api/auth/refresh';
 
     /**
      * Handle an incoming request.
@@ -26,7 +26,7 @@ class CheckUser {
             ->where('accessToken', $accessToken)
             ->first();
 
-        if ($token && $request->pathinfo != $this->REFRESH_ROUTE && $token->expiresAt < time()) {
+        if ($token && $request->pathinfo != $this->refreshRoute && $token->expiresAt < time()) {
             throw new HttpException(419);
         }
 
