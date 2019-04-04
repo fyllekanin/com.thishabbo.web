@@ -149,9 +149,9 @@ export class PermShowComponent extends Page implements OnDestroy {
         this._permShow.day = TimeHelper.getConvertedDay(this._permShow.hour, this._permShow.day);
 
         const tabs = [
-            { title: 'Cancel', value: PermShowActions.CANCEL, condition: true },
+            { title: 'Save', value: PermShowActions.SAVE, condition: true },
             { title: 'Delete', value: PermShowActions.DELETE, condition: this._permShow.createdAt },
-            { title: 'Save', value: PermShowActions.SAVE, condition: true }
+            { title: 'Cancel', value: PermShowActions.CANCEL, condition: true }
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));

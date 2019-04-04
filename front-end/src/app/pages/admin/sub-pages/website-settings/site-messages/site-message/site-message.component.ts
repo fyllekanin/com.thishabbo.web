@@ -78,9 +78,9 @@ export class SiteMessageComponent extends Page implements OnDestroy {
 
     private setTabs(): void {
         const tabs = [
-            { title: 'Cancel', link: '/admin/website-settings/site-messages', condition: true },
+            { title: 'Save', value: SiteMessagesActions.SAVE, condition: true },
             { title: 'Delete', value: SiteMessagesActions.DELETE, condition: this._data.createdAt },
-            { title: 'Save', value: SiteMessagesActions.SAVE, condition: true }
+            { title: 'Cancel', link: '/admin/website-settings/site-messages', condition: true }
         ];
 
         this.tabs = tabs.filter(item => item.condition).map(item => new TitleTab(item));
