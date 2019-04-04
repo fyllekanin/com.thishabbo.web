@@ -129,9 +129,9 @@ export class BBcodeComponent extends Page implements OnDestroy {
         this._bbcode = data.data;
 
         const tabs = [
-            { title: 'Cancel', value: BBcodeActions.CANCEL, condition: true },
+            { title: 'Save', value: BBcodeActions.SAVE, condition: true },
             { title: 'Delete', value: BBcodeActions.DELETE, condition: this._bbcode.createdAt },
-            { title: 'Save', value: BBcodeActions.SAVE, condition: true }
+            { title: 'Cancel', value: BBcodeActions.CANCEL, condition: true }
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));

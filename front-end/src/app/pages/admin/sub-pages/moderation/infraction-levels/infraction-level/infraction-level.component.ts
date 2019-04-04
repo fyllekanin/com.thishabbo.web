@@ -120,9 +120,9 @@ export class InfractionLevelComponent extends Page implements OnDestroy {
         this._page = data.data;
 
         const tabs = [
-            { title: 'Cancel', value: InfractionLevelActions.CANCEL, condition: true },
+            { title: 'Save', value: InfractionLevelActions.SAVE, condition: true },
             { title: 'Delete', value: InfractionLevelActions.DELETE, condition: this._page.createdAt },
-            { title: 'Save', value: InfractionLevelActions.SAVE, condition: true }
+            { title: 'Cancel', value: InfractionLevelActions.CANCEL, condition: true }
         ];
 
         this.setSelectableItems();

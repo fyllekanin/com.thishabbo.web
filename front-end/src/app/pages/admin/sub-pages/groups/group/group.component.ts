@@ -138,9 +138,9 @@ export class GroupComponent extends Page implements OnDestroy {
         this._group = data.data;
 
         const tabs = [
-            { title: 'Cancel', value: GroupActions.CANCEL, condition: true },
+            { title: 'Save', value: GroupActions.SAVE, condition: true },
             { title: 'Delete', value: GroupActions.DELETE, condition: this._group.createdAt },
-            { title: 'Save', value: GroupActions.SAVE, condition: true }
+            { title: 'Cancel', value: GroupActions.CANCEL, condition: true }
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));

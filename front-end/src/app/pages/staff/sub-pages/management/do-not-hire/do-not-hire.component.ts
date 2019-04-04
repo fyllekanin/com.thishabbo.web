@@ -133,9 +133,9 @@ export class DoNotHireComponent extends Page implements OnDestroy {
         this._data = data.data;
 
         const tabs = [
-            { title: 'Cancel', value: DoNotHireActions.CANCEL, condition: true },
+            { title: 'Save', value: DoNotHireActions.SAVE, condition: true },
             { title: 'Delete', value: DoNotHireActions.DELETE, condition: this._data.createdAt },
-            { title: 'Save', value: DoNotHireActions.SAVE, condition: true }
+            { title: 'Cancel', value: DoNotHireActions.CANCEL, condition: true }
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));

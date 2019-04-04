@@ -61,7 +61,7 @@ class LogsController extends Controller {
             $log->whereIn('userId', $userIds);
         }
 
-        $total = ceil($log->count / $this->perPage);
+        $total = ceil($log->count() / $this->perPage);
         $items = $log->take($this->perPage)->skip($this->getOffset($page))->get()->map(function($item) {
             $data = null;
             try {
