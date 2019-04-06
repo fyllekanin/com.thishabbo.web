@@ -14,9 +14,7 @@
     <div class="information">
         <div class="author">
             <em class="fas fa-pencil-alt"></em> Authored by
-            <a [routerLink]="['/user/profile/', article.user.nickname]">
-                <span [style]="article.user.styling | safeStyle">{{article.user.nickname}}</span>
-            </a>
+            <app-user-link [user]="article.user"></app-user-link>
         </div>
         <div class="time">
             <em class="fas fa-clock"></em> {{time}}

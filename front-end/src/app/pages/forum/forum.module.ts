@@ -39,6 +39,7 @@ import { LatestThreadsResolver } from './services/latest-threads.resolver';
 import { LatestThreadsComponent } from './latest-threads/latest-threads.component';
 import { ThreadPostersComponent } from './thread/thread-posters/thread-posters.component';
 import { TableModule } from 'shared/components/table/table.module';
+import { UserLinkModule } from 'shared/components/user/user-link.module';
 
 @NgModule({
     imports: [
@@ -57,7 +58,8 @@ import { TableModule } from 'shared/components/table/table.module';
         SafeHtmlModule,
         SafeStyleModule,
         InfractionModule,
-        TableModule
+        TableModule,
+        UserLinkModule
     ],
     declarations: [
         ForumHomeComponent,

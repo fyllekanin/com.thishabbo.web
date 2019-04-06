@@ -13,9 +13,7 @@
                         <div class="inner-content" [innerHTML]="item.content | safeHtml"></div>
                         <div class="divider"></div>
                         <div><i class="fas fa-pencil-alt"></i> Authored by
-                            <a [routerLink]="['/user/profile/', item.user.nickname]">
-                                <span [style]="item.user.styling | safeStyle">{{item.user.nickname}}</span>
-                            </a>
+                            <app-user-link [user]="item.user"></app-user-link>
                         </div>
                         <i class="fas fa-clock"></i> {{getTime(item)}}
                     </div>

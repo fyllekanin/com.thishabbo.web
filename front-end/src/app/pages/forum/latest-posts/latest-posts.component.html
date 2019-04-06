@@ -12,9 +12,8 @@
                     </a>
                     <br />
                     By
-                    <a [routerLink]="['/user/profile/', (item.user ? item.user.nickname : '')]">
-                        <span [style]="(item.user ? item.user.styling : '') | safeStyle">{{(item.user ? item.user.nickname : '')}}</span>
-                    </a><br />
+                    <app-user-link [user]="item.user"></app-user-link>
+                    <br />
                     {{item.time}}
                 </span>
             </div>

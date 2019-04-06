@@ -18,9 +18,7 @@
         <div class="cell small-2">
             <div class="latest-post" (click)="goToLastPost()">Latest Post</div>
             <div class="nickname">
-                <a [routerLink]="['/user/profile/', thread.lastPost.user.nickname]">
-                    <span [style]="thread.lastPost.user.styling | safeStyle">{{thread.lastPost.user.nickname}}</span>
-                </a>
+                <app-user-link [user]="thread.lastPost.user"></app-user-link>
             </div>
             <div class="time-ago">{{timeAgo(thread.lastPost.createdAt)}}</div>
         </div>

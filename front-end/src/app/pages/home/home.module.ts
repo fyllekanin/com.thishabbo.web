@@ -26,6 +26,7 @@ import { SearchResolver } from './services/search.resolver';
 import { PaginationModule } from 'shared/app-views/pagination/pagination.module';
 import { GroupListComponent } from './group-list/group-list.component';
 import { GroupListResolver } from './services/group-list.resolver';
+import { UserLinkModule } from 'shared/components/user/user-link.module';
 
 @NgModule({
     imports: [
@@ -42,7 +43,8 @@ import { GroupListResolver } from './services/group-list.resolver';
         LazyLoadModule,
         SafeStyleModule,
         SafeHtmlModule,
-        PaginationModule
+        PaginationModule,
+        UserLinkModule
     ],
     declarations: [
         HomeDefaultComponent,
