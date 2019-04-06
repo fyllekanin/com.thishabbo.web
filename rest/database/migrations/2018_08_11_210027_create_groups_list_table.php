@@ -17,6 +17,7 @@ class CreateGroupsListTable extends Migration
             $table->bigIncrements('groupListId');
             $table->bigInteger('groupId');
             $table->integer('displayOrder');
+            $table->string('color');
             $table->bigInteger('createdAt');
             $table->bigInteger('updatedAt');
 

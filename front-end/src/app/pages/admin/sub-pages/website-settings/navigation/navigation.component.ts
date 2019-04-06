@@ -31,8 +31,8 @@ export class NavigationComponent extends Page implements OnDestroy {
     private _newMainItemAction = 2;
 
     tabs = [
-        new TitleTab({ title: 'Create Main Item', value: this._newMainItemAction }),
-        new TitleTab({ title: 'Save', value: this._saveAction })
+        new TitleTab({ title: 'Save', value: this._saveAction }),
+        new TitleTab({ title: 'Create Main Item', value: this._newMainItemAction })
     ];
 
     tableTabs = [

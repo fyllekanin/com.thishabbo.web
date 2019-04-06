@@ -1,0 +1,15 @@
+<div *ngFor="let group of groups">
+    <app-title [title]="group.name" [top]="group.color"></app-title>
+    <app-content>
+        <div class="grid-x align-center">
+            <div class="cell small-4 medium-2" *ngFor="let user of group.users">
+                <img appUserProfile appLazyLoad [float]="'left'" [image]="'/rest/resources/images/users/' + user.userId + '.gif'"/>
+                <span class="user-info">
+                    <a [routerLink]="['/user/profile/', user.nickname]">
+                        <span [style]="user.styling | safeStyle">{{user.nickname}}</span>
+                    </a>
+                </span>
+            </div>
+        </div>
+    </app-content>
+</div>

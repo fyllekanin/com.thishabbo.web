@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\EloquentModels\BBcode;
 use App\EloquentModels\Forum\Category;
 use App\EloquentModels\Forum\Thread;
+use App\EloquentModels\GroupList;
 use App\EloquentModels\Notice;
 use App\EloquentModels\Page;
 use App\EloquentModels\Theme;
@@ -51,6 +52,21 @@ class PageController extends Controller {
             'navigation' => is_array($navigation) ? $navigation :  [],
             'theme' => $theme ? $theme->minified : ''
         ]);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getGroupList() {
+        return response()->json(GroupList::orderBy('displayOrder', 'ASC')->get()->map(function($item) {
+            return [
+                'name' => $item->group->name,
+                'color' => $item->color,
+                'users' => $item->group->userGroup()->get()->map(function($relation) {
+                    return UserHelper::getSlimUser($relation->userId);
+                })
+            ];
+        }));
     }
 
     /**
