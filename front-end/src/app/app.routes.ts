@@ -23,7 +23,7 @@ export const appRoutes: Routes = [
     },
     {
         path: 'user',
-        loadChildren: './pages/user/user.module#UserLinkModule'
+        loadChildren: './pages/user/user.module#UserModule'
     },
     {
         path: 'arcade',
