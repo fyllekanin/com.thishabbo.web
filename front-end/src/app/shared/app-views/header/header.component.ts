@@ -47,6 +47,7 @@ export class HeaderComponent {
             return;
         }
 
+        this.text = '';
         this._router.navigateByUrl(this._router.createUrlTree(
             ['/home/search/threads/page/1'], { queryParams: { text: this.text }}
         ));
