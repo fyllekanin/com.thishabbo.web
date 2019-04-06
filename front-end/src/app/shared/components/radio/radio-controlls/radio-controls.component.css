@@ -63,6 +63,7 @@ input[type="range"]::-ms-fill-upper {
     background: #9a9393;
     color: #ffffff;
     cursor: default;
+    width: 52px;
 }
 
 .mobile-button {

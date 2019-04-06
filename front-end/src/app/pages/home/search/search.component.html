@@ -1,9 +1,9 @@
-<div class="grid-x grid-margin-x">
+<div class="grid-x margin-x">
     <div class="cell small-12 medium-9">
         <app-title [title]="'Result'"></app-title>
         <app-content>
             <div class="grid-x grid-margin-y" *ngFor="let item of items">
-                <div class="cell small-12">
+                <div class="cell small-12 search-item">
                     <img appUserProfile [info]="item.getUserProfile()" />
                     <div class="data">
                         <div *ngIf="parameters.type === 'threads'">

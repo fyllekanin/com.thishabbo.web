@@ -283,7 +283,7 @@ export class NavigationComponent extends Page implements OnDestroy {
         if (urlExists) {
             this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
                 title: 'Error',
-                message: 'The URL already exists',
+                message: 'The URL already exists!',
                 type: NotificationType.ERROR
             }));
             return false;
