@@ -26,7 +26,7 @@ class CheckUser {
             ->where('accessToken', $accessToken)
             ->first();
 
-        if ($token && $request->pathinfo != $this->refreshRoute && $token->expiresAt < time()) {
+        if ($token && $request->getPathInfo() != $this->refreshRoute && $token->expiresAt < time()) {
             throw new HttpException(419);
         }
 
