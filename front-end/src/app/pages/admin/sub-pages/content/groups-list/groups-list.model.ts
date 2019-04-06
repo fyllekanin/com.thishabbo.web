@@ -7,6 +7,8 @@ export class GroupList {
     name: string;
     @primitive()
     displayOrder = -1;
+    @primitive()
+    color = 'BLUE';
 
     constructor(source: Partial<GroupList>) {
         ClassHelper.assign(this, source);

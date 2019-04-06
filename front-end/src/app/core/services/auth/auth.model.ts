@@ -1,4 +1,5 @@
 import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
+import { IUserProfile } from 'shared/directives/user-profile.directive';
 
 export class DisplayGroup {
     @primitive()
@@ -47,6 +48,10 @@ export class SlimUser {
 
     constructor(source?: Partial<SlimUser>) {
         ClassHelper.assign(this, source);
+    }
+
+    getUserProfileInfo(): IUserProfile {
+        return { userId: this.userId, avatarUpdatedAt: this.avatarUpdatedAt };
     }
 }
 

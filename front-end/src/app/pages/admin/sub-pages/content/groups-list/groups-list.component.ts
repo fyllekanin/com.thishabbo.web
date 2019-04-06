@@ -5,8 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { GroupList } from './groups-list.model';
 import { Page } from 'shared/page/page.model';
 import { Component, ElementRef, OnDestroy } from '@angular/core';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
-import { TitleTab } from 'shared/app-views/title/title.model';
+import { GlobalNotification, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { TitleTab, TitleTopBorder } from 'shared/app-views/title/title.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { SITECP_BREADCRUMB_ITEM } from '../../../admin.constants';
 import {
@@ -18,6 +18,7 @@ import {
     TableRow
 } from 'shared/components/table/table.model';
 import { SelectItem } from 'shared/components/form/select/select.model';
+import { StringHelper } from 'shared/helpers/string.helper';
 
 
 @Component({
@@ -26,8 +27,10 @@ import { SelectItem } from 'shared/components/form/select/select.model';
 })
 export class GroupsListComponent extends Page implements OnDestroy {
     private _groupsList: Array<GroupList> = [];
+    private _possibleColors: Array<{ label: string, color: string }> = [];
 
     selectedGroup: SelectItem;
+    selectedColor: string;
     selectableGroups: Array<SelectItem> = [];
     tableConfig: TableConfig;
     tabs: Array<TitleTab> = [
@@ -43,6 +46,10 @@ export class GroupsListComponent extends Page implements OnDestroy {
     ) {
         super(elementRef);
         this.addSubscription(activatedRoute.data, this.onData.bind(this));
+        this._possibleColors = Object.keys(TitleTopBorder).map(key => ({
+            label: StringHelper.prettifyString(key),
+            color: key
+        }));
         breadcrumbService.breadcrumb = new Breadcrumb({
             current: 'Manage Staff List',
             items: [SITECP_BREADCRUMB_ITEM]
@@ -71,23 +78,33 @@ export class GroupsListComponent extends Page implements OnDestroy {
     addGroup(): void {
         const group = this._groupsList
             .filter(grp => grp.displayOrder === -1)
-            .find(grp => grp.groupId === Number(this.selectedGroup.value));
-        if (!group) {
-            return;
-        }
+            .find(grp => grp.groupId === Number(this.selectedGroup && this.selectedGroup.value));
 
         if (!group) {
             this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
                 title: 'Failure',
-                message: 'The group do not exist or is already added'
+                message: 'The group do not exist or is already added',
+                type: NotificationType.ERROR
             }));
             return;
         }
+
+        if (!this.selectedColor) {
+            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                title: 'Failure',
+                message: 'You need to select a color!',
+                type: NotificationType.ERROR
+            }));
+            return;
+        }
+
         const highestOrder = this._groupsList.reduce((prev, curr) => {
             return (prev ? prev.displayOrder : 0) > curr.displayOrder ? prev : curr;
         }, null);
         group.displayOrder = highestOrder ? highestOrder.displayOrder + 1 : 0;
+        group.color = this.selectedColor;
         this.selectedGroup = null;
+        this.selectedColor = undefined;
         this.updateSelectableGroups();
         this.createOrUpdateTable();
     }
@@ -99,6 +116,10 @@ export class GroupsListComponent extends Page implements OnDestroy {
         }
         this.updateSelectableGroups();
         this.createOrUpdateTable();
+    }
+
+    get possibleColors(): Array<{ label: string, color: string }> {
+        return this._possibleColors;
     }
 
     get addedGroups(): Array<GroupList> {
@@ -143,7 +164,8 @@ export class GroupsListComponent extends Page implements OnDestroy {
             id: String(item.groupId),
             cells: [
                 new TableCell({ title: item.name }),
-                new TableCell({ title: 'Display Order', isEditable: true, value: item.displayOrder.toString() })
+                new TableCell({ title: 'Display Order', isEditable: true, value: item.displayOrder.toString() }),
+                new TableCell({ title: StringHelper.prettifyString(item.color) })
             ],
             actions: [
                 new TableAction({ title: 'Remove' })
@@ -154,7 +176,8 @@ export class GroupsListComponent extends Page implements OnDestroy {
     private getTableHeaders(): Array<TableHeader> {
         return [
             new TableHeader({ title: 'Group' }),
-            new TableHeader({ title: 'Display Order' })
+            new TableHeader({ title: 'Display Order' }),
+            new TableHeader({ title: 'Color' })
         ];
     }
 }

@@ -24,6 +24,8 @@ import { LeaderBoardComponent } from './leader-board/leader-board.component';
 import { SearchComponent } from './search/search.component';
 import { SearchResolver } from './services/search.resolver';
 import { PaginationModule } from 'shared/app-views/pagination/pagination.module';
+import { GroupListComponent } from './group-list/group-list.component';
+import { GroupListResolver } from './services/group-list.resolver';
 
 @NgModule({
     imports: [
@@ -50,11 +52,13 @@ import { PaginationModule } from 'shared/app-views/pagination/pagination.module'
         CommunityPollComponent,
         StaffSpotlightComponent,
         LeaderBoardComponent,
-        SearchComponent
+        SearchComponent,
+        GroupListComponent
     ],
     providers: [
         HomeDefaultResolver,
-        SearchResolver
+        SearchResolver,
+        GroupListResolver
     ],
     exports: [
         RouterModule

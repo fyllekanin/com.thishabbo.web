@@ -7,6 +7,7 @@ export class StaffListPage {
     static addGroup(group: string): void {
         InputUtil.searchInSelect(element(by.css('app-form-select')), group).then(() => {
             CommonUtil.click(element(by.cssContainingText('app-form-select .values div', group)));
+            CommonUtil.click(element(by.cssContainingText('select[name="color"] option', 'Red')));
 
             CommonUtil.click(element(by.cssContainingText('button', 'Add Group')));
 

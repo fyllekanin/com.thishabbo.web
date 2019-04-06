@@ -5,6 +5,8 @@ import { Routes } from '@angular/router';
 import { LeaderBoardComponent } from './leader-board/leader-board.component';
 import { SearchComponent } from './search/search.component';
 import { SearchResolver } from './services/search.resolver';
+import { GroupListComponent } from './group-list/group-list.component';
+import { GroupListResolver } from './services/group-list.resolver';
 
 export const homeRoutes: Routes = [
     {
@@ -32,6 +34,13 @@ export const homeRoutes: Routes = [
                 runGuardsAndResolvers: 'paramsOrQueryParamsChange',
                 resolve: {
                     data: SearchResolver
+                }
+            },
+            {
+                path: 'staff-list',
+                component: GroupListComponent,
+                resolve: {
+                    data: GroupListResolver
                 }
             }
         ]

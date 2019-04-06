@@ -21,7 +21,7 @@ class GroupsListController extends Controller {
     public function getGroupsList () {
         return response()->json(Group::leftJoin('groups_list', 'groups_list.groupId', '=', 'groups.groupId')
             ->where('groups.isDeleted', 0)
-            ->select('groups.groupId', 'groups.name', 'groups_list.displayOrder')
+            ->select('groups.groupId', 'groups.name', 'groups_list.displayOrder', 'groups_list.color')
             ->get());
     }
 
@@ -41,7 +41,8 @@ class GroupsListController extends Controller {
         foreach ($groups as $group) {
             $groupList = new GroupList([
                 'groupId' => $group['groupId'],
-                'displayOrder' => $group['displayOrder']
+                'displayOrder' => $group['displayOrder'],
+                'color' => $group['color']
             ]);
             $groupList->save();
         }
