@@ -1,6 +1,7 @@
 export const LOCAL_STORAGE = {
     AUTH_USER: 'auth-user',
     CONTRACTED_CATEGORIES: 'contracted-categories',
+    CONTRACTED_STICKIES: 'contracted-stickies',
     CONTRACTED_SECTIONS: 'contracted-sections',
     CONTRACTED_MENU_ITEMS: 'contracted-menu-items',
     NAVIGATION: 'navigation',

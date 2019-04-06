@@ -13,6 +13,16 @@
     </app-content>
 </div>
 
+<div *ngIf="categoryPage.stickyThreads.length > 0">
+    <app-title [title]="'Sticky Threads'" [tabs]="toggleStickies" (onTabClick)="onToggleStickies()"></app-title>
+    <app-content [isContracted]="isStickiesVisible">
+        <app-forum-slim-thread *ngFor="let stickyThread of categoryPage.stickyThreads"
+                               [forumPermissions]="categoryPage.forumPermissions"
+                               [thread]="stickyThread">
+        </app-forum-slim-thread>
+    </app-content>
+</div>
+
 <div *ngIf="!isMainParent">
     <app-title
         [title]="'Threads'"
@@ -20,10 +30,6 @@
         (onTabClick)="onTabClick($event)">
     </app-title>
     <app-content>
-        <app-forum-slim-thread *ngFor="let stickyThread of categoryPage.stickyThreads"
-                               [forumPermissions]="categoryPage.forumPermissions"
-                               [thread]="stickyThread">
-        </app-forum-slim-thread>
         <app-forum-slim-thread *ngFor="let thread of categoryPage.threads"
                                [thread]="thread"
                                [forumPermissions]="categoryPage.forumPermissions"
