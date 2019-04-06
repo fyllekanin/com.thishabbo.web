@@ -12,9 +12,7 @@
                             {{timeAgo(item.createdAt)}}
                             <br />
                             by
-                            <a [routerLink]="['/user/profile/' + item.user.nickname]" class="title">
-                                <span [style]="item.user.styling | safeStyle">{{item.user.nickname}}</span>
-                            </a>
+                            <app-user-link [user]="item.user"></app-user-link>
                         </div>
                         <div *ngIf="parameters.type === 'posts'">
                             <a [routerLink]="['/forum/thread/' + item.parentId + '/page/' + item.page]" [queryParams]="{ scrollTo: item.id }" class="title">{{item.title}}</a>
@@ -22,14 +20,10 @@
                             {{timeAgo(item.createdAt)}}
                             <br />
                             by
-                            <a [routerLink]="['/user/profile/' + item.user.nickname]" class="title">
-                                <span [style]="item.user.styling | safeStyle">{{item.user.nickname}}</span>
-                            </a>
+                            <app-user-link [user]="item.user"></app-user-link>
                         </div>
                         <div *ngIf="parameters.type === 'users'">
-                            <a [routerLink]="['/user/profile/' + item.user.nickname]" class="title">
-                                <span [style]="item.user.styling | safeStyle">{{item.user.nickname}}</span>
-                            </a>
+                            <app-user-link [user]="item.user"></app-user-link>
                             <br />
                             Joined at {{timeAgo(item.user.createdAt)}}
                         </div>

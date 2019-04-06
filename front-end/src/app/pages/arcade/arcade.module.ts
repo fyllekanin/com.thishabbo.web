@@ -15,6 +15,7 @@ import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.module';
 import { ArcadeDefaultResolver } from './services/arcade-default.resolver';
+import { UserLinkModule } from 'shared/components/user/user-link.module';
 
 @NgModule({
     imports: [
@@ -26,7 +27,8 @@ import { ArcadeDefaultResolver } from './services/arcade-default.resolver';
         FormsModule,
         SafeStyleModule,
         SafeHtmlModule,
-        StatsBoxesModule
+        StatsBoxesModule,
+        UserLinkModule
     ],
     declarations: [
         ArcadeDefaultComponent,

@@ -2,9 +2,7 @@
     <div class="grid-x">
         <div class="post-avatar">
             <div class="post-nickname">
-                <a [routerLink]="['/user/profile/', user.nickname]">
-                    <span [style]="user.styling | safeStyle">{{user.nickname}}</span>
-                </a>
+                <app-user-link [user]="user"></app-user-link>
             </div>
             <div class="avatar">
                 <img *ngIf="useAvatarImage" appLazyLoad [image]="userAvatarUrl" (error)="onAvatarError()"/>
@@ -13,8 +11,8 @@
                 <em class="fa fa-user"></em>
             </div>
             <div class="post-userbars">
-                <div *ngFor="let userbar of user.userBars" [style]="userbar.styling | safeStyle">
-                    {{userbar.name}}
+                <div *ngFor="let userBar of user.userBars" [style]="userBar.styling | safeStyle">
+                    {{userBar.name}}
                 </div>
             </div>
             <div class="post-bit" *ngIf="user.createdAt">

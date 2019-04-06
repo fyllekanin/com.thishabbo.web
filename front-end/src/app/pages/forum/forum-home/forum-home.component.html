@@ -44,24 +44,11 @@
                             {{latestPost.title}}
                         </a>
                         <br />
-                        Latest: <a [routerLink]="['/user/profile/', (latestPost.user ? latestPost.user.nickname : '')]">
-                                <span [style]="(latestPost.user ? latestPost.user.styling : '') | safeStyle">{{(latestPost.user ? latestPost.user.nickname : '')}}</span>
-                            </a>
+                        Latest: <app-user-link [user]="latestPost.user"></app-user-link>
                         - {{latestPost.time}}
                         <br />
                         In {{latestPost.category}}
                     </span>
-                    <!--<div class="latest-post-content">
-                        <a class="title" [routerLink]="['/forum', 'thread', latestPost.threadId, 'page', latestPost.page]" [queryParams]="{ scrollTo: 'post-' + latestPost.postId}">
-                            <span *ngIf="latestPost.text" [style]="latestPost.style | safeStyle">
-                                {{latestPost.text}} &#xbb;
-                            </span>
-                            {{latestPost.title}}
-                        </a>
-                        <a [routerLink]="['/user/profile/', (latestPost.user ? latestPost.user.nickname : '')]">
-                            <span [style]="(latestPost.user ? latestPost.user.styling : '') | safeStyle" class="name">{{(latestPost.user ? latestPost.user.nickname : '')}}</span>
-                        </a>
-                    </div>-->
                 </div>
             </app-content>
 
@@ -75,9 +62,7 @@
                 </div>
                 <div class="latest-post" *ngFor="let topPoster of topPostersToday; let i = index;">
                     {{i + 1}}.
-                    <a [routerLink]="['/user/profile/', (topPoster.user ? topPoster.user.nickname : '')]">
-                        <span [style]="(topPoster.user ? topPoster.user.styling : '') | safeStyle">{{(topPoster.user ? topPoster.user.nickname : '')}}</span>
-                    </a>
+                    <app-user-link [user]="topPoster.user"></app-user-link>
 
                     <span class="float-right">({{topPoster.posts | number: '1.'}})</span>
                 </div>
@@ -93,9 +78,7 @@
                 </div>
                 <div class="latest-post" *ngFor="let topPoster of topPosters; let i = index;">
                     {{i + 1}}.
-                    <a [routerLink]="['/user/profile/', (topPoster.user ? topPoster.user.nickname : '')]">
-                        <span [style]="(topPoster.user ? topPoster.user.styling : '') | safeStyle">{{(topPoster.user ? topPoster.user.nickname : '')}}</span>
-                    </a>
+                    <app-user-link [user]="topPoster.user"></app-user-link>
 
                     <span class="float-right">({{topPoster.posts | number: '1.'}})</span>
                 </div>

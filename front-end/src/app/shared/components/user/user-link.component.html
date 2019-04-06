@@ -1,0 +1,3 @@
+<a [routerLink]="['/user/profile/', user.nickname]">
+    <span [style]="user.styling | safeStyle">{{user.nickname}}</span>
+</a>

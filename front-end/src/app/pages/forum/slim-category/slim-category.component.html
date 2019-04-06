@@ -20,9 +20,7 @@
                 {{lastPost.threadTitle}}
             </a>
             <div class="nickname">
-                <a [routerLink]="['/user/profile/', lastPost.user.nickname]">
-                    <span [style]="lastPost.user.styling | safeStyle">{{lastPost.user.nickname}}</span>
-                </a>
+                <app-user-link [user]="lastPost.user"></app-user-link>
             </div>
             <div class="time-ago">{{timeAgo(lastPost.createdAt)}}</div>
         </div>

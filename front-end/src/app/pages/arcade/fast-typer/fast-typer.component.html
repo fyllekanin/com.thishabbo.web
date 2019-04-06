@@ -17,7 +17,7 @@
             <app-content>
                 <div class="highscore-row" *ngFor="let highscore of highscoreList; let i = index;">
                     {{i + 1}}.
-                    <span [style]="highscore.user.styling | safeStyle">{{highscore.user.nickname}}</span>
+                    <app-user-link [user]="highscore.user"></app-user-link>
 
                     <span class="float-right">{{highscore.score}} wpm</span>
                 </div>
