@@ -41,7 +41,7 @@ export class HeaderComponent {
         if (!this.text) {
             this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
                 title: 'Error',
-                message: 'You need to enter something to search on!',
+                message: 'You need to specify what you want to search first!',
                 type: NotificationType.ERROR
             }));
             return;

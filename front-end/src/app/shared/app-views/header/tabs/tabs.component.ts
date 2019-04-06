@@ -46,12 +46,12 @@ export class TabsComponent {
 
     onSaveTab(tab: TabModel): void {
         if (!tab.label) {
-            this.printError('Label needs to be set');
+            this.printError('The Label needs to be set!');
             return;
         }
 
         if (!tab.url) {
-            this.printError('URL needs to be set');
+            this.printError('The URL needs to be set!');
             return;
         }
 
@@ -64,7 +64,8 @@ export class TabsComponent {
         const urlExists = this._tabs
             .some(item => item.url.toLowerCase() === tab.url.toLowerCase());
         if (urlExists) {
-            this.printError('URL already exist');
+            this.printError('The URL already exists!');
+            return;
         }
 
         this._dialogService.closeDialog();

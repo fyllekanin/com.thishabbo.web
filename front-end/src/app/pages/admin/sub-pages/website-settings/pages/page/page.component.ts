@@ -81,7 +81,7 @@ export class PageComponent extends Page implements OnDestroy {
                 .subscribe(() => {
                     this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
                         title: 'Success',
-                        message: 'Page is updated'
+                        message: 'This page has been updated!'
                     }));
                 });
         } else {
@@ -89,7 +89,7 @@ export class PageComponent extends Page implements OnDestroy {
                 .subscribe(() => {
                     this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
                         title: 'Success',
-                        message: 'Page is updated'
+                        message: 'This page has been saved!'
                     }));
                     this._data.createdAt = new Date().getTime() / 1000;
                     this.updateTabs();
@@ -106,7 +106,7 @@ export class PageComponent extends Page implements OnDestroy {
                     .subscribe(() => {
                         this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
                             title: 'Success',
-                            message: 'Page is deleted'
+                            message: 'This page has been deleted!'
                         }));
                         this._router.navigateByUrl(PAGES_BREADCRUMB_ITEM.url);
                     }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));

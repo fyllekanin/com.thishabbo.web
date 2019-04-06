@@ -21,29 +21,21 @@
 
 <div class="bottom-bar">
     <div class="grid-container">
-        <div class="grid-x grid-x margin-x">
+        <div class="grid-x grid-margin-x">
             <div class="cell medium-9 tabs">
                 <div class="inner-search-bar">
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Looking for something?" (keyup)="onKeyUp($event)" [(ngModel)]="text">
-                        <div class="generic-radio-button generic-blue-button search-button" (click)="goToSearch()">
+                        <div class="generic-radio-button generic-blue-button search-button" (click)="goToSearch()" tooltip="Search">
                             <i class="fas fa-search ng-star-inserted"></i>
                         </div>
-                        <div class="generic-radio-button generic-red-button search-button" (click)="goToAdvancedSearch()">
+                        <div class="generic-radio-button generic-red-button search-button" (click)="goToAdvancedSearch()" tooltip="Advanced Search">
                             <i class="fas fa-search-plus ng-star-inserted"></i>
                         </div>
                     </div>
                 </div>
-                <div class="stats">
-                    <div class="generic-radio-button generic-green-button search-button">
-                        <i class="fas fa-users ng-star-inserted"></i> 389
-                    </div>
-                    <div class="generic-radio-button generic-pink-button search-button">
-                        <i class="fas fa-users ng-star-inserted"></i> 89
-                    </div>
-                </div>
             </div>
-            <div class="cell small-10 medium-3">
+            <div class="small-10 medium-3">
                 <div class="radio-controls">
                     <app-radio-controls></app-radio-controls>
                 </div>
