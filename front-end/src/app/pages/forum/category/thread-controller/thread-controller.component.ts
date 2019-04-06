@@ -163,10 +163,8 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
 
         this.editorButtons = [
             new EditorAction({ title: 'Save', value: ThreadControllerActions.SAVE }),
-            new EditorAction({ title: 'Save', value: ThreadControllerActions.SAVE, asButton: true, buttonColor: Button.GREEN }),
             new EditorAction({ title: 'Toggle Poll', value: ThreadControllerActions.TOGGLE_POLL }),
-            new EditorAction({ title: 'Cancel', value: ThreadControllerActions.CANCEL, buttonColor: Button.BLUE }),
-            new EditorAction({ title: 'Cancel', value: ThreadControllerActions.CANCEL, asButton: true, buttonColor: Button.BLUE })
+            new EditorAction({ title: 'Cancel', value: ThreadControllerActions.CANCEL, buttonColor: Button.BLUE })
         ];
 
         if (this._threadSkeleton.poll) {
