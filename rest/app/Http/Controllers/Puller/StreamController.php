@@ -89,6 +89,7 @@ class StreamController extends Controller {
         $stats = new RadioSettings(SettingsHelper::getSettingValue($this->settingKeys->radio));
         $stats->adminPassword = null;
         $stats->password = null;
+        return $stats;
     }
 
     /**

@@ -18,6 +18,7 @@ import {GlobalNotificationService} from 'core/services/notification/global-notif
 import {GlobalNotification} from 'shared/app-views/global-notification/global-notification.model';
 import {MoveThreadComponent} from '../thread/move-thread/move-thread.component';
 import {ChangeOwnerComponent} from '../thread/change-owner/change-owner.component';
+import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 
 @Component({
     selector: 'app-forum-category',
@@ -28,10 +29,12 @@ export class CategoryComponent extends Page implements OnDestroy {
     private _categoryPage: CategoryPage = new CategoryPage();
     private _selectedThreadIds: Array<number> = [];
     private _isToolsVisible = false;
+    private _isStickiesVisible = true;
 
     fixedTools: FixedTools;
     pagination: PaginationModel;
     tabs: Array<TitleTab> = [];
+    toggleStickies: Array<TitleTab> = [new TitleTab({ title: 'Toggle' })];
 
     constructor(
         private _dialogService: DialogService,
@@ -46,10 +49,20 @@ export class CategoryComponent extends Page implements OnDestroy {
     ) {
         super(elementRef);
         this.addSubscription(this._activatedRoute.data, this.onCategory.bind(this));
+        this._isStickiesVisible = this.isStickiesContracted();
     }
 
     ngOnDestroy(): void {
         super.destroy();
+    }
+
+    onToggleStickies(): void {
+        if (this._isStickiesVisible) {
+            this.onUnContractStickies();
+        } else {
+            this.onContractStickies();
+        }
+        this._isStickiesVisible = !this._isStickiesVisible;
     }
 
     onSort(options: CategoryDisplayOptions): void {
@@ -126,6 +139,10 @@ export class CategoryComponent extends Page implements OnDestroy {
         } else {
             this._selectedThreadIds.push(threadId);
         }
+    }
+
+    get isStickiesVisible(): boolean {
+        return this._isStickiesVisible;
     }
 
     get categoryPage(): CategoryPage {
@@ -279,7 +296,29 @@ export class CategoryComponent extends Page implements OnDestroy {
         });
     }
 
+    private isStickiesContracted(): boolean {
+        const contractedStickies = this.getContractedStickies();
+        return Boolean(contractedStickies.indexOf(String(this._categoryPage.categoryId)) > -1);
+    }
 
+    private onContractStickies(): void {
+        const contractedStickies = this.getContractedStickies();
+        if (contractedStickies.indexOf(String(this._categoryPage.categoryId)) === -1) {
+            contractedStickies.push(String(this._categoryPage.categoryId));
+        }
+        localStorage.setItem(LOCAL_STORAGE.CONTRACTED_STICKIES, JSON.stringify(contractedStickies));
+    }
 
+    private onUnContractStickies(): void {
+        let contractedStickies = this.getContractedStickies();
+        if (contractedStickies.indexOf(String(this._categoryPage.categoryId)) > -1) {
+            contractedStickies = contractedStickies.filter(item => item !== String(this._categoryPage.categoryId));
+        }
+        localStorage.setItem(LOCAL_STORAGE.CONTRACTED_STICKIES, JSON.stringify(contractedStickies));
+    }
 
+    private getContractedStickies(): Array<string> {
+        const stored = localStorage.getItem(LOCAL_STORAGE.CONTRACTED_STICKIES);
+        return stored ? JSON.parse(stored) : [];
+    }
 }
