@@ -34,7 +34,7 @@ class Logger {
      * @param $contentId
      * @param array $data
      */
-    public static function admin ($userId, $ipAddress, Array $action, $contentId = 0, Array $data = []) {
+    public static function admin ($userId, $ipAddress, Array $action, Array $data = [], $contentId = 0) {
         $data = self::checkData($data);
         $log = new LogAdmin([
             'userId' => $userId,
@@ -53,7 +53,7 @@ class Logger {
      * @param $contentId
      * @param array $data
      */
-    public static function staff ($userId, $ipAddress, Array $action, $contentId = 0, Array $data = []) {
+    public static function staff ($userId, $ipAddress, Array $action, Array $data = [], $contentId = 0) {
         $data = self::checkData($data);
         $log = new LogStaff([
             'userId' => $userId,
@@ -72,7 +72,7 @@ class Logger {
      * @param $contentId
      * @param array $data
      */
-    public static function mod ($userId, $ipAddress, Array $action, $contentId = 0, Array $data = []) {
+    public static function mod ($userId, $ipAddress, Array $action, Array $data = [], $contentId = 0) {
         $data = self::checkData($data);
         $log = new LogMod([
             'userId' => $userId,
@@ -91,7 +91,7 @@ class Logger {
      * @param int $contentId
      * @param array $items
      */
-    public static function modMultiple ($userId, $ipAddress, Array $action, $contentId = 0, Array $items = []){
+    public static function modMultiple ($userId, $ipAddress, Array $action, Array $items = [], $contentId = 0){
         foreach($items as $data) {
             self::mod($userId, $ipAddress, $action, $contentId, $data);
         }
@@ -104,7 +104,7 @@ class Logger {
      * @param int $contentId
      * @param array $data
      */
-    public static function user ($userId, $ipAddress, Array $action, $contentId = 0, Array $data = []) {
+    public static function user ($userId, $ipAddress, Array $action, Array $data = [], $contentId = 0) {
         $data = self::checkData($data);
         $log = new LogUser([
             'userId' => $userId,

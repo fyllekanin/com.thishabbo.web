@@ -169,12 +169,12 @@ class PostCrudController extends Controller {
         $post->save();
 
         NotifyMentionsInPost::dispatch($postModel->content, $postId, $user->userId);
-        Logger::user($user->userId, $request->ip(), Action::UPDATED_POST, $postId, [
+        Logger::user($user->userId, $request->ip(), Action::UPDATED_POST, [
             'thread' => $thread->title,
             'postId' => $postId,
             'oldContent' => $oldContent,
             'newContent' => $postModel->content
-        ]);
+        ], $postId);
         return response()->json($post);
     }
 
@@ -244,11 +244,11 @@ class PostCrudController extends Controller {
         $this->forumService->updateReadThread($thread->threadId, $user->userId);
         $this->forumService->updateLastPostIdOnCategory($thread->categoryId);
 
-        Logger::user($user->userId, $request->ip(), Action::CREATED_POST, $post->postId, [
+        Logger::user($user->userId, $request->ip(), Action::CREATED_POST, [
             'thread' => $thread->title,
             'threadId' => $thread->threadId,
             'categoryId' => $thread->categoryId
-        ]);
+        ], $post->postId);
         return response()->json($post, 201);
     }
 }
