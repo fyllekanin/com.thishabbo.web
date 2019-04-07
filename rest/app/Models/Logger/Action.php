@@ -1248,4 +1248,25 @@ class Action {
         ],
         'log' => 'log_user'
     ];
+
+    const CREATED_VOUCHER_CODE = [
+        'id' => 143,
+        'description' => 'Created voucher code',
+        'data' => [],
+        'log' => 'log_admin'
+    ];
+
+    const DELETED_VOUCHER_CODE = [
+        'id' => 144,
+        'description' => 'Deleted voucher code',
+        'data' => [],
+        'log' => 'log_admin'
+    ];
+
+    const CLAIMED_VOUCHER_CODE = [
+        'id' => 145,
+        'description' => 'Claimed voucher code',
+        'data' => [],
+        'log' => 'log_user'
+    ];
 }

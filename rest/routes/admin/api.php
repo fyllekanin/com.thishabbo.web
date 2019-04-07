@@ -20,6 +20,10 @@ Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions-
 Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canManageTHC)], function () {
     Route::get('/thc/requests', 'Admin\User\UserThcController@getThcRequests');
     Route::put('/thc/requests', 'Admin\User\UserThcController@updateThcRequests');
+
+    Route::get('/voucher-codes/page/{page}', 'Admin\User\UserThcController@getVoucherCodes');
+    Route::post('/voucher-codes', 'Admin\User\UserThcController@createVoucherCode');
+    Route::delete('/voucher-codes/{voucherCodeId}', 'Admin\User\UserThcController@deleteVoucherCode');
 });
 
 Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canManageForum)], function () use ($permissions) {
