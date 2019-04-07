@@ -1,0 +1,7 @@
+<app-table [config]="tableConfig"
+            [tabs]="tabs"
+            (onTabClick)="onCreateNew()"
+            (onFilter)="onFilter($event)"
+            (onAction)="onDelete($event)">
+</app-table>
+<app-pagination [paginationModel]="pagination"></app-pagination>

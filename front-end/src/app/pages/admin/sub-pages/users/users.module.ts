@@ -21,6 +21,9 @@ import { ThcRequestsComponent } from './thc-requests/thc-requests.component';
 import { IpSearchComponent } from './ip-search/ip-search.component';
 import { MergeUsersComponent } from './list/merge-users/merge-users.component';
 import { ReasonModule } from 'shared/components/reason/reason.module';
+import { VoucherCodesResolver } from './services/voucher-codes.resolver';
+import { VoucherCodesComponent } from './voucher-codes/voucher-codes.component';
+import { VoucherCodeComponent } from './voucher-codes/voucher-code/voucher-code.component';
 
 @NgModule({
     imports: [
@@ -41,17 +44,21 @@ import { ReasonModule } from 'shared/components/reason/reason.module';
         BanComponent,
         ThcRequestsComponent,
         MergeUsersComponent,
-        IpSearchComponent
+        IpSearchComponent,
+        VoucherCodesComponent,
+        VoucherCodeComponent
     ],
     providers: [
         UsersListService,
         UserService,
         GroupsService,
         BanService,
-        ThcRequestsService
+        ThcRequestsService,
+        VoucherCodesResolver
     ],
     entryComponents: [
-        MergeUsersComponent
+        MergeUsersComponent,
+        VoucherCodeComponent
     ],
     exports: [
         RouterModule
