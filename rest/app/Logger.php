@@ -93,7 +93,7 @@ class Logger {
      */
     public static function modMultiple ($userId, $ipAddress, Array $action, Array $items = [], $contentId = 0){
         foreach($items as $data) {
-            self::mod($userId, $ipAddress, $action, $contentId, $data);
+            self::mod($userId, $ipAddress, $action, $data, $contentId);
         }
     }
 
