@@ -15,7 +15,7 @@ class CreateUsersTable extends Migration {
             $table->bigIncrements('userId');
             $table->string('username')->unique();
             $table->string('nickname')->unique();
-            $table->string('habbo')->unique();
+            $table->string('habbo')->default(null);
             $table->string('password');
             $table->integer('displayGroupId')->default(0);
             $table->bigInteger('referralId')->default(0);
@@ -34,6 +34,8 @@ class CreateUsersTable extends Migration {
             $table->bigInteger('updatedAt');
 
             // Indexes
+            $table->index('lastActivity');
+            $table->index('habbo');
             $table->index('referralId');
             $table->index('createdAt');
             $table->index('updatedAt');
