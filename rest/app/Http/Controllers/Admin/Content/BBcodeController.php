@@ -44,7 +44,7 @@ class BBcodeController extends Controller {
             $file->move($destination, $fileName);
         }
 
-        Logger::admin($user->userId, $request->ip(), Action::CREATED_BBCODE, ['bbcode' => $newBbcode->name]);
+        Logger::admin($user->userId, $request->ip(), Action::CREATED_BBCODE, $newBbcode->bbcodeId, ['bbcode' => $newBbcode->name]);
         return $this->getBBcode($newBbcode->bbcodeId);
     }
 
@@ -81,7 +81,7 @@ class BBcodeController extends Controller {
             $file->move($destination, $fileName);
         }
 
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_BBCODE, ['bbcode' => $existing->name]);
+        Logger::admin($user->userId, $request->ip(), Action::UPDATED_BBCODE, $existing->bbcodeId, ['bbcode' => $existing->name]);
         return $this->getBBcode($bbcodeId);
     }
 
@@ -115,7 +115,7 @@ class BBcodeController extends Controller {
         Condition::precondition($bbcode->isSystem, 400, 'Can not delete system defined bbcode');
 
         $bbcode->delete();
-        Logger::admin($user->userId, $request->ip(), Action::DELETED_BBCODE, ['bbcode' => $bbcode->name]);
+        Logger::admin($user->userId, $request->ip(), Action::DELETED_BBCODE, $bbcode->bbcodeId, ['bbcode' => $bbcode->name]);
         return response()->json();
     }
 

@@ -82,7 +82,7 @@ class PostCrudController extends Controller {
         $updatedThreadAction = Action::getAction(Action::UPDATED_THREAD);
         $updatedPostAction = Action::getAction(Action::UPDATED_POST);
         $actions = $post->postId == $post->thread->firstPostId ? [$updatedThreadAction, $updatedPostAction] : [$updatedPostAction];
-        $logs = LogUser::whereJson($postId, ['postId'])
+        $logs = LogUser::where('contentId', $postId)
             ->whereIn('action', $actions)
             ->get()
             ->map(function($log) {
@@ -169,7 +169,7 @@ class PostCrudController extends Controller {
         $post->save();
 
         NotifyMentionsInPost::dispatch($postModel->content, $postId, $user->userId);
-        Logger::user($user->userId, $request->ip(), Action::UPDATED_POST, [
+        Logger::user($user->userId, $request->ip(), Action::UPDATED_POST, $postId, [
             'thread' => $thread->title,
             'postId' => $postId,
             'oldContent' => $oldContent,
@@ -244,7 +244,7 @@ class PostCrudController extends Controller {
         $this->forumService->updateReadThread($thread->threadId, $user->userId);
         $this->forumService->updateLastPostIdOnCategory($thread->categoryId);
 
-        Logger::user($user->userId, $request->ip(), Action::CREATED_POST, [
+        Logger::user($user->userId, $request->ip(), Action::CREATED_POST, $post->postId, [
             'thread' => $thread->title,
             'threadId' => $thread->threadId,
             'categoryId' => $thread->categoryId

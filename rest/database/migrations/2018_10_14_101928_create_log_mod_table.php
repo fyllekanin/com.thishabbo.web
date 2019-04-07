@@ -16,6 +16,7 @@ class CreateLogModTable extends Migration {
             $table->bigInteger('userId');
             $table->string('ip');
             $table->integer('action');
+            $table->bigInteger('contentId')->default(0);
             $table->text('data');
             $table->bigInteger('createdAt');
             $table->bigInteger('updatedAt');

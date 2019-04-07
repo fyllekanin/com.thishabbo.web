@@ -58,7 +58,7 @@ class UserGroupsController extends Controller {
         $current->displayGroupId = $displayGroupId;
         $current->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_USERS_GROUPS, [
+        Logger::admin($user->userId, $request->ip(), Action::UPDATED_USERS_GROUPS,  $current->userId, [
             'name' => $current->nickname,
             'before' => $before->toArray(),
             'after' => $current->groups->map(function($group) {
