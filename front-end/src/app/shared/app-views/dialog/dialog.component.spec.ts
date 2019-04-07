@@ -43,41 +43,6 @@ describe('DialogComponent', () => {
         component = TestBed.createComponent(DialogComponent).componentInstance;
     });
 
-    describe('onClose', () => {
-        it('should not close dialog if element clicked is inside wrapper', () => {
-            // Given
-            component.isVisible = true;
-
-            // When
-            component.onClose({
-                path: [
-                    {
-                        classList: ['something', 'nothing', 'wrapper']
-                    }
-                ]
-            });
-
-            // Then
-            expect(component.isVisible).toBeTruthy();
-        });
-        it('should close dialog if element clicked is not inside wrapper', () => {
-            // Given
-            component.isVisible = true;
-
-            // When
-            component.onClose({
-                path: [
-                    {
-                        classList: ['something', 'nothing']
-                    }
-                ]
-            });
-
-            // Then
-            expect(component.isVisible).toBeFalsy();
-        });
-    });
-
     it('onButton should call the callback on the button', (done) => {
         // Given
         const button = new DialogButton({

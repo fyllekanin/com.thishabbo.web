@@ -82,7 +82,7 @@ class PostCrudController extends Controller {
         $updatedThreadAction = Action::getAction(Action::UPDATED_THREAD);
         $updatedPostAction = Action::getAction(Action::UPDATED_POST);
         $actions = $post->postId == $post->thread->firstPostId ? [$updatedThreadAction, $updatedPostAction] : [$updatedPostAction];
-        $logs = LogUser::whereJson($postId, ['postId'])
+        $logs = LogUser::where('contentId', $postId)
             ->whereIn('action', $actions)
             ->get()
             ->map(function($log) {
@@ -174,7 +174,7 @@ class PostCrudController extends Controller {
             'postId' => $postId,
             'oldContent' => $oldContent,
             'newContent' => $postModel->content
-        ]);
+        ], $postId);
         return response()->json($post);
     }
 
@@ -248,7 +248,7 @@ class PostCrudController extends Controller {
             'thread' => $thread->title,
             'threadId' => $thread->threadId,
             'categoryId' => $thread->categoryId
-        ]);
+        ], $post->postId);
         return response()->json($post, 201);
     }
 }
