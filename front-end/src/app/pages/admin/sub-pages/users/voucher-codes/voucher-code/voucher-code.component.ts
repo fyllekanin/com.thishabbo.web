@@ -5,7 +5,7 @@ import { InnerDialogComponent } from 'shared/app-views/dialog/dialog.model';
     selector: 'app-admin-user-voucher-codes-code',
     templateUrl: 'voucher-code.component.html'
 })
-export class VoucherCodeComponent extends InnerDialogComponent{
+export class VoucherCodeComponent extends InnerDialogComponent {
 
     note: string;
     value: number;
