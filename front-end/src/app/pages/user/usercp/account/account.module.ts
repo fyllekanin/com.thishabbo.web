@@ -17,6 +17,7 @@ import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.modul
 import { ThemeResolver } from './services/theme.resolver';
 import { ThemeComponent } from './theme/theme.component';
 import { ButtonModule } from 'shared/directives/button/button.module';
+import { VoucherCodeComponent } from './voucher-code/voucher-code.component';
 
 @NgModule({
     imports: [
@@ -35,7 +36,8 @@ import { ButtonModule } from 'shared/directives/button/button.module';
         HomePageComponent,
         NicknameComponent,
         PasswordComponent,
-        ThemeComponent
+        ThemeComponent,
+        VoucherCodeComponent
     ],
     providers: [
         GroupsService,

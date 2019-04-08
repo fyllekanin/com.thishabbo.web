@@ -39,3 +39,5 @@ Route::put('nickname', 'Usercp\AccountController@updateNickname');
 
 Route::get('themes', 'Usercp\AccountController@getThemes');
 Route::put('themes', 'Usercp\AccountController@updateTheme');
+
+Route::post('voucher-code', 'Usercp\AccountController@claimVoucherCode');

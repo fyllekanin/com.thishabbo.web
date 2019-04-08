@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * @property mixed nickname
+ */
 class User extends Authenticatable {
     use Notifiable;
 

@@ -97,7 +97,7 @@ class UserThcController extends Controller {
                         'voucherCodeId' => $item->voucherCodeId,
                         'code' => $item->code,
                         'note' => $item->note,
-                        'claimer' => $item->isActive && $claimLog ? UserHelper::getSlimUser($claimLog->userId) : null,
+                        'claimer' => !$item->isActive && $claimLog ? UserHelper::getSlimUser($claimLog->userId) : null,
                         'value' => $item->value
                     ];
                 })
