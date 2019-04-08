@@ -31,6 +31,10 @@ export class TopBoxComponent {
         this._authService.logout(false);
     }
 
+    get credits(): number {
+        return this._authService.authUser.credits;
+    }
+
     get menuClasses(): string {
         const classes = [];
         if (this.showMenu) {

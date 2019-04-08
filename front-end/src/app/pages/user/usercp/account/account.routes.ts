@@ -9,6 +9,7 @@ import { HabboComponent } from './habbo/habbo.component';
 import { HabboService } from './services/habbo.service';
 import { ThemeComponent } from './theme/theme.component';
 import { ThemeResolver } from './services/theme.resolver';
+import { VoucherCodeComponent } from './voucher-code/voucher-code.component';
 
 export const accountRoutes: Routes = [
     {
@@ -47,5 +48,9 @@ export const accountRoutes: Routes = [
         resolve: {
             data: ThemeResolver
         }
+    },
+    {
+        path: 'voucher-code',
+        component: VoucherCodeComponent
     }
 ];

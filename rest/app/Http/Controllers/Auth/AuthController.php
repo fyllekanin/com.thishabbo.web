@@ -149,7 +149,8 @@ class AuthController extends Controller {
             'userId' => $user->userId,
             'nickname' => $user->nickname,
             'gdpr' => $user->gdpr,
-            'homePage' => UserHelper::getUserDataOrCreate($user->userId)->homePage
+            'homePage' => UserHelper::getUserDataOrCreate($user->userId)->homePage,
+            'credits' => UserHelper::getUserDataOrCreate($user->userId)->credits
         ]);
     }
 
@@ -173,7 +174,8 @@ class AuthController extends Controller {
             'userId' => $user->userId,
             'nickname' => $user->nickname,
             'gdpr' => $user->gdpr,
-            'homePage' => UserHelper::getUserDataOrCreate($user->userId)->homePage
+            'homePage' => UserHelper::getUserDataOrCreate($user->userId)->homePage,
+            'credits' => UserHelper::getUserDataOrCreate($user->userId)->credits
         ]);
     }
 
@@ -245,12 +247,13 @@ class AuthController extends Controller {
             'oauth' => [
                 'accessToken' => $accessToken,
                 'expiresIn' => $this->accessTokenLifetime,
-                'refreshToken' => $refreshToken
+                'refreshToken' => $refreshToken,
             ],
             'userId' => $user->userId,
             'nickname' => $user->nickname,
             'gdpr' => $user->gdpr,
-            'homePage' => UserHelper::getUserDataOrCreate($user->userId)->homePage
+            'homePage' => UserHelper::getUserDataOrCreate($user->userId)->homePage,
+            'credits' => UserHelper::getUserDataOrCreate($user->userId)->credits
         ]);
     }
 

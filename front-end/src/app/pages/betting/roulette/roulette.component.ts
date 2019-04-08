@@ -12,6 +12,7 @@ import { GlobalNotificationService } from 'core/services/notification/global-not
 import { GlobalNotification, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { TitleTopBorder } from 'shared/app-views/title/title.model';
 import { StatsBoxModel } from 'shared/app-views/stats-boxes/stats-boxes.model';
+import { AuthService } from 'core/services/auth/auth.service';
 
 
 @Component({
@@ -34,6 +35,7 @@ export class RouletteComponent extends Page implements OnDestroy {
     constructor(
         private _globalNotificationService: GlobalNotificationService,
         private _httpService: HttpService,
+        private _authService: AuthService,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService,
         activatedRoute: ActivatedRoute
@@ -75,6 +77,7 @@ export class RouletteComponent extends Page implements OnDestroy {
                     let notification;
                     if (item.isWin) {
                         this._data.stats.credits += item.profit;
+                        this._authService.authUser.credits += item.profit;
                         notification = new GlobalNotification({
                             title: 'Win!',
                             message: `You won ${item.profit} credits`,
@@ -82,6 +85,7 @@ export class RouletteComponent extends Page implements OnDestroy {
                         });
                     } else {
                         this._data.stats.credits -= this.amount;
+                        this._authService.authUser.credits -= this.amount;
                         notification = new GlobalNotification({
                             title: 'Lost!',
                             message: `You lost ${this.amount} credits`,

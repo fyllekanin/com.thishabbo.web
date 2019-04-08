@@ -1,4 +1,4 @@
-import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, objectOf, primitive, primitiveOf } from 'shared/helpers/class.helper';
 import { IUserProfile } from 'shared/directives/user-profile.directive';
 
 export class DisplayGroup {
@@ -203,6 +203,8 @@ export class AuthUser {
     gdpr: boolean;
     @primitive()
     homePage: string;
+    @primitiveOf(Number)
+    credits = 0;
 
     constructor(source: Partial<AuthUser>) {
         ClassHelper.assign(this, source);

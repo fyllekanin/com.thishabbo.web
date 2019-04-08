@@ -10,6 +10,7 @@ use App\EloquentModels\Theme;
 use App\EloquentModels\ThreadSubscription;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserData;
+use App\EloquentModels\User\VoucherCode;
 use App\Helpers\ConfigHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
@@ -35,6 +36,7 @@ class AccountController extends Controller {
      *
      * @param AuthService $authService
      * @param HabboService $habboService
+     * @param CreditsService $creditsService
      */
     public function __construct (AuthService $authService, HabboService $habboService, CreditsService $creditsService) {
         parent::__construct();
@@ -47,6 +49,26 @@ class AccountController extends Controller {
     /**
      * @param Request $request
      *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function claimVoucherCode(Request $request) {
+        $user = Cache::get('auth');
+        $code = $request->input('code');
+
+        $voucherCode = VoucherCode::where('code', $code)->first();
+        Condition::precondition(!$voucherCode, 404, 'No voucher code with that code!');
+        Condition::precondition(!$voucherCode->isActive, 400, 'The voucher code is not longer active!');
+
+        $voucherCode->isActive = false;
+        $voucherCode->save();
+
+        $this->creditsService->giveCredits($user->userId, $voucherCode->value);
+
+        Logger::user($user->userId, $request->ip(), Action::CLAIMED_VOUCHER_CODE, [], $voucherCode->voucherCodeId);
+        return response()->json($voucherCode->value);
+    }
+
+    /**
      * @return \Illuminate\Http\JsonResponse
      */
     public function getThemes() {
