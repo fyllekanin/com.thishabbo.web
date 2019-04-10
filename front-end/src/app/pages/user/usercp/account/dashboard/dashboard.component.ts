@@ -112,4 +112,16 @@ export class DashboardComponent extends Page implements OnDestroy {
     get tabs(): Array<TabModel> {
         return this._tabs;
     }
+
+    get threadTools(): boolean {
+        return Boolean(localStorage.getItem(LOCAL_STORAGE.THREAD_TOOLS));
+    }
+
+    set threadTools(value: boolean) {
+        if (value) {
+            localStorage.setItem(LOCAL_STORAGE.THREAD_TOOLS, 'true');
+        } else {
+            localStorage.removeItem(LOCAL_STORAGE.THREAD_TOOLS);
+        }
+    }
 }

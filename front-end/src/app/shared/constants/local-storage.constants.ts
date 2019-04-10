@@ -12,5 +12,6 @@ export const LOCAL_STORAGE = {
     IGNORE_SIGNATURES: 'ignore-signatures',
     FIXED_MENU: 'fixed-menu',
     TABS: 'tabs',
-    VOLUME: 'volume'
+    VOLUME: 'volume',
+    THREAD_TOOLS: 'thread-tools'
 };
