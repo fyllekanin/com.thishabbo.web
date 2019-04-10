@@ -65,7 +65,7 @@ $forumPermissions->canCloseOpenThread = 256;
 $forumPermissions->canApproveThreads = 512;
 $forumPermissions->canApprovePosts = 1024;
 $forumPermissions->canManagePolls = 4096;
-$forumPermissions->canChangeThreadOwner = 8192;
+$forumPermissions->canChangeOwner = 8192;
 $forumPermissions->canMergePosts = 16384;
 $forumPermissions->canMoveThreads = 32768;
 

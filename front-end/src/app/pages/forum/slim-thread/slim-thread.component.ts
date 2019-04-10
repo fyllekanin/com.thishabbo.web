@@ -43,7 +43,7 @@ export class SlimThreadComponent extends Page implements OnDestroy {
 
     get canSelectThreads(): boolean {
         return this.forumPermissions && (
-            this.forumPermissions.canMoveThreads || this.forumPermissions.canChangeThreadOwner);
+            this.forumPermissions.canMoveThreads || this.forumPermissions.canChangeOwner);
     }
 
     get title (): string {

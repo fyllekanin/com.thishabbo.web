@@ -127,7 +127,7 @@ export class CategoryComponent extends Page implements OnDestroy {
             case ThreadActions.MOVE_THREAD:
                 this.onMoveThread();
                 break;
-            case ThreadActions.CHANGE_OWNER:
+            case ThreadActions.CHANGE_THREAD_OWNER:
                 this.onChangeOwner();
                 break;
         }
@@ -208,8 +208,8 @@ export class CategoryComponent extends Page implements OnDestroy {
                 title: 'Move Thread(s)', value: ThreadActions.MOVE_THREAD,
                 condition: this._categoryPage.forumPermissions.canMoveThreads
             },
-            {   title: 'Change Owner', value: ThreadActions.CHANGE_OWNER,
-                condition: this._categoryPage.forumPermissions.canChangeThreadOwner
+            {   title: 'Change Owner', value: ThreadActions.CHANGE_THREAD_OWNER,
+                condition: this._categoryPage.forumPermissions.canChangeOwner
             }
         ];
     }

@@ -39,6 +39,7 @@ Route::prefix('moderation')->group(function () {
 
     Route::put('/thread/move/category/{categoryId}', 'Moderation\ThreadController@moveThreads');
     Route::put('/thread/change-owner', 'Moderation\ThreadController@changeOwner');
+    Route::put('/thread/posts/change-owner', 'Moderation\PostController@changeOwner');
     Route::put('/thread/open/{threadId}', 'Moderation\ThreadController@openThread');
     Route::put('/thread/close/{threadId}', 'Moderation\ThreadController@closeThread');
     Route::put('/thread/unapprove/{threadId}', 'Moderation\ThreadController@unapproveThread');

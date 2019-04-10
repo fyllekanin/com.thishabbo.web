@@ -108,7 +108,7 @@ class ThreadController extends Controller {
         Condition::precondition(count($threads) < 1, 400, 'No threads selected!');
 
         $categoryId = $threads->get(0)->categoryId;
-        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, $forumPermissions->canChangeThreadOwner, $categoryId),
+        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, $forumPermissions->canChangeOwner, $categoryId),
             400, 'You do not have permission to change thread owner');
 
         $sameCategoryId = Iterables::every($threads, function($thread) use ($categoryId) {

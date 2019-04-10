@@ -89,7 +89,7 @@ export enum ThreadActions {
     VIEW_POLL,
     CLOSE_THREAD,
     OPEN_THREAD,
-    CHANGE_OWNER,
+    CHANGE_THREAD_OWNER,
     MERGE_POSTS,
     MOVE_THREAD,
     SUBSCRIBE,
@@ -99,7 +99,8 @@ export enum ThreadActions {
     THREAD_HISTORY,
     POST_HISTORY,
     TOGGLE_TOOLS,
-    THREAD_POSTERS
+    THREAD_POSTERS,
+    CHANGE_POST_OWNER
 }
 
 export class PostHistoryModel {
@@ -122,6 +123,7 @@ export function getPostTools(forumPermissions: ForumPermissions) {
         { title: 'Approve Posts', value: ThreadActions.APPROVE_POSTS, condition: forumPermissions.canApprovePosts },
         { title: 'Unapprove Posts', value: ThreadActions.UNAPPROVE_POSTS, condition: forumPermissions.canApprovePosts },
         { title: 'Merge Posts', value: ThreadActions.MERGE_POSTS, condition: forumPermissions.canMergePosts },
+        { title: 'Change Owner', value: ThreadActions.CHANGE_POST_OWNER, condition: forumPermissions.canChangeOwner },
         { title: 'Edit History', value: ThreadActions.POST_HISTORY, condition: forumPermissions.canEditOthersPosts }
     ];
 }
@@ -189,8 +191,8 @@ export function getThreadTools(userId: number, threadPage: ThreadPage, forumPerm
         },
         {
             title: 'Change Owner',
-            value: ThreadActions.CHANGE_OWNER,
-            condition: forumPermissions.canChangeThreadOwner
+            value: ThreadActions.CHANGE_THREAD_OWNER,
+            condition: forumPermissions.canChangeOwner
         },
         {
             title: 'Move Thread',

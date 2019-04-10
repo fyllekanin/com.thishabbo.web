@@ -1269,4 +1269,15 @@ class Action {
         'data' => [],
         'log' => 'log_user'
     ];
+
+    const CHANGE_POST_OWNER = [
+        'id' => 146,
+        'description' => 'Changed owner of post',
+        'data' => [
+            'postId' => 'Id of post',
+            'originalOwner' => 'Id of original owner',
+            'newOwner' => 'Id of new owner'
+        ],
+        'log' => 'log_mod'
+    ];
 }

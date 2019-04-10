@@ -179,6 +179,69 @@ class PostController extends Controller {
         return response()->json();
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function changeOwner(Request $request) {
+        $user = Cache::get('auth');
+        $postIds = $request->input('postIds');
+
+        $forumPermissions = ConfigHelper::getForumConfig();
+
+        $newOwner = User::withNickname($request->input('nickname'))->first();
+        Condition::precondition(!$newOwner, 404, 'No user with that nickname');
+
+        $postSql = Post::whereIn('postId', $postIds);
+        $posts = $postSql->get();
+        Condition::precondition(count($posts) != count($postIds), 404, 'One or more of the posts do not exist!');
+
+        $posts = $posts->filter(function ($post) use ($newOwner) {
+            return $post->userId != $newOwner->userId;
+        });
+        Condition::precondition(count($posts) < 1, 400, 'No posts selected!');
+
+        $threadId = $posts->get(0)->threadId;
+        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, $forumPermissions->canChangeOwner, $posts->get(0)->thread->categoryId),
+            400, 'You do not have permission to change post owner');
+
+        $sameThreadId = Iterables::every($posts, function($post) use ($threadId) {
+            return $post->threadId == $threadId;
+        });
+        Condition::precondition(!$sameThreadId, 400, 'You are trying to change owners of posts from different threads');
+
+        $logData = $posts->map(function ($post) use ($newOwner) {
+            return [
+                'postId' => $post->postId,
+                'originalOwnerId' => $post->userId,
+                'newOwner' => $newOwner->userId
+            ];
+        })->toArray();
+
+        $originalOwnerIds = $posts->map(function ($post) {
+            return $post->userId;
+        })->toArray();
+
+        $originalOwnerFreq = array_count_values($originalOwnerIds);
+
+        $postSql->update([
+            'userId' => $newOwner->userId
+        ]);
+
+        foreach ($originalOwnerFreq as $key => $value) {
+            User::where('userId', $key)->first()->update([
+                'threads' => DB::raw('posts - ' . $value)
+            ]);
+        }
+
+        $newOwner->posts += count($posts);
+        $newOwner->save();
+
+        Logger::modMultiple($user->userId, $request->ip(), Action::CHANGE_POST_OWNER, $logData);
+        return response()->json(UserHelper::getUser($newOwner->userId));
+    }
+
     private function deletePost($postId, $user, $ipAddress) {
         $post = Post::with('thread')->where('postId', $postId)->first();
         Condition::precondition(!$post, 404, 'One of the posts do not exist');
