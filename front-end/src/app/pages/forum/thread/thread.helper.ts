@@ -78,8 +78,11 @@ export class ThreadActionExecutor {
             case ThreadActions.OPEN_THREAD:
                 this.onOpenThread();
                 break;
-            case ThreadActions.CHANGE_OWNER:
-                this.changeOwner();
+            case ThreadActions.CHANGE_THREAD_OWNER:
+                this.changeThreadOwner();
+                break;
+            case ThreadActions.CHANGE_POST_OWNER:
+                this.changePostOwner();
                 break;
             case ThreadActions.MERGE_POSTS:
                 this._dialogService.openConfirmDialog(
@@ -157,6 +160,7 @@ export class ThreadActionExecutor {
                 post.content = newPost.content;
                 post.parsedContent = newPost.parsedContent;
                 this._buildModerationTools();
+                this._threadPage.threadPosts.forEach(item => item.isSelected = false);
             }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
     }
 
@@ -181,19 +185,55 @@ export class ThreadActionExecutor {
         });
     }
 
-    private changeOwner(): void {
+    private changeThreadOwner(): void {
         this._dialogService.openDialog({
             title: `Change owner of ${this._threadPage.title}`,
             component: this._componentFactory.resolveComponentFactory(ChangeOwnerComponent),
             buttons: [
                 new DialogCloseButton('Close'),
-                new DialogButton({ title: 'Done', callback: this.onChangeOwner.bind(this) })
+                new DialogButton({ title: 'Done', callback: this.onChangeThreadOwner.bind(this) })
             ]
         });
     }
 
-    private onChangeOwner(nickname: string): void {
-        this._httpService.put(`forum/moderation/thread/change-owner/`, { nickname: nickname, threadIds: [this._threadPage.threadId] })
+    private changePostOwner(): void {
+        const selectedPostIds = this._threadPage.threadPosts.filter(post => post.isSelected).map(post => post.postId);
+        if (selectedPostIds.length === 0) {
+            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                title: 'Error',
+                message: 'You have no posts selected',
+                type: NotificationType.ERROR
+            }));
+            return;
+        }
+        this._dialogService.openDialog({
+            title: `Change owner of selected Posts`,
+            component: this._componentFactory.resolveComponentFactory(ChangeOwnerComponent),
+            buttons: [
+                new DialogCloseButton('Close'),
+                new DialogButton({ title: 'Done', callback: this.onChangePostOwner.bind(this, selectedPostIds) })
+            ]
+        });
+    }
+
+    private onChangePostOwner(postIds: Array<number>, nickname: string): void {
+        this._httpService.put(`forum/moderation/thread/posts/change-owner`, { nickname: nickname, postIds: postIds })
+            .subscribe(user => {
+                const newOwner = new User(user);
+                this._threadPage.threadPosts.forEach(post => {
+                    post.user = newOwner;
+                });
+                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                    title: 'Success',
+                    message: 'New owner updated!'
+                }));
+                this._dialogService.closeDialog();
+                this._threadPage.threadPosts.forEach(item => item.isSelected = false);
+            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+    }
+
+    private onChangeThreadOwner(nickname: string): void {
+        this._httpService.put(`forum/moderation/thread/change-owner`, { nickname: nickname, threadIds: [this._threadPage.threadId] })
             .subscribe(user => {
                 const newOwner = new User(user);
                 if (this._threadPage.page === 1) {
