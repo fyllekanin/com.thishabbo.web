@@ -25,6 +25,7 @@ import { AutoSaveHelper } from 'shared/helpers/auto-save.helper';
 import { ThreadService } from '../services/thread.service';
 import { ThreadActionExecutor } from './thread.helper';
 import { ThreadPostersComponent } from './thread-posters/thread-posters.component';
+import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 
 @Component({
     selector: 'app-forum-thread',
@@ -57,6 +58,7 @@ export class ThreadComponent extends Page implements OnDestroy {
         private _service: ThreadService
     ) {
         super(_elementRef);
+        this._isToolsVisible = Boolean(localStorage.getItem(LOCAL_STORAGE.THREAD_TOOLS));
         this.addSubscription(this._activatedRoute.data, this.onThread.bind(this));
     }
 
