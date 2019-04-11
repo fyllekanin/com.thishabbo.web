@@ -132,9 +132,7 @@ class PageController extends Controller {
         Condition::precondition(!$user, 404, 'No user with that nickname');
 
         return response()->json([
-            'userId' => $user->userId,
-            'nickname' => $user->nickname,
-            'avatarUpdatedAt' => Value::objectProperty($user->userdata, 'avatarUpdatedAt', null),
+            'user' => UserHelper::getSlimUser($user->userId),
             'stats' => [
                 'userId' => $user->userId,
                 'posts' => $user->posts,

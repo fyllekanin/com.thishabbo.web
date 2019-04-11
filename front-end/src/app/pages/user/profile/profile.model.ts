@@ -1,4 +1,5 @@
 import { ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
+import { SlimUser } from 'core/services/auth/auth.model';
 
 export class ProfileStats {
     @primitive()
@@ -20,12 +21,8 @@ export class ProfileStats {
 }
 
 export class ProfileModel {
-    @primitive()
-    userId: number;
-    @primitive()
-    nickname: string;
-    @primitive()
-    avatarUpdatedAt: number;
+    @objectOf(SlimUser)
+    user: SlimUser;
     @objectOf(ProfileStats)
     stats: ProfileStats;
 

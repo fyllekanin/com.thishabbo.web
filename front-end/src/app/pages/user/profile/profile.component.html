@@ -7,14 +7,14 @@
                 <app-title [title]="'User Profile : Public'"></app-title>
                 <app-content>
                     <div class="profile-name">
-                        Dez
+                        <app-user-link [user]="user"></app-user-link>
                     </div>
                     <div class="profile-joined">
-                        Joined September 2010
+                        Joined {{joined}}
                     </div>
 
                     <div class="profile-avatar">
-                            <img src="https://www.thishabbo.com/_assets/img/avatars/14994682782.gif" alt="Avatar">
+                        <img [src]="avatar" alt="Avatar">
                     </div>
 
                     <div class="post-bit">

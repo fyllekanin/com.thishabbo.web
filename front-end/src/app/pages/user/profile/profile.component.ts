@@ -2,6 +2,8 @@ import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { ProfileModel, ProfileStats } from './profile.model';
 import { Page } from 'shared/page/page.model';
 import { ActivatedRoute } from '@angular/router';
+import { TimeHelper } from 'shared/helpers/time.helper';
+import { SlimUser } from 'core/services/auth/auth.model';
 
 @Component({
     selector: 'app-user-profile',
@@ -23,16 +25,25 @@ export class ProfileComponent extends Page implements OnDestroy {
         super.destroy();
     }
 
+    get user(): SlimUser {
+        return this._data.user;
+    }
+
     get coverPhotoData(): { userId: number, version: number } {
-        return { userId: this._data.userId, version: this._data.avatarUpdatedAt };
+        return { userId: this._data.user.userId, version: this._data.user.avatarUpdatedAt };
+    }
+
+    get avatar(): string {
+        return `/rest/resources/images/users/${this._data.user.userId}.gif?${this._data.user.avatarUpdatedAt}`;
+    }
+
+    get joined(): string {
+        const date = new Date(this._data.stats.createdAt * 1000);
+        return `${TimeHelper.FULL_MONTHS[date.getMonth()]} ${date.getFullYear()}`;
     }
 
     get stats(): ProfileStats {
         return this._data.stats;
-    }
-
-    get nickname(): string {
-        return this._data.nickname;
     }
 
     private onData(data: { data: ProfileModel }): void {

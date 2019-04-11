@@ -9,6 +9,7 @@ import { CoverPhotoWithAvatarModule } from './cover/cover-photo-with-avatar.modu
 import { TitleModule } from 'shared/app-views/title/title.module';
 import { ContentModule } from 'shared/app-views/content/content.module';
 import { CommonModule } from '@angular/common';
+import { UserLinkModule } from 'shared/components/user/user-link.module';
 
 @NgModule({
     imports: [
@@ -18,7 +19,8 @@ import { CommonModule } from '@angular/common';
         TitleModule,
         ContentModule,
         CommonModule,
-        EditorModule
+        EditorModule,
+        UserLinkModule
     ],
     declarations: [
         ProfileComponent

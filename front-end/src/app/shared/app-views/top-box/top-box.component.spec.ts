@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { AuthService } from 'core/services/auth/auth.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('TopBoxComponent', () => {
 
@@ -29,7 +30,9 @@ describe('TopBoxComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [],
+            imports: [
+                RouterTestingModule
+            ],
             declarations: [
                 TopBoxComponent
             ],
