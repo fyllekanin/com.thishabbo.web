@@ -34,7 +34,7 @@
                     </div>
                     <div class="logged-in" *ngIf="isLoggedIn; else unregistered">
                         <div class="dropdown nickname-wrapper">
-                            Hello, <span class="nickname">{{nickname}}</span>
+                            Hello, <span class="nickname" (click)="goToProfile()">{{nickname}}</span>
                             <div class="dropdown-content">
                                 <a *ngIf="isAdmin" [routerLink]="['/admin/dashboard']">SiteCP</a>
                                 <a *ngIf="isStaff" [routerLink]="['/staff/dashboard']">StaffCP</a>

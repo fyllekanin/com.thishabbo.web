@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { AuthUser } from 'core/services/auth/auth.model';
 import { MainItem } from 'shared/app-views/navigation/navigation.model';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-top-box',
@@ -17,7 +18,8 @@ export class TopBoxComponent {
     showMenu: boolean;
 
     constructor(
-        private _authService: AuthService
+        private _authService: AuthService,
+        private _router: Router
     ) {
         this.setUser();
         const navigation = localStorage.getItem(LOCAL_STORAGE.NAVIGATION);
@@ -29,6 +31,10 @@ export class TopBoxComponent {
 
     logout(): void {
         this._authService.logout(false);
+    }
+
+    goToProfile(): void {
+        this._router.navigateByUrl(`/user/profile/${this._authService.authUser.nickname}`);
     }
 
     get credits(): number {
