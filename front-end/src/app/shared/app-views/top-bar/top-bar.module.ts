@@ -12,6 +12,7 @@ import { CategoryViewComponent } from 'shared/app-views/top-bar/notification-vie
 import { ThreadViewComponent } from 'shared/app-views/top-bar/notification-views/thread-view/thread-view.component';
 import { InfractionViewComponent } from 'shared/app-views/top-bar/notification-views/infraction-view/infraction-view.component';
 import { ContinuesInformationModule } from 'core/services/continues-information/continues-information.module';
+import { FollowerViewComponent } from 'shared/app-views/top-bar/notification-views/follower-view/follower-view.component';
 
 @NgModule({
     imports: [
@@ -30,7 +31,8 @@ import { ContinuesInformationModule } from 'core/services/continues-information/
         BadgeViewComponent,
         CategoryViewComponent,
         ThreadViewComponent,
-        InfractionViewComponent
+        InfractionViewComponent,
+        FollowerViewComponent
     ],
     providers: [],
     exports: [

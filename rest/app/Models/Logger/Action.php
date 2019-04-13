@@ -1280,4 +1280,18 @@ class Action {
         ],
         'log' => 'log_mod'
     ];
+
+    const FOLLOWED = [
+        'id' => 147,
+        'description' => 'Followed a user',
+        'data' => [],
+        'log' => 'log_user'
+    ];
+
+    const UNFOLLOWED = [
+        'id' => 147,
+        'description' => 'Followed a user',
+        'data' => [],
+        'log' => 'log_user'
+    ];
 }

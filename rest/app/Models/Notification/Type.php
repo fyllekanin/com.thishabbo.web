@@ -42,4 +42,9 @@ class Type {
         'type' => 7,
         'description' => 'When infraction on a user is deleted'
     ];
+
+    const FOLLOWED = [
+        'type' => 8,
+        'description' => 'When a user have received a new follower'
+    ];
 }

@@ -4,6 +4,7 @@ namespace App\Factories\Notification;
 
 use App\Factories\Notification\Views\BadgeView;
 use App\Factories\Notification\Views\CategoryView;
+use App\Factories\Notification\Views\FollowerView;
 use App\Factories\Notification\Views\InfractionView;
 use App\Factories\Notification\Views\ThreadView;
 use App\Models\Notification\Type;
@@ -28,6 +29,10 @@ class NotificationFactory {
             case Type::getType(Type::INFRACTION_GIVEN):
             case Type::getType(Type::INFRACTION_DELETED):
                 $item = new InfractionView($notification);
+                break;
+            case Type::getType(Type::FOLLOWED):
+                $item = new FollowerView($notification);
+                break;
         }
 
         return $item;
@@ -49,6 +54,16 @@ class NotificationFactory {
             'senderId' => $senderId,
             'type' => Type::getType(Type::INFRACTION_DELETED),
             'contentId' => $contentId,
+            'createdAt' => time()
+        ]);
+    }
+
+    public static function followedUser($userId, $senderId) {
+        DB::table('notifications')->insert([
+            'userId' => $userId,
+            'senderId' => $senderId,
+            'type' => Type::getType(Type::FOLLOWED),
+            'contentId' => 0,
             'createdAt' => time()
         ]);
     }

@@ -10,6 +10,7 @@ import { TitleModule } from 'shared/app-views/title/title.module';
 import { ContentModule } from 'shared/app-views/content/content.module';
 import { CommonModule } from '@angular/common';
 import { UserLinkModule } from 'shared/components/user/user-link.module';
+import { UserProfileModule } from 'shared/directives/user-profile.module';
 
 @NgModule({
     imports: [
@@ -20,7 +21,8 @@ import { UserLinkModule } from 'shared/components/user/user-link.module';
         ContentModule,
         CommonModule,
         EditorModule,
-        UserLinkModule
+        UserLinkModule,
+        UserProfileModule
     ],
     declarations: [
         ProfileComponent

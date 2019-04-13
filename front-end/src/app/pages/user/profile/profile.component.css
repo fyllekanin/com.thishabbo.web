@@ -2,7 +2,7 @@
     color: #7d7d7d;
 }
 
-.post-bit-row {
+.followers {
     background: rgba(165, 161, 161, .02);
     box-shadow: inset 0 1px 4px rgba(0, 0, 0, .02);
     color: #8c8a8a;
@@ -10,9 +10,13 @@
     text-shadow: #fff 1px 1px 0;
 }
 
-.profile-friends {
+.follower {
     width: 78%;
     float: right;
+}
+
+.align-center {
+    text-align: center;
 }
 
 .visitor-information-left {
@@ -36,11 +40,11 @@
 }
 
 .latest-post {
-        margin: 0 0 2px 0;
-        padding: 5px;
-        width: 100%;
-        background: #fbfbfb;
-        box-shadow: inset 0 1px 2px rgba(197, 197, 197, 0.09);
+    margin: 0 0 2px 0;
+    padding: 5px;
+    width: 100%;
+    background: #fbfbfb;
+    box-shadow: inset 0 1px 2px rgba(197, 197, 197, 0.09);
 }
 
 .vistor-message-info {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ProfileModel } from './profile.model';
+import { Followers, ProfileModel } from './profile.model';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { Observable } from 'rxjs';
 import { HttpService } from 'core/services/http/http.service';
@@ -14,5 +14,13 @@ export class ProfileService implements Resolve<ProfileModel> {
         const nickname = route.params['nickname'];
         return this._httpService.get(`page/profile/${nickname}`)
             .pipe(map(res => new ProfileModel(res)));
+    }
+
+    follow(userId: number): Observable<Followers> {
+        return this._httpService.post('usercp/profile/follow', { userId: userId });
+    }
+
+    unfollow(userId: number): Observable<Followers> {
+        return this._httpService.delete(`usercp/profile/unfollow/${userId}`);
     }
 }

@@ -41,3 +41,6 @@ Route::get('themes', 'Usercp\AccountController@getThemes');
 Route::put('themes', 'Usercp\AccountController@updateTheme');
 
 Route::post('voucher-code', 'Usercp\AccountController@claimVoucherCode');
+
+Route::post('profile/follow', 'ProfileController@createFollow');
+Route::delete('profile/unfollow/{userId}', 'ProfileController@deleteFollow');

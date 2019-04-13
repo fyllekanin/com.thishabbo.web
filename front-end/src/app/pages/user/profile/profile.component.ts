@@ -1,9 +1,13 @@
 import { Component, ElementRef, OnDestroy } from '@angular/core';
-import { ProfileModel, ProfileStats } from './profile.model';
+import { Followers, ProfileActions, ProfileModel, ProfileStats } from './profile.model';
 import { Page } from 'shared/page/page.model';
 import { ActivatedRoute } from '@angular/router';
 import { TimeHelper } from 'shared/helpers/time.helper';
 import { SlimUser } from 'core/services/auth/auth.model';
+import { TitleTab } from 'shared/app-views/title/title.model';
+import { AuthService } from 'core/services/auth/auth.service';
+import { ProfileService } from './profile.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 
 @Component({
     selector: 'app-user-profile',
@@ -13,7 +17,12 @@ import { SlimUser } from 'core/services/auth/auth.model';
 export class ProfileComponent extends Page implements OnDestroy {
     private _data: ProfileModel;
 
+    followerTabs: Array<TitleTab> = [];
+
     constructor(
+        private _authService: AuthService,
+        private _profileService: ProfileService,
+        private _notificationService: NotificationService,
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute
     ) {
@@ -23,6 +32,21 @@ export class ProfileComponent extends Page implements OnDestroy {
 
     ngOnDestroy(): void {
         super.destroy();
+    }
+
+    onFollowerTabClick(action: number): void {
+        switch (action) {
+            case ProfileActions.FOLLOW:
+                this.followUser();
+                break;
+            case ProfileActions.UNFOLLOW:
+                this.unfollowUser();
+                break;
+        }
+    }
+
+    get followers(): Followers {
+        return this._data.followers;
     }
 
     get user(): SlimUser {
@@ -46,7 +70,42 @@ export class ProfileComponent extends Page implements OnDestroy {
         return this._data.stats;
     }
 
+    private followUser(): void {
+        this._profileService.follow(this._data.user.userId)
+            .subscribe(res => {
+                this._notificationService.sendInfoNotification(`You have now followed!`);
+                this._data.followers = new Followers(res);
+                this.setFollowerTabs();
+            }, this._notificationService.failureNotification.bind(this._notificationService));
+    }
+
+    private unfollowUser(): void {
+        this._profileService.unfollow(this._data.user.userId)
+            .subscribe(res => {
+                this._notificationService.sendInfoNotification(`You have now unfollowed!`);
+                this._data.followers = new Followers(res);
+                this.setFollowerTabs();
+            }, this._notificationService.failureNotification.bind(this._notificationService));
+    }
+
     private onData(data: { data: ProfileModel }): void {
         this._data = data.data;
+        this.setFollowerTabs();
+    }
+
+    private setFollowerTabs(): void {
+        if (!this._authService.isLoggedIn() || this._authService.authUser.userId === this._data.user.userId) {
+            return;
+        }
+
+        if (this._data.followers.isFollowing) {
+            this.followerTabs = this._data.followers.isApproved ?
+                [new TitleTab({ title: 'Unfollow', value: ProfileActions.UNFOLLOW })] :
+                [new TitleTab({ title: 'Pending..' })];
+        } else {
+            this.followerTabs = [
+                new TitleTab({ title: 'Follow', value: ProfileActions.FOLLOW })
+            ];
+        }
     }
 }
