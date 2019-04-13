@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin\Group;
 
-use App\EloquentModels\Group;
-use App\EloquentModels\GroupRequest;
+use App\EloquentModels\Group\Group;
+use App\EloquentModels\Group\GroupRequest;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserGroup;
 use App\Helpers\ConfigHelper;

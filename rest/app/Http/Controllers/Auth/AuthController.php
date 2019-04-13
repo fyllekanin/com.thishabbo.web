@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\EloquentModels\Ban;
+use App\EloquentModels\User\Ban;
 use App\EloquentModels\Forum\ForumPermission;
 use App\EloquentModels\User\Token;
 use App\EloquentModels\User\User;

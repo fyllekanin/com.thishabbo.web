@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers\Admin\Group;
 
-use App\EloquentModels\Group;
-use App\EloquentModels\GroupList;
-use App\Helpers\UserHelper;
+use App\EloquentModels\Group\Group;
+use App\EloquentModels\Group\GroupList;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;

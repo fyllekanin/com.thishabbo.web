@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Usercp;
 
-use App\EloquentModels\CategorySubscription;
+use App\EloquentModels\Forum\CategorySubscription;
 use App\EloquentModels\Forum\IgnoredCategory;
 use App\EloquentModels\Forum\IgnoredThread;
 use App\EloquentModels\Log\LogUser;
 use App\EloquentModels\Theme;
-use App\EloquentModels\ThreadSubscription;
+use App\EloquentModels\Forum\ThreadSubscription;
 use App\EloquentModels\User\User;
-use App\EloquentModels\User\UserData;
 use App\EloquentModels\User\VoucherCode;
 use App\Helpers\ConfigHelper;
 use App\Helpers\UserHelper;

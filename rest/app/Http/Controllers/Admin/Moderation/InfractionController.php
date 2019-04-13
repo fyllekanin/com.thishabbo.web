@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Moderation;
 
-use App\EloquentModels\Ban;
+use App\EloquentModels\User\Ban;
 use App\EloquentModels\Infraction\AutoBan;
 use App\EloquentModels\Infraction\Infraction;
 use App\EloquentModels\Infraction\InfractionLevel;

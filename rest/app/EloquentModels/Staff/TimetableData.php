@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EloquentModels;
+namespace App\EloquentModels\Staff;
 
 use App\EloquentModels\Models\UnixTimeModel;
 

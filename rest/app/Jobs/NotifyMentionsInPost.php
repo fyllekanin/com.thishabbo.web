@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\EloquentModels\Group;
+use App\EloquentModels\Group\Group;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserGroup;
 use App\Helpers\ConfigHelper;

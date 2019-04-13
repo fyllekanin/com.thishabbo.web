@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers\Staff;
 
-use App\EloquentModels\RadioRequest;
+use App\EloquentModels\Staff\RadioRequest;
 use App\EloquentModels\RequestThc;
-use App\EloquentModels\Timetable;
+use App\EloquentModels\Staff\Timetable;
 use App\EloquentModels\User\User;
-use App\EloquentModels\User\UserData;
-use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;

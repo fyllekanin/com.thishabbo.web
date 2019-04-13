@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Staff;
 
-use App\EloquentModels\Timetable;
-use App\EloquentModels\TimetableData;
+use App\EloquentModels\Staff\Timetable;
+use App\EloquentModels\Staff\TimetableData;
 use App\EloquentModels\User\Login;
 use App\EloquentModels\User\User;
-use App\EloquentModels\Log\LogStaff;
 use App\Helpers\ConfigHelper;
 use App\Helpers\SettingsHelper;
 use App\Helpers\UserHelper;

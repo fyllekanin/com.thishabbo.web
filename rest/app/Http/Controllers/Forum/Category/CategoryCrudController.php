@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Forum\Category;
 
-use App\EloquentModels\CategorySubscription;
+use App\EloquentModels\Forum\CategorySubscription;
 use App\EloquentModels\Forum\Category;
 use App\EloquentModels\Forum\IgnoredCategory;
 use App\EloquentModels\Forum\IgnoredThread;
@@ -15,7 +15,6 @@ use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Services\ForumService;
 use App\Services\QueryParamService;
-use App\Utils\Iterables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;

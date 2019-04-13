@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 use App\EloquentModels\Forum\Category;
 use App\EloquentModels\Forum\ForumPermission;
-use App\EloquentModels\Group;
+use App\EloquentModels\Group\Group;
 use Exception;
 use Illuminate\Support\Facades\Cache;
 

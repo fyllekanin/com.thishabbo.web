@@ -12,7 +12,7 @@ use App\EloquentModels\Forum\Thread;
 use App\EloquentModels\Forum\ThreadPoll;
 use App\EloquentModels\Forum\ThreadPollAnswer;
 use App\EloquentModels\Forum\ThreadRead;
-use App\EloquentModels\ThreadSubscription;
+use App\EloquentModels\Forum\ThreadSubscription;
 use App\Helpers\ConfigHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;

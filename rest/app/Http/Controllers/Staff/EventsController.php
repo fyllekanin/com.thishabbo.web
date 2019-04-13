@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Staff;
 
-use App\EloquentModels\Event;
+use App\EloquentModels\Staff\Event;
 use App\EloquentModels\Log\LogStaff;
-use App\EloquentModels\Timetable;
+use App\EloquentModels\Staff\Timetable;
 use App\EloquentModels\User\User;
 use App\Helpers\ConfigHelper;
 use App\Helpers\PermissionHelper;

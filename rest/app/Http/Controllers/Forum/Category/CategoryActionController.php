@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Forum\Category;
 
-use App\EloquentModels\CategorySubscription;
+use App\EloquentModels\Forum\CategorySubscription;
 use App\EloquentModels\Forum\Category;
 use App\EloquentModels\Forum\IgnoredCategory;
 use App\Helpers\ConfigHelper;

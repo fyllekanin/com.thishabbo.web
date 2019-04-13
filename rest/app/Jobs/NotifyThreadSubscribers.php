@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\EloquentModels\ThreadSubscription;
+use App\EloquentModels\Forum\ThreadSubscription;
 use App\Models\Notification\Type;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
