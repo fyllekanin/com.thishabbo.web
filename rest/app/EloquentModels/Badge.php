@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 /**
  * @property mixed badgeId
+ * @property mixed name
  */
 class Badge extends DeletableModel {
     protected $primaryKey = 'badgeId';

@@ -1,10 +1,9 @@
 <?php
 
-namespace App\EloquentModels;
+namespace App\EloquentModels\User;
 
 use App\Helpers\PermissionHelper;
 use App\EloquentModels\Models\UnixTimeModel;
-use App\EloquentModels\User\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 

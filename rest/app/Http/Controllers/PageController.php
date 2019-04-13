@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\EloquentModels\BBcode;
 use App\EloquentModels\Forum\Category;
 use App\EloquentModels\Forum\Thread;
-use App\EloquentModels\GroupList;
+use App\EloquentModels\Group\GroupList;
 use App\EloquentModels\Notice;
 use App\EloquentModels\Page;
 use App\EloquentModels\Theme;
@@ -15,7 +15,6 @@ use App\Helpers\PermissionHelper;
 use App\Helpers\SettingsHelper;
 use App\Helpers\UserHelper;
 use App\Utils\BBcodeUtil;
-use App\Utils\Condition;
 use App\Utils\Iterables;
 use App\Utils\Value;
 use Illuminate\Http\Request;
@@ -119,28 +118,6 @@ class PageController extends Controller {
         $settingKeys = ConfigHelper::getKeyConfig();
         return response()->json([
             'content' => BBcodeUtil::bbcodeParser(SettingsHelper::getSettingValue($settingKeys->maintenanceContent))
-        ]);
-    }
-
-    /**
-     * @param         $nickname
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getProfile ($nickname) {
-        $user = User::withNickname($nickname)->first();
-        Condition::precondition(!$user, 404, 'No user with that nickname');
-
-        return response()->json([
-            'user' => UserHelper::getSlimUser($user->userId),
-            'stats' => [
-                'userId' => $user->userId,
-                'posts' => $user->posts,
-                'threads' => $user->threads,
-                'likes' => $user->likes,
-                'createdAt' => $user->createdAt->timestamp,
-                'lastActivity' => $user->lastActivity
-            ]
         ]);
     }
 

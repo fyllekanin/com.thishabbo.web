@@ -2,16 +2,13 @@
 
 namespace App\Helpers;
 
-use App\EloquentModels\Group;
-use App\EloquentModels\User\Token;
+use App\EloquentModels\Group\Group;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserData;
 use App\EloquentModels\User\UserGroup;
 use App\Utils\BBcodeUtil;
 use App\Utils\Value;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class UserHelper {
 

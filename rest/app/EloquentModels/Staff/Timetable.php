@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EloquentModels;
+namespace App\EloquentModels\Staff;
 
 use App\EloquentModels\Models\DeletableModel;
 use App\Helpers\UserHelper;
@@ -18,7 +18,7 @@ class Timetable extends DeletableModel {
     protected $appends = ['user', 'event', 'name'];
 
     public function event () {
-        return $this->hasMany('App\EloquentModels\Event', 'eventId', 'eventId');
+        return $this->hasMany('App\EloquentModels\Staff\Event', 'eventId', 'eventId');
     }
 
     public function getUserAttribute () {
@@ -35,7 +35,7 @@ class Timetable extends DeletableModel {
     }
 
     public function timetableData () {
-        return $this->hasOne('App\EloquentModels\TimetableData', 'timetableId');
+        return $this->hasOne('App\EloquentModels\Staff\TimetableData', 'timetableId');
     }
 
     public function getPermShowAttribute () {

@@ -5,6 +5,10 @@ namespace App\EloquentModels;
 use App\EloquentModels\Models\DeletableModel;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * @property mixed betCategoryId
+ * @property mixed name
+ */
 class BetCategory extends DeletableModel {
     protected $table = 'bet_categories';
     protected $primaryKey = 'betCategoryId';

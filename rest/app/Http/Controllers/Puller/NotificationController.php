@@ -2,15 +2,10 @@
 
 namespace App\Http\Controllers\Puller;
 
-use App\EloquentModels\Forum\Post;
 use App\Factories\Notification\NotificationView;
-use App\Helpers\ConfigHelper;
-use App\Helpers\PermissionHelper;
-use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Services\NotificationService;
 use App\Utils\Iterables;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 

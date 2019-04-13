@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Staff;
 
 use App\EloquentModels\Log\LogStaff;
 use App\EloquentModels\Log\LogUser;
-use App\EloquentModels\RadioRequest;
-use App\EloquentModels\Timetable;
-use App\EloquentModels\TimetableData;
+use App\EloquentModels\Staff\RadioRequest;
+use App\EloquentModels\Staff\Timetable;
 use App\EloquentModels\User\User;
 use App\Helpers\ConfigHelper;
 use App\Helpers\PermissionHelper;

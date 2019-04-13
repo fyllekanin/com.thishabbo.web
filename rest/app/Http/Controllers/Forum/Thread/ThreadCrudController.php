@@ -12,7 +12,7 @@ use App\EloquentModels\Forum\Thread;
 use App\EloquentModels\Forum\ThreadPoll;
 use App\EloquentModels\Forum\ThreadPollAnswer;
 use App\EloquentModels\Forum\ThreadRead;
-use App\EloquentModels\ThreadSubscription;
+use App\EloquentModels\Forum\ThreadSubscription;
 use App\Helpers\ConfigHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
@@ -175,7 +175,7 @@ class ThreadCrudController extends Controller {
             'oldContent' => $oldContent,
             'newContent' => $thread->firstPost->content
         ]);
-        return $this->getThreadController($request, $thread->categoryId, $thread->threadId);
+        return $this->getThreadController($thread->categoryId, $thread->threadId);
     }
 
     /**

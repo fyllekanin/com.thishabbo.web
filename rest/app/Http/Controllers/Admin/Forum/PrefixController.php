@@ -6,7 +6,6 @@ use App\EloquentModels\Forum\Category;
 use App\EloquentModels\Forum\Prefix;
 use App\Helpers\ConfigHelper;
 use App\Helpers\PermissionHelper;
-use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
@@ -91,7 +90,7 @@ class PrefixController extends Controller {
         $prefix->save();
 
         Logger::admin($user->userId, $request->ip(), Action::CREATED_PREFIX, ['prefix' => $prefix->text]);
-        return $this->getPrefix($request, $prefix->prefixId);
+        return $this->getPrefix($prefix->prefixId);
     }
 
     /**
@@ -126,7 +125,7 @@ class PrefixController extends Controller {
         $existing->save();
 
         Logger::admin($user->userId, $request->ip(), Action::UPDATED_PREFIX, ['prefix' => $prefix->text]);
-        return $this->getPrefix($request, $prefixId);
+        return $this->getPrefix($prefixId);
     }
 
     /**

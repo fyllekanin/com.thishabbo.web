@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Arcade;
 use App\EloquentModels\Game;
 use App\EloquentModels\Paragraph;
 use App\Helpers\ConfigHelper;
-use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;

@@ -6,7 +6,6 @@ use App\EloquentModels\Forum\Category;
 use App\EloquentModels\Forum\ForumPermission;
 use App\Helpers\ConfigHelper;
 use App\Helpers\PermissionHelper;
-use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
@@ -42,7 +41,7 @@ class CategoriesController extends Controller {
         }
 
         Logger::admin($user->userId, $request->ip(), Action::UPDATED_CATEGORIES_ORDER);
-        return $this->getCategories($request);
+        return $this->getCategories();
     }
 
     /**
@@ -85,7 +84,7 @@ class CategoriesController extends Controller {
         $this->createForumPermissions($category);
         Logger::admin($user->userId, $request->ip(), Action::CREATED_CATEGORY, ['category' => $category->title]);
 
-        return $this->getCategory($request, $category->categoryId);
+        return $this->getCategory($category->categoryId);
     }
 
     /**
@@ -158,7 +157,7 @@ class CategoriesController extends Controller {
         }
 
         Logger::admin($user->userId, $request->ip(), Action::UPDATED_CATEGORY, ['category' => $newCategory->title]);
-        return $this->getCategory($request, $categoryId);
+        return $this->getCategory($categoryId);
     }
 
     /**

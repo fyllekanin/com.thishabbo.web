@@ -43,17 +43,6 @@ class RadioStats {
         $radio->song = (string)$formatted->songtitle;
         $radio->albumArt = $this->getAlbumArt((string)$formatted->songtitle);
         SettingsHelper::createOrUpdateSetting($this->settingKeys->radio, json_encode($radio));
-
-        $this->saveToLog($formatted);
-    }
-
-    private function saveToLog($formatted) {
-        $log = new RadioStatsLog([
-            'listeners' => $formatted->currentlisteners,
-            'song' => (string)$formatted->songtitle,
-            'genre' => (string)$formatted->servergenre
-        ]);
-        $log->save();
     }
 
     private function getStatsData (RadioSettings $radio) {

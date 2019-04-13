@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 /**
  * @property mixed postId
  * @property mixed userId
+ * @property mixed threadId
  */
 class Post extends DeletableModel
 {

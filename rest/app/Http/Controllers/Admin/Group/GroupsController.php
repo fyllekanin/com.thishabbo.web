@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin\Group;
 
-use App\EloquentModels\Group;
-use App\EloquentModels\GroupRequest;
+use App\EloquentModels\Group\Group;
+use App\EloquentModels\Group\GroupRequest;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserGroup;
 use App\Helpers\ConfigHelper;
@@ -149,7 +149,7 @@ class GroupsController extends Controller {
         $group->save();
 
         Logger::admin($user->userId, $request->ip(), Action::CREATED_GROUP, ['group' => $group->name]);
-        return $this->getGroup($request, $group->groupId);
+        return $this->getGroup($group->groupId);
     }
 
     /**
@@ -193,7 +193,7 @@ class GroupsController extends Controller {
         ]);
 
         Logger::admin($user->userId, $request->ip(), Action::UPDATED_GROUP, ['group' => $group->name]);
-        return $this->getGroup($request, $groupId);
+        return $this->getGroup($groupId);
     }
 
     /**

@@ -6,7 +6,6 @@ use App\EloquentModels\Badge;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserItem;
 use App\Helpers\ConfigHelper;
-use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;

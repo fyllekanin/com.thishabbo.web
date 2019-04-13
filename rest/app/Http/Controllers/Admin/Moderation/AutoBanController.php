@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin\Moderation;
 
 use App\EloquentModels\Infraction\AutoBan;
-use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;

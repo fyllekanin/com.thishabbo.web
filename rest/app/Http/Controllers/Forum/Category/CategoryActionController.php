@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Forum\Category;
 
-use App\EloquentModels\CategorySubscription;
+use App\EloquentModels\Forum\CategorySubscription;
 use App\EloquentModels\Forum\Category;
 use App\EloquentModels\Forum\IgnoredCategory;
 use App\Helpers\ConfigHelper;
 use App\Helpers\PermissionHelper;
-use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;

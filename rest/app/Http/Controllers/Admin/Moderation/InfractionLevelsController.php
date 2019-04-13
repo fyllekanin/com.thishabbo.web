@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin\Moderation;
 
 use App\EloquentModels\Forum\Category;
 use App\EloquentModels\Infraction\InfractionLevel;
-use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
@@ -91,7 +90,7 @@ class InfractionLevelsController extends Controller {
         Logger::admin($user->userId, $request->ip(), Action::UPDATED_INFRACTION_LEVEL, [
             'infractionLevelId' => $infractionLevel->infractionLevelId
         ]);
-        return $this->getInfractionLevel($request, $infractionLevel->infractionLevelId);
+        return $this->getInfractionLevel($infractionLevel->infractionLevelId);
     }
 
     /**
@@ -137,7 +136,7 @@ class InfractionLevelsController extends Controller {
         Logger::admin($user->userId, $request->ip(), Action::CREATED_INFRACTION_LEVEL, [
             'infractionLevelId' => $infractionLevel->infractionLevelId
         ]);
-        return $this->getInfractionLevel($request, $infractionLevel->infractionLevelId);
+        return $this->getInfractionLevel($infractionLevel->infractionLevelId);
     }
 
     /**

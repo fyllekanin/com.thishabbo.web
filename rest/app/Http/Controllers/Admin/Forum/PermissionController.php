@@ -4,11 +4,10 @@ namespace App\Http\Controllers\Admin\Forum;
 
 use App\EloquentModels\Forum\Category;
 use App\EloquentModels\Forum\ForumPermission;
-use App\EloquentModels\Group;
+use App\EloquentModels\Group\Group;
 use App\EloquentModels\User\User;
 use App\Helpers\ConfigHelper;
 use App\Helpers\PermissionHelper;
-use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;

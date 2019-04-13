@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin\Betting;
 
 use App\EloquentModels\Bet;
 use App\EloquentModels\BetCategory;
-use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;

@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers\Staff;
 
-use App\EloquentModels\RadioRequest;
+use App\EloquentModels\Staff\RadioRequest;
 use App\EloquentModels\RequestThc;
-use App\EloquentModels\Timetable;
+use App\EloquentModels\Staff\Timetable;
 use App\EloquentModels\User\User;
-use App\EloquentModels\User\UserData;
-use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
@@ -65,9 +63,9 @@ class StaffController extends Controller {
                 'reason' => $thcRequest['reason']
             ]);
             $newRequest->save();
+            Logger::staff($user->userId, $request->ip(), Action::REQUESTED_THC_FOR_USER, ['name' => $account->nickname]);
         }
 
-        Logger::staff($user->userId, $request->ip(), Action::REQUESTED_THC_FOR_USER, ['name' => $account->nickname]);
         return response()->json();
     }
 

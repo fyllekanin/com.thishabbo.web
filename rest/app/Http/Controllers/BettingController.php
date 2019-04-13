@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\EloquentModels\Bet;
 use App\EloquentModels\BetCategory;
 use App\EloquentModels\User\UserBet;
-use App\Helpers\UserHelper;
 use App\Logger;
 use App\Models\Logger\Action;
 use App\Services\CreditsService;

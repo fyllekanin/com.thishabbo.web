@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EloquentModels;
+namespace App\EloquentModels\Group;
 
 use App\EloquentModels\Models\UnixTimeModel;
 
@@ -11,7 +11,7 @@ class GroupRequest extends UnixTimeModel {
     protected $appends = ['name', 'nickname'];
 
     public function group() {
-        return $this->hasMany('App\EloquentModels\Group', 'groupId');
+        return $this->hasMany('App\EloquentModels\Group\Group', 'groupId');
     }
 
     public function user() {

@@ -8,6 +8,10 @@ use App\Services\ForumService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\App;
 
+/**
+ * @property mixed title
+ * @property mixed categoryId
+ */
 class Category extends DeletableModel {
     /** @var ForumService */
     private $forumService;
