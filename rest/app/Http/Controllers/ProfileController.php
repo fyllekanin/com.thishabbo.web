@@ -34,7 +34,7 @@ class ProfileController extends Controller {
         $follow = new Follower([
             'userId' => $user->userId,
             'targetId' => $target->userId,
-            'isApproved' => true
+            'isApproved' => !($target->profile && $target->profile->isPrivate)
         ]);
         $follow->save();
 
@@ -109,7 +109,7 @@ class ProfileController extends Controller {
             return false;
         }
 
-        return Follower::where('userId', $user->userId)->where('targetId', $profile->userId)->count() === 0;
+        return Follower::where('userId', $user->userId)->where('targetId', $profile->userId)->isApproved()->count() === 0;
     }
 
     /**
