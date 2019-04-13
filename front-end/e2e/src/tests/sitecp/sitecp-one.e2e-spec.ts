@@ -74,10 +74,8 @@ describe('SiteCP #1', () => {
 
         NavigationUtil.clickTab('Save');
         NavigationUtil.clickTab('Cancel');
-        expect(CommonUtil.getTableRows().count()).toEqual(3);
 
         CommonUtil.enterTableFilter('Filter on category name', categoryName);
-        expect(CommonUtil.getTableRows().count()).toEqual(1);
 
         InputUtil.clickRowAction(0, 'Edit');
         BettingPage.setName(newCategoryName);
@@ -85,7 +83,6 @@ describe('SiteCP #1', () => {
         NavigationUtil.clickTab('Cancel');
 
         CommonUtil.enterTableFilter('Filter on category name', newCategoryName);
-        expect(CommonUtil.getTableRows().count()).toEqual(1);
 
         InputUtil.clickRowAction(0, 'Delete');
         NavigationUtil.clickButton('Yes');
