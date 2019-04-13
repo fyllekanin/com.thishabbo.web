@@ -4,14 +4,14 @@ import { HttpService } from 'core/services/http/http.service';
 import { Resolve } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { ThcRequestModel } from '../thc-requests/thc-requests.model';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 
 @Injectable()
 export class ThcRequestsService implements Resolve<Array<ThcRequestModel>> {
 
     constructor(
         private _httpService: HttpService,
-        private _globalNotificationService: GlobalNotificationService
+        private _notificationService: NotificationService
     ) {}
 
     resolve(): Observable<Array<ThcRequestModel>> {
@@ -23,6 +23,6 @@ export class ThcRequestsService implements Resolve<Array<ThcRequestModel>> {
 
     updateRequests(requests: Array<{ requestThcId: number, isApproved: boolean }>): Observable<void> {
         return this._httpService.put('admin/thc/requests', { requests: requests })
-            .pipe(catchError(this._globalNotificationService.failureNotification.bind(this._globalNotificationService)));
+            .pipe(catchError(this._notificationService.failureNotification.bind(this._notificationService)));
     }
 }

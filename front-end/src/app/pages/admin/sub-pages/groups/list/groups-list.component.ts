@@ -1,8 +1,8 @@
 
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 import {
@@ -42,7 +42,7 @@ export class GroupsListComponent extends Page implements OnDestroy {
     pagination: PaginationModel;
 
     constructor(
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _dialogService: DialogService,
         private _router: Router,
         private _httpService: HttpService,
@@ -93,13 +93,13 @@ export class GroupsListComponent extends Page implements OnDestroy {
     private onDelete(groupId: number): void {
         this._httpService.delete(`admin/groups/${groupId}`)
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Group deleted!'
                 }));
                 this._groupsListPage.groups = this._groupsListPage.groups.filter(group => group.groupId !== Number(groupId));
                 this.createOrUpdateTable();
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService), () => {
+            }, this._notificationService.failureNotification.bind(this._notificationService), () => {
                 this._dialogService.closeDialog();
             });
     }

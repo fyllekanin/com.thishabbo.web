@@ -1,6 +1,6 @@
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { Subscription } from 'rxjs';
-import { GlobalNotification, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { AfterViewInit, Component, ElementRef, NgZone, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
 
 @Component({
@@ -18,9 +18,9 @@ export class GlobalNotificationComponent implements AfterViewInit, OnDestroy {
 
     constructor(
         private _ngZone: NgZone,
-        globalNotificationService: GlobalNotificationService
+        notificationService: NotificationService
     ) {
-        this._notificationSubscription = globalNotificationService.onGlobalNotification.subscribe(this.onNotification.bind(this));
+        this._notificationSubscription = notificationService.onNotification.subscribe(this.onNotification.bind(this));
     }
 
     ngAfterViewInit(): void {
@@ -31,12 +31,12 @@ export class GlobalNotificationComponent implements AfterViewInit, OnDestroy {
         this._notificationSubscription.unsubscribe();
     }
 
-    private onNotification(notification: GlobalNotification): void {
+    private onNotification(notification: NotificationMessage): void {
         const node = this.createElement(notification);
         this._wrapperElement.appendChild(node);
     }
 
-    private createElement(notification: GlobalNotification): Node {
+    private createElement(notification: NotificationMessage): Node {
         const node = document.createElement('div');
         node.className = `global-notification ${this.getType(notification)}`;
 
@@ -71,7 +71,7 @@ export class GlobalNotificationComponent implements AfterViewInit, OnDestroy {
         }, 2100);
     }
 
-    private getType(notification: GlobalNotification): string {
+    private getType(notification: NotificationMessage): string {
         switch (notification.type) {
             case NotificationType.INFO:
                 return 'global-notification-info';

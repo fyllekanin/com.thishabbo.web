@@ -1,12 +1,12 @@
 import { DialogService } from 'core/services/dialog/dialog.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { HttpService } from 'core/services/http/http.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Prefix, PrefixActions, PrefixCategory } from '../prefix.model';
 import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-admin-forum-prefix',
@@ -21,7 +21,7 @@ export class PrefixComponent extends Page implements OnDestroy {
 
     constructor(
         private _dialogService: DialogService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _httpService: HttpService,
         private _router: Router,
         activatedRoute: ActivatedRoute,
@@ -44,21 +44,21 @@ export class PrefixComponent extends Page implements OnDestroy {
                 if (this._prefix.createdAt) {
                     this._httpService.put(`admin/prefixes/${this._prefix.prefixId}`, { prefix: this._prefix })
                         .subscribe(res => {
-                            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                            this._notificationService.sendNotification(new NotificationMessage({
                                 title: 'Success',
                                 message: 'Prefix updated'
                             }));
                             this.onData({ data: new Prefix(res) });
-                        }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                        }, this._notificationService.failureNotification.bind(this._notificationService));
                 } else {
                     this._httpService.post('admin/prefixes', { prefix: this._prefix })
                         .subscribe(res => {
-                            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                            this._notificationService.sendNotification(new NotificationMessage({
                                 title: 'Success',
                                 message: 'Prefix created'
                             }));
                             this.onData({ data: new Prefix(res) });
-                        }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                        }, this._notificationService.failureNotification.bind(this._notificationService));
                     }
                 break;
             case PrefixActions.DELETE:
@@ -104,13 +104,13 @@ export class PrefixComponent extends Page implements OnDestroy {
     private onDelete(): void {
         this._httpService.delete(`admin/prefixes/${this._prefix.prefixId}`)
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Prefix deleted'
                 }));
                 this._router.navigateByUrl('/admin/forum/prefixes');
                 this._dialogService.closeDialog();
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private flat(array: Array<PrefixCategory>, prefix: string = '', shouldAppend: boolean = true) {

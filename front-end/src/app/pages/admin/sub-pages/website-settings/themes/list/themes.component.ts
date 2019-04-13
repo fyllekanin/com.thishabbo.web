@@ -19,9 +19,9 @@ import {
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
 import { HttpService } from 'core/services/http/http.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-admin-website-settings-themes-list',
@@ -45,7 +45,7 @@ export class ThemesComponent extends Page implements OnDestroy {
         private _router: Router,
         private _httpService: HttpService,
         private _dialogService: DialogService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService,
         activatedRoute: ActivatedRoute
@@ -75,7 +75,7 @@ export class ThemesComponent extends Page implements OnDestroy {
                     item.isDefault = false;
                 });
                 this.createOrUpdateTable();
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'No theme is default'
                 }));
@@ -108,7 +108,7 @@ export class ThemesComponent extends Page implements OnDestroy {
                         });
                         this.createOrUpdateTable();
                         this._dialogService.closeDialog();
-                        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                        this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
                             message: 'Theme is default!'
                         }));
@@ -127,7 +127,7 @@ export class ThemesComponent extends Page implements OnDestroy {
                         this._data = this._data.filter(item => item.themeId !== Number(themeId));
                         this.createOrUpdateTable();
                         this._dialogService.closeDialog();
-                        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                        this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
                             message: 'Theme is deleted!'
                         }));

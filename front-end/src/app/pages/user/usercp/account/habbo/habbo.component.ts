@@ -6,8 +6,8 @@ import { ActivatedRoute } from '@angular/router';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { AuthService } from 'core/services/auth/auth.service';
 import { TitleTab } from 'shared/app-views/title/title.model';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { HabboService } from '../services/habbo.service';
 
 @Component({
@@ -23,7 +23,7 @@ export class HabboComponent extends Page implements OnDestroy {
     ];
 
     constructor(
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _service: HabboService,
         private _authService: AuthService,
         elementRef: ElementRef,
@@ -46,7 +46,7 @@ export class HabboComponent extends Page implements OnDestroy {
 
     onSave(): void {
         if (!this.newHabbo) {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Warning',
                 message: 'You can not update to nothing, fill something in',
                 type: NotificationType.WARNING
@@ -54,7 +54,7 @@ export class HabboComponent extends Page implements OnDestroy {
             return;
         }
         this._service.save(this.newHabbo).subscribe(() => {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Success',
                 message: 'Your habbo is updated!'
             }));

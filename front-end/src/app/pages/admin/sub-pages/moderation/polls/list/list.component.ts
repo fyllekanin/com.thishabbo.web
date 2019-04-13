@@ -14,9 +14,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 import { PollsListService } from '../../services/polls-list.service';
 import { HttpService } from 'core/services/http/http.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { DialogService } from 'core/services/dialog/dialog.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { SITECP_BREADCRUMB_ITEM } from '../../../../admin.constants';
@@ -35,7 +35,7 @@ export class ListComponent extends Page implements OnDestroy {
     pagination: PaginationModel;
 
     constructor(
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _dialogService: DialogService,
         private _httpService: HttpService,
         private _service: PollsListService,
@@ -98,7 +98,7 @@ export class ListComponent extends Page implements OnDestroy {
     private deletePoll(threadPollId: number, poll: PollListModel): void {
         this._httpService.delete(`forum/moderation/thread/poll/delete/${poll.threadId}`)
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Poll is deleted'
                 }));

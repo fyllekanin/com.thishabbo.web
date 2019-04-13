@@ -2,10 +2,10 @@ import { Injectable, ComponentFactoryResolver } from '@angular/core';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { AuthService } from 'core/services/auth/auth.service';
 import { HttpService } from 'core/services/http/http.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { DialogCloseButton, DialogButton } from 'shared/app-views/dialog/dialog.model';
 import { RequestComponent } from '../request/request.component';
-import { GlobalNotification, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { RadioModel } from '../radio.model';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class RadioService {
         private _dialogService: DialogService,
         private _authService: AuthService,
         private _httpService: HttpService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _componentResolver: ComponentFactoryResolver
     ) {}
 
@@ -33,7 +33,7 @@ export class RadioService {
 
     likeDj(): void {
         if (!this._authService.isLoggedIn()) {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
                 message: 'You need to be logged in when liking a DJ',
                 type: NotificationType.ERROR
@@ -41,11 +41,11 @@ export class RadioService {
             return;
         }
         this._httpService.post('radio/like', null).subscribe(() => {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationMessage({
                title: 'Success',
                message: 'You liked the DJ!'
             }));
-        }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+        }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     openInfo(stats: RadioModel): void {
@@ -63,12 +63,12 @@ export class RadioService {
     private onRequest(request: { content: string, nickname: string }): void {
         this._httpService.post('radio/request', { content: request.content, nickname: request.nickname })
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Request sent!'
                 }));
                 this._dialogService.closeDialog();
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
 }

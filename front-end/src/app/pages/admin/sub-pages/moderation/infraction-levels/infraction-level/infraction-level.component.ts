@@ -5,8 +5,8 @@ import { InfractionLevel, InfractionLevelActions } from '../infraction-level.mod
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { HttpService } from 'core/services/http/http.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { SelectItem } from 'shared/components/form/select/select.model';
 import { CategoryLeaf } from '../../../forum/category/category.model';
 
@@ -24,7 +24,7 @@ export class InfractionLevelComponent extends Page implements OnDestroy {
     constructor(
         private _dialogService: DialogService,
         private _httpService: HttpService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _router: Router,
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute
@@ -80,21 +80,21 @@ export class InfractionLevelComponent extends Page implements OnDestroy {
                 .subscribe(res => {
                     const data = new InfractionLevel(res);
                     this.onPage({ data: data });
-                    this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: 'Infraction level updated'
                     }));
-                }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                }, this._notificationService.failureNotification.bind(this._notificationService));
         } else {
             this._httpService.post(`admin/moderation/infraction-levels`, { infractionLevel: this._page })
                 .subscribe(res => {
                     const data = new InfractionLevel(res);
                     this.onPage({ data: data });
-                    this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: 'Infraction level created'
                     }));
-                }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                }, this._notificationService.failureNotification.bind(this._notificationService));
         }
     }
 
@@ -105,13 +105,13 @@ export class InfractionLevelComponent extends Page implements OnDestroy {
             () => {
                 this._httpService.delete(`admin/moderation/infraction-levels/${this._page.infractionLevelId}`)
                     .subscribe(() => {
-                        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                        this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
                             message: 'You deleted the infraction level'
                         }));
                         this._dialogService.closeDialog();
                         this._router.navigateByUrl('/admin/moderation/infraction-levels/page/1');
-                    }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                    }, this._notificationService.failureNotification.bind(this._notificationService));
             }
         );
     }

@@ -8,8 +8,8 @@ import { NumberHelper } from 'shared/helpers/number.helper';
 import { HttpService } from 'core/services/http/http.service';
 import { ActivatedRoute } from '@angular/router';
 import { getBettingStats } from '../betting.model';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { TitleTopBorder } from 'shared/app-views/title/title.model';
 import { StatsBoxModel } from 'shared/app-views/stats-boxes/stats-boxes.model';
 import { AuthService } from 'core/services/auth/auth.service';
@@ -33,7 +33,7 @@ export class RouletteComponent extends Page implements OnDestroy {
     stats: Array<StatsBoxModel> = [];
 
     constructor(
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _httpService: HttpService,
         private _authService: AuthService,
         elementRef: ElementRef,
@@ -57,7 +57,7 @@ export class RouletteComponent extends Page implements OnDestroy {
 
     spin(color: string): void {
         if (this.isSpinning) {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Oops!',
                 message: 'It\'s already spinning!',
                 type: NotificationType.WARNING
@@ -78,7 +78,7 @@ export class RouletteComponent extends Page implements OnDestroy {
                     if (item.isWin) {
                         this._data.stats.credits += item.profit;
                         this._authService.authUser.credits += item.profit;
-                        notification = new GlobalNotification({
+                        notification = new NotificationMessage({
                             title: 'Win!',
                             message: `You won ${item.profit} credits`,
                             type: NotificationType.SUCCESS
@@ -86,7 +86,7 @@ export class RouletteComponent extends Page implements OnDestroy {
                     } else {
                         this._data.stats.credits -= this.amount;
                         this._authService.authUser.credits -= this.amount;
-                        notification = new GlobalNotification({
+                        notification = new NotificationMessage({
                             title: 'Lost!',
                             message: `You lost ${this.amount} credits`,
                             type: NotificationType.ERROR
@@ -94,11 +94,11 @@ export class RouletteComponent extends Page implements OnDestroy {
                     }
                     this.isSpinning = false;
                     this.updateStats();
-                    this._globalNotificationService.sendGlobalNotification(notification);
+                    this._notificationService.sendNotification(notification);
                 }, 2000);
             }, err => {
                 this.isSpinning = false;
-                this._globalNotificationService.failureNotification(err);
+                this._notificationService.failureNotification(err);
             });
     }
 

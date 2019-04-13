@@ -13,8 +13,8 @@ import { EditorComponent } from 'shared/components/editor/editor.component';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { HttpService } from 'core/services/http/http.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-admin-website-settings-page',
@@ -31,7 +31,7 @@ export class PageComponent extends Page implements OnDestroy {
         private _router: Router,
         private _httpService: HttpService,
         private _dialogService: DialogService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute,
         breadcrumbService: BreadcrumbService
@@ -79,7 +79,7 @@ export class PageComponent extends Page implements OnDestroy {
         if (this._data.createdAt) {
             this._httpService.put(`admin/content/pages/${this._data.pageId}`, { data: this._data })
                 .subscribe(() => {
-                    this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: 'This page has been updated!'
                     }));
@@ -87,7 +87,7 @@ export class PageComponent extends Page implements OnDestroy {
         } else {
             this._httpService.post(`admin/content/pages`, { data: this._data })
                 .subscribe(() => {
-                    this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: 'This page has been saved!'
                     }));
@@ -104,12 +104,12 @@ export class PageComponent extends Page implements OnDestroy {
             () => {
                 this._httpService.delete(`admin/content/pages/${this._data.pageId}`)
                     .subscribe(() => {
-                        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                        this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
                             message: 'This page has been deleted!'
                         }));
                         this._router.navigateByUrl(PAGES_BREADCRUMB_ITEM.url);
-                    }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                    }, this._notificationService.failureNotification.bind(this._notificationService));
             }
         );
     }

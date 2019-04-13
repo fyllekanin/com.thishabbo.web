@@ -1,5 +1,5 @@
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { HttpService } from 'core/services/http/http.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import {
@@ -14,7 +14,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Page } from 'shared/page/page.model';
 import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { ThreadModerate, ThreadModerationActions } from './threads-moderation.model';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { SITECP_BREADCRUMB_ITEM } from '../../../admin.constants';
 
@@ -28,7 +28,7 @@ export class ThreadsModerationComponent extends Page implements OnDestroy {
     tableConfig: TableConfig;
 
     constructor(
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _httpService: HttpService,
         private _dialogService: DialogService,
         activatedRoute: ActivatedRoute,
@@ -75,7 +75,7 @@ export class ThreadsModerationComponent extends Page implements OnDestroy {
                 this._threads = this._threads.filter(th => th.threadId !== thread.threadId);
                 this.createOrUpdateTable();
                 this._dialogService.closeDialog();
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: `${thread.title} is now approved!`
                 }));
@@ -88,7 +88,7 @@ export class ThreadsModerationComponent extends Page implements OnDestroy {
                 this._threads = this._threads.filter(th => th.threadId !== thread.threadId);
                 this.createOrUpdateTable();
                 this._dialogService.closeDialog();
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: `${thread.title} is now deleted!`
                 }));

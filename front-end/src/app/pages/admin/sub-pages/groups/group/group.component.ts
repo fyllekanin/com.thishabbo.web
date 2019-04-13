@@ -5,8 +5,8 @@ import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { HttpService } from 'core/services/http/http.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { Page } from 'shared/page/page.model';
 import { SITECP_BREADCRUMB_ITEM, GROUP_LIST_BREADCRUMB_ITEM } from '../../../admin.constants';
@@ -24,7 +24,7 @@ export class GroupComponent extends Page implements OnDestroy {
 
     constructor (
         private _dialogService: DialogService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _httpService: HttpService,
         private _router: Router,
         breadcrumbService: BreadcrumbService,
@@ -64,11 +64,11 @@ export class GroupComponent extends Page implements OnDestroy {
         if (this._group.createdAt) {
             this._httpService.put(`admin/groups/${this._group.groupId}`, { group: this._group })
                 .subscribe(this.onSuccessUpdate.bind(this),
-                    this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                    this._notificationService.failureNotification.bind(this._notificationService));
         } else {
             this._httpService.post('admin/groups', { group: this._group })
                 .subscribe(this.onSuccessCreate.bind(this),
-                    this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                    this._notificationService.failureNotification.bind(this._notificationService));
         }
     }
 
@@ -124,12 +124,12 @@ export class GroupComponent extends Page implements OnDestroy {
     private onDelete (): void {
         this._httpService.delete(`admin/groups/${this._group.groupId}`)
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Group deleted!'
                 }));
                 this._router.navigateByUrl('/admin/groups/page/1');
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService), () => {
+            }, this._notificationService.failureNotification.bind(this._notificationService), () => {
                 this._dialogService.closeDialog();
             });
     }
@@ -148,7 +148,7 @@ export class GroupComponent extends Page implements OnDestroy {
 
     private onSuccessUpdate (group: Group): void {
         this._group = new Group(group);
-        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+        this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'Group updated!'
         }));
@@ -156,7 +156,7 @@ export class GroupComponent extends Page implements OnDestroy {
 
     private onSuccessCreate (group: Group): void {
         this.onPage({ data: new Group(group) });
-        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+        this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'Group created!'
         }));

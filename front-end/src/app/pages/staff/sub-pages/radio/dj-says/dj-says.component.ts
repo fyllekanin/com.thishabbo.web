@@ -8,8 +8,8 @@ import { STAFFCP_BREADCRUM_ITEM, STAFFCP_RADIO_BREADCRUM_ITEM } from '../../../s
 import { INFO_BOX_TYPE, InfoBoxModel } from 'shared/app-views/info-box/info-box.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { HttpService } from 'core/services/http/http.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-staff-radio-dj-says',
@@ -28,7 +28,7 @@ export class DjSaysComponent extends Page implements OnDestroy {
     };
 
     constructor(
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _httpService: HttpService,
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute,
@@ -52,11 +52,11 @@ export class DjSaysComponent extends Page implements OnDestroy {
     onSave(): void {
         this._httpService.put('staff/radio/dj-says', { says: this._data.says })
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'DJ Says updated!'
                 }));
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     get model(): DjSaysModel {

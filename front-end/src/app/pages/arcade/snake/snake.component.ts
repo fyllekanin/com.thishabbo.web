@@ -1,4 +1,4 @@
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { HttpService } from 'core/services/http/http.service';
 import { ActivatedRoute } from '@angular/router';
 import { ARCADE_BREADCRUM_ITEM } from '../arcade.constants';
@@ -9,7 +9,7 @@ import { Component, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@ang
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { HighScoreModel } from '../arcade.model';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-arcade-snake',
@@ -31,7 +31,7 @@ export class SnakeComponent extends Page implements AfterViewInit, OnDestroy {
     @ViewChild('game') gameArea: ElementRef;
 
     constructor(
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _httpService: HttpService,
         activatedRoute: ActivatedRoute,
         elementRef: ElementRef,
@@ -128,11 +128,11 @@ export class SnakeComponent extends Page implements AfterViewInit, OnDestroy {
         this._httpService.post('arcade/snake', { result: { gameId: this._gameId, score: this._gameValues.score } })
             .subscribe(res => {
                 this._highscore = res.highscore.map(item => new HighScoreModel(item));
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Score',
                     message: `${res.score} candys`
                 }));
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private isGameLost(head: Coordinates): boolean {

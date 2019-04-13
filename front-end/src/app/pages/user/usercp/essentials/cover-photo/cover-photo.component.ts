@@ -4,9 +4,9 @@ import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { Page } from 'shared/page/page.model';
 import { USERCP_BREADCRUM_ITEM } from '../../usercp.constants';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { HttpClient } from '@angular/common/http';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { UsercpAvatarCoverPreviewService } from '../../../cover/usercp-avatar-cover-preview.service';
 
 @Component({
@@ -21,7 +21,7 @@ export class CoverPhotoComponent extends Page implements OnDestroy {
 
     constructor(
         private _httpClient: HttpClient,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _previewService: UsercpAvatarCoverPreviewService,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService
@@ -48,12 +48,12 @@ export class CoverPhotoComponent extends Page implements OnDestroy {
         this._httpClient.post('rest/api/usercp/cover', form)
             .subscribe(() => {
                 this._previewService.update();
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Cover Photo Updated'
                 }));
             }, error => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Failure',
                     message: error.error.errors.cover[0]
                 }));

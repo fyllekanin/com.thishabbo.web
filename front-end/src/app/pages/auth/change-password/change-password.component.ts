@@ -3,9 +3,9 @@ import { Page } from 'shared/page/page.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpService } from 'core/services/http/http.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-auth-change-password',
@@ -20,7 +20,7 @@ export class ChangePasswordComponent extends Page implements OnDestroy {
 
     constructor(
         private _httpService: HttpService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _router: Router,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService,
@@ -45,12 +45,12 @@ export class ChangePasswordComponent extends Page implements OnDestroy {
             repassword: this.repassword
         })
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Your password is changed, you can now login'
                 }));
                 this._router.navigateByUrl(`/auth/login`);
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     get code(): string {

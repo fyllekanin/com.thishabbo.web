@@ -1,12 +1,12 @@
 import { DialogService } from 'core/services/dialog/dialog.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { HttpService } from 'core/services/http/http.service';
 import { Action, TableCell, TableConfig, TableHeader, TableRow } from 'shared/components/table/table.model';
 import { ActivatedRoute } from '@angular/router';
 import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { GroupModerate, GroupModerationActions } from './groups-moderation.model';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
@@ -23,7 +23,7 @@ export class GroupsModerationComponent extends Page implements OnDestroy {
 
     constructor(
         private _dialogService: DialogService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _httpService: HttpService,
         activatedRoute: ActivatedRoute,
         elementRef: ElementRef,
@@ -73,26 +73,26 @@ export class GroupsModerationComponent extends Page implements OnDestroy {
         this._httpService.post('admin/moderation/groups/approve', { groupRequestId: groupRequestId })
             .subscribe(() => {
                 this._groups = this._groups.filter(group => group.groupRequestId === groupRequestId);
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Group request approved'
                 }));
                 this._dialogService.closeDialog();
                 this.createOrUpdateTable();
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private onDeny(groupRequestId: number): void {
         this._httpService.delete(`admin/moderation/groups/deny/${groupRequestId}`)
             .subscribe(() => {
                 this._groups = this._groups.filter(group => group.groupRequestId === groupRequestId);
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Group request denied'
                 }));
                 this._dialogService.closeDialog();
                 this.createOrUpdateTable();
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private onData(data: { data: Array<GroupModerate> }): void {

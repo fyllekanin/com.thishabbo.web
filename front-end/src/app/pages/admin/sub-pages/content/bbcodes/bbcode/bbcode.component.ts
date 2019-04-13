@@ -1,11 +1,11 @@
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { BBcodeActions, BBcodeModel } from '../bbcode.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Page } from 'shared/page/page.model';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { SITECP_BREADCRUMB_ITEM, MANAGE_BBCODES_BREADCRUMB_ITEM } from '../../../../admin.constants';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
@@ -23,7 +23,7 @@ export class BBcodeComponent extends Page implements OnDestroy {
 
     constructor(
         private _dialogService: DialogService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _httpClient: HttpClient,
         private _router: Router,
         activatedRoute: ActivatedRoute,
@@ -70,20 +70,20 @@ export class BBcodeComponent extends Page implements OnDestroy {
             this._httpClient.post(`/rest/api/admin/content/bbcodes/${this._bbcode.bbcodeId}`, form)
                 .subscribe((res: any) => {
                     this.onData({ data: new BBcodeModel(res) });
-                    this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success!',
                         message: 'BBCode has been saved!'
                     }));
-                }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                }, this._notificationService.failureNotification.bind(this._notificationService));
         } else {
             this._httpClient.post(`/rest/api/admin/content/bbcodes`, form)
                 .subscribe((res: any) => {
                     this.onData({ data: new BBcodeModel(res) });
-                    this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success!',
                         message: 'BBcode has been created!'
                     }));
-                }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                }, this._notificationService.failureNotification.bind(this._notificationService));
         }
     }
 
@@ -116,13 +116,13 @@ export class BBcodeComponent extends Page implements OnDestroy {
     private onDelete(bbcode: BBcodeModel): void {
         this._httpClient.delete(`/rest/api/admin/content/bbcodes/${bbcode.bbcodeId}`)
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'BBcode deleted!'
                 }));
                 this._dialogService.closeDialog();
                 this.cancel();
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private onData(data: { data: BBcodeModel }): void {

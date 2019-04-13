@@ -19,8 +19,8 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 import { HttpService } from 'core/services/http/http.service';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
 import { DialogService } from 'core/services/dialog/dialog.service';
-import { GlobalNotification, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { ResultComponent } from './result/result.component';
 import { isAbsent } from 'shared/helpers/class.helper';
 import { QueryParameters } from 'core/services/http/http.model';
@@ -42,7 +42,7 @@ export class BetListComponent extends Page implements OnDestroy {
 
     constructor(
         private _componentFactory: ComponentFactoryResolver,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _dialogService: DialogService,
         private _router: Router,
         private _httpService: HttpService,
@@ -98,24 +98,24 @@ export class BetListComponent extends Page implements OnDestroy {
                     .subscribe(() => {
                         const bet = this._data.bets.find(item => item.betId === Number(action.rowId));
                         bet.isSuspended = true;
-                        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                        this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
                             message: 'Bet is suspended'
                         }));
                         this.createOrUpdateTable();
-                    }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                    }, this._notificationService.failureNotification.bind(this._notificationService));
                 break;
             case BetActions.UNSUSPEND_BET:
                 this._httpService.put(`admin/betting/bet/${action.rowId}/unsuspend`)
                     .subscribe(() => {
                         const bet = this._data.bets.find(item => item.betId === Number(action.rowId));
                         bet.isSuspended = false;
-                        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                        this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
                             message: 'Bet is unsuspended'
                         }));
                         this.createOrUpdateTable();
-                    }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                    }, this._notificationService.failureNotification.bind(this._notificationService));
                 break;
         }
     }
@@ -134,7 +134,7 @@ export class BetListComponent extends Page implements OnDestroy {
 
     private setResult(model: BetModel): void {
         if (isAbsent(model.result)) {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
                 message: 'You need to choose win or loss',
                 type: NotificationType.ERROR
@@ -144,28 +144,28 @@ export class BetListComponent extends Page implements OnDestroy {
 
         this._httpService.put(`admin/betting/bet/${model.betId}/result`, { result: Boolean(model.result) })
             .subscribe(res => {
-                    this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: 'Bet finished!'
                     }));
                     const index = this._data.bets.findIndex(item => item.betId === Number(model.betId));
                     this._data.bets[index] = new BetModel(res);
                     this.createOrUpdateTable();
-                }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService),
+                }, this._notificationService.failureNotification.bind(this._notificationService),
                 this._dialogService.closeDialog.bind(this._dialogService));
     }
 
     private doDelete(bet: BetModel): void {
         this._httpService.delete(`admin/betting/bet/${bet.betId}`)
             .subscribe(() => {
-                    this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: `${bet.name} is deleted!`
                     }));
                     this._data.bets = this._data.bets
                         .filter(item => item.betId !== bet.betId);
                     this.createOrUpdateTable();
-                }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService),
+                }, this._notificationService.failureNotification.bind(this._notificationService),
                 this._dialogService.closeDialog.bind(this._dialogService));
     }
 

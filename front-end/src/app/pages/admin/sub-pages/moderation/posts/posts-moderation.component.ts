@@ -2,7 +2,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PostModerate, PostModerationActions } from './posts-moderation.model';
 import { Page } from 'shared/page/page.model';
 import { Component, ElementRef, OnDestroy } from '@angular/core';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { HttpService } from 'core/services/http/http.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import {
@@ -14,7 +14,7 @@ import {
     TableRow
 } from 'shared/components/table/table.model';
 import { DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { SITECP_BREADCRUMB_ITEM } from '../../../admin.constants';
@@ -29,7 +29,7 @@ export class PostsModerationComponent extends Page implements OnDestroy {
     tableConfig: TableConfig;
 
     constructor(
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _httpService: HttpService,
         private _dialogService: DialogService,
         activatedRoute: ActivatedRoute,
@@ -83,7 +83,7 @@ export class PostsModerationComponent extends Page implements OnDestroy {
                 this._posts = this._posts.filter(po => po.postId !== post.postId);
                 this.createOrUpdateTable();
                 this._dialogService.closeDialog();
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: `Post is now approved!`
                 }));
@@ -96,7 +96,7 @@ export class PostsModerationComponent extends Page implements OnDestroy {
                 this._posts = this._posts.filter(po => po.postId !== post.postId);
                 this.createOrUpdateTable();
                 this._dialogService.closeDialog();
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: `Post is now deleted!`
                 }));

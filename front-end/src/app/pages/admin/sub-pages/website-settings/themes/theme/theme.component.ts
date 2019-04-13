@@ -11,8 +11,8 @@ import {
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { HttpService } from 'core/services/http/http.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-admin-website-settings-theme',
@@ -28,7 +28,7 @@ export class ThemeComponent extends Page implements OnDestroy {
         private _router: Router,
         private _httpService: HttpService,
         private _dialogService: DialogService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService,
         activatedRoute: ActivatedRoute
@@ -75,21 +75,21 @@ export class ThemeComponent extends Page implements OnDestroy {
         if (this._data.createdAt) {
             this._httpService.put(`admin/content/themes/${this._data.themeId}`, { theme: this._data })
                 .subscribe(() => {
-                    this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: 'Theme is created!'
                     }));
-                }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                }, this._notificationService.failureNotification.bind(this._notificationService));
         } else {
             this._httpService.post('admin/content/themes', { theme: this._data })
                 .subscribe(() => {
                     this._data.createdAt = new Date().getTime() / 1000;
                     this.updateTabs();
-                    this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: 'Theme is created!'
                     }));
-                }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                }, this._notificationService.failureNotification.bind(this._notificationService));
         }
     }
 
@@ -100,7 +100,7 @@ export class ThemeComponent extends Page implements OnDestroy {
             () => {
                 this._httpService.delete(`admin/content/themes/${this._data.themeId}`)
                     .subscribe(() => {
-                        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                        this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
                             message: 'Theme is deleted!'
                         }));

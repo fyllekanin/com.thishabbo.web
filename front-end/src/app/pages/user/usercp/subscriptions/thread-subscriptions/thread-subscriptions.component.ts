@@ -14,8 +14,8 @@ import {
     TableRow
 } from 'shared/components/table/table.model';
 import { ThreadSubscriptionsService } from '../services/thread-subscriptions.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-usercp-thread-subscriptions',
@@ -28,7 +28,7 @@ export class ThreadSubscriptionsComponent extends Page implements OnDestroy {
 
     constructor(
         private _service: ThreadSubscriptionsService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute,
         breadcrumbService: BreadcrumbService
@@ -50,7 +50,7 @@ export class ThreadSubscriptionsComponent extends Page implements OnDestroy {
     onAction(action: Action): void {
         this._service.unsubscribe(Number(action.rowId))
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Thread unsubscribed'
                 }));

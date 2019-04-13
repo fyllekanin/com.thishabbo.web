@@ -12,8 +12,8 @@ import {
     TableHeader,
     TableRow
 } from 'shared/components/table/table.model';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { CategorySubscription, CategorySubscriptionActions } from './category-subscriptions.model';
 import { CategorySubscriptionsService } from '../services/category-subscriptions.service';
 
@@ -28,7 +28,7 @@ export class CategorySubscriptionsComponent extends Page implements OnDestroy {
 
     constructor(
         private _service: CategorySubscriptionsService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute,
         breadcrumbService: BreadcrumbService
@@ -54,7 +54,7 @@ export class CategorySubscriptionsComponent extends Page implements OnDestroy {
 
         this._service.unsubscribe(Number(action.rowId))
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Category unsubscribed'
                 }));

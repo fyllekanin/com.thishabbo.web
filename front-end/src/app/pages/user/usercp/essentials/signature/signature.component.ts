@@ -2,8 +2,8 @@ import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { EditorComponent } from 'shared/components/editor/editor.component';
 import { EditorAction } from 'shared/components/editor/editor.model';
 import { Page } from 'shared/page/page.model';
@@ -23,7 +23,7 @@ export class SignatureComponent extends Page implements OnDestroy {
     saveButton: EditorAction = new EditorAction({ title: 'Save' });
 
     constructor(
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _service: SignatureService,
         activatedRoute: ActivatedRoute,
         elementRef: ElementRef,
@@ -45,7 +45,7 @@ export class SignatureComponent extends Page implements OnDestroy {
 
     onSave(): void {
         this._service.save(this.editor.getEditorValue()).subscribe(res => {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Success',
                 message: 'Signature updated'
             }));

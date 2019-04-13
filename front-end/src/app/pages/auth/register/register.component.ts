@@ -6,8 +6,8 @@ import { HttpService } from 'core/services/http/http.service';
 import { Page } from 'shared/page/page.model';
 import { RegisterModel, RegisterPage } from './register.model';
 import { Button } from 'shared/directives/button/button.model';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { AuthService } from 'core/services/auth/auth.service';
 
 @Component({
@@ -22,7 +22,7 @@ export class RegisterComponent extends Page implements OnDestroy {
     registerButton = Button.GREEN;
 
     constructor(
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _httpService: HttpService,
         private _authService: AuthService,
         elementRef: ElementRef,
@@ -43,17 +43,17 @@ export class RegisterComponent extends Page implements OnDestroy {
             return;
         }
         this._httpService.post('auth/register', { data: this.registerModel }).subscribe(() => {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Success',
                 message: 'You are now registered!'
             }));
             this._authService.login(this.registerModel.username, this.registerModel.password);
-        }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+        }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private isUserValid(): boolean {
         if (this.isNicknameTaken()) {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
                 message: 'nickname is already taken',
                 type: NotificationType.ERROR
@@ -61,7 +61,7 @@ export class RegisterComponent extends Page implements OnDestroy {
             return false;
         }
         if (!this.isReferredByValid()) {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error - Referred',
                 message: 'There is no user with that name',
                 type: NotificationType.ERROR

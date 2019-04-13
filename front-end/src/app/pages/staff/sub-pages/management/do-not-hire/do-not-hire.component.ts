@@ -6,10 +6,10 @@ import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { STAFFCP_BREADCRUM_ITEM, STAFFCP_MANAGEMENT_BREADCRUMB_ITEM } from '../../../staff.constants';
 import { TitleTab } from 'shared/app-views/title/title.model';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { HttpService } from 'core/services/http/http.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 
 @Component({
     selector: 'app-staff-management-do-not-hire',
@@ -21,7 +21,7 @@ export class DoNotHireComponent extends Page implements OnDestroy {
 
     constructor(
         private _dialogService: DialogService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _httpService: HttpService,
         private _router: Router,
         activatedRoute: ActivatedRoute,
@@ -80,29 +80,29 @@ export class DoNotHireComponent extends Page implements OnDestroy {
             this._httpService.put(`staff/management/do-not-hire/${this._data.nickname}`,
                 { information: information })
                     .subscribe(this.onSuccessUpdate.bind(this, this._data),
-                        this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                        this._notificationService.failureNotification.bind(this._notificationService));
         } else {
             this._httpService.post('staff/management/do-not-hire', { information: information })
                 .subscribe(this.onSuccessCreate.bind(this, this._data),
-                    this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                    this._notificationService.failureNotification.bind(this._notificationService));
         }
     }
 
     private onDelete (nickname: string): void {
         this._httpService.delete(`staff/management/do-not-hire/${nickname}`)
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Entry deleted!'
                 }));
                 this._router.navigateByUrl('/staff/management/do-not-hire');
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService), () => {
+            }, this._notificationService.failureNotification.bind(this._notificationService), () => {
                 this._dialogService.closeDialog();
             });
     }
 
     private onSuccessCreate (): void {
-        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+        this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'User added to Do Not Hire!'
         }));
@@ -111,7 +111,7 @@ export class DoNotHireComponent extends Page implements OnDestroy {
     }
 
     private onSuccessUpdate (): void {
-        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+        this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'Do Not Hire updated!'
         }));

@@ -3,8 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { HttpService } from 'core/services/http/http.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { EditorComponent } from 'shared/components/editor/editor.component';
 import { EditorAction } from 'shared/components/editor/editor.model';
 import { Page } from 'shared/page/page.model';
@@ -24,7 +24,7 @@ export class MaintenanceComponent extends Page implements OnDestroy {
     ];
 
     constructor(
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _httpService: HttpService,
         activatedRoute: ActivatedRoute,
         elementRef: ElementRef,
@@ -49,11 +49,11 @@ export class MaintenanceComponent extends Page implements OnDestroy {
         this._maintenanceModel.content = this.editor.getEditorValue();
         this._httpService.put('admin/content/maintenance', { maintenance: this._maintenanceModel })
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: this._maintenanceModel.content.length > 0 ? 'Maintenance turned on' : 'Maintenance turned off'
                 }));
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     get content(): string {

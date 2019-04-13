@@ -17,8 +17,8 @@ import {
 } from 'shared/components/table/table.model';
 import { BansPageService } from '../services/bans.service';
 import { TimeHelper } from 'shared/helpers/time.helper';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { IReason } from 'shared/components/reason/reason.model';
 import { DialogCloseButton, DialogButton } from 'shared/app-views/dialog/dialog.model';
@@ -44,7 +44,7 @@ export class BansComponent extends Page implements OnDestroy {
     constructor(
         private _router: Router,
         private _dialogService: DialogService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _componentFactory: ComponentFactoryResolver,
         private _service: BansPageService,
         breadcrumService: BreadcrumbService,
@@ -101,7 +101,7 @@ export class BansComponent extends Page implements OnDestroy {
 
     private doLift(banId: number, userId: number, reason: IReason): void {
         if (!reason.reason) {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
                 message: 'You need to set a reason',
                 type: NotificationType.ERROR
@@ -110,7 +110,7 @@ export class BansComponent extends Page implements OnDestroy {
         }
 
         this._service.liftBan(userId, banId, reason).subscribe(() => {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Success',
                 message: `Ban lifted!`
             }));
@@ -118,7 +118,7 @@ export class BansComponent extends Page implements OnDestroy {
             this._bansPage.bans = this._bansPage.bans.filter(item => item.banId !== Number(banId));
             this.createOrUpdateTable();
             this._dialogService.closeDialog.bind(this._dialogService);
-        }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+        }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private onViewBans(banId: string): void {

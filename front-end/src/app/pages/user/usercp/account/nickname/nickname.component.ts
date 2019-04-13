@@ -5,8 +5,8 @@ import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { USERCP_BREADCRUM_ITEM } from '../../usercp.constants';
 import { HttpService } from 'core/services/http/http.service';
 import { TitleTab } from 'shared/app-views/title/title.model';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { AuthService } from 'core/services/auth/auth.service';
 
 @Component({
@@ -23,7 +23,7 @@ export class NicknameComponent extends Page implements OnDestroy {
 
     constructor(
         private _httpService: HttpService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _authService: AuthService,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService
@@ -40,12 +40,12 @@ export class NicknameComponent extends Page implements OnDestroy {
     onSave(): void {
         this._httpService.put('usercp/nickname', { nickname: this.nickname })
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Your nickname is now changed!'
                 }));
                 this._authService.authUser.nickname = this.nickname;
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     ngOnDestroy(): void {

@@ -1,11 +1,11 @@
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { HttpService } from 'core/services/http/http.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { ActivatedRoute } from '@angular/router';
 import { GroupList } from './groups-list.model';
 import { Page } from 'shared/page/page.model';
 import { Component, ElementRef, OnDestroy } from '@angular/core';
-import { GlobalNotification, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { TitleTab, TitleTopBorder } from 'shared/app-views/title/title.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { SITECP_BREADCRUMB_ITEM } from '../../../admin.constants';
@@ -39,7 +39,7 @@ export class GroupsListComponent extends Page implements OnDestroy {
 
     constructor(
         private _httpService: HttpService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         activatedRoute: ActivatedRoute,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService
@@ -68,11 +68,11 @@ export class GroupsListComponent extends Page implements OnDestroy {
         });
         this._httpService.put('admin/content/groupslist', { groups: groups })
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'List saved'
                 }));
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     addGroup(): void {
@@ -81,7 +81,7 @@ export class GroupsListComponent extends Page implements OnDestroy {
             .find(grp => grp.groupId === Number(this.selectedGroup && this.selectedGroup.value));
 
         if (!group) {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Failure',
                 message: 'The group do not exist or is already added',
                 type: NotificationType.ERROR
@@ -90,7 +90,7 @@ export class GroupsListComponent extends Page implements OnDestroy {
         }
 
         if (!this.selectedColor) {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Failure',
                 message: 'You need to select a color!',
                 type: NotificationType.ERROR

@@ -4,8 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { Page } from 'shared/page/page.model';
 import { SITECP_BREADCRUMB_ITEM, BADGE_LIST_BREADCRUMB_ITEM } from '../../../admin.constants';
@@ -23,7 +23,7 @@ export class BadgeComponent extends Page implements OnDestroy {
 
     constructor(
         private _dialogService: DialogService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _httpClient: HttpClient,
         private _router: Router,
         breadcrumbService: BreadcrumbService,
@@ -66,20 +66,20 @@ export class BadgeComponent extends Page implements OnDestroy {
         form.append('badge', JSON.stringify(this._badge));
         if (this._badge.badgeId) {
             this._httpClient.post(`rest/api/admin/badges/${this._badge.badgeId}`, form).subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: `${this._badge.name} was updated!`
                 }));
                 this.cancel();
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
         } else {
             this._httpClient.post('rest/api/admin/badges', form).subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: `${this._badge.name} was created!`
                 }));
                 this.cancel();
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
         }
     }
 
@@ -112,12 +112,12 @@ export class BadgeComponent extends Page implements OnDestroy {
     private onDelete(): void {
         this._httpClient.delete(`rest/api/admin/badges/${this._badge.badgeId}`)
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Badge deleted!'
                 }));
                 this._router.navigateByUrl('/admin/badges/page/1');
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService), () => {
+            }, this._notificationService.failureNotification.bind(this._notificationService), () => {
                 this._dialogService.closeDialog();
             });
     }

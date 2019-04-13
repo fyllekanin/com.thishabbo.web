@@ -5,8 +5,8 @@ import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { HttpService } from 'core/services/http/http.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import {
     Action,
@@ -44,7 +44,7 @@ export class CategoriesListComponent extends Page implements OnDestroy {
     ];
 
     constructor(
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _dialogService: DialogService,
         private _httpService: HttpService,
         private _router: Router,
@@ -115,12 +115,12 @@ export class CategoriesListComponent extends Page implements OnDestroy {
         this._httpService.put(`admin/categories/orders/update`, { updates: data })
             .subscribe(res => {
                 const categories = res.map(item => new ListCategory(item));
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Orders updated!'
                 }));
                 this.onPage({ data: categories });
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private getTableConfig(item: ListCategory) {
@@ -135,7 +135,7 @@ export class CategoriesListComponent extends Page implements OnDestroy {
     private onDelete(categoryId: number): void {
         this._httpService.delete(`admin/categories/${categoryId}`)
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Category deleted!'
                 }));
@@ -152,7 +152,7 @@ export class CategoriesListComponent extends Page implements OnDestroy {
                     this._categories = this._categories.filter(category => category.categoryId !== categoryId);
                 }
                 this.onPage({ data: this._categories });
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService), () => {
+            }, this._notificationService.failureNotification.bind(this._notificationService), () => {
                 this._dialogService.closeDialog();
             });
     }

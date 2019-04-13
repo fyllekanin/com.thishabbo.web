@@ -12,8 +12,8 @@ import { DialogService } from 'core/services/dialog/dialog.service';
 import { ReasonComponent } from 'shared/components/reason/reason.component';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
 import { IReason } from 'shared/components/reason/reason.model';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { BanService } from '../services/ban.service';
 
 @Component({
@@ -33,7 +33,7 @@ export class BanComponent extends Page implements OnDestroy {
     ];
 
     constructor(
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _service: BanService,
         private _dialogService: DialogService,
         private _componentFactory: ComponentFactoryResolver,
@@ -108,7 +108,7 @@ export class BanComponent extends Page implements OnDestroy {
 
     private doLift(banId: number, reason: IReason): void {
         if (!reason.reason) {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
                 message: 'You need to set a reason',
                 type: NotificationType.ERROR
@@ -117,20 +117,20 @@ export class BanComponent extends Page implements OnDestroy {
         }
 
         this._service.liftBan(this._data.user.userId, banId, reason).subscribe(res => {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Success',
                 message: `${this._data.user.nickname}s ban is now liften`
             }));
 
             this._data.bans = this._data.bans.filter(item => item.banId !== banId);
             this._data.bans.push(new Ban(res));
-        }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService),
+        }, this._notificationService.failureNotification.bind(this._notificationService),
             this._dialogService.closeDialog.bind(this._dialogService));
     }
 
     private doBan(reason: IReason): void {
         if (!reason.length) {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
                 message: 'You need to set a length of the ban',
                 type: NotificationType.ERROR
@@ -138,7 +138,7 @@ export class BanComponent extends Page implements OnDestroy {
             return;
         }
         if (!reason.reason) {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
                 message: 'You need to set a reason',
                 type: NotificationType.ERROR
@@ -147,14 +147,14 @@ export class BanComponent extends Page implements OnDestroy {
         }
 
         this._service.banUser(this._data.user.userId, reason).subscribe(res => {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Success',
                 message: `${this._data.user.nickname} is now banned`
             }));
 
             const ban = new Ban(res);
             this._data.bans.push(ban);
-        }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService),
+        }, this._notificationService.failureNotification.bind(this._notificationService),
             this._dialogService.closeDialog.bind(this._dialogService));
     }
 }

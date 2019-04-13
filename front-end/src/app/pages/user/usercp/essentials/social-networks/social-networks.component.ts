@@ -2,11 +2,11 @@ import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { ActivatedRoute } from '@angular/router';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { USERCP_BREADCRUM_ITEM } from '../../usercp.constants';
 import { SocialNetworksModel } from './social-networks.model';
-import { GlobalNotification, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { SocialNetworksService } from '../services/social-networks.service';
 
@@ -22,7 +22,7 @@ export class SocialNetworksComponent extends Page implements OnDestroy {
     ];
 
     constructor(
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _service: SocialNetworksService,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService,
@@ -44,7 +44,7 @@ export class SocialNetworksComponent extends Page implements OnDestroy {
 
     update(): void {
         if (!this.valuesAreValid) {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
                 message: 'One or more are not having correct format',
                 type: NotificationType.ERROR

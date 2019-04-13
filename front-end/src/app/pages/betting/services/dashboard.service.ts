@@ -4,14 +4,14 @@ import { Observable } from 'rxjs';
 import { PlaceBetComponent } from '../dashboard/place-bet/place-bet.component';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
 import { Bet } from '../dashboard/dashboard.model';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 
 @Injectable()
 export class DashboardService {
 
     constructor(
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _dialogService: DialogService,
         private _componentFactory: ComponentFactoryResolver
     ) {}
@@ -31,7 +31,7 @@ export class DashboardService {
 
     private onPlaceBet(observer, maxThcAmount, data): void {
         if (!Number(data) || data <= 0) {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
                 message: 'The amount needs to be a positive number',
                 type: NotificationType.ERROR
@@ -40,7 +40,7 @@ export class DashboardService {
         }
 
         if (data > maxThcAmount) {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
                 message: 'You do not have enough credits',
                 type: NotificationType.ERROR

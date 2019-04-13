@@ -4,8 +4,8 @@ import { HttpService } from 'core/services/http/http.service';
 import { ListUser, UsersListPage } from '../list/users-list.model';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { QueryParameters } from 'core/services/http/http.model';
 
@@ -14,7 +14,7 @@ export class UsersListService implements Resolve<UsersListPage> {
 
     constructor(
         private _httpService: HttpService,
-        private _globalNotificationService: GlobalNotificationService
+        private _notificationService: NotificationService
     ) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<UsersListPage> {
@@ -29,13 +29,13 @@ export class UsersListService implements Resolve<UsersListPage> {
         this._httpService.put(`admin/users/${user.userId}/thc`, { credits: credits })
             .subscribe(() => {
                 user.credits = credits;
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: `${user.nickname} thc updated to ${credits}`
                 }));
                 dialogService.closeDialog();
                 user.credits = credits;
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     getUsers(filter: QueryParameters): Observable<{ data: UsersListPage }> {
@@ -49,10 +49,10 @@ export class UsersListService implements Resolve<UsersListPage> {
     mergeUsers(srcNickname: string, destNickname: string): Observable<void> {
         return this._httpService.post(`admin/users/merge/source/${srcNickname}/destination/${destNickname}`, {})
             .pipe(map(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Users merged!'
                 }));
-            }), catchError(this._globalNotificationService.failureNotification.bind(this._globalNotificationService)));
+            }), catchError(this._notificationService.failureNotification.bind(this._notificationService)));
     }
 }

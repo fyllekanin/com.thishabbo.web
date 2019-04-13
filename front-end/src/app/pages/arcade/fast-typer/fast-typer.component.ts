@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { FastTyperModel } from './fast-typer.model';
 import { HttpService } from 'core/services/http/http.service';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
@@ -8,7 +8,7 @@ import { Component, ElementRef, ViewEncapsulation, Renderer2, OnDestroy } from '
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { ARCADE_BREADCRUM_ITEM } from '../arcade.constants';
 import { TitleTab } from 'shared/app-views/title/title.model';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { HighScoreModel } from '../arcade.model';
 
 @Component({
@@ -30,7 +30,7 @@ export class FastTyperComponent extends Page implements OnDestroy {
     tabs: Array<TitleTab> = [];
 
     constructor(
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _renderer: Renderer2,
         private _httpService: HttpService,
         activatedRoute: ActivatedRoute,
@@ -74,11 +74,11 @@ export class FastTyperComponent extends Page implements OnDestroy {
             this._httpService.post('arcade/fast-typer', { result: this._fastTyperModel })
                 .subscribe((res: { score: number, highscore: Array<HighScoreModel> }) => {
                     this._highscore = res.highscore.map(item => new HighScoreModel(item));
-                    this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Score',
                         message: `Words per minute: ${res.score}`
                     }));
-                }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                }, this._notificationService.failureNotification.bind(this._notificationService));
         } else {
             this._fastTyperModel.nextWord();
         }

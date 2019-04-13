@@ -1,5 +1,5 @@
 import { DialogService } from 'core/services/dialog/dialog.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { HttpClientModule } from '@angular/common/http';
 import { httpInterceptorProviders } from 'core/services/auth/interceptors/interceptor.collection';
 import { HttpService } from 'core/services/http/http.service';
@@ -26,7 +26,7 @@ export class CoreModule {
                 httpInterceptorProviders,
                 HttpService,
                 AuthService,
-                GlobalNotificationService,
+                NotificationService,
                 DialogService,
                 BreadcrumbService,
                 RouterStateService,

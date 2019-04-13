@@ -1,8 +1,8 @@
 import { HttpService } from 'core/services/http/http.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { PostHistoryModel, ThreadActions, ThreadPage } from './thread.model';
 import { DialogService } from 'core/services/dialog/dialog.service';
-import { GlobalNotification, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { Router } from '@angular/router';
 import { ChangeOwnerComponent } from './change-owner/change-owner.component';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
@@ -13,7 +13,7 @@ import { EditHistoryComponent } from './edit-history/edit-history.component';
 
 export class ThreadActionExecutor {
     private readonly _httpService: HttpService;
-    private readonly _globalNotificationService: GlobalNotificationService;
+    private readonly _notificationService: NotificationService;
     private readonly _dialogService: DialogService;
     private readonly _componentFactory: ComponentFactoryResolver;
     private readonly _buildModerationTools: () => void;
@@ -23,7 +23,7 @@ export class ThreadActionExecutor {
 
     constructor(builder: Builder) {
         this._httpService = builder.getHttpService();
-        this._globalNotificationService = builder.getGlobalNotificationService();
+        this._notificationService = builder.getNotificationService();
         this._dialogService = builder.getDialogService();
         this._router = builder.getRouter();
         this._threadPage = builder.getThreadPage();
@@ -100,11 +100,7 @@ export class ThreadActionExecutor {
                 const selectedIds = this._threadPage.threadPosts.filter(post => post.isSelected)
                     .map(post => post.postId);
                 if (selectedIds.length !== 1) {
-                    this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
-                        title: 'Error',
-                        message: 'You need to select one postId to view history, not more or less',
-                        type: NotificationType.ERROR
-                    }));
+                    this._notificationService.sendErrorNotification('You need to select one postId to view history, not more or less');
                     return;
                 }
                 this.onPostHistory(selectedIds[0]);
@@ -116,7 +112,7 @@ export class ThreadActionExecutor {
         this._httpService.get(`forum/thread/post/${postId}/history`)
             .subscribe((data: Array<any>) => {
                 if (data.length < 1) {
-                    this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Sorry',
                         message: 'There are no edits on this thread/post'
                     }));
@@ -133,26 +129,19 @@ export class ThreadActionExecutor {
                     ]
                 });
 
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private onMergePosts(): void {
         const selectedPostIds = this._threadPage.threadPosts.filter(post => post.isSelected).map(post => post.postId);
         if (selectedPostIds.length < 2) {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
-                title: 'Error',
-                message: 'You most select at least two posts to merge',
-                type: NotificationType.ERROR
-            }));
+            this._notificationService.sendErrorNotification('You most select at least two posts to merge');
             return;
         }
 
         this._httpService.put(`forum/moderation/thread/merge-posts/${this._threadPage.threadId}`, { postIds: selectedPostIds })
             .subscribe(newPost => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
-                    title: 'Success',
-                    message: 'Posts are merged'
-                }));
+                this._notificationService.sendInfoNotification('Posts are merged');
                 this._threadPage.threadPosts =  this._threadPage.threadPosts.filter(item => {
                     return selectedPostIds.indexOf(item.postId) === -1 || item.postId === newPost.postId;
                 });
@@ -161,7 +150,7 @@ export class ThreadActionExecutor {
                 post.parsedContent = newPost.parsedContent;
                 this._buildModerationTools();
                 this._threadPage.threadPosts.forEach(item => item.isSelected = false);
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private onMoveThread(): void {
@@ -173,13 +162,10 @@ export class ThreadActionExecutor {
                 new DialogButton({ title: 'Done', callback: categoryId => {
                     this._httpService.put(`forum/moderation/thread/move/category/${categoryId}`, { threadIds: [this._threadPage.threadId]})
                         .subscribe(() => {
-                            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
-                                title: 'Success',
-                                message: 'Thread is moved!'
-                            }));
+                            this._notificationService.sendInfoNotification('Thread is moved!');
                             this._dialogService.closeDialog();
                             this._router.navigateByUrl(`/forum/thread/${this._threadPage.threadId}/page/${this._threadPage.page}`);
-                        }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                        }, this._notificationService.failureNotification.bind(this._notificationService));
                 }})
             ]
         });
@@ -199,11 +185,7 @@ export class ThreadActionExecutor {
     private changePostOwner(): void {
         const selectedPostIds = this._threadPage.threadPosts.filter(post => post.isSelected).map(post => post.postId);
         if (selectedPostIds.length === 0) {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
-                title: 'Error',
-                message: 'You have no posts selected',
-                type: NotificationType.ERROR
-            }));
+            this._notificationService.sendErrorNotification('You have no posts selected');
             return;
         }
         this._dialogService.openDialog({
@@ -223,13 +205,10 @@ export class ThreadActionExecutor {
                 this._threadPage.threadPosts.forEach(post => {
                     post.user = newOwner;
                 });
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
-                    title: 'Success',
-                    message: 'New owner updated!'
-                }));
+                this._notificationService.sendInfoNotification('New owner updated!');
                 this._dialogService.closeDialog();
                 this._threadPage.threadPosts.forEach(item => item.isSelected = false);
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private onChangeThreadOwner(nickname: string): void {
@@ -239,37 +218,28 @@ export class ThreadActionExecutor {
                 if (this._threadPage.page === 1) {
                     this._threadPage.threadPosts[0].user = newOwner;
                 }
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
-                    title: 'Success',
-                    message: `${newOwner.nickname} is now owner!`
-                }));
+                this._notificationService.sendInfoNotification(`${newOwner.nickname} is now owner!`);
                 this._dialogService.closeDialog();
                 this._buildModerationTools();
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private onOpenThread(): void {
         this._httpService.put(`forum/moderation/thread/open/${this._threadPage.threadId}`)
             .subscribe(() => {
                 this._threadPage.isOpen = true;
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
-                    title: 'Success',
-                    message: 'Thread is now open'
-                }));
+                this._notificationService.sendInfoNotification('Thread is now open');
                 this._buildModerationTools();
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private onCloseThread(): void {
         this._httpService.put(`forum/moderation/thread/close/${this._threadPage.threadId}`)
             .subscribe(() => {
                 this._threadPage.isOpen = false;
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
-                    title: 'Success',
-                    message: 'Thread is now closed'
-                }));
+                this._notificationService.sendInfoNotification('Thread is now closed');
                 this._buildModerationTools();
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private onDeletePoll(): void {
@@ -279,14 +249,11 @@ export class ThreadActionExecutor {
             () => {
                 this._httpService.delete(`forum/moderation/thread/poll/delete/${this._threadPage.threadId}`)
                     .subscribe(() => {
-                        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
-                            title: 'Success',
-                            message: 'Poll is deleted'
-                        }));
+                        this._notificationService.sendInfoNotification('Poll is deleted');
                         this._threadPage.poll = null;
                         this._dialogService.closeDialog();
                         this._buildModerationTools();
-                    }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                    }, this._notificationService.failureNotification.bind(this._notificationService));
             }
         );
     }
@@ -294,35 +261,26 @@ export class ThreadActionExecutor {
     private onStickyThread(): void {
         this._httpService.put(`forum/moderation/thread/sticky/${this._threadPage.threadId}`)
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
-                    title: 'Success',
-                    message: `${this._threadPage.title} is now stickied!`
-                }));
+                this._notificationService.sendInfoNotification(`${this._threadPage.title} is now stickied!`);
                 this._threadPage.isSticky = true;
                 this._buildModerationTools();
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private onUnStickyThread(): void {
         this._httpService.put(`forum/moderation/thread/unsticky/${this._threadPage.threadId}`)
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
-                    title: 'Success',
-                    message: `${this._threadPage.title} is now unstickied!`
-                }));
+                this._notificationService.sendInfoNotification(`${this._threadPage.title} is now unstickied!`);
                 this._threadPage.isSticky = false;
                 this._buildModerationTools();
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private onApproveThread(): void {
         this._httpService.put(`forum/moderation/thread/approve/${this._threadPage.threadId}`)
             .subscribe(() => {
                 this._threadPage.isApproved = true;
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
-                    title: 'Success',
-                    message: `${this._threadPage.title} is now approved!`
-                }));
+                this._notificationService.sendInfoNotification(`${this._threadPage.title} is now approved!`);
                 this._buildModerationTools();
             });
     }
@@ -331,10 +289,7 @@ export class ThreadActionExecutor {
         this._httpService.put(`forum/moderation/thread/unapprove/${this._threadPage.threadId}`)
             .subscribe(() => {
                 this._threadPage.isApproved = false;
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
-                    title: 'Success',
-                    message: `${this._threadPage.title} is now unapproved!`
-                }));
+                this._notificationService.sendInfoNotification(`${this._threadPage.title} is now unapproved!`);
                 this._buildModerationTools();
             });
     }
@@ -348,10 +303,7 @@ export class ThreadActionExecutor {
                     post.isSelected = false;
                     return post;
                 });
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
-                    title: 'Success',
-                    message: `Post are now unapproved!`
-                }));
+                this._notificationService.sendInfoNotification(`Post are now unapproved!`);
             });
     }
 
@@ -364,10 +316,7 @@ export class ThreadActionExecutor {
                     post.isSelected = false;
                     return post;
                 });
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
-                    title: 'Success',
-                    message: `Post are now approved!`
-                }));
+                this._notificationService.sendInfoNotification(`Post are now approved!`);
             });
     }
 
@@ -378,10 +327,7 @@ export class ThreadActionExecutor {
             () => {
                 this._httpService.delete(`forum/moderation/thread/delete/${this._threadPage.threadId}`)
                     .subscribe(() => {
-                        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
-                            title: 'Success',
-                            message: `${this._threadPage.title} is now deleted!`
-                        }));
+                        this._notificationService.sendInfoNotification(`${this._threadPage.title} is now deleted!`);
                         this._dialogService.closeDialog();
                         this._router.navigateByUrl(`/forum/category/${this._threadPage.categoryId}/page/1`);
                     });
@@ -392,7 +338,7 @@ export class ThreadActionExecutor {
 
 class Builder {
     private _httpService: HttpService;
-    private _globalNotificationService: GlobalNotificationService;
+    private _notificationService: NotificationService;
     private _dialogService: DialogService;
     private _componentFactory: ComponentFactoryResolver;
     private _router: Router;
@@ -405,8 +351,8 @@ class Builder {
         return this;
     }
 
-    withGlobalNotificationService(globalNotificationService: GlobalNotificationService): Builder {
-        this._globalNotificationService = globalNotificationService;
+    withNotificationService(notificationService: NotificationService): Builder {
+        this._notificationService = notificationService;
         return this;
     }
 
@@ -444,8 +390,8 @@ class Builder {
         return this._httpService;
     }
 
-    getGlobalNotificationService(): GlobalNotificationService {
-        return this._globalNotificationService;
+    getNotificationService(): NotificationService {
+        return this._notificationService;
     }
 
     getThreadPage(): ThreadPage {

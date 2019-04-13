@@ -1,7 +1,7 @@
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 import {
@@ -41,7 +41,7 @@ export class BadgesListComponent extends Page implements OnDestroy {
     pagination: PaginationModel;
 
     constructor(
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _dialogService: DialogService,
         private _router: Router,
         private _httpService: HttpService,
@@ -95,13 +95,13 @@ export class BadgesListComponent extends Page implements OnDestroy {
     private onDelete(badgeId: number): void {
         this._httpService.delete(`admin/badges/${badgeId}`)
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Badge deleted!'
                 }));
                 this._badgesListPage.badges = this._badgesListPage.badges.filter(badge => badge.badgeId !== String(badgeId));
                 this.createOrUpdateTable();
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService), () => {
+            }, this._notificationService.failureNotification.bind(this._notificationService), () => {
                 this._dialogService.closeDialog();
             });
     }

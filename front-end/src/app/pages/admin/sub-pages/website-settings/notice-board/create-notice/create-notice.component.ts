@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Component, ViewChild } from '@angular/core';
 import { Notice } from 'shared/components/notice/notice.model';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { Breadcrumb, BreadcrumbItem } from 'core/services/breadcrum/breadcrum.model';
 import { SITECP_BREADCRUMB_ITEM, WEBSITE_SETTINGS_BREADCRUMB_ITEM } from '../../../../admin.constants';
@@ -27,7 +27,7 @@ export class CreateNoticeComponent {
 
     constructor(
         private _httpClient: HttpClient,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _router: Router,
         breadcrumbService: BreadcrumbService
     ) {
@@ -62,12 +62,12 @@ export class CreateNoticeComponent {
         form.append('notice', JSON.stringify(this._notice));
 
         this._httpClient.post('rest/api/admin/content/notices', form).subscribe(() => {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Success',
                 message: `${this._notice.title} was created!`
             }));
             this.cancel();
-        }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+        }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     cancel(): void {

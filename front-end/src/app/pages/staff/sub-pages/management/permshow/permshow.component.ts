@@ -3,7 +3,7 @@ import { PermShow, PermShowActions } from './permshow.model';
 import { Page } from 'shared/page/page.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { DialogService } from 'core/services/dialog/dialog.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { HttpService } from 'core/services/http/http.service';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
@@ -11,7 +11,7 @@ import {
     STAFFCP_BREADCRUM_ITEM, STAFFCP_MANAGEMENT_BREADCRUMB_ITEM,
     STAFFCP_PERM_SHOW_BREADCRUM_ITEM
 } from 'app/pages/staff/staff.constants';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TimeHelper, Day, Hour } from 'shared/helpers/time.helper';
 
@@ -27,7 +27,7 @@ export class PermShowComponent extends Page implements OnDestroy {
 
     constructor(
         private _dialogService: DialogService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _httpService: HttpService,
         private _router: Router,
         breadcrumbService: BreadcrumbService,
@@ -82,11 +82,11 @@ export class PermShowComponent extends Page implements OnDestroy {
             this._httpService.put(`staff/management/permanent-shows/${this._permShow.timetableId}`,
                 { booking: booking })
                     .subscribe(this.onSuccessUpdate.bind(this, this._permShow),
-                        this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                        this._notificationService.failureNotification.bind(this._notificationService));
         } else {
             this._httpService.post('staff/management/permanent-shows', { booking: booking })
                 .subscribe(this.onSuccessCreate.bind(this, this._permShow),
-                    this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                    this._notificationService.failureNotification.bind(this._notificationService));
         }
     }
 
@@ -115,18 +115,18 @@ export class PermShowComponent extends Page implements OnDestroy {
     private onDelete (permShowId: number): void {
         this._httpService.delete(`staff/management/permanent-shows/${permShowId}`)
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Perm show deleted!'
                 }));
                 this._router.navigateByUrl('/staff/management/permanent-shows/page/1');
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService), () => {
+            }, this._notificationService.failureNotification.bind(this._notificationService), () => {
                 this._dialogService.closeDialog();
             });
     }
 
     private onSuccessCreate (): void {
-        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+        this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'Permanent show created!'
         }));
@@ -135,7 +135,7 @@ export class PermShowComponent extends Page implements OnDestroy {
     }
 
     private onSuccessUpdate (): void {
-        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+        this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'Permanent show updated!'
         }));
