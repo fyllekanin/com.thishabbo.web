@@ -2,6 +2,9 @@ import { CommonUtil } from '../../utils/common.util';
 import { NavigationUtil } from '../../utils/navigation.util';
 import { BbcodePage } from '../../pages/sitecp/bbcode.page';
 import { StaffListPage } from '../../pages/sitecp/staff-list.page';
+import { BettingPage } from '../../pages/sitecp/betting.page';
+import { Input } from '@angular/core';
+import { InputUtil } from '../../utils/input.util';
 
 describe('SiteCP #1', () => {
     const USERNAME = 'tovven';
@@ -58,5 +61,35 @@ describe('SiteCP #1', () => {
         NavigationUtil.clickSiteCpTool('Manage BBCode');
         NavigationUtil.clickSiteCpTool('Manage Staff List');
         expect(CommonUtil.getTableRows().count()).toBe(0);
+    });
+
+    it('should be possible to create, update and delete a betting category', () => {
+        const categoryName = 'Category #1';
+        const newCategoryName = 'Category #2';
+
+        NavigationUtil.clickSiteCpTool('Betting Categories');
+
+        NavigationUtil.clickTab('Create Category');
+        BettingPage.setName(categoryName);
+        BettingPage.setDisplayOrder(0);
+
+        NavigationUtil.clickTab('Save');
+        NavigationUtil.clickTab('Cancel');
+        expect(CommonUtil.getTableRows().count()).toEqual(3);
+
+        CommonUtil.enterTableFilter('Filter on category name', categoryName);
+        expect(CommonUtil.getTableRows().count()).toEqual(1);
+
+        InputUtil.clickRowAction(0, 'Edit');
+        BettingPage.setName(newCategoryName);
+        NavigationUtil.clickTab('Save');
+        NavigationUtil.clickTab('Cancel');
+
+        CommonUtil.enterTableFilter('Filter on category name', newCategoryName);
+        expect(CommonUtil.getTableRows().count()).toEqual(1);
+
+        InputUtil.clickRowAction(0, 'Delete');
+        NavigationUtil.clickButton('Yes');
+        expect(CommonUtil.getTableRows().count()).toEqual(0);
     });
 });
