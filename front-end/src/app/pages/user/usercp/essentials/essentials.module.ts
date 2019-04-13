@@ -16,6 +16,8 @@ import { SocialNetworksService } from './services/social-networks.service';
 import { essentialsRoutes } from './essentials.routes';
 import { EditorModule } from 'shared/components/editor/editor.module';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
+import { ProfileComponent } from './profile/profile.component';
+import { ProfileService } from './services/profile.service';
 
 @NgModule({
     imports: [
@@ -32,13 +34,15 @@ import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
         CoverPhotoComponent,
         PostBitComponent,
         SignatureComponent,
-        SocialNetworksComponent
+        SocialNetworksComponent,
+        ProfileComponent
     ],
     providers: [
         AvatarService,
         PostBitService,
         SignatureService,
-        SocialNetworksService
+        SocialNetworksService,
+        ProfileService
     ],
     exports: [
         RouterModule

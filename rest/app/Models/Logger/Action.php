@@ -1294,4 +1294,11 @@ class Action {
         'data' => [],
         'log' => 'log_user'
     ];
+
+    const UPDATED_PROFILE = [
+        'id' => 149,
+        'description' => 'User updated profile settings',
+        'data' => [],
+        'log' => 'log_user'
+    ];
 }

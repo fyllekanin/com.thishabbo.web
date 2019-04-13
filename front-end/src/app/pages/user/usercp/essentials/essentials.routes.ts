@@ -8,6 +8,8 @@ import { PostBitComponent } from './post-bit/post-bit.component';
 import { PostBitService } from './services/post-bit.service';
 import { SocialNetworksComponent } from './social-networks/social-networks.component';
 import { SocialNetworksService } from './services/social-networks.service';
+import { ProfileComponent } from './profile/profile.component';
+import { ProfileService } from './services/profile.service';
 
 export const essentialsRoutes: Routes = [
     {
@@ -44,6 +46,13 @@ export const essentialsRoutes: Routes = [
         component: SocialNetworksComponent,
         resolve: {
             data: SocialNetworksService
+        }
+    },
+    {
+        path: 'profile',
+        component: ProfileComponent,
+        resolve: {
+            data: ProfileService
         }
     }
 ];

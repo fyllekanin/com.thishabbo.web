@@ -44,3 +44,6 @@ Route::post('voucher-code', 'Usercp\AccountController@claimVoucherCode');
 
 Route::post('profile/follow', 'ProfileController@createFollow');
 Route::delete('profile/unfollow/{userId}', 'ProfileController@deleteFollow');
+
+Route::get('profile', 'Usercp\ProfileController@getProfile');
+Route::put('profile', 'Usercp\ProfileController@updateProfile');

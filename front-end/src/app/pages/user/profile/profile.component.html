@@ -1,231 +1,243 @@
-<div class="grid-container">
-    <div class="grid-x margin-x">
-        <div class="cell small-12">
-            <app-cover-photo-with-avatar [userId]="coverPhotoData.userId" [version]="coverPhotoData.version" [isVisible]="true"></app-cover-photo-with-avatar>
-        </div>
-        <div class="cell small-3">
-                <app-title [title]="'User Profile : Public'"></app-title>
+<div *ngIf="isPrivate" class="align-center">
+    <app-title [title]="'Private Profile'" [tabs]="followerTabs" (onTabClick)="onFollowerTabClick($event)"></app-title>
+    <app-content>
+        This profile is private! You are not allowed to visit this profile, if you wanna be able to see<br />
+        this profile you need to be an approved follower, so let's get following!
+    </app-content>
+</div>
+
+<div *ngIf="!isPrivate">
+    <div class="grid-container">
+        <div class="grid-x margin-x">
+            <div class="cell small-12">
+                <app-cover-photo-with-avatar [userId]="coverPhotoData.userId" [version]="coverPhotoData.version" [isVisible]="true"></app-cover-photo-with-avatar>
+            </div>
+            <div class="cell small-3">
+                    <app-title [title]="'User Profile : Public'"></app-title>
+                    <app-content>
+                        <div class="profile-name">
+                            <app-user-link [user]="user"></app-user-link>
+                        </div>
+                        <div class="profile-joined">
+                            Joined {{joined}}
+                        </div>
+
+                        <div class="profile-avatar">
+                            <img [src]="avatar" alt="Avatar">
+                        </div>
+
+                        <div class="post-bit">
+                            <div class="post-bit-row">
+                                    <strong>ThisHabbo ID:</strong>
+                                <div class="float-right">
+                                    #{{stats.userId}}
+                                </div>
+                            </div>
+                            <div class="post-bit-row">
+                                <strong>Last Active:</strong>
+                                <div class="float-right">
+                                    {{timeAgo(stats.lastActivity)}}
+                                </div>
+                            </div>
+                            <div class="post-bit-row">
+                                <strong>Registered:</strong>
+                                <div class="float-right">
+                                    {{timeAgo(stats.createdAt)}}
+                                </div>
+                            </div>
+                            <div class="post-bit-row">
+                                <strong>Likes:</strong>
+                                <div class="float-right">
+                                    {{stats.likes | number: '1.'}}
+                                </div>
+                            </div>
+                            <div class="post-bit-row">
+                                <strong>Threads Created:</strong>
+                                <div class="float-right">
+                                    {{stats.threads | number: '1.'}}
+                                </div>
+                            </div>
+                            <div class="post-bit-row">
+                                <strong>Posts Created:</strong>
+                                <div class="float-right">
+                                    {{stats.posts | number: '1.'}}
+                                </div>
+                            </div>
+                        </div>
+                    </app-content>
+            <app-title [title]="'Accolades'"></app-title>
+            <app-content>
+                        <div class="latest-post"><span style="color: #c66464"><i class="fa fa-trophy"></i> <b> Ownership »</b></span> 2010 - Present</div>
+            </app-content>
+
+            <app-title [title]="'All Time Stats'"></app-title>
+            <app-content>
+                        <div class="latest-post"><i class="fas fa-trophy gold-trophy"></i><b> Best Season:</b> 3rd (Season 11)</div>
+                        <div class="latest-post"><i class="fas fa-trophy gold-trophy"></i><b> Participated in:</b> 8 Seasons</div>
+                        <div class="latest-post"><i class="fas fa-trophy gold-trophy"></i><b> Most Events:</b> 20 (Season 11)</div>
+                        <div class="latest-post"><i class="fas fa-trophy gold-trophy"></i><b> Most Radio Slots:</b> 20 (Season 8)</div>
+                        <div class="latest-post"><i class="fas fa-trophy gold-trophy"></i><b> Most Radio Slots:</b> 20 (Season 8)</div>
+                        <div class="latest-post"><i class="fas fa-trophy gold-trophy"></i><b> Most Posts in Season:</b> 9 (203)</div>
+                        <div class="latest-post"><i class="fas fa-trophy gold-trophy"></i><b> Most Threads in Season:</b> 3 (23)</div>
+            </app-content>
+            </div>
+            <div class="cell small-6">
+                <app-editor [title]="'Visitor Messages'"></app-editor>
+
                 <app-content>
-                    <div class="profile-name">
-                        <app-user-link [user]="user"></app-user-link>
+                    <img _ngcontent-c16="" _ngcontent-c21="" appuserprofile="" ng-reflect-info="[object Object]" style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
+                    <div class="vistor-message-info">
+                        <div class="visitor-message-nickname">Chimp</div>
+                        June, 2 2018 - 19:19PM
                     </div>
-                    <div class="profile-joined">
-                        Joined {{joined}}
+                    <div class="visitor-message-desc">
+                    are you on discord tonight? so fucking boredddddddddddddddddd
                     </div>
-
-                    <div class="profile-avatar">
-                        <img [src]="avatar" alt="Avatar">
+                    <div class="visitor-information">
+                        <div class="visitor-information-left">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <i class="fa fa-envelope"></i>
+                            <i class="fa fa-bell"></i>
+                        </div>
+                        <div class="visitor-information-text">
+                            <i class="far fa-heart"></i> 1 -
+                            <i class="far fa-comment"></i> 4
+                        </div>
                     </div>
-
-                    <div class="post-bit">
-                        <div class="post-bit-row">
-                                <strong>ThisHabbo ID:</strong>
-                            <div class="float-right">
-                                #{{stats.userId}}
+                    <div class="visitor-reply-container">
+                        <img _ngcontent-c16="" _ngcontent-c21="" appuserprofile="" ng-reflect-info="[object Object]" style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
+                        <div class="vistor-reply-info">
+                            <div class="visitor-message-nickname">Dez</div>
+                            June, 2 2018 - 19:19PM
+                        </div>
+                        <div class="visitor-message-desc">
+                            yes i am mate, what time u on?
+                        </div>
+                        <div class="visitor-information">
+                            <div class="visitor-information-left">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <i class="fa fa-envelope"></i>
+                                <i class="fa fa-bell"></i>
+                            </div>
+                            <div class="visitor-information-text">
+                                <i class="far fa-heart"></i> 2
                             </div>
                         </div>
-                        <div class="post-bit-row">
-                            <strong>Last Active:</strong>
-                            <div class="float-right">
-                                {{timeAgo(stats.lastActivity)}}
+                    </div>
+                    <div class="visitor-reply-container">
+                        <img _ngcontent-c16="" _ngcontent-c21="" appuserprofile="" ng-reflect-info="[object Object]" style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
+                        <div class="vistor-reply-info">
+                            <div class="visitor-message-nickname">Chimp</div>
+                            June, 2 2018 - 19:19PM
+                        </div>
+                        <div class="visitor-message-desc">
+                            yes i am mate, what time u on?
+                        </div>
+                        <div class="visitor-information">
+                            <div class="visitor-information-left">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <i class="fa fa-envelope"></i>
+                                <i class="fa fa-bell"></i>
+                            </div>
+                            <div class="visitor-information-text">
+                                <i class="far fa-heart"></i> 1
                             </div>
                         </div>
-                        <div class="post-bit-row">
-                            <strong>Registered:</strong>
-                            <div class="float-right">
-                                {{timeAgo(stats.createdAt)}}
+                    </div>
+                    <div class="visitor-reply-container">
+                        <img _ngcontent-c16="" _ngcontent-c21="" appuserprofile="" ng-reflect-info="[object Object]" style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
+                        <div class="vistor-reply-info">
+                            <div class="visitor-message-nickname">Dez</div>
+                            June, 2 2018 - 19:19PM
+                        </div>
+                        <div class="visitor-message-desc">
+                            yes i am mate, what time u on?
+                        </div>
+                        <div class="visitor-information">
+                            <div class="visitor-information-left">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <i class="fa fa-envelope"></i>
+                                <i class="fa fa-bell"></i>
+                            </div>
+                            <div class="visitor-information-text">
+                                <i class="far fa-heart"></i> 4
                             </div>
                         </div>
-                        <div class="post-bit-row">
-                            <strong>Likes:</strong>
-                            <div class="float-right">
-                                {{stats.likes | number: '1.'}}
-                            </div>
+                    </div>
+                    <div class="visitor-reply-container">
+                        <img _ngcontent-c16="" _ngcontent-c21="" appuserprofile="" ng-reflect-info="[object Object]" style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
+                        <div class="vistor-reply-info">
+                            <div class="visitor-message-nickname">Chimp</div>
+                            June, 2 2018 - 19:19PM
                         </div>
-                        <div class="post-bit-row">
-                            <strong>Threads Created:</strong>
-                            <div class="float-right">
-                                {{stats.threads | number: '1.'}}
-                            </div>
+                        <div class="visitor-message-desc">
+                            yes i am mate, what time u on?
                         </div>
-                        <div class="post-bit-row">
-                            <strong>Posts Created:</strong>
-                            <div class="float-right">
-                                {{stats.posts | number: '1.'}}
+                        <div class="visitor-information">
+                            <div class="visitor-information-left">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <i class="fa fa-envelope"></i>
+                                <i class="fa fa-bell"></i>
+                            </div>
+                            <div class="visitor-information-text">
+                                <i class="far fa-heart"></i> 2
                             </div>
                         </div>
                     </div>
                 </app-content>
-        <app-title [title]="'Accolades'"></app-title>
-        <app-content>
-                    <div class="latest-post"><span style="color: #c66464"><i class="fa fa-trophy"></i> <b> Ownership »</b></span> 2010 - Present</div>
-        </app-content>
+            </div>
 
-        <app-title [title]="'All Time Stats'"></app-title>
-        <app-content>
-                    <div class="latest-post"><i class="fas fa-trophy gold-trophy"></i><b> Best Season:</b> 3rd (Season 11)</div>
-                    <div class="latest-post"><i class="fas fa-trophy gold-trophy"></i><b> Participated in:</b> 8 Seasons</div>
-                    <div class="latest-post"><i class="fas fa-trophy gold-trophy"></i><b> Most Events:</b> 20 (Season 11)</div>
-                    <div class="latest-post"><i class="fas fa-trophy gold-trophy"></i><b> Most Radio Slots:</b> 20 (Season 8)</div>
-                    <div class="latest-post"><i class="fas fa-trophy gold-trophy"></i><b> Most Radio Slots:</b> 20 (Season 8)</div>
-                    <div class="latest-post"><i class="fas fa-trophy gold-trophy"></i><b> Most Posts in Season:</b> 9 (203)</div>
-                    <div class="latest-post"><i class="fas fa-trophy gold-trophy"></i><b> Most Threads in Season:</b> 3 (23)</div>
-        </app-content>
-        </div>
-        <div class="cell small-6">
-            <app-editor [title]="'Visitor Messages'"></app-editor>
+            <div class="cell small-3">
+                    <app-title [title]="'Followers (' + followers.total + ')'" [tabs]="followerTabs" (onTabClick)="onFollowerTabClick($event)"></app-title>
+                    <app-content>
+                        <div class="followers" *ngFor="let follower of followers.followers">
+                            <img appUserProfile [isSmall]="true" [info]="follower">
+                            <div class="follower">
+                                <b>Follower</b><br />
+                                <app-user-link [user]="follower"></app-user-link>
+                            </div>
+                        </div>
+                        <div *ngIf="followers.followers.length === 0" class="align-center">
+                            ¯\_(ツ)_/¯
+                        </div>
+                </app-content>
 
-            <app-content>
-                <img _ngcontent-c16="" _ngcontent-c21="" appuserprofile="" ng-reflect-info="[object Object]" style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
-                <div class="vistor-message-info">
-                    <div class="visitor-message-nickname">Chimp</div>
-                    June, 2 2018 - 19:19PM
-                </div>
-                <div class="visitor-message-desc">
-                are you on discord tonight? so fucking boredddddddddddddddddd
-                </div>
-                <div class="visitor-information">
-                    <div class="visitor-information-left">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <i class="fa fa-envelope"></i>
-                        <i class="fa fa-bell"></i>
-                    </div>
-                    <div class="visitor-information-text">
-                        <i class="far fa-heart"></i> 1 - 
-                        <i class="far fa-comment"></i> 4
-                    </div>
-                </div>
-                <div class="visitor-reply-container">
-                    <img _ngcontent-c16="" _ngcontent-c21="" appuserprofile="" ng-reflect-info="[object Object]" style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
-                    <div class="vistor-reply-info">
-                        <div class="visitor-message-nickname">Dez</div>
-                        June, 2 2018 - 19:19PM
-                    </div>
-                    <div class="visitor-message-desc">
-                        yes i am mate, what time u on?
-                    </div>
-                    <div class="visitor-information">
-                        <div class="visitor-information-left">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <i class="fa fa-envelope"></i>
-                            <i class="fa fa-bell"></i>
+                <app-title [title]="'Recent Activity'"></app-title>
+                    <app-content>
+                        <div class="latest-post">
+                                <b>Yesterday</b> » <b>Chimp</b> liked a post by erico in thread <b>Release 0.2.1</b>
                         </div>
-                        <div class="visitor-information-text">
-                            <i class="far fa-heart"></i> 2
+                        <div class="latest-post">
+                               <b>Yesterday</b> » <b>Chimp</b> liked a post by erico in thread <b>Release 0.2.1</b>
                         </div>
-                    </div>
-                </div>
-                <div class="visitor-reply-container">
-                    <img _ngcontent-c16="" _ngcontent-c21="" appuserprofile="" ng-reflect-info="[object Object]" style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
-                    <div class="vistor-reply-info">
-                        <div class="visitor-message-nickname">Chimp</div>
-                        June, 2 2018 - 19:19PM
-                    </div>
-                    <div class="visitor-message-desc">
-                        yes i am mate, what time u on?
-                    </div>
-                    <div class="visitor-information">
-                        <div class="visitor-information-left">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <i class="fa fa-envelope"></i>
-                            <i class="fa fa-bell"></i>
+                        <div class="latest-post">
+                               <b>Yesterday</b> » <b>Chimp</b> liked a post by erico in thread <b>Release 0.2.1</b>
                         </div>
-                        <div class="visitor-information-text">
-                            <i class="far fa-heart"></i> 1
+                        <div class="latest-post">
+                               <b>Yesterday</b> » <b>Chimp</b> liked a post by erico in thread <b>Release 0.2.1</b>
                         </div>
-                    </div>
-                </div>
-                <div class="visitor-reply-container">
-                    <img _ngcontent-c16="" _ngcontent-c21="" appuserprofile="" ng-reflect-info="[object Object]" style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
-                    <div class="vistor-reply-info">
-                        <div class="visitor-message-nickname">Dez</div>
-                        June, 2 2018 - 19:19PM
-                    </div>
-                    <div class="visitor-message-desc">
-                        yes i am mate, what time u on?
-                    </div>
-                    <div class="visitor-information">
-                        <div class="visitor-information-left">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <i class="fa fa-envelope"></i>
-                            <i class="fa fa-bell"></i>
+                        <div class="latest-post">
+                               <b>Yesterday</b> » <b>Chimp</b> liked a post by erico in thread <b>Release 0.2.1</b>
                         </div>
-                        <div class="visitor-information-text">
-                            <i class="far fa-heart"></i> 4
-                        </div>
-                    </div>
-                </div>
-                <div class="visitor-reply-container">
-                    <img _ngcontent-c16="" _ngcontent-c21="" appuserprofile="" ng-reflect-info="[object Object]" style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
-                    <div class="vistor-reply-info">
-                        <div class="visitor-message-nickname">Chimp</div>
-                        June, 2 2018 - 19:19PM
-                    </div>
-                    <div class="visitor-message-desc">
-                        yes i am mate, what time u on?
-                    </div>
-                    <div class="visitor-information">
-                        <div class="visitor-information-left">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <i class="fa fa-envelope"></i>
-                            <i class="fa fa-bell"></i>
-                        </div>
-                        <div class="visitor-information-text">
-                            <i class="far fa-heart"></i> 2
-                        </div>
-                    </div>
-                </div>
-            </app-content>
-        </div>
+                </app-content>
 
-        <div class="cell small-3">
-                <app-title [title]="'Followers (' + followers.total + ')'" [tabs]="followerTabs" (onTabClick)="onFollowerTabClick($event)"></app-title>
+                <app-title [title]="'Top 5 Friends'"></app-title>
                 <app-content>
-                    <div class="followers" *ngFor="let follower of followers.followers">
-                        <img appUserProfile [isSmall]="true" [info]="follower">
-                        <div class="follower">
-                            <b>Follower</b><br />
-                            <app-user-link [user]="follower"></app-user-link>
-                        </div>
-                    </div>
-                    <div *ngIf="followers.followers.length === 0" class="align-center">
-                        ¯\_(ツ)_/¯
-                    </div>
-            </app-content>
+                        <div class="latest-post"><i class="fas fa-trophy gold-trophy"></i> <b> Erico</b></div>
+                        <div class="latest-post"><i class="fas fa-trophy gold-trophy"></i> <b> Erico</b></div>
+                        <div class="latest-post"><i class="fas fa-trophy silver-trophy"></i> <b> Erico</b></div>
+                        <div class="latest-post"><i class="fas fa-trophy silver-trophy"></i> <b> Erico</b></div>
+                        <div class="latest-post"><i class="fas fa-trophy bronze-trophy"></i> <b> Erico</b></div>
+                        <div class="latest-post"><i class="fas fa-trophy bronze-trophy"></i> <b> Erico</b></div>
+                </app-content>
 
-            <app-title [title]="'Recent Activity'"></app-title>
-                <app-content>
-                    <div class="latest-post">
-                            <b>Yesterday</b> » <b>Chimp</b> liked a post by erico in thread <b>Release 0.2.1</b>
-                    </div>
-                    <div class="latest-post">
-                           <b>Yesterday</b> » <b>Chimp</b> liked a post by erico in thread <b>Release 0.2.1</b>
-                    </div>
-                    <div class="latest-post">
-                           <b>Yesterday</b> » <b>Chimp</b> liked a post by erico in thread <b>Release 0.2.1</b>
-                    </div>
-                    <div class="latest-post">
-                           <b>Yesterday</b> » <b>Chimp</b> liked a post by erico in thread <b>Release 0.2.1</b>
-                    </div>
-                    <div class="latest-post">
-                           <b>Yesterday</b> » <b>Chimp</b> liked a post by erico in thread <b>Release 0.2.1</b>
-                    </div>
-            </app-content>
-
-            <app-title [title]="'Top 5 Friends'"></app-title>
-            <app-content>
-                    <div class="latest-post"><i class="fas fa-trophy gold-trophy"></i> <b> Erico</b></div>
-                    <div class="latest-post"><i class="fas fa-trophy gold-trophy"></i> <b> Erico</b></div>
-                    <div class="latest-post"><i class="fas fa-trophy silver-trophy"></i> <b> Erico</b></div>
-                    <div class="latest-post"><i class="fas fa-trophy silver-trophy"></i> <b> Erico</b></div>
-                    <div class="latest-post"><i class="fas fa-trophy bronze-trophy"></i> <b> Erico</b></div>
-                    <div class="latest-post"><i class="fas fa-trophy bronze-trophy"></i> <b> Erico</b></div>
-            </app-content>
-
-            <app-title [title]="'YouTube'"></app-title>
-            <app-content>
-                    <iframe width="274" height="400" src="https://www.youtube.com/embed/fTNnwzXrVdg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </app-content>
+                <div *ngIf="youtube">
+                    <app-title [title]="'YouTube'"></app-title>
+                    <app-content>
+                            <iframe width="274" height="400" [src]="youtube" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </app-content>
+                </div>
+            </div>
         </div>
     </div>
 </div>

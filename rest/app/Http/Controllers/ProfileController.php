@@ -34,7 +34,7 @@ class ProfileController extends Controller {
         $follow = new Follower([
             'userId' => $user->userId,
             'targetId' => $target->userId,
-            'isApproved' => true
+            'isApproved' => !($target->profile && $target->profile->isPrivate)
         ]);
         $follow->save();
 
@@ -72,9 +72,17 @@ class ProfileController extends Controller {
         $profile = User::withNickname($nickname)->first();
         Condition::precondition(!$profile, 404, 'No user with that nickname');
 
+        if ($this->isPrivate($user, $profile)) {
+            return response()->json([
+                'user' => UserHelper::getSlimUser($profile->userId),
+                'followers' => $this->getFollowers($profile->userId, $user)
+            ]);
+        }
+
         return response()->json([
             'user' => UserHelper::getSlimUser($profile->userId),
             'followers' => $this->getFollowers($profile->userId, $user),
+            'youtube' => $profile->profile ? $profile->profile->youtube : null,
             'stats' => [
                 'userId' => $profile->userId,
                 'posts' => $profile->posts,
@@ -84,6 +92,24 @@ class ProfileController extends Controller {
                 'lastActivity' => $profile->lastActivity
             ]
         ]);
+    }
+
+    /**
+     * @param $user
+     * @param $profile
+     *
+     * @return bool
+     */
+    private function isPrivate($user, $profile) {
+        if ($user->userId == $profile->userId) {
+            return false;
+        }
+
+        if (!$profile->profile || !$profile->profile->isPrivate) {
+            return false;
+        }
+
+        return Follower::where('userId', $user->userId)->where('targetId', $profile->userId)->isApproved()->count() === 0;
     }
 
     /**

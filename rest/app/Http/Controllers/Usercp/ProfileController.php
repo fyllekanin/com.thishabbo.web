@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Usercp;
 
 use App\EloquentModels\User\UserData;
+use App\EloquentModels\User\UserProfile;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
@@ -14,6 +15,45 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 class ProfileController extends Controller {
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getProfile() {
+        $user = Cache::get('auth');
+        $profile = UserProfile::where('userId', $user->userId)->first();
+
+        if (!$profile) {
+            return response()->json();
+        }
+        return response()->json([
+            'isPrivate' => $profile->isPrivate,
+            'youtube' => $profile->youtube
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateProfile(Request $request) {
+        $user = Cache::get('auth');
+        $profile = UserProfile::where('userId', $user->userId)->first();
+        $data = (object) $request->input('data');
+
+        if (!$profile) {
+            $profile = new UserProfile([ 'userId' => $user->userId ]);
+            $profile->save();
+        }
+
+        $profile->isPrivate = Value::objectProperty($data, 'isPrivate', false);
+        $profile->youtube = Value::objectProperty($data, 'youtube', null);
+        $profile->save();
+
+        Logger::user($user->userId, $request->ip(), Action::UPDATED_PROFILE);
+        return response()->json();
+    }
 
     /**
      * @return \Illuminate\Http\JsonResponse
