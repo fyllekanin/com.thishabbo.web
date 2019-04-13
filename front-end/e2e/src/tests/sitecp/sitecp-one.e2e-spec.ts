@@ -69,8 +69,8 @@ describe('SiteCP #1', () => {
         NavigationUtil.clickSiteCpTool('Betting Categories');
 
         NavigationUtil.clickTab('Create Category');
-        BettingPage.setName(categoryName);
-        BettingPage.setDisplayOrder(1);
+        BettingPage.setCategoryName(categoryName);
+        BettingPage.setCategoryDisplayOrder(1);
 
         NavigationUtil.clickTab('Save');
         NavigationUtil.clickTab('Cancel');
@@ -80,12 +80,51 @@ describe('SiteCP #1', () => {
         expect(CommonUtil.getTableRows().count()).toEqual(1);
 
         InputUtil.clickRowAction(0, 'Edit');
-        BettingPage.setName(newCategoryName);
+        BettingPage.setCategoryName(newCategoryName);
         NavigationUtil.clickTab('Save');
         NavigationUtil.clickTab('Cancel');
 
         CommonUtil.enterTableFilter('Filter on category name', newCategoryName);
         expect(CommonUtil.getTableRows().count()).toEqual(1);
+
+        InputUtil.clickRowAction(0, 'Delete');
+        NavigationUtil.clickButton('Yes');
+        expect(CommonUtil.getTableRows().count()).toEqual(0);
+    });
+
+    it('should be possible to create, update, suspend, set result and delete a bet', () => {
+        const betName = 'Bet #1';
+        const newBetName = 'Bet #2';
+
+        NavigationUtil.clickSiteCpTool('Bets');
+
+        NavigationUtil.clickTab('Create Bet');
+        BettingPage.setBetName(betName);
+        BettingPage.selectCategory('Staff');
+        BettingPage.setBetDisplayOrder(1);
+        BettingPage.setNumerator(1);
+        BettingPage.setDenominator(1);
+
+        NavigationUtil.clickTab('Save');
+        NavigationUtil.clickTab('Cancel');
+        expect(CommonUtil.getTableRows().count()).toEqual(4);
+
+        CommonUtil.enterTableFilter('Filter on bet title', betName);
+        InputUtil.clickRowAction(0, 'Edit');
+
+        BettingPage.setBetName(newBetName);
+        NavigationUtil.clickTab('Save');
+        NavigationUtil.clickTab('Cancel');
+
+        CommonUtil.enterTableFilter('Filter on bet title', newBetName);
+        expect(CommonUtil.getTableRows().count()).toEqual(1);
+
+        InputUtil.clickRowAction(0, 'Suspend');
+        InputUtil.clickRowAction(0, 'Unsuspend');
+
+        InputUtil.clickRowAction(0, 'Set Result');
+        BettingPage.setResult('Win');
+        NavigationUtil.clickButton('Done');
 
         InputUtil.clickRowAction(0, 'Delete');
         NavigationUtil.clickButton('Yes');
