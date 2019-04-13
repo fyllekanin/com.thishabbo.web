@@ -149,7 +149,7 @@ class GroupsController extends Controller {
         $group->save();
 
         Logger::admin($user->userId, $request->ip(), Action::CREATED_GROUP, ['group' => $group->name]);
-        return $this->getGroup($request, $group->groupId);
+        return $this->getGroup($group->groupId);
     }
 
     /**
@@ -193,7 +193,7 @@ class GroupsController extends Controller {
         ]);
 
         Logger::admin($user->userId, $request->ip(), Action::UPDATED_GROUP, ['group' => $group->name]);
-        return $this->getGroup($request, $groupId);
+        return $this->getGroup($groupId);
     }
 
     /**

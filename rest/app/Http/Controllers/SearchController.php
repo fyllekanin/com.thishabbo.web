@@ -21,6 +21,7 @@ class SearchController extends Controller {
      * @param ForumService $forumService
      */
     public function __construct(ForumService $forumService) {
+        parent::__construct();
         $this->forumService = $forumService;
     }
 

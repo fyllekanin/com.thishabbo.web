@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 
 /**
  * @property mixed nickname
+ * @property mixed userId
  */
 class User extends Authenticatable {
     use Notifiable;
@@ -41,7 +42,7 @@ class User extends Authenticatable {
     }
 
     public function displayGroup () {
-        return $this->belongsTo('App\EloquentModels\Group', 'displayGroupId', 'groupId');
+        return $this->belongsTo('App\EloquentModels\Group\Group', 'displayGroupId', 'groupId');
     }
 
     public function scopeWithNicknameLike (Builder $query, $nickname) {

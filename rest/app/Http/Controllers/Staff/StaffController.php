@@ -63,9 +63,9 @@ class StaffController extends Controller {
                 'reason' => $thcRequest['reason']
             ]);
             $newRequest->save();
+            Logger::staff($user->userId, $request->ip(), Action::REQUESTED_THC_FOR_USER, ['name' => $account->nickname]);
         }
 
-        Logger::staff($user->userId, $request->ip(), Action::REQUESTED_THC_FOR_USER, ['name' => $account->nickname]);
         return response()->json();
     }
 

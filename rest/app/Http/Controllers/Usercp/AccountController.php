@@ -365,7 +365,7 @@ class AccountController extends Controller {
 
 
     /**
-     * @param $ignoredNotificationTypes
+     * @param $ignoredNotifications
      *
      * @return int
      */

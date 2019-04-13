@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 /**
  * @property mixed prefixId
+ * @property mixed text
  */
 class Prefix extends DeletableModel {
     protected $table = 'prefixes';

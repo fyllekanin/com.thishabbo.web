@@ -5,6 +5,10 @@ namespace App\EloquentModels\Group;
 use App\EloquentModels\Models\DeletableModel;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * @property mixed groupId
+ * @property mixed name
+ */
 class Group extends DeletableModel {
     protected $primaryKey = 'groupId';
     protected $fillable = ['name', 'nameStyling', 'userBarStyling', 'immunity', 'adminPermissions', 'staffPermissions',

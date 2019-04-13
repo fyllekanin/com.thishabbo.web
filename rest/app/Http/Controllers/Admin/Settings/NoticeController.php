@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin\Settings;
 
 use App\EloquentModels\Notice;
-use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;

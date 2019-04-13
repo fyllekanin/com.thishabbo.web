@@ -10,6 +10,6 @@ class GroupList extends UnixTimeModel {
     protected $fillable = ['groupId', 'displayOrder', 'color'];
 
     public function group() {
-        return $this->hasOne('App\EloquentModels\Group', 'groupId', 'groupId');
+        return $this->hasOne('App\EloquentModels\Group\Group', 'groupId', 'groupId');
     }
 }

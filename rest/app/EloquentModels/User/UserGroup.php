@@ -14,6 +14,6 @@ class UserGroup extends UnixTimeModel {
     }
 
     public function group () {
-        return $this->belongsTo('App\EloquentModels\Group', 'groupId', 'groupId');
+        return $this->belongsTo('App\EloquentModels\Group\Group', 'groupId', 'groupId');
     }
 }

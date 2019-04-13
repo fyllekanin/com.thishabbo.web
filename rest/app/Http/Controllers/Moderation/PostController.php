@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Moderation;
 
-use App\EloquentModels\Forum\Category;
 use App\EloquentModels\Forum\Post;
 use App\EloquentModels\Forum\Thread;
 use App\EloquentModels\User\User;

@@ -6,7 +6,6 @@ use App\EloquentModels\Forum\Post;
 use App\EloquentModels\Forum\PostLike;
 use App\Helpers\ConfigHelper;
 use App\Helpers\PermissionHelper;
-use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;

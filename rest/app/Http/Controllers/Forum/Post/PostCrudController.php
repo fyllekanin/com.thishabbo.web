@@ -23,7 +23,6 @@ use App\Utils\BBcodeUtil;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 
 class PostCrudController extends Controller {
     private $forumService;

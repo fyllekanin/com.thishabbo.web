@@ -7,7 +7,6 @@ use App\EloquentModels\Setting;
 use App\EloquentModels\User\User;
 use App\Helpers\ConfigHelper;
 use App\Helpers\SettingsHelper;
-use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;

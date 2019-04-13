@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin\Settings;
 use App\EloquentModels\Page;
 use App\Helpers\ConfigHelper;
 use App\Helpers\SettingsHelper;
-use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
