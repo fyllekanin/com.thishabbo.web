@@ -1,13 +1,13 @@
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
 import { HttpErrorResponse } from '@angular/common/http';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 
-describe('GlobalNotificationService', () => {
+describe('NotificationService', () => {
 
-    let service: GlobalNotificationService;
+    let service: NotificationService;
 
     beforeEach(() => {
-        service = new GlobalNotificationService();
+        service = new NotificationService();
     });
 
     it('failureNotification should use HttpErrorResponse to get message', (done) => {
@@ -15,7 +15,7 @@ describe('GlobalNotificationService', () => {
         const response = new HttpErrorResponse({
             error: { message: 'test' }
         });
-        service.onGlobalNotification.subscribe(res => {
+        service.onNotification.subscribe(res => {
             expect(res.title).toEqual('Error');
             expect(res.message).toEqual('test');
             done();
@@ -25,24 +25,24 @@ describe('GlobalNotificationService', () => {
         service.failureNotification(response);
     });
 
-    describe('sendGlobalNotification', () => {
+    describe('sendNotification', () => {
         it('should do nothing if argument is null', () => {
             // Given
             let count = 0;
-            service.onGlobalNotification.subscribe(() => count++);
+            service.onNotification.subscribe(() => count++);
 
             // When
-            service.sendGlobalNotification(null);
+            service.sendNotification(null);
 
             // Then
             expect(count).toBe(0);
         });
         it('should trigger observable', (done) => {
             // Given
-            service.onGlobalNotification.subscribe(() => done());
+            service.onNotification.subscribe(() => done());
 
             // When
-            service.sendGlobalNotification(new GlobalNotification({ title: 'test' }));
+            service.sendNotification(new NotificationModel({ title: 'test' }));
         });
     });
 });

@@ -1,13 +1,13 @@
 import { ComponentFactoryResolver, Injectable } from '@angular/core';
 import { HttpService } from 'core/services/http/http.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { map } from 'rxjs/operators';
 import { InfractionContext, InfractModel } from 'shared/components/infraction/infraction.model';
 import { Observable } from 'rxjs';
 import { InfractionComponent } from 'shared/components/infraction/infraction.component';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
-import { GlobalNotification, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationModel, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 
 
 @Injectable()
@@ -17,7 +17,7 @@ export class InfractionService {
         private _componentResolver: ComponentFactoryResolver,
         private _httpService: HttpService,
         private _dialogService: DialogService,
-        private _globalNotificationService: GlobalNotificationService
+        private _notificationService: NotificationService
     ) {}
 
     infract(userId: number): void {
@@ -46,16 +46,16 @@ export class InfractionService {
         }
         this._httpService.post('admin/moderation/infract', { infraction: data })
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification( {
+                this._notificationService.sendNotification(new NotificationModel( {
                     title: 'Success',
                     message: 'Infraction created!'
                 }));
                 this._dialogService.closeDialog();
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private invalidInfractData(): void {
-        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+        this._notificationService.sendNotification(new NotificationModel({
             title: 'Missing data',
             message: 'You need to choose both infraction level & enter a reason',
             type: NotificationType.ERROR

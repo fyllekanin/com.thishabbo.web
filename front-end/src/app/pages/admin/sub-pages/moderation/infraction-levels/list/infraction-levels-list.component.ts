@@ -20,8 +20,8 @@ import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { InfractionLevelsService } from '../../services/infraction-levels.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { HttpService } from 'core/services/http/http.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-admin-moderation-infraction-levels-list',
@@ -47,7 +47,7 @@ export class InfractionLevelsListComponent extends Page implements OnDestroy {
         private _httpService: HttpService,
         private _router: Router,
         private _service: InfractionLevelsService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute,
         breadcrumbService: BreadcrumbService
@@ -91,7 +91,7 @@ export class InfractionLevelsListComponent extends Page implements OnDestroy {
                     () => {
                         this._httpService.delete(`admin/moderation/infraction-levels/${action.rowId}`)
                             .subscribe(() => {
-                                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                                this._notificationService.sendNotification(new NotificationModel({
                                     title: 'Success',
                                     message: 'Infraction level deleted'
                                 }));
@@ -99,7 +99,7 @@ export class InfractionLevelsListComponent extends Page implements OnDestroy {
                                     .filter(item => item.infractionLevelId !== Number(action.rowId));
                                 this.buildTableConfig();
                                 this._dialogService.closeDialog();
-                            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                            }, this._notificationService.failureNotification.bind(this._notificationService));
                     }
                 );
                 break;

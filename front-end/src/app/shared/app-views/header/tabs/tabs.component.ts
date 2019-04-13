@@ -3,8 +3,8 @@ import { DialogService } from 'core/services/dialog/dialog.service';
 import { TabModel } from 'shared/app-views/header/tabs/tabs.model';
 import { TabComponent } from 'shared/app-views/header/tabs/tab/tab.component';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationModel, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 
@@ -19,7 +19,7 @@ export class TabsComponent {
     constructor(
         private _dialogService: DialogService,
         private _componentResolver: ComponentFactoryResolver,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         continuesInformationService: ContinuesInformationService
     ) {
         this.updateTabs();
@@ -74,7 +74,7 @@ export class TabsComponent {
     }
 
     private printError(message: string): void {
-        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+        this._notificationService.sendNotification(new NotificationModel({
             title: 'Error',
             message: message,
             type: NotificationType.ERROR

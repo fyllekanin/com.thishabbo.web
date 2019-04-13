@@ -9,9 +9,9 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 import { TableCell, TableConfig, TableHeader, TableRow, TableAction, Action } from 'shared/components/table/table.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
 import { DialogService } from 'core/services/dialog/dialog.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { HttpService } from 'core/services/http/http.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-staff-management-do-not-hire-list',
@@ -32,7 +32,7 @@ export class DoNotHireListComponent extends Page implements OnDestroy {
 
     constructor(
         private _dialogService: DialogService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _httpService: HttpService,
         private _router: Router,
         breadcrumbService: BreadcrumbService,
@@ -76,13 +76,13 @@ export class DoNotHireListComponent extends Page implements OnDestroy {
     private onDelete(nickname: string): void {
         this._httpService.delete(`staff/management/do-not-hire/${nickname}`)
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationModel({
                     title: 'Success',
                     message: 'Entry deleted!'
                 }));
                 this._data.items = this._data.items.filter(item => nickname !== item.nickname);
                 this.createOrUpdateTable();
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService), () => {
+            }, this._notificationService.failureNotification.bind(this._notificationService), () => {
                 this._dialogService.closeDialog();
             });
     }

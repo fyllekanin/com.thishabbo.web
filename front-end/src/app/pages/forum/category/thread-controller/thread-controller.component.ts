@@ -3,7 +3,7 @@ import { DialogService } from 'core/services/dialog/dialog.service';
 import { CategoryTemplates } from 'shared/constants/templates.constants';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { EditorComponent } from 'shared/components/editor/editor.component';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ThreadControllerActions, ThreadSkeleton } from './thread-controller.model';
@@ -11,7 +11,7 @@ import { CategoryParent } from '../category.model';
 import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { EditorAction } from 'shared/components/editor/editor.model';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
 import { Breadcrumb, BreadcrumbItem } from 'core/services/breadcrum/breadcrum.model';
 import { Button } from 'shared/directives/button/button.model';
 import { ArrayHelper } from 'shared/helpers/array.helper';
@@ -37,7 +37,7 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
         private _dialogService: DialogService,
         private _httpClient: HttpClient,
         private _router: Router,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _breadcrumbService: BreadcrumbService,
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute
@@ -213,18 +213,18 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
         if (!this.isNew) {
             this._httpClient.post(`rest/api/forum/thread/update/${this._threadSkeleton.threadId}`, form)
                 .subscribe(this.onSuccessUpdate.bind(this),
-                this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                this._notificationService.failureNotification.bind(this._notificationService));
         } else {
             this._httpClient.post('rest/api/forum/thread', form)
                 .subscribe(this.onSuccessCreate.bind(this),
-                this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                this._notificationService.failureNotification.bind(this._notificationService));
         }
     }
 
     private onSuccessUpdate(res: ThreadSkeleton): void {
         this._threadSkeleton = new ThreadSkeleton(res);
         AutoSaveHelper.remove(AutoSave.THREAD, this._threadSkeleton.categoryId);
-        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+        this._notificationService.sendNotification(new NotificationModel({
             title: 'Success!',
             message: 'Thread is updated!'
         }));

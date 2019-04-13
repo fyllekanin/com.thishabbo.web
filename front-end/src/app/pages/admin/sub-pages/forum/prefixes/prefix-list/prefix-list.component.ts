@@ -11,9 +11,9 @@ import {
     TableHeader,
     TableRow
 } from 'shared/components/table/table.model';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { HttpService } from 'core/services/http/http.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 
 
@@ -31,7 +31,7 @@ export class PrefixListComponent extends Page implements OnDestroy {
 
     constructor(
         private _router: Router,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _dialogService: DialogService,
         private _httpService: HttpService,
         activatedRoute: ActivatedRoute,
@@ -66,12 +66,12 @@ export class PrefixListComponent extends Page implements OnDestroy {
             .subscribe(() => {
                 this._prefixes = this._prefixes.filter(pre => pre.prefixId !== prefix.prefixId);
                 this.createOrUpdateTable();
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationModel({
                     title: 'Success',
                     message: 'Prefix deleted!'
                 }));
                 this._dialogService.closeDialog();
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private onData(data: { data: Array<Prefix> }): void {

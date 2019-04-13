@@ -6,8 +6,8 @@ import { Page } from 'shared/page/page.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { USERCP_BREADCRUM_ITEM } from '../../usercp.constants';
 import { UserCpGroup, UserCpGroupsPage } from './groups.model';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
 import { GroupsService } from '../services/groups.service';
 import { TitleTab } from 'shared/app-views/title/title.model';
 
@@ -24,7 +24,7 @@ export class GroupsComponent extends Page implements OnDestroy {
     ];
 
     constructor(
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _dialogService: DialogService,
         private _service: GroupsService,
         elementRef: ElementRef,
@@ -86,7 +86,7 @@ export class GroupsComponent extends Page implements OnDestroy {
 
     private onApply(groupId: number): void {
         this._service.apply(groupId).subscribe(() => {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationModel({
                 title: 'Success',
                 message: 'You are applied!'
             }));
@@ -98,7 +98,7 @@ export class GroupsComponent extends Page implements OnDestroy {
 
     private onLeave(groupId: number): void {
         this._service.leave(groupId).subscribe(() => {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationModel({
                 title: 'Success',
                 message: 'You have left the group!'
             }));

@@ -2,8 +2,8 @@ import { Component, Input } from '@angular/core';
 import { ThreadAnswer, ThreadPoll } from './thread-poll.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { HttpService } from 'core/services/http/http.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-forum-thread-poll',
@@ -21,20 +21,20 @@ export class ThreadPollComponent {
 
     constructor(
         private _httpService: HttpService,
-        private _globalNotificationService: GlobalNotificationService
+        private _notificationService: NotificationService
     ) {}
 
     vote(): void {
         this._httpService.post(`forum/thread/${this._threadId}/vote`, { answerId: this.answerId })
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationModel({
                     title: 'Success',
                     message: 'Your vote is saved!'
                 }));
                 this._poll.haveVoted = true;
                 const answer = this._poll.answers.find(ans => ans.id === this.answerId);
                 answer.answers += 1;
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     @Input()

@@ -12,11 +12,11 @@ import {
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'core/services/auth/auth.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { BehaviorSubject, Observable, throwError as observableThrowError } from 'rxjs';
 
 import { catchError, filter, finalize, switchMap, take } from 'rxjs/operators';
-import { GlobalNotification, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationModel, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
@@ -27,7 +27,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
     constructor(
         private _authService: AuthService,
         private _router: Router,
-        private _globalNotificationService: GlobalNotificationService) {
+        private _notificationService: NotificationService) {
     }
 
     intercept(req: HttpRequest<any>, next: HttpHandler):
@@ -37,7 +37,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
                 if (error instanceof HttpErrorResponse) {
                     switch ((<HttpErrorResponse>error).status) {
                         case 401:
-                            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                            this._notificationService.sendNotification(new NotificationModel({
                                 title: 'Oh no!',
                                 message: 'You have been logged out!'
                             }));
@@ -45,14 +45,14 @@ export class AuthenticationInterceptor implements HttpInterceptor {
                         case 419:
                             return this.handle419Error(req, next);
                         case 403:
-                            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                            this._notificationService.sendNotification(new NotificationModel({
                                 title: 'Oops!',
                                 message: error.error.message
                             }));
                             this._router.navigateByUrl('/page/access');
                             return observableThrowError(error);
                         case 503:
-                            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                            this._notificationService.sendNotification(new NotificationModel({
                                 title: 'Oh no!',
                                 message: 'Maintenance Mode is on!',
                                 type: NotificationType.WARNING

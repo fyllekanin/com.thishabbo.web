@@ -3,7 +3,7 @@ import { Resolve } from '@angular/router';
 import { Observable } from 'rxjs';
 import { HttpService } from 'core/services/http/http.service';
 import { catchError, map } from 'rxjs/operators';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { CategorySubscription } from '../category-subscriptions/category-subscriptions.model';
 
 @Injectable()
@@ -11,12 +11,12 @@ export class CategorySubscriptionsService implements Resolve<Array<CategorySubsc
 
     constructor(
         private _httpService: HttpService,
-        private _globalNotificationService: GlobalNotificationService
+        private _notificationService: NotificationService
     ) {}
 
     unsubscribe(categoryId: number): Observable<void> {
         return this._httpService.delete(`forum/category/${categoryId}/unsubscribe`)
-            .pipe(catchError(this._globalNotificationService.failureNotification.bind(this._globalNotificationService)));
+            .pipe(catchError(this._notificationService.failureNotification.bind(this._notificationService)));
     }
 
     resolve(): Observable<Array<CategorySubscription>> {

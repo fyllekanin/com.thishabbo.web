@@ -5,8 +5,8 @@ import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { STAFFCP_BREADCRUM_ITEM } from '../staff.constants';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { RequestThcActions, RequestThcModel } from './request-thc.model';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationModel, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { HttpService } from 'core/services/http/http.service';
 
 @Component({
@@ -25,7 +25,7 @@ export class RequestThcComponent extends Page implements OnDestroy {
 
     constructor(
         private _httpService: HttpService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         breadcrumbService: BreadcrumbService,
         elementRef: ElementRef
     ) {
@@ -62,7 +62,7 @@ export class RequestThcComponent extends Page implements OnDestroy {
 
     private sendRequest(): void {
         if (this.rowsAreInvalid()) {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationModel({
                 title: 'Error',
                 message: 'One or more rows are invalid',
                 type: NotificationType.ERROR
@@ -72,11 +72,11 @@ export class RequestThcComponent extends Page implements OnDestroy {
         this._httpService.post('staff/request-thc', { requests: this._rows })
             .subscribe(() => {
                 this._rows = [new RequestThcModel()];
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationModel({
                     title: 'Success',
                     message: 'Requests are sent!'
                 }));
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private rowsAreInvalid(): boolean {

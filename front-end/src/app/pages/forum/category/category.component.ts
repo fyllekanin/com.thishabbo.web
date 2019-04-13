@@ -14,8 +14,8 @@ import {FORUM_BREADCRUM_ITEM} from '../forum.constants';
 import {ArrayHelper} from 'shared/helpers/array.helper';
 import {AuthService} from 'core/services/auth/auth.service';
 import {HttpService} from 'core/services/http/http.service';
-import {GlobalNotificationService} from 'core/services/notification/global-notification.service';
-import {GlobalNotification} from 'shared/app-views/global-notification/global-notification.model';
+import {NotificationService} from 'core/services/notification/notification.service';
+import {NotificationModel} from 'shared/app-views/global-notification/global-notification.model';
 import {MoveThreadComponent} from '../thread/move-thread/move-thread.component';
 import {ChangeOwnerComponent} from '../thread/change-owner/change-owner.component';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
@@ -40,7 +40,7 @@ export class CategoryComponent extends Page implements OnDestroy {
         private _dialogService: DialogService,
         private _authService: AuthService,
         private _httpService: HttpService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
         private _breadcrumbService: BreadcrumbService,
@@ -76,44 +76,44 @@ export class CategoryComponent extends Page implements OnDestroy {
                     .subscribe(() => {
                         this._categoryPage.isSubscribed = true;
                         this.setTabs();
-                        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                        this._notificationService.sendNotification(new NotificationModel({
                             title: 'Success',
                             message: 'You are now subscribed!'
                         }));
-                    }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                    }, this._notificationService.failureNotification.bind(this._notificationService));
                 break;
             case CategoryActions.UNSUBSCRIBE:
                 this._httpService.delete(`forum/category/${this._categoryPage.categoryId}/unsubscribe`)
                     .subscribe(() => {
                         this._categoryPage.isSubscribed = false;
                         this.setTabs();
-                        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                        this._notificationService.sendNotification(new NotificationModel({
                             title: 'Success',
                             message: 'You are now unsubscribed!'
                         }));
-                    }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                    }, this._notificationService.failureNotification.bind(this._notificationService));
                 break;
             case CategoryActions.IGNORE:
                 this._httpService.post(`forum/category/${this._categoryPage.categoryId}/ignore`, {})
                     .subscribe(() => {
                         this._categoryPage.isIgnored = true;
                         this.setTabs();
-                        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                        this._notificationService.sendNotification(new NotificationModel({
                             title: 'Success',
                             message: 'You ignored the Category!'
                         }));
-                    }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                    }, this._notificationService.failureNotification.bind(this._notificationService));
                 break;
             case CategoryActions.UNIGNORE:
                 this._httpService.delete(`forum/category/${this._categoryPage.categoryId}/ignore`)
                     .subscribe(() => {
                         this._categoryPage.isIgnored = false;
                         this.setTabs();
-                        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                        this._notificationService.sendNotification(new NotificationModel({
                             title: 'Success',
                             message: 'You unignored the Category!'
                         }));
-                    }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                    }, this._notificationService.failureNotification.bind(this._notificationService));
                 break;
             case CategoryActions.TOGGLE_TOOLS:
                 this._isToolsVisible = !this._isToolsVisible;
@@ -262,13 +262,13 @@ export class CategoryComponent extends Page implements OnDestroy {
                     this._httpService.put(`forum/moderation/thread/move/category/${categoryId}`,
                         { threadIds: this._selectedThreadIds})
                         .subscribe(() => {
-                            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                            this._notificationService.sendNotification(new NotificationModel({
                                 title: 'Success',
                                 message: 'Threads are moved!'
                             }));
                             this._dialogService.closeDialog();
                             this._router.navigateByUrl(`/forum/category/${categoryId}/page/1`);
-                        }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                        }, this._notificationService.failureNotification.bind(this._notificationService));
                 }})
             ]
         });
@@ -285,12 +285,12 @@ export class CategoryComponent extends Page implements OnDestroy {
                         threadIds: this._selectedThreadIds,
                         nickname: nickname
                     }).subscribe(() => {
-                        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                        this._notificationService.sendNotification(new NotificationModel({
                             title: 'Success',
                             message: 'Thread owners changed!'
                         }));
                         this._router.navigateByUrl(`/forum/category/${this._categoryPage.categoryId}/page/1`);
-                    }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                    }, this._notificationService.failureNotification.bind(this._notificationService));
                 }})
             ]
         });

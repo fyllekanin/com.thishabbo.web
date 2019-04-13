@@ -4,15 +4,15 @@ import { HttpService } from 'core/services/http/http.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { NotificationSettingsModel } from '../notification-settings/notification-settings.model';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
 
 @Injectable()
 export class NotificationSettingsService implements Resolve<NotificationSettingsModel> {
 
     constructor(
         private _httpService: HttpService,
-        private _globalNotificationService: GlobalNotificationService
+        private _notificationService: NotificationService
     ) {
     }
 
@@ -24,10 +24,10 @@ export class NotificationSettingsService implements Resolve<NotificationSettings
     save(data: NotificationSettingsModel): void {
         this._httpService.put('usercp/notification-settings', { ignoredNotificationTypes: data })
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationModel({
                     title: 'Success',
                     message: 'Notification settings updated'
                 }));
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 }

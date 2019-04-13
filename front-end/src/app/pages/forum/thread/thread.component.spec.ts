@@ -7,7 +7,7 @@ import { HttpService } from 'core/services/http/http.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ThreadComponent } from './thread.component';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { EditorAction } from 'shared/components/editor/editor.model';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ThreadActions, ThreadPage } from './thread.model';
@@ -27,7 +27,7 @@ describe('ThreadComponent', () => {
             return { userId: 1 };
         }
     }
-    class GlobalNotificationServiceMock {
+    class NotificationServiceMock {
         sendGlobalNotification() {}
         failureNotification() {}
     }
@@ -36,13 +36,13 @@ describe('ThreadComponent', () => {
     let component: ThreadComponent;
     let httpService: HttpServiceMock;
     let authService: AuthServiceMock;
-    let globalNotificationService: GlobalNotificationServiceMock;
+    let notificationService: NotificationServiceMock;
     const sendThread: Subject<{ data: ThreadPage }> = new Subject();
 
     beforeEach(() => {
         httpService = new HttpServiceMock();
         authService = new AuthServiceMock();
-        globalNotificationService = new GlobalNotificationServiceMock();
+        notificationService = new NotificationServiceMock();
 
         TestBed.configureTestingModule({
             imports: [
@@ -55,9 +55,9 @@ describe('ThreadComponent', () => {
             providers: [
                 { provide: HttpService, useValue: httpService },
                 { provide: AuthService, useValue: authService },
-                { provide: GlobalNotificationService, useValue: globalNotificationService },
+                { provide: NotificationService, useValue: notificationService },
                 { provide: ActivatedRoute, useValue: { data: sendThread.asObservable() } },
-                { provide: BreadcrumbService, useValue: { set breadcrum(_val) {} } },
+                { provide: BreadcrumbService, useValue: { set breadcrumb(_val) {} } },
                 { provide: DialogService, useValue: {} },
                 { provide: ThreadService, useValue: {} }
             ],
@@ -71,7 +71,7 @@ describe('ThreadComponent', () => {
     describe('onButtonClick', () => {
         it('should call failureNotification on failed POST', () => {
             // Given
-            spyOn(globalNotificationService, 'failureNotification');
+            spyOn(notificationService, 'failureNotification');
             spyOn(httpService, 'post').and.returnValue(throwError({ error: { message: 'Message' } }));
 
             // When
@@ -79,7 +79,7 @@ describe('ThreadComponent', () => {
 
             // Then
             expect(httpService.post).toHaveBeenCalledTimes(1);
-            expect(globalNotificationService.failureNotification).toHaveBeenCalled();
+            expect(notificationService.failureNotification).toHaveBeenCalled();
         });
     });
 

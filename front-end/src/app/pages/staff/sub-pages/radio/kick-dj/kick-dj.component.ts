@@ -1,11 +1,11 @@
 import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { HttpService } from 'core/services/http/http.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { INFO_BOX_TYPE, InfoBoxModel } from 'shared/app-views/info-box/info-box.model';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { TitleTab } from 'shared/app-views/title/title.model';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-staff-radio-kick-dj',
@@ -25,7 +25,7 @@ you should be prepared or any other DJ to jump on air after this button click.`
 
     constructor(
         private _httpService: HttpService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _dialogService: DialogService,
         elementRef: ElementRef
     ) {
@@ -47,11 +47,11 @@ you should be prepared or any other DJ to jump on air after this button click.`
     private doKick(): void {
         this._httpService.post('staff/radio/kick/dj', {})
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationModel({
                     title: 'Success',
                     message: 'DJ is kicked off air!'
                 }));
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
 }

@@ -4,15 +4,15 @@ import { Observable } from 'rxjs';
 import { HttpService } from 'core/services/http/http.service';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
 
 @Injectable()
 export class ThreadService implements Resolve<ThreadPage> {
 
     constructor(
         private _httpService: HttpService,
-        private _globalNotificationService: GlobalNotificationService
+        private _notificationService: NotificationService
     ) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<ThreadPage> {
@@ -28,12 +28,12 @@ export class ThreadService implements Resolve<ThreadPage> {
             this._httpService.post(`forum/thread/subscribe/${thread.threadId}`, null);
 
         return call.pipe(map(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationModel({
                     title: 'Success',
                     message: `You ${thread.isSubscribed ? 'unsubscribed' : 'subscribed'} to the thread`
                 }));
                 return !thread.isSubscribed;
-            }), catchError(this._globalNotificationService.failureNotification.bind(this._globalNotificationService)));
+            }), catchError(this._notificationService.failureNotification.bind(this._notificationService)));
     }
 
     toggleIgnore(thread: ThreadPage): Observable<boolean> {
@@ -42,11 +42,11 @@ export class ThreadService implements Resolve<ThreadPage> {
             this._httpService.post(`forum/thread/${thread.threadId}/ignore`, null);
 
         return call.pipe(map(() => {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationModel({
                 title: 'Success',
                 message: `You ${thread.isIgnored ? 'unignored' : 'ignored'} the thread`
             }));
             return !thread.isIgnored;
-        }), catchError(this._globalNotificationService.failureNotification.bind(this._globalNotificationService)));
+        }), catchError(this._notificationService.failureNotification.bind(this._notificationService)));
     }
 }

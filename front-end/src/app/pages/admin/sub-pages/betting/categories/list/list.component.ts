@@ -18,8 +18,8 @@ import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { SITECP_BREADCRUMB_ITEM } from '../../../../admin.constants';
 import { HttpService } from 'core/services/http/http.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
 import { QueryParameters } from 'core/services/http/http.model';
 
 @Component({
@@ -39,7 +39,7 @@ export class ListComponent extends Page implements OnDestroy {
 
     constructor(
         private _dialogService: DialogService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _router: Router,
         private _httpService: HttpService,
         elementRef: ElementRef,
@@ -92,14 +92,14 @@ export class ListComponent extends Page implements OnDestroy {
     private doDelete(model: BetCategoryModel): void {
         this._httpService.delete(`admin/betting/category/${model.betCategoryId}`)
             .subscribe(() => {
-                    this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                    this._notificationService.sendNotification(new NotificationModel({
                         title: 'Success',
                         message: `${model.name} is deleted`
                     }));
                     this._data.betCategories = this._data.betCategories
                         .filter(category => category.betCategoryId !== model.betCategoryId);
                     this.createOrUpdateTable();
-                }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService),
+                }, this._notificationService.failureNotification.bind(this._notificationService),
                 this._dialogService.closeDialog.bind(this._dialogService));
     }
 

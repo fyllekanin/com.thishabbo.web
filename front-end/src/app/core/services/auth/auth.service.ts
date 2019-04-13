@@ -1,4 +1,4 @@
-import { GlobalNotificationService } from './../notification/global-notification.service';
+import { NotificationService } from '../notification/notification.service';
 import { Observable, Subject, Subscription, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { HttpHeaders } from '@angular/common/http';
@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { HttpService } from 'core/services/http/http.service';
 import { RouterStateService } from 'core/services/router/router-state.service';
-import { GlobalNotification, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationModel, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
@@ -21,7 +21,7 @@ export class AuthService {
     constructor(
         private _routerState: RouterStateService,
         private _activatedRoute: ActivatedRoute,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _router: Router,
         private _httpService: HttpService,
         private _dialogService: DialogService
@@ -37,7 +37,7 @@ export class AuthService {
         return this._httpService.post('auth/login', { loginName: loginName, password: password })
             .subscribe(this.doLogin.bind(this), res => {
                 this._user = null;
-                this._globalNotificationService.failureNotification(res);
+                this._notificationService.failureNotification(res);
                 if (onFailure) {
                     onFailure();
                 }
@@ -48,7 +48,7 @@ export class AuthService {
         this.clearUserAndNavigate(isRedirect);
         this._onUserChangeSubject.next();
         this._httpService.post('auth/logout', null).subscribe(() => {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationModel({
                 title: 'Success',
                 message: 'You logged out!'
             }));
@@ -118,7 +118,7 @@ export class AuthService {
         this.checkGdpr();
 
         this._onUserChangeSubject.next();
-        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+        this._notificationService.sendNotification(new NotificationModel({
             title: 'Success',
             message: 'You are logged in!'
         }));
@@ -127,7 +127,7 @@ export class AuthService {
             this._router.navigateByUrl(this._routerState.getPreviousUrl())
                 .catch(() => {
                     this.navigateToHome();
-                    this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                    this._notificationService.sendNotification(new NotificationModel({
                         title: 'Warning',
                         message: 'Your previous page is not a valid page',
                         type: NotificationType.WARNING
@@ -140,7 +140,7 @@ export class AuthService {
             this._router.navigateByUrl(this._user.homePage)
                 .catch(() => {
                     this.navigateToHome();
-                    this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                    this._notificationService.sendNotification(new NotificationModel({
                         title: 'Warning',
                         message: 'Your previous page is not a valid page',
                         type: NotificationType.WARNING
@@ -171,7 +171,7 @@ Until you accept our terms and conditions you will not be able to use most of th
                     callback: () => {
                         this._httpService.put('auth/accept/gdpr')
                             .subscribe(() => {
-                                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                                this._notificationService.sendNotification(new NotificationModel({
                                     title: 'You have accepted!',
                                     message: 'You have accepted Thishabbo\'s privacy policy & gdpr!'
                                 }));

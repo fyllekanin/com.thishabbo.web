@@ -6,7 +6,7 @@ import { of, throwError } from 'rxjs';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { RouterStateService } from 'core/services/router/router-state.service';
 import { RouterTestingModule } from '@angular/router/testing';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 
 describe('AppLoadService', () => {
@@ -23,7 +23,7 @@ describe('AppLoadService', () => {
                 AppLoadService,
                 AuthService,
                 RouterStateService,
-                GlobalNotificationService,
+                NotificationService,
                 DialogService,
                 { provide: HttpService, useValue: { get: () => {} } }
             ]

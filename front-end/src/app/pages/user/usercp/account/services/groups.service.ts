@@ -4,15 +4,15 @@ import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { UserCpGroup, UserCpGroupsPage } from '../groups/groups.model';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
 
 @Injectable()
 export class GroupsService implements Resolve<UserCpGroupsPage> {
 
     constructor(
         private _httpService: HttpService,
-        private _globalNotificationService: GlobalNotificationService
+        private _notificationService: NotificationService
     ) {
     }
 
@@ -22,21 +22,21 @@ export class GroupsService implements Resolve<UserCpGroupsPage> {
 
     apply(groupId: number): Observable<void> {
         return this._httpService.post('usercp/groups/apply', { groupId: groupId })
-            .pipe(catchError(this._globalNotificationService.failureNotification.bind(this._globalNotificationService)));
+            .pipe(catchError(this._notificationService.failureNotification.bind(this._notificationService)));
     }
 
     leave(groupId: number): Observable<void> {
         return this._httpService.delete(`usercp/groups/${groupId}`)
-            .pipe(catchError(this._globalNotificationService.failureNotification.bind(this._globalNotificationService)));
+            .pipe(catchError(this._notificationService.failureNotification.bind(this._notificationService)));
     }
 
     updateDisplayGroup(group: UserCpGroup): void {
         this._httpService.put('usercp/groups/displaygroup', { groupId: group.groupId })
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationModel({
                     title: 'Success',
                     message: 'Display group updated'
                 }));
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 }

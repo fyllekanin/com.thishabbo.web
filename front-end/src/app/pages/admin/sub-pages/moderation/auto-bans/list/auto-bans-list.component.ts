@@ -18,9 +18,9 @@ import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { SITECP_BREADCRUMB_ITEM } from '../../../../admin.constants';
 import { DialogService } from 'core/services/dialog/dialog.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
 import { HttpService } from 'core/services/http/http.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { QueryParameters } from 'core/services/http/http.model';
 
 @Component({
@@ -47,7 +47,7 @@ export class AutoBansListComponent extends Page implements OnDestroy {
         private _router: Router,
         private _dialogService: DialogService,
         private _httpService: HttpService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute,
         breadcrumbService: BreadcrumbService
@@ -91,14 +91,14 @@ export class AutoBansListComponent extends Page implements OnDestroy {
                     () => {
                         this._httpService.delete(`admin/moderation/auto-bans/${action.rowId}`)
                             .subscribe(() => {
-                                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                                this._notificationService.sendNotification(new NotificationModel({
                                     title: 'Success',
                                     message: 'Autoban deleted'
                                 }));
                                 this._dialogService.closeDialog();
                                 this._data.items = this._data.items.filter(item => item.autoBanId !== Number(action.rowId));
                                 this.buildTableConfig();
-                            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                            }, this._notificationService.failureNotification.bind(this._notificationService));
                     }
                 );
         }

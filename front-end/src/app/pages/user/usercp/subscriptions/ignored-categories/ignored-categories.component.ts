@@ -10,9 +10,9 @@ import {
     TableHeader,
     TableRow
 } from 'shared/components/table/table.model';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
 import { HttpService } from 'core/services/http/http.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 
 @Component({
     selector: 'app-usercp-ignored-threads',
@@ -25,7 +25,7 @@ export class IgnoredCategoriesComponent extends Page implements OnDestroy {
 
     constructor(
         private _httpService: HttpService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute
     ) {
@@ -42,11 +42,11 @@ export class IgnoredCategoriesComponent extends Page implements OnDestroy {
             .subscribe(() => {
                 this._data = this._data.filter(item => item.categoryId !== Number(action.rowId));
                 this.buildTableConfig();
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationModel({
                     title: 'Success',
                     message: 'Category unignored!'
                 }));
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private onData(data: { data: Array<IgnoredCategory> }): void {

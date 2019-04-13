@@ -4,15 +4,15 @@ import { HttpService } from 'core/services/http/http.service';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { GroupsModel } from '../groups/groups.model';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
 
 @Injectable()
 export class GroupsService implements Resolve<GroupsModel> {
 
     constructor(
         private _httpService: HttpService,
-        private _globalNotificationService: GlobalNotificationService
+        private _notificationService: NotificationService
     ) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<GroupsModel> {
@@ -28,10 +28,10 @@ export class GroupsService implements Resolve<GroupsModel> {
         };
         this._httpService.put(`admin/users/${userId}/groups`, body)
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationModel({
                     title: 'Success',
                     message: 'User groups are updated!'
                 }));
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 }

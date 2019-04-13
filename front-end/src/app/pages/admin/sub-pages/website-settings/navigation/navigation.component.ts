@@ -14,8 +14,8 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { NavigationItemComponent } from './navigation-item/navigation-item.component';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationModel, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { HttpService } from 'core/services/http/http.service';
 import { NavigationActions } from './navigation.enum';
 import { ArrayHelper } from 'shared/helpers/array.helper';
@@ -41,7 +41,7 @@ export class NavigationComponent extends Page implements OnDestroy {
 
     constructor(
         private _httpService: HttpService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _dialogService: DialogService,
         private _componentResolver: ComponentFactoryResolver,
         elementRef: ElementRef,
@@ -139,7 +139,7 @@ export class NavigationComponent extends Page implements OnDestroy {
                             this.updateItem(newItem);
                             this._dialogService.closeDialog();
                             this.buildTableConfigs();
-                            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                            this._notificationService.sendNotification(new NotificationModel({
                                 title: 'Success',
                                 message: 'Item updated, do not forget to save!'
                             }));
@@ -212,11 +212,11 @@ export class NavigationComponent extends Page implements OnDestroy {
     private onSave(): void {
         this._httpService.put('admin/content/navigation', { navigation: this._data })
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationModel({
                     title: 'Success',
                     message: 'Navigation updated'
                 }));
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private removeItem(rowId: string): void {
@@ -281,7 +281,7 @@ export class NavigationComponent extends Page implements OnDestroy {
         const allItems = this.getAllItems();
         const urlExists = allItems.findIndex(data => data.url === item.url && data.id !== item.id) > -1;
         if (urlExists) {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationModel({
                 title: 'Error',
                 message: 'The URL already exists!',
                 type: NotificationType.ERROR
@@ -291,7 +291,7 @@ export class NavigationComponent extends Page implements OnDestroy {
 
         const labelExists = allItems.findIndex(data => data.label === item.label && data.id !== item.id) > -1;
         if (labelExists) {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationModel({
                 title: 'Error',
                 message: 'The LABEL already exists',
                 type: NotificationType.ERROR

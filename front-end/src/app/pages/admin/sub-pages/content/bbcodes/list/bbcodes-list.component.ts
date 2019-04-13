@@ -12,9 +12,9 @@ import {
     TableRow
 } from 'shared/components/table/table.model';
 import { BBcodeActions, BBcodeModel } from '../bbcode.model';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { HttpService } from 'core/services/http/http.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { SITECP_BREADCRUMB_ITEM, MANAGE_BBCODES_BREADCRUMB_ITEM } from '../../../../admin.constants';
@@ -36,7 +36,7 @@ export class BBcodesListComponent extends Page implements OnDestroy {
 
     constructor(
         private _router: Router,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _dialogService: DialogService,
         private _httpService: HttpService,
         activatedRoute: ActivatedRoute,
@@ -76,12 +76,12 @@ export class BBcodesListComponent extends Page implements OnDestroy {
             .subscribe(() => {
                 this._bbcodes = this._bbcodes.filter(code => code.bbcodeId !== bbcode.bbcodeId);
                 this.createOrUpdateCustomTable();
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationModel({
                     title: 'Success',
                     message: 'BBCode Deleted!'
                 }));
                 this._dialogService.closeDialog();
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private onData(data: { data: Array<BBcodeModel> }): void {

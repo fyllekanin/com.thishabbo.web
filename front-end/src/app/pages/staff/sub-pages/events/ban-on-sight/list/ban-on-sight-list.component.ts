@@ -9,9 +9,9 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 import { TableCell, TableConfig, TableHeader, TableRow, TableAction, Action } from 'shared/components/table/table.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
 import { DialogService } from 'core/services/dialog/dialog.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { HttpService } from 'core/services/http/http.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
 import {AuthService} from 'core/services/auth/auth.service';
 
 @Component({
@@ -31,7 +31,7 @@ export class BanOnSightListComponent extends Page implements OnDestroy, OnInit {
     constructor(
         private _authService: AuthService,
         private _dialogService: DialogService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _httpService: HttpService,
         private _router: Router,
         breadcrumbService: BreadcrumbService,
@@ -81,13 +81,13 @@ export class BanOnSightListComponent extends Page implements OnDestroy, OnInit {
     private onDelete(entryId: string): void {
         this._httpService.delete(`staff/events/ban-on-sight/${entryId}`)
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationModel({
                     title: 'Success',
                     message: 'Entry deleted!'
                 }));
                 this._data = this._data.filter(item => entryId !== item.id);
                 this.createOrUpdateTable();
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService), () => {
+            }, this._notificationService.failureNotification.bind(this._notificationService), () => {
                 this._dialogService.closeDialog();
             });
     }

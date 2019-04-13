@@ -8,8 +8,8 @@ import { BetCategoryActions, BetCategoryModel } from '../categories.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { HttpService } from 'core/services/http/http.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-admin-betting-category',
@@ -21,7 +21,7 @@ export class CategoryComponent extends Page implements OnDestroy {
     tabs: Array<TitleTab> = [];
 
     constructor(
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _httpService: HttpService,
         private _dialogService: DialogService,
         private _router: Router,
@@ -72,21 +72,21 @@ export class CategoryComponent extends Page implements OnDestroy {
         if (this._data.createdAt) {
             this._httpService.put(`admin/betting/category/${this._data.betCategoryId}`, { betCategory: this._data })
                 .subscribe(res => {
-                    this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                    this._notificationService.sendNotification(new NotificationModel({
                         title: 'Success',
                         message: `${this._data.name} updated!`
                     }));
                     this.onData({ data: new BetCategoryModel(res) });
-                }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                }, this._notificationService.failureNotification.bind(this._notificationService));
         } else {
             this._httpService.post(`admin/betting/category`, { betCategory: this._data })
                 .subscribe(res => {
-                    this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                    this._notificationService.sendNotification(new NotificationModel({
                         title: 'Success',
                         message: `${this._data.name} created!`
                     }));
                     this.onData({ data: new BetCategoryModel(res) });
-                }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                }, this._notificationService.failureNotification.bind(this._notificationService));
         }
     }
 
@@ -101,12 +101,12 @@ export class CategoryComponent extends Page implements OnDestroy {
     private doDelete(): void {
         this._httpService.delete(`admin/betting/category/${this._data.betCategoryId}`)
             .subscribe(() => {
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationModel({
                     title: 'Success',
                     message: `${this._data.name} is deleted`
                 }));
                 this._router.navigateByUrl('/admin/betting/categories/page/1');
-            }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private onData(data: { data: BetCategoryModel }): void {

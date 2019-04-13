@@ -8,14 +8,14 @@ export enum NotificationType {
     SUCCESS
 }
 
-export class GlobalNotification {
+export class NotificationModel {
     id = IdHelper.newUuid;
     title: string;
     message: string;
     timeout = 5000;
     type = NotificationType.INFO;
 
-    constructor(source: Partial<GlobalNotification>) {
+    constructor(source: Partial<NotificationModel>) {
         ClassHelper.assign(this, source);
     }
 }

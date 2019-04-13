@@ -6,9 +6,9 @@ import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { SITECP_BREADCRUMB_ITEM, WEBSITE_SETTINGS_BREADCRUMB_ITEM } from '../../../admin.constants';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { HttpService } from 'core/services/http/http.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
 
 @Component({
@@ -23,7 +23,7 @@ export class StaffOfTheWeekComponent extends Page implements OnDestroy {
     ];
 
     constructor(
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _httpService: HttpService,
         activatedRoute: ActivatedRoute,
         elementRef: ElementRef,
@@ -55,11 +55,11 @@ export class StaffOfTheWeekComponent extends Page implements OnDestroy {
     onSave(): void {
         this._httpService.put('admin/content/staff-of-the-week', { information: this._data })
             .subscribe(this.onSuccessUpdate.bind(this, this),
-                this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private onSuccessUpdate (): void {
-        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+        this._notificationService.sendNotification(new NotificationModel({
             title: 'Success',
             message: 'Staff of the Week updated!'
         }));

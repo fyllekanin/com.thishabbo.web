@@ -18,10 +18,10 @@ import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { HttpService } from 'core/services/http/http.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { VoucherCodeComponent } from './voucher-code/voucher-code.component';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
-import { GlobalNotification, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationModel, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { QueryParameters } from 'core/services/http/http.model';
 
 @Component({
@@ -45,7 +45,7 @@ export class VoucherCodesComponent extends Page implements OnDestroy {
     constructor(
         private _httpService: HttpService,
         private _dialogService: DialogService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _componentResolver: ComponentFactoryResolver,
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute,
@@ -97,18 +97,18 @@ export class VoucherCodesComponent extends Page implements OnDestroy {
                 .subscribe(() => {
                     this._data.items = this._data.items.filter(item => item.voucherCodeId !== Number(action.rowId));
                     this.createOrUpdateTable();
-                    this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                    this._notificationService.sendNotification(new NotificationModel({
                         title: 'Success',
                         message: 'Voucher code deleted!'
                     }));
                     this._dialogService.closeDialog();
-                }, this._globalNotificationService.failureNotification.bind(this))
+                }, this._notificationService.failureNotification.bind(this))
         );
     }
 
     private onCreateCode(data: { note: string, value: number }): void {
         if (!data.note) {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationModel({
                 title: 'Failure',
                 message: 'Note can not be empty',
                 type: NotificationType.ERROR
@@ -120,12 +120,12 @@ export class VoucherCodesComponent extends Page implements OnDestroy {
             .subscribe(res => {
                 this._data.items.push(new VoucherCode(res));
                 this._dialogService.closeDialog();
-                this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                this._notificationService.sendNotification(new NotificationModel({
                     title: 'Success',
                     message: 'Code created!'
                 }));
                 this.createOrUpdateTable();
-            }, this._globalNotificationService.failureNotification.bind(this));
+            }, this._notificationService.failureNotification.bind(this));
     }
 
     private onData(data: { data: VoucherCodesPage }): void {

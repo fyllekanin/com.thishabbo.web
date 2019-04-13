@@ -1,7 +1,7 @@
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { HttpService } from 'core/services/http/http.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { ActivatedRoute } from '@angular/router';
@@ -25,7 +25,7 @@ export class NoticeBoardComponent {
 
     constructor(
         private _httpService: HttpService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _dialogService: DialogService,
         breadcrumbService: BreadcrumbService,
         activatedRoute: ActivatedRoute
@@ -81,24 +81,24 @@ export class NoticeBoardComponent {
 
     private updateOrder(): void {
         this._httpService.put('admin/content/notices', { notices: this._notices }).subscribe(() => {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationModel({
                 title: 'Success!',
                 message: 'Notice order updated'
             }));
-        }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+        }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private onDelete(notice: Notice): void {
         this._httpService.delete(`admin/content/notices/${notice.noticeId}`)
             .subscribe(this.onSuccessDelete.bind(this, notice),
-            this._globalNotificationService.failureNotification.bind(this._globalNotificationService), () => {
+            this._notificationService.failureNotification.bind(this._notificationService), () => {
                 this._dialogService.closeDialog();
             });
     }
 
     private onSuccessDelete(notice: Notice): void {
         this._notices = this._notices.filter(noti => noti.noticeId !== notice.noticeId);
-        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+        this._notificationService.sendNotification(new NotificationModel({
             title: 'Success!',
             message: 'Notice got deleted!'
         }));

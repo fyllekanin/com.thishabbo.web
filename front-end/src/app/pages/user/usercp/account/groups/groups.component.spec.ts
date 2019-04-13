@@ -1,7 +1,7 @@
 import { GroupsComponent } from './groups.component';
 import { TestBed } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { GroupsService } from '../services/groups.service';
 import { Subject } from 'rxjs';
@@ -32,7 +32,7 @@ describe('GroupsComponent', () => {
                 GroupsComponent
             ],
             providers: [
-                { provide: GlobalNotificationService, useValue: {} },
+                { provide: NotificationService, useValue: {} },
                 { provide: DialogService, useValue: {} },
                 { provide: GroupsService, useValue: { updateDisplayGroup() {} } },
                 { provide: BreadcrumbService, useValue: { set breadcrum(_data) {} } },

@@ -2,7 +2,7 @@ import { DialogService } from 'core/services/dialog/dialog.service';
 import { FixedToolItem, FixedTools } from 'shared/components/fixed-tools/fixed-tools.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { AutoSave, ForumPermissions } from '../forum.model';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { EditorComponent } from 'shared/components/editor/editor.component';
 import { HttpService } from 'core/services/http/http.service';
 import { AuthService } from 'core/services/auth/auth.service';
@@ -13,12 +13,11 @@ import { getPostTools, getThreadTools, ThreadActions, ThreadPage } from './threa
 import { Component, ComponentFactoryResolver, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { EditorAction } from 'shared/components/editor/editor.model';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
 import { Breadcrumb, BreadcrumbItem } from 'core/services/breadcrum/breadcrum.model';
 import { FORUM_BREADCRUM_ITEM } from '../forum.constants';
 import { DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
-import { Button } from 'shared/directives/button/button.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { ArrayHelper } from 'shared/helpers/array.helper';
 import { AutoSaveHelper } from 'shared/helpers/auto-save.helper';
@@ -51,7 +50,7 @@ export class ThreadComponent extends Page implements OnDestroy {
         private _activatedRoute: ActivatedRoute,
         private _authService: AuthService,
         private _router: Router,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _elementRef: ElementRef,
         private _breadcrumbService: BreadcrumbService,
         private _componentFactory: ComponentFactoryResolver,
@@ -100,7 +99,7 @@ export class ThreadComponent extends Page implements OnDestroy {
     onAction(action: number): void {
         ThreadActionExecutor.newBuilder()
             .withAction(action)
-            .withGlobalNotificationService(this._globalNotificationService)
+            .withNotificationService(this._notificationService)
             .withComponentFactory(this._componentFactory)
             .withDialogService(this._dialogService)
             .withHttpService(this._httpService)
@@ -113,7 +112,7 @@ export class ThreadComponent extends Page implements OnDestroy {
     onUpdatePost(postModel: PostModel): void {
         this._httpService.put(`forum/thread/post/${postModel.postId}`, { post: postModel })
             .subscribe(this.onSuccessUpdate.bind(this),
-                this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     onQuotePost(content: string): void {
@@ -207,7 +206,7 @@ export class ThreadComponent extends Page implements OnDestroy {
 
         this._httpService.post(`forum/thread/${threadId}`, { content: content, toggleThread: toggleThread })
             .subscribe(this.onSuccessPost.bind(this, toggleThread),
-                this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private onOpenAutoSave(): void {
@@ -226,7 +225,7 @@ export class ThreadComponent extends Page implements OnDestroy {
     }
 
     private onSuccessUpdate(postModel: PostModel): void {
-        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+        this._notificationService.sendNotification(new NotificationModel({
             title: 'Success',
             message: 'Post updated!'
         }));
@@ -362,23 +361,20 @@ export class ThreadComponent extends Page implements OnDestroy {
             buttons.push(new EditorAction({ title: 'Post & Close Thread', value: ThreadActions.POST_CLOSE }));
             buttons.push(new EditorAction({
                 title: 'Post & Close Thread',
-                value: ThreadActions.POST_CLOSE,
-                buttonColor: Button.GREEN
+                value: ThreadActions.POST_CLOSE
             }));
         } else if (this._threadPage.forumPermissions.canCloseOpenThread && !this._threadPage.isOpen) {
             buttons.push(new EditorAction({ title: 'Post & Open Thread', value: ThreadActions.POST_OPEN }));
             buttons.push(new EditorAction({
                 title: 'Post & Open Thread',
-                value: ThreadActions.POST_OPEN,
-                buttonColor: Button.GREEN
+                value: ThreadActions.POST_OPEN
             }));
         }
 
         if (AutoSaveHelper.exists(AutoSave.POST, this._threadPage.threadId)) {
             buttons.push(new EditorAction({
                 title: 'Open Auto-Save',
-                value: ThreadActions.AUTO_SAVE,
-                buttonColor: Button.YELLOW
+                value: ThreadActions.AUTO_SAVE
             }));
         }
 

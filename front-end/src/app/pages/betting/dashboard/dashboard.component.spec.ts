@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpService } from 'core/services/http/http.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { DashboardService } from '../services/dashboard.service';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -44,7 +44,7 @@ describe('Dashboard Component', () => {
             providers: [
                 BreadcrumbService,
                 { provide: HttpService, useValue: {} },
-                { provide: GlobalNotificationService, useValue: {} },
+                { provide: NotificationService, useValue: {} },
                 {
                     provide: DashboardService, useValue: {
                         openBetDialog: () => {

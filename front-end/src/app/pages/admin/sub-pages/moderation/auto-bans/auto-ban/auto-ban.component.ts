@@ -7,8 +7,8 @@ import { AUTO_BAN_LIST_BREADCRUMB_ITEM, SITECP_BREADCRUMB_ITEM } from '../../../
 import { ActivatedRoute, Router } from '@angular/router';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { HttpService } from 'core/services/http/http.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
 import { DialogService } from 'core/services/dialog/dialog.service';
 
 @Component({
@@ -23,7 +23,7 @@ export class AutoBanComponent extends Page implements OnDestroy {
     constructor(
         private _router: Router,
         private _httpService: HttpService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _dialogService: DialogService,
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute,
@@ -73,13 +73,13 @@ export class AutoBanComponent extends Page implements OnDestroy {
             () => {
                 this._httpService.delete(`admin/moderation/auto-bans/${this._data.autoBanId}`)
                     .subscribe(() => {
-                        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                        this._notificationService.sendNotification(new NotificationModel({
                             title: 'Success',
                             message: 'Autoban deleted'
                         }));
                         this._dialogService.closeDialog();
                         this._router.navigateByUrl('/admin/moderation/auto-bans/page/1');
-                    }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                    }, this._notificationService.failureNotification.bind(this._notificationService));
             }
         );
     }
@@ -88,21 +88,21 @@ export class AutoBanComponent extends Page implements OnDestroy {
         if (this._data.updatedAt) {
             this._httpService.put(`admin/moderation/auto-bans/${this._data.autoBanId}`, { autoBan: this._data })
                 .subscribe(res => {
-                    this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                    this._notificationService.sendNotification(new NotificationModel({
                         title: 'Success',
                         message: 'Autoban updated'
                     }));
                     this.onData({ data: new AutoBan(res) });
-                }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                }, this._notificationService.failureNotification.bind(this._notificationService));
         } else {
             this._httpService.post(`admin/moderation/auto-bans`, { autoBan: this._data })
                 .subscribe(res => {
-                    this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                    this._notificationService.sendNotification(new NotificationModel({
                         title: 'Success',
                         message: 'Autoban created'
                     }));
                     this.onData({ data: new AutoBan(res) });
-                }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                }, this._notificationService.failureNotification.bind(this._notificationService));
         }
     }
 

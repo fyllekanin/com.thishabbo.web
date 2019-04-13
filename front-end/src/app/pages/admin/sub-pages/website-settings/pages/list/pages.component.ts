@@ -20,8 +20,8 @@ import {
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { HttpService } from 'core/services/http/http.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-admin-website-settings-pages',
@@ -38,7 +38,7 @@ export class PagesComponent extends Page implements OnDestroy {
     constructor(
         private _httpService: HttpService,
         private _dialogService: DialogService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _router: Router,
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute,
@@ -79,11 +79,11 @@ export class PagesComponent extends Page implements OnDestroy {
                     .subscribe(() => {
                         this._data = this._data.filter(item => item.pageId !== pageId);
                         this.createOrUpdateTable();
-                        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                        this._notificationService.sendNotification(new NotificationModel({
                             title: 'Success',
                             message: 'Page is deleted'
                         }));
-                    }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                    }, this._notificationService.failureNotification.bind(this._notificationService));
             }
         );
     }

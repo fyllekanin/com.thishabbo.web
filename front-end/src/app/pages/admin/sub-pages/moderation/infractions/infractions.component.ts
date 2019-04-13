@@ -19,8 +19,8 @@ import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 import { HttpService } from 'core/services/http/http.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
 import { QueryParameters } from 'core/services/http/http.model';
 
 @Component({
@@ -38,7 +38,7 @@ export class InfractionsComponent extends Page implements OnDestroy {
     pagination: PaginationModel;
 
     constructor(
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _dialogService: DialogService,
         private _httpService: HttpService,
         elementRef: ElementRef,
@@ -144,12 +144,12 @@ export class InfractionsComponent extends Page implements OnDestroy {
                         infraction.isDeleted = true;
                         this.createOrUpdateTable();
 
-                        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                        this._notificationService.sendNotification(new NotificationModel({
                             title: 'Success',
                             message: 'Infraction reversed'
                         }));
                         this._dialogService.closeDialog();
-                    }, this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                    }, this._notificationService.failureNotification.bind(this._notificationService));
             }
         );
     }

@@ -5,9 +5,9 @@ import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { HttpService } from 'core/services/http/http.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
-import { GlobalNotification } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
 import { Page } from 'shared/page/page.model';
@@ -35,7 +35,7 @@ export class TimetableComponent extends Page implements OnDestroy {
         private _authService: AuthService,
         private _router: Router,
         private _httpService: HttpService,
-        private _globalNotificationService: GlobalNotificationService,
+        private _notificationService: NotificationService,
         private _componentFactory: ComponentFactoryResolver,
         activatedRoute: ActivatedRoute,
         elementRef: ElementRef,
@@ -147,11 +147,11 @@ export class TimetableComponent extends Page implements OnDestroy {
             }
         })
             .subscribe(this.onSuccessBooking.bind(this, currentDay, hour),
-                this._globalNotificationService.failureNotification.bind(this._globalNotificationService));
+                this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private onSuccessBooking(day, hour, item): void {
-        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+        this._notificationService.sendNotification(new NotificationModel({
             title: 'Success',
             message: 'Slot booked'
         }));
@@ -169,7 +169,7 @@ export class TimetableComponent extends Page implements OnDestroy {
 
     private unbook (timetable: TimetableModel): void {
         if (timetable.user.userId !== this._authService.authUser.userId && !this._authService.staffPermissions.canBookRadioForOthers) {
-            this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+            this._notificationService.sendNotification(new NotificationModel({
                 title: 'Error',
                 message: 'You do not have permission to unbook someone elses slot'
             }));
@@ -183,7 +183,7 @@ export class TimetableComponent extends Page implements OnDestroy {
                 this._dialogService.closeDialog();
                 this._httpService.delete(`staff/${this._type}/timetable/${timetable.timetableId}`)
                     .subscribe(() => {
-                        this._globalNotificationService.sendGlobalNotification(new GlobalNotification({
+                        this._notificationService.sendNotification(new NotificationModel({
                             title: 'Success',
                             message: 'Slot unbooked'
                         }));

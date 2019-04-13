@@ -3,7 +3,7 @@ import { AuthService } from 'core/services/auth/auth.service';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpService } from 'core/services/http/http.service';
-import { GlobalNotificationService } from 'core/services/notification/global-notification.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 import { RouterStateService } from 'core/services/router/router-state.service';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
@@ -42,7 +42,7 @@ describe('AuthService', () => {
                     }
                 },
                 {
-                    provide: GlobalNotificationService, useValue: {
+                    provide: NotificationService, useValue: {
                         failureNotification: () => {
                         },
                         sendGlobalNotification: () => {
