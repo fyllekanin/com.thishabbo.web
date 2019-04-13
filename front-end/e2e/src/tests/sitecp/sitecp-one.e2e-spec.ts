@@ -3,7 +3,6 @@ import { NavigationUtil } from '../../utils/navigation.util';
 import { BbcodePage } from '../../pages/sitecp/bbcode.page';
 import { StaffListPage } from '../../pages/sitecp/staff-list.page';
 import { BettingPage } from '../../pages/sitecp/betting.page';
-import { Input } from '@angular/core';
 import { InputUtil } from '../../utils/input.util';
 
 describe('SiteCP #1', () => {
