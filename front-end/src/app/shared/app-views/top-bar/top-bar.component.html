@@ -41,7 +41,7 @@
                                 You do not have any notifications currently!
                             </div>
                             <div class="notif-view" *ngFor="let notification of notifications"
-                                 (click)="notificationClick(notification)" [ngSwitch]="notification.type">
+                                 (click)="notificationClick(notification.notificationId)" [ngSwitch]="notification.type">
                                 <app-top-bar-thread-view *ngSwitchCase="1" [notification]="notification" (onClick)="notificationClick($event)"></app-top-bar-thread-view>
                                 <app-top-bar-thread-view *ngSwitchCase="2" [notification]="notification" (onClick)="notificationClick($event)"></app-top-bar-thread-view>
                                 <app-top-bar-thread-view *ngSwitchCase="4" [notification]="notification" (onClick)="notificationClick($event)"></app-top-bar-thread-view>
@@ -50,6 +50,7 @@
                                 <app-top-bar-category-view *ngSwitchCase="5" [notification]="notification" (onClick)="notificationClick($event)"></app-top-bar-category-view>
                                 <app-top-bar-infraction-view *ngSwitchCase="6" [notification]="notification" (onClick)="notificationClick($event)"></app-top-bar-infraction-view>
                                 <app-top-bar-infraction-view *ngSwitchCase="7" [notification]="notification" (onClick)="notificationClick($event)"></app-top-bar-infraction-view>
+                                <app-top-bar-follower-view *ngSwitchCase="8" [notification]="notification" (onClick)="notificationClick($event)"></app-top-bar-follower-view>
                             </div>
                         </div>
                     </div>

@@ -3,6 +3,7 @@ import { BadgeView } from 'shared/app-views/top-bar/notification-views/badge-vie
 import { CategoryView } from 'shared/app-views/top-bar/notification-views/category-view/category-view.model';
 import { ThreadView } from 'shared/app-views/top-bar/notification-views/thread-view/thread-view.model';
 import { InfractionView } from 'shared/app-views/top-bar/notification-views/infraction-view/infraction-view.model';
+import { FollowerView } from 'shared/app-views/top-bar/notification-views/follower-view/follower-view.model';
 
 export enum NotificationTypes {
     MENTION = 1,
@@ -11,7 +12,8 @@ export enum NotificationTypes {
     THREAD_SUBSCRIPTION = 4,
     CATEGORY_SUBSCRIPTION = 5,
     INFRACTION_GIVE = 6,
-    INFRACTION_DELETED = 7
+    INFRACTION_DELETED = 7,
+    FOLLOWED = 8
 }
 
 export class NotificationModel<T> {
@@ -41,6 +43,10 @@ export class NotificationModel<T> {
             case NotificationTypes.INFRACTION_GIVE:
             case NotificationTypes.INFRACTION_DELETED:
                 this._item = new InfractionView(source.item);
+                break;
+            case NotificationTypes.FOLLOWED:
+                this._item = new FollowerView(source.item);
+                break;
         }
     }
 
