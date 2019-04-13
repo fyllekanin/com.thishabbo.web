@@ -2,6 +2,8 @@ import { CommonUtil } from '../../utils/common.util';
 import { NavigationUtil } from '../../utils/navigation.util';
 import { BbcodePage } from '../../pages/sitecp/bbcode.page';
 import { StaffListPage } from '../../pages/sitecp/staff-list.page';
+import { BettingPage } from '../../pages/sitecp/betting.page';
+import { InputUtil } from '../../utils/input.util';
 
 describe('SiteCP #1', () => {
     const USERNAME = 'tovven';
@@ -58,5 +60,74 @@ describe('SiteCP #1', () => {
         NavigationUtil.clickSiteCpTool('Manage BBCode');
         NavigationUtil.clickSiteCpTool('Manage Staff List');
         expect(CommonUtil.getTableRows().count()).toBe(0);
+    });
+
+    it('should be possible to create, update and delete a betting category', () => {
+        const categoryName = 'Category #1';
+        const newCategoryName = 'Category #2';
+
+        NavigationUtil.clickSiteCpTool('Betting Categories');
+
+        NavigationUtil.clickTab('Create Category');
+        BettingPage.setCategoryName(categoryName);
+        BettingPage.setCategoryDisplayOrder(1);
+
+        NavigationUtil.clickTab('Save');
+        NavigationUtil.clickTab('Cancel');
+        expect(CommonUtil.getTableRows().count()).toEqual(3);
+
+        CommonUtil.enterTableFilter('Filter on category name', categoryName);
+        expect(CommonUtil.getTableRows().count()).toEqual(1);
+
+        InputUtil.clickRowAction(0, 'Edit');
+        BettingPage.setCategoryName(newCategoryName);
+        NavigationUtil.clickTab('Save');
+        NavigationUtil.clickTab('Cancel');
+
+        CommonUtil.enterTableFilter('Filter on category name', newCategoryName);
+        expect(CommonUtil.getTableRows().count()).toEqual(1);
+
+        InputUtil.clickRowAction(0, 'Delete');
+        NavigationUtil.clickButton('Yes');
+        expect(CommonUtil.getTableRows().count()).toEqual(0);
+    });
+
+    it('should be possible to create, update, suspend, set result and delete a bet', () => {
+        const betName = 'Bet #1';
+        const newBetName = 'Bet #2';
+
+        NavigationUtil.clickSiteCpTool('Bets');
+
+        NavigationUtil.clickTab('Create Bet');
+        BettingPage.setBetName(betName);
+        BettingPage.selectCategory('Staff');
+        BettingPage.setBetDisplayOrder(1);
+        BettingPage.setNumerator(1);
+        BettingPage.setDenominator(1);
+
+        NavigationUtil.clickTab('Save');
+        NavigationUtil.clickTab('Cancel');
+        expect(CommonUtil.getTableRows().count()).toEqual(4);
+
+        CommonUtil.enterTableFilter('Filter on bet title', betName);
+        InputUtil.clickRowAction(0, 'Edit');
+
+        BettingPage.setBetName(newBetName);
+        NavigationUtil.clickTab('Save');
+        NavigationUtil.clickTab('Cancel');
+
+        CommonUtil.enterTableFilter('Filter on bet title', newBetName);
+        expect(CommonUtil.getTableRows().count()).toEqual(1);
+
+        InputUtil.clickRowAction(0, 'Suspend');
+        InputUtil.clickRowAction(0, 'Unsuspend');
+
+        InputUtil.clickRowAction(0, 'Set Result');
+        BettingPage.setResult('Win');
+        NavigationUtil.clickButton('Done');
+
+        InputUtil.clickRowAction(0, 'Delete');
+        NavigationUtil.clickButton('Yes');
+        expect(CommonUtil.getTableRows().count()).toEqual(0);
     });
 });

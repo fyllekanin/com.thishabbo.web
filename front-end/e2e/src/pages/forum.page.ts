@@ -25,4 +25,8 @@ export class ForumPage {
     static getStickyElement(index: number): ElementFinder {
         return element.all(by.css('app-forum-slim-thread .sticky')).get(index);
     }
+
+    static getFixedToolsElement(name: string): ElementFinder {
+        return element(by.cssContainingText('app-fixed-tools button', name));
+    }
 }

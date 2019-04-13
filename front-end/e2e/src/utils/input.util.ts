@@ -1,4 +1,5 @@
-import { browser, ElementFinder, ExpectedConditions, Key, protractor } from 'protractor';
+import { browser, by, element, ElementFinder, ExpectedConditions, Key, protractor } from 'protractor';
+import { CommonUtil } from './common.util';
 
 export class InputUtil {
 
@@ -26,5 +27,15 @@ export class InputUtil {
             .sendKeys(protractor.Key.BACK_SPACE)
             .sendKeys(value)
             .perform();
+    }
+
+    static clickRowAction(index: number, action: string): void {
+        const ele = element.all(by.css('app-table .row')).get(index);
+        browser.wait(ExpectedConditions.presenceOf(ele), 10000, `Expected row ${index} to be present`);
+
+        const actionEle = ele.element(by.cssContainingText('select option', action));
+        browser.wait(ExpectedConditions.presenceOf(actionEle), 10000, `Expected row ${index} action ${action} to be present`);
+
+        CommonUtil.click(actionEle);
     }
 }

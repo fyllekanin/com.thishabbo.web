@@ -39,7 +39,7 @@ class CategoryController extends Controller {
         $filter = $request->input('filter');
 
         $getBetCategorySql = BetCategory::where('name', 'LIKE', '%' . $filter . '%')
-            ->orderBy('name', 'ASC');
+            ->orderBy('displayOrder', 'ASC');
         $total = ceil($getBetCategorySql->count() / $this->perPage);
 
         return response()->json([

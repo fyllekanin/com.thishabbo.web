@@ -2,6 +2,7 @@ import { CommonUtil } from '../../utils/common.util';
 import { NavigationUtil } from '../../utils/navigation.util';
 import { UserCpPage } from '../../pages/user-cp.page';
 import { InputUtil } from '../../utils/input.util';
+import { ForumPage } from '../../pages/forum.page';
 
 describe('User #2', () => {
     const USERNAME = 'tovven';
@@ -24,5 +25,23 @@ describe('User #2', () => {
         InputUtil.fillInput(UserCpPage.getHabboInput(), newHabbo);
         NavigationUtil.clickTab('Save');
         expect(UserCpPage.getCurrentHabbo().getText()).toEqual(newHabbo);
+    });
+
+    it('should default thread tools to hidden and test device setting', () => {
+        NavigationUtil.clickNavigation('Forum');
+        NavigationUtil.clickCategory('Welcome!');
+        NavigationUtil.clickThread('Welcome test!');
+        expect(ForumPage.getFixedToolsElement('Post Tools').isPresent()).toBeFalsy();
+
+        NavigationUtil.clickUserNavigation('UserCP');
+        UserCpPage.toggleSetting('Thread Tools');
+
+        NavigationUtil.clickNavigation('Forum');
+        NavigationUtil.clickCategory('Welcome!');
+        NavigationUtil.clickThread('Welcome test!');
+        expect(ForumPage.getFixedToolsElement('Post Tools').isPresent()).toBeTruthy();
+
+        NavigationUtil.clickUserNavigation('UserCP');
+        UserCpPage.toggleSetting('Thread Tools');
     });
 });
