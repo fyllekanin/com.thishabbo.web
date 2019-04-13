@@ -81,4 +81,9 @@ export class UserCpPage {
     static getCurrentHabbo(): ElementFinder {
         return element(by.css('app-usercp-habbo .habbo'));
     }
+
+    static toggleSetting(name: string): void {
+        const ele = element(by.cssContainingText('app-user-usercp-dashboard .checkbox-container', name));
+        CommonUtil.click(ele);
+    }
 }
