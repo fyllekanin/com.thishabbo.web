@@ -1289,7 +1289,7 @@ class Action {
     ];
 
     const UNFOLLOWED = [
-        'id' => 147,
+        'id' => 148,
         'description' => 'Followed a user',
         'data' => [],
         'log' => 'log_user'
