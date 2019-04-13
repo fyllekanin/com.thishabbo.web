@@ -29,6 +29,10 @@ class User extends Authenticatable {
         return $this->hasOne('App\EloquentModels\User\UserData', 'userId', 'userId');
     }
 
+    public function profile () {
+        return $this->hasOne('App\EloquentModels\User\UserProfile', 'userId', 'userId');
+    }
+
     public function threads () {
         return $this->hasMany('App\EloquentModels\Forum\Thread', 'userId');
     }

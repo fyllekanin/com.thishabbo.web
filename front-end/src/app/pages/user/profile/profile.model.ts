@@ -40,11 +40,14 @@ export class ProfileModel {
     user: SlimUser;
     @objectOf(ProfileStats)
     stats: ProfileStats;
+    @primitive()
+    youtube: string;
     @objectOf(Followers)
     followers: Followers;
 
     constructor(source: Partial<ProfileModel>) {
         ClassHelper.assign(this, source);
+        this.youtube = this.youtube ? this.youtube.replace('watch?v=', 'embed/') : null;
     }
 }
 

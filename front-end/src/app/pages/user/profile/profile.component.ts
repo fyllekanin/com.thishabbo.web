@@ -8,6 +8,7 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 import { AuthService } from 'core/services/auth/auth.service';
 import { ProfileService } from './profile.service';
 import { NotificationService } from 'core/services/notification/notification.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-user-profile',
@@ -23,6 +24,7 @@ export class ProfileComponent extends Page implements OnDestroy {
         private _authService: AuthService,
         private _profileService: ProfileService,
         private _notificationService: NotificationService,
+        private _sanitizer: DomSanitizer,
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute
     ) {
@@ -43,6 +45,10 @@ export class ProfileComponent extends Page implements OnDestroy {
                 this.unfollowUser();
                 break;
         }
+    }
+
+    get isPrivate(): boolean {
+        return !Boolean(this._data.stats);
     }
 
     get followers(): Followers {
@@ -68,6 +74,10 @@ export class ProfileComponent extends Page implements OnDestroy {
 
     get stats(): ProfileStats {
         return this._data.stats;
+    }
+
+    get youtube(): SafeResourceUrl {
+        return this._data.youtube ? this._sanitizer.bypassSecurityTrustResourceUrl(this._data.youtube) : null;
     }
 
     private followUser(): void {

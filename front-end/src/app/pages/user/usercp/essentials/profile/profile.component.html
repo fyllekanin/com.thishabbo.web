@@ -1,0 +1,19 @@
+<app-title [title]="'Profile Settings'" [tabs]="tabs" (onTabClick)="onSave()"></app-title>
+<app-content>
+    <div class="grid-container">
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-6">
+                <label>Youtube Video <em>(Leave empty for non)</em></label>
+                <input [(ngModel)]="model.youtube" placeholder="Full Youtube Link" />
+            </div>
+            <div class="cell small-6">
+                <label>Do you want your profile to be private?</label>
+                <label class="checkbox-container">
+                    Private Profile <em>(Only approved followers can see it)</em>
+                    <input type="checkbox" [(ngModel)]="model.isPrivate">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+</app-content>

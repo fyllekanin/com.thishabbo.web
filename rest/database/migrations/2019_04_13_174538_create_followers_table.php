@@ -20,6 +20,12 @@ class CreateFollowersTable extends Migration
             $table->integer('isApproved')->default(true);
             $table->bigInteger('createdAt');
             $table->bigInteger('updatedAt');
+
+            $table->index('userId');
+            $table->index('targetId');
+            $table->index('isApproved');
+            $table->index('createdAt');
+            $table->index('updatedAt');
         });
     }
 
