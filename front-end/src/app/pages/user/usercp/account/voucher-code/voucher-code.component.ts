@@ -7,7 +7,7 @@ import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { USERCP_BREADCRUM_ITEM } from '../../usercp.constants';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { AuthService } from 'core/services/auth/auth.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-usercp-voucher-code',
@@ -43,7 +43,7 @@ export class VoucherCodeComponent extends Page implements OnDestroy {
     onClaim(): void {
         this._httpService.post('usercp/voucher-code', { code: this.code })
             .subscribe(amount => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: `You claimed ${amount} credits!`
                 }));

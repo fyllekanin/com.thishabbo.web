@@ -2,7 +2,7 @@ import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { PostHistoryModel, ThreadActions, ThreadPage } from './thread.model';
 import { DialogService } from 'core/services/dialog/dialog.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { Router } from '@angular/router';
 import { ChangeOwnerComponent } from './change-owner/change-owner.component';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
@@ -112,7 +112,7 @@ export class ThreadActionExecutor {
         this._httpService.get(`forum/thread/post/${postId}/history`)
             .subscribe((data: Array<any>) => {
                 if (data.length < 1) {
-                    this._notificationService.sendNotification(new NotificationModel({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Sorry',
                         message: 'There are no edits on this thread/post'
                     }));

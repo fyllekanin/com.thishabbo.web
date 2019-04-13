@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { UserCpGroup, UserCpGroupsPage } from '../groups/groups.model';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 
 @Injectable()
 export class GroupsService implements Resolve<UserCpGroupsPage> {
@@ -33,7 +33,7 @@ export class GroupsService implements Resolve<UserCpGroupsPage> {
     updateDisplayGroup(group: UserCpGroup): void {
         this._httpService.put('usercp/groups/displaygroup', { groupId: group.groupId })
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Display group updated'
                 }));

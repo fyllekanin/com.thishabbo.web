@@ -14,7 +14,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Page } from 'shared/page/page.model';
 import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { ThreadModerate, ThreadModerationActions } from './threads-moderation.model';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { SITECP_BREADCRUMB_ITEM } from '../../../admin.constants';
 
@@ -75,7 +75,7 @@ export class ThreadsModerationComponent extends Page implements OnDestroy {
                 this._threads = this._threads.filter(th => th.threadId !== thread.threadId);
                 this.createOrUpdateTable();
                 this._dialogService.closeDialog();
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: `${thread.title} is now approved!`
                 }));
@@ -88,7 +88,7 @@ export class ThreadsModerationComponent extends Page implements OnDestroy {
                 this._threads = this._threads.filter(th => th.threadId !== thread.threadId);
                 this.createOrUpdateTable();
                 this._dialogService.closeDialog();
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: `${thread.title} is now deleted!`
                 }));

@@ -9,7 +9,7 @@ import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { SITECP_BREADCRUMB_ITEM, BADGE_LIST_BREADCRUMB_ITEM } from '../../../admin.constants';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { Button } from 'shared/directives/button/button.model';
-import { NotificationModel, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { ArrayHelper } from 'shared/helpers/array.helper';
 
 @Component({
@@ -51,7 +51,7 @@ export class BadgeUsersComponent extends Page implements OnDestroy {
         const userIds = this._data.users.map(user => user.userId);
         this._httpService.put(`admin/badges/${this._data.badge.badgeId}/users`, { userIds: userIds })
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Users with this badge are now updated!'
                 }));
@@ -60,7 +60,7 @@ export class BadgeUsersComponent extends Page implements OnDestroy {
 
     removeUser(user: BadgeUser): void {
         this._data.users = this._data.users.filter(item => item.userId !== user.userId);
-        this._notificationService.sendNotification(new NotificationModel({
+        this._notificationService.sendNotification(new NotificationMessage({
             title: 'Removed',
             message: 'User is removed'
         }));
@@ -71,7 +71,7 @@ export class BadgeUsersComponent extends Page implements OnDestroy {
         const user = this._data.availableUsers
             .find(item => item.nickname.toLowerCase() === this.nickname.toLowerCase());
         if (!user) {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 message: `User with name "${this.nickname}" do not exist`,
                 title: 'User do not exist',
                 type: NotificationType.ERROR
@@ -79,7 +79,7 @@ export class BadgeUsersComponent extends Page implements OnDestroy {
             return;
         }
 
-        this._notificationService.sendNotification(new NotificationModel({
+        this._notificationService.sendNotification(new NotificationMessage({
             title: 'Added',
             message: 'User is added'
         }));

@@ -7,7 +7,7 @@ import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { AuthService } from 'core/services/auth/auth.service';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { HabboService } from '../services/habbo.service';
 
 @Component({
@@ -46,7 +46,7 @@ export class HabboComponent extends Page implements OnDestroy {
 
     onSave(): void {
         if (!this.newHabbo) {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Warning',
                 message: 'You can not update to nothing, fill something in',
                 type: NotificationType.WARNING
@@ -54,7 +54,7 @@ export class HabboComponent extends Page implements OnDestroy {
             return;
         }
         this._service.save(this.newHabbo).subscribe(() => {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Success',
                 message: 'Your habbo is updated!'
             }));

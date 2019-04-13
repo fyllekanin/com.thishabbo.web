@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { USERCP_BREADCRUM_ITEM } from '../../usercp.constants';
 import { AvatarService } from '../services/avatar.service';
 import { UsercpAvatarCoverPreviewService } from '../../../cover/usercp-avatar-cover-preview.service';
-import { NotificationModel, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { NotificationService } from 'core/services/notification/notification.service';
 
 @Component({
@@ -54,7 +54,7 @@ export class AvatarComponent extends Page implements OnDestroy {
             .subscribe(() => {
                 this._previewService.update();
             }, error => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Failure',
                     message: error.error.errors.avatar[0],
                     type: NotificationType.ERROR

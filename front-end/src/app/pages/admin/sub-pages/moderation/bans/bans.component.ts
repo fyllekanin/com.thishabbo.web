@@ -18,7 +18,7 @@ import {
 import { BansPageService } from '../services/bans.service';
 import { TimeHelper } from 'shared/helpers/time.helper';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { IReason } from 'shared/components/reason/reason.model';
 import { DialogCloseButton, DialogButton } from 'shared/app-views/dialog/dialog.model';
@@ -101,7 +101,7 @@ export class BansComponent extends Page implements OnDestroy {
 
     private doLift(banId: number, userId: number, reason: IReason): void {
         if (!reason.reason) {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
                 message: 'You need to set a reason',
                 type: NotificationType.ERROR
@@ -110,7 +110,7 @@ export class BansComponent extends Page implements OnDestroy {
         }
 
         this._service.liftBan(userId, banId, reason).subscribe(() => {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Success',
                 message: `Ban lifted!`
             }));

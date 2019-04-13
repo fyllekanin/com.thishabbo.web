@@ -1,7 +1,7 @@
 import { ForumPermissions } from '../../../../forum/forum.model';
 import { CATEGORY_LIST_BREADCRUMB_ITEM, SITECP_BREADCRUMB_ITEM } from '../../../admin.constants';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { HttpService } from 'core/services/http/http.service';
 import { AuthService } from 'core/services/auth/auth.service';
@@ -58,7 +58,7 @@ export class PermissionsComponent extends Page implements OnDestroy {
 
         this._httpService.put(url, { groups: groups, cascade: cascade, permissions: this._permissionsPage.group.forumPermissions })
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Group Forum Permissions Updated!'
                 }));

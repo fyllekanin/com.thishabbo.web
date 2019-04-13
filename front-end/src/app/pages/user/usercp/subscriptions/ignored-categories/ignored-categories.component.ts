@@ -10,7 +10,7 @@ import {
     TableHeader,
     TableRow
 } from 'shared/components/table/table.model';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 
@@ -42,7 +42,7 @@ export class IgnoredCategoriesComponent extends Page implements OnDestroy {
             .subscribe(() => {
                 this._data = this._data.filter(item => item.categoryId !== Number(action.rowId));
                 this.buildTableConfig();
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Category unignored!'
                 }));

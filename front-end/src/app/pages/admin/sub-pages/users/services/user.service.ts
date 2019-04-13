@@ -5,7 +5,7 @@ import { HttpService } from 'core/services/http/http.service';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 
 @Injectable()
 export class UserService implements Resolve<BasicModel> {
@@ -24,7 +24,7 @@ export class UserService implements Resolve<BasicModel> {
     save(user: BasicModel): void {
         this._httpService.put(`admin/users/${user.userId}/basic`, { user: user })
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'User saved!'
                 }));

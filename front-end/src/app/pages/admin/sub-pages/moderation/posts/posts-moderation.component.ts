@@ -14,7 +14,7 @@ import {
     TableRow
 } from 'shared/components/table/table.model';
 import { DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { SITECP_BREADCRUMB_ITEM } from '../../../admin.constants';
@@ -83,7 +83,7 @@ export class PostsModerationComponent extends Page implements OnDestroy {
                 this._posts = this._posts.filter(po => po.postId !== post.postId);
                 this.createOrUpdateTable();
                 this._dialogService.closeDialog();
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: `Post is now approved!`
                 }));
@@ -96,7 +96,7 @@ export class PostsModerationComponent extends Page implements OnDestroy {
                 this._posts = this._posts.filter(po => po.postId !== post.postId);
                 this.createOrUpdateTable();
                 this._dialogService.closeDialog();
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: `Post is now deleted!`
                 }));

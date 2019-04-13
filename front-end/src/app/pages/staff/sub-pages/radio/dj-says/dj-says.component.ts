@@ -9,7 +9,7 @@ import { INFO_BOX_TYPE, InfoBoxModel } from 'shared/app-views/info-box/info-box.
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-staff-radio-dj-says',
@@ -52,7 +52,7 @@ export class DjSaysComponent extends Page implements OnDestroy {
     onSave(): void {
         this._httpService.put('staff/radio/dj-says', { says: this._data.says })
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'DJ Says updated!'
                 }));

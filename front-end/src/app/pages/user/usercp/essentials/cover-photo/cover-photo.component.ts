@@ -4,7 +4,7 @@ import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { Page } from 'shared/page/page.model';
 import { USERCP_BREADCRUM_ITEM } from '../../usercp.constants';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { HttpClient } from '@angular/common/http';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { UsercpAvatarCoverPreviewService } from '../../../cover/usercp-avatar-cover-preview.service';
@@ -48,12 +48,12 @@ export class CoverPhotoComponent extends Page implements OnDestroy {
         this._httpClient.post('rest/api/usercp/cover', form)
             .subscribe(() => {
                 this._previewService.update();
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Cover Photo Updated'
                 }));
             }, error => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Failure',
                     message: error.error.errors.cover[0]
                 }));

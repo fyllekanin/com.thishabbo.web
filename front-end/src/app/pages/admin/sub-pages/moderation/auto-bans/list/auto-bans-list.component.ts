@@ -18,7 +18,7 @@ import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { SITECP_BREADCRUMB_ITEM } from '../../../../admin.constants';
 import { DialogService } from 'core/services/dialog/dialog.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { QueryParameters } from 'core/services/http/http.model';
@@ -91,7 +91,7 @@ export class AutoBansListComponent extends Page implements OnDestroy {
                     () => {
                         this._httpService.delete(`admin/moderation/auto-bans/${action.rowId}`)
                             .subscribe(() => {
-                                this._notificationService.sendNotification(new NotificationModel({
+                                this._notificationService.sendNotification(new NotificationMessage({
                                     title: 'Success',
                                     message: 'Autoban deleted'
                                 }));

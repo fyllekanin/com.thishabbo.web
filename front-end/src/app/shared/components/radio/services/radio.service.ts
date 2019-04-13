@@ -5,7 +5,7 @@ import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { DialogCloseButton, DialogButton } from 'shared/app-views/dialog/dialog.model';
 import { RequestComponent } from '../request/request.component';
-import { NotificationModel, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { RadioModel } from '../radio.model';
 
 @Injectable()
@@ -33,7 +33,7 @@ export class RadioService {
 
     likeDj(): void {
         if (!this._authService.isLoggedIn()) {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
                 message: 'You need to be logged in when liking a DJ',
                 type: NotificationType.ERROR
@@ -41,7 +41,7 @@ export class RadioService {
             return;
         }
         this._httpService.post('radio/like', null).subscribe(() => {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                title: 'Success',
                message: 'You liked the DJ!'
             }));
@@ -63,7 +63,7 @@ export class RadioService {
     private onRequest(request: { content: string, nickname: string }): void {
         this._httpService.post('radio/request', { content: request.content, nickname: request.nickname })
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Request sent!'
                 }));

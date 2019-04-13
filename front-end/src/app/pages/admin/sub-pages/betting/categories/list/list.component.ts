@@ -19,7 +19,7 @@ import { SITECP_BREADCRUMB_ITEM } from '../../../../admin.constants';
 import { HttpService } from 'core/services/http/http.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { QueryParameters } from 'core/services/http/http.model';
 
 @Component({
@@ -92,7 +92,7 @@ export class ListComponent extends Page implements OnDestroy {
     private doDelete(model: BetCategoryModel): void {
         this._httpService.delete(`admin/betting/category/${model.betCategoryId}`)
             .subscribe(() => {
-                    this._notificationService.sendNotification(new NotificationModel({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: `${model.name} is deleted`
                     }));

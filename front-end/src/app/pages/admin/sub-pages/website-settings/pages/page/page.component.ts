@@ -14,7 +14,7 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 import { HttpService } from 'core/services/http/http.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-admin-website-settings-page',
@@ -79,7 +79,7 @@ export class PageComponent extends Page implements OnDestroy {
         if (this._data.createdAt) {
             this._httpService.put(`admin/content/pages/${this._data.pageId}`, { data: this._data })
                 .subscribe(() => {
-                    this._notificationService.sendNotification(new NotificationModel({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: 'This page has been updated!'
                     }));
@@ -87,7 +87,7 @@ export class PageComponent extends Page implements OnDestroy {
         } else {
             this._httpService.post(`admin/content/pages`, { data: this._data })
                 .subscribe(() => {
-                    this._notificationService.sendNotification(new NotificationModel({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: 'This page has been saved!'
                     }));
@@ -104,7 +104,7 @@ export class PageComponent extends Page implements OnDestroy {
             () => {
                 this._httpService.delete(`admin/content/pages/${this._data.pageId}`)
                     .subscribe(() => {
-                        this._notificationService.sendNotification(new NotificationModel({
+                        this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
                             message: 'This page has been deleted!'
                         }));

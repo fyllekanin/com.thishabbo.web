@@ -8,7 +8,7 @@ import { Component, ElementRef, ViewEncapsulation, Renderer2, OnDestroy } from '
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { ARCADE_BREADCRUM_ITEM } from '../arcade.constants';
 import { TitleTab } from 'shared/app-views/title/title.model';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { HighScoreModel } from '../arcade.model';
 
 @Component({
@@ -74,7 +74,7 @@ export class FastTyperComponent extends Page implements OnDestroy {
             this._httpService.post('arcade/fast-typer', { result: this._fastTyperModel })
                 .subscribe((res: { score: number, highscore: Array<HighScoreModel> }) => {
                     this._highscore = res.highscore.map(item => new HighScoreModel(item));
-                    this._notificationService.sendNotification(new NotificationModel({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Score',
                         message: `Words per minute: ${res.score}`
                     }));

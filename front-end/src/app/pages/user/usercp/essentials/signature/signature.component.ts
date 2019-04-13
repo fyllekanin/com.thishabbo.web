@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { EditorComponent } from 'shared/components/editor/editor.component';
 import { EditorAction } from 'shared/components/editor/editor.model';
 import { Page } from 'shared/page/page.model';
@@ -45,7 +45,7 @@ export class SignatureComponent extends Page implements OnDestroy {
 
     onSave(): void {
         this._service.save(this.editor.getEditorValue()).subscribe(res => {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Success',
                 message: 'Signature updated'
             }));

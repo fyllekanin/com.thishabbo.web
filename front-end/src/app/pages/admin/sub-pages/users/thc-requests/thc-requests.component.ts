@@ -15,7 +15,7 @@ import {
 } from 'shared/components/table/table.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { ThcRequestsService } from '../services/thc-requests.service';
 
 @Component({
@@ -72,7 +72,7 @@ export class ThcRequestsComponent extends Page implements OnDestroy {
 
     private updateRequests(requests: Array<{ requestThcId: number, isApproved: boolean }>, isBatch: boolean): void {
         this._service.updateRequests(requests).subscribe(() => {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Success',
                 message: isBatch ? 'All requests approved!' : 'Request done'
             }));

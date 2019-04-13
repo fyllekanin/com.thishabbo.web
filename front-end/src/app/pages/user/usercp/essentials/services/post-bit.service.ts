@@ -4,7 +4,7 @@ import { HttpService } from 'core/services/http/http.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { PostBitModel } from '../post-bit/post-bit.model';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { NotificationService } from 'core/services/notification/notification.service';
 
 @Injectable()
@@ -24,7 +24,7 @@ export class PostBitService implements Resolve<PostBitModel> {
     save(data: PostBitModel): void {
         this._httpService.put('usercp/post-bit', { postBitOptions: data })
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'PostBit Settings Updated'
                 }));

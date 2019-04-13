@@ -13,7 +13,7 @@ import { getPostTools, getThreadTools, ThreadActions, ThreadPage } from './threa
 import { Component, ComponentFactoryResolver, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { EditorAction } from 'shared/components/editor/editor.model';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { Breadcrumb, BreadcrumbItem } from 'core/services/breadcrum/breadcrum.model';
 import { FORUM_BREADCRUM_ITEM } from '../forum.constants';
 import { DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
@@ -225,7 +225,7 @@ export class ThreadComponent extends Page implements OnDestroy {
     }
 
     private onSuccessUpdate(postModel: PostModel): void {
-        this._notificationService.sendNotification(new NotificationModel({
+        this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'Post updated!'
         }));

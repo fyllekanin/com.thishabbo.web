@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Component, ViewChild } from '@angular/core';
 import { Notice } from 'shared/components/notice/notice.model';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { Breadcrumb, BreadcrumbItem } from 'core/services/breadcrum/breadcrum.model';
 import { SITECP_BREADCRUMB_ITEM, WEBSITE_SETTINGS_BREADCRUMB_ITEM } from '../../../../admin.constants';
@@ -62,7 +62,7 @@ export class CreateNoticeComponent {
         form.append('notice', JSON.stringify(this._notice));
 
         this._httpClient.post('rest/api/admin/content/notices', form).subscribe(() => {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Success',
                 message: `${this._notice.title} was created!`
             }));

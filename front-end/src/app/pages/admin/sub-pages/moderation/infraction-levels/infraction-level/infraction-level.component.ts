@@ -6,7 +6,7 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { SelectItem } from 'shared/components/form/select/select.model';
 import { CategoryLeaf } from '../../../forum/category/category.model';
 
@@ -80,7 +80,7 @@ export class InfractionLevelComponent extends Page implements OnDestroy {
                 .subscribe(res => {
                     const data = new InfractionLevel(res);
                     this.onPage({ data: data });
-                    this._notificationService.sendNotification(new NotificationModel({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: 'Infraction level updated'
                     }));
@@ -90,7 +90,7 @@ export class InfractionLevelComponent extends Page implements OnDestroy {
                 .subscribe(res => {
                     const data = new InfractionLevel(res);
                     this.onPage({ data: data });
-                    this._notificationService.sendNotification(new NotificationModel({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: 'Infraction level created'
                     }));
@@ -105,7 +105,7 @@ export class InfractionLevelComponent extends Page implements OnDestroy {
             () => {
                 this._httpService.delete(`admin/moderation/infraction-levels/${this._page.infractionLevelId}`)
                     .subscribe(() => {
-                        this._notificationService.sendNotification(new NotificationModel({
+                        this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
                             message: 'You deleted the infraction level'
                         }));

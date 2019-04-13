@@ -1,6 +1,6 @@
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
@@ -95,7 +95,7 @@ export class BadgesListComponent extends Page implements OnDestroy {
     private onDelete(badgeId: number): void {
         this._httpService.delete(`admin/badges/${badgeId}`)
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Badge deleted!'
                 }));

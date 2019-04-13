@@ -5,7 +5,7 @@ import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { isAbsent } from 'shared/helpers/class.helper';
 import { Page } from 'shared/page/page.model';
@@ -131,7 +131,7 @@ export class CategoryComponent extends Page implements OnDestroy {
     private onDelete (): void {
         this._httpService.delete(`admin/categories/${this._categoryPage.category.categoryId}`)
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Category Deleted!'
                 }));
@@ -143,7 +143,7 @@ export class CategoryComponent extends Page implements OnDestroy {
 
     private onSuccessCreate (category: CategoryPage): void {
         this.onPage({ data: new CategoryPage(category) });
-        this._notificationService.sendNotification(new NotificationModel({
+        this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'Category Created!'
         }));
@@ -151,7 +151,7 @@ export class CategoryComponent extends Page implements OnDestroy {
 
     private onSuccessUpdate (category: CategoryPage): void {
         this.onPage({ data: new CategoryPage(category) });
-        this._notificationService.sendNotification(new NotificationModel({
+        this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'Category Updated!'
         }));

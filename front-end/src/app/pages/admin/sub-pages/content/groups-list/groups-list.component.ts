@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { GroupList } from './groups-list.model';
 import { Page } from 'shared/page/page.model';
 import { Component, ElementRef, OnDestroy } from '@angular/core';
-import { NotificationModel, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { TitleTab, TitleTopBorder } from 'shared/app-views/title/title.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { SITECP_BREADCRUMB_ITEM } from '../../../admin.constants';
@@ -68,7 +68,7 @@ export class GroupsListComponent extends Page implements OnDestroy {
         });
         this._httpService.put('admin/content/groupslist', { groups: groups })
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'List saved'
                 }));
@@ -81,7 +81,7 @@ export class GroupsListComponent extends Page implements OnDestroy {
             .find(grp => grp.groupId === Number(this.selectedGroup && this.selectedGroup.value));
 
         if (!group) {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Failure',
                 message: 'The group do not exist or is already added',
                 type: NotificationType.ERROR
@@ -90,7 +90,7 @@ export class GroupsListComponent extends Page implements OnDestroy {
         }
 
         if (!this.selectedColor) {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Failure',
                 message: 'You need to select a color!',
                 type: NotificationType.ERROR

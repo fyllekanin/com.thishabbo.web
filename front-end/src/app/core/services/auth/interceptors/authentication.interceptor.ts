@@ -16,7 +16,7 @@ import { NotificationService } from 'core/services/notification/notification.ser
 import { BehaviorSubject, Observable, throwError as observableThrowError } from 'rxjs';
 
 import { catchError, filter, finalize, switchMap, take } from 'rxjs/operators';
-import { NotificationModel, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
@@ -37,7 +37,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
                 if (error instanceof HttpErrorResponse) {
                     switch ((<HttpErrorResponse>error).status) {
                         case 401:
-                            this._notificationService.sendNotification(new NotificationModel({
+                            this._notificationService.sendNotification(new NotificationMessage({
                                 title: 'Oh no!',
                                 message: 'You have been logged out!'
                             }));
@@ -45,14 +45,14 @@ export class AuthenticationInterceptor implements HttpInterceptor {
                         case 419:
                             return this.handle419Error(req, next);
                         case 403:
-                            this._notificationService.sendNotification(new NotificationModel({
+                            this._notificationService.sendNotification(new NotificationMessage({
                                 title: 'Oops!',
                                 message: error.error.message
                             }));
                             this._router.navigateByUrl('/page/access');
                             return observableThrowError(error);
                         case 503:
-                            this._notificationService.sendNotification(new NotificationModel({
+                            this._notificationService.sendNotification(new NotificationMessage({
                                 title: 'Oh no!',
                                 message: 'Maintenance Mode is on!',
                                 type: NotificationType.WARNING

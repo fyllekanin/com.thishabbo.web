@@ -6,7 +6,7 @@ import { Prefix, PrefixActions, PrefixCategory } from '../prefix.model';
 import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-admin-forum-prefix',
@@ -44,7 +44,7 @@ export class PrefixComponent extends Page implements OnDestroy {
                 if (this._prefix.createdAt) {
                     this._httpService.put(`admin/prefixes/${this._prefix.prefixId}`, { prefix: this._prefix })
                         .subscribe(res => {
-                            this._notificationService.sendNotification(new NotificationModel({
+                            this._notificationService.sendNotification(new NotificationMessage({
                                 title: 'Success',
                                 message: 'Prefix updated'
                             }));
@@ -53,7 +53,7 @@ export class PrefixComponent extends Page implements OnDestroy {
                 } else {
                     this._httpService.post('admin/prefixes', { prefix: this._prefix })
                         .subscribe(res => {
-                            this._notificationService.sendNotification(new NotificationModel({
+                            this._notificationService.sendNotification(new NotificationMessage({
                                 title: 'Success',
                                 message: 'Prefix created'
                             }));
@@ -104,7 +104,7 @@ export class PrefixComponent extends Page implements OnDestroy {
     private onDelete(): void {
         this._httpService.delete(`admin/prefixes/${this._prefix.prefixId}`)
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Prefix deleted'
                 }));

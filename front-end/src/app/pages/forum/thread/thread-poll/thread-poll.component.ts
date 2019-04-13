@@ -3,7 +3,7 @@ import { ThreadAnswer, ThreadPoll } from './thread-poll.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-forum-thread-poll',
@@ -27,7 +27,7 @@ export class ThreadPollComponent {
     vote(): void {
         this._httpService.post(`forum/thread/${this._threadId}/vote`, { answerId: this.answerId })
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Your vote is saved!'
                 }));

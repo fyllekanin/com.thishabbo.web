@@ -12,7 +12,7 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 import { HttpService } from 'core/services/http/http.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-admin-website-settings-theme',
@@ -75,7 +75,7 @@ export class ThemeComponent extends Page implements OnDestroy {
         if (this._data.createdAt) {
             this._httpService.put(`admin/content/themes/${this._data.themeId}`, { theme: this._data })
                 .subscribe(() => {
-                    this._notificationService.sendNotification(new NotificationModel({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: 'Theme is created!'
                     }));
@@ -85,7 +85,7 @@ export class ThemeComponent extends Page implements OnDestroy {
                 .subscribe(() => {
                     this._data.createdAt = new Date().getTime() / 1000;
                     this.updateTabs();
-                    this._notificationService.sendNotification(new NotificationModel({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: 'Theme is created!'
                     }));
@@ -100,7 +100,7 @@ export class ThemeComponent extends Page implements OnDestroy {
             () => {
                 this._httpService.delete(`admin/content/themes/${this._data.themeId}`)
                     .subscribe(() => {
-                        this._notificationService.sendNotification(new NotificationModel({
+                        this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
                             message: 'Theme is deleted!'
                         }));

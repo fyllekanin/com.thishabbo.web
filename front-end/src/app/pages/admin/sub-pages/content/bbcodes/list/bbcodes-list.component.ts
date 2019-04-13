@@ -14,7 +14,7 @@ import {
 import { BBcodeActions, BBcodeModel } from '../bbcode.model';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { HttpService } from 'core/services/http/http.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { SITECP_BREADCRUMB_ITEM, MANAGE_BBCODES_BREADCRUMB_ITEM } from '../../../../admin.constants';
@@ -76,7 +76,7 @@ export class BBcodesListComponent extends Page implements OnDestroy {
             .subscribe(() => {
                 this._bbcodes = this._bbcodes.filter(code => code.bbcodeId !== bbcode.bbcodeId);
                 this.createOrUpdateCustomTable();
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'BBCode Deleted!'
                 }));

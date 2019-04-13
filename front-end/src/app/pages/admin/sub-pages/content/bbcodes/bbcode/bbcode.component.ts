@@ -5,7 +5,7 @@ import { BBcodeActions, BBcodeModel } from '../bbcode.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Page } from 'shared/page/page.model';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { SITECP_BREADCRUMB_ITEM, MANAGE_BBCODES_BREADCRUMB_ITEM } from '../../../../admin.constants';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
@@ -70,7 +70,7 @@ export class BBcodeComponent extends Page implements OnDestroy {
             this._httpClient.post(`/rest/api/admin/content/bbcodes/${this._bbcode.bbcodeId}`, form)
                 .subscribe((res: any) => {
                     this.onData({ data: new BBcodeModel(res) });
-                    this._notificationService.sendNotification(new NotificationModel({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success!',
                         message: 'BBCode has been saved!'
                     }));
@@ -79,7 +79,7 @@ export class BBcodeComponent extends Page implements OnDestroy {
             this._httpClient.post(`/rest/api/admin/content/bbcodes`, form)
                 .subscribe((res: any) => {
                     this.onData({ data: new BBcodeModel(res) });
-                    this._notificationService.sendNotification(new NotificationModel({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success!',
                         message: 'BBcode has been created!'
                     }));
@@ -116,7 +116,7 @@ export class BBcodeComponent extends Page implements OnDestroy {
     private onDelete(bbcode: BBcodeModel): void {
         this._httpClient.delete(`/rest/api/admin/content/bbcodes/${bbcode.bbcodeId}`)
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'BBcode deleted!'
                 }));

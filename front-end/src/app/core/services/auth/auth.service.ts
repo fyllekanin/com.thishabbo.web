@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { HttpService } from 'core/services/http/http.service';
 import { RouterStateService } from 'core/services/router/router-state.service';
-import { NotificationModel, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
@@ -48,7 +48,7 @@ export class AuthService {
         this.clearUserAndNavigate(isRedirect);
         this._onUserChangeSubject.next();
         this._httpService.post('auth/logout', null).subscribe(() => {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Success',
                 message: 'You logged out!'
             }));
@@ -118,7 +118,7 @@ export class AuthService {
         this.checkGdpr();
 
         this._onUserChangeSubject.next();
-        this._notificationService.sendNotification(new NotificationModel({
+        this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'You are logged in!'
         }));
@@ -127,7 +127,7 @@ export class AuthService {
             this._router.navigateByUrl(this._routerState.getPreviousUrl())
                 .catch(() => {
                     this.navigateToHome();
-                    this._notificationService.sendNotification(new NotificationModel({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Warning',
                         message: 'Your previous page is not a valid page',
                         type: NotificationType.WARNING
@@ -140,7 +140,7 @@ export class AuthService {
             this._router.navigateByUrl(this._user.homePage)
                 .catch(() => {
                     this.navigateToHome();
-                    this._notificationService.sendNotification(new NotificationModel({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Warning',
                         message: 'Your previous page is not a valid page',
                         type: NotificationType.WARNING
@@ -171,7 +171,7 @@ Until you accept our terms and conditions you will not be able to use most of th
                     callback: () => {
                         this._httpService.put('auth/accept/gdpr')
                             .subscribe(() => {
-                                this._notificationService.sendNotification(new NotificationModel({
+                                this._notificationService.sendNotification(new NotificationMessage({
                                     title: 'You have accepted!',
                                     message: 'You have accepted Thishabbo\'s privacy policy & gdpr!'
                                 }));

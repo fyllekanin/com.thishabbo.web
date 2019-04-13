@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { GroupModerate, GroupModerationActions } from './groups-moderation.model';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
@@ -73,7 +73,7 @@ export class GroupsModerationComponent extends Page implements OnDestroy {
         this._httpService.post('admin/moderation/groups/approve', { groupRequestId: groupRequestId })
             .subscribe(() => {
                 this._groups = this._groups.filter(group => group.groupRequestId === groupRequestId);
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Group request approved'
                 }));
@@ -86,7 +86,7 @@ export class GroupsModerationComponent extends Page implements OnDestroy {
         this._httpService.delete(`admin/moderation/groups/deny/${groupRequestId}`)
             .subscribe(() => {
                 this._groups = this._groups.filter(group => group.groupRequestId === groupRequestId);
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Group request denied'
                 }));

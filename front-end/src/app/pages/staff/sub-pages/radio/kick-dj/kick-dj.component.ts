@@ -5,7 +5,7 @@ import { NotificationService } from 'core/services/notification/notification.ser
 import { INFO_BOX_TYPE, InfoBoxModel } from 'shared/app-views/info-box/info-box.model';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { TitleTab } from 'shared/app-views/title/title.model';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-staff-radio-kick-dj',
@@ -47,7 +47,7 @@ you should be prepared or any other DJ to jump on air after this button click.`
     private doKick(): void {
         this._httpService.post('staff/radio/kick/dj', {})
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'DJ is kicked off air!'
                 }));

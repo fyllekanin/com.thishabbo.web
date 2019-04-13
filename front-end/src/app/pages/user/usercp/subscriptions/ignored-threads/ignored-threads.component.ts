@@ -12,7 +12,7 @@ import {
 } from 'shared/components/table/table.model';
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-usercp-ignored-threads',
@@ -42,7 +42,7 @@ export class IgnoredThreadsComponent extends Page implements OnDestroy {
             .subscribe(() => {
                 this._data = this._data.filter(item => item.threadId !== Number(action.rowId));
                 this.buildTableConfig();
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Thread unignored'
                 }));

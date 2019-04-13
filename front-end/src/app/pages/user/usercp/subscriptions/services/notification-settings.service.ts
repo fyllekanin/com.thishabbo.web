@@ -4,7 +4,7 @@ import { HttpService } from 'core/services/http/http.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { NotificationSettingsModel } from '../notification-settings/notification-settings.model';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { NotificationService } from 'core/services/notification/notification.service';
 
 @Injectable()
@@ -24,7 +24,7 @@ export class NotificationSettingsService implements Resolve<NotificationSettings
     save(data: NotificationSettingsModel): void {
         this._httpService.put('usercp/notification-settings', { ignoredNotificationTypes: data })
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Notification settings updated'
                 }));

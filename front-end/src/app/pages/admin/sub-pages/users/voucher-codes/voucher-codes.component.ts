@@ -21,7 +21,7 @@ import { DialogService } from 'core/services/dialog/dialog.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { VoucherCodeComponent } from './voucher-code/voucher-code.component';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
-import { NotificationModel, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { QueryParameters } from 'core/services/http/http.model';
 
 @Component({
@@ -97,7 +97,7 @@ export class VoucherCodesComponent extends Page implements OnDestroy {
                 .subscribe(() => {
                     this._data.items = this._data.items.filter(item => item.voucherCodeId !== Number(action.rowId));
                     this.createOrUpdateTable();
-                    this._notificationService.sendNotification(new NotificationModel({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: 'Voucher code deleted!'
                     }));
@@ -108,7 +108,7 @@ export class VoucherCodesComponent extends Page implements OnDestroy {
 
     private onCreateCode(data: { note: string, value: number }): void {
         if (!data.note) {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Failure',
                 message: 'Note can not be empty',
                 type: NotificationType.ERROR
@@ -120,7 +120,7 @@ export class VoucherCodesComponent extends Page implements OnDestroy {
             .subscribe(res => {
                 this._data.items.push(new VoucherCode(res));
                 this._dialogService.closeDialog();
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Code created!'
                 }));

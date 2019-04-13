@@ -14,7 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 import { PollsListService } from '../../services/polls-list.service';
 import { HttpService } from 'core/services/http/http.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
@@ -98,7 +98,7 @@ export class ListComponent extends Page implements OnDestroy {
     private deletePoll(threadPollId: number, poll: PollListModel): void {
         this._httpService.delete(`forum/moderation/thread/poll/delete/${poll.threadId}`)
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Poll is deleted'
                 }));

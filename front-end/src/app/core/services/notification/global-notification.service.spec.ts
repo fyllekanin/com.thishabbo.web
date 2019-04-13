@@ -1,4 +1,4 @@
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NotificationService } from 'core/services/notification/notification.service';
 
@@ -42,7 +42,7 @@ describe('NotificationService', () => {
             service.onNotification.subscribe(() => done());
 
             // When
-            service.sendNotification(new NotificationModel({ title: 'test' }));
+            service.sendNotification(new NotificationMessage({ title: 'test' }));
         });
     });
 });

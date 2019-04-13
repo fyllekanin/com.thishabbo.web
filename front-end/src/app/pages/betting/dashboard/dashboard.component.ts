@@ -15,7 +15,7 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 import { DashboardService } from '../services/dashboard.service';
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { BETTING_HUB } from '../betting.constants';
@@ -115,7 +115,7 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
 
         this._httpService.post(`betting/bet/${bet.betId}`, { amount: credits })
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'You have now placed your bet!'
                 }));

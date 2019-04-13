@@ -6,7 +6,7 @@ import { DialogService } from 'core/services/dialog/dialog.service';
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import {
@@ -121,7 +121,7 @@ export class TypesComponent extends Page implements OnDestroy {
             () => {
                 this._httpService.delete(`staff/events/types/${eventId}`)
                     .subscribe(() => {
-                        this._notificationService.sendNotification(new NotificationModel({
+                        this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
                             message: 'Event deleted!'
                         }));
@@ -136,7 +136,7 @@ export class TypesComponent extends Page implements OnDestroy {
     private saveEvent(event: EventType): void {
         this._httpService.put(`staff/events/types/${event.eventId}`, { event: event })
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Event saved!'
                 }));
@@ -150,7 +150,7 @@ export class TypesComponent extends Page implements OnDestroy {
     private createEvent(event: EventType): void {
         this._httpService.post('staff/events/types', { event: event })
             .subscribe(res => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Event created!'
                 }));

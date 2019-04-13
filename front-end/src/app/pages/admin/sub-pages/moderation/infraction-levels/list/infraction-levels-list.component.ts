@@ -21,7 +21,7 @@ import { InfractionLevelsService } from '../../services/infraction-levels.servic
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-admin-moderation-infraction-levels-list',
@@ -91,7 +91,7 @@ export class InfractionLevelsListComponent extends Page implements OnDestroy {
                     () => {
                         this._httpService.delete(`admin/moderation/infraction-levels/${action.rowId}`)
                             .subscribe(() => {
-                                this._notificationService.sendNotification(new NotificationModel({
+                                this._notificationService.sendNotification(new NotificationMessage({
                                     title: 'Success',
                                     message: 'Infraction level deleted'
                                 }));

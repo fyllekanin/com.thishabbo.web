@@ -1,6 +1,6 @@
 import { NotificationService } from 'core/services/notification/notification.service';
 import { Subscription } from 'rxjs';
-import { NotificationModel, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { AfterViewInit, Component, ElementRef, NgZone, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
 
 @Component({
@@ -31,12 +31,12 @@ export class GlobalNotificationComponent implements AfterViewInit, OnDestroy {
         this._notificationSubscription.unsubscribe();
     }
 
-    private onNotification(notification: NotificationModel): void {
+    private onNotification(notification: NotificationMessage): void {
         const node = this.createElement(notification);
         this._wrapperElement.appendChild(node);
     }
 
-    private createElement(notification: NotificationModel): Node {
+    private createElement(notification: NotificationMessage): Node {
         const node = document.createElement('div');
         node.className = `global-notification ${this.getType(notification)}`;
 
@@ -71,7 +71,7 @@ export class GlobalNotificationComponent implements AfterViewInit, OnDestroy {
         }, 2100);
     }
 
-    private getType(notification: NotificationModel): string {
+    private getType(notification: NotificationMessage): string {
         switch (notification.type) {
             case NotificationType.INFO:
                 return 'global-notification-info';

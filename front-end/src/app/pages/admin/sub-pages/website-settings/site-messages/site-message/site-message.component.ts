@@ -13,7 +13,7 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 import { HttpService } from 'core/services/http/http.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { EditorComponent } from 'shared/components/editor/editor.component';
 
 @Component({
@@ -91,7 +91,7 @@ export class SiteMessageComponent extends Page implements OnDestroy {
         if (this._data.createdAt) {
             this._httpService.put(`admin/content/site-messages/${this._data.siteMessageId}`, { data: this._data })
                 .subscribe(() => {
-                    this._notificationService.sendNotification(new NotificationModel({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: 'Site message is updated'
                     }));
@@ -101,7 +101,7 @@ export class SiteMessageComponent extends Page implements OnDestroy {
                 .subscribe(() => {
                     this._data.createdAt = new Date().getTime() / 1000;
                     this.setTabs();
-                    this._notificationService.sendNotification(new NotificationModel({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: 'Site message is saved'
                     }));
@@ -116,7 +116,7 @@ export class SiteMessageComponent extends Page implements OnDestroy {
             () => {
                 this._httpService.delete(`admin/content/site-messages/${this._data.siteMessageId}`)
                     .subscribe(() => {
-                        this._notificationService.sendNotification(new NotificationModel({
+                        this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
                             message: 'Site message is deleted'
                         }));

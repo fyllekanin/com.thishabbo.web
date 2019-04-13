@@ -7,7 +7,7 @@ import { InfractionContext, InfractModel } from 'shared/components/infraction/in
 import { Observable } from 'rxjs';
 import { InfractionComponent } from 'shared/components/infraction/infraction.component';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
-import { NotificationModel, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 
 
 @Injectable()
@@ -46,7 +46,7 @@ export class InfractionService {
         }
         this._httpService.post('admin/moderation/infract', { infraction: data })
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel( {
+                this._notificationService.sendNotification(new NotificationMessage( {
                     title: 'Success',
                     message: 'Infraction created!'
                 }));
@@ -55,7 +55,7 @@ export class InfractionService {
     }
 
     private invalidInfractData(): void {
-        this._notificationService.sendNotification(new NotificationModel({
+        this._notificationService.sendNotification(new NotificationMessage({
             title: 'Missing data',
             message: 'You need to choose both infraction level & enter a reason',
             type: NotificationType.ERROR

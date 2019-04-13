@@ -20,7 +20,7 @@ import { HttpService } from 'core/services/http/http.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { QueryParameters } from 'core/services/http/http.model';
 
 @Component({
@@ -144,7 +144,7 @@ export class InfractionsComponent extends Page implements OnDestroy {
                         infraction.isDeleted = true;
                         this.createOrUpdateTable();
 
-                        this._notificationService.sendNotification(new NotificationModel({
+                        this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
                             message: 'Infraction reversed'
                         }));

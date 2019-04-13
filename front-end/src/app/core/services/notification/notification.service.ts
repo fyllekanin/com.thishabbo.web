@@ -1,21 +1,21 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { NotificationModel, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 
 @Injectable()
 export class NotificationService {
-    private _onNotificationSubject: Subject<NotificationModel> = new Subject();
+    private _onNotificationSubject: Subject<NotificationMessage> = new Subject();
 
     failureNotification(error: HttpErrorResponse): void {
-        this.sendNotification(new NotificationModel({
+        this.sendNotification(new NotificationMessage({
             title: 'Error',
             message: error.error.message,
             type: NotificationType.ERROR
         }));
     }
 
-    sendNotification(notification: NotificationModel): void {
+    sendNotification(notification: NotificationMessage): void {
         if (!notification) {
             return;
         }
@@ -23,7 +23,7 @@ export class NotificationService {
     }
 
     sendInfoNotification(message: string): void {
-        this._onNotificationSubject.next(new NotificationModel({
+        this._onNotificationSubject.next(new NotificationMessage({
             title: 'Success',
             message: message,
             type: NotificationType.INFO
@@ -31,14 +31,14 @@ export class NotificationService {
     }
 
     sendErrorNotification(message: string): void {
-        this._onNotificationSubject.next(new NotificationModel({
+        this._onNotificationSubject.next(new NotificationMessage({
             title: 'Error',
             message: message,
             type: NotificationType.ERROR
         }));
     }
 
-    get onNotification(): Observable<NotificationModel> {
+    get onNotification(): Observable<NotificationMessage> {
         return this._onNotificationSubject.asObservable();
     }
 }

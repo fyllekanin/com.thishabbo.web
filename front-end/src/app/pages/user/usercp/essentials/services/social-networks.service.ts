@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { SocialNetworksModel } from '../social-networks/social-networks.model';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 
 @Injectable()
 export class SocialNetworksService implements Resolve<SocialNetworksModel> {
@@ -24,7 +24,7 @@ export class SocialNetworksService implements Resolve<SocialNetworksModel> {
     save(data: SocialNetworksModel): Subscription {
         return this._httpService.put('usercp/social-networks', data)
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Social networks updates'
                 }));

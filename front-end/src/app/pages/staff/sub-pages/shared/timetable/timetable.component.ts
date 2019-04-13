@@ -7,7 +7,7 @@ import { DialogService } from 'core/services/dialog/dialog.service';
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
 import { Page } from 'shared/page/page.model';
@@ -151,7 +151,7 @@ export class TimetableComponent extends Page implements OnDestroy {
     }
 
     private onSuccessBooking(day, hour, item): void {
-        this._notificationService.sendNotification(new NotificationModel({
+        this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'Slot booked'
         }));
@@ -169,7 +169,7 @@ export class TimetableComponent extends Page implements OnDestroy {
 
     private unbook (timetable: TimetableModel): void {
         if (timetable.user.userId !== this._authService.authUser.userId && !this._authService.staffPermissions.canBookRadioForOthers) {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
                 message: 'You do not have permission to unbook someone elses slot'
             }));
@@ -183,7 +183,7 @@ export class TimetableComponent extends Page implements OnDestroy {
                 this._dialogService.closeDialog();
                 this._httpService.delete(`staff/${this._type}/timetable/${timetable.timetableId}`)
                     .subscribe(() => {
-                        this._notificationService.sendNotification(new NotificationModel({
+                        this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
                             message: 'Slot unbooked'
                         }));

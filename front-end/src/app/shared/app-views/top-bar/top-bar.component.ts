@@ -9,7 +9,7 @@ import { ContinuesInformationService } from 'core/services/continues-information
 import { RouterStateService } from 'core/services/router/router-state.service';
 import { ArrayHelper } from 'shared/helpers/array.helper';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-top-bar',
@@ -68,7 +68,7 @@ export class TopBarComponent {
                 this._continuesInformationService.removeAllNotifications();
                 this._notifications = [];
                 this._routerStateService.updateTitle(this._notifications.length);
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'All notifications marked as read!'
                 }));

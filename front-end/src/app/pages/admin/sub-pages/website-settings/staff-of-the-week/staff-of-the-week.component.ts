@@ -8,7 +8,7 @@ import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { SITECP_BREADCRUMB_ITEM, WEBSITE_SETTINGS_BREADCRUMB_ITEM } from '../../../admin.constants';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { HttpService } from 'core/services/http/http.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
 
 @Component({
@@ -59,7 +59,7 @@ export class StaffOfTheWeekComponent extends Page implements OnDestroy {
     }
 
     private onSuccessUpdate (): void {
-        this._notificationService.sendNotification(new NotificationModel({
+        this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'Staff of the Week updated!'
         }));

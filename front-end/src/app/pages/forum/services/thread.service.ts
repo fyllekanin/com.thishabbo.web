@@ -5,7 +5,7 @@ import { HttpService } from 'core/services/http/http.service';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 
 @Injectable()
 export class ThreadService implements Resolve<ThreadPage> {
@@ -28,7 +28,7 @@ export class ThreadService implements Resolve<ThreadPage> {
             this._httpService.post(`forum/thread/subscribe/${thread.threadId}`, null);
 
         return call.pipe(map(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: `You ${thread.isSubscribed ? 'unsubscribed' : 'subscribed'} to the thread`
                 }));
@@ -42,7 +42,7 @@ export class ThreadService implements Resolve<ThreadPage> {
             this._httpService.post(`forum/thread/${thread.threadId}/ignore`, null);
 
         return call.pipe(map(() => {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Success',
                 message: `You ${thread.isIgnored ? 'unignored' : 'ignored'} the thread`
             }));

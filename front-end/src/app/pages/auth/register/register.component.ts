@@ -7,7 +7,7 @@ import { Page } from 'shared/page/page.model';
 import { RegisterModel, RegisterPage } from './register.model';
 import { Button } from 'shared/directives/button/button.model';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { AuthService } from 'core/services/auth/auth.service';
 
 @Component({
@@ -43,7 +43,7 @@ export class RegisterComponent extends Page implements OnDestroy {
             return;
         }
         this._httpService.post('auth/register', { data: this.registerModel }).subscribe(() => {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Success',
                 message: 'You are now registered!'
             }));
@@ -53,7 +53,7 @@ export class RegisterComponent extends Page implements OnDestroy {
 
     private isUserValid(): boolean {
         if (this.isNicknameTaken()) {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
                 message: 'nickname is already taken',
                 type: NotificationType.ERROR
@@ -61,7 +61,7 @@ export class RegisterComponent extends Page implements OnDestroy {
             return false;
         }
         if (!this.isReferredByValid()) {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error - Referred',
                 message: 'There is no user with that name',
                 type: NotificationType.ERROR

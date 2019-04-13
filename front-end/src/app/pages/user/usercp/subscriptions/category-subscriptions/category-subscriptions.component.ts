@@ -13,7 +13,7 @@ import {
     TableRow
 } from 'shared/components/table/table.model';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { CategorySubscription, CategorySubscriptionActions } from './category-subscriptions.model';
 import { CategorySubscriptionsService } from '../services/category-subscriptions.service';
 
@@ -54,7 +54,7 @@ export class CategorySubscriptionsComponent extends Page implements OnDestroy {
 
         this._service.unsubscribe(Number(action.rowId))
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Category unsubscribed'
                 }));

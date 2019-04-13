@@ -15,7 +15,7 @@ import { DialogService } from 'core/services/dialog/dialog.service';
 import { NavigationItemComponent } from './navigation-item/navigation-item.component';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { HttpService } from 'core/services/http/http.service';
 import { NavigationActions } from './navigation.enum';
 import { ArrayHelper } from 'shared/helpers/array.helper';
@@ -139,7 +139,7 @@ export class NavigationComponent extends Page implements OnDestroy {
                             this.updateItem(newItem);
                             this._dialogService.closeDialog();
                             this.buildTableConfigs();
-                            this._notificationService.sendNotification(new NotificationModel({
+                            this._notificationService.sendNotification(new NotificationMessage({
                                 title: 'Success',
                                 message: 'Item updated, do not forget to save!'
                             }));
@@ -212,7 +212,7 @@ export class NavigationComponent extends Page implements OnDestroy {
     private onSave(): void {
         this._httpService.put('admin/content/navigation', { navigation: this._data })
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Navigation updated'
                 }));
@@ -281,7 +281,7 @@ export class NavigationComponent extends Page implements OnDestroy {
         const allItems = this.getAllItems();
         const urlExists = allItems.findIndex(data => data.url === item.url && data.id !== item.id) > -1;
         if (urlExists) {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
                 message: 'The URL already exists!',
                 type: NotificationType.ERROR
@@ -291,7 +291,7 @@ export class NavigationComponent extends Page implements OnDestroy {
 
         const labelExists = allItems.findIndex(data => data.label === item.label && data.id !== item.id) > -1;
         if (labelExists) {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
                 message: 'The LABEL already exists',
                 type: NotificationType.ERROR

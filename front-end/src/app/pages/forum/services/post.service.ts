@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { catchError, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
@@ -16,7 +16,7 @@ export class PostService {
     reportPost(postId: number, message: string): Observable<void> {
         return this._httpService.post(`forum/moderation/post/report`, { postId: postId, message: message })
             .pipe(map(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'You reported the post'
                 }));
@@ -26,7 +26,7 @@ export class PostService {
     likePost(postId: number): Observable<void> {
         return this._httpService.post(`forum/thread/like/post/${postId}`, null)
             .pipe(map(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'You liked the post!'
                 }));
@@ -36,7 +36,7 @@ export class PostService {
     unlikePost(postId: number): Observable<void> {
         return this._httpService.delete(`forum/thread/unlike/post/${postId}`, null)
             .pipe(map(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'You unliked the post!'
                 }));

@@ -5,7 +5,7 @@ import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { Page } from 'shared/page/page.model';
 import { SITECP_BREADCRUMB_ITEM, BADGE_LIST_BREADCRUMB_ITEM } from '../../../admin.constants';
@@ -66,7 +66,7 @@ export class BadgeComponent extends Page implements OnDestroy {
         form.append('badge', JSON.stringify(this._badge));
         if (this._badge.badgeId) {
             this._httpClient.post(`rest/api/admin/badges/${this._badge.badgeId}`, form).subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: `${this._badge.name} was updated!`
                 }));
@@ -74,7 +74,7 @@ export class BadgeComponent extends Page implements OnDestroy {
             }, this._notificationService.failureNotification.bind(this._notificationService));
         } else {
             this._httpClient.post('rest/api/admin/badges', form).subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: `${this._badge.name} was created!`
                 }));
@@ -112,7 +112,7 @@ export class BadgeComponent extends Page implements OnDestroy {
     private onDelete(): void {
         this._httpClient.delete(`rest/api/admin/badges/${this._badge.badgeId}`)
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Badge deleted!'
                 }));

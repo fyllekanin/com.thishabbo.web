@@ -11,7 +11,7 @@ import { CategoryParent } from '../category.model';
 import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { EditorAction } from 'shared/components/editor/editor.model';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { Breadcrumb, BreadcrumbItem } from 'core/services/breadcrum/breadcrum.model';
 import { Button } from 'shared/directives/button/button.model';
 import { ArrayHelper } from 'shared/helpers/array.helper';
@@ -224,7 +224,7 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
     private onSuccessUpdate(res: ThreadSkeleton): void {
         this._threadSkeleton = new ThreadSkeleton(res);
         AutoSaveHelper.remove(AutoSave.THREAD, this._threadSkeleton.categoryId);
-        this._notificationService.sendNotification(new NotificationModel({
+        this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success!',
             message: 'Thread is updated!'
         }));

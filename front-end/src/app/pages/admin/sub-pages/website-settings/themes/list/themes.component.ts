@@ -21,7 +21,7 @@ import { TimeHelper } from 'shared/helpers/time.helper';
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-admin-website-settings-themes-list',
@@ -75,7 +75,7 @@ export class ThemesComponent extends Page implements OnDestroy {
                     item.isDefault = false;
                 });
                 this.createOrUpdateTable();
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'No theme is default'
                 }));
@@ -108,7 +108,7 @@ export class ThemesComponent extends Page implements OnDestroy {
                         });
                         this.createOrUpdateTable();
                         this._dialogService.closeDialog();
-                        this._notificationService.sendNotification(new NotificationModel({
+                        this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
                             message: 'Theme is default!'
                         }));
@@ -127,7 +127,7 @@ export class ThemesComponent extends Page implements OnDestroy {
                         this._data = this._data.filter(item => item.themeId !== Number(themeId));
                         this.createOrUpdateTable();
                         this._dialogService.closeDialog();
-                        this._notificationService.sendNotification(new NotificationModel({
+                        this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
                             message: 'Theme is deleted!'
                         }));

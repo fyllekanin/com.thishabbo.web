@@ -6,7 +6,7 @@ import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { STAFFCP_BREADCRUM_ITEM } from '../../../staff.constants';
 import { TitleTab } from 'shared/app-views/title/title.model';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { HttpService } from 'core/services/http/http.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { NotificationService } from 'core/services/notification/notification.service';
@@ -85,7 +85,7 @@ export class BanOnSightComponent extends Page implements OnDestroy {
     private onDelete (entryId: number): void {
         this._httpService.delete(`staff/events/ban-on-sight/${entryId}`)
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Entry deleted!'
                 }));
@@ -96,7 +96,7 @@ export class BanOnSightComponent extends Page implements OnDestroy {
     }
 
     private onSuccessCreate (): void {
-        this._notificationService.sendNotification(new NotificationModel({
+        this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'User added to Ban On Sight!'
         }));
@@ -105,7 +105,7 @@ export class BanOnSightComponent extends Page implements OnDestroy {
     }
 
     private onSuccessUpdate (): void {
-        this._notificationService.sendNotification(new NotificationModel({
+        this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'Ban On Sight Updated!'
         }));

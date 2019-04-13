@@ -6,7 +6,7 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-betting-bet',
@@ -71,7 +71,7 @@ export class BetComponent extends Page implements OnDestroy {
     private doDelete(): void {
         this._httpService.delete(`admin/betting/bet/${this._data.bet.betId}`)
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: `${this._data.bet.name} is deleted!`
                 }));
@@ -84,7 +84,7 @@ export class BetComponent extends Page implements OnDestroy {
         if (this._data.bet.createdAt) {
             this._httpService.put(`admin/betting/bet/${this._data.bet.betId}`, { bet: this._data.bet })
                 .subscribe(res => {
-                    this._notificationService.sendNotification(new NotificationModel({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: `${this._data.bet.name} is updated!`
                     }));
@@ -93,7 +93,7 @@ export class BetComponent extends Page implements OnDestroy {
         } else {
             this._httpService.post('admin/betting/bet', { bet: this._data.bet })
                 .subscribe(res => {
-                    this._notificationService.sendNotification(new NotificationModel({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: `${this._data.bet.name} is created!`
                     }));

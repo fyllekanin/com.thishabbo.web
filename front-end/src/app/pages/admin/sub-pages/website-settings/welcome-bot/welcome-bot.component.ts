@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Page } from 'shared/page/page.model';
 import { Component, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { TitleTab } from 'shared/app-views/title/title.model';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { EditorComponent } from 'shared/components/editor/editor.component';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { SITECP_BREADCRUMB_ITEM, WEBSITE_SETTINGS_BREADCRUMB_ITEM } from '../../../admin.constants';
@@ -54,7 +54,7 @@ export class WelcomeBotComponent extends Page implements OnDestroy {
         this._welcomeBot.user = this.findUserWithName();
         this._httpService.put('admin/content/welcome-bot', this._welcomeBot)
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Welcome Bot settings updated!'
                 }));
@@ -104,7 +104,7 @@ export class WelcomeBotComponent extends Page implements OnDestroy {
     }
 
     private notifyErrors(): void {
-        const notification = new NotificationModel({ title: 'Error', message: '' });
+        const notification = new NotificationMessage({ title: 'Error', message: '' });
         if (this.userIsNotCorrect()) {
             notification.message = 'User do not exist';
         }

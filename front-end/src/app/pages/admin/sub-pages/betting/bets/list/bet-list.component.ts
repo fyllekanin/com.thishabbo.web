@@ -19,7 +19,7 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 import { HttpService } from 'core/services/http/http.service';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
 import { DialogService } from 'core/services/dialog/dialog.service';
-import { NotificationModel, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { ResultComponent } from './result/result.component';
 import { isAbsent } from 'shared/helpers/class.helper';
@@ -98,7 +98,7 @@ export class BetListComponent extends Page implements OnDestroy {
                     .subscribe(() => {
                         const bet = this._data.bets.find(item => item.betId === Number(action.rowId));
                         bet.isSuspended = true;
-                        this._notificationService.sendNotification(new NotificationModel({
+                        this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
                             message: 'Bet is suspended'
                         }));
@@ -110,7 +110,7 @@ export class BetListComponent extends Page implements OnDestroy {
                     .subscribe(() => {
                         const bet = this._data.bets.find(item => item.betId === Number(action.rowId));
                         bet.isSuspended = false;
-                        this._notificationService.sendNotification(new NotificationModel({
+                        this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
                             message: 'Bet is unsuspended'
                         }));
@@ -134,7 +134,7 @@ export class BetListComponent extends Page implements OnDestroy {
 
     private setResult(model: BetModel): void {
         if (isAbsent(model.result)) {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
                 message: 'You need to choose win or loss',
                 type: NotificationType.ERROR
@@ -144,7 +144,7 @@ export class BetListComponent extends Page implements OnDestroy {
 
         this._httpService.put(`admin/betting/bet/${model.betId}/result`, { result: Boolean(model.result) })
             .subscribe(res => {
-                    this._notificationService.sendNotification(new NotificationModel({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: 'Bet finished!'
                     }));
@@ -158,7 +158,7 @@ export class BetListComponent extends Page implements OnDestroy {
     private doDelete(bet: BetModel): void {
         this._httpService.delete(`admin/betting/bet/${bet.betId}`)
             .subscribe(() => {
-                    this._notificationService.sendNotification(new NotificationModel({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: `${bet.name} is deleted!`
                     }));

@@ -1,6 +1,6 @@
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { HttpService } from 'core/services/http/http.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
@@ -81,7 +81,7 @@ export class NoticeBoardComponent {
 
     private updateOrder(): void {
         this._httpService.put('admin/content/notices', { notices: this._notices }).subscribe(() => {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Success!',
                 message: 'Notice order updated'
             }));
@@ -98,7 +98,7 @@ export class NoticeBoardComponent {
 
     private onSuccessDelete(notice: Notice): void {
         this._notices = this._notices.filter(noti => noti.noticeId !== notice.noticeId);
-        this._notificationService.sendNotification(new NotificationModel({
+        this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success!',
             message: 'Notice got deleted!'
         }));

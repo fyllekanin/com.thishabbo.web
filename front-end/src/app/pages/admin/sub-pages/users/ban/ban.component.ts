@@ -13,7 +13,7 @@ import { ReasonComponent } from 'shared/components/reason/reason.component';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
 import { IReason } from 'shared/components/reason/reason.model';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { BanService } from '../services/ban.service';
 
 @Component({
@@ -108,7 +108,7 @@ export class BanComponent extends Page implements OnDestroy {
 
     private doLift(banId: number, reason: IReason): void {
         if (!reason.reason) {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
                 message: 'You need to set a reason',
                 type: NotificationType.ERROR
@@ -117,7 +117,7 @@ export class BanComponent extends Page implements OnDestroy {
         }
 
         this._service.liftBan(this._data.user.userId, banId, reason).subscribe(res => {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Success',
                 message: `${this._data.user.nickname}s ban is now liften`
             }));
@@ -130,7 +130,7 @@ export class BanComponent extends Page implements OnDestroy {
 
     private doBan(reason: IReason): void {
         if (!reason.length) {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
                 message: 'You need to set a length of the ban',
                 type: NotificationType.ERROR
@@ -138,7 +138,7 @@ export class BanComponent extends Page implements OnDestroy {
             return;
         }
         if (!reason.reason) {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
                 message: 'You need to set a reason',
                 type: NotificationType.ERROR
@@ -147,7 +147,7 @@ export class BanComponent extends Page implements OnDestroy {
         }
 
         this._service.banUser(this._data.user.userId, reason).subscribe(res => {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Success',
                 message: `${this._data.user.nickname} is now banned`
             }));

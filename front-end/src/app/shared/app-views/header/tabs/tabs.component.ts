@@ -4,7 +4,7 @@ import { TabModel } from 'shared/app-views/header/tabs/tabs.model';
 import { TabComponent } from 'shared/app-views/header/tabs/tab/tab.component';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 
@@ -74,7 +74,7 @@ export class TabsComponent {
     }
 
     private printError(message: string): void {
-        this._notificationService.sendNotification(new NotificationModel({
+        this._notificationService.sendNotification(new NotificationMessage({
             title: 'Error',
             message: message,
             type: NotificationType.ERROR

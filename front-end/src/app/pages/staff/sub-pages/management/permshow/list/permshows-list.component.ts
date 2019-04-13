@@ -12,7 +12,7 @@ import {
     STAFFCP_MANAGEMENT_BREADCRUMB_ITEM
 
 } from 'app/pages/staff/staff.constants';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import {
     Action,
     TableAction,
@@ -123,7 +123,7 @@ export class PermShowsListComponent extends Page implements OnDestroy {
     private onDelete(permShowId: number): void {
         this._httpService.delete(`staff/management/permanent-shows/${permShowId}`)
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Perm show deleted!'
                 }));

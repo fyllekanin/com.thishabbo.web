@@ -6,7 +6,7 @@ import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { Page } from 'shared/page/page.model';
 import { SITECP_BREADCRUMB_ITEM, GROUP_LIST_BREADCRUMB_ITEM } from '../../../admin.constants';
@@ -124,7 +124,7 @@ export class GroupComponent extends Page implements OnDestroy {
     private onDelete (): void {
         this._httpService.delete(`admin/groups/${this._group.groupId}`)
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Group deleted!'
                 }));
@@ -148,7 +148,7 @@ export class GroupComponent extends Page implements OnDestroy {
 
     private onSuccessUpdate (group: Group): void {
         this._group = new Group(group);
-        this._notificationService.sendNotification(new NotificationModel({
+        this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'Group updated!'
         }));
@@ -156,7 +156,7 @@ export class GroupComponent extends Page implements OnDestroy {
 
     private onSuccessCreate (group: Group): void {
         this.onPage({ data: new Group(group) });
-        this._notificationService.sendNotification(new NotificationModel({
+        this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'Group created!'
         }));

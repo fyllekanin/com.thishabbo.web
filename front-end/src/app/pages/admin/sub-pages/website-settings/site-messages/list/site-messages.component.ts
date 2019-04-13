@@ -21,7 +21,7 @@ import { TimeHelper } from 'shared/helpers/time.helper';
 import { HttpService } from 'core/services/http/http.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 
 @Component({
@@ -76,7 +76,7 @@ export class SiteMessagesComponent extends Page implements OnDestroy {
                             .subscribe(() => {
                                 this._data = this._data.filter(item => item.siteMessageId === siteMessage.siteMessageId);
                                 this.createOrUpdateTable();
-                                this._notificationService.sendNotification(new NotificationModel({
+                                this._notificationService.sendNotification(new NotificationMessage({
                                     title: 'Success',
                                     message: 'Site message is deleted'
                                 }));

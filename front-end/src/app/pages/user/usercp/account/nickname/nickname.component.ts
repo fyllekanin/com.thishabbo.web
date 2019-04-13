@@ -6,7 +6,7 @@ import { USERCP_BREADCRUM_ITEM } from '../../usercp.constants';
 import { HttpService } from 'core/services/http/http.service';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { AuthService } from 'core/services/auth/auth.service';
 
 @Component({
@@ -40,7 +40,7 @@ export class NicknameComponent extends Page implements OnDestroy {
     onSave(): void {
         this._httpService.put('usercp/nickname', { nickname: this.nickname })
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Your nickname is now changed!'
                 }));

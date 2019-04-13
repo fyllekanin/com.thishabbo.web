@@ -13,7 +13,7 @@ import {
 } from 'shared/components/table/table.model';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { HttpService } from 'core/services/http/http.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 
 
@@ -66,7 +66,7 @@ export class PrefixListComponent extends Page implements OnDestroy {
             .subscribe(() => {
                 this._prefixes = this._prefixes.filter(pre => pre.prefixId !== prefix.prefixId);
                 this.createOrUpdateTable();
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Prefix deleted!'
                 }));

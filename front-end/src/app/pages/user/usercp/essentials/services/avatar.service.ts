@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from 'core/services/auth/auth.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { map } from 'rxjs/operators';
 
@@ -27,7 +27,7 @@ export class AvatarService implements Resolve<{ height: number; width: number }>
         return this._httpClient.post('rest/api/usercp/avatar', data)
             .pipe(map(res => {
                 this._authService.authUser.avatarUpdatedAt = <number>res;
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Avatar Updated'
                 }));

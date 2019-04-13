@@ -9,7 +9,7 @@ import { Component, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@ang
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { HighScoreModel } from '../arcade.model';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-arcade-snake',
@@ -128,7 +128,7 @@ export class SnakeComponent extends Page implements AfterViewInit, OnDestroy {
         this._httpService.post('arcade/snake', { result: { gameId: this._gameId, score: this._gameValues.score } })
             .subscribe(res => {
                 this._highscore = res.highscore.map(item => new HighScoreModel(item));
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Score',
                     message: `${res.score} candys`
                 }));

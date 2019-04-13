@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { DialogService } from 'core/services/dialog/dialog.service';
 
 @Component({
@@ -73,7 +73,7 @@ export class AutoBanComponent extends Page implements OnDestroy {
             () => {
                 this._httpService.delete(`admin/moderation/auto-bans/${this._data.autoBanId}`)
                     .subscribe(() => {
-                        this._notificationService.sendNotification(new NotificationModel({
+                        this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
                             message: 'Autoban deleted'
                         }));
@@ -88,7 +88,7 @@ export class AutoBanComponent extends Page implements OnDestroy {
         if (this._data.updatedAt) {
             this._httpService.put(`admin/moderation/auto-bans/${this._data.autoBanId}`, { autoBan: this._data })
                 .subscribe(res => {
-                    this._notificationService.sendNotification(new NotificationModel({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: 'Autoban updated'
                     }));
@@ -97,7 +97,7 @@ export class AutoBanComponent extends Page implements OnDestroy {
         } else {
             this._httpService.post(`admin/moderation/auto-bans`, { autoBan: this._data })
                 .subscribe(res => {
-                    this._notificationService.sendNotification(new NotificationModel({
+                    this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: 'Autoban created'
                     }));

@@ -15,7 +15,7 @@ import {ArrayHelper} from 'shared/helpers/array.helper';
 import {AuthService} from 'core/services/auth/auth.service';
 import {HttpService} from 'core/services/http/http.service';
 import {NotificationService} from 'core/services/notification/notification.service';
-import {NotificationModel} from 'shared/app-views/global-notification/global-notification.model';
+import {NotificationMessage} from 'shared/app-views/global-notification/global-notification.model';
 import {MoveThreadComponent} from '../thread/move-thread/move-thread.component';
 import {ChangeOwnerComponent} from '../thread/change-owner/change-owner.component';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
@@ -76,7 +76,7 @@ export class CategoryComponent extends Page implements OnDestroy {
                     .subscribe(() => {
                         this._categoryPage.isSubscribed = true;
                         this.setTabs();
-                        this._notificationService.sendNotification(new NotificationModel({
+                        this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
                             message: 'You are now subscribed!'
                         }));
@@ -87,7 +87,7 @@ export class CategoryComponent extends Page implements OnDestroy {
                     .subscribe(() => {
                         this._categoryPage.isSubscribed = false;
                         this.setTabs();
-                        this._notificationService.sendNotification(new NotificationModel({
+                        this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
                             message: 'You are now unsubscribed!'
                         }));
@@ -98,7 +98,7 @@ export class CategoryComponent extends Page implements OnDestroy {
                     .subscribe(() => {
                         this._categoryPage.isIgnored = true;
                         this.setTabs();
-                        this._notificationService.sendNotification(new NotificationModel({
+                        this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
                             message: 'You ignored the Category!'
                         }));
@@ -109,7 +109,7 @@ export class CategoryComponent extends Page implements OnDestroy {
                     .subscribe(() => {
                         this._categoryPage.isIgnored = false;
                         this.setTabs();
-                        this._notificationService.sendNotification(new NotificationModel({
+                        this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
                             message: 'You unignored the Category!'
                         }));
@@ -262,7 +262,7 @@ export class CategoryComponent extends Page implements OnDestroy {
                     this._httpService.put(`forum/moderation/thread/move/category/${categoryId}`,
                         { threadIds: this._selectedThreadIds})
                         .subscribe(() => {
-                            this._notificationService.sendNotification(new NotificationModel({
+                            this._notificationService.sendNotification(new NotificationMessage({
                                 title: 'Success',
                                 message: 'Threads are moved!'
                             }));
@@ -285,7 +285,7 @@ export class CategoryComponent extends Page implements OnDestroy {
                         threadIds: this._selectedThreadIds,
                         nickname: nickname
                     }).subscribe(() => {
-                        this._notificationService.sendNotification(new NotificationModel({
+                        this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
                             message: 'Thread owners changed!'
                         }));

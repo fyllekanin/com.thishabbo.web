@@ -11,7 +11,7 @@ import { TimeHelper } from 'shared/helpers/time.helper';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { HttpService } from 'core/services/http/http.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-staff-management-do-not-hire-list',
@@ -76,7 +76,7 @@ export class DoNotHireListComponent extends Page implements OnDestroy {
     private onDelete(nickname: string): void {
         this._httpService.delete(`staff/management/do-not-hire/${nickname}`)
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Entry deleted!'
                 }));

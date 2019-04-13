@@ -6,7 +6,7 @@ import { STAFFCP_BREADCRUM_ITEM } from '../staff.constants';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { RequestThcActions, RequestThcModel } from './request-thc.model';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { HttpService } from 'core/services/http/http.service';
 
 @Component({
@@ -62,7 +62,7 @@ export class RequestThcComponent extends Page implements OnDestroy {
 
     private sendRequest(): void {
         if (this.rowsAreInvalid()) {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
                 message: 'One or more rows are invalid',
                 type: NotificationType.ERROR
@@ -72,7 +72,7 @@ export class RequestThcComponent extends Page implements OnDestroy {
         this._httpService.post('staff/request-thc', { requests: this._rows })
             .subscribe(() => {
                 this._rows = [new RequestThcModel()];
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Requests are sent!'
                 }));

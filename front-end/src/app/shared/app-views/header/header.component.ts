@@ -6,7 +6,7 @@ import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { Activity, ContinuesInformationModel } from 'core/services/continues-information/continues-information.model';
 import { Router } from '@angular/router';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationModel, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-header',
@@ -39,7 +39,7 @@ export class HeaderComponent {
 
     goToSearch(): void {
         if (!this.text) {
-            this._notificationService.sendNotification(new NotificationModel({
+            this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
                 message: 'You need to specify what you want to search first!',
                 type: NotificationType.ERROR

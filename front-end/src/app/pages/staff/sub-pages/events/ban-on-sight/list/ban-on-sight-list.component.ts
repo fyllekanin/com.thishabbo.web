@@ -11,7 +11,7 @@ import { TimeHelper } from 'shared/helpers/time.helper';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { HttpService } from 'core/services/http/http.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import {AuthService} from 'core/services/auth/auth.service';
 
 @Component({
@@ -81,7 +81,7 @@ export class BanOnSightListComponent extends Page implements OnDestroy, OnInit {
     private onDelete(entryId: string): void {
         this._httpService.delete(`staff/events/ban-on-sight/${entryId}`)
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationModel({
+                this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Entry deleted!'
                 }));

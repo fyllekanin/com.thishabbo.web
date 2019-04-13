@@ -8,7 +8,7 @@ import { STAFFCP_BREADCRUM_ITEM, STAFFCP_RADIO_BREADCRUM_ITEM } from '../../../s
 import { ManageConnectionModel, ManageConnectionActions } from './manage-connection.model';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { HttpService } from 'core/services/http/http.service';
-import { NotificationModel } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 
 @Component({
     selector: 'app-staff-manage-connection',
@@ -91,7 +91,7 @@ export class ManageConnectionComponent extends Page implements OnDestroy {
     }
 
     private onSuccessUpdate (): void {
-        this._notificationService.sendNotification(new NotificationModel({
+        this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'Information updated!'
         }));
