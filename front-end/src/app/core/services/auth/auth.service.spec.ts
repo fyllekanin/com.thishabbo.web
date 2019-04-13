@@ -45,7 +45,7 @@ describe('AuthService', () => {
                     provide: NotificationService, useValue: {
                         failureNotification: () => {
                         },
-                        sendGlobalNotification: () => {
+                        sendNotification: () => {
                         }
                     }
                 },
