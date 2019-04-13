@@ -40,5 +40,8 @@ describe('User #2', () => {
         NavigationUtil.clickCategory('Welcome!');
         NavigationUtil.clickThread('Welcome test!');
         expect(ForumPage.getFixedToolsElement('Post Tools').isPresent()).toBeTruthy();
+
+        NavigationUtil.clickUserNavigation('UserCP');
+        UserCpPage.toggleSetting('Thread Tools');
     });
 });
