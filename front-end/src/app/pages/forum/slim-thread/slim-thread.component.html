@@ -1,6 +1,6 @@
 <div class="grid-container margin-bottom forum-home" [ngClass]="isApproved ? '' : 'opacity'">
     <div class="grid-x grid-margin-x">
-        <div class="cell small-8">
+        <div class="cell small-7 medium-8">
             <a class="title" [routerLink]="[threadUrl]" title="{{title}}" [ngClass]="haveRead ? 'read' : ''">
                 <span *ngIf="thread.prefix" [style]="thread.prefix.style | safeStyle">
                     {{thread.prefix.text}} &#xbb;
@@ -14,8 +14,8 @@
             <div class="nickname">by <a [routerLink]="['/user/profile/', thread.nickname]">{{thread.nickname}}</a>
             </div>
         </div>
-        <img appUserProfile [info]="lastPostInfo" />
-        <div class="cell small-2">
+        <img class="mobile-hidden" appUserProfile [info]="lastPostInfo" />
+        <div class="cell small-4 medium-2">
             <div class="latest-post" (click)="goToLastPost()">Latest Post</div>
             <div class="nickname">
                 <app-user-link [user]="thread.lastPost.user"></app-user-link>

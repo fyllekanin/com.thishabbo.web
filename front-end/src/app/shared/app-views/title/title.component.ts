@@ -24,6 +24,7 @@ export class TitleComponent {
     @Input() checkboxValue = false;
 
     topBorder: TitleTopBorder = TitleTopBorder.BLUE;
+    selectValue = null;
 
     constructor (private _router: Router) {
     }
@@ -31,11 +32,17 @@ export class TitleComponent {
     @Input()
     set tabs (tabs: Array<TitleTab>) {
         this._tabs = Array.isArray(tabs) ? tabs : [];
+        this.selectValue = this.activeValue;
     }
 
     @Input()
     set top (top: TitleTopBorder) {
         this.topBorder = top || TitleTopBorder.BLUE;
+    }
+
+    onTabSelect(event): void {
+        this.onTabClick.emit(Number(event.target.value));
+        this.tabs = this._tabs.concat([]);
     }
 
     titleClick (): void {
@@ -61,5 +68,10 @@ export class TitleComponent {
 
     get tabs (): Array<TitleTab> {
         return this._tabs;
+    }
+
+    get activeValue(): number {
+        const activeTab = this._tabs.find(item => item.isActive);
+        return activeTab ? activeTab.value : null;
     }
 }

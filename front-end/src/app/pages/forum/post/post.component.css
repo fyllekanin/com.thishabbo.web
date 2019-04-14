@@ -119,3 +119,9 @@ img {
 .post-content-container {
     width: 81%;
 }
+
+@media screen and (max-width: 1200px) {
+    .post-avatar {
+        width: 100%;
+    }
+}

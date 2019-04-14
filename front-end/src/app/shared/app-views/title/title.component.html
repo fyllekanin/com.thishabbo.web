@@ -3,7 +3,11 @@
 
     <span class="sub-title" *ngIf="subTitle">{{subTitle}}</span>
 
-    <span *ngFor="let item of tabs" class="tab" (click)="tabClick(item)" [ngClass]="item.isActive ? 'active' : ''">
+    <select class="mobile" [ngModel]="selectValue" (change)="onTabSelect($event)">
+        <option [value]="null">Select Action..</option>
+        <option *ngFor="let item of tabs" [value]="item.value">{{item.title}}</option>
+    </select>
+    <span *ngFor="let item of tabs" class="tab desktop" (click)="tabClick(item)" [ngClass]="item.isActive ? 'active' : ''">
         {{item.title}}
     </span>
 

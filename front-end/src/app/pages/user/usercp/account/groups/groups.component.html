@@ -2,16 +2,14 @@
 <app-content>
     <div class="grid-container">
         <div class="grid-x margin-x">
-            <div class="cell small-6">
+            <div class="cell small-12 medium-12">
                 <strong>Display Group</strong> <br />
                 <em>(Group which decides styling on name)</em>
-            </div>
-            <div class="cell small-6">
                 <select [(ngModel)]="displayGroupId">
                     <option *ngFor="let group of memberGroups" [value]="group.groupId">{{group.name}}</option>
                 </select>
             </div>
-            <div class="cell small-4 position-relative groups" *ngFor="let group of memberGroups">
+            <div class="cell small-6 medium-4 position-relative groups" *ngFor="let group of memberGroups">
                 <div>
                     <strong>Usergroup:</strong> {{group.name}}
                 </div>

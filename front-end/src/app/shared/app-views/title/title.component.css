@@ -109,3 +109,28 @@ a:hover {
 .checkbox {
     margin: 5px;
 }
+
+.mobile {
+    display: none;
+}
+
+.desktop {
+    display: inline-block;
+}
+
+@media screen and (max-width: 600px) {
+    .mobile {
+        display: inline-block;
+    }
+
+    .desktop {
+        display: none;
+    }
+}
+
+select {
+    float: right;
+    width: 153px;
+    border-bottom: none;
+    box-shadow: none;
+}

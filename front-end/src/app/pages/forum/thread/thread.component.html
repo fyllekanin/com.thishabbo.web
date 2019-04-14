@@ -1,57 +1,59 @@
-<app-fixed-tools [tools]="fixedTools" (onAction)="onAction($event)"></app-fixed-tools>
+<div class="wrapper-margin-x">
+    <app-fixed-tools [tools]="fixedTools" (onAction)="onAction($event)"></app-fixed-tools>
 
-<app-pagination
-    [paginationModel]="pagination">
-</app-pagination>
+    <app-pagination
+        [paginationModel]="pagination">
+    </app-pagination>
 
-<app-forum-thread-poll *ngIf="thread.poll" [poll]="thread.poll" [threadId]="thread.threadId"></app-forum-thread-poll>
+    <app-forum-thread-poll *ngIf="thread.poll" [poll]="thread.poll" [threadId]="thread.threadId"></app-forum-thread-poll>
 
-<div *ngFor="let post of posts; trackBy: trackPosts; let first = first; let index = index;" class="post-{{post.postId}}"
-     [ngClass]="!post.isApproved ? 'opacity' : ''">
-    <app-title
-        [checkboxValue]="post.isSelected"
-        [checkbox]="first ? pagination.page > 1 : (forumPermissions.canDeletePosts || forumPermissions.canApprovePosts)"
-        [title]="getPostTitle(post, index)"
-        [subTitle]="first ? subTitle : null"
-        [tabs]="first && pagination.page === 1 ? tabs : null"
-        (onTabClick)="onTabClick($event)"
-        (onCheckboxChange)="post.isSelected = !post.isSelected">
-    </app-title>
-    <app-content>
-        <app-forum-post
-            [postModel]="post"
-            [canPost]="canPost"
-            [forumPermissions]="thread.forumPermissions"
-            (onQuotePost)="onQuotePost($event)"
-            (onUpdatePost)="onUpdatePost($event)"></app-forum-post>
-    </app-content>
-</div>
-
-<app-pagination
-    [paginationModel]="pagination">
-</app-pagination>
-
-<div *ngIf="canPost">
-    <div class="new-post-editor">
-        <app-editor #editor
-                    [subTitle]="subTitle"
-                    [buttons]="editorButtons"
-                    (onTabClick)="onButtonClick($event)"
-                    (onKeyUp)="onKeyUp($event)">
-        </app-editor>
+    <div *ngFor="let post of posts; trackBy: trackPosts; let first = first; let index = index;" class="post-{{post.postId}}"
+         [ngClass]="!post.isApproved ? 'opacity' : ''">
+        <app-title
+            [checkboxValue]="post.isSelected"
+            [checkbox]="first ? pagination.page > 1 : (forumPermissions.canDeletePosts || forumPermissions.canApprovePosts)"
+            [title]="getPostTitle(post, index)"
+            [subTitle]="first ? subTitle : null"
+            [tabs]="first && pagination.page === 1 ? tabs : null"
+            (onTabClick)="onTabClick($event)"
+            (onCheckboxChange)="post.isSelected = !post.isSelected">
+        </app-title>
+        <app-content>
+            <app-forum-post
+                [postModel]="post"
+                [canPost]="canPost"
+                [forumPermissions]="thread.forumPermissions"
+                (onQuotePost)="onQuotePost($event)"
+                (onUpdatePost)="onUpdatePost($event)"></app-forum-post>
+        </app-content>
     </div>
-</div>
-<div *ngIf="!canPost">
-    <app-title [title]="'Can\'t post'"></app-title>
+
+    <app-pagination
+        [paginationModel]="pagination">
+    </app-pagination>
+
+    <div *ngIf="canPost">
+        <div class="new-post-editor">
+            <app-editor #editor
+                        [subTitle]="subTitle"
+                        [buttons]="editorButtons"
+                        (onTabClick)="onButtonClick($event)"
+                        (onKeyUp)="onKeyUp($event)">
+            </app-editor>
+        </div>
+    </div>
+    <div *ngIf="!canPost">
+        <app-title [title]="'Can\'t post'"></app-title>
+        <app-content>
+            {{cantPostReason}}
+        </app-content>
+    </div>
+
+    <app-title [title]="'Last 20 users to read this thread'"></app-title>
     <app-content>
-        {{cantPostReason}}
+        <span *ngFor="let reader of thread.readers; let index = index;">
+            {{index > 0 ? ', ' : ''}}
+            <app-user-link [user]="reader.user" [attr.tooltip]="reader.timeAgo"></app-user-link>
+        </span>
     </app-content>
 </div>
-
-<app-title [title]="'Last 20 users to read this thread'"></app-title>
-<app-content>
-    <span *ngFor="let reader of thread.readers; let index = index;">
-        {{index > 0 ? ', ' : ''}}
-        <app-user-link [user]="reader.user" [attr.tooltip]="reader.timeAgo"></app-user-link>
-    </span>
-</app-content>

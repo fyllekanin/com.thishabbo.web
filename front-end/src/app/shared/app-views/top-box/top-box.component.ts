@@ -37,6 +37,14 @@ export class TopBoxComponent {
         this._router.navigateByUrl(`/user/profile/${this._authService.authUser.nickname}`);
     }
 
+    closeMenu(): void {
+        this.showMenu = false;
+        this._navigation = this._navigation.map(item => {
+            item.isExpanded = false;
+            return item;
+        });
+    }
+
     get credits(): number {
         return this._authService.authUser.credits;
     }

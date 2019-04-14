@@ -10,7 +10,7 @@
             </div>
         </div>
         <div *ngIf="lastPost">
-            <img appUserProfile [info]="lastPostInfo"/>
+            <img class="mobile-hidden" appUserProfile [info]="lastPostInfo"/>
         </div>
         <div *ngIf="lastPost" class="cell small-3 small-width">
             <a class="thread-name" [routerLink]="['/forum', 'thread', lastPost.threadId, 'page', 1]">

@@ -111,6 +111,11 @@ input {
     display: none;
 }
 
+.login-wrapper {
+    margin: -3px -80px 0 94px;
+    width: 76.3%;
+}
+
 @media screen and (max-width: 1091px) {
     .notification-wrapper {
         margin-left: 0 !important;
@@ -127,14 +132,9 @@ input {
 }
 
 @media screen and (max-width: 1210px) {
-    .breadcrum {
-        padding-left: 8px;
+    .login-wrapper {
+        margin: 1px 0 0 51px;
     }
-}
-
-.login-wrapper {
-    margin: -3px -80px 0 94px;
-    width: 76.3%;
 }
 
 .top-login {

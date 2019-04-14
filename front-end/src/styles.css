@@ -85,10 +85,27 @@ h2 {
     padding-right: 0.625rem;
 }
 
+.wrapper-margin-x {
+    padding: 0;
+}
+
+.mobile-hidden {
+    display: inherit;
+}
+
 @media screen and (max-width: 1200px) {
     .margin-x > .cell {
         padding-right: 0.312rem;
         padding-left: 0.312rem;
+    }
+
+    .wrapper-margin-x {
+        padding-right: 0.312rem;
+        padding-left: 0.312rem;
+    }
+
+    .mobile-hidden {
+        display: none;
     }
 }
 

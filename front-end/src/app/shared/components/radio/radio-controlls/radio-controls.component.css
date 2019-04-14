@@ -4,6 +4,7 @@
     margin-right: -1px;
     float: left;
     margin-top: 11px;
+    display: block;
 }
 
 /*Chrome*/
@@ -84,5 +85,9 @@ input[type="range"]::-ms-fill-upper {
 
     .generic-radio-button {
         margin-top: 13px;
+    }
+
+    .slider {
+        margin-top: 15px;
     }
 }
