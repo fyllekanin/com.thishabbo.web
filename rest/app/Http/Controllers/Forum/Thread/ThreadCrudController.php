@@ -14,6 +14,7 @@ use App\EloquentModels\Forum\ThreadPollAnswer;
 use App\EloquentModels\Forum\ThreadRead;
 use App\EloquentModels\Forum\ThreadSubscription;
 use App\Helpers\ConfigHelper;
+use App\Helpers\DataHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
@@ -60,7 +61,7 @@ class ThreadCrudController extends Controller {
             ->join('users', 'users.userId', '=', 'posts.userId')
             ->select('users.userId', DB::raw('COUNT(*) as amount'))
             ->groupBy('users.userId');
-        $total = ceil($query->count() / $this->perPage);
+        $total = DataHelper::getPage($query->count());
 
         return response()->json([
             'total' => $total,
@@ -89,7 +90,7 @@ class ThreadCrudController extends Controller {
             ->whereNotIn('categoryId', $ignoredCategoryIds)
             ->whereNotIn('threadId', $ignoredThreadIds)
             ->orderBy('createdAt', 'DESC');
-        $total = ceil($threadSql->count() / $this->perPage);
+        $total = DataHelper::getPage($threadSql->count());
 
         return response()->json([
             'page' => $page,
@@ -264,7 +265,7 @@ class ThreadCrudController extends Controller {
 
         $thread->page = $page;
         $thread->contentApproval = PermissionHelper::haveGroupOption($user->userId, ConfigHelper::getGroupOptionsConfig()->contentNeedApproval);
-        $thread->total = ceil($thread->posts / $this->perPage);
+        $thread->total = DataHelper::getPage($thread->posts);
         $thread->forumPermissions = $permissions;
         $thread->isSubscribed = ThreadSubscription::where('userId', $user->userId)->where('threadId', $threadId)->count() > 0;
         $thread->append('categoryIsOpen');

@@ -10,6 +10,8 @@ use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
 use App\Logger;
 use App\Models\Logger\Action;
+use App\Services\ActivityService;
+use App\Services\ForumService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -64,11 +66,13 @@ class ProfileController extends Controller {
     }
 
     /**
+     * @param ActivityService $activityService
+     * @param ForumService $forumService
      * @param         $nickname
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getProfile ($nickname) {
+    public function getProfile (ActivityService $activityService, ForumService $forumService, $nickname) {
         $user = Cache::get('auth');
 
         $profile = User::withNickname($nickname)->first();
@@ -85,6 +89,7 @@ class ProfileController extends Controller {
             'user' => UserHelper::getSlimUser($profile->userId),
             'followers' => $this->getFollowers($profile->userId, $user),
             'youtube' => $profile->profile ? $profile->profile->youtube : null,
+            'activities' => $activityService->getLatestActivities($forumService->getAccessibleCategories($user->userId), $profile->userId),
             'stats' => [
                 'userId' => $profile->userId,
                 'posts' => $profile->posts,
@@ -128,7 +133,7 @@ class ProfileController extends Controller {
         $following = Follower::where('userId', $user->userId)->where('targetId', $userId)->first();
 
         return [
-            'followers' => Follower::where('targetId', $userId)->inRandomOrder()->take(5)->get()->map(function($follower) {
+            'followers' => Follower::where('targetId', $userId)->inRandomOrder()->take(5)->isApproved()->get()->map(function($follower) {
                 return UserHelper::getSlimUser($follower->userId);
             }),
             'total' => Follower::where('targetId', $userId)->isApproved()->count(),

@@ -3,7 +3,9 @@
 namespace App\EloquentModels\Forum;
 
 use App\EloquentModels\Models\DeletableModel;
+use App\Helpers\DataHelper;
 use App\Helpers\UserHelper;
+use App\Http\Controllers\Controller;
 use App\Utils\BBcodeUtil;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -11,6 +13,8 @@ use Illuminate\Database\Eloquent\Builder;
  * @property mixed postId
  * @property mixed userId
  * @property mixed threadId
+ * @property mixed content
+ * @property mixed thread
  */
 class Post extends DeletableModel
 {
@@ -46,6 +50,10 @@ class Post extends DeletableModel
 
     public function getParsedContentAttribute() {
         return BBcodeUtil::bbcodeParser($this->content);
+    }
+
+    public function getPage($canApprove = false) {
+        return DataHelper::getPage(Post::isApproved($canApprove)->where('postId', '<', $this->postId)->where('threadId', $this->threadId)->count());
     }
 
     public function scopeIsApproved(Builder $query, $canApprove = false) {

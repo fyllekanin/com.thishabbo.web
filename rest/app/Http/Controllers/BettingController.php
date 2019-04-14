@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\EloquentModels\Bet;
 use App\EloquentModels\BetCategory;
 use App\EloquentModels\User\UserBet;
+use App\Helpers\DataHelper;
 use App\Logger;
 use App\Models\Logger\Action;
 use App\Services\CreditsService;
@@ -183,7 +184,7 @@ class BettingController extends Controller {
             ->where('bets.isFinished', 1)
             ->select('user_bets.*', 'bets.name', 'bets.isFinished', 'bets.result');
 
-        $total = ceil($betsSql->count() / $this->perPage);
+        $total = DataHelper::getPage($betsSql->count());
         $bets = $betsSql->orderBy('user_bets.userBetId', 'DESC')->get()->map(function ($bet) {
             return [
                 'name' => $bet->name,

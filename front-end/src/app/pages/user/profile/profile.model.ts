@@ -1,5 +1,6 @@
 import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
 import { SlimUser } from 'core/services/auth/auth.model';
+import { Activity } from 'core/services/continues-information/continues-information.model';
 
 export class ProfileStats {
     @primitive()
@@ -38,6 +39,8 @@ export class Followers {
 export class ProfileModel {
     @objectOf(SlimUser)
     user: SlimUser;
+    @arrayOf(Activity)
+    activities: Array<Activity> = [];
     @objectOf(ProfileStats)
     stats: ProfileStats;
     @primitive()

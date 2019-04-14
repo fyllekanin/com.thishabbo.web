@@ -11,6 +11,7 @@ import { ContentModule } from 'shared/app-views/content/content.module';
 import { CommonModule } from '@angular/common';
 import { UserLinkModule } from 'shared/components/user/user-link.module';
 import { UserProfileModule } from 'shared/directives/user-profile.module';
+import { ActivitiesComponent } from './profile/activities/activities.component';
 
 @NgModule({
     imports: [
@@ -25,7 +26,8 @@ import { UserProfileModule } from 'shared/directives/user-profile.module';
         UserProfileModule
     ],
     declarations: [
-        ProfileComponent
+        ProfileComponent,
+        ActivitiesComponent
     ],
     providers: [
         ProfileService

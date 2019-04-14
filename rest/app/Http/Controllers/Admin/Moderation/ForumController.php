@@ -6,6 +6,7 @@ use App\EloquentModels\Infraction\AutoBan;
 use App\EloquentModels\Forum\Post;
 use App\EloquentModels\Forum\Thread;
 use App\Helpers\ConfigHelper;
+use App\Helpers\DataHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
@@ -39,7 +40,7 @@ class ForumController extends Controller {
             ->skip($this->getOffset($page))
             ->take($this->perPage);
 
-        $total = ceil($autoBansSql->count() / $this->perPage);
+        $total = DataHelper::getPage($autoBansSql->count());
         $items = $autoBansSql->map(function($item) {
             return [
                 'autoBanId' => $item->autoBanId,

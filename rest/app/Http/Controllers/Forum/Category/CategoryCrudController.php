@@ -10,6 +10,7 @@ use App\EloquentModels\Forum\Post;
 use App\EloquentModels\Forum\Thread;
 use App\EloquentModels\User\User;
 use App\Helpers\ConfigHelper;
+use App\Helpers\DataHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
@@ -113,7 +114,7 @@ class CategoryCrudController extends Controller {
             $threadSql->belongsToUser($user->userId);
         }
 
-        $total = ceil($threadSql->count() / $this->perPage);
+        $total = DataHelper::getPage($threadSql->count());
         $threads = $threadSql->skip($this->getOffset($page))
             ->take($this->perPage)
             ->get();

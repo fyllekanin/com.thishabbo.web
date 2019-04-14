@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\User;
 use App\EloquentModels\Log\LogUser;
 use App\EloquentModels\RequestThc;
 use App\EloquentModels\User\VoucherCode;
+use App\Helpers\DataHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
@@ -86,7 +87,7 @@ class UserThcController extends Controller {
         $total = $voucherCodeSql->count();
 
         return response()->json([
-            'total' => ceil($total / $this->perPage),
+            'total' => DataHelper::getPage($total),
             'page' => $page,
             'items' => $voucherCodeSql->orderBy('createdAt', 'ASC')->take($this->perPage)->skip($this->getOffset($page))
                 ->get()->map(function($item) {

@@ -7,6 +7,7 @@ use App\EloquentModels\Log\LogStaff;
 use App\EloquentModels\Staff\Timetable;
 use App\EloquentModels\User\User;
 use App\Helpers\ConfigHelper;
+use App\Helpers\DataHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\SettingsHelper;
 use App\Helpers\UserHelper;
@@ -156,7 +157,7 @@ class EventsController extends Controller {
 
         $logSql = LogStaff::whereIn('action', [$bookAction, $unbookAction]);
 
-        $total = ceil($logSql->count() / $this->perPage);
+        $total = DataHelper::getPage($logSql->count());
         $items = $logSql->orderBy('logId', 'DESC')
             ->take($this->perPage)
             ->skip($this->getOffset($page))
@@ -195,7 +196,7 @@ class EventsController extends Controller {
         $eventsSql = Event::where('name', 'LIKE', '%' . $filter . '%')
             ->orderBy('name', 'ASC');
 
-        $total = ceil($eventsSql->count() / $this->perPage);
+        $total = DataHelper::getPage($eventsSql->count());
         $events = $eventsSql->take($this->perPage)->skip($this->getOffset($page))->get();
 
         return response()->json([

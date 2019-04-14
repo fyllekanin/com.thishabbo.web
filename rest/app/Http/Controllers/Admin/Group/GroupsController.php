@@ -7,6 +7,7 @@ use App\EloquentModels\Group\GroupRequest;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserGroup;
 use App\Helpers\ConfigHelper;
+use App\Helpers\DataHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
@@ -242,7 +243,7 @@ class GroupsController extends Controller {
             ->where('name', 'LIKE', '%' . $filter . '%')
             ->orderBy('name', 'ASC');
 
-        $total = ceil($getGroupSql->count() / $this->perPage);
+        $total = DataHelper::getPage($getGroupSql->count());
         $groups = $getGroupSql->take($this->perPage)->skip($this->getOffset($page))->get();
 
         foreach ($groups as $group) {

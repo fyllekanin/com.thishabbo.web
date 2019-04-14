@@ -4,6 +4,7 @@ namespace App\Factories\Notification\Views;
 
 use App\EloquentModels\Forum\Post;
 use App\Helpers\ConfigHelper;
+use App\Helpers\DataHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
@@ -32,10 +33,10 @@ class ThreadView {
             'threadId' => $post->thread->threadId,
             'title' => $post->thread->title,
             'postId' => $notification->contentId,
-            'page' => ceil(Post::where('threadId', $post->threadId)
+            'page' => DataHelper::getPage(Post::where('threadId', $post->threadId)
                 ->where('postId', '<=', $notification->contentId)
                 ->isApproved($canApprovePosts)
-                ->count() / Controller::$perPageStatic)
+                ->count())
         ];
     }
 }

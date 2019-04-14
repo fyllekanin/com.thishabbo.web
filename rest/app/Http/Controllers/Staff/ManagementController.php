@@ -7,6 +7,7 @@ use App\EloquentModels\Staff\TimetableData;
 use App\EloquentModels\User\Login;
 use App\EloquentModels\User\User;
 use App\Helpers\ConfigHelper;
+use App\Helpers\DataHelper;
 use App\Helpers\SettingsHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
@@ -317,7 +318,7 @@ class ManagementController extends Controller {
      */
     public function getPermShows ($page) {
         $permShows = Timetable::isPerm()->take($this->perPage)->skip($this->getOffset($page))->get();
-        $total = ceil(Timetable::isPerm()->count() / $this->perPage);
+        $total = DataHelper::getPage(Timetable::isPerm()->count());
 
         return response()->json([
             'permShows' => $permShows->map(function ($item) {

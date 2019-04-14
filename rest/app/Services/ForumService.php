@@ -7,6 +7,7 @@ use App\EloquentModels\Forum\Post;
 use App\EloquentModels\Forum\Thread;
 use App\EloquentModels\Forum\ThreadRead;
 use App\Helpers\ConfigHelper;
+use App\Helpers\DataHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
@@ -153,7 +154,7 @@ class ForumService {
         return (object) [
             'total' => $threadsSql->count(),
             'data' => $threadsSql->take($amount)->skip($skip)->orderBy('lastPostId', 'DESC')->get()->map(function($thread) {
-                $page = ceil($thread->posts / Controller::$perPageStatic);
+                $page = DataHelper::getPage($thread->posts);
 
                 return (object) [
                     'title' => $thread->title,
@@ -224,7 +225,7 @@ class ForumService {
             'prefix' => $post->thread->prefix,
             'user' => UserHelper::getSlimUser($post->userId),
             'createdAt' => $post->createdAt->timestamp,
-            'page' => ceil($post->thread->posts / Controller::$perPageStatic)
+            'page' => DataHelper::getPage($post->thread->posts)
         ];
     }
 

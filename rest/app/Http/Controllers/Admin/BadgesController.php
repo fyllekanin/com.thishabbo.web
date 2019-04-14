@@ -6,6 +6,7 @@ use App\EloquentModels\Badge;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserItem;
 use App\Helpers\ConfigHelper;
+use App\Helpers\DataHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
@@ -195,7 +196,7 @@ class BadgesController extends Controller {
         $getBadgeSql = Badge::where('name', 'LIKE', '%' . $filter . '%')
             ->orderBy('name', 'ASC');
 
-        $total = ceil($getBadgeSql->count() / $this->perPage);
+        $total = DataHelper::getPage($getBadgeSql->count());
         $badges = $getBadgeSql->take($this->perPage)
             ->skip($this->getOffset($page))
             ->get();

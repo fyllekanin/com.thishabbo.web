@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Betting;
 
 use App\EloquentModels\Bet;
 use App\EloquentModels\BetCategory;
+use App\Helpers\DataHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
@@ -40,7 +41,7 @@ class CategoryController extends Controller {
 
         $getBetCategorySql = BetCategory::where('name', 'LIKE', '%' . $filter . '%')
             ->orderBy('displayOrder', 'ASC');
-        $total = ceil($getBetCategorySql->count() / $this->perPage);
+        $total = DataHelper::getPage($getBetCategorySql->count());
 
         return response()->json([
             'betCategories' => $getBetCategorySql->take($this->perPage)->skip($this->getOffset($page))->get(),

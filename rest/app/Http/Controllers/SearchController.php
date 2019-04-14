@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\EloquentModels\Forum\Post;
 use App\EloquentModels\Forum\Thread;
 use App\EloquentModels\User\User;
+use App\Helpers\DataHelper;
 use App\Helpers\UserHelper;
 use App\Services\ForumService;
 use App\Utils\Condition;
@@ -70,7 +71,7 @@ class SearchController extends Controller {
         $this->applyFilters($request, $usersSql);
 
         return (object) [
-            'total' => ceil($usersSql->count() / $this->perPage),
+            'total' => DataHelper::getPage($usersSql->count()),
             'items' => $usersSql->take($this->perPage)->offset($this->getOffset($page))->get()->map(function($item) {
                 return [
                     'id' => $item->userId,
@@ -89,13 +90,13 @@ class SearchController extends Controller {
         $this->applyFilters($request, $postsSql);
 
         return (object) [
-            'total' => ceil($postsSql->count() / $this->perPage),
+            'total' => DataHelper::getPage($postsSql->count()),
             'items' => $postsSql->take($this->perPage)->offset($this->getOffset($page))->get()->map(function($item) {
                 return [
                     'id' => $item->postId,
                     'parentId' => $item->threadId,
-                    'page' => ceil(Post::where('postId', '<', $item->postId)->where('threadId', $item->threadId)
-                            ->isApproved()->count() / $this->perPage),
+                    'page' => DataHelper::getPage(Post::where('postId', '<', $item->postId)->where('threadId', $item->threadId)
+                            ->isApproved()->count()),
                     'user' => UserHelper::getSlimUser($item->userId),
                     'title' => $item->thread->title,
                     'createdAt' => $item->createdAt->timestamp
@@ -110,7 +111,7 @@ class SearchController extends Controller {
         $this->applyFilters($request, $threadsSql);
 
         return (object) [
-            'total' => ceil($threadsSql->count() / $this->perPage),
+            'total' => DataHelper::getPage($threadsSql->count()),
             'items' => $threadsSql->take($this->perPage)->offset($this->getOffset($page))->get()->map(function($item) {
                 return [
                     'id' => $item->threadId,

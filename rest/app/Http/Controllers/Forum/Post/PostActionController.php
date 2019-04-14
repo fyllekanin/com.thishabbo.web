@@ -67,7 +67,7 @@ class PostActionController extends Controller {
             'thread' => $post->thread->title,
             'threadId' => $post->threadId,
             'categoryId' => $post->thread->categoryId
-        ]);
+        ], $post->postId);
         return response()->json();
     }
 
