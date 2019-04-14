@@ -37,6 +37,10 @@ export class FollowerViewComponent implements NotificationView {
         return this._notification.item.user;
     }
 
+    get isApproved(): boolean {
+        return this._notification.item.isApproved;
+    }
+
     @HostListener('click')
     click(): void {
         this.onClick.next(this._notification.notificationId);

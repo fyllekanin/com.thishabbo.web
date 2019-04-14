@@ -3,8 +3,14 @@
     <em class="fa fa-user"></em>
 </div>
 <div class="description">
-    New Follower! <br />
-    {{user.nickname}} just followed you!
+    <div *ngIf="isApproved">
+        New Follower! <br />
+        {{user.nickname}} just followed you!
+    </div>
+    <div *ngIf="!isApproved">
+        New Follower Request! <br />
+        {{user.nickname}} wanna follow you! Visit UserCP to approve/deny
+    </div>
     <div class="time">
         <i class="fas fa-clock"></i> about {{getTime()}}
     </div>
