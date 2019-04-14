@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Betting;
 use App\EloquentModels\Bet;
 use App\EloquentModels\BetCategory;
 use App\EloquentModels\User\UserBet;
+use App\Helpers\DataHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
@@ -107,7 +108,7 @@ class BetsController extends Controller {
         $getBadgeSql = Bet::where('name', 'LIKE', '%' . $filter . '%')
             ->orderBy('leftSide', 'ASC')->orderBy('rightSide', 'DESC');
 
-        $total = ceil($getBadgeSql->count() / $this->perPage);
+        $total = DataHelper::getPage($getBadgeSql->count());
         $bets = $getBadgeSql->take($this->perPage)->skip($this->getOffset($page))->get();
 
         return response()->json([

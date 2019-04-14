@@ -37,7 +37,12 @@ export class ContinuesInformationService implements Resolve<void> {
             if (this._authService.isLoggedIn()) {
                 this.stopEventStream();
                 this.startEventStream();
-        }
+            } else {
+                console.log(1);
+                this._notifications = [];
+                this._notificationsSubject.next(this._notifications);
+                this._lastNotificationCheck = 0;
+            }
         });
     }
 

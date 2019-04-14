@@ -41,6 +41,19 @@ export class ActiveUser {
     }
 }
 
+export class ActivityThread {
+    @primitive()
+    title: string;
+    @primitive()
+    threadId: number;
+    @primitive()
+    page: number;
+
+    constructor(source: Partial<ActivityThread>) {
+        ClassHelper.assign(this, source);
+    }
+}
+
 export class Activity {
     @primitive()
     logId: number;
@@ -48,8 +61,10 @@ export class Activity {
     user: SlimUser;
     @primitive()
     type: number;
+    @objectOf(ActivityThread)
+    thread: ActivityThread;
     @primitive()
-    thread: string;
+    createdAt: number;
 
     constructor(source: Partial<Activity>) {
         ClassHelper.assign(this, source);

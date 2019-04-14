@@ -7,6 +7,7 @@ use App\EloquentModels\Forum\ThreadPoll;
 use App\EloquentModels\Forum\ThreadPollAnswer;
 use App\EloquentModels\User\User;
 use App\Helpers\ConfigHelper;
+use App\Helpers\DataHelper;
 use App\Helpers\PermissionHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
@@ -78,7 +79,7 @@ class ThreadPollController extends Controller {
             ->orderBy('threads.title', 'ASC')
             ->select('threads.title', 'threads.threadId', 'thread_polls.*');
 
-        $total = ceil($getPollsSql->count() / $this->perPage);
+        $total = DataHelper::getPage($getPollsSql->count());
         $polls = $getPollsSql->take($this->perPage)->skip($this->getOffset($page))->get()->map(function ($poll) {
             return [
                 'threadPollId' => $poll->threadPollId,

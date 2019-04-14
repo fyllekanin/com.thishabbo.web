@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\User;
 use App\EloquentModels\User\Ban;
 use App\EloquentModels\User\Token;
 use App\EloquentModels\User\User;
+use App\Helpers\DataHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
@@ -105,7 +106,7 @@ class BansController extends Controller {
         $user = Cache::get('auth');
         $filter = $request->input('nickname');
         $bansSql = Ban::active()->withImmunityLessThan(User::getImmunity($user->userId))->withNicknameLike($filter);
-        $total = ceil($bansSql->count() / $this->perPage);
+        $total = DataHelper::getPage($bansSql->count());
         $bans = $bansSql->take($this->perPage)->skip($this->getOffset($page))->get()->map(function ($ban) {
             return $this->mapBan($ban);
         });

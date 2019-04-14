@@ -9,6 +9,9 @@ import { AuthService } from 'core/services/auth/auth.service';
 import { ProfileService } from './profile.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
+import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
+import { Activity } from 'core/services/continues-information/continues-information.model';
 
 @Component({
     selector: 'app-user-profile',
@@ -26,10 +29,14 @@ export class ProfileComponent extends Page implements OnDestroy {
         private _notificationService: NotificationService,
         private _sanitizer: DomSanitizer,
         elementRef: ElementRef,
-        activatedRoute: ActivatedRoute
+        activatedRoute: ActivatedRoute,
+        breadcrumbService: BreadcrumbService
     ) {
         super(elementRef);
         this.addSubscription(activatedRoute.data, this.onData.bind(this));
+        breadcrumbService.breadcrumb = new Breadcrumb({
+            current: `${activatedRoute.snapshot.params['nickname']}'s profile`
+        });
     }
 
     ngOnDestroy(): void {
@@ -45,6 +52,10 @@ export class ProfileComponent extends Page implements OnDestroy {
                 this.unfollowUser();
                 break;
         }
+    }
+
+    get activities(): Array<Activity> {
+        return this._data.activities;
     }
 
     get isPrivate(): boolean {

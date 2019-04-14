@@ -9,6 +9,7 @@ use App\EloquentModels\Forum\Post;
 use App\EloquentModels\Forum\Thread;
 use App\EloquentModels\Log\LogUser;
 use App\Helpers\ConfigHelper;
+use App\Helpers\DataHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
@@ -55,7 +56,7 @@ class PostCrudController extends Controller {
 
         $latestPosts = $this->forumService->getLatestPosts($categoryIds, $ignoredThreadIds,
             $ignoredCategoryIds, $this->perPage, $this->getOffset($page));
-        $total = ceil($latestPosts->total / $this->perPage);
+        $total = DataHelper::getPage($latestPosts->total);
 
         return response()->json([
             'page' => $page,

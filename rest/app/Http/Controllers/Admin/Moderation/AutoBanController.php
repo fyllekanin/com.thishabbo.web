@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Moderation;
 
 use App\EloquentModels\Infraction\AutoBan;
+use App\Helpers\DataHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
@@ -25,7 +26,7 @@ class AutoBanController extends Controller {
             ->skip($this->getOffset($page))
             ->take($this->perPage);
 
-        $total = ceil($autoBansSql->count() / $this->perPage);
+        $total = DataHelper::getPage($autoBansSql->count());
         $items = $autoBansSql->get()->map(function($item) {
             return [
                 'autoBanId' => $item->autoBanId,

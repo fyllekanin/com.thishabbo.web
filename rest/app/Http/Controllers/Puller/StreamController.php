@@ -11,6 +11,7 @@ use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Logger\Action;
 use App\Models\Radio\RadioSettings;
+use App\Services\ActivityService;
 use App\Services\ForumService;
 use App\Services\NotificationService;
 use App\Utils\BBcodeUtil;
@@ -22,6 +23,7 @@ class StreamController extends Controller {
     private $settingKeys;
     private $notificationService;
     private $forumService;
+    private $activityService;
 
     /**
      * RadioController constructor.
@@ -29,12 +31,14 @@ class StreamController extends Controller {
      *
      * @param NotificationService $notificationService
      * @param ForumService $forumService
+     * @param ActivityService $activityService
      */
-    public function __construct (NotificationService $notificationService, ForumService $forumService) {
+    public function __construct (NotificationService $notificationService, ForumService $forumService, ActivityService $activityService) {
         parent::__construct();
         $this->settingKeys = ConfigHelper::getKeyConfig();
         $this->notificationService = $notificationService;
         $this->forumService = $forumService;
+        $this->activityService = $activityService;
     }
 
     /**
@@ -54,7 +58,7 @@ class StreamController extends Controller {
         $response->setCallback(function () use ($userId) {
             $activeUsers = $this->getActiveUsers();
             $siteMessages = $this->getSiteMessages();
-            $activities = $this->getLatestActivities($userId);
+            $activities = $this->activityService->getLatestActivities($this->forumService->getAccessibleCategories($userId));
 
             for ($i = 0; $i < 6; $i++) {
                 $stats = [
@@ -128,93 +132,5 @@ class StreamController extends Controller {
      */
     private function getActiveUsers() {
         return User::orderBy('lastActivity', 'DESC')->take(28)->get(['nickname', 'userId']);
-    }
-
-    /**
-     * @param $userId
-     *
-     * @return array
-     */
-    private function getLatestActivities($userId) {
-        $supportedTypes = $this->getSupportedLogIds();
-        $categoryIds = $this->forumService->getAccessibleCategories($userId);
-
-        $activities = [];
-        $limit = 5;
-
-        while(count($activities) < $limit) {
-            $lastItem = end($activities);
-            $item = null;
-            if ($lastItem) {
-                $item = LogUser::whereIn('action', $supportedTypes)->orderBy('createdAt', 'DESC')->where('logId', '<', $lastItem->logId)->first();
-            } else {
-                $item = LogUser::whereIn('action', $supportedTypes)->orderBy('createdAt', 'DESC')->first();
-            }
-
-            if (!$item) {
-                break;
-            }
-
-            $item->data = isset($item->data) && !empty($item->data) ? (object) json_decode($item->data) : new \stdClass();
-            if ($this->isItemValid($item, $categoryIds)) {
-                $activities[] = $this->convertItem($item);
-            }
-        }
-
-        return $activities;
-    }
-
-    /**
-     * @param $item
-     * @param $categoryIds
-     *
-     * @return bool
-     */
-    private function isItemValid($item, $categoryIds) {
-        if (!$this->isThreadRelatedAction($item)) {
-            return true;
-        }
-        return in_array($item->data->categoryId, $categoryIds);
-    }
-
-    /**
-     * @return array
-     */
-    private function getSupportedLogIds() {
-        return array_map(function($action) {
-            return $action['id'];
-        }, [
-            Action::CREATED_POST,
-            Action::CREATED_THREAD,
-            Action::LIKED_POST,
-            Action::LIKED_DJ,
-            Action::STARTED_FASTEST_TYPE_GAME,
-            Action::STARTED_SNAKE_GAME,
-            Action::WON_ROULETTE,
-            Action::LOST_ROULETTE
-        ]);
-    }
-
-    /**
-     * @param $item
-     *
-     * @return object
-     */
-    private function convertItem($item) {
-        return (object) [
-            'logId' => $item->logId,
-            'user' => UserHelper::getSlimUser($item->userId),
-            'type' => $item->action,
-            'thread' => $this->isThreadRelatedAction($item) ? $item->data->thread : null
-        ];
-    }
-
-    /**
-     * @param $item
-     *
-     * @return bool
-     */
-    private function isThreadRelatedAction($item) {
-        return in_array($item->action, [Action::CREATED_POST['id'], Action::CREATED_THREAD['id'], Action::LIKED_POST['id']]);
     }
 }

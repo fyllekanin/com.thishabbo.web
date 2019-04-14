@@ -7,6 +7,7 @@ use App\EloquentModels\Log\LogMod;
 use App\EloquentModels\Log\LogStaff;
 use App\EloquentModels\Log\LogUser;
 use App\EloquentModels\User\User;
+use App\Helpers\DataHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Logger\Action;
@@ -61,7 +62,7 @@ class LogsController extends Controller {
             $log->whereIn('userId', $userIds);
         }
 
-        $total = ceil($log->count() / $this->perPage);
+        $total = DataHelper::getPage($log->count());
         $items = $log->take($this->perPage)->skip($this->getOffset($page))->get()->map(function($item) {
             $data = null;
             try {

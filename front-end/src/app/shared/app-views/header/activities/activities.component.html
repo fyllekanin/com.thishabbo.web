@@ -3,17 +3,17 @@
         <div *ngSwitchCase="40">
             <i class="fas fa-comment"></i>
             <strong>{{activity.user.nickname}}</strong> have posted in
-            <strong>{{activity.thread}}</strong>
+            <strong><a [routerLink]="['/forum/thread/' + activity.thread.threadId + '/page/' + activity.thread.page]">{{activity.thread.title}}</a></strong>
         </div>
         <div *ngSwitchCase="88">
             <i class="fas fa-comment"></i>
             <strong>{{activity.user.nickname}}</strong> created thread
-            <strong>{{activity.thread}}</strong>
+            <strong><a [routerLink]="['/forum/thread/' + activity.thread.threadId + '/page/' + activity.thread.page]">{{activity.thread.title}}</a></strong>
         </div>
         <div *ngSwitchCase="41">
             <i class="fas fa-thumbs-up"></i>
             <strong>{{activity.user.nickname}}</strong> have liked a post in
-            <strong>{{activity.thread}}</strong>
+            <strong><a [routerLink]="['/forum/thread/' + activity.thread.threadId + '/page/' + activity.thread.page]">{{activity.thread.title}}</a></strong>
         </div>
         <div *ngSwitchCase="18">
             <i class="fas fa-thumbs-up"></i>

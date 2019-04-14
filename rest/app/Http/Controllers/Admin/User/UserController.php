@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\User;
 
 use App\EloquentModels\User\User;
 use App\Helpers\ConfigHelper;
+use App\Helpers\DataHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
@@ -100,7 +101,7 @@ class UserController extends Controller {
             $getUserSql->where('habbo', 'LIKE', '%' . $habbo . '%');
         }
 
-        $total = ceil($getUserSql->count() / $this->perPage);
+        $total = DataHelper::getPage($getUserSql->count());
         $users = array_map(function ($user) {
             $user['credits'] = UserHelper::getUserDataOrCreate($user['userId'])->credits;
             return $user;

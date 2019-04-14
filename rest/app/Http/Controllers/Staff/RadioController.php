@@ -8,6 +8,7 @@ use App\EloquentModels\Staff\RadioRequest;
 use App\EloquentModels\Staff\Timetable;
 use App\EloquentModels\User\User;
 use App\Helpers\ConfigHelper;
+use App\Helpers\DataHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\SettingsHelper;
 use App\Helpers\UserHelper;
@@ -36,7 +37,7 @@ class RadioController extends Controller {
 
         $logSql = LogStaff::whereIn('action', [$bookAction, $unbookAction, $bookedPermAction, $deletedPermAction]);
 
-        $total = ceil($logSql->count() / $this->perPage);
+        $total = DataHelper::getPage($logSql->count());
         $items = $logSql->orderBy('logId', 'DESC')
             ->take($this->perPage)
             ->skip($this->getOffset($page))
@@ -168,7 +169,6 @@ class RadioController extends Controller {
         Condition::precondition($user->userId == 0, 400, 'You need to be logged in to like a DJ');
         Condition::precondition($user->userId == $djUser->userId, 400, 'You can not like yourself');
         $haveLikedWithInLimit = LogUser::where('userId', $user->userId)
-                ->whereJson($djUser->userId, ['djId'])
                 ->where('action', Action::getAction(Action::LIKED_DJ))
                 ->where('createdAt', '>', $nowMinus30Min)
                 ->count() > 0;

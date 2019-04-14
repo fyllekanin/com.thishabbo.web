@@ -10,6 +10,7 @@ use App\EloquentModels\User\Token;
 use App\EloquentModels\User\User;
 use App\Factories\Notification\NotificationFactory;
 use App\Helpers\ConfigHelper;
+use App\Helpers\DataHelper;
 use App\Helpers\SettingsHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
@@ -58,7 +59,7 @@ class InfractionController extends Controller {
             ->withoutGlobalScope('nonHardDeleted')
             ->orderBy('createdAt', 'DESC');
 
-        $total = ceil($infractionsSql->count() / $this->perPage);
+        $total = DataHelper::getPage($infractionsSql->count());
         $items = $infractionsSql->take($this->perPage)->skip($this->getOffset($page))
             ->get()->map(function($infraction) {
                 return [
