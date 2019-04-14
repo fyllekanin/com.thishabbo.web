@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 @Injectable()
-export class UsercpAvatarCoverPreviewService {
+export class UsercpAvatarCoverPreviewService implements OnDestroy {
     private _onUpdateSubject: Subject<void> = new Subject();
     private _onShowSubject: Subject<void> = new Subject();
     private _onHideSubject: Subject<void> = new Subject();
@@ -17,6 +17,12 @@ export class UsercpAvatarCoverPreviewService {
 
     hide() {
         this._onHideSubject.next();
+    }
+
+    ngOnDestroy (): void {
+        this._onUpdateSubject.complete();
+        this._onShowSubject.complete();
+        this._onHideSubject.complete();
     }
 
     get onUpdate(): Observable<void> {

@@ -1,11 +1,13 @@
 <div class="grid-container full">
-    <div class="grid-x margin-x">
+    <div class="grid-x">
 
-        <div class="small-12 medium-9">
+        <div class="cell small-12 medium-9">
             <div class="articles">
-                <h2>Badge Articles</h2>
                 <div class="grid-container full">
                     <div class="grid-x margin-x">
+                        <div class="cell small-12">
+                            <h2>Badge Articles</h2>
+                        </div>
                         <div class="cell small-6 medium-3" *ngFor="let article of articles">
                             <app-slim-article [article]="article"></app-slim-article>
                         </div>
@@ -16,7 +18,7 @@
             <app-home-media-articles [articles]="mediaArticles"></app-home-media-articles>
         </div>
 
-        <div class="cell small-12 medium-3">
+        <div class="cell small-12 medium-3 wrapper-margin-x">
             <div class="noticeboard">
                 <h2>Noticeboard</h2>
                 <app-notice *ngFor="let notice of notices" [notice]="notice"></app-notice>

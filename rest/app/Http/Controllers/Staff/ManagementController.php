@@ -186,7 +186,8 @@ class ManagementController extends Controller {
 
         $data = curl_exec($curl);
         curl_close($curl);
-        return json_decode($data);
+        $listeners = json_decode($data);
+        return $listeners ? $listeners : [];
     }
 
     /**

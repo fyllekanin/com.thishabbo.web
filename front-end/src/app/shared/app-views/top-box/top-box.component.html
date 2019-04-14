@@ -1,22 +1,22 @@
-<div class="menu-overlay" [ngClass]="showMenu ? 'menu-overlay-show' : ''" (click)="showMenu = false"></div>
+<div class="menu-overlay" [ngClass]="showMenu ? 'menu-overlay-show' : ''" (click)="closeMenu()"></div>
 <div class="menu" [ngClass]="menuClasses">
-    <span class="close" (click)="showMenu = false"><i class="fas fa-times"></i> Close</span>
+    <span class="close" (click)="closeMenu()"><i class="fas fa-times"></i> Close</span>
     <div class="user" *ngIf="isLoggedIn">
         <img class="avatar" [style.backgroundImage]="'url(' + avatar + ')'" />
         <span class="mobile-nickname">{{username}}</span>
         <div class="quick-links">
-            <a *ngIf="isAdmin" [routerLink]="['/admin/dashboard']" (click)="showMenu = false">SiteCP</a>
-            <a *ngIf="isStaff" [routerLink]="['/staff/dashboard']" (click)="showMenu = false">StaffCP</a>
-            <a [routerLink]="['/user/usercp']" (click)="showMenu = false">UserCP</a>
+            <a *ngIf="isAdmin" [routerLink]="['/admin/dashboard']" (click)="closeMenu()">SiteCP</a>
+            <a *ngIf="isStaff" [routerLink]="['/staff/dashboard']" (click)="closeMenu()">StaffCP</a>
+            <a [routerLink]="['/user/usercp']" (click)="closeMenu()">UserCP</a>
         </div>
     </div>
     <div class="menu-item" *ngFor="let item of routes">
-        <a *ngIf="!item.isLogout" [routerLink]="[item.url]" (click)="showMenu = false"><i [ngClass]="item.icon"></i> {{item.label}}</a>
-        <a *ngIf="item.isLogout" (click)="showMenu = false; logout()"><i [ngClass]="item.icon"></i> {{item.label}}</a>
-        <i *ngIf="item.haveChildren" class="fas fa-plus-square expand" (click)="item.isExpanded = !item.isExpanded"></i>
+        <a *ngIf="!item.isLogout" [routerLink]="[item.url]" (click)="closeMenu()"><i [ngClass]="item.icon"></i> {{item.label}}</a>
+        <a *ngIf="item.isLogout" (click)="closeMenu(); logout()"><i [ngClass]="item.icon"></i> {{item.label}}</a>
+        <i *ngIf="item.haveChildren" class="fas expand" [ngClass]="item.isExpanded ? 'fa-minus-square' : 'fa-plus-square'" (click)="item.isExpanded = !item.isExpanded"></i>
         <div *ngIf="item.isExpanded" class="children">
             <div *ngFor="let child of item.children" class="child">
-                <a *ngIf="!child.isDivider" [routerLink]="[child.url]" (click)="showMenu = false"><i [ngClass]="child.icon"></i> {{child.label}}</a>
+                <a *ngIf="!child.isDivider" [routerLink]="[child.url]" (click)="closeMenu()">{{child.label}}</a>
                 <div *ngIf="child.isDivider" class="divider"></div>
             </div>
         </div>

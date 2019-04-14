@@ -5,7 +5,7 @@
                 <app-user-link [user]="user"></app-user-link>
             </div>
             <div class="avatar">
-                <img *ngIf="useAvatarImage" appLazyLoad [image]="userAvatarUrl" (error)="onAvatarError()"/>
+                <img *ngIf="useAvatarImage" class="mobile-hidden" appLazyLoad [image]="userAvatarUrl" (error)="onAvatarError()"/>
             </div>
             <div class="default" *ngIf="!useAvatarImage">
                 <em class="fa fa-user"></em>
