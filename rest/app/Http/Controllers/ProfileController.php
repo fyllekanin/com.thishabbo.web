@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\EloquentModels\User\Follower;
 use App\EloquentModels\User\User;
 use App\Factories\Notification\NotificationFactory;
+use App\Helpers\ConfigHelper;
+use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
 use App\Logger;
 use App\Models\Logger\Action;
@@ -102,6 +104,10 @@ class ProfileController extends Controller {
      */
     private function isPrivate($user, $profile) {
         if ($user->userId == $profile->userId) {
+            return false;
+        }
+
+        if (PermissionHelper::haveAdminPermission($user->userId, ConfigHelper::getAdminConfig()->canPassPrivate)) {
             return false;
         }
 

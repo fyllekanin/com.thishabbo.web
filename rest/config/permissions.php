@@ -28,6 +28,7 @@ $adminPermissions->canManageInfractions = 262144;
 $adminPermissions->canDoInfractions = 524288;
 $adminPermissions->canSeeLogs = 1048576;
 $adminPermissions->canManageShop = 2097152;
+$adminPermissions->canPassPrivate = 4194304;
 
 $staffPermissions = new \stdClass();
 $staffPermissions->canRadio = 1;
