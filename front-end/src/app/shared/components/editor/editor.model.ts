@@ -35,7 +35,8 @@ export function getEditorSettings(emojis: Array<BBcodeModel>) {
                     '<li>{DATA}</li>': '[li]{DATA}[/li]',
                     '<ul>{DATA}</ul>': '[ul]{DATA}[/ul]',
                     '<img src="{URL}" align="right">': '[imgr]{URL}[/imgr]',
-                    '<img src="{URL}" align="left">': '[imgl]{URL}[/imgl]'
+                    '<img src="{URL}" align="left">': '[imgl]{URL}[/imgl]',
+                    '<details><summary>Spoiler</summary>{SELTEXT}</details>': '[spoiler]{SELTEXT}[/spoiler]'
                 }
             }
         },
