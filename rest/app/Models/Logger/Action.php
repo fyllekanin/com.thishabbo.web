@@ -1301,4 +1301,31 @@ class Action {
         'data' => [],
         'log' => 'log_user'
     ];
+
+    const APPROVED_FOLLOWER = [
+        'id' => 150,
+        'description' => 'Approved follower request',
+        'data' => [
+            'user' => 'Nickname of user that got denied'
+        ],
+        'log' => 'log_user'
+    ];
+
+    const DENIED_FOLLOWER = [
+        'id' => 151,
+        'description' => 'Denied follower request',
+        'data' => [
+            'user' => 'Nickname of user that got denied'
+        ],
+        'log' => 'log_user'
+    ];
+
+    const REMOVED_FOLLOWER = [
+        'id' => 152,
+        'description' => 'Removed follower',
+        'data' => [
+            'user' => 'Nickanem of user that got removed'
+        ],
+        'log' => 'log_user'
+    ];
 }

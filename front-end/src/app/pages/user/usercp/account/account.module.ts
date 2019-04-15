@@ -18,6 +18,10 @@ import { ThemeResolver } from './services/theme.resolver';
 import { ThemeComponent } from './theme/theme.component';
 import { ButtonModule } from 'shared/directives/button/button.module';
 import { VoucherCodeComponent } from './voucher-code/voucher-code.component';
+import { FollowersComponent } from './followers/followers.component';
+import { FollowersService } from './services/followers.service';
+import { TableModule } from 'shared/components/table/table.module';
+import { PaginationModule } from 'shared/app-views/pagination/pagination.module';
 
 @NgModule({
     imports: [
@@ -27,7 +31,9 @@ import { VoucherCodeComponent } from './voucher-code/voucher-code.component';
         TitleModule,
         ContentModule,
         StatsBoxesModule,
-        ButtonModule
+        ButtonModule,
+        TableModule,
+        PaginationModule
     ],
     declarations: [
         DashboardComponent,
@@ -37,12 +43,14 @@ import { VoucherCodeComponent } from './voucher-code/voucher-code.component';
         NicknameComponent,
         PasswordComponent,
         ThemeComponent,
-        VoucherCodeComponent
+        VoucherCodeComponent,
+        FollowersComponent
     ],
     providers: [
         GroupsService,
         HabboService,
-        ThemeResolver
+        ThemeResolver,
+        FollowersService
     ],
     exports: [
         RouterModule

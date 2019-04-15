@@ -10,6 +10,8 @@ import { HabboService } from './services/habbo.service';
 import { ThemeComponent } from './theme/theme.component';
 import { ThemeResolver } from './services/theme.resolver';
 import { VoucherCodeComponent } from './voucher-code/voucher-code.component';
+import { FollowersComponent } from './followers/followers.component';
+import { FollowersService } from './services/followers.service';
 
 export const accountRoutes: Routes = [
     {
@@ -52,5 +54,12 @@ export const accountRoutes: Routes = [
     {
         path: 'voucher-code',
         component: VoucherCodeComponent
+    },
+    {
+        path: 'followers/page/:page',
+        component: FollowersComponent,
+        resolve: {
+            data: FollowersService
+        }
     }
 ];

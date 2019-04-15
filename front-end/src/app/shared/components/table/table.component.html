@@ -73,6 +73,9 @@
                     <div [innerHTML]="row.data | safeHtml"></div>
                 </div>
             </div>
+            <div *ngIf="rows.length === 0">
+                There no data! ¯\_(ツ)_/¯
+            </div>
         </div>
     </app-content>
 </div>
