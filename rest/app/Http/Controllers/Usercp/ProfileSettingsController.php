@@ -14,7 +14,7 @@ use App\Utils\Value;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
-class ProfileController extends Controller {
+class ProfileSettingsController extends Controller {
 
     /**
      * @return \Illuminate\Http\JsonResponse
