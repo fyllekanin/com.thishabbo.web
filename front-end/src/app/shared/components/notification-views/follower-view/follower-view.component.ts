@@ -1,8 +1,8 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import { NotificationView } from 'shared/app-views/top-bar/notification-views/notification-views.model';
+import { NotificationView } from 'shared/components/notification-views/notification-views.model';
 import { NotificationModel } from 'shared/app-views/top-bar/top-bar.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
-import { FollowerView } from 'shared/app-views/top-bar/notification-views/follower-view/follower-view.model';
+import { FollowerView } from 'app/shared/components/notification-views/follower-view/follower-view.model';
 import { SlimUser } from 'core/services/auth/auth.model';
 import { Router } from '@angular/router';
 

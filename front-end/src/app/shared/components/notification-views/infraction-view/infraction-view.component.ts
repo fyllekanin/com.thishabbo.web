@@ -1,8 +1,8 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import { NotificationView } from 'shared/app-views/top-bar/notification-views/notification-views.model';
+import { NotificationView } from 'shared/components/notification-views/notification-views.model';
 import { NotificationModel, NotificationTypes } from 'shared/app-views/top-bar/top-bar.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
-import { InfractionView } from 'shared/app-views/top-bar/notification-views/infraction-view/infraction-view.model';
+import { InfractionView } from 'app/shared/components/notification-views/infraction-view/infraction-view.model';
 
 @Component({
     selector: 'app-top-bar-infraction-view',

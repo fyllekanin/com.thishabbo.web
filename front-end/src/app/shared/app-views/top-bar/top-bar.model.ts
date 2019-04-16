@@ -1,9 +1,9 @@
 import { ClassHelper, primitive } from 'shared/helpers/class.helper';
-import { BadgeView } from 'shared/app-views/top-bar/notification-views/badge-view/badge-view.model';
-import { CategoryView } from 'shared/app-views/top-bar/notification-views/category-view/category-view.model';
-import { ThreadView } from 'shared/app-views/top-bar/notification-views/thread-view/thread-view.model';
-import { InfractionView } from 'shared/app-views/top-bar/notification-views/infraction-view/infraction-view.model';
-import { FollowerView } from 'shared/app-views/top-bar/notification-views/follower-view/follower-view.model';
+import { BadgeView } from 'shared/components/notification-views/badge-view/badge-view.model';
+import { CategoryView } from 'shared/components/notification-views/category-view/category-view.model';
+import { ThreadView } from 'shared/components/notification-views/thread-view/thread-view.model';
+import { InfractionView } from 'shared/components/notification-views/infraction-view/infraction-view.model';
+import { FollowerView } from 'shared/components/notification-views/follower-view/follower-view.model';
 
 export enum NotificationTypes {
     MENTION = 1,

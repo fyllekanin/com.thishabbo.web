@@ -10,7 +10,9 @@ use App\EloquentModels\Theme;
 use App\EloquentModels\Forum\ThreadSubscription;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\VoucherCode;
+use App\Factories\Notification\NotificationView;
 use App\Helpers\ConfigHelper;
+use App\Helpers\DataHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
@@ -18,9 +20,12 @@ use App\Models\Logger\Action;
 use App\Services\AuthService;
 use App\Services\CreditsService;
 use App\Services\HabboService;
+use App\Services\NotificationService;
 use App\Utils\Condition;
+use App\Utils\Iterables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class AccountController extends Controller {
@@ -43,6 +48,35 @@ class AccountController extends Controller {
         $this->habboService = $habboService;
         $this->creditsService = $creditsService;
         $this->monthAgo = time() - 2419200;
+    }
+
+    /**
+     * @param NotificationService $notificationService
+     * @param $page
+     *
+     * @return array
+     */
+    public function getNotifications(NotificationService $notificationService, $page) {
+        $user = Cache::get('auth');
+
+        $notificationsSql = DB::table('notifications')
+            ->where('userId', $user->userId)
+            ->orderBy('createdAt', 'DESC');
+
+        $page = DataHelper::getPage($notificationsSql->count());
+        $notifications = $notificationsSql->take($this->perPage)->skip($this->getOffset($page))->get()->toArray();
+
+        $items = array_map(function($notification) use ($user) {
+            return new NotificationView($notification, $user);
+        }, Iterables::filter($notifications, function($notification) use ($user, $notificationService) {
+            return $notificationService->isNotificationValid($notification->contentId, $notification->type);
+        }));
+
+        return response()->json([
+            'total' => $page,
+            'page' => $page,
+            'items' => $items
+        ]);
     }
 
     /**

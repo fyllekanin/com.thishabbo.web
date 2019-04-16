@@ -51,7 +51,8 @@ export class UsercpComponent extends Page implements OnDestroy, OnInit {
                     new SideMenuItem({ title: 'Edit Home Page', link: '/user/usercp/account/home-page' }),
                     new SideMenuItem({ title: 'Edit Theme', link: '/user/usercp/account/theme' }),
                     new SideMenuItem({ title: 'Claim Voucher Code', link: '/user/usercp/account/voucher-code' }),
-                    new SideMenuItem({ title: 'Follower Management', link: '/user/usercp/account/followers/page/1' })
+                    new SideMenuItem({ title: 'Follower Management', link: '/user/usercp/account/followers/page/1' }),
+                    new SideMenuItem({ title: 'Notifications', link: '/user/usercp/account/notifications/page/1' })
                 ]
             }),
             new SideMenuBlock({

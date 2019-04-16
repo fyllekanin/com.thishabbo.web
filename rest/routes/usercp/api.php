@@ -52,3 +52,5 @@ Route::get('followers/page/{page}', 'Usercp\FollowersController@getFollowers');
 Route::put('followers/approve/{followerId}', 'Usercp\FollowersController@approveFollower');
 Route::delete('followers/deny/{followerId}', 'Usercp\FollowersController@denyFollower');
 Route::delete('followers/remove/{followerId}', 'Usercp\FollowersController@removeFollower');
+
+Route::get('notifications/page/{page}', 'Usercp\AccountController@getNotifications');
