@@ -48,6 +48,6 @@ export class NotificationsComponent extends Page implements OnDestroy {
             total: this._data.total,
             page: this._data.page,
             url: '/user/usercp/account/notifications/page/:page'
-        })
+        });
     }
 }
