@@ -1,6 +1,6 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import { NotificationView } from 'shared/app-views/top-bar/notification-views/notification-views.model';
-import { ThreadView } from 'shared/app-views/top-bar/notification-views/thread-view/thread-view.model';
+import { NotificationView } from 'shared/components/notification-views/notification-views.model';
+import { ThreadView } from 'app/shared/components/notification-views/thread-view/thread-view.model';
 import { NotificationModel, NotificationTypes } from 'shared/app-views/top-bar/top-bar.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
 import { SlimUser } from 'core/services/auth/auth.model';

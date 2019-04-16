@@ -1,0 +1,8 @@
+.notification-view {
+    margin: 0;
+    padding: 5px 7px 12px 5px;
+    color: #4c4949;
+    min-height: 82px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07) !important;
+}

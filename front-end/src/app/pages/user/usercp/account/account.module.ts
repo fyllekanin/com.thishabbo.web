@@ -22,6 +22,9 @@ import { FollowersComponent } from './followers/followers.component';
 import { FollowersService } from './services/followers.service';
 import { TableModule } from 'shared/components/table/table.module';
 import { PaginationModule } from 'shared/app-views/pagination/pagination.module';
+import { NotificationsComponent } from './notifications/notifications.component';
+import { NotificationsService } from './services/notifications.service';
+import { NotificationViewsModule } from 'shared/components/notification-views/notification-views.module';
 
 @NgModule({
     imports: [
@@ -33,7 +36,8 @@ import { PaginationModule } from 'shared/app-views/pagination/pagination.module'
         StatsBoxesModule,
         ButtonModule,
         TableModule,
-        PaginationModule
+        PaginationModule,
+        NotificationViewsModule
     ],
     declarations: [
         DashboardComponent,
@@ -44,13 +48,15 @@ import { PaginationModule } from 'shared/app-views/pagination/pagination.module'
         PasswordComponent,
         ThemeComponent,
         VoucherCodeComponent,
-        FollowersComponent
+        FollowersComponent,
+        NotificationsComponent
     ],
     providers: [
         GroupsService,
         HabboService,
         ThemeResolver,
-        FollowersService
+        FollowersService,
+        NotificationsService
     ],
     exports: [
         RouterModule

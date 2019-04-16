@@ -1,7 +1,7 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import { NotificationView } from 'shared/app-views/top-bar/notification-views/notification-views.model';
+import { NotificationView } from 'shared/components/notification-views/notification-views.model';
 import { NotificationModel } from 'shared/app-views/top-bar/top-bar.model';
-import { BadgeView } from 'shared/app-views/top-bar/notification-views/badge-view/badge-view.model';
+import { BadgeView } from 'app/shared/components/notification-views/badge-view/badge-view.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
 
 @Component({

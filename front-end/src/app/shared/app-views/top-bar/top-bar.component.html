@@ -31,7 +31,9 @@
                         <div class="notification-top">
                             <b>Notifications</b>
                             <div class="pull-right">
-                                <a class="notification-tool" (click)="readAll()" *ngIf="notifications.length > 0">Mark all as read</a>
+                                <a class="notification-tool" [routerLink]="['/user/usercp/account/notifications/page/1']">See All</a>
+                                <a class="notification-tool not-clickable">-</a>
+                                <a class="notification-tool" (click)="readAll()" *ngIf="notifications.length > 0">Read All</a>
                                 <a class="notification-tool not-clickable" *ngIf="notifications.length > 0">-</a>
                                 <a class="notification-tool" [routerLink]="['/user/usercp/subscriptions/notification-settings']">Settings</a>
                             </div>

@@ -7,12 +7,8 @@ import { FormsModule } from '@angular/forms';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
 import { UserProfileModule } from 'shared/directives/user-profile.module';
-import { BadgeViewComponent } from 'shared/app-views/top-bar/notification-views/badge-view/badge-view.component';
-import { CategoryViewComponent } from 'shared/app-views/top-bar/notification-views/category-view/category-view.component';
-import { ThreadViewComponent } from 'shared/app-views/top-bar/notification-views/thread-view/thread-view.component';
-import { InfractionViewComponent } from 'shared/app-views/top-bar/notification-views/infraction-view/infraction-view.component';
 import { ContinuesInformationModule } from 'core/services/continues-information/continues-information.module';
-import { FollowerViewComponent } from 'shared/app-views/top-bar/notification-views/follower-view/follower-view.component';
+import { NotificationViewsModule } from 'shared/components/notification-views/notification-views.module';
 
 @NgModule({
     imports: [
@@ -24,15 +20,11 @@ import { FollowerViewComponent } from 'shared/app-views/top-bar/notification-vie
         FormsModule,
         SafeHtmlModule,
         SafeStyleModule,
-        UserProfileModule
+        UserProfileModule,
+        NotificationViewsModule
     ],
     declarations: [
-        TopBarComponent,
-        BadgeViewComponent,
-        CategoryViewComponent,
-        ThreadViewComponent,
-        InfractionViewComponent,
-        FollowerViewComponent
+        TopBarComponent
     ],
     providers: [],
     exports: [

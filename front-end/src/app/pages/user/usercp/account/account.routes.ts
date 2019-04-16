@@ -12,6 +12,8 @@ import { ThemeResolver } from './services/theme.resolver';
 import { VoucherCodeComponent } from './voucher-code/voucher-code.component';
 import { FollowersComponent } from './followers/followers.component';
 import { FollowersService } from './services/followers.service';
+import { NotificationsComponent } from './notifications/notifications.component';
+import { NotificationsService } from './services/notifications.service';
 
 export const accountRoutes: Routes = [
     {
@@ -60,6 +62,13 @@ export const accountRoutes: Routes = [
         component: FollowersComponent,
         resolve: {
             data: FollowersService
+        }
+    },
+    {
+        path: 'notifications/page/:page',
+        component: NotificationsComponent,
+        resolve: {
+            data: NotificationsService
         }
     }
 ];
