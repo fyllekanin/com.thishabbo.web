@@ -36,9 +36,13 @@ class UserGroupsController extends Controller {
         $displayGroupId = $request->input('displayGroupId');
         Condition::precondition(!$groupIds, 400, 'Group ids are missing');
 
-        $before = $current->groups->map(function($group) {
-            return Group::where('groupId', $group->groupId)->first()->name;
+        $currentGroups = $current->groups->map(function($group) {
+            return Group::where('groupId', $group->groupId)->first();
         });
+        $before = $currentGroups->map(function($group) { return $group->name; });
+        $highImmunityGroupIds = $currentGroups->filter(function($group) use ($myImmunity) {
+            return $group->immunity >= $myImmunity;
+        })->map(function($group) { return $group->groupId; });
         $groups = Group::whereIn('groupId', $groupIds)->get()->toArray();
         Condition::precondition(Iterables::filter($groups, function ($group) use ($myImmunity) {
             return $group['immunity'] >= $myImmunity;
@@ -46,7 +50,7 @@ class UserGroupsController extends Controller {
 
         Condition::precondition($displayGroupId > 0 && !in_array($displayGroupId, $groupIds), 400, 'Display group is not one of the possible groups');
 
-        UserGroup::where('userId', $userId)->delete();
+        UserGroup::where('userId', $userId)->whereNotIn('groupId', $highImmunityGroupIds)->delete();
         foreach ($groupIds as $groupId) {
             $userGroup = new UserGroup([
                 'userId' => $userId,
