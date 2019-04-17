@@ -51,6 +51,8 @@ export class RadioControlsComponent {
             this.player.nativeElement.pause();
             this.player.nativeElement.currentTime = 0;
         }
+
+        debugger;
     }
 
     openRequest(): void {
