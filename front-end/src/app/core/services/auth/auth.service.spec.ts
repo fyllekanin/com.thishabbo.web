@@ -13,10 +13,11 @@ import { DialogService } from 'core/services/dialog/dialog.service';
 describe('AuthService', () => {
 
     class HttpServiceMock {
-        post() {
+        post () {
+            return null;
         }
 
-        get() {
+        get () {
         }
     }
 
@@ -28,8 +29,8 @@ describe('AuthService', () => {
         TestBed.configureTestingModule({
             imports: [
                 RouterTestingModule.withRoutes([
-                    { path: 'auth/login', redirectTo: '' },
-                    { path: 'dashboard', redirectTo: '' }
+                    {path: 'auth/login', redirectTo: ''},
+                    {path: 'dashboard', redirectTo: ''}
                 ])
             ],
             providers: [
@@ -38,7 +39,8 @@ describe('AuthService', () => {
                 RouterStateService,
                 {
                     provide: ContinuesInformationService, useValue: {
-                        triggerFetch: () => {}
+                        triggerFetch: () => {
+                        }
                     }
                 },
                 {
@@ -49,7 +51,7 @@ describe('AuthService', () => {
                         }
                     }
                 },
-                { provide: HttpService, useValue: httpServiceMock }
+                {provide: HttpService, useValue: httpServiceMock}
             ]
         });
 
@@ -120,7 +122,7 @@ describe('AuthService', () => {
 
     it('getAccessToken should return "access-token" from localStorage', () => {
         // Given
-        const user = { oauth: { accessToken: 'token' } };
+        const user = {oauth: {accessToken: 'token'}};
         localStorage.setItem(LOCAL_STORAGE.AUTH_USER, JSON.stringify(user));
 
         // When

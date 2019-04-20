@@ -10,17 +10,19 @@ describe('TopBoxComponent', () => {
     class MockAuthService {
         subject = new Subject<void>();
 
-        get onUserChange(): Observable<void> {
+        get onUserChange (): Observable<void> {
             return this.subject.asObservable();
         }
 
-        get authUser() {
+        get authUser () {
             return null;
         }
 
-        isLoggedIn() {}
+        isLoggedIn () {
+            return false;
+        }
 
-        triggerUserChange(): void {
+        triggerUserChange (): void {
             this.subject.next();
         }
     }
@@ -37,7 +39,7 @@ describe('TopBoxComponent', () => {
                 TopBoxComponent
             ],
             providers: [
-                { provide: AuthService, useValue: new MockAuthService() }
+                {provide: AuthService, useValue: new MockAuthService()}
             ],
             schemas: [
                 NO_ERRORS_SCHEMA
@@ -49,30 +51,30 @@ describe('TopBoxComponent', () => {
     });
 
     describe('nickname', () => {
-       it('should return default value User if not logged in', () => {
-           // Given
-           spyOn(authService, 'isLoggedIn').and.returnValue(false);
-           authService.triggerUserChange();
+        it('should return default value User if not logged in', () => {
+            // Given
+            spyOn(authService, 'isLoggedIn').and.returnValue(false);
+            authService.triggerUserChange();
 
-           // When
-           const result = component.nickname;
+            // When
+            const result = component.nickname;
 
-           // Then
-           expect(result).toEqual('User');
-       });
-       it('should return nickname of user if logged in', () => {
-           // Given
-           spyOn(authService, 'isLoggedIn').and.returnValue(true);
-           spyOnProperty(authService, 'authUser', 'get')
-               .and.returnValue({ nickname: 'Tovven' });
-           authService.triggerUserChange();
+            // Then
+            expect(result).toEqual('User');
+        });
+        it('should return nickname of user if logged in', () => {
+            // Given
+            spyOn(authService, 'isLoggedIn').and.returnValue(true);
+            spyOnProperty(authService, 'authUser', 'get')
+                .and.returnValue({nickname: 'Tovven'});
+            authService.triggerUserChange();
 
-           // When
-           const result = component.nickname;
+            // When
+            const result = component.nickname;
 
-           // Then
-           expect(result).toEqual('Tovven');
-       });
+            // Then
+            expect(result).toEqual('Tovven');
+        });
     });
 
     describe('isLoggedIn', () => {

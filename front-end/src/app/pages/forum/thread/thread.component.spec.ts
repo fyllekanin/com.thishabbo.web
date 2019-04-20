@@ -1,11 +1,11 @@
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { ForumPermissions } from '../forum.model';
-import { throwError, Subject } from 'rxjs';
+import { Subject, throwError } from 'rxjs';
 import { AuthService } from 'core/services/auth/auth.service';
 import { HttpService } from 'core/services/http/http.service';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ThreadComponent } from './thread.component';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { EditorAction } from 'shared/components/editor/editor.model';
@@ -19,17 +19,24 @@ import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
 describe('ThreadComponent', () => {
 
     class HttpServiceMock {
-        post() {}
-    }
-    class AuthServiceMock {
-        isLoggedIn() {}
-        get authUser() {
-            return { userId: 1 };
+        post () {
+            return null;
         }
     }
+
+    class AuthServiceMock {
+        isLoggedIn () {
+            return true;
+        }
+
+        get authUser () {
+            return {userId: 1};
+        }
+    }
+
     class NotificationServiceMock {
-        sendGlobalNotification() {}
-        failureNotification() {}
+        failureNotification () {
+        }
     }
 
     let fixture: ComponentFixture<ThreadComponent>;
@@ -53,15 +60,20 @@ describe('ThreadComponent', () => {
                 ThreadComponent
             ],
             providers: [
-                { provide: HttpService, useValue: httpService },
-                { provide: AuthService, useValue: authService },
-                { provide: NotificationService, useValue: notificationService },
-                { provide: ActivatedRoute, useValue: { data: sendThread.asObservable() } },
-                { provide: BreadcrumbService, useValue: { set breadcrumb(_val) {} } },
-                { provide: DialogService, useValue: {} },
-                { provide: ThreadService, useValue: {} }
+                {provide: HttpService, useValue: httpService},
+                {provide: AuthService, useValue: authService},
+                {provide: NotificationService, useValue: notificationService},
+                {provide: ActivatedRoute, useValue: {data: sendThread.asObservable()}},
+                {
+                    provide: BreadcrumbService, useValue: {
+                        set breadcrumb (_val) {
+                        }
+                    }
+                },
+                {provide: DialogService, useValue: {}},
+                {provide: ThreadService, useValue: {}}
             ],
-            schemas: [ NO_ERRORS_SCHEMA ]
+            schemas: [NO_ERRORS_SCHEMA]
         });
 
         fixture = TestBed.createComponent(ThreadComponent);
@@ -72,10 +84,10 @@ describe('ThreadComponent', () => {
         it('should call failureNotification on failed POST', () => {
             // Given
             spyOn(notificationService, 'failureNotification');
-            spyOn(httpService, 'post').and.returnValue(throwError({ error: { message: 'Message' } }));
+            spyOn(httpService, 'post').and.returnValue(throwError({error: {message: 'Message'}}));
 
             // When
-            component.onButtonClick(new EditorAction({ title: 'test', value: ThreadActions.POST }));
+            component.onButtonClick(new EditorAction({title: 'test', value: ThreadActions.POST}));
 
             // Then
             expect(httpService.post).toHaveBeenCalledTimes(1);
@@ -106,7 +118,7 @@ describe('ThreadComponent', () => {
     describe('subTitle', () => {
         it('should return empty string if thread is open', () => {
             // Given
-            sendThread.next({ data: new ThreadPage({ isOpen: true }) });
+            sendThread.next({data: new ThreadPage({isOpen: true})});
 
             // When
             const result = component.subTitle;
@@ -201,7 +213,7 @@ describe('ThreadComponent', () => {
                 data: new ThreadPage({
                     isOpen: false,
                     categoryIsOpen: true,
-                    forumPermissions: new ForumPermissions({ canCloseOpenThread: true })
+                    forumPermissions: new ForumPermissions({canCloseOpenThread: true})
                 })
             });
 
