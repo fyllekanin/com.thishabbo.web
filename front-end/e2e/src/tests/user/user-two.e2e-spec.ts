@@ -35,6 +35,7 @@ describe('User #2', () => {
 
         NavigationUtil.clickUserNavigation('UserCP');
         UserCpPage.toggleSetting('Thread Tools');
+        NavigationUtil.clickTab('Save');
 
         NavigationUtil.clickNavigation('Forum');
         NavigationUtil.clickCategory('Welcome!');
@@ -43,5 +44,6 @@ describe('User #2', () => {
 
         NavigationUtil.clickUserNavigation('UserCP');
         UserCpPage.toggleSetting('Thread Tools');
+        NavigationUtil.clickTab('Save');
     });
 });
