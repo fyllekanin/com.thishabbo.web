@@ -86,6 +86,16 @@ export class DashboardComponent extends Page implements OnDestroy {
         this._notificationService.sendInfoNotification('Device settings saved!');
     }
 
+    onRemove(tab: TabModel): void {
+        this._tabs = this._tabs.filter(item => item.label.toLowerCase() !== tab.label.toLowerCase());
+        localStorage.setItem(LOCAL_STORAGE.TABS, JSON.stringify(this._tabs));
+        this._continuesInformation.tabsUpdated();
+    }
+
+    ngOnDestroy (): void {
+        super.destroy();
+    }
+
     private updateEditorSourceMode(): void {
         if (this.isEditorSourceMode) {
             localStorage.setItem(LOCAL_STORAGE.EDITOR_MODE, 'true');
@@ -116,16 +126,6 @@ export class DashboardComponent extends Page implements OnDestroy {
         } else {
             localStorage.removeItem(LOCAL_STORAGE.THREAD_TOOLS);
         }
-    }
-
-    onRemove(tab: TabModel): void {
-        this._tabs = this._tabs.filter(item => item.label.toLowerCase() !== tab.label.toLowerCase());
-        localStorage.setItem(LOCAL_STORAGE.TABS, JSON.stringify(this._tabs));
-        this._continuesInformation.tabsUpdated();
-    }
-
-    ngOnDestroy (): void {
-        super.destroy();
     }
 
     get tabs(): Array<TabModel> {

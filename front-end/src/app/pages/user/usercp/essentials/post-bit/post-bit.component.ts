@@ -60,7 +60,7 @@ export class PostBitComponent extends Page implements OnDestroy {
                         callback: this.onSelectedBadges.bind(this)
                     })
                 ]
-            })
+            });
         }
     }
 
