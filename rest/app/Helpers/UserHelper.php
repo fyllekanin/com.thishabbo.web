@@ -2,10 +2,12 @@
 
 namespace App\Helpers;
 
+use App\EloquentModels\Badge;
 use App\EloquentModels\Group\Group;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserData;
 use App\EloquentModels\User\UserGroup;
+use App\EloquentModels\User\UserItem;
 use App\Utils\BBcodeUtil;
 use App\Utils\Value;
 use Illuminate\Support\Facades\Cache;
@@ -74,6 +76,15 @@ class UserHelper {
         $user->createdAt = $postBit->hideJoinDate ? null : $userObj->createdAt->timestamp;
         $user->posts = $postBit->hidePostCount ? null : $userObj->posts;
         $user->likes = $postBit->hideLikesCount ? null : $userObj->likes;
+        $user->badges = UserItem::badge()->where('userId', $user->userId)->isActive()->pluck('itemId')->map(function($badgeId) {
+            $badge = Badge::find($badgeId);
+            return [
+                'badgeId' => $badgeId,
+                'name' => $badge->name,
+                'description' => $badge->description,
+                'updatedAt' => $badge->updatedAt
+            ];
+        });
 
         $user = self::setUserDataFields($user, $userdata, $postBit);
 

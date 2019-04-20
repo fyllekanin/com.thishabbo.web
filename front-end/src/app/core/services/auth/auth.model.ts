@@ -1,5 +1,4 @@
 import { arrayOf, ClassHelper, objectOf, primitive, primitiveOf } from 'shared/helpers/class.helper';
-import { IUserProfile } from 'shared/directives/user-profile.directive';
 
 export class DisplayGroup {
     @primitive()
@@ -34,6 +33,21 @@ export class UserSocial {
     }
 }
 
+export class UserBadge {
+    @primitive()
+    badgeId: number;
+    @primitive()
+    name: string;
+    @primitive()
+    description: string;
+    @primitive()
+    updatedAt: number;
+
+    constructor(source: Partial<UserBadge>) {
+        ClassHelper.assign(this, source);
+    }
+}
+
 export class SlimUser {
     @primitive()
     userId: number;
@@ -48,10 +62,6 @@ export class SlimUser {
 
     constructor(source?: Partial<SlimUser>) {
         ClassHelper.assign(this, source);
-    }
-
-    getUserProfileInfo(): IUserProfile {
-        return { userId: this.userId, avatarUpdatedAt: this.avatarUpdatedAt };
     }
 }
 
@@ -70,6 +80,8 @@ export class User extends SlimUser {
     likes: number;
     @objectOf(UserSocial)
     social: UserSocial;
+    @arrayOf(UserBadge)
+    badges: Array<UserBadge> = [];
 
     constructor(source?: Partial<User>) {
         super(source);

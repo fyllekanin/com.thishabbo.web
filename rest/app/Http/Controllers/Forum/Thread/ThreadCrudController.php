@@ -269,7 +269,7 @@ class ThreadCrudController extends Controller {
         $thread->forumPermissions = $permissions;
         $thread->isSubscribed = ThreadSubscription::where('userId', $user->userId)->where('threadId', $threadId)->count() > 0;
         $thread->append('categoryIsOpen');
-        $thread->poll =$this->getThreadPoll($thread->threadId, $user->userId);
+        $thread->poll = $this->getThreadPoll($thread->threadId, $user->userId);
         $thread->isIgnored = IgnoredThread::where('userId', $user->userId)->where('threadId', $thread->threadId)->count() > 0;
         $thread->readers = ThreadRead::where('threadId', $thread->threadId)->take(20)->orderBy('updatedAt', 'DESC')
             ->get(['userId', 'updatedAt'])->map(function($read) {

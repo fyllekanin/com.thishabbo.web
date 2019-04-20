@@ -1,6 +1,6 @@
 <app-stats-boxes [stats]="stats"></app-stats-boxes>
 
-<app-title [title]="'Device Settings'"></app-title>
+<app-title [title]="'Device Settings'" [tabs]="saveTab" (onTabClick)="onSave()"></app-title>
 <app-content>
         <em>These are settings which are bound to the current device you are using. <br />
         If you visit ThisHabbo on another device these settings will be default until changed. Once ticked, the page will automatically save your changes.</em>
@@ -8,14 +8,14 @@
     <div>
         <label class="checkbox-container">
             Default BBcode mode in editor
-            <input type="checkbox" [(ngModel)]="editorSourceMode">
+            <input type="checkbox" [(ngModel)]="isEditorSourceMode">
             <span class="checkmark"></span>
         </label>
     </div>
     <div>
         <label class="checkbox-container">
             Ignore Signatures
-            <input type="checkbox" [(ngModel)]="ignoreSignatures">
+            <input type="checkbox" [(ngModel)]="doIgnoreSignatures">
             <span class="checkmark"></span>
         </label>
     </div>
@@ -23,7 +23,7 @@
     <div>
         <label class="checkbox-container">
             Fixed menu <em>- Should the menu follow you when you scroll? (needs reload after checking this)</em>
-            <input type="checkbox" [(ngModel)]="fixedMenu">
+            <input type="checkbox" [(ngModel)]="haveFixedMenu">
             <span class="checkmark"></span>
         </label>
     </div>
@@ -31,7 +31,7 @@
     <div>
         <label class="checkbox-container">
             Thread Tools <em>- Should tools be default visible? (default tools are hidden until toggled)</em>
-            <input type="checkbox" [(ngModel)]="threadTools">
+            <input type="checkbox" [(ngModel)]="showThreadTools">
             <span class="checkmark"></span>
         </label>
     </div>

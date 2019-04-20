@@ -130,7 +130,7 @@ export class SnakeComponent extends Page implements AfterViewInit, OnDestroy {
                 this._highscore = res.highscore.map(item => new HighScoreModel(item));
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Score',
-                    message: `${res.score} candys`
+                    message: `${res.score} candies`
                 }));
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
