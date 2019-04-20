@@ -141,7 +141,7 @@ export class BadgesListComponent extends Page implements OnDestroy {
                 id: badge.badgeId,
                 cells: [
                     new TableCell({
-                        title: `<img appLazyLoad [image]="'/rest/resources/images/badges/${badge.badgeId}.gif?${badge.updatedAt}'" />`
+                        title: `<img src="/rest/resources/images/badges/${badge.badgeId}.gif?${badge.updatedAt}" />`
                     }),
                     new TableCell({ title: badge.name }),
                     new TableCell({ title: badge.description }),

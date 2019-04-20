@@ -25,4 +25,8 @@ class UserItem extends UnixTimeModel {
     public function scopeBadge (Builder $query) {
         return $query->where('type', $this->itemTypes->badge);
     }
+
+    public function scopeIsActive (Builder $query) {
+        return $query->where('isActive', true);
+    }
 }

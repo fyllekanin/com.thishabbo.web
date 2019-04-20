@@ -125,3 +125,7 @@ img {
         width: 100%;
     }
 }
+
+.post-badge {
+    margin: 5px 5px;
+}

@@ -18,6 +18,7 @@ import { EditorModule } from 'shared/components/editor/editor.module';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 import { ProfileComponent } from './profile/profile.component';
 import { ProfileService } from './services/profile.service';
+import { BadgesComponent } from './post-bit/badges/badges.component';
 
 @NgModule({
     imports: [
@@ -35,7 +36,11 @@ import { ProfileService } from './services/profile.service';
         PostBitComponent,
         SignatureComponent,
         SocialNetworksComponent,
-        ProfileComponent
+        ProfileComponent,
+        BadgesComponent
+    ],
+    entryComponents: [
+        BadgesComponent
     ],
     providers: [
         AvatarService,

@@ -27,7 +27,7 @@ class BadgesController extends Controller {
         $badge = Badge::find($badgeId);
         Condition::precondition(!$badge, 404, 'Badge do not exist');
 
-        $users = UserItem::badge()->get()->map(function ($userItem) {
+        $users = UserItem::badge()->where('itemId', $badgeId)->get()->map(function ($userItem) {
             return [
                 'nickname' => $userItem->user->nickname,
                 'userId' => $userItem->userId

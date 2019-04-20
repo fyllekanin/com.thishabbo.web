@@ -119,9 +119,9 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
         if (!this._editorInstance) {
             return;
         }
-        this._editorInstance.keybind('DOMSubtreeModified', e => {
+        this._editorInstance.keybind('keyup', e => {
             this.onKeyUp.emit(this.getEditorValue());
-            if (e.ctrlKey && e.keyCode === 83) {
+            if (e.altKey && e.keyCode === 83) {
                 e.preventDefault();
                 this._editorActions.filter(button => button.saveCallback).forEach(button => {
                     button.saveCallback();

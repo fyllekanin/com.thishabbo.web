@@ -22,7 +22,7 @@ export class PostBitService implements Resolve<PostBitModel> {
     }
 
     save(data: PostBitModel): void {
-        this._httpService.put('usercp/post-bit', { postBitOptions: data })
+        this._httpService.put('usercp/post-bit', { data: data })
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',

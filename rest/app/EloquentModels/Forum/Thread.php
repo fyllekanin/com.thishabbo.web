@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\App;
  * @property mixed threadId
  * @property mixed categoryId
  * @property mixed userId
+ * @property mixed category
+ * @property mixed firstPost
+ * @property mixed templateData
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class Thread extends DeletableModel {

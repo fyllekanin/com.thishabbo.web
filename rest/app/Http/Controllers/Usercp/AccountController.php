@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Usercp;
 
+use App\EloquentModels\Badge;
 use App\EloquentModels\Forum\CategorySubscription;
 use App\EloquentModels\Forum\IgnoredCategory;
 use App\EloquentModels\Forum\IgnoredThread;
@@ -9,6 +10,7 @@ use App\EloquentModels\Log\LogUser;
 use App\EloquentModels\Theme;
 use App\EloquentModels\Forum\ThreadSubscription;
 use App\EloquentModels\User\User;
+use App\EloquentModels\User\UserItem;
 use App\EloquentModels\User\VoucherCode;
 use App\Factories\Notification\NotificationView;
 use App\Helpers\ConfigHelper;
@@ -315,8 +317,25 @@ class AccountController extends Controller {
      */
     public function getPostBit () {
         $user = Cache::get('auth');
+        $selectedBadgeIds = UserItem::where('userId', $user->userId)->badge()->isActive()->pluck('itemId');
 
-        return response()->json($this->buildPostBitOptions($user));
+        return response()->json([
+            'information' => $this->buildPostBitOptions($user),
+            'badges' => Badge::whereIn('badgeId', $selectedBadgeIds)->orderBy('updatedAt', 'ASC')->get(['badgeId', 'name', 'updatedAt'])
+        ]);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAvailableBadges() {
+        $user = Cache::get('auth');
+        $availableBadgeIds = UserItem::where('userId', $user->userId)->badge()->pluck('itemId');
+
+        return response()->json(Badge::whereIn('badgeId', $availableBadgeIds)->get(['badgeId', 'name', 'updatedAt'])->map(function($badge) use ($user) {
+            $badge->isActive = UserItem::badge()->where('itemId', $badge->badgeId)->isActive()->where('userId', $user->userId)->count() > 0;
+            return $badge;
+        }));
     }
 
     /**
@@ -328,11 +347,17 @@ class AccountController extends Controller {
      */
     public function updatePostBit (Request $request) {
         $user = Cache::get('auth');
-        $postBitOptions = $request->input('postBitOptions');
-        $userData = UserHelper::getUserDataOrCreate($user->userId);
+        $data = (object) $request->input('data');
+        $badgeIds = array_map(function($badge) { return $badge['badgeId']; }, $data->badges);
 
-        $userData->postBit = $this->convertPostBitOptions($postBitOptions);
+        Condition::precondition(count($badgeIds) > 3, 400, 'You can not have more then 3 badges selected!');
+
+        $userData = UserHelper::getUserDataOrCreate($user->userId);
+        $userData->postBit = $this->convertPostBitOptions($data->information);
         $userData->save();
+
+        UserItem::badge()->where('userId', $user->userId)->update(['isActive' => false]);
+        UserItem::badge()->where('userId', $user->userId)->whereIn('itemId', $badgeIds)->update(['isActive' => true]);
 
         Logger::user($user->userId, $request->ip(), Action::UPDATED_POSTBIT);
         return response()->json();

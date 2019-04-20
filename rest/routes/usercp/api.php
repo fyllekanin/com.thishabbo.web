@@ -19,6 +19,7 @@ Route::get('avatar', 'Usercp\ProfileSettingsController@getAvatarSize');
 
 Route::get('post-bit', 'Usercp\AccountController@getPostBit');
 Route::put('post-bit', 'Usercp\AccountController@updatePostBit');
+Route::get('badges', 'Usercp\AccountController@getAvailableBadges');
 
 Route::get('social-networks', 'Usercp\ProfileSettingsController@getSocialNetworks');
 Route::put('social-networks', 'Usercp\ProfileSettingsController@updateSocialNetworks');
