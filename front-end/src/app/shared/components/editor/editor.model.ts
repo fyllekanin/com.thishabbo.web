@@ -1,5 +1,4 @@
-import { ClassHelper } from 'shared/helpers/class.helper';
-import { primitive } from 'shared/helpers/class.helper';
+import { ClassHelper, primitive } from 'shared/helpers/class.helper';
 import { ButtonColor } from 'shared/directives/button/button.model';
 import { BBcodeModel } from '../../../pages/admin/sub-pages/content/bbcodes/bbcode.model';
 
@@ -13,15 +12,16 @@ export class EditorAction {
     buttonColor?: ButtonColor;
     saveCallback?: () => {};
 
-    constructor(source: Partial<EditorAction>) {
+    constructor (source: Partial<EditorAction>) {
         ClassHelper.assign(this, source);
     }
 }
 
-export function getEditorSettings(emojis: Array<BBcodeModel>) {
+export function getEditorSettings (emojis: Array<BBcodeModel>, isSlim: boolean) {
     return {
         debug: false,
-        minheight: '150',
+        minheight: isSlim ? 100 : 150,
+        buttons: isSlim ? 'bold,italic,underline' : undefined,
         allButtons: {
             quote: {
                 transform: {
@@ -43,7 +43,7 @@ export function getEditorSettings(emojis: Array<BBcodeModel>) {
         smileList: emojis.map(item => {
             return {
                 title: item.name,
-                img:  `<img src="/rest/resources/images/emojis/${item.bbcodeId}.gif" class="sm" />`,
+                img: `<img src="/rest/resources/images/emojis/${item.bbcodeId}.gif" class="sm" />`,
                 bbcode: item.pattern
             };
         })
