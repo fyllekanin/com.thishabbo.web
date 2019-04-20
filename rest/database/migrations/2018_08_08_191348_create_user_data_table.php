@@ -10,7 +10,7 @@ class CreateUserdataTable extends Migration {
      *
      * @return void
      */
-    public function up () {
+    public function up() {
         Schema::create('userdata', function (Blueprint $table) {
             $table->bigIncrements('userdataId');
             $table->bigInteger('userId')->unique();
@@ -34,7 +34,7 @@ class CreateUserdataTable extends Migration {
      *
      * @return void
      */
-    public function down () {
+    public function down() {
         Schema::dropIfExists('userdata');
     }
 }

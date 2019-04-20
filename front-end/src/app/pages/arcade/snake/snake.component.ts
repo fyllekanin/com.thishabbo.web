@@ -4,8 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { ARCADE_BREADCRUM_ITEM } from '../arcade.constants';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Page } from 'shared/page/page.model';
-import { SnakeSettings, SnakeGameValues, Coordinates } from './snake.model';
-import { Component, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
+import { Coordinates, SnakeGameValues, SnakeSettings } from './snake.model';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { HighScoreModel } from '../arcade.model';
@@ -24,13 +24,13 @@ export class SnakeComponent extends Page implements AfterViewInit, OnDestroy {
     private _context: CanvasRenderingContext2D;
     private _gameValues: SnakeGameValues;
     private _defaultTabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Start Game '})
+        new TitleTab({title: 'Start Game '})
     ];
 
     tabs: Array<TitleTab> = [];
     @ViewChild('game') gameArea: ElementRef;
 
-    constructor(
+    constructor (
         private _notificationService: NotificationService,
         private _httpService: HttpService,
         activatedRoute: ActivatedRoute,
@@ -46,19 +46,19 @@ export class SnakeComponent extends Page implements AfterViewInit, OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
         window.onkeydown = this._onKeydownBackup;
     }
 
-    ngAfterViewInit(): void {
+    ngAfterViewInit (): void {
         this._canvas = this.gameArea.nativeElement;
         this._context = this._canvas.getContext('2d');
         this.runSetup();
         this.showLoseScreen();
     }
 
-    start(): void {
+    start (): void {
         this._httpService.get('arcade/snake')
             .subscribe(res => {
                 this._gameId = res.gameId;
@@ -70,25 +70,30 @@ export class SnakeComponent extends Page implements AfterViewInit, OnDestroy {
                     if (!this._timerReference) {
                         return;
                     }
-                    this._gameValues.newDirection = {37: -1, 38: -2, 39: 1, 40: 2}[e.keyCode] || this._gameValues.newDirection;
+                    this._gameValues.newDirection = {
+                        37: -1,
+                        38: -2,
+                        39: 1,
+                        40: 2
+                    }[e.keyCode] || this._gameValues.newDirection;
                     e.preventDefault();
                 };
             });
     }
 
-    get score(): number {
+    get score (): number {
         return this._gameValues ? this._gameValues.score : 0;
     }
 
-    get highscoreList(): Array<HighScoreModel> {
+    get highscoreList (): Array<HighScoreModel> {
         return this._highscore;
     }
 
-    private onData(data: { data: Array<HighScoreModel>}): void {
+    private onData (data: { data: Array<HighScoreModel> }): void {
         this._highscore = data.data;
     }
 
-    private tick(): void {
+    private tick (): void {
         let head: Coordinates = this._gameValues.newHead;
         this._gameValues.checkDirection();
         head = this._gameValues.updateHead(head);
@@ -97,10 +102,10 @@ export class SnakeComponent extends Page implements AfterViewInit, OnDestroy {
         this.updateGameArea(head);
     }
 
-    private updateGameArea(head: Coordinates): void {
-        this._context.fillStyle = '#002b36';
+    private updateGameArea (head: Coordinates): void {
+        this._context.fillStyle = '#ffffff';
         this._context.fillRect(0, 0, SnakeSettings.SIZE, SnakeSettings.SIZE);
-        this._context.fillStyle = '#268bd2';
+        this._context.fillStyle = '#000000';
 
         this._gameValues.snake.unshift(head);
         this._gameValues.snake = this._gameValues.snake.slice(0, this._gameValues.length);
@@ -117,15 +122,15 @@ export class SnakeComponent extends Page implements AfterViewInit, OnDestroy {
         }
 
         while (!this._gameValues.candy || this._gameValues.getSnakeObject()[SnakeSettings.stringifyCoord(this._gameValues.candy)]) {
-            this._gameValues.candy = { x: SnakeSettings.randomOffset(), y: SnakeSettings.randomOffset() };
+            this._gameValues.candy = {x: SnakeSettings.randomOffset(), y: SnakeSettings.randomOffset()};
         }
 
-        this._context.fillStyle = '#b58900';
+        this._context.fillStyle = '#c37070';
         this._context.fillRect(this._gameValues.candy.x, this._gameValues.candy.y, SnakeSettings.GRID_SIZE, SnakeSettings.GRID_SIZE);
     }
 
-    private saveScore(): void {
-        this._httpService.post('arcade/snake', { result: { gameId: this._gameId, score: this._gameValues.score } })
+    private saveScore (): void {
+        this._httpService.post('arcade/snake', {result: {gameId: this._gameId, score: this._gameValues.score}})
             .subscribe(res => {
                 this._highscore = res.highscore.map(item => new HighScoreModel(item));
                 this._notificationService.sendNotification(new NotificationMessage({
@@ -135,7 +140,7 @@ export class SnakeComponent extends Page implements AfterViewInit, OnDestroy {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private isGameLost(head: Coordinates): boolean {
+    private isGameLost (head: Coordinates): boolean {
         return head.x < 0 ||
             head.x >= SnakeSettings.SIZE ||
             head.y < 0 ||
@@ -143,17 +148,17 @@ export class SnakeComponent extends Page implements AfterViewInit, OnDestroy {
             this._gameValues.getSnakeObject()[SnakeSettings.stringifyCoord(head)];
     }
 
-    private showLoseScreen() {
-        this._context.fillStyle = '#002b36';
+    private showLoseScreen () {
+        this._context.fillStyle = '#ffffff';
         this._context.fillRect(0, 0, SnakeSettings.SIZE, SnakeSettings.SIZE);
 
-        this._context.fillStyle = '#eee8d5';
+        this._context.fillStyle = '#000000';
         this._context.font = '10px serif';
         this._context.textAlign = 'center';
         this._context.fillText('Click "Start Game" to play!', SnakeSettings.SIZE / 2, SnakeSettings.SIZE / 2);
     }
 
-    private runSetup(): void {
+    private runSetup (): void {
         SnakeSettings.setCanvasSettings(this._canvas);
         SnakeSettings.scaleContext(this._context);
     }

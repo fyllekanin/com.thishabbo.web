@@ -3,7 +3,6 @@
 namespace App\EloquentModels\User;
 
 use App\EloquentModels\Models\UnixTimeModel;
-use Illuminate\Database\Eloquent\Builder;
 
 /**
  * @property mixed userProfileId
@@ -18,10 +17,12 @@ class UserProfile extends UnixTimeModel {
         'userId',
         'youtube',
         'isPrivate',
-        'friends'
+        'love',
+        'like',
+        'hate'
     ];
 
-    public function user () {
+    public function user() {
         return $this->belongsTo('App\EloquentModels\User\User', 'userId', 'userId');
     }
 }

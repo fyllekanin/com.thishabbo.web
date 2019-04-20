@@ -33,17 +33,19 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
     @ViewChild('editor') editorEle;
     @Input() title = 'Editor';
     @Input() subTitle = '';
+    @Input() slim = false;
     @Output() onTabClick: EventEmitter<EditorAction> = new EventEmitter();
     @Output() onKeyUp: EventEmitter<string> = new EventEmitter();
 
     tabs: Array<TitleTab> = [];
     bottomButtons: Array<EditorAction> = [];
 
-    constructor(httpService: HttpService) {
+    constructor (httpService: HttpService) {
         httpService.get('bbcode/emojis')
             .subscribe(res => {
                 this._emojis = res.map(item => new BBcodeModel(item));
-            }, () => {}, () => {
+            }, () => {
+            }, () => {
                 this._haveLoaded = true;
                 if (!this._editorInstance) {
                     this.ngAfterViewInit();
@@ -51,12 +53,12 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
             });
     }
 
-    ngAfterViewInit(): void {
+    ngAfterViewInit (): void {
         this.editorEle.nativeElement.id = this._id;
         // @ts-ignore
         $(document).ready(() => {
             if (this._haveLoaded) {
-                const settings = getEditorSettings(this._emojis);
+                const settings = getEditorSettings(this._emojis, this.slim);
                 // @ts-ignore
                 this._editorInstance = $(`#${this._id}`).wysibb(settings);
                 this.setMode();
@@ -66,23 +68,23 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         if (this._editorInstance) {
             this._editorInstance.destroy();
         }
     }
 
-    getEditorValue(): string {
+    getEditorValue (): string {
         const value = this._editorInstance ? this._editorInstance.getBBCode() : '';
         return value.replace(new RegExp(/@([a-zA-Z0-9]+)/gi), '[mention]@$1[/mention]');
     }
 
-    onClick(value: number): void {
-        this.onTabClick.emit({ title: '', value: value });
+    onClick (value: number): void {
+        this.onTabClick.emit({title: '', value: value});
     }
 
     @Input()
-    set content(content: string) {
+    set content (content: string) {
         // @ts-ignore
         $(document).ready(() => {
             this._content = content || '';
@@ -93,14 +95,14 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
     }
 
     @Input()
-    set buttons(buttons: Array<EditorAction>) {
+    set buttons (buttons: Array<EditorAction>) {
         this._editorActions = buttons;
         this.bottomButtons = (buttons || [])
             .filter(button => button.asButton);
         this.tabs = (buttons || [])
             .filter(button => !button.asButton)
             .map(button => {
-                return new TitleTab({ title: button.title, value: button.value });
+                return new TitleTab({title: button.title, value: button.value});
             });
 
         if (this._editorInstance) {
@@ -108,14 +110,14 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
         }
     }
 
-    private setMode(): void {
+    private setMode (): void {
         const isSourceMode = Boolean(localStorage.getItem(LOCAL_STORAGE.EDITOR_MODE));
         if (isSourceMode && !this._editorInstance.isBBMode()) {
             this._editorInstance.modeSwitch();
         }
     }
 
-    private setShortcuts(): void {
+    private setShortcuts (): void {
         if (!this._editorInstance) {
             return;
         }

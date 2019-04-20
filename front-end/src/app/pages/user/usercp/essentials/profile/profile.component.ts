@@ -2,7 +2,7 @@ import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { ActivatedRoute } from '@angular/router';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
-import { ProfileModel } from './profile.model';
+import { ProfileModel, ProfileRelations } from './profile.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { USERCP_BREADCRUM_ITEM } from '../../usercp.constants';
 import { TitleTab } from 'shared/app-views/title/title.model';
@@ -11,16 +11,17 @@ import { NotificationService } from 'core/services/notification/notification.ser
 
 @Component({
     selector: 'app-usercp-profile',
-    templateUrl: 'profile.component.html'
+    templateUrl: 'profile.component.html',
+    styleUrls: ['profile.component.css']
 })
 export class ProfileComponent extends Page implements OnDestroy {
     private _data: ProfileModel;
 
     tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Save' })
+        new TitleTab({title: 'Save'})
     ];
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService,
         elementRef: ElementRef,
@@ -41,18 +42,22 @@ export class ProfileComponent extends Page implements OnDestroy {
         super.destroy();
     }
 
-    onSave(): void {
-        this._httpService.put('usercp/profile', { data: this._data })
+    onSave (): void {
+        this._httpService.put('usercp/profile', {data: this._data})
             .subscribe(() => {
                 this._notificationService.sendInfoNotification('Profile Updated!');
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    get model(): ProfileModel {
+    get model (): ProfileModel {
         return this._data;
     }
 
-    private onData(data: { data: ProfileModel }): void {
+    get relations (): ProfileRelations {
+        return this._data.relations;
+    }
+
+    private onData (data: { data: ProfileModel }): void {
         this._data = data.data;
     }
 }

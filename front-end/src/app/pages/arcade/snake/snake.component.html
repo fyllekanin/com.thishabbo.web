@@ -1,16 +1,16 @@
 <div class="grid-container full">
     <div class="grid-x margin-x">
-        <div class="cell small-8">
+        <div class="cell small-7">
             <app-title
-                [title]="'Snake - Score: ' + score"
-                [tabs]="tabs"
-                (onTabClick)="start()">
-                </app-title>
+                    [title]="'Snake - Score: ' + score"
+                    [tabs]="tabs"
+                    (onTabClick)="start()">
+            </app-title>
             <app-content>
-                <canvas style="width: 100%; height: 400px" #game></canvas>
+                <canvas style="width: 100%;" #game></canvas>
             </app-content>
         </div>
-        <div class="cell small-4">
+        <div class="cell small-5">
             <app-title [title]="'Highscore'"></app-title>
             <app-content>
                 <div class="highscore-row" *ngFor="let highscore of highscoreList; let i = index;">
