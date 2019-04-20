@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnDestroy } from '@angular/core';
-import { Followers, ProfileActions, ProfileModel, ProfileStats } from './profile.model';
+import { Followers, ProfileActions, ProfileModel, ProfileRelations, ProfileStats } from './profile.model';
 import { Page } from 'shared/page/page.model';
 import { ActivatedRoute } from '@angular/router';
 import { TimeHelper } from 'shared/helpers/time.helper';
@@ -23,7 +23,7 @@ export class ProfileComponent extends Page implements OnDestroy {
 
     followerTabs: Array<TitleTab> = [];
 
-    constructor(
+    constructor (
         private _authService: AuthService,
         private _profileService: ProfileService,
         private _notificationService: NotificationService,
@@ -39,11 +39,11 @@ export class ProfileComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onFollowerTabClick(action: number): void {
+    onFollowerTabClick (action: number): void {
         switch (action) {
             case ProfileActions.FOLLOW:
                 this.followUser();
@@ -54,44 +54,48 @@ export class ProfileComponent extends Page implements OnDestroy {
         }
     }
 
-    get activities(): Array<Activity> {
+    get activities (): Array<Activity> {
         return this._data.activities;
     }
 
-    get isPrivate(): boolean {
+    get isPrivate (): boolean {
         return !Boolean(this._data.stats);
     }
 
-    get followers(): Followers {
+    get followers (): Followers {
         return this._data.followers;
     }
 
-    get user(): SlimUser {
+    get user (): SlimUser {
         return this._data.user;
     }
 
-    get coverPhotoData(): { userId: number, version: number } {
-        return { userId: this._data.user.userId, version: this._data.user.avatarUpdatedAt };
+    get coverPhotoData (): { userId: number, version: number } {
+        return {userId: this._data.user.userId, version: this._data.user.avatarUpdatedAt};
     }
 
-    get avatar(): string {
+    get avatar (): string {
         return `/rest/resources/images/users/${this._data.user.userId}.gif?${this._data.user.avatarUpdatedAt}`;
     }
 
-    get joined(): string {
+    get joined (): string {
         const date = new Date(this._data.stats.createdAt * 1000);
         return `${TimeHelper.FULL_MONTHS[date.getMonth()]} ${date.getFullYear()}`;
     }
 
-    get stats(): ProfileStats {
+    get stats (): ProfileStats {
         return this._data.stats;
     }
 
-    get youtube(): SafeResourceUrl {
+    get youtube (): SafeResourceUrl {
         return this._data.youtube ? this._sanitizer.bypassSecurityTrustResourceUrl(this._data.youtube) : null;
     }
 
-    private followUser(): void {
+    get relations (): ProfileRelations {
+        return this._data.relations;
+    }
+
+    private followUser (): void {
         this._profileService.follow(this._data.user.userId)
             .subscribe(res => {
                 this._notificationService.sendInfoNotification(`You have now followed!`);
@@ -100,7 +104,7 @@ export class ProfileComponent extends Page implements OnDestroy {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private unfollowUser(): void {
+    private unfollowUser (): void {
         this._profileService.unfollow(this._data.user.userId)
             .subscribe(res => {
                 this._notificationService.sendInfoNotification(`You have now unfollowed!`);
@@ -109,23 +113,23 @@ export class ProfileComponent extends Page implements OnDestroy {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private onData(data: { data: ProfileModel }): void {
+    private onData (data: { data: ProfileModel }): void {
         this._data = data.data;
         this.setFollowerTabs();
     }
 
-    private setFollowerTabs(): void {
+    private setFollowerTabs (): void {
         if (!this._authService.isLoggedIn() || this._authService.authUser.userId === this._data.user.userId) {
             return;
         }
 
         if (this._data.followers.isFollowing) {
             this.followerTabs = this._data.followers.isApproved ?
-                [new TitleTab({ title: 'Unfollow', value: ProfileActions.UNFOLLOW })] :
-                [new TitleTab({ title: 'Pending..' })];
+                [new TitleTab({title: 'Unfollow', value: ProfileActions.UNFOLLOW})] :
+                [new TitleTab({title: 'Pending..'})];
         } else {
             this.followerTabs = [
-                new TitleTab({ title: 'Follow', value: ProfileActions.FOLLOW })
+                new TitleTab({title: 'Follow', value: ProfileActions.FOLLOW})
             ];
         }
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Usercp;
 
+use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserData;
 use App\EloquentModels\User\UserProfile;
 use App\Helpers\UserHelper;
@@ -26,9 +27,15 @@ class ProfileSettingsController extends Controller {
         if (!$profile) {
             return response()->json();
         }
+
         return response()->json([
             'isPrivate' => $profile->isPrivate,
-            'youtube' => $profile->youtube
+            'youtube' => $profile->youtube,
+            'relations' => [
+                'love' => isset($profile->love) ? UserHelper::getSlimUser($profile->love)->nickname : null,
+                'like' => isset($profile->like) ? UserHelper::getSlimUser($profile->like)->nickname : null,
+                'hate' => isset($profile->hate) ? UserHelper::getSlimUser($profile->hate)->nickname : null
+            ]
         ]);
     }
 
@@ -40,15 +47,30 @@ class ProfileSettingsController extends Controller {
     public function updateProfile(Request $request) {
         $user = Cache::get('auth');
         $profile = UserProfile::where('userId', $user->userId)->first();
-        $data = (object) $request->input('data');
+        $data = json_decode(json_encode($request->input('data')), false);
 
         if (!$profile) {
-            $profile = new UserProfile([ 'userId' => $user->userId ]);
+            $profile = new UserProfile(['userId' => $user->userId]);
             $profile->save();
         }
 
+        $love = User::withNickname($data->relations->love)->first();
+        $like = User::withNickname($data->relations->like)->first();
+        $hate = User::withNickname($data->relations->hate)->first();
+
+        Condition::precondition(!empty($data->relations->love) && !$love, 404,
+            'No user with the nickname: ' . $data->relations->love);
+        Condition::precondition(!empty($data->relations->like) && !$like, 404,
+            'No user with the nickname: ' . $data->relations->like);
+        Condition::precondition(!empty($data->relations->hate) && !$hate, 404,
+            'No user with the nickname: ' . $data->relations->hate);
+
+
         $profile->isPrivate = Value::objectProperty($data, 'isPrivate', false);
         $profile->youtube = Value::objectProperty($data, 'youtube', null);
+        $profile->love = $love ? $love->userId : null;
+        $profile->like = $like ? $like->userId : null;
+        $profile->hate = $hate ? $hate->userId : null;
         $profile->save();
 
         Logger::user($user->userId, $request->ip(), Action::UPDATED_PROFILE);
@@ -58,7 +80,7 @@ class ProfileSettingsController extends Controller {
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getSocialNetworks () {
+    public function getSocialNetworks() {
         $user = Cache::get('auth');
         $userData = UserHelper::getUserDataOrCreate($user->userId);
 
@@ -71,7 +93,7 @@ class ProfileSettingsController extends Controller {
     /**
      * @param Request $request
      */
-    public function updateSocialNetworks (Request $request) {
+    public function updateSocialNetworks(Request $request) {
         $user = Cache::get('auth');
         $twitter = $request->input('twitter');
         $discord = $request->input('discord');
@@ -95,7 +117,7 @@ class ProfileSettingsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getAvatarSize () {
+    public function getAvatarSize() {
         $user = Cache::get('auth');
         $avatarHeight = $this->getMaxAvatarHeight($user);
         $avatarWidth = $this->getMaxAvatarWidth($user);
@@ -112,7 +134,7 @@ class ProfileSettingsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function updateCover (Request $request) {
+    public function updateCover(Request $request) {
         $user = Cache::get('auth');
         $cover = $request->file('cover');
 
@@ -137,7 +159,7 @@ class ProfileSettingsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function updateAvatar (Request $request) {
+    public function updateAvatar(Request $request) {
         $user = Cache::get('auth');
         $avatar = $request->file('avatar');
         $avatarHeight = $this->getMaxAvatarHeight($user);
@@ -163,7 +185,7 @@ class ProfileSettingsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getSignature () {
+    public function getSignature() {
         $user = Cache::get('auth');
         $userdata = UserData::where('userId', $user->userId)->first();
 
@@ -180,7 +202,7 @@ class ProfileSettingsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateSignature (Request $request) {
+    public function updateSignature(Request $request) {
         $user = Cache::get('auth');
         $signature = $request->input('signature');
 
@@ -202,7 +224,7 @@ class ProfileSettingsController extends Controller {
      *
      * @return int
      */
-    private function getMaxAvatarWidth ($user) {
+    private function getMaxAvatarWidth($user) {
         $width = 200;
 
         foreach ($user->groups as $group) {
@@ -218,7 +240,7 @@ class ProfileSettingsController extends Controller {
      *
      * @return int
      */
-    private function getMaxAvatarHeight ($user) {
+    private function getMaxAvatarHeight($user) {
         $height = 200;
 
         foreach ($user->groups as $group) {

@@ -16,7 +16,7 @@ export class ProfileStats {
     @primitive()
     lastActivity: number;
 
-    constructor(source: Partial<ProfileStats>) {
+    constructor (source: Partial<ProfileStats>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -31,7 +31,20 @@ export class Followers {
     @primitive()
     isApproved: boolean;
 
-    constructor(source: Partial<Followers>) {
+    constructor (source: Partial<Followers>) {
+        ClassHelper.assign(this, source);
+    }
+}
+
+export class ProfileRelations {
+    @objectOf(SlimUser)
+    love: SlimUser;
+    @objectOf(SlimUser)
+    like: SlimUser;
+    @objectOf(SlimUser)
+    hate: SlimUser;
+
+    constructor (source: Partial<ProfileRelations>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -47,8 +60,10 @@ export class ProfileModel {
     youtube: string;
     @objectOf(Followers)
     followers: Followers;
+    @objectOf(ProfileRelations)
+    relations: ProfileRelations;
 
-    constructor(source: Partial<ProfileModel>) {
+    constructor (source: Partial<ProfileModel>) {
         ClassHelper.assign(this, source);
         this.youtube = this.youtube ? this.youtube.replace('watch?v=', 'embed/') : null;
     }

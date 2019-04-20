@@ -72,7 +72,7 @@ class ProfileController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getProfile (ActivityService $activityService, ForumService $forumService, $nickname) {
+    public function getProfile(ActivityService $activityService, ForumService $forumService, $nickname) {
         $user = Cache::get('auth');
 
         $profile = User::withNickname($nickname)->first();
@@ -97,6 +97,11 @@ class ProfileController extends Controller {
                 'likes' => $profile->likes,
                 'createdAt' => $profile->createdAt->timestamp,
                 'lastActivity' => $profile->lastActivity
+            ],
+            'relations' => !$profile->profile ? [] : [
+                'love' => isset($profile->profile->love) ? UserHelper::getSlimUser($profile->profile->love) : null,
+                'like' => isset($profile->profile->like) ? UserHelper::getSlimUser($profile->profile->like) : null,
+                'hate' => isset($profile->profile->hate) ? UserHelper::getSlimUser($profile->profile->hate) : null
             ]
         ]);
     }
@@ -133,7 +138,7 @@ class ProfileController extends Controller {
         $following = Follower::where('userId', $user->userId)->where('targetId', $userId)->first();
 
         return [
-            'followers' => Follower::where('targetId', $userId)->inRandomOrder()->take(5)->isApproved()->get()->map(function($follower) {
+            'followers' => Follower::where('targetId', $userId)->inRandomOrder()->take(5)->isApproved()->get()->map(function ($follower) {
                 return UserHelper::getSlimUser($follower->userId);
             }),
             'total' => Follower::where('targetId', $userId)->isApproved()->count(),

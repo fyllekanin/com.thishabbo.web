@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ElementRef, ComponentFactoryResolver } from '@angular/core';
+import { Component, ComponentFactoryResolver, ElementRef, OnDestroy } from '@angular/core';
 import { BansPage, BansPageAction } from './bans.model';
 import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,13 +7,13 @@ import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { SITECP_BREADCRUMB_ITEM } from 'app/pages/admin/admin.constants';
 import {
+    Action,
     FilterConfig,
+    TableAction,
     TableCell,
     TableConfig,
     TableHeader,
-    TableRow,
-    TableAction,
-    Action
+    TableRow
 } from 'shared/components/table/table.model';
 import { BansPageService } from '../services/bans.service';
 import { TimeHelper } from 'shared/helpers/time.helper';
@@ -21,7 +21,7 @@ import { NotificationService } from 'core/services/notification/notification.ser
 import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { IReason } from 'shared/components/reason/reason.model';
-import { DialogCloseButton, DialogButton } from 'shared/app-views/dialog/dialog.model';
+import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
 import { ReasonComponent } from 'shared/components/reason/reason.component';
 import { QueryParameters } from 'core/services/http/http.model';
 
@@ -34,14 +34,14 @@ export class BansComponent extends Page implements OnDestroy {
     private _filterTimer = null;
     private _filter: QueryParameters;
     private _actions: Array<TableAction> = [
-        new TableAction ({ title: 'Lift Ban', value: BansPageAction.LIFT_BAN}),
-        new TableAction ({ title: 'View User Bans', value: BansPageAction.VIEW_BANS})
+        new TableAction({title: 'Lift Ban', value: BansPageAction.LIFT_BAN}),
+        new TableAction({title: 'View User Bans', value: BansPageAction.VIEW_BANS})
     ];
 
     tableConfig: TableConfig;
     pagination: PaginationModel;
 
-    constructor(
+    constructor (
         private _router: Router,
         private _dialogService: DialogService,
         private _notificationService: NotificationService,
@@ -59,23 +59,23 @@ export class BansComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onFilter(filter: QueryParameters): void {
+    onFilter (filter: QueryParameters): void {
         clearTimeout(this._filterTimer);
         this._filter = filter;
 
         this._filterTimer = setTimeout(() => {
             this._service.getBans(filter, 1)
                 .subscribe(data => {
-                    this.onPage(data);
+                    this.onPage({data: data});
                 });
         }, 200);
     }
 
-    onAction(action: Action): void {
+    onAction (action: Action): void {
         switch (action.value) {
             case BansPageAction.LIFT_BAN:
                 this.onLiftBan(action.rowId);
@@ -86,20 +86,20 @@ export class BansComponent extends Page implements OnDestroy {
         }
     }
 
-    private onLiftBan(banId: string): void {
+    private onLiftBan (banId: string): void {
         const user = this._bansPage.bans.find(ban => ban.banId === Number(banId)).banned;
         this._dialogService.openDialog({
             title: `Lifting ban on ${user.nickname}`,
             component: this._componentFactory.resolveComponentFactory(ReasonComponent),
             buttons: [
                 new DialogCloseButton('Close'),
-                new DialogButton({ title: 'Lift', callback: this.doLift.bind(this, banId, user.userId) })
+                new DialogButton({title: 'Lift', callback: this.doLift.bind(this, banId, user.userId)})
             ],
-            data: { isBanning: false }
+            data: {isBanning: false}
         });
     }
 
-    private doLift(banId: number, userId: number, reason: IReason): void {
+    private doLift (banId: number, userId: number, reason: IReason): void {
         if (!reason.reason) {
             this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
@@ -121,13 +121,13 @@ export class BansComponent extends Page implements OnDestroy {
         }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private onViewBans(banId: string): void {
+    private onViewBans (banId: string): void {
         const userId = this._bansPage.bans.find(ban => ban.banId === Number(banId)).banned.userId;
         this._router.navigateByUrl(`admin/users/${userId}/bans`);
     }
 
-    private onPage(data: BansPage ): void {
-        this._bansPage = data;
+    private onPage (data: { data: BansPage }): void {
+        this._bansPage = data.data;
         this.createOrUpdateTable();
 
         this.pagination = new PaginationModel({
@@ -138,7 +138,7 @@ export class BansComponent extends Page implements OnDestroy {
         });
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -158,31 +158,31 @@ export class BansComponent extends Page implements OnDestroy {
     }
 
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         return this._bansPage.bans.map(ban => {
             return new TableRow({
                 id: String(ban.banId),
                 cells: [
-                    new TableCell({ title: ban.banned.nickname }),
-                    new TableCell({ title: ban.banner.nickname }),
-                    new TableCell({ title: ban.reason }),
-                    new TableCell({ title: BansComponent.getTime(ban.expiresAt) })
+                    new TableCell({title: ban.banned.nickname}),
+                    new TableCell({title: ban.banner.nickname}),
+                    new TableCell({title: ban.reason}),
+                    new TableCell({title: BansComponent.getTime(ban.expiresAt)})
                 ],
                 actions: this._actions
             });
         });
     }
 
-    private static getTableHeaders(): Array<TableHeader> {
+    private static getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'Banned' }),
-            new TableHeader({ title: 'Banner' }),
-            new TableHeader({ title: 'Reason' }),
-            new TableHeader({ title: 'Expiry' })
+            new TableHeader({title: 'Banned'}),
+            new TableHeader({title: 'Banner'}),
+            new TableHeader({title: 'Reason'}),
+            new TableHeader({title: 'Expiry'})
         ];
     }
 
-    private static getTime(expiresAt: number): string {
+    private static getTime (expiresAt: number): string {
         return expiresAt === 0 ? 'Never' : TimeHelper.getLongDateWithTime(expiresAt);
     }
 
