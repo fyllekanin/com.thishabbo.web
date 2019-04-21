@@ -24,6 +24,10 @@ import { ReasonModule } from 'shared/components/reason/reason.module';
 import { VoucherCodesResolver } from './services/voucher-codes.resolver';
 import { VoucherCodesComponent } from './voucher-codes/voucher-codes.component';
 import { VoucherCodeComponent } from './voucher-codes/voucher-code/voucher-code.component';
+import { InfractionModule } from 'shared/components/infraction/infraction.module';
+import { EssentialsComponent } from './essentials/essentials.component';
+import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
+import { EssentialsService } from './services/essentials.service';
 
 @NgModule({
     imports: [
@@ -35,7 +39,9 @@ import { VoucherCodeComponent } from './voucher-codes/voucher-code/voucher-code.
         ContentModule,
         CommonModule,
         FormsModule,
-        ReasonModule
+        ReasonModule,
+        InfractionModule,
+        SafeHtmlModule
     ],
     declarations: [
         UsersListComponent,
@@ -46,7 +52,8 @@ import { VoucherCodeComponent } from './voucher-codes/voucher-code/voucher-code.
         MergeUsersComponent,
         IpSearchComponent,
         VoucherCodesComponent,
-        VoucherCodeComponent
+        VoucherCodeComponent,
+        EssentialsComponent
     ],
     providers: [
         UsersListService,
@@ -54,7 +61,8 @@ import { VoucherCodeComponent } from './voucher-codes/voucher-code/voucher-code.
         GroupsService,
         BanService,
         ThcRequestsService,
-        VoucherCodesResolver
+        VoucherCodesResolver,
+        EssentialsService
     ],
     entryComponents: [
         MergeUsersComponent,
@@ -64,4 +72,5 @@ import { VoucherCodeComponent } from './voucher-codes/voucher-code/voucher-code.
         RouterModule
     ]
 })
-export class UsersModule {}
+export class UsersModule {
+}

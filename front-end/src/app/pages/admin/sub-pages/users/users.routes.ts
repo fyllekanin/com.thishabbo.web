@@ -15,6 +15,8 @@ import { ContinuesInformationService } from 'core/services/continues-information
 import { PING_TYPES } from 'core/services/continues-information/continues-information.model';
 import { VoucherCodesComponent } from './voucher-codes/voucher-codes.component';
 import { VoucherCodesResolver } from './services/voucher-codes.resolver';
+import { EssentialsComponent } from './essentials/essentials.component';
+import { EssentialsService } from './services/essentials.service';
 
 export const usersRoutes: Routes = [
     {
@@ -75,6 +77,13 @@ export const usersRoutes: Routes = [
                 component: VoucherCodesComponent,
                 resolve: {
                     data: VoucherCodesResolver
+                }
+            },
+            {
+                path: ':userId/essentials',
+                component: EssentialsComponent,
+                resolve: {
+                    data: EssentialsService
                 }
             }
         ]

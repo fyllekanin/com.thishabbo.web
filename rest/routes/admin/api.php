@@ -92,9 +92,17 @@ Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions-
 });
 
 Route::group(['middleware' => PermissionHelper::getAdminMiddleware([$permissions->canEditUserBasic, $permissions->canEditUserAdvanced, $permissions->canEditUserProfile,
-    $permissions->canBanUser])], function () use ($permissions) {
+    $permissions->canBanUser, $permissions->canRemoveEssentials, $permissions->canDoInfractions])], function () use ($permissions) {
 
     Route::get('/users/list/page/{page}', 'Admin\User\UserController@getUsers');
+
+    Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canRemoveEssentials)], function () {
+        Route::get('/users/{userId}/essentials', 'Admin\User\UserEssentialsController@getUser');
+
+        Route::delete('/users/{userId}/avatar', 'Admin\User\UserEssentialsController@deleteAvatar');
+        Route::delete('/users/{userId}/cover-photo', 'Admin\User\UserEssentialsController@deleteCoverPhoto');
+        Route::delete('/users/{userId}/signature', 'Admin\User\UserEssentialsController@deleteSignature');
+    });
 
     Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canMergeUsers)], function () {
         Route::post('/users/merge/source/{srcUserId}/destination/{destUserId}', 'Admin\User\UserController@mergeUsers');
