@@ -12,7 +12,7 @@ export class ListUser {
     @primitive()
     credits: number;
 
-    constructor(source: Partial<ListUser>) {
+    constructor (source: Partial<ListUser>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -25,7 +25,7 @@ export class UsersListPage {
     @arrayOf(ListUser)
     users: Array<ListUser> = [];
 
-    constructor(source?: Partial<UsersListPage>) {
+    constructor (source?: Partial<UsersListPage>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -34,5 +34,7 @@ export enum UserListAction {
     EDIT_USER_BASIC,
     EDIT_USER_GROUPS,
     MANAGE_BANS,
-    MERGE_USER
+    MERGE_USER,
+    MANAGE_ESSENTIALS,
+    GIVE_INFRACTION
 }

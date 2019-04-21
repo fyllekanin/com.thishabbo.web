@@ -13,11 +13,11 @@ use ReflectionClass;
  */
 class Action {
 
-    public static function getAction ($action) {
+    public static function getAction($action) {
         return $action['id'];
     }
 
-    public static function getActionFromId ($actionId) {
+    public static function getActionFromId($actionId) {
         try {
             return Iterables::find(self::getAllConstants(), function ($action) use ($actionId) {
                 return $action['id'] == $actionId;
@@ -39,7 +39,7 @@ class Action {
      * @return array
      * @throws \ReflectionException
      */
-    public static function getAllConstants () {
+    public static function getAllConstants() {
         return (new ReflectionClass(get_class()))->getConstants();
     }
 
@@ -1327,5 +1327,26 @@ class Action {
             'user' => 'Nickanem of user that got removed'
         ],
         'log' => 'log_user'
+    ];
+
+    const DELETED_AVATAR = [
+        'id' => 153,
+        'description' => 'Deleted avatar',
+        'data' => [],
+        'log' => 'log_admin'
+    ];
+
+    const DELETED_COVER_PHOTO = [
+        'id' => 154,
+        'description' => 'Deleted cover photo',
+        'data' => [],
+        'log' => 'log_admin'
+    ];
+
+    const DELETED_SIGNATURE = [
+        'id' => 155,
+        'description' => 'Deleted signature',
+        'data' => [],
+        'log' => 'log_admin'
     ];
 }

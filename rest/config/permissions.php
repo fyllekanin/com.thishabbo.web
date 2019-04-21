@@ -19,7 +19,7 @@ $adminPermissions->canEditUserBasic = 1024;
 $adminPermissions->canEditUserAdvanced = 2048;
 $adminPermissions->canEditUserProfile = 4096;
 $adminPermissions->canBanUser = 8192;
-$adminPermissions->canMergeUsers =  16384;
+$adminPermissions->canMergeUsers = 16384;
 
 $adminPermissions->canManageBetting = 32768;
 $adminPermissions->canManageTHC = 65536;
@@ -29,6 +29,7 @@ $adminPermissions->canDoInfractions = 524288;
 $adminPermissions->canSeeLogs = 1048576;
 $adminPermissions->canManageShop = 2097152;
 $adminPermissions->canPassPrivate = 4194304;
+$adminPermissions->canRemoveEssentials = 8388608;
 
 $staffPermissions = new \stdClass();
 $staffPermissions->canRadio = 1;

@@ -8,31 +8,31 @@ import { AuthService } from 'core/services/auth/auth.service';
 @Component({
     selector: 'app-admin',
     template: `
-    <div class="grid-container">
-        <div class="grid-x margin-x">
-            <div class="cell small-12 medium-9 position-relative">
-                <router-outlet></router-outlet>
+        <div class="grid-container">
+            <div class="grid-x margin-x">
+                <div class="cell small-12 medium-9 position-relative">
+                    <router-outlet></router-outlet>
+                </div>
+                <div class="cell small-12 medium-3">
+                    <app-side-menu [blocks]="blocks"></app-side-menu>
+                </div>
             </div>
-            <div class="cell small-12 medium-3">
-                <app-side-menu [blocks]="blocks"></app-side-menu>
-            </div>
-        </div>
-    </div>`
+        </div>`
 })
 
 export class AdminComponent extends Page implements OnDestroy, OnInit {
     blocks: Array<SideMenuBlock> = [];
 
-    constructor(
+    constructor (
         private _authService: AuthService,
         breadcrumbService: BreadcrumbService,
         elementRef: ElementRef
     ) {
         super(elementRef);
-        breadcrumbService.breadcrumb = new Breadcrumb({ current: 'AdminCP' });
+        breadcrumbService.breadcrumb = new Breadcrumb({current: 'AdminCP'});
     }
 
-    ngOnInit(): void {
+    ngOnInit (): void {
         this.blocks = [
             new SideMenuBlock({
                 title: 'Content Management',
@@ -186,21 +186,23 @@ export class AdminComponent extends Page implements OnDestroy, OnInit {
             new SideMenuBlock({
                 title: 'Statistics',
                 items: [
-                    new SideMenuItem({ title: 'Users Logged In', link: '/admin/statistics/users' }),
-                    new SideMenuItem({ title: 'Posts', link: '/admin/statistics/posts' })
+                    new SideMenuItem({title: 'Users Logged In', link: '/admin/statistics/users'}),
+                    new SideMenuItem({title: 'Posts', link: '/admin/statistics/posts'})
                 ]
             })
         ];
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    get canManageUsers(): boolean {
+    get canManageUsers (): boolean {
         return this._authService.adminPermissions.canEditUserBasic ||
             this._authService.adminPermissions.canEditUserAdvanced ||
             this._authService.adminPermissions.canEditUserProfile ||
-            this._authService.adminPermissions.canBanUser;
+            this._authService.adminPermissions.canBanUser ||
+            this._authService.adminPermissions.canRemoveEssentials ||
+            this._authService.adminPermissions.canDoInfractions;
     }
 }

@@ -1,0 +1,14 @@
+<app-title [title]="'Avatar'" [tabs]="tabs" (onTabClick)="onRemoveAvatar()"></app-title>
+<app-content>
+    <img [src]="'/rest/resources/images/users/' + userId + '.gif?' + updatedAt"/>
+</app-content>
+
+<app-title [title]="'Coverphoto'" [tabs]="tabs" (onTabClick)="onRemoveCoverPhoto()"></app-title>
+<app-content>
+    <img [src]="'/rest/resources/images/covers/' + userId + '.gif?' + updatedAt"/>
+</app-content>
+
+<app-title [title]="'Signature'" [tabs]="tabs" (onTabClick)="onRemoveSignature()"></app-title>
+<app-content>
+    <div [innerHTML]="signature | safeHtml"></div>
+</app-content>

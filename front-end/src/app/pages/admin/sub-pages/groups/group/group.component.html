@@ -33,7 +33,7 @@
 </app-content>
 
 <app-title
-    [title]="'Admin Permissions'">
+        [title]="'Admin Permissions'">
 </app-title>
 <app-content>
     <div class="grid-container full">
@@ -99,6 +99,13 @@
                     <label class="checkbox-container">
                         Can pass private profiles?
                         <input type="checkbox" [(ngModel)]="adminPermissions.canPassPrivate">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can remove another users avatar, cover photo and signature
+                        <input type="checkbox" [(ngModel)]="adminPermissions.canRemoveEssentials">
                         <span class="checkmark"></span>
                     </label>
                 </div>
@@ -194,7 +201,7 @@
 </app-content>
 
 <app-title
-    [title]="'Staff Permissions'">
+        [title]="'Staff Permissions'">
 </app-title>
 <app-content>
     <div class="grid-container full">
@@ -299,21 +306,25 @@
 </app-content>
 
 <app-title
-    [title]="'Group Options'">
+        [title]="'Group Options'">
 </app-title>
 <app-content>
     <div class="grid-container full">
         <div class="grid-x grid-margin-x">
             <div class="cell small-6">
                 <label class="checkbox-container">
-                    Threads & Posts need approval? <br><em>If ticked, any user in this user group will be limited. They will need a moderator to "approve" all their posts & threads before they are public.</em>
+                    Threads & Posts need approval? <br><em>If ticked, any user in this user group will be limited. They
+                    will need a moderator to "approve" all their posts & threads before they are public.</em>
                     <input type="checkbox" [(ngModel)]="options.contentNeedApproval">
                     <span class="checkmark"></span>
                 </label>
             </div>
             <div class="cell small-6">
                 <label class="checkbox-container">
-                    Usergroup can be tagged?<br> <em>If ticked, if somebody posts @<i>user group name</i> it will tag everyone within that user group. Useful for Admin groups - not useful for groups with tons of people as they will all be tagged and can be abused. Like @RegisteredUsers - that's a tag to 25,000+ people!</em>
+                    Usergroup can be tagged?<br> <em>If ticked, if somebody posts @<i>user group name</i> it will tag
+                    everyone within that user group. Useful for Admin groups - not useful for groups with tons of people
+                    as they will all be tagged and can be abused. Like @RegisteredUsers - that's a tag to 25,000+
+                    people!</em>
                     <input type="checkbox" [(ngModel)]="options.canBeTagged">
                     <span class="checkmark"></span>
                 </label>

@@ -21,6 +21,7 @@ import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.
 import { UsersListService } from '../services/users-list.service';
 import { MergeUsersComponent } from './merge-users/merge-users.component';
 import { QueryParameters } from 'core/services/http/http.model';
+import { InfractionService } from 'shared/components/infraction/infraction.service';
 
 @Component({
     selector: 'app-admin-users-list',
@@ -35,12 +36,13 @@ export class UsersListComponent extends Page implements OnDestroy {
     tableConfig: TableConfig;
     pagination: PaginationModel;
 
-    constructor(
+    constructor (
         private _authService: AuthService,
         private _router: Router,
         private _componentFactory: ComponentFactoryResolver,
         private _dialogService: DialogService,
         private _service: UsersListService,
+        private _infractionService: InfractionService,
         breadcrumbService: BreadcrumbService,
         activatedRoute: ActivatedRoute,
         elementRef: ElementRef
@@ -53,11 +55,11 @@ export class UsersListComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onFilter(filter: QueryParameters): void {
+    onFilter (filter: QueryParameters): void {
         clearTimeout(this._filterTimer);
         this._filter = filter;
 
@@ -69,7 +71,7 @@ export class UsersListComponent extends Page implements OnDestroy {
         }, 200);
     }
 
-    onAction(action: Action): void {
+    onAction (action: Action): void {
         switch (action.value) {
             case UserListAction.EDIT_USER_BASIC:
                 this._router.navigateByUrl(`/admin/users/${action.rowId}/basic`);
@@ -83,10 +85,16 @@ export class UsersListComponent extends Page implements OnDestroy {
             case UserListAction.MERGE_USER:
                 this.openMergeDialog(action.rowId);
                 break;
+            case UserListAction.GIVE_INFRACTION:
+                this._infractionService.infract(Number(action.rowId));
+                break;
+            case UserListAction.MANAGE_ESSENTIALS:
+                this._router.navigateByUrl(`/admin/users/${action.rowId}/essentials`);
+                break;
         }
     }
 
-    private openMergeDialog(userId: string): void {
+    private openMergeDialog (userId: string): void {
         const user = this._usersListPage.users.find(item => item.userId === Number(userId));
         this._dialogService.openDialog({
             title: `Merge ${user.nickname} with another user`,
@@ -105,13 +113,13 @@ export class UsersListComponent extends Page implements OnDestroy {
                             this.createOrUpdateTable();
                         });
                     }
-                }),
+                })
             ],
             data: user.nickname
         });
     }
 
-    private onPage(data: { data: UsersListPage }): void {
+    private onPage (data: { data: UsersListPage }): void {
         this._usersListPage = data.data;
 
         this.buildActions();
@@ -125,7 +133,7 @@ export class UsersListComponent extends Page implements OnDestroy {
         });
     }
 
-    private buildActions(): void {
+    private buildActions (): void {
         const adminPermissions = this._authService.adminPermissions;
         const actions = [
             {
@@ -138,14 +146,25 @@ export class UsersListComponent extends Page implements OnDestroy {
                 value: UserListAction.EDIT_USER_GROUPS,
                 condition: adminPermissions.canEditUserAdvanced
             },
-            { title: 'Manage Bans', value: UserListAction.MANAGE_BANS, condition: adminPermissions.canBanUser },
-            { title: 'Merge User', value: UserListAction.MERGE_USER, condition: adminPermissions.canMergeUsers }
+            {title: 'Manage Bans', value: UserListAction.MANAGE_BANS, condition: adminPermissions.canBanUser},
+            {title: 'Merge User', value: UserListAction.MERGE_USER, condition: adminPermissions.canMergeUsers},
+            {
+                title: 'Manage Essentials',
+                value: UserListAction.MANAGE_ESSENTIALS,
+                condition: adminPermissions.canRemoveEssentials
+            },
+            {
+                title: 'Give Infraction',
+                value: UserListAction.GIVE_INFRACTION,
+                condition: adminPermissions.canDoInfractions
+            }
         ];
 
-        this._actions = actions.map(action => new TableAction({ title: action.title, value: action.value }));
+        this._actions = actions.filter(action => action.condition)
+            .map(action => new TableAction({title: action.title, value: action.value}));
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -169,26 +188,26 @@ export class UsersListComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         const actions = [].concat(this._actions);
         return this._usersListPage.users.map(user => {
             return new TableRow({
                 id: String(user.userId),
                 cells: [
-                    new TableCell({ title: user.nickname }),
-                    new TableCell({ title: user.habbo || '' }),
-                    new TableCell({ title: this.timeAgo(user.updatedAt) })
+                    new TableCell({title: user.nickname}),
+                    new TableCell({title: user.habbo || ''}),
+                    new TableCell({title: this.timeAgo(user.updatedAt)})
                 ],
                 actions: actions
             });
         });
     }
 
-    private getTableHeaders(): Array<TableHeader> {
+    private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'Nickname' }),
-            new TableHeader({ title: 'Habbo' }),
-            new TableHeader({ title: 'Last modified' })
+            new TableHeader({title: 'Nickname'}),
+            new TableHeader({title: 'Habbo'}),
+            new TableHeader({title: 'Last modified'})
         ];
     }
 }
