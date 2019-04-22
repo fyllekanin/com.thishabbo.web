@@ -21,6 +21,9 @@ import { Activity } from 'core/services/continues-information/continues-informat
 export class ProfileComponent extends Page implements OnDestroy {
     private _data: ProfileModel;
 
+    visitorMessageTabs: Array<TitleTab> = [
+        new TitleTab({title: 'Send Message'})
+    ];
     followerTabs: Array<TitleTab> = [];
 
     constructor (

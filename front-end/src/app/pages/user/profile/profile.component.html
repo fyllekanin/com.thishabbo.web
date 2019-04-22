@@ -10,7 +10,8 @@
     <div class="grid-container">
         <div class="grid-x margin-x">
             <div class="cell small-12">
-                <app-cover-photo-with-avatar [userId]="coverPhotoData.userId" [version]="coverPhotoData.version"
+                <app-cover-photo-with-avatar [hideAvatar]="true" [userId]="coverPhotoData.userId"
+                                             [version]="coverPhotoData.version"
                                              [isVisible]="true"></app-cover-photo-with-avatar>
             </div>
             <div class="cell small-12 medium-3">
@@ -98,12 +99,11 @@
                 </app-content>
             </div>
             <div class="cell small-12 medium-6">
-                <app-editor [title]="'Visitor Messages'" [slim]="true"></app-editor>
-
+                <app-title [title]="'Visitor Messages'" [tabs]="visitorMessageTabs"></app-title>
+                <app-content></app-content>
                 <app-content>
-                    <img _ngcontent-c16="" _ngcontent-c21="" appuserprofile="" ng-reflect-info="[object Object]"
-                         style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
-                    <div class="vistor-message-info">
+                    <img style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
+                    <div class="visitor-message-info">
                         <div class="visitor-message-nickname">Chimp</div>
                         June, 2 2018 - 19:19PM
                     </div>
@@ -122,9 +122,8 @@
                         </div>
                     </div>
                     <div class="visitor-reply-container">
-                        <img _ngcontent-c16="" _ngcontent-c21="" appuserprofile="" ng-reflect-info="[object Object]"
-                             style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
-                        <div class="vistor-reply-info">
+                        <img style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
+                        <div class="visitor-reply-info">
                             <div class="visitor-message-nickname">Dez</div>
                             June, 2 2018 - 19:19PM
                         </div>
@@ -143,9 +142,8 @@
                         </div>
                     </div>
                     <div class="visitor-reply-container">
-                        <img _ngcontent-c16="" _ngcontent-c21="" appuserprofile="" ng-reflect-info="[object Object]"
-                             style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
-                        <div class="vistor-reply-info">
+                        <img style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
+                        <div class="visitor-reply-info">
                             <div class="visitor-message-nickname">Chimp</div>
                             June, 2 2018 - 19:19PM
                         </div>
@@ -164,9 +162,8 @@
                         </div>
                     </div>
                     <div class="visitor-reply-container">
-                        <img _ngcontent-c16="" _ngcontent-c21="" appuserprofile="" ng-reflect-info="[object Object]"
-                             style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
-                        <div class="vistor-reply-info">
+                        <img style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
+                        <div class="visitor-reply-info">
                             <div class="visitor-message-nickname">Dez</div>
                             June, 2 2018 - 19:19PM
                         </div>
@@ -185,9 +182,8 @@
                         </div>
                     </div>
                     <div class="visitor-reply-container">
-                        <img _ngcontent-c16="" _ngcontent-c21="" appuserprofile="" ng-reflect-info="[object Object]"
-                             style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
-                        <div class="vistor-reply-info">
+                        <img style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
+                        <div class="visitor-reply-info">
                             <div class="visitor-message-nickname">Chimp</div>
                             June, 2 2018 - 19:19PM
                         </div>
