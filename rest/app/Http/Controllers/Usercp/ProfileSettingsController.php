@@ -173,8 +173,9 @@ class ProfileSettingsController extends Controller {
         $destination = base_path('/public/rest/resources/images/users');
         $avatar->move($destination, $fileName);
 
-        $userData = UserHelper::getUserDataOrCreate($user->userId);
-        $userData->avatarUpdatedAt = time();
+        $userdata = UserHelper::getUserDataOrCreate($user->userId);
+        $userdata->avatarUpdatedAt = time();
+        $userdata->save();
 
         Logger::user($user->userId, $request->ip(), Action::UPDATED_AVATAR);
         return response()->json(time());

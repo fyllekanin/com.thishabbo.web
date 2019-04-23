@@ -13,8 +13,9 @@ export class CoverPhotoWithAvatarComponent implements OnDestroy {
     @Input() isVisible = false;
     @Input() userId: number;
     @Input() version: number;
+    @Input() hideAvatar = false;
 
-    constructor(service: UsercpAvatarCoverPreviewService) {
+    constructor (service: UsercpAvatarCoverPreviewService) {
         this._subscriptions.push(service.onShow.subscribe(() => {
             this.isVisible = true;
         }));
@@ -26,17 +27,17 @@ export class CoverPhotoWithAvatarComponent implements OnDestroy {
         }));
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         this._subscriptions.forEach(sub => {
             sub.unsubscribe();
         });
     }
 
-    get avatar(): string {
+    get avatar (): string {
         return `/rest/resources/images/users/${this.userId}.gif?${this.version}`;
     }
 
-    get cover(): string {
+    get cover (): string {
         return `/rest/resources/images/covers/${this.userId}.gif?${this.version}`;
     }
 }

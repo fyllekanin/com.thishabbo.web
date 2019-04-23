@@ -1,5 +1,5 @@
 <div *ngIf="isVisible">
     <div class="cover-photo" [style.backgroundImage]="'url(' + cover + ')'">
-        <div class="avatar" [style.backgroundImage]="'url(' + avatar + ')'"></div>
+        <div *ngIf="!hideAvatar" class="avatar" [style.backgroundImage]="'url(' + avatar + ')'"></div>
     </div>
 </div>
