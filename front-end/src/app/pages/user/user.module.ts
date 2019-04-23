@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { UserLinkModule } from 'shared/components/user/user-link.module';
 import { UserProfileModule } from 'shared/directives/user-profile.module';
 import { ActivitiesComponent } from './profile/activities/activities.component';
+import { ButtonModule } from 'shared/directives/button/button.module';
 
 @NgModule({
     imports: [
@@ -23,7 +24,8 @@ import { ActivitiesComponent } from './profile/activities/activities.component';
         CommonModule,
         EditorModule,
         UserLinkModule,
-        UserProfileModule
+        UserProfileModule,
+        ButtonModule
     ],
     declarations: [
         ProfileComponent,
@@ -37,4 +39,5 @@ import { ActivitiesComponent } from './profile/activities/activities.component';
     ]
 })
 
-export class UserModule {}
+export class UserModule {
+}
