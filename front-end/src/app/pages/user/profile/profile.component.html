@@ -99,42 +99,52 @@
                 </app-content>
             </div>
             <div class="cell small-12 medium-6">
-                <app-title [title]="'Visitor Messages'" [tabs]="visitorMessageTabs"></app-title>
-                <app-content></app-content>
+                <app-editor [title]="'Visitor Messages'" [slim]="true" [buttons]="sendButton"></app-editor>
                 <app-content>
-                    <img style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
-                    <div class="visitor-message-info">
-                        <div class="visitor-message-nickname">Chimp</div>
-                        June, 2 2018 - 19:19PM
+                    <div class="visitor-reply-container-avatar">
+                        <img style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
                     </div>
-                    <div class="visitor-message-desc">
-                        are you on discord tonight? so fucking boredddddddddddddddddd
+                    <div class="visitor-reply-container-content">
+                        <div class="visitor-reply-info">
+                            <div class="visitor-message-nickname">Dez</div>
+                        </div>
+                        <div class="visitor-message-desc">
+                            yes i am mate, what time u on?
+                        </div>
                     </div>
                     <div class="visitor-information">
                         <div class="visitor-information-left">
                             <i class="fas fa-exclamation-triangle"></i>
                             <i class="fa fa-envelope"></i>
                             <i class="fa fa-bell"></i>
+                            |
+                            June, 2 2018 - 19:19PM
                         </div>
                         <div class="visitor-information-text">
-                            <i class="far fa-heart"></i> 1 -
-                            <i class="far fa-comment"></i> 4
+                            <i class="far fa-heart"></i> 1
+                            -
+                            <i class="far fa-comment"></i> 2
                         </div>
                     </div>
                     <div class="visitor-reply-container">
-                        <img style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
-                        <div class="visitor-reply-info">
-                            <div class="visitor-message-nickname">Dez</div>
-                            June, 2 2018 - 19:19PM
+                        <div class="visitor-reply-container-avatar">
+                            <img style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
                         </div>
-                        <div class="visitor-message-desc">
-                            yes i am mate, what time u on?
+                        <div class="visitor-reply-container-content">
+                            <div class="visitor-reply-info">
+                                <div class="visitor-message-nickname">Dez</div>
+                            </div>
+                            <div class="visitor-message-desc">
+                                yes i am mate, what time u on?
+                            </div>
                         </div>
                         <div class="visitor-information">
                             <div class="visitor-information-left">
                                 <i class="fas fa-exclamation-triangle"></i>
                                 <i class="fa fa-envelope"></i>
                                 <i class="fa fa-bell"></i>
+                                |
+                                June, 2 2018 - 19:19PM
                             </div>
                             <div class="visitor-information-text">
                                 <i class="far fa-heart"></i> 2
@@ -142,64 +152,33 @@
                         </div>
                     </div>
                     <div class="visitor-reply-container">
-                        <img style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
-                        <div class="visitor-reply-info">
-                            <div class="visitor-message-nickname">Chimp</div>
-                            June, 2 2018 - 19:19PM
+                        <div class="visitor-reply-container-avatar">
+                            <img style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
                         </div>
-                        <div class="visitor-message-desc">
-                            yes i am mate, what time u on?
+                        <div class="visitor-reply-container-content">
+                            <div class="visitor-reply-info">
+                                <div class="visitor-message-nickname">Dez</div>
+                            </div>
+                            <div class="visitor-message-desc">
+                                yes i am mate, what time u on?
+                            </div>
                         </div>
                         <div class="visitor-information">
                             <div class="visitor-information-left">
                                 <i class="fas fa-exclamation-triangle"></i>
                                 <i class="fa fa-envelope"></i>
                                 <i class="fa fa-bell"></i>
-                            </div>
-                            <div class="visitor-information-text">
-                                <i class="far fa-heart"></i> 1
-                            </div>
-                        </div>
-                    </div>
-                    <div class="visitor-reply-container">
-                        <img style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
-                        <div class="visitor-reply-info">
-                            <div class="visitor-message-nickname">Dez</div>
-                            June, 2 2018 - 19:19PM
-                        </div>
-                        <div class="visitor-message-desc">
-                            yes i am mate, what time u on?
-                        </div>
-                        <div class="visitor-information">
-                            <div class="visitor-information-left">
-                                <i class="fas fa-exclamation-triangle"></i>
-                                <i class="fa fa-envelope"></i>
-                                <i class="fa fa-bell"></i>
-                            </div>
-                            <div class="visitor-information-text">
-                                <i class="far fa-heart"></i> 4
-                            </div>
-                        </div>
-                    </div>
-                    <div class="visitor-reply-container">
-                        <img style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
-                        <div class="visitor-reply-info">
-                            <div class="visitor-message-nickname">Chimp</div>
-                            June, 2 2018 - 19:19PM
-                        </div>
-                        <div class="visitor-message-desc">
-                            yes i am mate, what time u on?
-                        </div>
-                        <div class="visitor-information">
-                            <div class="visitor-information-left">
-                                <i class="fas fa-exclamation-triangle"></i>
-                                <i class="fa fa-envelope"></i>
-                                <i class="fa fa-bell"></i>
+                                |
+                                June, 2 2018 - 19:19PM
                             </div>
                             <div class="visitor-information-text">
                                 <i class="far fa-heart"></i> 2
                             </div>
                         </div>
+                    </div>
+                    <div class="visitor-reply-input">
+                        <input type="text" placeholder="Reply..."/>
+                        <button appButton [float]="'right'">Send</button>
                     </div>
                 </app-content>
             </div>
@@ -224,17 +203,17 @@
 
                 <app-title [title]="'Relations'"></app-title>
                 <app-content>
-                    <div class="relation">
+                    <div class="relation" *ngIf="relations.love">
                         <img src="/assets/images/heart.png"/>
                         <app-user-link [user]="relations.love"></app-user-link>
                     </div>
-                    <div class="relation">
+                    <div class="relation" *ngIf="relations.like">
                         <img src="/assets/images/smile.png"/>
-                        <app-user-link [user]="relations.love"></app-user-link>
+                        <app-user-link [user]="relations.like"></app-user-link>
                     </div>
-                    <div class="relation">
+                    <div class="relation" *ngIf="relations.hate">
                         <img src="/assets/images/skull.png"/>
-                        <app-user-link [user]="relations.love"></app-user-link>
+                        <app-user-link [user]="relations.hate"></app-user-link>
                     </div>
                 </app-content>
 
