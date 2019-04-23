@@ -12,6 +12,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { Activity } from 'core/services/continues-information/continues-information.model';
+import { EditorAction } from 'shared/components/editor/editor.model';
 
 @Component({
     selector: 'app-user-profile',
@@ -21,8 +22,8 @@ import { Activity } from 'core/services/continues-information/continues-informat
 export class ProfileComponent extends Page implements OnDestroy {
     private _data: ProfileModel;
 
-    visitorMessageTabs: Array<TitleTab> = [
-        new TitleTab({title: 'Send Message'})
+    sendButton: Array<EditorAction> = [
+        new EditorAction({title: 'Send Message'})
     ];
     followerTabs: Array<TitleTab> = [];
 
