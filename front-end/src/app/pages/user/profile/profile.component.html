@@ -203,17 +203,17 @@
 
                 <app-title [title]="'Relations'"></app-title>
                 <app-content>
-                    <div class="relation">
+                    <div class="relation" *ngIf="relations.love">
                         <img src="/assets/images/heart.png"/>
                         <app-user-link [user]="relations.love"></app-user-link>
                     </div>
-                    <div class="relation">
+                    <div class="relation" *ngIf="relations.like">
                         <img src="/assets/images/smile.png"/>
-                        <app-user-link [user]="relations.love"></app-user-link>
+                        <app-user-link [user]="relations.like"></app-user-link>
                     </div>
-                    <div class="relation">
+                    <div class="relation" *ngIf="relations.hate">
                         <img src="/assets/images/skull.png"/>
-                        <app-user-link [user]="relations.love"></app-user-link>
+                        <app-user-link [user]="relations.hate"></app-user-link>
                     </div>
                 </app-content>
 
