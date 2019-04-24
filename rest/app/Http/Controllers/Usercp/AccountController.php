@@ -125,10 +125,10 @@ class AccountController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateTheme(Request $request) {
-        $themeId = $request->input('themeId');
         $user = Cache::get('auth');
-        $theme = Theme::find($themeId);
-        Condition::precondition(!$theme, 404, 'No theme with that ID');
+        $themeId = $request->input('themeId');
+        $theme = $themeId == 0 ? (object)['title' => 'Default'] : Theme::find($themeId);
+        Condition::precondition(!$theme , 404, 'No theme with that ID');
 
         $user->theme = $themeId;
         $user->save();
