@@ -1349,4 +1349,11 @@ class Action {
         'data' => [],
         'log' => 'log_admin'
     ];
+
+    const CREATED_VISITOR_MESSAGE = [
+        'id' => 156,
+        'description' => 'Created a visitor message',
+        'data' => [],
+        'log' => 'log_user'
+    ];
 }

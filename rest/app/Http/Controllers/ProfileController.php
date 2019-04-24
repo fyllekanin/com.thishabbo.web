@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\EloquentModels\User\Follower;
 use App\EloquentModels\User\User;
+use App\EloquentModels\User\VisitorMessage;
 use App\Factories\Notification\NotificationFactory;
 use App\Helpers\ConfigHelper;
 use App\Helpers\PermissionHelper;
@@ -63,6 +64,34 @@ class ProfileController extends Controller {
         $follow->delete();
         Logger::user($user->userId, $request->ip(), Action::UNFOLLOWED, [], $targetId);
         return response()->json($this->getFollowers($targetId, $user));
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function createVisitorMessage(Request $request) {
+        $user = Cache::get('auth');
+        $data = (object)$request->input('data');
+
+        $profile = User::find($data->hostId);
+        $parent = isset($data->parentId) ? VisitorMessage::find($data->parentId) : null;
+        Condition::precondition($this->isPrivate($user, $profile), 400, 'You are not an approved follower, you can not post here!');
+        Condition::precondition(isset($data->parentId) && !$parent, 404, 'The parent visitor message do not exist');
+        Condition::precondition($parent && $parent->hostId != $data->hostId, 400, 'Parent message and host do not match');
+        Condition::precondition(!isset($data->content) || empty($data->content), 400, 'Message can not be empty');
+
+        $visitorMessage = new VisitorMessage([
+            'hostId' => $data->hostId,
+            'userId' => $user->userId,
+            'content' => $data->content,
+            'parentId' => $parent ? $parent->parentId : 0
+        ]);
+        $visitorMessage->save();
+
+        Logger::user($user->userId, $request->ip(), Action::CREATED_VISITOR_MESSAGE, [], $visitorMessage->visitorMessageId);
+        return response()->json();
     }
 
     /**
