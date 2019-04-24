@@ -49,6 +49,36 @@ export class ProfileRelations {
     }
 }
 
+export class ProfileVisitorMessage {
+    @primitive()
+    visitorMessageId: number;
+    @objectOf(SlimUser)
+    user: SlimUser;
+    @primitive()
+    content: string;
+    @primitive()
+    replies: number;
+    @primitive()
+    createdAt: number;
+
+    constructor (source: Partial<ProfileVisitorMessage>) {
+        ClassHelper.assign(this, source);
+    }
+}
+
+export class ProfileVisitorMessages {
+    @primitive()
+    total: number;
+    @primitive()
+    page: number;
+    @arrayOf(ProfileVisitorMessage)
+    items: Array<ProfileVisitorMessage> = [];
+
+    constructor (source: Partial<ProfileVisitorMessages>) {
+        ClassHelper.assign(this, source);
+    }
+}
+
 export class ProfileModel {
     @objectOf(SlimUser)
     user: SlimUser;
@@ -62,6 +92,8 @@ export class ProfileModel {
     followers: Followers;
     @objectOf(ProfileRelations)
     relations: ProfileRelations;
+    @objectOf(ProfileVisitorMessages)
+    visitorMessages: ProfileVisitorMessages;
 
     constructor (source: Partial<ProfileModel>) {
         ClassHelper.assign(this, source);

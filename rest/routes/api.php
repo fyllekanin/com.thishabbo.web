@@ -55,6 +55,8 @@ Route::group(['middleware' => ['maintenance']], function () {
         Route::get('/auth/user', 'Auth\AuthController@getUser');
         Route::post('/radio/like', 'Staff\RadioController@createDjLike');
 
+        Route::post('/profile/visitor-message', 'ProfileController@createVisitorMessage');
+
         Route::put('puller/notifications/read/all', 'Puller\NotificationController@readAllNotifications');
         Route::put('puller/notifications/read/{notificationId}', 'Puller\NotificationController@readNotification');
 

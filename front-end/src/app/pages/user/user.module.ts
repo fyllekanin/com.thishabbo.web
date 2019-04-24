@@ -13,6 +13,9 @@ import { UserLinkModule } from 'shared/components/user/user-link.module';
 import { UserProfileModule } from 'shared/directives/user-profile.module';
 import { ActivitiesComponent } from './profile/activities/activities.component';
 import { ButtonModule } from 'shared/directives/button/button.module';
+import { VisitorMessageComponent } from './profile/visitor-message/visitor-message.component';
+import { PaginationModule } from 'shared/app-views/pagination/pagination.module';
+import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 
 @NgModule({
     imports: [
@@ -25,11 +28,14 @@ import { ButtonModule } from 'shared/directives/button/button.module';
         EditorModule,
         UserLinkModule,
         UserProfileModule,
-        ButtonModule
+        ButtonModule,
+        PaginationModule,
+        SafeHtmlModule
     ],
     declarations: [
         ProfileComponent,
-        ActivitiesComponent
+        ActivitiesComponent,
+        VisitorMessageComponent
     ],
     providers: [
         ProfileService
