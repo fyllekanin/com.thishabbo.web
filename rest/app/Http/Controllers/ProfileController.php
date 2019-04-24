@@ -75,6 +75,9 @@ class ProfileController extends Controller {
         $user = Cache::get('auth');
         $data = (object)$request->input('data');
 
+        Condition::precondition(VisitorMessage::where('userId', $user->userId)->where('createdAt', '>', time() - $this->nowMinus15)->count() > 0,
+            400, 'You are commenting to quick!');
+
         $profile = User::find($data->hostId);
         $parent = isset($data->parentId) ? VisitorMessage::find($data->parentId) : null;
         Condition::precondition($this->isPrivate($user, $profile), 400, 'You are not an approved follower, you can not post here!');
