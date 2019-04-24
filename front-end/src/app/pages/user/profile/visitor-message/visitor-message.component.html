@@ -1,27 +1,25 @@
 <app-content>
     <div class="toggle-replies" (click)="isRepliesOpen = !isRepliesOpen; toggleReplies();">
         <div class="avatar">
-            <img style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
+            <img appUserProfile [info]="visitorMessage.user"/>
         </div>
         <div class="content">
             <div class="user">
-                Dez
+                <app-user-link [user]="visitorMessage.user"></app-user-link>
             </div>
-            <div class="message">
-                yes i am mate, what time u on?
-            </div>
+            <div class="message" [innerHTML]="visitorMessage.content | safeHtml"></div>
         </div>
         <div class="footer">
             <div class="controls">
                 <span tooltip="Report"><i class="fas fa-exclamation-triangle"></i></span>
                 <span tooltip="Warn / Infract"><i class="fa fa-bell"></i></span>
                 |
-                June, 2 2018 - 19:19PM
+                {{getTime(visitorMessage.createdAt)}}
             </div>
             <div class="user-controls">
-                <span tooltip="Likes"><i class="far fa-heart"></i></span> 1
+                <span tooltip="Likes"><i class="far fa-heart"></i></span> 0
                 -
-                <span tooltip="Comments"><i class="far fa-comment"></i></span> 2
+                <span tooltip="Comments"><i class="far fa-comment"></i></span> 0
             </div>
         </div>
     </div>

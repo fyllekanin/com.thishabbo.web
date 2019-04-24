@@ -13,6 +13,7 @@ use App\Logger;
 use App\Models\Logger\Action;
 use App\Services\ActivityService;
 use App\Services\ForumService;
+use App\Utils\BBcodeUtil;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -94,7 +95,7 @@ class ProfileController extends Controller {
         $visitorMessage->save();
 
         Logger::user($user->userId, $request->ip(), Action::CREATED_VISITOR_MESSAGE, [], $visitorMessage->visitorMessageId);
-        return response()->json();
+        return response()->json($this->mapVisitorMessage($visitorMessage));
     }
 
     /**
@@ -104,7 +105,7 @@ class ProfileController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getProfile(ActivityService $activityService, ForumService $forumService, $nickname) {
+    public function getProfile(ActivityService $activityService, ForumService $forumService, $nickname, $page = 1) {
         $user = Cache::get('auth');
 
         $profile = User::withNickname($nickname)->first();
@@ -130,6 +131,7 @@ class ProfileController extends Controller {
                 'createdAt' => $profile->createdAt->timestamp,
                 'lastActivity' => $profile->lastActivity
             ],
+            'visitorMessages' => $this->getVisitorMessages($profile, $page),
             'relations' => !$profile->profile ? [] : [
                 'love' => isset($profile->profile->love) ? UserHelper::getSlimUser($profile->profile->love) : null,
                 'like' => isset($profile->profile->like) ? UserHelper::getSlimUser($profile->profile->like) : null,
@@ -176,6 +178,40 @@ class ProfileController extends Controller {
             'total' => Follower::where('targetId', $userId)->isApproved()->count(),
             'isFollowing' => $following ? true : false,
             'isApproved' => $following ? $following->isApproved : false
+        ];
+    }
+
+    /**
+     * @param $user
+     * @param int $page
+     *
+     * @return array
+     */
+    private function getVisitorMessages($user, $page) {
+        $visitorMessagesSql = VisitorMessage::where('hostId', $user->userId)->isSubject()->take($this->perPage)->skip($this->getOffset($page));
+        $total = ceil($visitorMessagesSql->count() / $this->perPage);
+
+        return [
+            'total' => $total,
+            'page' => $page,
+            'items' => $visitorMessagesSql->orderBy('visitorMessageId', 'DESC')->get()->map(function ($item) {
+                return $this->mapVisitorMessage($item);
+            })
+        ];
+    }
+
+    /**
+     * @param $visitorMessage
+     *
+     * @return object
+     */
+    private function mapVisitorMessage($visitorMessage) {
+        return (object)[
+            'visitorMessageId' => $visitorMessage->visitorMessageId,
+            'user' => UserHelper::getSlimUser($visitorMessage->userId),
+            'content' => $visitorMessage->parentId > 0 ? $visitorMessage->content : BBcodeUtil::bbcodeParser($visitorMessage->content),
+            'replies' => $visitorMessage->parentId > 0 ? 0 : $visitorMessage->replies->count(),
+            'createdAt' => $visitorMessage->createdAt->timestamp
         ];
     }
 }

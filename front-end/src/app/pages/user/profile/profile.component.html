@@ -99,9 +99,13 @@
                 </app-content>
             </div>
             <div class="cell small-12 medium-6">
-                <app-editor [title]="'Visitor Messages'" [slim]="true" [buttons]="sendButton"></app-editor>
-                <app-user-profile-visitor-message></app-user-profile-visitor-message>
-                <app-pagination></app-pagination>
+                <app-editor #editor [title]="'Visitor Messages'" [slim]="true" [buttons]="sendButton"
+                            (onTabClick)="onPost()"></app-editor>
+                <div *ngIf="visitorMessages">
+                    <app-user-profile-visitor-message *ngFor="let visitorMessage of visitorMessages"
+                                                      [visitorMessage]="visitorMessage"></app-user-profile-visitor-message>
+                    <app-pagination></app-pagination>
+                </div>
             </div>
 
             <div class="cell small-12 medium-3">

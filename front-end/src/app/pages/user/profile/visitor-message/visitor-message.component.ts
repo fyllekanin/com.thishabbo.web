@@ -1,4 +1,6 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
+import { ProfileVisitorMessage } from '../profile.model';
+import { TimeHelper } from 'shared/helpers/time.helper';
 
 @Component({
     selector: 'app-user-profile-visitor-message',
@@ -7,8 +9,13 @@ import { Component, ViewChild } from '@angular/core';
 })
 export class VisitorMessageComponent {
 
+    @Input() visitorMessage: ProfileVisitorMessage;
     @ViewChild('replies') repliesEle;
     isRepliesOpen = false;
+
+    getTime (time: number): string {
+        return TimeHelper.getTime(time);
+    }
 
     toggleReplies (): void {
         if (this.isRepliesOpen) {

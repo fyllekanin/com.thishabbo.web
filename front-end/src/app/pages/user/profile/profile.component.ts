@@ -1,5 +1,12 @@
-import { Component, ElementRef, OnDestroy } from '@angular/core';
-import { Followers, ProfileActions, ProfileModel, ProfileRelations, ProfileStats } from './profile.model';
+import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import {
+    Followers,
+    ProfileActions,
+    ProfileModel,
+    ProfileRelations,
+    ProfileStats,
+    ProfileVisitorMessage
+} from './profile.model';
 import { Page } from 'shared/page/page.model';
 import { ActivatedRoute } from '@angular/router';
 import { TimeHelper } from 'shared/helpers/time.helper';
@@ -13,6 +20,7 @@ import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { Activity } from 'core/services/continues-information/continues-information.model';
 import { EditorAction } from 'shared/components/editor/editor.model';
+import { EditorComponent } from 'shared/components/editor/editor.component';
 
 @Component({
     selector: 'app-user-profile',
@@ -22,6 +30,7 @@ import { EditorAction } from 'shared/components/editor/editor.model';
 export class ProfileComponent extends Page implements OnDestroy {
     private _data: ProfileModel;
 
+    @ViewChild('editor') editor: EditorComponent;
     sendButton: Array<EditorAction> = [
         new EditorAction({title: 'Send Message'})
     ];
@@ -43,6 +52,19 @@ export class ProfileComponent extends Page implements OnDestroy {
         });
     }
 
+    onPost (): void {
+        const value = this.editor.getEditorValue();
+        if (!value) {
+            this._notificationService.sendErrorNotification('Can not post empty message');
+            return;
+        }
+        this._profileService.postVisitorMessage(this._data.user.userId, value)
+            .subscribe(res => {
+                this._data.visitorMessages.items.unshift(res);
+                this.editor.content = '';
+            }, this._notificationService.failureNotification.bind(this._notificationService));
+    }
+
     ngOnDestroy (): void {
         super.destroy();
     }
@@ -56,6 +78,10 @@ export class ProfileComponent extends Page implements OnDestroy {
                 this.unfollowUser();
                 break;
         }
+    }
+
+    get visitorMessages (): Array<ProfileVisitorMessage> {
+        return this._data.visitorMessages.items;
     }
 
     get activities (): Array<Activity> {
