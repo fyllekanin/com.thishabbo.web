@@ -20,6 +20,13 @@ export const userRoutes: Routes = [
                 component: ProfileComponent
             },
             {
+                path: 'profile/:nickname/page/:page',
+                resolve: {
+                    data: ProfileService
+                },
+                component: ProfileComponent
+            },
+            {
                 path: 'usercp',
                 loadChildren: './usercp/usercp.module#UsercpModule'
             }

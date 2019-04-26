@@ -20,7 +20,7 @@ class VisitorMessage extends DeletableModel {
     ];
 
     public function replies() {
-        return $this->hasMany('App\EloquentModels\User\VisitorMessage', 'parentId');
+        return $this->hasMany('App\EloquentModels\User\VisitorMessage', 'parentId', 'visitorMessageId');
     }
 
     public function scopeIsSubject(Builder $query) {

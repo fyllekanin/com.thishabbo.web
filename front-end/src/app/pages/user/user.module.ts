@@ -16,6 +16,7 @@ import { ButtonModule } from 'shared/directives/button/button.module';
 import { VisitorMessageComponent } from './profile/visitor-message/visitor-message.component';
 import { PaginationModule } from 'shared/app-views/pagination/pagination.module';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
     imports: [
@@ -30,7 +31,8 @@ import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
         UserProfileModule,
         ButtonModule,
         PaginationModule,
-        SafeHtmlModule
+        SafeHtmlModule,
+        FormsModule
     ],
     declarations: [
         ProfileComponent,

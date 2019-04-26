@@ -19,58 +19,36 @@
             <div class="user-controls">
                 <span tooltip="Likes"><i class="far fa-heart"></i></span> 0
                 -
-                <span tooltip="Comments"><i class="far fa-comment"></i></span> 0
+                <span tooltip="Comments"><i class="far fa-comment"></i></span> {{replyCount | number: '1.'}}
             </div>
         </div>
     </div>
     <div #replies class="replies hidden">
-        <div class="avatar">
-            <img style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
-        </div>
-        <div class="content">
-            <div class="user">
-                Dez
+        <div *ngFor="let comment of comments">
+            <div class="avatar">
+                <img appUserProfile [info]="comment.user"/>
             </div>
-            <div class="message">
-                yes i am mate, what time u on?
+            <div class="content">
+                <div class="user">
+                    <app-user-link [user]="comment.user"></app-user-link>
+                </div>
+                <div class="message" [innerHTML]="comment.content | safeHtml"></div>
             </div>
-        </div>
-        <div class="footer">
-            <div class="controls">
-                <span tooltip="Report"><i class="fas fa-exclamation-triangle"></i></span>
-                <span tooltip="Warn / Infract"><i class="fa fa-bell"></i></span>
-                |
-                June, 2 2018 - 19:19PM
-            </div>
-            <div class="user-controls">
-                <span tooltip="Likes"><i class="far fa-heart"></i></span> 2
-            </div>
-        </div>
-        <div class="avatar">
-            <img style="background-position: 0 center; background-repeat: no-repeat; background-size: 100%; border: 1px solid rgb(255, 255, 255); border-radius: 100%; height: 50px; width: 50px; box-shadow: rgba(0, 0, 0, 0.1) 0 3px 5px; background-image: url(&quot;/rest/resources/images/users/1.gif?undefined&quot;);">
-        </div>
-        <div class="content">
-            <div class="user">
-                Dez
-            </div>
-            <div class="message">
-                yes i am mate, what time u on?
+            <div class="footer">
+                <div class="controls">
+                    <span tooltip="Report"><i class="fas fa-exclamation-triangle"></i></span>
+                    <span tooltip="Warn / Infract"><i class="fa fa-bell"></i></span>
+                    |
+                    {{ getTime(comment.createdAt) }}
+                </div>
+                <div class="user-controls">
+                    <span tooltip="Likes"><i class="far fa-heart"></i></span> 0
+                </div>
             </div>
         </div>
-        <div class="footer">
-            <div class="controls">
-                <span tooltip="Report"><i class="fas fa-exclamation-triangle"></i></span>
-                <span tooltip="Warn / Infract"><i class="fa fa-bell"></i></span>
-                |
-                June, 2 2018 - 19:19PM
-            </div>
-            <div class="user-controls">
-                <span tooltip="Likes"><i class="far fa-heart"></i></span> 2
-            </div>
-        </div>
-        <div class="new-message">
-            <input type="text" placeholder="Reply..."/>
-            <button appButton [float]="'right'">Send</button>
+        <div class="new-message" *ngIf="isLoggedIn">
+            <input [(ngModel)]="content" type="text" placeholder="Reply..."/>
+            <button appButton [float]="'right'" (onClick)="onComment()">Send</button>
         </div>
     </div>
 </app-content>

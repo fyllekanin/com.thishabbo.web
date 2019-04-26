@@ -103,8 +103,9 @@
                             (onTabClick)="onPost()"></app-editor>
                 <div *ngIf="visitorMessages">
                     <app-user-profile-visitor-message *ngFor="let visitorMessage of visitorMessages"
+                                                      [hostId]="user.userId"
                                                       [visitorMessage]="visitorMessage"></app-user-profile-visitor-message>
-                    <app-pagination></app-pagination>
+                    <app-pagination [paginationModel]="pagination"></app-pagination>
                 </div>
             </div>
 

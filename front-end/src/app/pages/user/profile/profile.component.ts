@@ -21,6 +21,7 @@ import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { Activity } from 'core/services/continues-information/continues-information.model';
 import { EditorAction } from 'shared/components/editor/editor.model';
 import { EditorComponent } from 'shared/components/editor/editor.component';
+import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 
 @Component({
     selector: 'app-user-profile',
@@ -35,6 +36,7 @@ export class ProfileComponent extends Page implements OnDestroy {
         new EditorAction({title: 'Send Message'})
     ];
     followerTabs: Array<TitleTab> = [];
+    pagination: PaginationModel;
 
     constructor (
         private _authService: AuthService,
@@ -146,6 +148,12 @@ export class ProfileComponent extends Page implements OnDestroy {
     private onData (data: { data: ProfileModel }): void {
         this._data = data.data;
         this.setFollowerTabs();
+
+        this.pagination = new PaginationModel({
+            total: data.data.visitorMessages.total,
+            page: data.data.visitorMessages.page,
+            url: '/user/profile/Tovven/page/:page'
+        });
     }
 
     private setFollowerTabs (): void {

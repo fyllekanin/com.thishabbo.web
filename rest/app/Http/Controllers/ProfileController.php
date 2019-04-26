@@ -76,7 +76,7 @@ class ProfileController extends Controller {
         $user = Cache::get('auth');
         $data = (object)$request->input('data');
 
-        Condition::precondition(VisitorMessage::where('userId', $user->userId)->where('createdAt', '>', time() - $this->nowMinus15)->count() > 0,
+        Condition::precondition(VisitorMessage::where('userId', $user->userId)->where('createdAt', '>', $this->nowMinus15)->count() > 0,
             400, 'You are commenting to quick!');
 
         $profile = User::find($data->hostId);
@@ -90,7 +90,7 @@ class ProfileController extends Controller {
             'hostId' => $data->hostId,
             'userId' => $user->userId,
             'content' => $data->content,
-            'parentId' => $parent ? $parent->parentId : 0
+            'parentId' => $parent ? $parent->visitorMessageId : 0
         ]);
         $visitorMessage->save();
 
@@ -105,7 +105,7 @@ class ProfileController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getProfile(ActivityService $activityService, ForumService $forumService, $nickname, $page = 1) {
+    public function getProfile(ActivityService $activityService, ForumService $forumService, $nickname, $page) {
         $user = Cache::get('auth');
 
         $profile = User::withNickname($nickname)->first();
@@ -211,6 +211,11 @@ class ProfileController extends Controller {
             'user' => UserHelper::getSlimUser($visitorMessage->userId),
             'content' => $visitorMessage->parentId > 0 ? $visitorMessage->content : BBcodeUtil::bbcodeParser($visitorMessage->content),
             'replies' => $visitorMessage->parentId > 0 ? 0 : $visitorMessage->replies->count(),
+            'comments' => $visitorMessage->parentId > 0 ? [] : VisitorMessage::where('parentId', $visitorMessage->visitorMessageId)->orderBy('visitorMessageId', 'ASC')
+                ->get()
+                ->map(function ($item) {
+                    return $this->mapVisitorMessage($item);
+                }),
             'createdAt' => $visitorMessage->createdAt->timestamp
         ];
     }

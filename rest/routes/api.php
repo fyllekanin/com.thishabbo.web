@@ -38,7 +38,7 @@ Route::group(['middleware' => ['maintenance']], function () {
     Route::get('/auth/forgot-password/code/{habbo}', 'Auth\ForgotPasswordController@getCodeForHabbo');
     Route::put('/auth/forgot-password', 'Auth\ForgotPasswordController@changePassword');
 
-    Route::get('/page/profile/{nickname}', 'ProfileController@getProfile');
+    Route::get('/page/profile/{nickname}/page/{page}', 'ProfileController@getProfile');
     Route::get('/page/custom/{page}', 'PageController@getCustomPage');
     Route::get('/page/home', 'PageController@getHomePage');
     Route::get('/page/register', 'PageController@getRegisterPage');

@@ -1,4 +1,4 @@
-import { PaginationModel, PaginationItem } from 'shared/app-views/pagination/pagination.model';
+import { PaginationItem, PaginationModel } from 'shared/app-views/pagination/pagination.model';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { QueryParameters } from 'core/services/http/http.model';
@@ -11,15 +11,22 @@ import { QueryParameters } from 'core/services/http/http.model';
 export class PaginationComponent {
     private _paginationModel: PaginationModel = new PaginationModel();
 
+    fillBackwardItems: Array<PaginationItem> = [];
+    backwardItems: Array<PaginationItem> = [];
+
+    fillForwardItems: Array<PaginationItem> = [];
+    forwardItems: Array<PaginationItem> = [];
+
     @Output() onPageSwitch: EventEmitter<number> = new EventEmitter();
 
-    constructor(private _router: Router) {}
+    constructor (private _router: Router) {
+    }
 
-    getUrl(item: PaginationItem): string {
+    getUrl (item: PaginationItem): string {
         return this._paginationModel.url.replace(':page', item.value.toString());
     }
 
-    goToPrevious(): void {
+    goToPrevious (): void {
         if (this._paginationModel.url) {
             const url = this.getUrl({value: this._paginationModel.page - 1});
             this._router.navigateByUrl(url);
@@ -28,7 +35,7 @@ export class PaginationComponent {
         }
     }
 
-    goToNext(): void {
+    goToNext (): void {
         if (this._paginationModel.url) {
             const url = this.getUrl({value: this._paginationModel.page + 1});
             this._router.navigateByUrl(url);
@@ -37,24 +44,48 @@ export class PaginationComponent {
         }
     }
 
-    switchPage(page: number): void {
+    switchPage (page: number): void {
         this.onPageSwitch.emit(page);
     }
 
     @Input()
-    set paginationModel(paginationModel: PaginationModel) {
+    set paginationModel (paginationModel: PaginationModel) {
         this._paginationModel = paginationModel || new PaginationModel();
+        this.fillBackwardItems = this.getFillBackwardItems();
+        this.backwardItems = this.getBackwardItems();
+        this.fillForwardItems = this.getFillForwardItems();
+        this.forwardItems = this.getForwardItems();
     }
 
-    get queryParameters(): QueryParameters {
-        return this._paginationModel.params;
-    }
-
-    get isUrlSet(): boolean {
+    get isUrlSet (): boolean {
         return Boolean(this._paginationModel.url);
     }
 
-    get fillBackwardItems(): Array<PaginationItem> {
+    get thereIsPrevious (): boolean {
+        return this._paginationModel.page > 1;
+    }
+
+    get thereIsNext (): boolean {
+        return this._paginationModel.page < this._paginationModel.total;
+    }
+
+    get currentPage (): string {
+        return this._paginationModel.page.toString();
+    }
+
+    private thereIsGapBackwards (): boolean {
+        return this._paginationModel.page > 4;
+    }
+
+    get queryParameters (): QueryParameters {
+        return this._paginationModel.params;
+    }
+
+    private thereIsGapForward (): boolean {
+        return this._paginationModel.page < (this._paginationModel.total - 4);
+    }
+
+    private getFillBackwardItems (): Array<PaginationItem> {
         if (this.thereIsGapBackwards()) {
             return [];
         }
@@ -71,7 +102,7 @@ export class PaginationComponent {
         return items;
     }
 
-    get fillForwardItems(): Array<PaginationItem> {
+    private getFillForwardItems (): Array<PaginationItem> {
         if (this.thereIsGapForward()) {
             return [];
         }
@@ -85,43 +116,23 @@ export class PaginationComponent {
         return items;
     }
 
-    get backwardItems(): Array<PaginationItem> {
+    private getBackwardItems (): Array<PaginationItem> {
         return this.thereIsGapBackwards() ? [
-            { value: 1, title: '1' },
-            { value: 2, title: '2' },
-            { value: 3, title: '3' },
-            { value: -1, title: '...' },
-            { value: this._paginationModel.page - 1, title: (this._paginationModel.page - 1).toString() }
+            {value: 1, title: '1'},
+            {value: 2, title: '2'},
+            {value: 3, title: '3'},
+            {value: -1, title: '...'},
+            {value: this._paginationModel.page - 1, title: (this._paginationModel.page - 1).toString()}
         ] : [];
     }
 
-    get forwardItems(): Array<PaginationItem> {
+    private getForwardItems (): Array<PaginationItem> {
         return this.thereIsGapForward() ? [
-            { value: this._paginationModel.page + 1, title: (this._paginationModel.page + 1).toString() },
-            { value: -1, title: '...' },
-            { value: this._paginationModel.total - 2, title: (this._paginationModel.total - 2).toString() },
-            { value: this._paginationModel.total - 1, title: (this._paginationModel.total - 1).toString() },
-            { value: this._paginationModel.total, title: (this._paginationModel.total).toString() }
+            {value: this._paginationModel.page + 1, title: (this._paginationModel.page + 1).toString()},
+            {value: -1, title: '...'},
+            {value: this._paginationModel.total - 2, title: (this._paginationModel.total - 2).toString()},
+            {value: this._paginationModel.total - 1, title: (this._paginationModel.total - 1).toString()},
+            {value: this._paginationModel.total, title: (this._paginationModel.total).toString()}
         ] : [];
-    }
-
-    get thereIsPrevious(): boolean {
-        return this._paginationModel.page > 1;
-    }
-
-    get thereIsNext(): boolean {
-        return this._paginationModel.page < this._paginationModel.total;
-    }
-
-    get currentPage(): string {
-        return this._paginationModel.page.toString();
-    }
-
-    private thereIsGapBackwards(): boolean {
-        return this._paginationModel.page > 4;
-    }
-
-    private thereIsGapForward(): boolean {
-        return this._paginationModel.page < (this._paginationModel.total - 4);
     }
 }

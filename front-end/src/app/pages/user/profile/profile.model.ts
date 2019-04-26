@@ -58,6 +58,8 @@ export class ProfileVisitorMessage {
     content: string;
     @primitive()
     replies: number;
+    @arrayOf(ProfileVisitorMessage)
+    comments: Array<ProfileVisitorMessage> = [];
     @primitive()
     createdAt: number;
 

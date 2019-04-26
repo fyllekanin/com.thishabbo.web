@@ -13,7 +13,8 @@ export class ProfileService implements Resolve<ProfileModel> {
 
     resolve (route: ActivatedRouteSnapshot): Observable<ProfileModel> {
         const nickname = route.params['nickname'];
-        return this._httpService.get(`page/profile/${nickname}`)
+        const page = route.params['page'] || 1;
+        return this._httpService.get(`page/profile/${nickname}/page/${page}`)
             .pipe(map(res => new ProfileModel(res)));
     }
 
@@ -25,11 +26,12 @@ export class ProfileService implements Resolve<ProfileModel> {
         return this._httpService.delete(`usercp/profile/unfollow/${userId}`);
     }
 
-    postVisitorMessage (hostId: number, value: string): Observable<ProfileVisitorMessage> {
+    postVisitorMessage (hostId: number, value: string, parentId: number = null): Observable<ProfileVisitorMessage> {
         return this._httpService.post('profile/visitor-message', {
             data: {
                 hostId: hostId,
-                content: value
+                content: value,
+                parentId: parentId
             }
         }).pipe(map(res => new ProfileVisitorMessage(res)));
     }
