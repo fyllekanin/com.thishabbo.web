@@ -2,16 +2,26 @@
 
 namespace App\Factories\Notification;
 
+use App\EloquentModels\User\VisitorMessage;
 use App\Factories\Notification\Views\BadgeView;
 use App\Factories\Notification\Views\CategoryView;
 use App\Factories\Notification\Views\FollowerView;
 use App\Factories\Notification\Views\InfractionView;
 use App\Factories\Notification\Views\ThreadView;
+use App\Factories\Notification\Views\VisitorMessageView;
 use App\Models\Notification\Type;
 use Illuminate\Support\Facades\DB;
 
 class NotificationFactory {
 
+    /**
+     * @param $notification
+     * @param $user
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     *
+     * @return BadgeView|CategoryView|FollowerView|InfractionView|ThreadView|VisitorMessageView|null
+     */
     public static function ofType($notification, $user) {
         $item = null;
         switch ($notification->type) {
@@ -32,6 +42,9 @@ class NotificationFactory {
                 break;
             case Type::getType(Type::FOLLOWED):
                 $item = new FollowerView($notification);
+                break;
+            case Type::getType(Type::VISITOR_MESSAGE):
+                $item = new VisitorMessageView($notification);
                 break;
         }
 
@@ -66,5 +79,30 @@ class NotificationFactory {
             'contentId' => 0,
             'createdAt' => time()
         ]);
+    }
+
+    public static function newVisitorMessage(VisitorMessage $visitorMessage) {
+        $receiverIds = [$visitorMessage->hostId];
+        if ($visitorMessage->parentId > 0) {
+            VisitorMessage::where('parentId', $visitorMessage->parentId)->orWhere('visitorMessageId', $visitorMessage->parentId)->pluck('userId')
+                ->filter(function ($userId) use ($visitorMessage) {
+                    return $userId != $visitorMessage->userId;
+                })
+                ->each(function ($userId) use ($receiverIds) {
+                    $receiverIds[] = $userId;
+                });
+        }
+
+        $notifications = array_map(function ($userId) use ($visitorMessage) {
+            return [
+                'userId' => $userId,
+                'senderId' => $visitorMessage->userId,
+                'type' => Type::getType(Type::VISITOR_MESSAGE),
+                'contentId' => $visitorMessage->visitorMessageId,
+                'createdAt' => time()
+            ];
+        }, array_unique($receiverIds));
+
+        DB::table('notifications')->insert($notifications);
     }
 }

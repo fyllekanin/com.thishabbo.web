@@ -2,7 +2,7 @@
 <app-content>
     <div class="notification-view" *ngFor="let notification of notifications" [ngSwitch]="notification.type">
         <app-top-bar-thread-view *ngSwitchCase="1" [notification]="notification"></app-top-bar-thread-view>
-        <app-top-bar-thread-view *ngSwitchCase="2" [notification]="notification" ></app-top-bar-thread-view>
+        <app-top-bar-thread-view *ngSwitchCase="2" [notification]="notification"></app-top-bar-thread-view>
         <app-top-bar-thread-view *ngSwitchCase="4" [notification]="notification"></app-top-bar-thread-view>
 
         <app-top-bar-badge-view *ngSwitchCase="3" [notification]="notification"></app-top-bar-badge-view>
@@ -10,6 +10,8 @@
         <app-top-bar-infraction-view *ngSwitchCase="6" [notification]="notification"></app-top-bar-infraction-view>
         <app-top-bar-infraction-view *ngSwitchCase="7" [notification]="notification"></app-top-bar-infraction-view>
         <app-top-bar-follower-view *ngSwitchCase="8" [notification]="notification"></app-top-bar-follower-view>
+        <app-top-bar-visitor-message-view *ngSwitchCase="9"
+                                          [notification]="notification"></app-top-bar-visitor-message-view>
     </div>
 </app-content>
 

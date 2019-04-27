@@ -4,6 +4,7 @@ import { CategoryView } from 'shared/components/notification-views/category-view
 import { ThreadView } from 'shared/components/notification-views/thread-view/thread-view.model';
 import { InfractionView } from 'shared/components/notification-views/infraction-view/infraction-view.model';
 import { FollowerView } from 'shared/components/notification-views/follower-view/follower-view.model';
+import { VisitorMessageView } from 'shared/components/notification-views/visitor-message-view/visitor-message-view.model';
 
 export enum NotificationTypes {
     MENTION = 1,
@@ -13,7 +14,8 @@ export enum NotificationTypes {
     CATEGORY_SUBSCRIPTION = 5,
     INFRACTION_GIVE = 6,
     INFRACTION_DELETED = 7,
-    FOLLOWED = 8
+    FOLLOWED = 8,
+    VISITOR_MESSAGE = 9
 }
 
 export class NotificationModel<T> {
@@ -26,7 +28,7 @@ export class NotificationModel<T> {
     @primitive()
     type: number;
 
-    constructor(source: Partial<NotificationModel<any>>) {
+    constructor (source: Partial<NotificationModel<any>>) {
         ClassHelper.assign(this, source);
         switch (source.type) {
             case NotificationTypes.BADGE:
@@ -47,14 +49,17 @@ export class NotificationModel<T> {
             case NotificationTypes.FOLLOWED:
                 this._item = new FollowerView(source.item);
                 break;
+            case NotificationTypes.VISITOR_MESSAGE:
+                this._item = new VisitorMessageView(source.item);
+                break;
         }
     }
 
-    get item(): T {
+    get item (): T {
         return this._item;
     }
 
-    set item(_value) {
+    set item (_value) {
         // Intentionally Empty
     }
 }
