@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 /**
  * @property mixed visitorMessageId
+ * @property mixed hostId
  * @property mixed userId
  * @property mixed content
  * @property mixed replies

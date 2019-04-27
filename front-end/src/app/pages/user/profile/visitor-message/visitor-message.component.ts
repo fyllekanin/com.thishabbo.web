@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { AfterContentInit, Component, Input, ViewChild } from '@angular/core';
 import { ProfileVisitorMessage } from '../profile.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
 import { ProfileService } from '../profile.service';
@@ -10,9 +10,10 @@ import { NotificationService } from 'core/services/notification/notification.ser
     templateUrl: 'visitor-message.component.html',
     styleUrls: ['visitor-message.component.css']
 })
-export class VisitorMessageComponent {
+export class VisitorMessageComponent implements AfterContentInit {
+    private _visitorMessage: ProfileVisitorMessage;
+    private _haveCheckedQueries = false;
 
-    @Input() visitorMessage: ProfileVisitorMessage;
     @Input() hostId: number;
     @ViewChild('replies') repliesEle;
     isRepliesOpen = false;
@@ -31,11 +32,36 @@ export class VisitorMessageComponent {
     }
 
     get comments (): Array<ProfileVisitorMessage> {
-        return this.visitorMessage.comments;
+        return this._visitorMessage.comments;
     }
 
     get replyCount (): number {
-        return this.visitorMessage.replies;
+        return this._visitorMessage.replies;
+    }
+
+    @Input()
+    set visitorMessage (visitorMessage: ProfileVisitorMessage) {
+        this._visitorMessage = visitorMessage;
+        this.ngAfterContentInit();
+    }
+
+    get visitorMessage (): ProfileVisitorMessage {
+        return this._visitorMessage;
+    }
+
+    ngAfterContentInit (): void {
+        if (this._haveCheckedQueries || !this._visitorMessage) {
+            return;
+        }
+        this._haveCheckedQueries = true;
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('visitorMessageId') &&
+            Number(urlParams.get('visitorMessageId')) === this.visitorMessage.visitorMessageId) {
+            setTimeout(() => {
+                this.isRepliesOpen = true;
+                this.toggleReplies();
+            }, 0);
+        }
     }
 
     onToggleLike (event, visitorMessage: ProfileVisitorMessage): void {

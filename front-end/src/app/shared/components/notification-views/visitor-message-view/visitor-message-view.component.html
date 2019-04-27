@@ -1,0 +1,17 @@
+<img *ngIf="!isAvatarFailing" class="picture" [src]="imagePath" (error)="isAvatarFailing = true;"/>
+<div class="picture fallback" *ngIf="isAvatarFailing">
+    <em class="fa fa-user"></em>
+</div>
+<div class="description">
+    <div *ngIf="isMyProfile">
+        New visitor message/comment <br/>
+        {{user.nickname}} just posted on your profile!
+    </div>
+    <div *ngIf="!isMyProfile">
+        New visitor message/comment <br/>
+        {{user.nickname}} just posted on {{host.nickname}}'s profile!
+    </div>
+    <div class="time">
+        <i class="fas fa-clock"></i> about {{getTime()}}
+    </div>
+</div>

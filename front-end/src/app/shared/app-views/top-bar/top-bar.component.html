@@ -31,11 +31,14 @@
                         <div class="notification-top">
                             <b>Notifications</b>
                             <div class="pull-right">
-                                <a class="notification-tool" [routerLink]="['/user/usercp/account/notifications/page/1']">See All</a>
+                                <a class="notification-tool"
+                                   [routerLink]="['/user/usercp/account/notifications/page/1']">See All</a>
                                 <a class="notification-tool not-clickable">-</a>
-                                <a class="notification-tool" (click)="readAll()" *ngIf="notifications.length > 0">Read All</a>
+                                <a class="notification-tool" (click)="readAll()" *ngIf="notifications.length > 0">Read
+                                    All</a>
                                 <a class="notification-tool not-clickable" *ngIf="notifications.length > 0">-</a>
-                                <a class="notification-tool" [routerLink]="['/user/usercp/subscriptions/notification-settings']">Settings</a>
+                                <a class="notification-tool"
+                                   [routerLink]="['/user/usercp/subscriptions/notification-settings']">Settings</a>
                             </div>
                         </div>
                         <div class="notification-overflow">
@@ -43,16 +46,27 @@
                                 You do not have any notifications currently!
                             </div>
                             <div class="notification-view" *ngFor="let notification of notifications"
-                                 (click)="notificationClick(notification.notificationId)" [ngSwitch]="notification.type">
-                                <app-top-bar-thread-view *ngSwitchCase="1" [notification]="notification" (onClick)="notificationClick($event)"></app-top-bar-thread-view>
-                                <app-top-bar-thread-view *ngSwitchCase="2" [notification]="notification" (onClick)="notificationClick($event)"></app-top-bar-thread-view>
-                                <app-top-bar-thread-view *ngSwitchCase="4" [notification]="notification" (onClick)="notificationClick($event)"></app-top-bar-thread-view>
+                                 (click)="notificationClick(notification.notificationId)"
+                                 [ngSwitch]="notification.type">
+                                <app-top-bar-thread-view *ngSwitchCase="1" [notification]="notification"
+                                                         (onClick)="notificationClick($event)"></app-top-bar-thread-view>
+                                <app-top-bar-thread-view *ngSwitchCase="2" [notification]="notification"
+                                                         (onClick)="notificationClick($event)"></app-top-bar-thread-view>
+                                <app-top-bar-thread-view *ngSwitchCase="4" [notification]="notification"
+                                                         (onClick)="notificationClick($event)"></app-top-bar-thread-view>
 
-                                <app-top-bar-badge-view *ngSwitchCase="3" [notification]="notification" (onClick)="notificationClick($event)"></app-top-bar-badge-view>
-                                <app-top-bar-category-view *ngSwitchCase="5" [notification]="notification" (onClick)="notificationClick($event)"></app-top-bar-category-view>
-                                <app-top-bar-infraction-view *ngSwitchCase="6" [notification]="notification" (onClick)="notificationClick($event)"></app-top-bar-infraction-view>
-                                <app-top-bar-infraction-view *ngSwitchCase="7" [notification]="notification" (onClick)="notificationClick($event)"></app-top-bar-infraction-view>
-                                <app-top-bar-follower-view *ngSwitchCase="8" [notification]="notification" (onClick)="notificationClick($event)"></app-top-bar-follower-view>
+                                <app-top-bar-badge-view *ngSwitchCase="3" [notification]="notification"
+                                                        (onClick)="notificationClick($event)"></app-top-bar-badge-view>
+                                <app-top-bar-category-view *ngSwitchCase="5" [notification]="notification"
+                                                           (onClick)="notificationClick($event)"></app-top-bar-category-view>
+                                <app-top-bar-infraction-view *ngSwitchCase="6" [notification]="notification"
+                                                             (onClick)="notificationClick($event)"></app-top-bar-infraction-view>
+                                <app-top-bar-infraction-view *ngSwitchCase="7" [notification]="notification"
+                                                             (onClick)="notificationClick($event)"></app-top-bar-infraction-view>
+                                <app-top-bar-follower-view *ngSwitchCase="8" [notification]="notification"
+                                                           (onClick)="notificationClick($event)"></app-top-bar-follower-view>
+                                <app-top-bar-visitor-message-view *ngSwitchCase="9" [notification]="notification"
+                                                                  (onClick)="notificationClick($event)"></app-top-bar-visitor-message-view>
                             </div>
                         </div>
                     </div>
@@ -79,7 +93,7 @@
                                     Sed ut perspiciatis unde omnis iste natus error sit voluptatem...
                                     <br>
                                     <i class="fas fa-clock"></i> about an hour ago <i
-                                    class="fas fa-comments pull-right"></i>
+                                        class="fas fa-comments pull-right"></i>
                                 </div>
                             </div>
 
@@ -93,7 +107,7 @@
                                     Sed ut perspiciatis unde omnis iste natus error sit voluptatem...
                                     <br>
                                     <i class="fas fa-clock"></i> about an hour ago <i
-                                    class="fas fa-comments pull-right"></i>
+                                        class="fas fa-comments pull-right"></i>
                                 </div>
                             </div>
 
@@ -107,7 +121,7 @@
                                     Sed ut perspiciatis unde omnis iste natus error sit voluptatem...
                                     <br>
                                     <i class="fas fa-clock"></i> about an hour ago <i
-                                    class="fas fa-comments pull-right"></i>
+                                        class="fas fa-comments pull-right"></i>
                                 </div>
                             </div>
 
@@ -117,12 +131,12 @@
                                 </div>
                                 <div class="notification-desc">
                                     <b>Dais</b>, <b>Fergie</b> &amp; <b>2 others</b> <i
-                                    class="fas fa-users vxmessageIcon"></i>
+                                        class="fas fa-users vxmessageIcon"></i>
                                     <br>
                                     Sed ut perspiciatis unde omnis iste natus error sit voluptatem...
                                     <br>
                                     <i class="fas fa-clock"></i> about an hour ago <i
-                                    class="fas fa-comments pull-right"></i>
+                                        class="fas fa-comments pull-right"></i>
                                 </div>
                             </div>
 
@@ -136,7 +150,7 @@
                                     Sed ut perspiciatis unde omnis iste natus error sit voluptatem...
                                     <br>
                                     <i class="fas fa-clock"></i> about an hour ago <i
-                                    class="fas fa-comments pull-right"></i>
+                                        class="fas fa-comments pull-right"></i>
                                 </div>
                             </div>
 

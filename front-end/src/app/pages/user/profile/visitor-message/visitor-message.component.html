@@ -1,4 +1,4 @@
-<app-content>
+<app-content [ngClass]="'vmId-' + visitorMessage.visitorMessageId">
     <div class="toggle-replies" (click)="isRepliesOpen = !isRepliesOpen; toggleReplies();">
         <div class="avatar">
             <img appUserProfile [info]="visitorMessage.user"/>
