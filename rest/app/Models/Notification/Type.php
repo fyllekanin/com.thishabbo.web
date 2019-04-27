@@ -4,7 +4,7 @@ namespace App\Models\Notification;
 
 class Type {
 
-    public static function getType ($type) {
+    public static function getType($type) {
         return $type['type'];
     }
 
@@ -46,5 +46,10 @@ class Type {
     const FOLLOWED = [
         'type' => 8,
         'description' => 'When a user have received a new follower'
+    ];
+
+    const VISITOR_MESSAGE = [
+        'type' => 9,
+        'description' => 'When a user have posted a new visitor message'
     ];
 }

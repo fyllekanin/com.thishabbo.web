@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Builder;
 
 /**
  * @property mixed visitorMessageId
+ * @property mixed hostId
+ * @property mixed parentId
+ * @property mixed userId
  */
 class VisitorMessage extends DeletableModel {
     protected $table = 'visitor_messages';

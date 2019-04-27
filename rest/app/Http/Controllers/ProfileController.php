@@ -94,6 +94,7 @@ class ProfileController extends Controller {
         ]);
         $visitorMessage->save();
 
+        NotificationFactory::newVisitorMessage($visitorMessage);
         Logger::user($user->userId, $request->ip(), Action::CREATED_VISITOR_MESSAGE, [], $visitorMessage->visitorMessageId);
         return response()->json($this->mapVisitorMessage($visitorMessage));
     }

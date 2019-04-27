@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
 import { UserProfileModule } from 'shared/directives/user-profile.module';
+import { VisitorMessageViewComponent } from 'shared/components/notification-views/visitor-message-view/visitor-message-view.component';
 
 @NgModule({
     imports: [
@@ -23,14 +24,17 @@ import { UserProfileModule } from 'shared/directives/user-profile.module';
         CategoryViewComponent,
         ThreadViewComponent,
         InfractionViewComponent,
-        FollowerViewComponent
+        FollowerViewComponent,
+        VisitorMessageViewComponent
     ],
     exports: [
         BadgeViewComponent,
         CategoryViewComponent,
         ThreadViewComponent,
         InfractionViewComponent,
-        FollowerViewComponent
+        FollowerViewComponent,
+        VisitorMessageViewComponent
     ]
 })
-export class NotificationViewsModule {}
+export class NotificationViewsModule {
+}
