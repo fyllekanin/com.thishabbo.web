@@ -14,6 +14,14 @@ use Illuminate\Support\Facades\DB;
 
 class NotificationFactory {
 
+    /**
+     * @param $notification
+     * @param $user
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     *
+     * @return BadgeView|CategoryView|FollowerView|InfractionView|ThreadView|VisitorMessageView|null
+     */
     public static function ofType($notification, $user) {
         $item = null;
         switch ($notification->type) {
