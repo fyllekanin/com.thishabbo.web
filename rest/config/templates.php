@@ -1,10 +1,9 @@
 <?php
 
-$categoryTemplates = new \stdClass();
-$categoryTemplates->DEFAULT = 'DEFAULT';
-$categoryTemplates->QUEST = 'QUEST';
-$categoryTemplates->MEDIA = 'MEDIA';
-
 return [
-    'CATEGORY_TEMPLATES' => $categoryTemplates
+    'CATEGORY_TEMPLATES' => [
+        'DEFAULT' => 'DEFAULT',
+        'QUEST' => 'QUEST',
+        'MEDIA' => 'MEDIA'
+    ]
 ];
