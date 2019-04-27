@@ -21,7 +21,7 @@ class AutoBansTableSeeder extends Seeder
                 'title' => 'Short Ban',
                 'amount' => 3,
                 'banLength' => 10800,
-                'reason' => 'You did something bad!',
+                'reason' => 'You did something bad so we punished you.... bye bye',
                 'isDeleted' => 0,
                 'createdAt' => 1549186220,
                 'updatedAt' => 1549186220
