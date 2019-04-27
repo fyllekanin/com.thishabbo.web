@@ -12,7 +12,11 @@ npm run build:prod
 
 # Create target folder
 cd ./../rest
-composer install --optimize-autoloader --no-dev
+composer install --no-interaction --optimize-autoloader --no-dev
+php artisan clear-compiled
+php artisan optimize
+php artisan config:cache
+php artisan route:cache
 cd ./..
 cp -r rest target
 
@@ -20,10 +24,4 @@ cp -r rest target
 mv ./front-end/dist/thvx/* ./target/public
 cp ./front-end/.htaccess ./target/public/.htaccess
 cp ./scripts/job-runner.sh ./target/job-runner.sh
-
-# Optimize back-end
-cd target
-php artisan config:cache
-php artisan route:cache
-php artisan optimize --force
 
