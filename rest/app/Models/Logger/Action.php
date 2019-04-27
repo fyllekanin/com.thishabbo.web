@@ -1356,4 +1356,18 @@ class Action {
         'data' => [],
         'log' => 'log_user'
     ];
+
+    const CREATED_VISITOR_MESSAGE_LIKE = [
+        'id' => 157,
+        'description' => 'Created a visitor message like',
+        'data' => [],
+        'log' => 'log_user'
+    ];
+
+    const DELETED_VISITOR_MESSAGE_LIKE = [
+        'id' => 158,
+        'description' => 'Created a visitor message like',
+        'data' => [],
+        'log' => 'log_user'
+    ];
 }

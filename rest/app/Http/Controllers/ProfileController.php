@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\EloquentModels\User\Follower;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\VisitorMessage;
+use App\EloquentModels\User\VisitorMessageLike;
 use App\Factories\Notification\NotificationFactory;
 use App\Helpers\ConfigHelper;
 use App\Helpers\PermissionHelper;
@@ -141,6 +142,63 @@ class ProfileController extends Controller {
     }
 
     /**
+     * @param Request $request
+     * @param $visitorMessageId
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function createVisitorMessageLike(Request $request, $visitorMessageId) {
+        $user = Cache::get('auth');
+        $visitorMessage = VisitorMessage::find($visitorMessageId);
+        Condition::precondition(!$visitorMessage, 404, 'No visitor message with that ID');
+        Condition::precondition($this->isPrivate($user, $visitorMessage->host), 400, 'You can not like this message');
+
+        $visitorMessageLike = VisitorMessageLike::where('userId', $user->userId)->where('visitorMessageId', $visitorMessageId)->first();
+        Condition::precondition($visitorMessageLike, 400, 'You have already liked this message!');
+        Condition::precondition($visitorMessage->userId == $user->userId, 400, 'You can not like your own message');
+
+        $visitorMessage->likes++;
+        $visitorMessage->save();
+        $visitorMessage->user->likes++;
+        $visitorMessage->user->save();
+
+        $like = new VisitorMessageLike([
+            'visitorMessageId' => $visitorMessageId,
+            'userId' => $user->userId
+        ]);
+        $like->save();
+
+        Logger::user($user->userId, $request->ip(), Action::CREATED_VISITOR_MESSAGE_LIKE, [], $visitorMessageId);
+        return response()->json();
+    }
+
+    /**
+     * @param Request $request
+     * @param $visitorMessageId
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deleteVisitorMessageLike(Request $request, $visitorMessageId) {
+        $user = Cache::get('auth');
+        $visitorMessage = VisitorMessage::find($visitorMessageId);
+        Condition::precondition(!$visitorMessage, 404, 'No visitor message with that ID');
+        Condition::precondition($this->isPrivate($user, $visitorMessage->host), 400, 'You can not un-like this message');
+
+        $visitorMessageLike = VisitorMessageLike::where('userId', $user->userId)->where('visitorMessageId', $visitorMessageId)->first();
+        Condition::precondition(!$visitorMessageLike, 404, 'You have not liked this message');
+
+        $visitorMessage->likes--;
+        $visitorMessage->save();
+        $visitorMessage->user->likes--;
+        $visitorMessage->user->save();
+
+        $visitorMessageLike->delete();
+
+        Logger::user($user->userId, $request->ip(), Action::DELETED_VISITOR_MESSAGE_LIKE, [], $visitorMessage->visitorMessageId);
+        return response()->json();
+    }
+
+    /**
      * @param $user
      * @param $profile
      *
@@ -187,7 +245,7 @@ class ProfileController extends Controller {
      *
      * @return array
      */
-    private function getVisitorMessages($user, $page) {
+    private function getVisitorMessages(User $user, $page) {
         $visitorMessagesSql = VisitorMessage::where('hostId', $user->userId)->isSubject()->take($this->perPage)->skip($this->getOffset($page));
         $total = ceil($visitorMessagesSql->count() / $this->perPage);
 
@@ -201,17 +259,19 @@ class ProfileController extends Controller {
     }
 
     /**
-     * @param $visitorMessage
+     * @param VisitorMessage $visitorMessage
      *
      * @return object
      */
-    private function mapVisitorMessage($visitorMessage) {
+    private function mapVisitorMessage(VisitorMessage $visitorMessage) {
         return (object)[
             'visitorMessageId' => $visitorMessage->visitorMessageId,
             'user' => UserHelper::getSlimUser($visitorMessage->userId),
-            'content' => $visitorMessage->parentId > 0 ? $visitorMessage->content : BBcodeUtil::bbcodeParser($visitorMessage->content),
-            'replies' => $visitorMessage->parentId > 0 ? 0 : $visitorMessage->replies->count(),
-            'comments' => $visitorMessage->parentId > 0 ? [] : VisitorMessage::where('parentId', $visitorMessage->visitorMessageId)->orderBy('visitorMessageId', 'ASC')
+            'content' => $visitorMessage->isComment() ? $visitorMessage->content : BBcodeUtil::bbcodeParser($visitorMessage->content),
+            'replies' => $visitorMessage->isComment() ? 0 : $visitorMessage->replies->count(),
+            'likes' => $visitorMessage->likes || 0,
+            'isLiking' => VisitorMessageLike::where('userId', Cache::get('auth')->userId)->where('visitorMessageId', $visitorMessage->visitorMessageId)->count() > 0,
+            'comments' => $visitorMessage->isComment() ? [] : VisitorMessage::where('parentId', $visitorMessage->visitorMessageId)->orderBy('visitorMessageId', 'ASC')
                 ->get()
                 ->map(function ($item) {
                     return $this->mapVisitorMessage($item);

@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Builder;
 
 /**
  * @property mixed visitorMessageId
+ * @property mixed userId
+ * @property mixed content
+ * @property mixed replies
+ * @property mixed parentId
+ * @property mixed likes
+ * @property mixed createdAt
  */
 class VisitorMessage extends DeletableModel {
     protected $table = 'visitor_messages';
@@ -15,12 +21,29 @@ class VisitorMessage extends DeletableModel {
         'hostId',
         'userId',
         'content',
+        'likes',
         'parentId',
         'isDeleted'
     ];
 
+    public function host() {
+        return $this->hasOne('App\EloquentModels\User\User', 'userId', 'hostId');
+    }
+
+    public function user() {
+        return $this->hasOne('App\EloquentModels\User\User', 'userId', 'userId');
+    }
+
     public function replies() {
         return $this->hasMany('App\EloquentModels\User\VisitorMessage', 'parentId', 'visitorMessageId');
+    }
+
+    public function isSubject() {
+        return $this->parentId == 0;
+    }
+
+    public function isComment() {
+        return $this->parentId > 0;
     }
 
     public function scopeIsSubject(Builder $query) {

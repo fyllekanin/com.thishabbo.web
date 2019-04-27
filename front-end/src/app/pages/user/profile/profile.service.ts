@@ -35,4 +35,12 @@ export class ProfileService implements Resolve<ProfileModel> {
             }
         }).pipe(map(res => new ProfileVisitorMessage(res)));
     }
+
+    likeMessage (visitorMessageId: number): Observable<void> {
+        return this._httpService.post(`profile/visitor-message/${visitorMessageId}/like`, null);
+    }
+
+    unlikeMessage (visitorMessageId: number): Observable<void> {
+        return this._httpService.delete(`profile/visitor-message/${visitorMessageId}/like`);
+    }
 }

@@ -56,6 +56,8 @@ Route::group(['middleware' => ['maintenance']], function () {
         Route::post('/radio/like', 'Staff\RadioController@createDjLike');
 
         Route::post('/profile/visitor-message', 'ProfileController@createVisitorMessage');
+        Route::post('/profile/visitor-message/{visitorMessageId}/like', 'ProfileController@createVisitorMessageLike');
+        Route::delete('/profile/visitor-message/{visitorMessageId}/like', 'ProfileController@deleteVisitorMessageLike');
 
         Route::put('puller/notifications/read/all', 'Puller\NotificationController@readAllNotifications');
         Route::put('puller/notifications/read/{notificationId}', 'Puller\NotificationController@readNotification');
