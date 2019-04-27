@@ -23,5 +23,7 @@ cp ./scripts/job-runner.sh ./target/job-runner.sh
 
 # Optimize back-end
 cd target
+php artisan config:cache
 php artisan route:cache
+php artisan optimize --force
 
