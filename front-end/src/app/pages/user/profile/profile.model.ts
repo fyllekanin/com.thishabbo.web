@@ -58,6 +58,10 @@ export class ProfileVisitorMessage {
     content: string;
     @primitive()
     replies: number;
+    @primitive()
+    likes: number;
+    @primitive()
+    isLiking: boolean;
     @arrayOf(ProfileVisitorMessage)
     comments: Array<ProfileVisitorMessage> = [];
     @primitive()

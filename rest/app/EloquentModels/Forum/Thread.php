@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\App;
  * @property mixed firstPost
  * @property mixed templateData
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ * @method static isApproved()
  */
 class Thread extends DeletableModel {
     /** @var ForumService */
@@ -28,40 +29,40 @@ class Thread extends DeletableModel {
     protected $appends = ['parents', 'categoryIsOpen', 'user'];
     protected $hidden = ['firstPost', 'templateData', 'category'];
 
-    public function __construct (array $attributes = []) {
+    public function __construct(array $attributes = []) {
         parent::__construct($attributes);
         $this->forumService = App::make('App\Services\ForumService');
     }
 
-    public function firstPost () {
+    public function firstPost() {
         return $this->hasOne('App\EloquentModels\Forum\Post', 'postId', 'firstPostId');
     }
 
-    public function lastPost () {
+    public function lastPost() {
         return $this->hasOne('App\EloquentModels\Forum\Post', 'postId', 'lastPostId');
     }
 
-    public function poll () {
+    public function poll() {
         return $this->hasOne('App\EloquentModels\Forum\ThreadPoll', 'threadId');
     }
 
-    public function threadPosts () {
+    public function threadPosts() {
         return $this->hasMany('App\EloquentModels\Forum\Post', 'threadId');
     }
 
-    public function prefix () {
+    public function prefix() {
         return $this->hasOne('App\EloquentModels\Forum\Prefix', 'prefixId', 'prefixId');
     }
 
-    public function user () {
+    public function user() {
         return $this->belongsTo('App\EloquentModels\User\User', 'userId');
     }
 
-    public function templateData () {
+    public function templateData() {
         return $this->hasOne('App\EloquentModels\Forum\TemplateData', 'threadId');
     }
 
-    public function category () {
+    public function category() {
         return $this->belongsTo('App\EloquentModels\Forum\Category', 'categoryId');
     }
 
@@ -69,38 +70,38 @@ class Thread extends DeletableModel {
         return $this->prefix()->first();
     }
 
-    public function getUserAttribute () {
+    public function getUserAttribute() {
         return UserHelper::getUser($this->userId);
     }
 
-    public function getParentsAttribute () {
+    public function getParentsAttribute() {
         return $this->forumService->getCategoryParents($this);
     }
 
-    public function getCategoryIsOpenAttribute () {
+    public function getCategoryIsOpenAttribute() {
         return $this->category->isOpen;
     }
 
-    public function getTemplateAttribute () {
+    public function getTemplateAttribute() {
         return $this->category->template;
     }
 
-    public function getContentAttribute () {
+    public function getContentAttribute() {
         return $this->firstPost->content;
     }
 
-    public function getLastPostAttribute () {
+    public function getLastPostAttribute() {
         return $this->lastPost()->first();
     }
 
-    public function getTagsAttribute () {
+    public function getTagsAttribute() {
         if (isset($this->templateData->tags)) {
             return explode(',', $this->templateData->tags);
         }
         return [];
     }
 
-    public function getBadgeAttribute () {
+    public function getBadgeAttribute() {
         return Value::objectProperty($this->templateData, 'badge', '');
     }
 
@@ -108,7 +109,7 @@ class Thread extends DeletableModel {
         return $query->where('userId', $userId);
     }
 
-    public function scopeIsApproved (Builder $query, $canApprove = false) {
+    public function scopeIsApproved(Builder $query, $canApprove = false) {
         return $query->where('isApproved', ($canApprove ? '<=' : '='), true);
     }
 
@@ -116,23 +117,23 @@ class Thread extends DeletableModel {
         return $query->where('createdAt', '>', $createdAfter);
     }
 
-    public function scopeUnapproved (Builder $query) {
+    public function scopeUnapproved(Builder $query) {
         return $query->where('isApproved', false);
     }
 
-    public function scopeOpen (Builder $query) {
+    public function scopeOpen(Builder $query) {
         return $query->where('isOpen', true);
     }
 
-    public function scopeClosed (Builder $query) {
+    public function scopeClosed(Builder $query) {
         return $query->where('isOpen', false);
     }
 
-    public function scopeIsSticky (Builder $query) {
+    public function scopeIsSticky(Builder $query) {
         return $query->where('isSticky', true);
     }
 
-    public function scopeNonStickied (Builder $query) {
+    public function scopeNonStickied(Builder $query) {
         return $query->where('isSticky', false);
     }
 }

@@ -64,6 +64,25 @@ export class VisitorMessageComponent implements AfterContentInit {
         }
     }
 
+    onToggleLike (event, visitorMessage: ProfileVisitorMessage): void {
+        event.stopPropagation();
+        if (visitorMessage.isLiking) {
+            this._profileService.unlikeMessage(visitorMessage.visitorMessageId)
+                .subscribe(() => {
+                    visitorMessage.likes--;
+                    visitorMessage.isLiking = false;
+                    this._notificationService.sendInfoNotification('You un-liked the message!');
+                }, this._notificationService.failureNotification.bind(this._notificationService));
+        } else {
+            this._profileService.likeMessage(visitorMessage.visitorMessageId)
+                .subscribe(() => {
+                    visitorMessage.likes++;
+                    visitorMessage.isLiking = true;
+                    this._notificationService.sendInfoNotification('You liked the message!');
+                }, this._notificationService.failureNotification.bind(this._notificationService));
+        }
+    }
+
     onComment (): void {
         this._profileService.postVisitorMessage(this.hostId, this.content, this.visitorMessage.visitorMessageId)
             .subscribe(res => {

@@ -17,7 +17,10 @@
                 {{getTime(visitorMessage.createdAt)}}
             </div>
             <div class="user-controls">
-                <span tooltip="Likes"><i class="far fa-heart"></i></span> 0
+                <span tooltip="Likes" [ngClass]="visitorMessage.isLiking ? 'likes' : ''"
+                      (click)="onToggleLike($event, visitorMessage)">
+                    <i class="far fa-heart"></i>
+                </span> {{visitorMessage.likes | number: '1.'}}
                 -
                 <span tooltip="Comments"><i class="far fa-comment"></i></span> {{replyCount | number: '1.'}}
             </div>
@@ -42,7 +45,10 @@
                     {{ getTime(comment.createdAt) }}
                 </div>
                 <div class="user-controls">
-                    <span tooltip="Likes"><i class="far fa-heart"></i></span> 0
+                    <span tooltip="Likes" [ngClass]="comment.isLiking ? 'likes' : ''"
+                          (click)="onToggleLike($event, comment)">
+                        <i class="far fa-heart"></i>
+                    </span> {{comment.likes | number: '1.'}}
                 </div>
             </div>
         </div>
