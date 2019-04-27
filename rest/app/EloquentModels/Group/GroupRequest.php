@@ -11,7 +11,7 @@ class GroupRequest extends UnixTimeModel {
     protected $appends = ['name', 'nickname'];
 
     public function group() {
-        return $this->hasMany('App\EloquentModels\Group\Group', 'groupId');
+        return $this->hasOne('App\EloquentModels\Group\Group', 'groupId');
     }
 
     public function user() {
