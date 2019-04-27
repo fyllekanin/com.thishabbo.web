@@ -1,17 +1,15 @@
 <?php
 
-$itemTypes = new \stdClass();
-$itemTypes->badge = 1;
-$itemTypes->nameIcon = 2;
-$itemTypes->nameEffect = 3;
-
-$rarities = new \stdClass();
-$rarities->common = 80;
-$rarities->rare = 50;
-$rarities->epic = 30;
-$rarities->legendary = 10;
-
 return [
-    'TYPES' => $itemTypes,
-    'RARITIES' => $rarities
+    'TYPES' => [
+        'badge' => 1,
+        'nameIcon' => 2,
+        'nameEffect' => 3
+    ],
+    'RARITIES' => [
+        'common' => 80,
+        'rare' => 50,
+        'epic' => 30,
+        'legendary' => 10
+    ]
 ];

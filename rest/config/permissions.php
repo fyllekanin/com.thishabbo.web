@@ -1,98 +1,82 @@
 <?php
 
-$adminPermissions = new \stdClass();
-
-$adminPermissions->canManageBadges = 1;
-$adminPermissions->canManageForum = 2;
-$adminPermissions->canManageForumPermissions = 4;
-
-$adminPermissions->canManageGroups = 8;
-$adminPermissions->canEditWebsiteSettings = 16;
-$adminPermissions->canEditDefaultPermissions = 32;
-
-$adminPermissions->canApprovePublicGroups = 64;
-$adminPermissions->canManageBBcodes = 128;
-$adminPermissions->canManagePrefixes = 256;
-$adminPermissions->canManageGroupsList = 512;
-
-$adminPermissions->canEditUserBasic = 1024;
-$adminPermissions->canEditUserAdvanced = 2048;
-$adminPermissions->canEditUserProfile = 4096;
-$adminPermissions->canBanUser = 8192;
-$adminPermissions->canMergeUsers = 16384;
-
-$adminPermissions->canManageBetting = 32768;
-$adminPermissions->canManageTHC = 65536;
-$adminPermissions->canSeeIps = 131072;
-$adminPermissions->canManageInfractions = 262144;
-$adminPermissions->canDoInfractions = 524288;
-$adminPermissions->canSeeLogs = 1048576;
-$adminPermissions->canManageShop = 2097152;
-$adminPermissions->canPassPrivate = 4194304;
-$adminPermissions->canRemoveEssentials = 8388608;
-
-$staffPermissions = new \stdClass();
-$staffPermissions->canRadio = 1;
-$staffPermissions->canEvent = 2;
-$staffPermissions->canBookRadioForOthers = 4;
-$staffPermissions->canBookEventForOthers = 8;
-$staffPermissions->canManageEvents = 16;
-
-$staffPermissions->canSeeIpOnRequests = 32;
-$staffPermissions->canManagePermShows = 64;
-
-$staffPermissions->canKickDjOffAir = 128;
-$staffPermissions->canOverrideDjSays = 256;
-
-$staffPermissions->canSeeBookingLogs = 512;
-$staffPermissions->canEditRadioInfo = 1024;
-
-$staffPermissions->canSeeDoNotHire = 2048;
-$staffPermissions->canManageBanOnSight = 4096;
-$staffPermissions->canSeeListeners = 8192;
-
-$forumPermissions = new \stdClass();
-$forumPermissions->canRead = 1;
-$forumPermissions->canPost = 2;
-$forumPermissions->canCreateThreads = 4;
-$forumPermissions->canViewThreadContent = 128;
-$forumPermissions->canViewOthersThreads = 2048;
-$forumPermissions->canOpenCloseOwnThread = 65536;
-
-// More moderation related
-$forumPermissions->canEditOthersPosts = 8;
-$forumPermissions->canDeletePosts = 32;
-$forumPermissions->canStickyThread = 64;
-$forumPermissions->canCloseOpenThread = 256;
-$forumPermissions->canApproveThreads = 512;
-$forumPermissions->canApprovePosts = 1024;
-$forumPermissions->canManagePolls = 4096;
-$forumPermissions->canChangeOwner = 8192;
-$forumPermissions->canMergePosts = 16384;
-$forumPermissions->canMoveThreads = 32768;
-
-$forumOptions = new \stdClass();
-$forumOptions->threadsNeedApproval = 1;
-$forumOptions->postsDontCount = 2;
-$forumOptions->prefixMandatory = 4;
-$forumOptions->threadsCanHavePolls = 8;
-$forumOptions->reportPostsGoHere = 16;
-
-$groupOptions = new \stdClass();
-$groupOptions->contentNeedApproval = 1;
-$groupOptions->canBeTagged = 2;
-
-$postBitOptions = new \stdClass();
-$postBitOptions->hideJoinDate = 1;
-$postBitOptions->hidePostCount = 2;
-$postBitOptions->hideLikesCount = 4;
-$postBitOptions->hideSocials = 8;
-
 return [
-    'ADMIN' => $adminPermissions,
-    'FORUM' => $forumPermissions,
-    'FORUM_OPTIONS' => $forumOptions,
-    'GROUP_OPTIONS' => $groupOptions,
-    'STAFF' => $staffPermissions,
-    'POST_BIT_OPTIONS' => $postBitOptions
+    'ADMIN' => [
+        'canManageBadges' => 1,
+        'canManageForum' => 2,
+        'canManageForumPermissions' => 4,
+        'canManageGroups' => 8,
+        'canEditWebsiteSettings' => 16,
+        'canEditDefaultPermissions' => 32,
+        'canApprovePublicGroups' => 64,
+        'canManageBBcodes' => 128,
+        'canManagePrefixes' => 256,
+        'canManageGroupsList' => 512,
+        'canEditUserBasic' => 1024,
+        'canEditUserAdvanced' => 2048,
+        'canEditUserProfile' => 4096,
+        'canBanUser' => 8192,
+        'canMergeUsers' => 16384,
+        'canManageBetting' => 32768,
+        'canManageTHC' => 65536,
+        'canSeeIps' => 131072,
+        'canManageInfractions' => 262144,
+        'canDoInfractions' => 524288,
+        'canSeeLogs' => 1048576,
+        'canManageShop' => 2097152,
+        'canPassPrivate' => 4194304,
+        'canRemoveEssentials' => 8388608
+    ],
+    'FORUM' => [
+        'canRead' => 1,
+        'canPost' => 2,
+        'canCreateThreads' => 4,
+        'canViewThreadContent' => 128,
+        'canViewOthersThreads' => 2048,
+        'canOpenCloseOwnThread' => 65536,
+        // Mod related
+        'canEditOthersPosts' => 8,
+        'canDeletePosts' => 32,
+        'canStickyThread' => 64,
+        'canCloseOpenThread' => 256,
+        'canApproveThreads' => 512,
+        'canApprovePosts' => 1024,
+        'canManagePolls' => 4096,
+        'canChangeOwner' => 8192,
+        'canMergePosts' => 16384,
+        'canMoveThreads' => 32768
+    ],
+    'FORUM_OPTIONS' => [
+        'threadsNeedApproval' => 1,
+        'postsDontCount' => 2,
+        'prefixMandatory' => 4,
+        'threadsCanHavePolls' => 8,
+        'reportPostsGoHere' => 16
+    ],
+    'GROUP_OPTIONS' => [
+        'contentNeedApproval' => 1,
+        'canBeTagged' => 2
+    ],
+    'STAFF' => [
+        'canRadio' => 1,
+        'canEvent' => 2,
+        'canBookRadioForOthers' => 4,
+        'canBookEventForOthers' => 8,
+        'canManageEvents' => 16,
+        'canSeeIpOnRequests' => 32,
+        'canManagePermShows' => 64,
+        'canKickDjOffAir' => 128,
+        'canOverrideDjSays' => 256,
+        'canSeeBookingLogs' => 512,
+        'canEditRadioInfo' => 1024,
+        'canSeeDoNotHire' => 2048,
+        'canManageBanOnSight' => 4096,
+        'canSeeListeners' => 8192
+    ],
+    'POST_BIT_OPTIONS' => [
+        'hideJoinDate' => 1,
+        'hidePostCount' => 2,
+        'hideLikesCount' => 4,
+        'hideSocials' => 8
+    ]
 ];
