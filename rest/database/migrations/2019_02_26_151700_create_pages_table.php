@@ -1,18 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreatePagesTable extends Migration
-{
+class CreatePagesTable extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('pages', function (Blueprint $table) {
             $table->bigIncrements('pageId');
             $table->string('path');
@@ -20,8 +18,11 @@ class CreatePagesTable extends Migration
             $table->text('content');
             $table->integer('isDeleted')->default(0);
             $table->integer('isSystem')->default(0);
+            $table->integer('canEdit')->default(1);
             $table->bigInteger('createdAt');
             $table->bigInteger('updatedAt');
+
+            $table->index('path');
         });
     }
 
@@ -30,8 +31,7 @@ class CreatePagesTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('pages');
     }
 }

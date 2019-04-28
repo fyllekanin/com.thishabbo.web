@@ -11,6 +11,7 @@ import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 import { CustomPageComponent } from './custom-page/custom-page.component';
 import { CustomPageResolver } from './services/custom-page.resolver';
+import { LeaderBoardComponent } from './leader-board/leader-board.component';
 
 @NgModule({
     imports: [
@@ -25,7 +26,8 @@ import { CustomPageResolver } from './services/custom-page.resolver';
         SafeHtmlModule
     ],
     declarations: [
-        CustomPageComponent
+        CustomPageComponent,
+        LeaderBoardComponent
     ],
     providers: [
         CustomPageResolver

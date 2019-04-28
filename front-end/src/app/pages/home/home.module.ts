@@ -20,7 +20,6 @@ import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 import { CommunityPollComponent } from './home-default/community-poll/community-poll.component';
 import { StaffSpotlightComponent } from './home-default/staff-spotlight/staff-spotlight.component';
-import { LeaderBoardComponent } from './leader-board/leader-board.component';
 import { SearchComponent } from './search/search.component';
 import { SearchResolver } from './services/search.resolver';
 import { PaginationModule } from 'shared/app-views/pagination/pagination.module';
@@ -53,7 +52,6 @@ import { UserLinkModule } from 'shared/components/user/user-link.module';
         MediaArticlesComponent,
         CommunityPollComponent,
         StaffSpotlightComponent,
-        LeaderBoardComponent,
         SearchComponent,
         GroupListComponent
     ],

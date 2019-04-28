@@ -19,7 +19,7 @@ class PageSettingsController extends Controller {
      * GeneralSettingsController constructor.
      * Fetch the setting keys and store them in an instance variable
      */
-    public function __construct () {
+    public function __construct() {
         parent::__construct();
         $this->settingKeys = ConfigHelper::getKeyConfig();
     }
@@ -28,12 +28,13 @@ class PageSettingsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function getPages() {
-        return response()->json(Page::all()->map(function($page) {
+        return response()->json(Page::all()->map(function ($page) {
             return [
                 'pageId' => $page->pageId,
                 'path' => $page->path,
                 'title' => $page->title,
-                'isSystem' => $page->isSystem
+                'isSystem' => $page->isSystem,
+                'canEdit' => $page->canEdit
             ];
         }));
     }
@@ -57,7 +58,7 @@ class PageSettingsController extends Controller {
      */
     public function createPage(Request $request) {
         $user = Cache::get('auth');
-        $data = (object) $request->input('data');
+        $data = (object)$request->input('data');
 
         Condition::precondition(!isset($data->path) || empty($data->path), 400, 'Path can not be empty');
         Condition::precondition(!isset($data->title) || empty($data->title), 400, 'Title can not be empty');
@@ -88,9 +89,10 @@ class PageSettingsController extends Controller {
     public function updatePage(Request $request, $pageId) {
         $user = Cache::get('auth');
         $page = Page::find($pageId);
-        $data = (object) $request->input('data');
+        $data = (object)$request->input('data');
 
         Condition::precondition(!$page, 404, 'No page with that ID exists');
+        Condition::precondition(!$page->canEdit, 400, 'You can not edit this page');
         Condition::precondition(!isset($data->path) || empty($data->path), 400, 'Path can not be empty');
         Condition::precondition(!isset($data->title) || empty($data->title), 400, 'Title can not be empty');
         Condition::precondition(!isset($data->content) || empty($data->content), 400, 'Content can not be empty');
@@ -136,14 +138,14 @@ class PageSettingsController extends Controller {
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getNavigation () {
+    public function getNavigation() {
         $navigation = null;
         try {
             $navigation = json_decode(SettingsHelper::getSettingValue($this->settingKeys->navigation));
         } catch (\Exception $e) {
             $navigation = [];
         }
-        return response()->json(is_array($navigation) ? $navigation :  []);
+        return response()->json(is_array($navigation) ? $navigation : []);
     }
 
     /**
@@ -151,7 +153,7 @@ class PageSettingsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateNavigation (Request $request) {
+    public function updateNavigation(Request $request) {
         $user = Cache::get('auth');
 
         $navigation = json_encode($request->input('navigation'));

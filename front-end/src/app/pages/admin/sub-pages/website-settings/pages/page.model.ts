@@ -12,11 +12,13 @@ export class PageModel {
     @primitive()
     isSystem: boolean;
     @primitive()
+    canEdit: boolean;
+    @primitive()
     createdAt: number;
     @primitive()
     updatedAt: number;
 
-    constructor(source?: Partial<PageModel>) {
+    constructor (source?: Partial<PageModel>) {
         ClassHelper.assign(this, source);
     }
 }
