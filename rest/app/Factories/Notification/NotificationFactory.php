@@ -85,14 +85,14 @@ class NotificationFactory {
         $receiverIds = [$visitorMessage->hostId];
         if ($visitorMessage->parentId > 0) {
             VisitorMessage::where('parentId', $visitorMessage->parentId)->orWhere('visitorMessageId', $visitorMessage->parentId)->pluck('userId')
-                ->filter(function ($userId) use ($visitorMessage) {
-                    return $userId != $visitorMessage->userId;
-                })
                 ->each(function ($userId) use ($receiverIds) {
                     $receiverIds[] = $userId;
                 });
         }
 
+        $receiverIds = array_filter($receiverIds, function ($userId) use ($visitorMessage) {
+            return $userId != $visitorMessage->userId;
+        });
         $notifications = array_map(function ($userId) use ($visitorMessage) {
             return [
                 'userId' => $userId,
