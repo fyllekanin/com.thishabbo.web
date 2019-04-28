@@ -186,8 +186,14 @@ export class AdminComponent extends Page implements OnDestroy, OnInit {
             new SideMenuBlock({
                 title: 'Statistics',
                 items: [
-                    new SideMenuItem({title: 'Users Logged In', link: '/admin/statistics/users'}),
-                    new SideMenuItem({title: 'Posts', link: '/admin/statistics/posts'})
+                    new SideMenuItem({
+                        title: 'Users Logged In',
+                        link: `/admin/statistics/users/${new Date().getFullYear()}/${new Date().getMonth() + 1}`
+                    }),
+                    new SideMenuItem({
+                        title: 'Posts',
+                        link: `/admin/statistics/posts/${new Date().getFullYear()}/${new Date().getMonth() + 1}`
+                    })
                 ]
             })
         ];
