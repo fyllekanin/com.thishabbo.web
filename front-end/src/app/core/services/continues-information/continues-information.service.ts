@@ -1,4 +1,4 @@
-import { Subject, Observable, interval } from 'rxjs';
+import { interval, Observable, Subject } from 'rxjs';
 import { HttpService } from 'core/services/http/http.service';
 import { Injectable, NgZone } from '@angular/core';
 import { NotificationModel } from 'shared/app-views/top-bar/top-bar.model';
@@ -23,7 +23,7 @@ export class ContinuesInformationService implements Resolve<void> {
 
     private _onTabsUpdatedSubject: Subject<void> = new Subject();
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _ngZone: NgZone,
         private _authService: AuthService,
@@ -46,7 +46,7 @@ export class ContinuesInformationService implements Resolve<void> {
         });
     }
 
-    resolve(activatedRouteSnapshot: ActivatedRouteSnapshot): Observable<void> {
+    resolve (activatedRouteSnapshot: ActivatedRouteSnapshot): Observable<void> {
         let prefix = '';
         if (activatedRouteSnapshot.data['type']) {
             prefix = activatedRouteSnapshot.data['type'] === PING_TYPES.ADMIN ? 'admin/' : 'staff/';
@@ -54,31 +54,31 @@ export class ContinuesInformationService implements Resolve<void> {
         return this._httpService.get(prefix + 'ping');
     }
 
-    removeNotification(notificationId: number): void {
+    removeNotification (notificationId: number): void {
         this._notifications = this._notifications.filter(item => item.notificationId !== notificationId);
     }
 
-    removeAllNotifications(): void {
-        this._notifications = [];
+    removeNotificationIds (ids: Array<Number>): void {
+        this._notifications = this._notifications.filter(notification => ids.indexOf(notification.notificationId) === -1);
     }
 
-    tabsUpdated(): void {
+    tabsUpdated (): void {
         this._onTabsUpdatedSubject.next();
     }
 
-    get onTabsUpdated(): Observable<void> {
+    get onTabsUpdated (): Observable<void> {
         return this._onTabsUpdatedSubject.asObservable();
     }
 
-    get onNotifications(): Observable<Array<NotificationModel<any>>> {
+    get onNotifications (): Observable<Array<NotificationModel<any>>> {
         return this._notificationsSubject.asObservable();
     }
 
-    get onContinuesInformation(): Observable<ContinuesInformationModel> {
+    get onContinuesInformation (): Observable<ContinuesInformationModel> {
         return this._onContinuesInformationSubject.asObservable();
     }
 
-    private onUserActivityChange(isUserActive): void {
+    private onUserActivityChange (isUserActive): void {
         if (this._event && isUserActive) {
             return;
         }
@@ -90,12 +90,12 @@ export class ContinuesInformationService implements Resolve<void> {
         }
     }
 
-    private stopEventStream(): void {
+    private stopEventStream (): void {
         this._event.close();
         this._event = null;
     }
 
-    private startEventStream(): void {
+    private startEventStream (): void {
         if (this._event) {
             return;
         }
@@ -112,7 +112,7 @@ export class ContinuesInformationService implements Resolve<void> {
         };
     }
 
-    private updateIntervalTime(isUserActive: boolean): void {
+    private updateIntervalTime (isUserActive: boolean): void {
         if (isUserActive && this._intervalSubscription) {
             this._intervalSubscription.unsubscribe();
             this._intervalSubscription = null;
@@ -122,11 +122,11 @@ export class ContinuesInformationService implements Resolve<void> {
         }
     }
 
-    private startInterval(): void {
+    private startInterval (): void {
         this._intervalSubscription = interval(this._intervalSpeed).subscribe(this.fetchNotifications.bind(this));
     }
 
-    private fetchNotifications(): void {
+    private fetchNotifications (): void {
         this._ngZone.run(() => {
             if (!this._authService.isLoggedIn()) {
                 return;
@@ -136,7 +136,7 @@ export class ContinuesInformationService implements Resolve<void> {
         });
     }
 
-    private onContinuesInformationData(event: { data: string }): void {
+    private onContinuesInformationData (event: { data: string }): void {
         const data = new ContinuesInformationModel(JSON.parse(event.data));
         this._onContinuesInformationSubject.next(data);
 
@@ -147,7 +147,7 @@ export class ContinuesInformationService implements Resolve<void> {
         }
     }
 
-    private onNotificationData(res: Array<any>): void {
+    private onNotificationData (res: Array<any>): void {
         const newNotifications = res.map(item => new NotificationModel(item));
         const newNotificationIds = newNotifications.map(noti => noti.notificationId);
 

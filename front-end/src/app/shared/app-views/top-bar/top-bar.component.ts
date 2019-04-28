@@ -4,7 +4,7 @@ import { HttpService } from 'core/services/http/http.service';
 import { Breadcrumb, BreadcrumbItem } from 'core/services/breadcrum/breadcrum.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Component } from '@angular/core';
-import { NotificationModel } from 'shared/app-views/top-bar/top-bar.model';
+import { NotificationModel, NotificationTypes } from 'shared/app-views/top-bar/top-bar.model';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 import { RouterStateService } from 'core/services/router/router-state.service';
 import { ArrayHelper } from 'shared/helpers/array.helper';
@@ -19,12 +19,13 @@ import { NotificationMessage } from 'shared/app-views/global-notification/global
 
 export class TopBarComponent {
     private _notifications: Array<NotificationModel<any>> = [];
+    private _messages: Array<NotificationModel<any>> = [];
     private _breadcrumb: Breadcrumb;
 
     loginName = '';
     password = '';
 
-    constructor(
+    constructor (
         private _authService: AuthService,
         private _router: Router,
         private _httpService: HttpService,
@@ -39,7 +40,7 @@ export class TopBarComponent {
         this._continuesInformationService.onNotifications.subscribe(this.onNotifications.bind(this));
     }
 
-    login(): void {
+    login (): void {
         this._authService.login(this.loginName, this.password, () => {
             this._router.navigateByUrl('/auth/login');
         });
@@ -47,13 +48,13 @@ export class TopBarComponent {
         this.password = '';
     }
 
-    keyDownFunction(event): void {
+    keyDownFunction (event): void {
         if (event.keyCode === 13) {
             this.login();
         }
     }
 
-    notificationClick(notificationId: number): void {
+    notificationClick (notificationId: number): void {
         this._httpService.put(`puller/notifications/read/${notificationId}`)
             .subscribe(() => {
                 this._continuesInformationService.removeNotification(notificationId);
@@ -62,12 +63,12 @@ export class TopBarComponent {
             });
     }
 
-    readAll(): void {
-        this._httpService.put('puller/notifications/read/all')
+    readAllNotifications (): void {
+        this._httpService.put('puller/notifications/read/all/notifications')
             .subscribe(() => {
-                this._continuesInformationService.removeAllNotifications();
+                this._continuesInformationService.removeNotificationIds(this._notifications.map(notification => notification.notificationId));
                 this._notifications = [];
-                this._routerStateService.updateTitle(this._notifications.length);
+                this.updateTitle();
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'All notifications marked as read!'
@@ -75,31 +76,70 @@ export class TopBarComponent {
             });
     }
 
-    get homePage(): Array<string> {
+    readAllMessages (): void {
+        this._httpService.put('puller/notifications/read/all/messages')
+            .subscribe(() => {
+                this._continuesInformationService.removeNotificationIds(this._messages.map(notification => notification.notificationId));
+                this._messages = [];
+                this.updateTitle();
+                this._notificationService.sendNotification(new NotificationMessage({
+                    title: 'Success',
+                    message: 'All messages marked as read!'
+                }));
+            });
+    }
+
+    get homePage (): Array<string> {
         const homePage = this._authService.isLoggedIn() && this._authService.authUser.homePage ?
             this._authService.authUser.homePage : '/home';
         return [homePage];
     }
 
-    get loggedIn(): boolean {
+    get loggedIn (): boolean {
         return this._authService.isLoggedIn();
     }
 
-    get notifications(): Array<NotificationModel<any>> {
+    get notifications (): Array<NotificationModel<any>> {
         return this._notifications;
     }
 
-    get breadcrumbItems(): Array<BreadcrumbItem> {
+    get messages (): Array<NotificationModel<any>> {
+        return this._messages;
+    }
+
+    get breadcrumbItems (): Array<BreadcrumbItem> {
         return this._breadcrumb ? this._breadcrumb.items : [];
     }
 
-    get current(): string {
+    get current (): string {
         return this._breadcrumb ? this._breadcrumb.current : '';
     }
 
-    private onNotifications(notifications: Array<NotificationModel<any>>): void {
-        this._notifications = notifications;
-        this._notifications.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'createdAt'));
-        this._routerStateService.updateTitle(this._notifications.length);
+    private onNotifications (notifications: Array<NotificationModel<any>>): void {
+        notifications.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'createdAt'));
+        this._notifications = notifications.filter(this.isNotification);
+        this._messages = notifications.filter(this.isMessage);
+        this.updateTitle();
+    }
+
+    private updateTitle (): void {
+        this._routerStateService.updateTitle(this._notifications.length + this._messages.length);
+    }
+
+    private isMessage (notification: NotificationModel<any>): boolean {
+        return notification.type === NotificationTypes.VISITOR_MESSAGE;
+    }
+
+    private isNotification (notification: NotificationModel<any>): boolean {
+        return [
+            NotificationTypes.FOLLOWED,
+            NotificationTypes.BADGE,
+            NotificationTypes.CATEGORY_SUBSCRIPTION,
+            NotificationTypes.INFRACTION_DELETED,
+            NotificationTypes.INFRACTION_GIVE,
+            NotificationTypes.MENTION,
+            NotificationTypes.QUOTE,
+            NotificationTypes.THREAD_SUBSCRIPTION
+        ].indexOf(notification.type) > -1;
     }
 }

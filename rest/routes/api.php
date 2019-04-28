@@ -60,7 +60,8 @@ Route::group(['middleware' => ['maintenance']], function () {
         Route::post('/profile/visitor-message/{visitorMessageId}/like', 'ProfileController@createVisitorMessageLike');
         Route::delete('/profile/visitor-message/{visitorMessageId}/like', 'ProfileController@deleteVisitorMessageLike');
 
-        Route::put('puller/notifications/read/all', 'Puller\NotificationController@readAllNotifications');
+        Route::put('puller/notifications/read/all/notifications', 'Puller\NotificationController@readAllNotifications');
+        Route::put('puller/notifications/read/all/messages', 'Puller\NotificationController@readAllMessages');
         Route::put('puller/notifications/read/{notificationId}', 'Puller\NotificationController@readNotification');
 
         Route::prefix('betting')->group(function () {
