@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { SlimArticle } from '../home-default.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
+import { SlimArticle } from 'shared/components/slim-article/slim-article.model';
 
 @Component({
     selector: 'app-home-media-articles',
@@ -10,20 +10,20 @@ import { TimeHelper } from 'shared/helpers/time.helper';
 export class MediaArticlesComponent {
     private _articles: Array<SlimArticle> = [];
 
-    getBackgroundImage(articleId: number): string {
+    getBackgroundImage (articleId: number): string {
         return `url(/rest/resources/images/thumbnails/${articleId}.gif)`;
     }
 
-    getTime(article: SlimArticle) {
+    getTime (article: SlimArticle) {
         return TimeHelper.getTime(article.createdAt);
     }
 
     @Input()
-    set articles(articles: Array<SlimArticle>) {
+    set articles (articles: Array<SlimArticle>) {
         this._articles = Array.isArray(articles) ? articles : [];
     }
 
-    get articles(): Array<SlimArticle> {
+    get articles (): Array<SlimArticle> {
         return this._articles;
     }
 }

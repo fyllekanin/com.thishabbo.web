@@ -132,6 +132,18 @@ If you\'re still having problems - tweet us [b]@[url=https://twitter.com/thishab
                     'createdAt' => 1551197660,
                     'updatedAt' => 1551197660,
                 ),
+            3 =>
+                array(
+                    'pageId' => 4,
+                    'path' => 'badge-articles/page/1',
+                    'title' => 'Badge Articles',
+                    'content' => '',
+                    'isDeleted' => 0,
+                    'isSystem' => 1,
+                    'canEdit' => 0,
+                    'createdAt' => 1551197660,
+                    'updatedAt' => 1551197660,
+                ),
         ));
 
 

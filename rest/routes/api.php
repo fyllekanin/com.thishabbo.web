@@ -40,6 +40,7 @@ Route::group(['middleware' => ['maintenance']], function () {
 
     Route::get('/page/profile/{nickname}/page/{page}', 'ProfileController@getProfile');
     Route::get('/page/custom/{page}', 'PageController@getCustomPage');
+    Route::get('/page/badge-guides/page/{page}', 'PageController@getBadgeGuides');
     Route::get('/page/home', 'PageController@getHomePage');
     Route::get('/page/register', 'PageController@getRegisterPage');
     Route::get('/page/forum/categories', 'Forum\Category\CategoryCrudController@getForumCategories');

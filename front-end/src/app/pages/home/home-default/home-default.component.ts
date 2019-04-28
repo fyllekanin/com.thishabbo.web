@@ -1,11 +1,12 @@
 import { Notice } from 'shared/components/notice/notice.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
-import { HomeDefaultPage, SlimArticle } from './home-default.model';
-import { ActivatedRoute } from '@angular/router';
+import { HomeDefaultPage } from './home-default.model';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Page } from 'shared/page/page.model';
-import { Component, ElementRef, OnInit, OnDestroy } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from 'core/services/auth/auth.service';
+import { SlimArticle } from 'shared/components/slim-article/slim-article.model';
 
 @Component({
     selector: 'app-page-home-default',
@@ -16,9 +17,10 @@ import { AuthService } from 'core/services/auth/auth.service';
 export class HomeDefaultComponent extends Page implements OnInit, OnDestroy {
     private _page: HomeDefaultPage = new HomeDefaultPage();
 
-    constructor(
+    constructor (
         private _authService: AuthService,
         private _activatedRoute: ActivatedRoute,
+        private _router: Router,
         breadcrumbService: BreadcrumbService,
         elementRef: ElementRef
     ) {
@@ -29,27 +31,31 @@ export class HomeDefaultComponent extends Page implements OnInit, OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    ngOnInit(): void {
+    ngOnInit (): void {
         this._page = this._activatedRoute.snapshot.data['data'];
     }
 
-    get isLoggedIn(): boolean {
+    seeMoreBadgeArticles (): void {
+        this._router.navigateByUrl('/page/badge-articles/page/1');
+    }
+
+    get isLoggedIn (): boolean {
         return this._authService.isLoggedIn();
     }
 
-    get articles(): Array<SlimArticle> {
+    get articles (): Array<SlimArticle> {
         return this._page.articles;
     }
 
-    get mediaArticles(): Array<SlimArticle> {
+    get mediaArticles (): Array<SlimArticle> {
         return this._page.mediaArticles;
     }
 
-    get notices(): Array<Notice> {
+    get notices (): Array<Notice> {
         return this._page.notices.sort((a, b) => {
             if (a.order > b.order) {
                 return 1;
