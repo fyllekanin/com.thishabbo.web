@@ -19,7 +19,7 @@ class Controller extends BaseController {
      * Setup commonly used instance variables used in majority of controllers
      * extending this one.
      */
-    public function __construct () {
+    public function __construct() {
         $this->nowMinus15 = time() - 15;
     }
 
@@ -28,9 +28,14 @@ class Controller extends BaseController {
      *
      * @param $page
      *
+     * @param int $perPage
+     *
      * @return float|int
      */
-    public function getOffset ($page) {
-        return $page >= 2 ? ($this->perPage * $page) - $this->perPage : 0;
+    public function getOffset($page, $perPage = 0) {
+        if ($perPage == 0) {
+            $perPage = $this->perPage;
+        }
+        return $page >= 2 ? ($perPage * $page) - $perPage : 0;
     }
 }

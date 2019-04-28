@@ -6,8 +6,17 @@ use App\Http\Controllers\Controller;
 
 class DataHelper {
 
-    public static function getPage($count) {
-        $page = ceil($count / Controller::$perPageStatic);
+    /**
+     * @param $count
+     * @param int $perPage
+     *
+     * @return float|int
+     */
+    public static function getPage($count, $perPage = 0) {
+        if ($perPage == 0) {
+            $perPage = Controller::$perPageStatic;
+        }
+        $page = ceil($count / $perPage);
         return $page > 0 ? $page : 1;
     }
 }

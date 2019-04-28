@@ -11,6 +11,7 @@ use App\EloquentModels\Page;
 use App\EloquentModels\Theme;
 use App\EloquentModels\User\User;
 use App\Helpers\ConfigHelper;
+use App\Helpers\DataHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\SettingsHelper;
 use App\Helpers\UserHelper;
@@ -27,7 +28,7 @@ class PageController extends Controller {
      * PageController constructor.
      * Store the possible category templates in instance variable
      */
-    public function __construct () {
+    public function __construct() {
         parent::__construct();
         $this->categoryTemplates = ConfigHelper::getCategoryTemplatesConfig();
     }
@@ -35,7 +36,7 @@ class PageController extends Controller {
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function loadInitial () {
+    public function loadInitial() {
         $user = Cache::get('auth');
 
         $navigation = null;
@@ -48,7 +49,7 @@ class PageController extends Controller {
         $theme = Theme::where('themeId', Value::objectProperty($user, 'theme', 0))->orWhere('isDefault', true)->first();
 
         return response()->json([
-            'navigation' => is_array($navigation) ? $navigation :  [],
+            'navigation' => is_array($navigation) ? $navigation : [],
             'theme' => $theme ? $theme->minified : ''
         ]);
     }
@@ -57,11 +58,11 @@ class PageController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function getGroupList() {
-        return response()->json(GroupList::orderBy('displayOrder', 'ASC')->get()->map(function($item) {
+        return response()->json(GroupList::orderBy('displayOrder', 'ASC')->get()->map(function ($item) {
             return [
                 'name' => $item->group->name,
                 'color' => $item->color,
-                'users' => $item->group->userGroup()->get()->map(function($relation) {
+                'users' => $item->group->userGroup()->get()->map(function ($relation) {
                     return UserHelper::getSlimUser($relation->userId);
                 })
             ];
@@ -114,7 +115,7 @@ class PageController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getMaintenanceMessage () {
+    public function getMaintenanceMessage() {
         $settingKeys = ConfigHelper::getKeyConfig();
         return response()->json([
             'content' => BBcodeUtil::bbcodeParser(SettingsHelper::getSettingValue($settingKeys->maintenanceContent))
@@ -126,7 +127,7 @@ class PageController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getHomePage () {
+    public function getHomePage() {
         $user = Cache::get('auth');
 
         return response()->json([
@@ -142,9 +143,39 @@ class PageController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getRegisterPage () {
+    public function getRegisterPage() {
         return response()->json([
             'names' => User::getQuery()->get(['nickname'])
+        ]);
+    }
+
+    /**
+     * @param $page
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getBadgeGuides($page) {
+        $user = Cache::get('auth');
+        $perPage = 12;
+
+        $categories = Category::where('template', $this->categoryTemplates->QUEST)
+            ->pluck('categoryId')->toArray();
+
+        $categoryIds = Iterables::filter($categories, function ($categoryId) use ($user) {
+            return PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canRead, $categoryId);
+        });
+
+        $threadsSql = Thread::isApproved()->orderBy('threadId', 'DESC')->whereIn('categoryId', $categoryIds);
+        $total = DataHelper::getPage($threadsSql->count(), $perPage);
+
+        $items = $threadsSql->take($perPage)->skip($this->getOffset($page, $perPage))->get()->map(function ($item) {
+            return $this->mapArticle($item);
+        });
+
+        return response()->json([
+            'total' => $total,
+            'page' => $page,
+            'items' => $items
         ]);
     }
 
@@ -153,7 +184,7 @@ class PageController extends Controller {
      *
      * @return Notice[]|\Illuminate\Database\Eloquent\Collection
      */
-    private function getNotices () {
+    private function getNotices() {
         $notices = Notice::all();
 
         foreach ($notices as $notice) {
@@ -173,7 +204,7 @@ class PageController extends Controller {
      *
      * @return array
      */
-    private function getArticles ($user, $amount, $type) {
+    private function getArticles($user, $amount, $type) {
         $categories = Category::where('template', $type)
             ->pluck('categoryId')->toArray();
 
@@ -181,25 +212,30 @@ class PageController extends Controller {
             return PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canRead, $categoryId);
         });
 
-        $threads = Thread::isApproved()->orderBy('threadId', 'DESC')->whereIn('categoryId', $categoryIds)->take($amount)->get();
-        $articles = [];
-        foreach ($threads as $thread) {
-            $tags = isset($thread->templateData) ? (strpos($thread->templateData->tags, ',') !== false ?
-                explode(',', $thread->templateData->tags) :
-                [$thread->templateData->tags]) : null;
+        return Thread::isApproved()->orderBy('threadId', 'DESC')->whereIn('categoryId', $categoryIds)->take($amount)->get()->map(function ($item) {
+            return $this->mapArticle($item);
+        });
+    }
 
-            $articles[] = [
-                'threadId' => $thread->threadId,
-                'badge' => isset($thread->templateData) ? $thread->templateData->badge : null,
-                'title' => $thread->title,
-                'content' => BBcodeUtil::bbcodeParser($thread->content, false),
-                'tags' => $tags,
-                'user' => UserHelper::getSlimUser($thread->userId),
-                'createdAt' => $thread->createdAt->timestamp,
-                'prefix' => $thread->prefix
-            ];
-        }
+    /**
+     * @param $thread
+     *
+     * @return array
+     */
+    private function mapArticle($thread) {
+        $tags = isset($thread->templateData) ? (strpos($thread->templateData->tags, ',') !== false ?
+            explode(',', $thread->templateData->tags) :
+            [$thread->templateData->tags]) : null;
 
-        return $articles;
+        return [
+            'threadId' => $thread->threadId,
+            'badge' => isset($thread->templateData) ? $thread->templateData->badge : null,
+            'title' => $thread->title,
+            'content' => BBcodeUtil::bbcodeParser($thread->content, false),
+            'tags' => $tags,
+            'user' => UserHelper::getSlimUser($thread->userId),
+            'createdAt' => $thread->createdAt->timestamp,
+            'prefix' => $thread->prefix
+        ];
     }
 }
