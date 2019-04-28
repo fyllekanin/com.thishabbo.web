@@ -9,7 +9,7 @@ export class ButtonDirective {
     private _color: ButtonColor = Button.BLUE;
     private _lastClick = 0;
 
-    private _float: 'left' | 'center' | 'right' = 'left';
+    private _float: 'left' | 'center' | 'right' | null = null;
 
     @HostBinding('style.font-size') fontSize = '11px';
     @HostBinding('style.padding') padding = '10px';
@@ -18,7 +18,7 @@ export class ButtonDirective {
     @HostBinding('style.text-shadow') textShadow;
     @HostBinding('style.box-shadow') boxShadow;
     @HostBinding('style.background') background;
-    @HostBinding('style.float') floatDirection = 'left';
+    @HostBinding('style.float') floatDirection = null;
     @HostBinding('style.color') textColor = '#ffffff';
     @HostBinding('style.outline') outline = 'none';
     @HostBinding('style.margin') margin = '0 0 0 5px';
@@ -26,7 +26,7 @@ export class ButtonDirective {
 
     @Output() onClick: EventEmitter<void> = new EventEmitter();
 
-    constructor(
+    constructor (
         private _sanitizer: DomSanitizer
     ) {
         this.background = this._sanitizer.bypassSecurityTrustStyle(`url(/assets/images/bargradient.png) , ${this._color.background}`);
@@ -37,7 +37,7 @@ export class ButtonDirective {
     }
 
     @HostListener('click', ['$event, $event.target'])
-    click() {
+    click () {
         if (this._lastClick < (new Date().getTime() - 5000)) {
             this._lastClick = new Date().getTime();
             this.onClick.emit();
@@ -45,7 +45,7 @@ export class ButtonDirective {
     }
 
     @Input()
-    set color(color: ButtonColor) {
+    set color (color: ButtonColor) {
         this._color = color || Button.BLUE;
         this.background = this._sanitizer.bypassSecurityTrustStyle(`url(/assets/images/bargradient.png) , ${this._color.background}`);
         this.textColor = this._color.color;
@@ -53,7 +53,7 @@ export class ButtonDirective {
     }
 
     @Input()
-    set float(align: 'left' | 'center' | 'right') {
+    set float (align: 'left' | 'center' | 'right') {
         this._float = align;
         this.floatDirection = this._float;
     }

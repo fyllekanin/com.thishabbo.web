@@ -16,6 +16,9 @@ class ForumValidatorService {
      * @param $threadSkeleton
      */
     public function validatePoll($threadSkeleton) {
+        if (!isset($threadSkeleton->poll)) {
+            return;
+        }
         Condition::precondition(!isset($threadSkeleton->poll->question) || empty($threadSkeleton->poll->question), 400,
             'Question can not be empty');
         Condition::precondition(!is_array($threadSkeleton->poll->answers), 400, 'There need to be at least 2 answers');
