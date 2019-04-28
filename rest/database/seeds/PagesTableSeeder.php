@@ -3,24 +3,22 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class PagesTableSeeder extends Seeder
-{
+class PagesTableSeeder extends Seeder {
 
     /**
      * Auto generated seed file
      *
      * @return void
      */
-    public function run()
-    {
+    public function run() {
         DB::table('pages')->delete();
-        DB::table('pages')->insert(array (
+        DB::table('pages')->insert(array(
             0 =>
-            array (
-                'pageId' => 1,
-                'path' => 'rules',
-                'title' => 'Site Rules',
-                'content' => 'All rules apply to all ThisHabbo related services. If you have an issue regarding a giveaway or some form of event on Habbo, then please report this to the Habbo Moderators and not ourselves. Staff are not excluded from these rules below.
+                array(
+                    'pageId' => 1,
+                    'path' => 'rules',
+                    'title' => 'Site Rules',
+                    'content' => 'All rules apply to all ThisHabbo related services. If you have an issue regarding a giveaway or some form of event on Habbo, then please report this to the Habbo Moderators and not ourselves. Staff are not excluded from these rules below.
 
 [center][b][size=6][u]Global Rules[/u][/size][/b][/center]
 [b]1. Intimidating or Abusive Behaviour:[/b]
@@ -94,13 +92,14 @@ Firstly, ThisHabbo takes absolutely no responsibility of things which happen on 
 [center][/center]
 
 [admin]Last modified: 04-29-2018[/admin]',
-                'isDeleted' => 0,
-                'isSystem' => 0,
-                'createdAt' => 1551197660,
-                'updatedAt' => 1551197660,
-            ),
+                    'isDeleted' => 0,
+                    'isSystem' => 0,
+                    'canEdit' => 1,
+                    'createdAt' => 1551197660,
+                    'updatedAt' => 1551197660,
+                ),
             1 =>
-                array (
+                array(
                     'pageId' => 2,
                     'path' => 'access',
                     'title' => 'Access Denied',
@@ -117,6 +116,19 @@ Firstly, ThisHabbo takes absolutely no responsibility of things which happen on 
 If you\'re still having problems - tweet us [b]@[url=https://twitter.com/thishabbo]ThisHabbo[/url][/b]!',
                     'isDeleted' => 0,
                     'isSystem' => 1,
+                    'canEdit' => 1,
+                    'createdAt' => 1551197660,
+                    'updatedAt' => 1551197660,
+                ),
+            2 =>
+                array(
+                    'pageId' => 3,
+                    'path' => 'leader-board',
+                    'title' => 'Leader Board',
+                    'content' => '',
+                    'isDeleted' => 0,
+                    'isSystem' => 1,
+                    'canEdit' => 0,
                     'createdAt' => 1551197660,
                     'updatedAt' => 1551197660,
                 ),

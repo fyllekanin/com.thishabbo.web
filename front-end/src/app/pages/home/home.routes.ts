@@ -2,7 +2,6 @@ import { HomeDefaultResolver } from './services/home-default.resolver';
 import { PageComponent } from 'shared/page/page.component';
 import { HomeDefaultComponent } from './home-default/home-default.component';
 import { Routes } from '@angular/router';
-import { LeaderBoardComponent } from './leader-board/leader-board.component';
 import { SearchComponent } from './search/search.component';
 import { SearchResolver } from './services/search.resolver';
 import { GroupListComponent } from './group-list/group-list.component';
@@ -19,10 +18,6 @@ export const homeRoutes: Routes = [
                     data: HomeDefaultResolver
                 },
                 component: HomeDefaultComponent
-            },
-            {
-                path: 'leader-board',
-                component: LeaderBoardComponent
             },
             {
                 path: 'search',
