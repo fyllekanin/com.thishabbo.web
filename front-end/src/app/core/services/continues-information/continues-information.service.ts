@@ -58,7 +58,7 @@ export class ContinuesInformationService implements Resolve<void> {
         this._notifications = this._notifications.filter(item => item.notificationId !== notificationId);
     }
 
-    removeNotificationIds (ids: Array<Number>): void {
+    removeNotificationIds (ids: Array<number>): void {
         this._notifications = this._notifications.filter(notification => ids.indexOf(notification.notificationId) === -1);
     }
 

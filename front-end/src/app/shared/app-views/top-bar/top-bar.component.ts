@@ -66,7 +66,8 @@ export class TopBarComponent {
     readAllNotifications (): void {
         this._httpService.put('puller/notifications/read/all/notifications')
             .subscribe(() => {
-                this._continuesInformationService.removeNotificationIds(this._notifications.map(notification => notification.notificationId));
+                this._continuesInformationService.removeNotificationIds(this._notifications
+                    .map(notification => notification.notificationId));
                 this._notifications = [];
                 this.updateTitle();
                 this._notificationService.sendNotification(new NotificationMessage({
@@ -79,7 +80,8 @@ export class TopBarComponent {
     readAllMessages (): void {
         this._httpService.put('puller/notifications/read/all/messages')
             .subscribe(() => {
-                this._continuesInformationService.removeNotificationIds(this._messages.map(notification => notification.notificationId));
+                this._continuesInformationService.removeNotificationIds(this._messages
+                    .map(notification => notification.notificationId));
                 this._messages = [];
                 this.updateTitle();
                 this._notificationService.sendNotification(new NotificationMessage({
