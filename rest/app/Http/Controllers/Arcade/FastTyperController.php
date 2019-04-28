@@ -19,7 +19,7 @@ class FastTyperController extends Controller {
      * FastTyperController constructor.
      * Fetch available game types and store in instance variable
      */
-    public function __construct () {
+    public function __construct() {
         parent::__construct();
         $this->gameTypes = ConfigHelper::getGameTypesConfig();
     }
@@ -31,7 +31,7 @@ class FastTyperController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getFastTyperHighscoreTable ($asJson = false) {
+    public function getFastTyperHighscoreTable($asJson = false) {
         $highScore = Game::orderBy('score', 'DESC')
             ->where('gameType', $this->gameTypes->fastTyper)
             ->where('isFinished', true)
@@ -49,7 +49,7 @@ class FastTyperController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getFastTyperParagraph (Request $request) {
+    public function getFastTyperParagraph(Request $request) {
         $user = Cache::get('auth');
 
         $paragraph = Paragraph::inRandomOrder()->first();
@@ -74,7 +74,7 @@ class FastTyperController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createFastTyperScore (Request $request) {
+    public function createFastTyperScore(Request $request) {
         $user = Cache::get('auth');
         $result = (object)$request->input('result');
 
@@ -109,7 +109,7 @@ class FastTyperController extends Controller {
      *
      * @return float
      */
-    private function getWordsPerMinute ($text, $startTime, $endTime) {
+    private function getWordsPerMinute($text, $startTime, $endTime) {
         $time = $endTime - $startTime;
         $wordCount = count(explode(' ', $text));
 

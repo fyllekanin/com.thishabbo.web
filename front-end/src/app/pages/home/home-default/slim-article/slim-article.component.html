@@ -8,7 +8,7 @@
 <div class="container">
     <a class="title" [routerLink]="[threadLink]"><i class="fas fa-comment"></i> {{article.title}}</a>
     <div class="tags">
-        <div *ngFor="let tag of article.tags" class="tag {{tag}}">{{prettify(tag)}}</div>
+        <div *ngFor="let tag of article.tags" class="tag" [ngClass]="tag">{{prettify(tag)}}</div>
     </div>
     <div class="content" [innerHTML]="article.content | safeHtml"></div>
     <div class="information">

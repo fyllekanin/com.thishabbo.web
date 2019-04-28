@@ -1,5 +1,4 @@
-import { ThreadPrefix } from '../forum.model';
-import { ForumPermissions } from '../forum.model';
+import { ForumPermissions, ThreadPrefix } from '../forum.model';
 import { CategoryParent } from '../category/category.model';
 import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
 import { PostModel } from '../post/post.model';
@@ -13,11 +12,11 @@ export class ThreadReader {
     @primitive()
     time: number;
 
-    constructor(source: Partial<ThreadReader>) {
+    constructor (source: Partial<ThreadReader>) {
         ClassHelper.assign(this, source);
     }
 
-    get timeAgo(): string {
+    get timeAgo (): string {
         return TimeHelper.getTime(this.time);
     }
 }
@@ -66,8 +65,16 @@ export class ThreadPage {
     isIgnored: boolean;
     @arrayOf(ThreadReader)
     readers: Array<ThreadReader> = [];
+    @primitive()
+    template: string;
+    @primitive()
+    badge: string;
+    @arrayOf(String)
+    tags: Array<string> = [];
+    @primitive()
+    roomLink: string;
 
-    constructor(source?: Partial<ThreadPage>) {
+    constructor (source?: Partial<ThreadPage>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -113,18 +120,18 @@ export class PostHistoryModel {
     @primitive()
     createdAt: number;
 
-    constructor(source: Partial<PostHistoryModel>) {
+    constructor (source: Partial<PostHistoryModel>) {
         ClassHelper.assign(this, source);
     }
 }
 
-export function getPostTools(forumPermissions: ForumPermissions) {
+export function getPostTools (forumPermissions: ForumPermissions) {
     return [
-        { title: 'Approve Posts', value: ThreadActions.APPROVE_POSTS, condition: forumPermissions.canApprovePosts },
-        { title: 'Unapprove Posts', value: ThreadActions.UNAPPROVE_POSTS, condition: forumPermissions.canApprovePosts },
-        { title: 'Merge Posts', value: ThreadActions.MERGE_POSTS, condition: forumPermissions.canMergePosts },
-        { title: 'Change Owner', value: ThreadActions.CHANGE_POST_OWNER, condition: forumPermissions.canChangeOwner },
-        { title: 'Edit History', value: ThreadActions.POST_HISTORY, condition: forumPermissions.canEditOthersPosts }
+        {title: 'Approve Posts', value: ThreadActions.APPROVE_POSTS, condition: forumPermissions.canApprovePosts},
+        {title: 'Unapprove Posts', value: ThreadActions.UNAPPROVE_POSTS, condition: forumPermissions.canApprovePosts},
+        {title: 'Merge Posts', value: ThreadActions.MERGE_POSTS, condition: forumPermissions.canMergePosts},
+        {title: 'Change Owner', value: ThreadActions.CHANGE_POST_OWNER, condition: forumPermissions.canChangeOwner},
+        {title: 'Edit History', value: ThreadActions.POST_HISTORY, condition: forumPermissions.canEditOthersPosts}
     ];
 }
 
@@ -134,14 +141,15 @@ export function getPostTools(forumPermissions: ForumPermissions) {
  * @param threadPage of the current thread
  * @param forumPermissions of the current user
  */
-export function getThreadTools(userId: number, threadPage: ThreadPage, forumPermissions: ForumPermissions) {
+export function getThreadTools (userId: number, threadPage: ThreadPage, forumPermissions: ForumPermissions) {
     return [
         {
             title: 'Edit Thread',
             value: ThreadActions.EDIT_THREAD,
             condition: forumPermissions.canEditOthersPosts || userId === threadPage.user.userId
         },
-        { title: 'Delete Thread',
+        {
+            title: 'Delete Thread',
             value: ThreadActions.DELETE_THREAD,
             condition: forumPermissions.canDeletePosts
         },

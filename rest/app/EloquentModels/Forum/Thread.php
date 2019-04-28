@@ -105,6 +105,11 @@ class Thread extends DeletableModel {
         return Value::objectProperty($this->templateData, 'badge', '');
     }
 
+    public function getRoomLinkAttribute() {
+        return Value::objectProperty($this->templateData, 'roomLink', '');
+    }
+
+
     public function scopeBelongsToUser(Builder $query, $userId) {
         return $query->where('userId', $userId);
     }

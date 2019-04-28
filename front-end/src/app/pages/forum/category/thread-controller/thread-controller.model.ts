@@ -1,6 +1,6 @@
 import { ThreadPrefix } from '../../forum.model';
 import { CategoryParent } from '../category.model';
-import { primitive, arrayOf, ClassHelper, objectOf } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
 import { ThreadPoll } from '../../thread/thread-poll/thread-poll.model';
 
 export class ThreadSkeleton {
@@ -28,10 +28,12 @@ export class ThreadSkeleton {
     tags: Array<string> = [];
     @primitive()
     badge: string;
+    @primitive()
+    roomLink: string;
     @objectOf(ThreadPoll)
     poll: ThreadPoll;
 
-    constructor(source?: Partial<ThreadSkeleton>) {
+    constructor (source?: Partial<ThreadSkeleton>) {
         ClassHelper.assign(this, source);
     }
 }

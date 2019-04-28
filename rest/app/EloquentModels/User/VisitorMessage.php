@@ -39,10 +39,6 @@ class VisitorMessage extends DeletableModel {
         return $this->hasMany('App\EloquentModels\User\VisitorMessage', 'parentId', 'visitorMessageId');
     }
 
-    public function isSubject() {
-        return $this->parentId == 0;
-    }
-
     public function isComment() {
         return $this->parentId > 0;
     }
