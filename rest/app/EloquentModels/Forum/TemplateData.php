@@ -2,11 +2,11 @@
 
 namespace App\EloquentModels\Forum;
 
-use Illuminate\Database\Eloquent\Model;
+use App\EloquentModels\Models\UnixTimeModel;
 
-class TemplateData extends Model {
+class TemplateData extends UnixTimeModel {
     public $timestamps = false;
-    protected $fillable = ['threadId', 'tags', 'badge'];
+    protected $fillable = ['threadId', 'tags', 'badge', 'roomLink'];
     protected $table = 'template_data';
     protected $primaryKey = 'templateDataId';
 }

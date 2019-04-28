@@ -18,8 +18,8 @@ use App\Helpers\DataHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
-use App\Jobs\NotifyThreadSubscribers;
 use App\Jobs\NotifyMentionsInPost;
+use App\Jobs\NotifyThreadSubscribers;
 use App\Logger;
 use App\Models\Logger\Action;
 use App\Services\ForumService;
@@ -40,10 +40,10 @@ class ThreadCrudController extends Controller {
      * ThreadController constructor.
      * Fetch the available category templates and store in an instance variable
      *
-     * @param ForumService          $forumService
+     * @param ForumService $forumService
      * @param ForumValidatorService $validatorService
      */
-    public function __construct (ForumService $forumService, ForumValidatorService $validatorService) {
+    public function __construct(ForumService $forumService, ForumValidatorService $validatorService) {
         parent::__construct();
         $this->categoryTemplates = ConfigHelper::getCategoryTemplatesConfig();
         $this->forumService = $forumService;
@@ -69,7 +69,7 @@ class ThreadCrudController extends Controller {
             'items' => $query->take($this->perPage)
                 ->skip($this->getOffset($page))
                 ->get()
-                ->map(function($item) {
+                ->map(function ($item) {
                     return [
                         'user' => UserHelper::getSlimUser($item->userId),
                         'posts' => $item->amount
@@ -78,7 +78,7 @@ class ThreadCrudController extends Controller {
         ]);
     }
 
-    public function getLatestThreads ($page) {
+    public function getLatestThreads($page) {
         $user = Cache::get('auth');
 
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
@@ -95,7 +95,7 @@ class ThreadCrudController extends Controller {
         return response()->json([
             'page' => $page,
             'total' => $total,
-            'items' => $threadSql->take($this->perPage)->skip($this->getOffset($page))->get()->map(function($thread) {
+            'items' => $threadSql->take($this->perPage)->skip($this->getOffset($page))->get()->map(function ($thread) {
                 return [
                     'categoryId' => $thread->categoryId,
                     'style' => isset($thread->prefix) ? $thread->prefix->style : '',
@@ -117,7 +117,7 @@ class ThreadCrudController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function createThread (Request $request) {
+    public function createThread(Request $request) {
         $user = Cache::get('auth');
         $thumbnail = $request->file('thumbnail');
         $threadSkeleton = json_decode($request->input('thread'));
@@ -132,7 +132,7 @@ class ThreadCrudController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function updateThread (Request $request, $threadId) {
+    public function updateThread(Request $request, $threadId) {
         $user = Cache::get('auth');
         $thumbnail = $request->file('thumbnail');
         $threadSkeleton = json_decode($request->input('thread'));
@@ -187,7 +187,7 @@ class ThreadCrudController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getThreadController ($categoryId, $threadId) {
+    public function getThreadController($categoryId, $threadId) {
         $user = Cache::get('auth');
 
         PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumConfig()->canRead,
@@ -209,6 +209,7 @@ class ThreadCrudController extends Controller {
                 ->append('content')
                 ->append('badge')
                 ->append('tags')
+                ->append('roomLink')
                 ->makeHidden('category');
         } else {
             $thread->template = Category::find($categoryId)->template;
@@ -230,11 +231,11 @@ class ThreadCrudController extends Controller {
      * Get request to fetch a thread resource
      *
      * @param         $threadId
-     * @param int     $page
+     * @param int $page
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getThreadPage ($threadId, $page = 1) {
+    public function getThreadPage($threadId, $page = 1) {
         $user = Cache::get('auth');
         $thread = Thread::find($threadId);
 
@@ -271,8 +272,15 @@ class ThreadCrudController extends Controller {
         $thread->append('categoryIsOpen');
         $thread->poll = $this->getThreadPoll($thread->threadId, $user->userId);
         $thread->isIgnored = IgnoredThread::where('userId', $user->userId)->where('threadId', $thread->threadId)->count() > 0;
+        $thread->template = $thread->category->template;
+
+        if ($thread->template === ConfigHelper::getCategoryTemplatesConfig()->QUEST) {
+            $thread->append('badge')
+                ->append('tags')
+                ->append('roomLink');
+        }
         $thread->readers = ThreadRead::where('threadId', $thread->threadId)->take(20)->orderBy('updatedAt', 'DESC')
-            ->get(['userId', 'updatedAt'])->map(function($read) {
+            ->get(['userId', 'updatedAt'])->map(function ($read) {
                 return [
                     'user' => UserHelper::getSlimUser($read->userId),
                     'time' => $read->updatedAt->timestamp
@@ -287,12 +295,12 @@ class ThreadCrudController extends Controller {
      * @param         $thumbnail
      * @param         $threadSkeleton
      * @param Request $request
-     * @param bool    $skipValidation
+     * @param bool $skipValidation
      *
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function doThread ($user, $thumbnail, $threadSkeleton, $request, $skipValidation = false) {
+    public function doThread($user, $thumbnail, $threadSkeleton, $request, $skipValidation = false) {
         $category = Category::where('categoryId', $threadSkeleton->categoryId)->first(['template', 'options', 'isOpen']);
         $contentNeedApproval = PermissionHelper::haveGroupOption($user->userId, ConfigHelper::getGroupOptionsConfig()->contentNeedApproval);
         $prefixId = Value::objectProperty($threadSkeleton, 'prefixId', 0);
@@ -300,6 +308,7 @@ class ThreadCrudController extends Controller {
 
         if (!$skipValidation) {
             $this->validatorService->validateCreateUpdateThread($user, $threadSkeleton, $category, $request);
+            $this->validatorService->validatePoll($threadSkeleton);
         }
 
         $post = new Post([
@@ -392,7 +401,7 @@ class ThreadCrudController extends Controller {
      * @param $threadId
      * @param $hasFile
      */
-    private function uploadFileAndCreateTemplateData ($threadSkeleton, $thumbnail, $threadId, $hasFile) {
+    private function uploadFileAndCreateTemplateData($threadSkeleton, $thumbnail, $threadId, $hasFile) {
         if ($hasFile) {
             $fileName = $threadId . '.gif';
             $destination = base_path('/public/rest/resources/images/thumbnails');
@@ -404,6 +413,7 @@ class ThreadCrudController extends Controller {
             if ($templateData) {
                 $templateData->badge = $threadSkeleton->badge;
                 $templateData->tags = implode(',', $threadSkeleton->tags);
+                $templateData->roomLink = Value::objectProperty($threadSkeleton, 'roomLink', '');
                 $templateData->save();
             } else {
                 TemplateData::create([
@@ -439,7 +449,7 @@ class ThreadCrudController extends Controller {
      * @param $category
      * @param $havePrefix
      */
-    private function createThreadConditions ($category, $havePrefix) {
+    private function createThreadConditions($category, $havePrefix) {
         Condition::precondition(!$category, 404, 'Category do not exist');
         Condition::precondition($category->isOpen == 0, 400, 'Category is closed');
 

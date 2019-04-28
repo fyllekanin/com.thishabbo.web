@@ -13,15 +13,19 @@
                     <option *ngFor="let prefix of thread.prefixes" value="{{prefix.prefixId}}">{{prefix.text}}</option>
                 </select>
             </div>
-            <div *ngIf="shouldHaveThumbnail" class="cell small-6">
+            <div *ngIf="shouldHaveThumbnail" class="cell small-4">
                 <label>Thumbnail:</label>
                 <input type="file" accept="image/*" #file name="thread-thumbnail">
             </div>
-            <div *ngIf="isQuestTemplate" class="cell small-6">
+            <div *ngIf="isQuestTemplate" class="cell small-4">
                 <label>Badge: <em *ngIf="badeHaveError" class="error">Only name!</em></label>
                 <input [(ngModel)]="thread.badge" type="text" name="thread-badge"> <br/>
             </div>
-            <div *ngIf="isQuestTemplate" class="cell small-6">
+            <div class="cell small-4" *ngIf="isQuestTemplate">
+                <label>Room Link:</label>
+                <input [(ngModel)]="thread.roomLink" type="text" name="thread-roomLink"> <br/>
+            </div>
+            <div *ngIf="isQuestTemplate" class="cell small-4">
                 <label>Tags:</label>
                 <div class="grid-container full">
                     <div class="grid-x grid-margin-x">
@@ -60,7 +64,7 @@
                     </div>
                 </div>
             </div>
-            <div class="cell small-6" *ngIf="isQuestTemplate">
+            <div class="cell small-4" *ngIf="isQuestTemplate">
                 Preview: <br/>
                 <img *ngIf="badge" appLazyLoad [image]="badgeUrl"/>
             </div>
@@ -68,7 +72,7 @@
     </div>
 </app-content>
 
-<app-title  [title]="'Thread Poll'"></app-title>
+<app-title [title]="'Thread Poll'"></app-title>
 <app-content>
     <div *ngIf="thread.poll">
         <em>You can later not edit the poll after creation, make sure it's correct before saving</em>
@@ -76,7 +80,8 @@
             <div class="grid-x">
                 <div class="cell small-11">
                     <label>Question:</label>
-                    <input [(ngModel)]="thread.poll.question" type="text" [disabled]="thread.createdAt && !thread.poll.isNew" name="thread-poll-question">
+                    <input [(ngModel)]="thread.poll.question" type="text"
+                           [disabled]="thread.createdAt && !thread.poll.isNew" name="thread-poll-question">
                 </div>
             </div>
         </div>
@@ -84,8 +89,9 @@
             <div class="grid-container full poll-answer">
                 <div class="grid-x">
                     <div class="cell small-11">
-                        <label>Answer #{{index+1}}</label>
-                        <input [(ngModel)]="answer.label" type="text" [disabled]="thread.createdAt && !thread.poll.isNew" name="thread-poll-answer">
+                        <label>Answer #{{index + 1}}</label>
+                        <input [(ngModel)]="answer.label" type="text"
+                               [disabled]="thread.createdAt && !thread.poll.isNew" name="thread-poll-answer">
                     </div>
                     <div class="cell small-1 remove-answer" *ngIf="!thread.createdAt && thread.poll.isNew">
                         <i class="fas fa-trash" (click)="removeAnswer(answer.id)"></i>
@@ -93,7 +99,8 @@
                 </div>
             </div>
         </div>
-        <button appButton (click)="addThreadAnswer()" [disabled]="thread.createdAt && !thread.poll.isNew">+Add Answer</button>
+        <button appButton (click)="addThreadAnswer()" [disabled]="thread.createdAt && !thread.poll.isNew">+Add Answer
+        </button>
     </div>
 </app-content>
 

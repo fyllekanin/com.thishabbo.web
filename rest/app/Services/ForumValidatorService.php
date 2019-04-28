@@ -34,12 +34,16 @@ class ForumValidatorService {
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function validateCreateUpdateThread ($user, $threadSkeleton, $category, $request) {
+    public function validateCreateUpdateThread($user, $threadSkeleton, $category, $request) {
         if (isset($threadSkeleton->prefixId) && $threadSkeleton->prefixId > 0) {
             $prefixExist = Prefix::where('prefixId', $threadSkeleton->prefixId)->exists();
             Condition::precondition(!$prefixExist, 404, 'Prefix do not exist');
         }
         $categoryTemplates = ConfigHelper::getCategoryTemplatesConfig();
+
+        if (isset($threadSkeleton->poll)) {
+            $this->validatePoll($threadSkeleton);
+        }
 
         if ($category->template !== $categoryTemplates->DEFAULT && $request->hasFile('thumbnail')) {
             $this->validate($request, [

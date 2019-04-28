@@ -2,7 +2,7 @@
 
 return [
     'GAME_TYPES' => [
-        'fastType' => 1,
+        'fastTyper' => 1,
         'snake' => 2
     ]
 ];

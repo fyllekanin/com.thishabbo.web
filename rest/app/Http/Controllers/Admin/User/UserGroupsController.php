@@ -24,7 +24,7 @@ class UserGroupsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateUserGroups (Request $request, $userId) {
+    public function updateUserGroups(Request $request, $userId) {
         $user = Cache::get('auth');
         $current = UserHelper::getUserFromId($userId);
         Condition::precondition(!$current, 404, 'User do not exist');
@@ -36,13 +36,17 @@ class UserGroupsController extends Controller {
         $displayGroupId = $request->input('displayGroupId');
         Condition::precondition(!$groupIds, 400, 'Group ids are missing');
 
-        $currentGroups = $current->groups->map(function($group) {
+        $currentGroups = $current->groups->map(function ($group) {
             return Group::where('groupId', $group->groupId)->first();
         });
-        $before = $currentGroups->map(function($group) { return $group->name; });
-        $highImmunityGroupIds = $currentGroups->filter(function($group) use ($myImmunity) {
+        $before = $currentGroups->map(function ($group) {
+            return $group->name;
+        });
+        $highImmunityGroupIds = $currentGroups->filter(function ($group) use ($myImmunity) {
             return $group->immunity >= $myImmunity;
-        })->map(function($group) { return $group->groupId; });
+        })->map(function ($group) {
+            return $group->groupId;
+        });
         $groups = Group::whereIn('groupId', $groupIds)->get()->toArray();
         Condition::precondition(Iterables::filter($groups, function ($group) use ($myImmunity) {
             return $group['immunity'] >= $myImmunity;
@@ -62,12 +66,12 @@ class UserGroupsController extends Controller {
         $current->displayGroupId = $displayGroupId;
         $current->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_USERS_GROUPS,  $current->userId, [
+        Logger::admin($user->userId, $request->ip(), Action::UPDATED_USERS_GROUPS, [
             'name' => $current->nickname,
             'before' => $before->toArray(),
-            'after' => $current->groups->map(function($group) {
+            'after' => $current->groups->map(function ($group) {
                 return Group::where('groupId', $group->groupId)->first()->name;
-            })->toArray()
+            })->toArray(), $current->userId
         ]);
         return response()->json();
     }
@@ -79,7 +83,7 @@ class UserGroupsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getUserGroups ($userId) {
+    public function getUserGroups($userId) {
         $user = Cache::get('auth');
         $current = UserHelper::getUserFromId($userId);
         Condition::precondition(!$current, 404, 'User do not exist');

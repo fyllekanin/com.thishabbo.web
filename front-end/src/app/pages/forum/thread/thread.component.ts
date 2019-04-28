@@ -25,6 +25,8 @@ import { ThreadService } from '../services/thread.service';
 import { ThreadActionExecutor } from './thread.helper';
 import { ThreadPostersComponent } from './thread-posters/thread-posters.component';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
+import { CategoryTemplates } from 'shared/constants/templates.constants';
+import { StringHelper } from 'shared/helpers/string.helper';
 
 @Component({
     selector: 'app-forum-thread',
@@ -44,7 +46,7 @@ export class ThreadComponent extends Page implements OnDestroy {
 
     tabs: Array<TitleTab> = [];
 
-    constructor(
+    constructor (
         private _dialogService: DialogService,
         private _httpService: HttpService,
         private _activatedRoute: ActivatedRoute,
@@ -61,15 +63,19 @@ export class ThreadComponent extends Page implements OnDestroy {
         this.addSubscription(this._activatedRoute.data, this.onThread.bind(this));
     }
 
-    trackPosts(_index: number, item: PostModel): number {
+    prettify (str: string): string {
+        return StringHelper.prettifyString(str);
+    }
+
+    trackPosts (_index: number, item: PostModel): number {
         return item.updatedAt;
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onKeyUp(content: string): void {
+    onKeyUp (content: string): void {
         if (!content) {
             return;
         }
@@ -81,7 +87,7 @@ export class ThreadComponent extends Page implements OnDestroy {
         });
     }
 
-    onButtonClick(button: EditorAction): void {
+    onButtonClick (button: EditorAction): void {
         switch (button.value) {
             case ThreadActions.AUTO_SAVE:
                 this.onOpenAutoSave();
@@ -96,7 +102,7 @@ export class ThreadComponent extends Page implements OnDestroy {
         }
     }
 
-    onAction(action: number): void {
+    onAction (action: number): void {
         ThreadActionExecutor.newBuilder()
             .withAction(action)
             .withNotificationService(this._notificationService)
@@ -109,20 +115,20 @@ export class ThreadComponent extends Page implements OnDestroy {
             .execute();
     }
 
-    onUpdatePost(postModel: PostModel): void {
-        this._httpService.put(`forum/thread/post/${postModel.postId}`, { post: postModel })
+    onUpdatePost (postModel: PostModel): void {
+        this._httpService.put(`forum/thread/post/${postModel.postId}`, {post: postModel})
             .subscribe(this.onSuccessUpdate.bind(this),
                 this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    onQuotePost(content: string): void {
+    onQuotePost (content: string): void {
         const editorValue = this.editor.getEditorValue();
         this.editor.content = editorValue.length > 0 ? `${editorValue}${content}` : content;
         this.onKeyUp(this.editor.getEditorValue());
         this.scrollToEditor();
     }
 
-    getPostTitle(post: PostModel, index: number): string {
+    getPostTitle (post: PostModel, index: number): string {
         let title = TimeHelper.getLongDateWithTime(post.createdAt);
 
         if (!post.isApproved) {
@@ -131,7 +137,7 @@ export class ThreadComponent extends Page implements OnDestroy {
         return `#${this._threadPage.page * (index + 1)} - ${title}`;
     }
 
-    onTabClick(action: number): void {
+    onTabClick (action: number): void {
         switch (action) {
             case ThreadActions.SUBSCRIBE:
             case ThreadActions.UNSUBSCRIBE:
@@ -151,7 +157,7 @@ export class ThreadComponent extends Page implements OnDestroy {
         }
     }
 
-    onIgnoreToggle(): void {
+    onIgnoreToggle (): void {
         this._service.toggleIgnore(this._threadPage)
             .subscribe(isIgnored => {
                 this._threadPage.isIgnored = isIgnored;
@@ -159,7 +165,7 @@ export class ThreadComponent extends Page implements OnDestroy {
             });
     }
 
-    onSubscribeToggle(): void {
+    onSubscribeToggle (): void {
         this._service.toggleSubscription(this._threadPage)
             .subscribe(isSubscribed => {
                 this._threadPage.isSubscribed = isSubscribed;
@@ -167,13 +173,13 @@ export class ThreadComponent extends Page implements OnDestroy {
             });
     }
 
-    get canPost(): boolean {
+    get canPost (): boolean {
         return this._authService.isLoggedIn() &&
             (this._threadPage.isOpen || this._threadPage.forumPermissions.canCloseOpenThread) &&
             this._threadPage.categoryIsOpen;
     }
 
-    get cantPostReason(): string {
+    get cantPostReason (): string {
         if (!this._authService.isLoggedIn()) {
             return 'You need to be logged in to post';
         } else if (!this._threadPage.isOpen) {
@@ -184,47 +190,51 @@ export class ThreadComponent extends Page implements OnDestroy {
         return '';
     }
 
-    get posts(): Array<PostModel> {
+    get posts (): Array<PostModel> {
         return this._threadPage.threadPosts.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'postId'));
     }
 
-    get subTitle(): string {
+    get subTitle (): string {
         return this._threadPage.isOpen ? '' : 'Thread is closed';
     }
 
-    get forumPermissions(): ForumPermissions {
+    get forumPermissions (): ForumPermissions {
         return this._threadPage.forumPermissions;
     }
 
-    get thread(): ThreadPage {
+    get thread (): ThreadPage {
         return this._threadPage;
     }
 
-    private doPost(toggleThread: boolean): void {
+    get isQuest (): boolean {
+        return this._threadPage.template === CategoryTemplates.QUEST;
+    }
+
+    private doPost (toggleThread: boolean): void {
         const threadId = this._threadPage ? this._threadPage.threadId : 0;
         const content = this.editor ? this.editor.getEditorValue() : '';
 
-        this._httpService.post(`forum/thread/${threadId}`, { content: content, toggleThread: toggleThread })
+        this._httpService.post(`forum/thread/${threadId}`, {content: content, toggleThread: toggleThread})
             .subscribe(this.onSuccessPost.bind(this, toggleThread),
                 this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private onOpenAutoSave(): void {
+    private onOpenAutoSave (): void {
         const autoSave = AutoSaveHelper.get(AutoSave.POST, this._threadPage.threadId);
         this.editor.content = autoSave.content;
         AutoSaveHelper.remove(AutoSave.POST, this._threadPage.threadId);
         this.editorButtons = this.editorButtons.filter(button => button.value !== ThreadActions.AUTO_SAVE);
     }
 
-    private scrollToEditor(): void {
+    private scrollToEditor (): void {
         const elements = this._elementRef.nativeElement.getElementsByClassName('new-post-editor');
         if (elements.length > 0) {
             const top = elements[elements.length - 1].offsetTop;
-            window.scrollTo({ left: 0, top: top, behavior: 'smooth' });
+            window.scrollTo({left: 0, top: top, behavior: 'smooth'});
         }
     }
 
-    private onSuccessUpdate(postModel: PostModel): void {
+    private onSuccessUpdate (postModel: PostModel): void {
         this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'Post updated!'
@@ -234,7 +244,7 @@ export class ThreadComponent extends Page implements OnDestroy {
         });
     }
 
-    private onSuccessPost(toggleThread: boolean, post: PostModel): void {
+    private onSuccessPost (toggleThread: boolean, post: PostModel): void {
         this.editor.content = '';
         AutoSaveHelper.remove(AutoSave.POST, this._threadPage.threadId);
         if (this._threadPage.contentApproval) {
@@ -256,7 +266,7 @@ export class ThreadComponent extends Page implements OnDestroy {
         }
     }
 
-    private onThread(data: { data: ThreadPage }): void {
+    private onThread (data: { data: ThreadPage }): void {
         this._threadPage = data.data;
         this.pagination = new PaginationModel({
             total: this._threadPage.total,
@@ -272,7 +282,7 @@ export class ThreadComponent extends Page implements OnDestroy {
         }
     }
 
-    private createOrUpdateTabs(): void {
+    private createOrUpdateTabs (): void {
         if (!this._authService.isLoggedIn()) {
             this.tabs = [];
             return;
@@ -300,7 +310,7 @@ export class ThreadComponent extends Page implements OnDestroy {
         }
     }
 
-    private setPrefix(): void {
+    private setPrefix (): void {
         if (!this._threadPage || !this._threadPage.title) {
             return;
         }
@@ -319,7 +329,7 @@ export class ThreadComponent extends Page implements OnDestroy {
         });
     }
 
-    private buildModerationTools(): void {
+    private buildModerationTools (): void {
         if (!this._isToolsVisible) {
             this.fixedTools = null;
             return;
@@ -330,41 +340,41 @@ export class ThreadComponent extends Page implements OnDestroy {
                 new FixedToolItem({
                     title: 'Post Tools',
                     children: getPostTools(this.forumPermissions).filter(action => action.condition)
-                        .map(action => new FixedToolItem({ title: action.title, value: action.value }))
+                        .map(action => new FixedToolItem({title: action.title, value: action.value}))
                 }),
                 new FixedToolItem({
                     title: 'Thread Tools',
                     children: getThreadTools(this._authService.authUser.userId, this._threadPage, this.forumPermissions)
                         .filter(action => action.condition)
-                        .map(action => new FixedToolItem({ title: action.title, value: action.value }))
+                        .map(action => new FixedToolItem({title: action.title, value: action.value}))
                 })
             ]
         });
     }
 
-    private haveAnyTools(): boolean {
+    private haveAnyTools (): boolean {
         return getPostTools(this.forumPermissions).filter(item => item.condition).length > 0 ||
             getThreadTools(this._authService.authUser.userId, this._threadPage, this.forumPermissions)
                 .filter(item => item.condition).length > 0;
     }
 
-    private buildEditorButtons(): void {
+    private buildEditorButtons (): void {
         const buttons = [
             new EditorAction({
                 title: 'Post',
                 value: ThreadActions.POST,
-                saveCallback: this.onButtonClick.bind(this, { value: ThreadActions.POST })
+                saveCallback: this.onButtonClick.bind(this, {value: ThreadActions.POST})
             })
         ];
 
         if (this._threadPage.forumPermissions.canCloseOpenThread && this._threadPage.isOpen) {
-            buttons.push(new EditorAction({ title: 'Post & Close Thread', value: ThreadActions.POST_CLOSE }));
+            buttons.push(new EditorAction({title: 'Post & Close Thread', value: ThreadActions.POST_CLOSE}));
             buttons.push(new EditorAction({
                 title: 'Post & Close Thread',
                 value: ThreadActions.POST_CLOSE
             }));
         } else if (this._threadPage.forumPermissions.canCloseOpenThread && !this._threadPage.isOpen) {
-            buttons.push(new EditorAction({ title: 'Post & Open Thread', value: ThreadActions.POST_OPEN }));
+            buttons.push(new EditorAction({title: 'Post & Open Thread', value: ThreadActions.POST_OPEN}));
             buttons.push(new EditorAction({
                 title: 'Post & Open Thread',
                 value: ThreadActions.POST_OPEN
@@ -381,7 +391,7 @@ export class ThreadComponent extends Page implements OnDestroy {
         this.editorButtons = buttons;
     }
 
-    private showThreadPosters(): void {
+    private showThreadPosters (): void {
         this._dialogService.openDialog({
             title: 'Thread Posters',
             buttons: [
