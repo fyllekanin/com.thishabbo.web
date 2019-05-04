@@ -105,6 +105,8 @@ class ProfileController extends Controller {
      * @param ForumService $forumService
      * @param         $nickname
      *
+     * @param $page
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function getProfile(ActivityService $activityService, ForumService $forumService, $nickname, $page) {
