@@ -14,14 +14,15 @@ use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Forum\Thread\ThreadCrudController;
-use App\Jobs\NotifyThreadSubscribers;
 use App\Jobs\NotifyMentionsInPost;
+use App\Jobs\NotifyThreadSubscribers;
 use App\Logger;
 use App\Models\Logger\Action;
 use App\Services\ForumService;
 use App\Services\ForumValidatorService;
 use App\Utils\BBcodeUtil;
 use App\Utils\Condition;
+use App\Views\PostReportView;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -32,10 +33,10 @@ class PostCrudController extends Controller {
     /**
      * PostController constructor.
      *
-     * @param ForumService          $forumService
+     * @param ForumService $forumService
      * @param ForumValidatorService $validatorService
      */
-    public function __construct (ForumService $forumService, ForumValidatorService $validatorService) {
+    public function __construct(ForumService $forumService, ForumValidatorService $validatorService) {
         parent::__construct();
         $this->forumService = $forumService;
         $this->validatorService = $validatorService;
@@ -85,7 +86,7 @@ class PostCrudController extends Controller {
         $logs = LogUser::where('contentId', $postId)
             ->whereIn('action', $actions)
             ->get()
-            ->map(function($log) {
+            ->map(function ($log) {
                 $data = json_decode($log->data);
                 return [
                     'user' => UserHelper::getSlimUser($log->userId),
@@ -114,21 +115,10 @@ class PostCrudController extends Controller {
         Condition::precondition(!$post, 404, 'Post do not exist');
         Condition::precondition(!isset($message) || empty($message), 400, 'Message can not be empty');
 
-        $threadSkeleton = new \stdClass();
-        $threadSkeleton->content = "[mention=" . $user->userId . "]" . $user->nickname . "[/mention] reported a post.
-
-[b]User reported:[/b] [mention]@" . $post->user->nickname . "[/mention]
-[b]Thread:[/b] [url=/forum/thread/1/page/1]Click here to go to thread.[/url]
-
-[b]Reason:[/b]
-[quote]" . $message . "[/quote]
-
-[b]Original post:[/b]
-[quote]" . $post->content . "[/quote]";
-        $threadSkeleton->title = 'Report by ' . $user->nickname;
-
-        $reportCategories = Category::whereRaw('(options & ' . ConfigHelper::getForumOptionsConfig()->reportPostsGoHere . ')')->get();
+        $threadSkeleton = PostReportView::of($user, $post, $message);
+        $reportCategories = Category::isReportCategory()->get();
         $threadController = new ThreadCrudController($this->forumService, $this->validatorService);
+        
         foreach ($reportCategories as $category) {
             $threadSkeleton->categoryId = $category->categoryId;
             $threadController->doThread($user, null, $threadSkeleton, null, true);
@@ -146,7 +136,7 @@ class PostCrudController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updatePost (Request $request, $postId) {
+    public function updatePost(Request $request, $postId) {
         $user = Cache::get('auth');
         $postModel = (object)$request->input('post');
 
@@ -186,7 +176,7 @@ class PostCrudController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createPost (Request $request, $threadId) {
+    public function createPost(Request $request, $threadId) {
         $user = Cache::get('auth');
         $content = $request->input('content');
         $toggleThread = $request->input('toggleThread');
