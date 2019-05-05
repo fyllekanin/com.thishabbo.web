@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Forum\Category;
 
-use App\EloquentModels\Forum\CategorySubscription;
 use App\EloquentModels\Forum\Category;
+use App\EloquentModels\Forum\CategorySubscription;
 use App\EloquentModels\Forum\IgnoredCategory;
 use App\EloquentModels\Forum\IgnoredThread;
 use App\EloquentModels\Forum\Post;
@@ -31,9 +31,9 @@ class CategoryCrudController extends Controller {
      * Fetch the available category templates and store them in an instance variable
      *
      * @param QueryParamService $queryParamService
-     * @param ForumService      $forumService
+     * @param ForumService $forumService
      */
-    public function __construct (QueryParamService $queryParamService, ForumService $forumService) {
+    public function __construct(QueryParamService $queryParamService, ForumService $forumService) {
         parent::__construct();
         $this->categoryTemplates = ConfigHelper::getCategoryTemplatesConfig();
         $this->queryParamService = $queryParamService;
@@ -55,7 +55,7 @@ class CategoryCrudController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getForumCategories () {
+    public function getForumCategories() {
         $user = Cache::get('auth');
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
 
@@ -68,7 +68,7 @@ class CategoryCrudController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getForumStats ($clientTodayMidnight) {
+    public function getForumStats($clientTodayMidnight) {
         $user = Cache::get('auth');
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
 
@@ -84,11 +84,11 @@ class CategoryCrudController extends Controller {
      *
      * @param Request $request
      * @param         $categoryId
-     * @param int     $page
+     * @param int $page
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getCategoryPage (Request $request, $categoryId, $page = 1) {
+    public function getCategoryPage(Request $request, $categoryId, $page = 1) {
         $user = Cache::get('auth');
         $sortedByQuery = $request->input('sortedBy');
         $sortOrderQuery = $request->input('sortOrder');
@@ -106,15 +106,18 @@ class CategoryCrudController extends Controller {
         $sortOrder = isset($sortOrderQuery) && !empty($sortOrderQuery) ? $sortOrderQuery : 'desc';
         $threadSql = Thread::nonStickied()
             ->where('categoryId', $categoryId)
-            ->createdAfter($fromThe)
             ->isApproved($forumPermissions->canApproveThreads)
             ->orderBy($sortedBy, $sortOrder);
+
+        if ($fromThe > -1) {
+            $threadSql->createdAfter($fromThe);
+        }
 
         if (!$forumPermissions->canViewOthersThreads) {
             $threadSql->belongsToUser($user->userId);
         }
 
-        $total = DataHelper::getPage($threadSql->count());
+        $total = DataHelper::getPage($threadSql->count('threadId'));
         $threads = $threadSql->skip($this->getOffset($page))
             ->take($this->perPage)
             ->get();
@@ -135,8 +138,8 @@ class CategoryCrudController extends Controller {
                 'sortOrder' => $sortOrderQuery,
                 'fromThe' => $fromTheQuery
             ],
-            'isSubscribed' => CategorySubscription::where('userId', $user->userId)->where('categoryId', $categoryId)->count() > 0,
-            'isIgnored' => IgnoredCategory::where('userId', $user->userId)->where('categoryId', $categoryId)->count() > 0
+            'isSubscribed' => CategorySubscription::where('userId', $user->userId)->where('categoryId', $categoryId)->count('categoryId') > 0,
+            'isIgnored' => IgnoredCategory::where('userId', $user->userId)->where('categoryId', $categoryId)->count('categoryId') > 0
         ]);
     }
 
@@ -148,7 +151,7 @@ class CategoryCrudController extends Controller {
      *
      * @return object
      */
-    private function getCategoryPermissions ($categoryId, $userId) {
+    private function getCategoryPermissions($categoryId, $userId) {
         $permissions = [];
 
         foreach (ConfigHelper::getForumConfig() as $key => $value) {
@@ -167,7 +170,7 @@ class CategoryCrudController extends Controller {
      *
      * @return mixed
      */
-    private function buildThreadsForCategory ($threads, $userId) {
+    private function buildThreadsForCategory($threads, $userId) {
         foreach ($threads as $thread) {
             $thread->append('prefix');
             $user = UserHelper::getUserFromId($thread->userId);
@@ -188,7 +191,7 @@ class CategoryCrudController extends Controller {
      *
      * @return \Illuminate\Support\Collection
      */
-    private function getStickyThreadsForCategory ($categoryId, $categoryPermissions, $userId) {
+    private function getStickyThreadsForCategory($categoryId, $categoryPermissions, $userId) {
         $threadSql = Thread::isApproved($categoryPermissions->canApproveThreads)
             ->isSticky()
             ->where('categoryId', $categoryId);
@@ -217,7 +220,7 @@ class CategoryCrudController extends Controller {
      *
      * @return array
      */
-    private function getCategoriesAndFirstLevel ($userId, $categoryIds) {
+    private function getCategoriesAndFirstLevel($userId, $categoryIds) {
         $categorySql = Category::nonHidden()
             ->withParent('-1')
             ->whereIn('categoryId', $categoryIds)
@@ -241,7 +244,7 @@ class CategoryCrudController extends Controller {
      *
      * @return array
      */
-    private function getSlimChildCategories ($categoryId, $userId) {
+    private function getSlimChildCategories($categoryId, $userId) {
         $categoryIds = $this->forumService->getAccessibleCategories($userId);
         $children = Category::nonHidden()
             ->withParent($categoryId)
@@ -303,7 +306,7 @@ class CategoryCrudController extends Controller {
      *
      * @return \Illuminate\Support\Collection
      */
-    private function getLatestPosts ($user, $categoryIds) {
+    private function getLatestPosts($user, $categoryIds) {
         $ignoredCategoryIds = array_merge(IgnoredCategory::where('userId', $user->userId)->pluck('categoryId')->toArray(),
             $this->forumService->getCategoriesUserCantSeeOthersThreadsIn($user->userId));
         $ignoredThreadIds = IgnoredThread::where('userId', $user->userId)->pluck('threadId');
@@ -316,13 +319,13 @@ class CategoryCrudController extends Controller {
     /**
      * Get method to get an array of all the top poster over all time
      */
-    private function getTopPosters () {
+    private function getTopPosters() {
         return User::select('userId', 'posts')
             ->orderBy('posts', 'DESC')
             ->take(15)
             ->getQuery()
             ->get()
-            ->map(function($user) {
+            ->map(function ($user) {
                 return [
                     'posts' => $user->posts,
                     'user' => UserHelper::getSlimUser($user->userId)
@@ -337,7 +340,7 @@ class CategoryCrudController extends Controller {
      *
      * @return array
      */
-    private function getTopPostersToday ($clientTodayMidnight) {
+    private function getTopPostersToday($clientTodayMidnight) {
         return Post::where('createdAt', '>=', $clientTodayMidnight)
             ->select('userId', DB::raw('count(postId) AS number'))
             ->groupBy('userId')
@@ -345,7 +348,7 @@ class CategoryCrudController extends Controller {
             ->take(15)
             ->getQuery()
             ->get()
-            ->map(function($post) {
+            ->map(function ($post) {
                 return [
                     'posts' => $post->number,
                     'user' => UserHelper::getSlimUser($post->userId)

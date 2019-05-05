@@ -33,6 +33,6 @@ class VisitorMessageView {
         return DataHelper::getPage(VisitorMessage::isSubject()
             ->where('visitorMessageId', '>', $this->subjectId)
             ->where('hostId', $visitorMessage->hostId)
-            ->count());
+            ->count('visitorMessageId'));
     }
 }

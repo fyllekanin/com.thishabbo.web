@@ -30,6 +30,7 @@ class BetsController extends Controller {
     /**
      * @param Request $request
      * @param $betId
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function suspendBet(Request $request, $betId) {
@@ -50,6 +51,7 @@ class BetsController extends Controller {
     /**
      * @param Request $request
      * @param $betId
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function unsuspendBet(Request $request, $betId) {
@@ -73,7 +75,7 @@ class BetsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function setResult (Request $request, $betId) {
+    public function setResult(Request $request, $betId) {
         $user = Cache::get('auth');
         $result = $request->input('result');
         $bet = Bet::find($betId);
@@ -102,13 +104,13 @@ class BetsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getBets (Request $request, $page) {
+    public function getBets(Request $request, $page) {
         $filter = $request->input('filter');
 
         $getBadgeSql = Bet::where('name', 'LIKE', '%' . $filter . '%')
             ->orderBy('leftSide', 'ASC')->orderBy('rightSide', 'DESC');
 
-        $total = DataHelper::getPage($getBadgeSql->count());
+        $total = DataHelper::getPage($getBadgeSql->count('betId'));
         $bets = $getBadgeSql->take($this->perPage)->skip($this->getOffset($page))->get();
 
         return response()->json([
@@ -123,7 +125,7 @@ class BetsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getBet ($betId) {
+    public function getBet($betId) {
         $bet = Bet::find($betId);
 
         return response()->json([
@@ -137,7 +139,7 @@ class BetsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createBet (Request $request) {
+    public function createBet(Request $request) {
         $user = Cache::get('auth');
         $bet = (object)$request->input('bet');
 
@@ -161,7 +163,7 @@ class BetsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateBet (Request $request, $betId) {
+    public function updateBet(Request $request, $betId) {
         $user = Cache::get('auth');
         $newBet = (object)$request->input('bet');
 
@@ -186,7 +188,7 @@ class BetsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteBet (Request $request, $betId) {
+    public function deleteBet(Request $request, $betId) {
         $user = Cache::get('auth');
 
         $bet = Bet::find($betId);
@@ -206,7 +208,7 @@ class BetsController extends Controller {
      *
      * @param $betId
      */
-    private function deleteUserBets ($betId) {
+    private function deleteUserBets($betId) {
         $userBets = UserBet::where('betId', $betId)->get();
 
         foreach ($userBets as $userBet) {
@@ -219,7 +221,7 @@ class BetsController extends Controller {
     /**
      * @param $bet
      */
-    private function betConditionCollection ($bet) {
+    private function betConditionCollection($bet) {
         Condition::precondition(!$bet, 400, 'Stupid developer');
         Condition::precondition(!isset($bet->name) || empty($bet->name), 400, 'Name can not be empty');
 
@@ -233,7 +235,7 @@ class BetsController extends Controller {
     /**
      * @param $betId
      */
-    private function giveUserPrizes ($betId) {
+    private function giveUserPrizes($betId) {
         $bets = UserBet::where('betId', $betId)->get();
 
         foreach ($bets as $bet) {

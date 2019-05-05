@@ -5,7 +5,6 @@ namespace App\EloquentModels\Forum;
 use App\EloquentModels\Models\DeletableModel;
 use App\Helpers\DataHelper;
 use App\Helpers\UserHelper;
-use App\Http\Controllers\Controller;
 use App\Utils\BBcodeUtil;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -16,8 +15,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property mixed content
  * @property mixed thread
  */
-class Post extends DeletableModel
-{
+class Post extends DeletableModel {
     protected $fillable = ['threadId', 'userId', 'content', 'isApproved'];
     protected $primaryKey = 'postId';
     protected $appends = ['parsedContent', 'likers', 'user'];
@@ -31,7 +29,7 @@ class Post extends DeletableModel
     }
 
     public function likes() {
-        return $this->hasMany('App\EloquentModels\Forum\PostLike','postId');
+        return $this->hasMany('App\EloquentModels\Forum\PostLike', 'postId');
     }
 
     public function getPrefixAttribute() {
@@ -39,7 +37,7 @@ class Post extends DeletableModel
     }
 
     public function getLikersAttribute() {
-        return $this->likes()->get()->map(function($like) {
+        return $this->likes()->get()->map(function ($like) {
             return $like->user;
         });
     }
@@ -53,7 +51,7 @@ class Post extends DeletableModel
     }
 
     public function getPage($canApprove = false) {
-        return DataHelper::getPage(Post::isApproved($canApprove)->where('postId', '<', $this->postId)->where('threadId', $this->threadId)->count());
+        return DataHelper::getPage(Post::isApproved($canApprove)->where('postId', '<', $this->postId)->where('threadId', $this->threadId)->count('postId'));
     }
 
     public function scopeIsApproved(Builder $query, $canApprove = false) {

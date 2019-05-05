@@ -62,7 +62,7 @@ class ForumValidatorService {
 
         $postedInRecently = Thread::where('userId', $user->userId)
             ->where('createdAt', '>', (time() - 15))
-            ->count();
+            ->count('threadId');
 
         $titleContentMissing = empty($threadSkeleton->title) || empty($threadSkeleton->content);
         Condition::precondition($postedInRecently > 0, 550, 'You are creating threads to quick!');

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Staff;
 
-use App\EloquentModels\Staff\RadioRequest;
 use App\EloquentModels\RequestThc;
+use App\EloquentModels\Staff\RadioRequest;
 use App\EloquentModels\Staff\Timetable;
 use App\EloquentModels\User\User;
 use App\Http\Controllers\Controller;
@@ -26,10 +26,10 @@ class StaffController extends Controller {
 
         return response()->json([
             'general' => [
-                'events' => Timetable::isActive()->events()->count(),
-                'radio' => Timetable::isActive()->radio()->count(),
-                'requests' => RadioRequest::where('createdAt', '>', $startOfWeek)->count(),
-                'thc' => RequestThc::where('createdAt', '>', $startOfWeek)->count()
+                'events' => Timetable::isActive()->events()->count('timetableId'),
+                'radio' => Timetable::isActive()->radio()->count('timetableId'),
+                'requests' => RadioRequest::where('createdAt', '>', $startOfWeek)->count('requestId'),
+                'thc' => RequestThc::where('createdAt', '>', $startOfWeek)->count('requestThcId')
             ],
             'personal' => [
                 'events' => $this->getNextEventsSlot($user),
@@ -43,7 +43,7 @@ class StaffController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createRequestThc (Request $request) {
+    public function createRequestThc(Request $request) {
         $user = Cache::get('auth');
         $requests = $request->input('requests');
         $this->validateRequests($requests);
@@ -77,7 +77,7 @@ class StaffController extends Controller {
      *
      * @return null|object
      */
-    private function findAccount ($nickname, $habbo) {
+    private function findAccount($nickname, $habbo) {
         $account = User::withNickname($nickname)->first();
         if ($account) {
             return $account;
@@ -90,7 +90,7 @@ class StaffController extends Controller {
      *
      * @param $requests
      */
-    private function validateRequests ($requests) {
+    private function validateRequests($requests) {
         foreach ($requests as $request) {
             Condition::precondition(!isset($request['nickname']) && !isset($request['habbo']),
                 400, 'nickname or habbo needs to be set');

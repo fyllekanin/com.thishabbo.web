@@ -1,18 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreateThreadsTables extends Migration
-{
+class CreateThreadsTables extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('threads', function (Blueprint $table) {
             $table->bigIncrements('threadId');
             $table->bigInteger('categoryId');
@@ -32,11 +30,14 @@ class CreateThreadsTables extends Migration
 
             // Indexes
             $table->index('title');
+            $table->index('isOpen');
+            $table->index('userId');
             $table->index('categoryId');
             $table->index('firstPostId');
             $table->index('lastPostId');
             $table->index('isDeleted');
             $table->index('isApproved');
+            $table->index('isSticky');
             $table->index('prefixId');
             $table->index('createdAt');
             $table->index('updatedAt');
@@ -48,8 +49,7 @@ class CreateThreadsTables extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('threads');
     }
 }

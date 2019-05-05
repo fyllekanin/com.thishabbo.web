@@ -21,10 +21,10 @@ class BBcodeController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function createBBcode (Request $request) {
+    public function createBBcode(Request $request) {
         $user = Cache::get('auth');
         $file = $request->file('image');
-        $bbcode = (object) json_decode($request->input('bbcode'));
+        $bbcode = (object)json_decode($request->input('bbcode'));
         $this->bbcodeChecker($bbcode, $request);
 
         $newBbcode = new BBcode([
@@ -57,9 +57,9 @@ class BBcodeController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function updateBBcode (Request $request, $bbcodeId) {
+    public function updateBBcode(Request $request, $bbcodeId) {
         $user = Cache::get('auth');
-        $bbcode = (object) json_decode($request->input('bbcode'));
+        $bbcode = (object)json_decode($request->input('bbcode'));
         $file = $request->file('image');
 
         $existing = BBcode::find($bbcodeId);
@@ -92,7 +92,7 @@ class BBcodeController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getBBcode ($bbcodeId) {
+    public function getBBcode($bbcodeId) {
         $bbcode = BBcode::find($bbcodeId);
         Condition::precondition(!$bbcode, 404, 'BBcode do not exist');
 
@@ -107,7 +107,7 @@ class BBcodeController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteBBcode (Request $request, $bbcodeId) {
+    public function deleteBBcode(Request $request, $bbcodeId) {
         $user = Cache::get('auth');
         $bbcode = BBcode::find($bbcodeId);
 
@@ -124,7 +124,7 @@ class BBcodeController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getBBcodes () {
+    public function getBBcodes() {
         return response()->json(BBcode::get());
     }
 
@@ -138,11 +138,11 @@ class BBcodeController extends Controller {
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    private function bbcodeChecker ($bbcode, $request, $isImageRequired = true) {
+    private function bbcodeChecker($bbcode, $request, $isImageRequired = true) {
         Condition::precondition(!$bbcode, 400, 'No bbcode sent for creation');
         Condition::precondition(!isset($bbcode->name), 400, 'Name needs to be present');
         Condition::precondition(!isset($bbcode->pattern), 400, 'Pattern needs to be present');
-        Condition::precondition($isImageRequired && BBcode::where('pattern', $bbcode->pattern)->count() > 0,
+        Condition::precondition($isImageRequired && BBcode::where('pattern', $bbcode->pattern)->count('bbcodeId') > 0,
             404, 'Pattern already exists');
         if ($bbcode->isEmoji) {
             $this->validate($request, [

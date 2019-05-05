@@ -6,9 +6,9 @@ use App\EloquentModels\Badge;
 use App\EloquentModels\Forum\CategorySubscription;
 use App\EloquentModels\Forum\IgnoredCategory;
 use App\EloquentModels\Forum\IgnoredThread;
+use App\EloquentModels\Forum\ThreadSubscription;
 use App\EloquentModels\Log\LogUser;
 use App\EloquentModels\Theme;
-use App\EloquentModels\Forum\ThreadSubscription;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserItem;
 use App\EloquentModels\User\VoucherCode;
@@ -44,7 +44,7 @@ class AccountController extends Controller {
      * @param HabboService $habboService
      * @param CreditsService $creditsService
      */
-    public function __construct (AuthService $authService, HabboService $habboService, CreditsService $creditsService) {
+    public function __construct(AuthService $authService, HabboService $habboService, CreditsService $creditsService) {
         parent::__construct();
         $this->authService = $authService;
         $this->habboService = $habboService;
@@ -65,12 +65,12 @@ class AccountController extends Controller {
             ->where('userId', $user->userId)
             ->orderBy('createdAt', 'DESC');
 
-        $page = DataHelper::getPage($notificationsSql->count());
+        $page = DataHelper::getPage($notificationsSql->count('notificationId'));
         $notifications = $notificationsSql->take($this->perPage)->skip($this->getOffset($page))->get()->toArray();
 
-        $items = array_map(function($notification) use ($user) {
+        $items = array_map(function ($notification) use ($user) {
             return new NotificationView($notification, $user);
-        }, Iterables::filter($notifications, function($notification) use ($user, $notificationService) {
+        }, Iterables::filter($notifications, function ($notification) use ($user, $notificationService) {
             return $notificationService->isNotificationValid($notification->contentId, $notification->type);
         }));
 
@@ -109,7 +109,7 @@ class AccountController extends Controller {
     public function getThemes() {
         $user = Cache::get('auth');
 
-        return response()->json(Theme::get()->map(function($item) use ($user) {
+        return response()->json(Theme::get()->map(function ($item) use ($user) {
             return [
                 'themeId' => $item->themeId,
                 'title' => $item->title,
@@ -128,7 +128,7 @@ class AccountController extends Controller {
         $user = Cache::get('auth');
         $themeId = $request->input('themeId');
         $theme = $themeId == 0 ? (object)['title' => 'Default'] : Theme::find($themeId);
-        Condition::precondition(!$theme , 404, 'No theme with that ID');
+        Condition::precondition(!$theme, 404, 'No theme with that ID');
 
         $user->theme = $themeId;
         $user->save();
@@ -142,12 +142,13 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getHabbo () {
+    public function getHabbo() {
         $user = Cache::get('auth');
         return response()->json([
             'habbo' => $user->habbo
         ]);
     }
+
     /**
      * Put request to update the habbo, checks motto on habbo API to match
      * with the supplied string used in FE. "thishabbo-{userId}"
@@ -157,13 +158,13 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateHabbo (Request $request) {
+    public function updateHabbo(Request $request) {
         $user = Cache::get('auth');
         $requiredMotto = 'thishabbo-' . $user->userId;
 
         $name = $request->input('habbo');
         Condition::precondition(!$name, 400, 'You did not fill anything in');
-        Condition::precondition(User::withHabbo($name)->count() > 0, 400, 'Habbo already taken');
+        Condition::precondition(User::withHabbo($name)->count('userId') > 0, 400, 'Habbo already taken');
 
         $habbo = $this->habboService->getHabboByName($name);
         Condition::precondition(!$habbo, 404, 'No habbo with that name');
@@ -191,8 +192,8 @@ class AccountController extends Controller {
         $oneMonth = 2419200;
 
         $gotTimeout = LogUser::where('action', Action::getAction(Action::CHANGED_NICKNAME))->where('userId', $user->userId)
-                ->where('createdAt', '>', (time() - $oneWeek))->count() > 0;
-        Condition::precondition($gotTimeout,400, 'You need to wait one week until you can change nickname again');
+                ->where('createdAt', '>', (time() - $oneWeek))->count('logId') > 0;
+        Condition::precondition($gotTimeout, 400, 'You need to wait one week until you can change nickname again');
         Condition::precondition(!$this->creditsService->haveEnoughCredits($user->userId, 300), 400, 'You do not have enough credits');
         Condition::precondition(!isset($nickname) || empty($nickname) || strlen($nickname) < 3, 400,
             'Nickname is not valid');
@@ -224,8 +225,8 @@ class AccountController extends Controller {
      */
     public function getIgnoredThreads() {
         $user = Cache::get('auth');
-        return IgnoredThread::where('userId', $user->userId)->get()->map(function($ignoredThread) {
-            return [ 'threadId' => $ignoredThread->threadId, 'title' => $ignoredThread->thread->title ];
+        return IgnoredThread::where('userId', $user->userId)->get()->map(function ($ignoredThread) {
+            return ['threadId' => $ignoredThread->threadId, 'title' => $ignoredThread->thread->title];
         });
     }
 
@@ -234,15 +235,15 @@ class AccountController extends Controller {
      */
     public function getIgnoredCategories() {
         $user = Cache::get('auth');
-        return IgnoredCategory::where('userId', $user->userId)->get()->map(function($ignoredCategory) {
-            return [ 'categoryId' => $ignoredCategory->categoryId, 'title' => $ignoredCategory->category->title ];
+        return IgnoredCategory::where('userId', $user->userId)->get()->map(function ($ignoredCategory) {
+            return ['categoryId' => $ignoredCategory->categoryId, 'title' => $ignoredCategory->category->title];
         });
     }
 
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getNotificationSettings () {
+    public function getNotificationSettings() {
         $user = Cache::get('auth');
 
         return response()->json($this->buildIgnoredNotificationTypes($user));
@@ -253,7 +254,7 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateNotificationSettings (Request $request) {
+    public function updateNotificationSettings(Request $request) {
         $user = Cache::get('auth');
         $ignoredNotifications = $this->convertIgnoredNotificationTypes($request->input('ignoredNotificationTypes'));
 
@@ -269,7 +270,7 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateHomePage (Request $request) {
+    public function updateHomePage(Request $request) {
         $user = Cache::get('auth');
         $homePage = $request->input('homePage');
 
@@ -289,7 +290,7 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updatePassword (Request $request) {
+    public function updatePassword(Request $request) {
         $user = Cache::get('auth');
         $password = $request->input('password');
         $repassword = $request->input('repassword');
@@ -315,7 +316,7 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPostBit () {
+    public function getPostBit() {
         $user = Cache::get('auth');
         $selectedBadgeIds = UserItem::where('userId', $user->userId)->badge()->isActive()->pluck('itemId');
 
@@ -332,8 +333,8 @@ class AccountController extends Controller {
         $user = Cache::get('auth');
         $availableBadgeIds = UserItem::where('userId', $user->userId)->badge()->pluck('itemId');
 
-        return response()->json(Badge::whereIn('badgeId', $availableBadgeIds)->get(['badgeId', 'name', 'updatedAt'])->map(function($badge) use ($user) {
-            $badge->isActive = UserItem::badge()->where('itemId', $badge->badgeId)->isActive()->where('userId', $user->userId)->count() > 0;
+        return response()->json(Badge::whereIn('badgeId', $availableBadgeIds)->get(['badgeId', 'name', 'updatedAt'])->map(function ($badge) use ($user) {
+            $badge->isActive = UserItem::badge()->where('itemId', $badge->badgeId)->isActive()->where('userId', $user->userId)->count('userItemId') > 0;
             return $badge;
         }));
     }
@@ -345,10 +346,12 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updatePostBit (Request $request) {
+    public function updatePostBit(Request $request) {
         $user = Cache::get('auth');
-        $data = (object) $request->input('data');
-        $badgeIds = array_map(function($badge) { return $badge['badgeId']; }, $data->badges);
+        $data = (object)$request->input('data');
+        $badgeIds = array_map(function ($badge) {
+            return $badge['badgeId'];
+        }, $data->badges);
 
         Condition::precondition(count($badgeIds) > 3, 400, 'You can not have more then 3 badges selected!');
 
@@ -366,10 +369,10 @@ class AccountController extends Controller {
     /**
      * @return mixed
      */
-    public function getThreadSubscriptions () {
+    public function getThreadSubscriptions() {
         $user = Cache::get('auth');
 
-        return ThreadSubscription::where('userId', $user->userId)->get()->map(function($subscription) {
+        return ThreadSubscription::where('userId', $user->userId)->get()->map(function ($subscription) {
             return [
                 'threadId' => $subscription->thread->threadId,
                 'title' => $subscription->thread->title
@@ -380,10 +383,10 @@ class AccountController extends Controller {
     /**
      * @return mixed
      */
-    public function getCategorySubscriptions () {
+    public function getCategorySubscriptions() {
         $user = Cache::get('auth');
 
-        return CategorySubscription::where('userId', $user->userId)->get()->map(function($subscription) {
+        return CategorySubscription::where('userId', $user->userId)->get()->map(function ($subscription) {
             return [
                 'categoryId' => $subscription->category->categoryId,
                 'title' => $subscription->category->title
@@ -398,7 +401,7 @@ class AccountController extends Controller {
      *
      * @return int
      */
-    private function convertPostBitOptions ($postBitOptions) {
+    private function convertPostBitOptions($postBitOptions) {
         $options = 0;
         $config = ConfigHelper::getPostBitConfig();
 
@@ -417,7 +420,7 @@ class AccountController extends Controller {
      *
      * @return array
      */
-    private function buildPostBitOptions ($user) {
+    private function buildPostBitOptions($user) {
         $userdata = UserHelper::getUserDataOrCreate($user->userId);
         return UserHelper::getUserPostBit($userdata);
     }
@@ -428,7 +431,7 @@ class AccountController extends Controller {
      *
      * @return int
      */
-    private function convertIgnoredNotificationTypes ($ignoredNotifications) {
+    private function convertIgnoredNotificationTypes($ignoredNotifications) {
         $options = 0;
 
         foreach ($ignoredNotifications as $key => $value) {
@@ -446,7 +449,7 @@ class AccountController extends Controller {
      *
      * @return array
      */
-    private function buildIgnoredNotificationTypes ($user) {
+    private function buildIgnoredNotificationTypes($user) {
         $obj = [];
         $ignoredNotifications = ConfigHelper::getIgnoredNotificationsConfig();
 
@@ -462,7 +465,7 @@ class AccountController extends Controller {
      *
      * @return string
      */
-    private function generateString () {
+    private function generateString() {
         $token = openssl_random_pseudo_bytes(8);
         $token = bin2hex($token);
         return implode('', str_split($token, 4));

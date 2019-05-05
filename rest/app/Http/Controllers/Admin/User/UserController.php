@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin\User;
 
+use App\EloquentModels\Forum\Post;
+use App\EloquentModels\Forum\PostLike;
+use App\EloquentModels\Forum\Thread;
 use App\EloquentModels\User\User;
 use App\Helpers\ConfigHelper;
 use App\Helpers\DataHelper;
@@ -16,9 +19,6 @@ use App\Utils\Iterables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
-use App\EloquentModels\Forum\Thread;
-use App\EloquentModels\Forum\Post;
-use App\EloquentModels\Forum\PostLike;
 
 class UserController extends Controller {
     private $authService;
@@ -26,9 +26,9 @@ class UserController extends Controller {
     /**
      * UserController constructor.
      *
-     * @param AuthService  $authService
+     * @param AuthService $authService
      */
-    public function __construct (AuthService $authService) {
+    public function __construct(AuthService $authService) {
         parent::__construct();
         $this->authService = $authService;
     }
@@ -42,7 +42,7 @@ class UserController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function mergeUsers (Request $request, $srcNickname, $destNickname) {
+    public function mergeUsers(Request $request, $srcNickname, $destNickname) {
         $user = Cache::get('auth');
 
         Condition::precondition(!PermissionHelper::haveAdminPermission($user->userId, ConfigHelper::getAdminConfig()->canMergeUsers), 400, 'You do not have permission!');
@@ -85,7 +85,7 @@ class UserController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getUsers (Request $request, $page) {
+    public function getUsers(Request $request, $page) {
         $nickname = $request->input('nickname');
         $habbo = $request->input('habbo');
         $user = Cache::get('auth');
@@ -101,7 +101,7 @@ class UserController extends Controller {
             $getUserSql->where('habbo', 'LIKE', '%' . $habbo . '%');
         }
 
-        $total = DataHelper::getPage($getUserSql->count());
+        $total = DataHelper::getPage($getUserSql->count('userId'));
         $users = array_map(function ($user) {
             $user['credits'] = UserHelper::getUserDataOrCreate($user['userId'])->credits;
             return $user;
@@ -123,7 +123,7 @@ class UserController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getUserBasic ($userId) {
+    public function getUserBasic($userId) {
         $user = Cache::get('auth');
         $current = UserHelper::getUserFromId($userId);
 
@@ -147,7 +147,7 @@ class UserController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateUserBasic (Request $request, $userId) {
+    public function updateUserBasic(Request $request, $userId) {
         $user = Cache::get('auth');
         $current = User::find($userId);
         $newUser = (object)$request->input('user');
@@ -185,7 +185,7 @@ class UserController extends Controller {
      * @param $user
      * @param $newUser
      */
-    private function basicUserConditionCollection ($user, $newUser) {
+    private function basicUserConditionCollection($user, $newUser) {
         if (!PermissionHelper::haveAdminPermission($user->userId, ConfigHelper::getAdminConfig()->canEditUserBasic)) {
             return;
         }

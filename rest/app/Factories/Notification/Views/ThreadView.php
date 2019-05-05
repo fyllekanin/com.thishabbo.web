@@ -7,7 +7,6 @@ use App\Helpers\ConfigHelper;
 use App\Helpers\DataHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
-use App\Http\Controllers\Controller;
 
 class ThreadView {
     public $user;
@@ -29,14 +28,14 @@ class ThreadView {
         }
 
         $canApprovePosts = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canApprovePosts, $post->thread->categoryId);
-        return (object) [
+        return (object)[
             'threadId' => $post->thread->threadId,
             'title' => $post->thread->title,
             'postId' => $notification->contentId,
             'page' => DataHelper::getPage(Post::where('threadId', $post->threadId)
                 ->where('postId', '<=', $notification->contentId)
                 ->isApproved($canApprovePosts)
-                ->count())
+                ->count('postId'))
         ];
     }
 }

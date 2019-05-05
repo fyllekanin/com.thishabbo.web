@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin\Moderation;
 
-use App\EloquentModels\User\Ban;
 use App\EloquentModels\Infraction\AutoBan;
 use App\EloquentModels\Infraction\Infraction;
 use App\EloquentModels\Infraction\InfractionLevel;
+use App\EloquentModels\User\Ban;
 use App\EloquentModels\User\Token;
 use App\EloquentModels\User\User;
 use App\Factories\Notification\NotificationFactory;
@@ -59,9 +59,9 @@ class InfractionController extends Controller {
             ->withoutGlobalScope('nonHardDeleted')
             ->orderBy('createdAt', 'DESC');
 
-        $total = DataHelper::getPage($infractionsSql->count());
+        $total = DataHelper::getPage($infractionsSql->count('infractionId'));
         $items = $infractionsSql->take($this->perPage)->skip($this->getOffset($page))
-            ->get()->map(function($infraction) {
+            ->get()->map(function ($infraction) {
                 return [
                     'infractionId' => $infraction->infractionId,
                     'title' => $infraction->level->title,
@@ -108,7 +108,7 @@ class InfractionController extends Controller {
      */
     public function createInfraction(Request $request) {
         $user = Cache::get('auth');
-        $data = (object) $request->input('infraction');
+        $data = (object)$request->input('infraction');
         $this->validateInfraction($data);
 
         $infractionLevel = InfractionLevel::find($data->infractionLevelId);
@@ -149,7 +149,7 @@ class InfractionController extends Controller {
 
         return response()->json([
             'levels' => InfractionLevel::all(),
-            'history' => Infraction::where('infractedId', $userId)->take(5)->get()->map(function($infraction) {
+            'history' => Infraction::where('infractedId', $userId)->take(5)->get()->map(function ($infraction) {
                 return [
                     'title' => $infraction->level->title,
                     'user' => UserHelper::getSlimUser($infraction->userId),
@@ -173,7 +173,7 @@ class InfractionController extends Controller {
         $points = Infraction::isActive()
             ->where('infractedId', $infracted->userId)
             ->get()
-            ->reduce(function($prev, $curr) {
+            ->reduce(function ($prev, $curr) {
                 return $prev + $curr->level()->value('points');
             }, 0);
 
@@ -205,12 +205,12 @@ Below you can find information regarding the infraction you were just given.
             'Reason needs to be set');
 
         Condition::precondition(!isset($infraction->infractionLevelId), 400, 'Infraction level needs to be set');
-        Condition::precondition(InfractionLevel::where('infractionLevelId', $infraction->infractionLevelId)->count() == 0,
+        Condition::precondition(InfractionLevel::where('infractionLevelId', $infraction->infractionLevelId)->count('infractionLevelId') == 0,
             404, 'Infraction level do not exist');
 
         Condition::precondition(!isset($infraction->userId) || empty($infraction->userId), 400,
             'No user to infract set');
-        Condition::precondition(User::where('userId', $infraction->userId)->count() == 0, 404,
+        Condition::precondition(User::where('userId', $infraction->userId)->count('userId') == 0, 404,
             'User do not exist');
     }
 
@@ -218,7 +218,7 @@ Below you can find information regarding the infraction you were just given.
         $points = Infraction::isActive()
             ->where('infractedId', $userId)
             ->get()
-            ->reduce(function($prev, $curr) {
+            ->reduce(function ($prev, $curr) {
                 return $prev + $curr->level()->value('points');
             }, 0);
 

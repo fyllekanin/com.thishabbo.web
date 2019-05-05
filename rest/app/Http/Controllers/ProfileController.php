@@ -39,7 +39,7 @@ class ProfileController extends Controller {
         $target = User::find($userId);
         Condition::precondition(!$target, 404, 'No user with that ID');
 
-        $isFollowing = Follower::where('userId', $user->userId)->where('targetId', $userId)->count() > 0;
+        $isFollowing = Follower::where('userId', $user->userId)->where('targetId', $userId)->count('followerId') > 0;
         Condition::precondition($isFollowing, 400, 'You are already following this user');
 
         $follow = new Follower([
@@ -81,7 +81,7 @@ class ProfileController extends Controller {
         $user = Cache::get('auth');
         $data = (object)$request->input('data');
 
-        Condition::precondition(VisitorMessage::where('userId', $user->userId)->where('createdAt', '>', $this->nowMinus15)->count() > 0,
+        Condition::precondition(VisitorMessage::where('userId', $user->userId)->where('createdAt', '>', $this->nowMinus15)->count('visitorMessageId') > 0,
             400, 'You are commenting to quick!');
 
         $profile = User::find($data->hostId);
@@ -255,7 +255,7 @@ class ProfileController extends Controller {
             return false;
         }
 
-        return Follower::where('userId', $user->userId)->where('targetId', $profile->userId)->isApproved()->count() === 0;
+        return Follower::where('userId', $user->userId)->where('targetId', $profile->userId)->isApproved()->count('followerId') === 0;
     }
 
     /**
@@ -271,7 +271,7 @@ class ProfileController extends Controller {
             'followers' => Follower::where('targetId', $userId)->inRandomOrder()->take(5)->isApproved()->get()->map(function ($follower) {
                 return UserHelper::getSlimUser($follower->userId);
             }),
-            'total' => Follower::where('targetId', $userId)->isApproved()->count(),
+            'total' => Follower::where('targetId', $userId)->isApproved()->count('followerId'),
             'isFollowing' => $following ? true : false,
             'isApproved' => $following ? $following->isApproved : false
         ];
@@ -285,7 +285,7 @@ class ProfileController extends Controller {
      */
     private function getVisitorMessages(User $user, $page) {
         $visitorMessagesSql = VisitorMessage::where('hostId', $user->userId)->isSubject();
-        $total = ceil($visitorMessagesSql->count() / $this->perPage);
+        $total = ceil($visitorMessagesSql->count('visitorMessageId') / $this->perPage);
 
         return [
             'total' => $total,
@@ -306,9 +306,9 @@ class ProfileController extends Controller {
             'visitorMessageId' => $visitorMessage->visitorMessageId,
             'user' => UserHelper::getSlimUser($visitorMessage->userId),
             'content' => $visitorMessage->isComment() ? $visitorMessage->content : BBcodeUtil::bbcodeParser($visitorMessage->content),
-            'replies' => $visitorMessage->isComment() ? 0 : $visitorMessage->replies->count(),
+            'replies' => $visitorMessage->isComment() ? 0 : $visitorMessage->replies->count('visitorMessageId'),
             'likes' => $visitorMessage->likes || 0,
-            'isLiking' => VisitorMessageLike::where('userId', Cache::get('auth')->userId)->where('visitorMessageId', $visitorMessage->visitorMessageId)->count() > 0,
+            'isLiking' => VisitorMessageLike::where('userId', Cache::get('auth')->userId)->where('visitorMessageId', $visitorMessage->visitorMessageId)->count('visitorMessageLikeId') > 0,
             'comments' => $visitorMessage->isComment() ? [] : VisitorMessage::where('parentId', $visitorMessage->visitorMessageId)->orderBy('visitorMessageId', 'ASC')
                 ->get()
                 ->map(function ($item) {

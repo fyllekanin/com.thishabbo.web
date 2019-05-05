@@ -23,14 +23,14 @@ class GroupsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function applyForGroup (Request $request) {
+    public function applyForGroup(Request $request) {
         $user = Cache::get('auth');
         $groupId = $request->input('groupId');
 
         $group = Group::find($groupId);
         Condition::precondition(!$group, 404, 'Group does not exist');
         Condition::precondition(in_array($groupId, $user->groupIds), 400, 'You are already in this group');
-        $haveApplied = GroupRequest::where('userId', $user->userId)->where('groupId', $groupId)->count() > 0;
+        $haveApplied = GroupRequest::where('userId', $user->userId)->where('groupId', $groupId)->count('groupRequestId') > 0;
         Condition::precondition($haveApplied, 400, 'You have already have a pending application');
 
         $groupRequest = new GroupRequest([
@@ -52,7 +52,7 @@ class GroupsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function leaveGroup (Request $request, $groupId) {
+    public function leaveGroup(Request $request, $groupId) {
         $user = Cache::get('auth');
 
         $group = Group::find($groupId);
@@ -74,7 +74,7 @@ class GroupsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getGroups () {
+    public function getGroups() {
         $user = Cache::get('auth');
         $groups = Group::select('groupId', 'name', 'isPublic')
             ->get();
@@ -82,11 +82,11 @@ class GroupsController extends Controller {
         foreach ($groups as $group) {
             $group->isMember = in_array($group->groupId, $user->groupIds);
             $group->haveApplied = $group->isMember ? false : GroupRequest::where('userId', $user->userId)
-                    ->where('groupId', $group->groupId)->count() > 0;
+                    ->where('groupId', $group->groupId)->count('groupRequestId') > 0;
         }
 
         return response()->json([
-            'displayGroupId' => Iterables::find($groups, function($group) use ($user) {
+            'displayGroupId' => Iterables::find($groups, function ($group) use ($user) {
                 return $group->groupId == $user->displayGroupId;
             }),
             'groups' => $groups

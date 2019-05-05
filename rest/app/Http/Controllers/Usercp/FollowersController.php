@@ -79,19 +79,19 @@ class FollowersController extends Controller {
      */
     public function getFollowers($page) {
         $followersSql = Follower::isApproved();
-        $total = DataHelper::getPage($followersSql->count());
+        $total = DataHelper::getPage($followersSql->count('followerId'));
 
         return response()->json([
             'total' => $total,
             'page' => $page,
-            'followers' => $followersSql->take($this->perPage)->skip($this->getOffset($page))->get()->map(function($item) {
+            'followers' => $followersSql->take($this->perPage)->skip($this->getOffset($page))->get()->map(function ($item) {
                 return [
                     'followerId' => $item->followerId,
                     'user' => UserHelper::getSlimUser($item->userId),
                     'createdAt' => $item->createdAt->timestamp
                 ];
             }),
-            'awaiting' =>  Follower::where('isApproved', false)->get()->map(function($item) {
+            'awaiting' => Follower::where('isApproved', false)->get()->map(function ($item) {
                 return [
                     'followerId' => $item->followerId,
                     'user' => UserHelper::getSlimUser($item->userId),

@@ -29,7 +29,7 @@ class RadioController extends Controller {
      *
      * @return mixed
      */
-    public function getBookingLog ($page) {
+    public function getBookingLog($page) {
         $bookAction = Action::getAction(Action::BOOKED_RADIO_SLOT);
         $unbookAction = Action::getAction(Action::UNBOOKED_RADIO_SLOT);
         $bookedPermAction = Action::getAction(Action::BOOKED_PERM_SLOT);
@@ -37,11 +37,11 @@ class RadioController extends Controller {
 
         $logSql = LogStaff::whereIn('action', [$bookAction, $unbookAction, $bookedPermAction, $deletedPermAction]);
 
-        $total = DataHelper::getPage($logSql->count());
+        $total = DataHelper::getPage($logSql->count('logId'));
         $items = $logSql->orderBy('logId', 'DESC')
             ->take($this->perPage)
             ->skip($this->getOffset($page))
-            ->get()->map(function($log) {
+            ->get()->map(function ($log) {
 
                 $booking = Timetable::where('timetableId', json_decode($log->data)->timetableId)
                     ->withoutGlobalScope('nonHardDeleted')->first();
@@ -67,7 +67,7 @@ class RadioController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getConnectionInformation () {
+    public function getConnectionInformation() {
         return response()->json(SettingsHelper::getRadioConnectionInformation());
     }
 
@@ -76,14 +76,14 @@ class RadioController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getAdminConnectionInformation () {
+    public function getAdminConnectionInformation() {
         return response()->json(SettingsHelper::getRadioConnectionInformation(true));
     }
 
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getDjSays () {
+    public function getDjSays() {
         $user = Cache::get('auth');
         $settingKeys = ConfigHelper::getKeyConfig();
 
@@ -101,7 +101,7 @@ class RadioController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateDjSays (Request $request) {
+    public function updateDjSays(Request $request) {
         $user = Cache::get('auth');
         $says = $request->input('says');
         $settingKeys = ConfigHelper::getKeyConfig();
@@ -124,7 +124,7 @@ class RadioController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function kickOffDj (Request $request) {
+    public function kickOffDj(Request $request) {
         $user = Cache::get('auth');
 
         $settingKeys = ConfigHelper::getKeyConfig();
@@ -158,7 +158,7 @@ class RadioController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createDjLike (Request $request) {
+    public function createDjLike(Request $request) {
         $user = Cache::get('auth');
         $nowMinus30Min = time() - 1800;
         $settings = ConfigHelper::getKeyConfig();
@@ -171,7 +171,7 @@ class RadioController extends Controller {
         $haveLikedWithInLimit = LogUser::where('userId', $user->userId)
                 ->where('action', Action::getAction(Action::LIKED_DJ))
                 ->where('createdAt', '>', $nowMinus30Min)
-                ->count() > 0;
+                ->count('logId') > 0;
         Condition::precondition($haveLikedWithInLimit, 400, 'You are trying to like to fast!');
 
         $djUser->likes++;
@@ -189,7 +189,7 @@ class RadioController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createRequest (Request $request) {
+    public function createRequest(Request $request) {
         $user = Cache::get('auth');
         $nickname = $user ? $user->nickname : $request->input('nickname');
         $content = $request->input('content');
@@ -200,7 +200,7 @@ class RadioController extends Controller {
         Condition::precondition(!$nickname, 400, 'nickname can not be empty');
         Condition::precondition(strlen($nickname) == 0, 400, 'nickname can not be empty');
 
-        $isRequestingToQuick = RadioRequest::where('ip', $ipAddress)->where('createdAt', '>', $this->nowMinus15)->count() > 0;
+        $isRequestingToQuick = RadioRequest::where('ip', $ipAddress)->where('createdAt', '>', $this->nowMinus15)->count('requestId') > 0;
         Condition::precondition($isRequestingToQuick, 400, 'You are requesting to quick!');
 
         $radioRequest = new RadioRequest([
@@ -220,7 +220,7 @@ class RadioController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getRequests () {
+    public function getRequests() {
         $user = Cache::get('auth');
         $canSeeRequestIp = PermissionHelper::haveStaffPermission($user->userId, ConfigHelper::getStaffConfig()->canSeeIpOnRequests);
 
@@ -241,7 +241,7 @@ class RadioController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getTimetable () {
+    public function getTimetable() {
         return response()->json([
             'timetable' => Timetable::radio()->isActive()->get(),
             'events' => []
@@ -256,7 +256,7 @@ class RadioController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteBooking (Request $request, $timetableId) {
+    public function deleteBooking(Request $request, $timetableId) {
         $user = Cache::get('auth');
 
         $booking = Timetable::find($timetableId);
@@ -282,7 +282,7 @@ class RadioController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createBooking (Request $request) {
+    public function createBooking(Request $request) {
         $user = Cache::get('auth');
         $booking = (object)$request->input('booking');
 
@@ -295,7 +295,7 @@ class RadioController extends Controller {
         Condition::precondition(isset($booking->nickname) && !$bookingForUser, 404, 'No user by the name ' . Value::objectProperty($booking, 'nickname', ''));
         Condition::precondition($bookingForUser && $bookingForUser->userId != $user->userId && !$canBookForOthers, 400, 'You can not book for someone else');
 
-        $existing = Timetable::radio()->where('day', $booking->day)->where('hour', $booking->hour)->isActive()->count() > 0;
+        $existing = Timetable::radio()->where('day', $booking->day)->where('hour', $booking->hour)->isActive()->count('timetableId') > 0;
         Condition::precondition($existing, 400, 'Booking already exists on this slot');
         $userId = $bookingForUser ? $bookingForUser->userId : $user->userId;
 
@@ -324,13 +324,13 @@ class RadioController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
 
-    public function updateConnectionInfo (Request $request){
+    public function updateConnectionInfo(Request $request) {
         $user = Cache::get('auth');
-        $information = (object) $request->input('information');
+        $information = (object)$request->input('information');
         $settingKeys = ConfigHelper::getKeyConfig();
         $oldInformation = new RadioSettings(SettingsHelper::getSettingValue($settingKeys->radio));
 
-        foreach($information as $key => $value) {
+        foreach ($information as $key => $value) {
             Condition::precondition(!isset($value) || empty($value), 400, $key . ' is missing');
         }
 

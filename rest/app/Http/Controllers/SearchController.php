@@ -70,9 +70,9 @@ class SearchController extends Controller {
         $usersSql = User::where('nickname', 'LIKE', '%' . $request->input('text') . '%');
         $this->applyFilters($request, $usersSql);
 
-        return (object) [
-            'total' => DataHelper::getPage($usersSql->count()),
-            'items' => $usersSql->take($this->perPage)->offset($this->getOffset($page))->get()->map(function($item) {
+        return (object)[
+            'total' => DataHelper::getPage($usersSql->count('userId')),
+            'items' => $usersSql->take($this->perPage)->offset($this->getOffset($page))->get()->map(function ($item) {
                 return [
                     'id' => $item->userId,
                     'page' => 1,
@@ -89,14 +89,14 @@ class SearchController extends Controller {
         $postsSql = Post::where('content', 'LIKE', '%' . $request->input('text') . '%')->whereIn('threadId', $threadIds);
         $this->applyFilters($request, $postsSql);
 
-        return (object) [
-            'total' => DataHelper::getPage($postsSql->count()),
-            'items' => $postsSql->take($this->perPage)->offset($this->getOffset($page))->get()->map(function($item) {
+        return (object)[
+            'total' => DataHelper::getPage($postsSql->count('postId')),
+            'items' => $postsSql->take($this->perPage)->offset($this->getOffset($page))->get()->map(function ($item) {
                 return [
                     'id' => $item->postId,
                     'parentId' => $item->threadId,
                     'page' => DataHelper::getPage(Post::where('postId', '<', $item->postId)->where('threadId', $item->threadId)
-                            ->isApproved()->count()),
+                        ->isApproved()->count('postId')),
                     'user' => UserHelper::getSlimUser($item->userId),
                     'title' => $item->thread->title,
                     'createdAt' => $item->createdAt->timestamp
@@ -110,9 +110,9 @@ class SearchController extends Controller {
         $threadsSql = Thread::where('title', 'LIKE', '%' . $request->input('text') . '%')->whereIn('categoryId', $categoryIds);
         $this->applyFilters($request, $threadsSql);
 
-        return (object) [
-            'total' => DataHelper::getPage($threadsSql->count()),
-            'items' => $threadsSql->take($this->perPage)->offset($this->getOffset($page))->get()->map(function($item) {
+        return (object)[
+            'total' => DataHelper::getPage($threadsSql->count('threadId')),
+            'items' => $threadsSql->take($this->perPage)->offset($this->getOffset($page))->get()->map(function ($item) {
                 return [
                     'id' => $item->threadId,
                     'page' => 1,
@@ -140,7 +140,7 @@ class SearchController extends Controller {
             $sqlObj->where('createdAt', '<', strtotime($request->input('to')));
         }
 
-        $sqlObj->orderBy('createdAt', $request->input('order') ? $request->input('order'): 'DESC');
+        $sqlObj->orderBy('createdAt', $request->input('order') ? $request->input('order') : 'DESC');
         return $sqlObj;
     }
 }

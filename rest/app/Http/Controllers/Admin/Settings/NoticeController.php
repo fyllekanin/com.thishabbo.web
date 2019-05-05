@@ -20,7 +20,7 @@ class NoticeController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateNoticeOrder (Request $request) {
+    public function updateNoticeOrder(Request $request) {
         $user = Cache::get('auth');
         $notices = $request->input('notices');
 
@@ -39,7 +39,7 @@ class NoticeController extends Controller {
      *
      * @return Notice[]|\Illuminate\Database\Eloquent\Collection
      */
-    public function getNotices () {
+    public function getNotices() {
         $notices = Notice::all();
 
         foreach ($notices as $notice) {
@@ -57,7 +57,7 @@ class NoticeController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteNotice (Request $request, $noticeId) {
+    public function deleteNotice(Request $request, $noticeId) {
         $user = Cache::get('auth');
 
         $notice = Notice::find($noticeId);
@@ -76,12 +76,12 @@ class NoticeController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function createNotice (Request $request) {
+    public function createNotice(Request $request) {
         $user = Cache::get('auth');
         $notice = json_decode($request->input('notice'));
         $backgroundImage = $request->file('backgroundImage');
 
-        $haveCreatedNewToFast = Notice::where('createdAt', '>', $this->nowMinus15)->count() > 0;
+        $haveCreatedNewToFast = Notice::where('createdAt', '>', $this->nowMinus15)->count('noticeId') > 0;
 
         Condition::precondition($haveCreatedNewToFast, 400, 'You are creating notices to fast');
         Condition::precondition(empty($notice->title), 400, 'Title can not be empty');

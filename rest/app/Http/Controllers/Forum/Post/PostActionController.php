@@ -22,10 +22,10 @@ class PostActionController extends Controller {
     /**
      * PostController constructor.
      *
-     * @param ForumService          $forumService
+     * @param ForumService $forumService
      * @param ForumValidatorService $validatorService
      */
-    public function __construct (ForumService $forumService, ForumValidatorService $validatorService) {
+    public function __construct(ForumService $forumService, ForumValidatorService $validatorService) {
         parent::__construct();
         $this->forumService = $forumService;
         $this->validatorService = $validatorService;
@@ -39,7 +39,7 @@ class PostActionController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function likePost (Request $request, $postId) {
+    public function likePost(Request $request, $postId) {
         $user = Cache::get('auth');
         $post = Post::find($postId);
         Condition::precondition(!$post, 404, 'Post do not exist');
@@ -47,7 +47,7 @@ class PostActionController extends Controller {
 
         $haveLiked = PostLike::where('postId', $postId)
                 ->where('userId', $user->userId)
-                ->count() > 0;
+                ->count('postLikeId') > 0;
 
         Condition::precondition($post->userId == $user->userId, 400, 'You can not like your own post');
         Condition::precondition($haveLiked, 400, 'You already liked this post');
@@ -79,7 +79,7 @@ class PostActionController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function unlikePost (Request $request, $postId) {
+    public function unlikePost(Request $request, $postId) {
         $user = Cache::get('auth');
 
         $post = Post::with('thread:threadId,categoryId')->where('postId', $postId)->first(['threadId', 'userId']);
@@ -88,7 +88,7 @@ class PostActionController extends Controller {
 
         $haveLiked = PostLike::where('postId', $postId)
                 ->where('userId', $user->userId)
-                ->count() > 0;
+                ->count('postLikeId') > 0;
 
         Condition::precondition(!$haveLiked, '400', 'Can not unlike a post you havent liked');
         Condition::precondition($post->userId == $user->userId, 400, 'You can not unlike your own post');

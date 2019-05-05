@@ -33,7 +33,7 @@ class InfractionLevelsController extends Controller {
 
         return response()->json([
             'page' => $page,
-            'total' => $infractionLevelsSql->count(),
+            'total' => $infractionLevelsSql->count('infractionLevelId'),
             'items' => $infractionLevelsSql->take($this->perPage)
                 ->skip($this->getOffset($page))
                 ->get()
@@ -74,7 +74,7 @@ class InfractionLevelsController extends Controller {
      */
     public function updateInfractionLevel(Request $request, $infractionLevelId) {
         $user = Cache::get('auth');
-        $newInfractionLevel = (object) $request->input('infractionLevel');
+        $newInfractionLevel = (object)$request->input('infractionLevel');
         $infractionLevel = InfractionLevel::find($infractionLevelId);
         Condition::precondition(!$infractionLevel, 404, 'No infraction level with that ID exists');
 
@@ -82,7 +82,7 @@ class InfractionLevelsController extends Controller {
 
         $infractionLevel->title = $newInfractionLevel->title;
         $infractionLevel->points = $newInfractionLevel->points;
-        $infractionLevel->lifeTime = $newInfractionLevel->lifeTime  * 86400;
+        $infractionLevel->lifeTime = $newInfractionLevel->lifeTime * 86400;
         $infractionLevel->categoryId = Value::objectProperty($newInfractionLevel, 'categoryId', null);
         $infractionLevel->penalty = Value::objectProperty($newInfractionLevel, 'penalty', 0);
         $infractionLevel->save();
@@ -121,7 +121,7 @@ class InfractionLevelsController extends Controller {
      */
     public function createInfractionLevel(Request $request) {
         $user = Cache::get('auth');
-        $newInfractionLevel = (object) $request->input('infractionLevel');
+        $newInfractionLevel = (object)$request->input('infractionLevel');
         $this->validateInfractionLevel($newInfractionLevel);
 
         $infractionLevel = new InfractionLevel([
@@ -150,7 +150,7 @@ class InfractionLevelsController extends Controller {
         Condition::precondition(!isset($infractionLevel->lifeTime) || !is_numeric($infractionLevel->lifeTime),
             400, 'Life time needs to be set as a number');
         Condition::precondition(isset($infractionLevel->categoryId) && Category::where('categoryId',
-                $infractionLevel->categoryId)->count() == 0, 400, 'Category with that ID do not exist');
+                $infractionLevel->categoryId)->count('categoryId') == 0, 400, 'Category with that ID do not exist');
         Condition::precondition(isset($infractionLevel->penalty) && !is_numeric($infractionLevel->penalty), 400,
             'Penalty needs to be numeric.');
         Condition::precondition(isset($infractionLevel->penalty) && $infractionLevel->penalty < 0, 400,

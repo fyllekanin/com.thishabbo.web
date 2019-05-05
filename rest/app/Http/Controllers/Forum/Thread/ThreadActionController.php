@@ -28,10 +28,10 @@ class ThreadActionController extends Controller {
      * ThreadController constructor.
      * Fetch the available category templates and store in an instance variable
      *
-     * @param ForumService          $forumService
+     * @param ForumService $forumService
      * @param ForumValidatorService $validatorService
      */
-    public function __construct (ForumService $forumService, ForumValidatorService $validatorService) {
+    public function __construct(ForumService $forumService, ForumValidatorService $validatorService) {
         parent::__construct();
         $this->categoryTemplates = ConfigHelper::getCategoryTemplatesConfig();
         $this->forumService = $forumService;
@@ -46,7 +46,7 @@ class ThreadActionController extends Controller {
      */
     public function createIgnore(Request $request, $threadId) {
         $user = Cache::get('auth');
-        $isAlreadyIgnoring = IgnoredThread::where('userId', $user->userId)->where('threadId', $threadId)->count() > 0;
+        $isAlreadyIgnoring = IgnoredThread::where('userId', $user->userId)->where('threadId', $threadId)->count('threadId') > 0;
         Condition::precondition($isAlreadyIgnoring, 400, 'You are already ignoring this thread');
         $ignore = new IgnoredThread([
             'userId' => $user->userId,
@@ -54,7 +54,7 @@ class ThreadActionController extends Controller {
         ]);
         $ignore->save();
 
-        Logger::user($user->userId, $request->ip(), Action::IGNORED_THREAD, [ 'threadId' => $threadId ]);
+        Logger::user($user->userId, $request->ip(), Action::IGNORED_THREAD, ['threadId' => $threadId]);
         return response()->json();
     }
 
@@ -67,11 +67,11 @@ class ThreadActionController extends Controller {
     public function deleteIgnore(Request $request, $threadId) {
         $user = Cache::get('auth');
         $item = IgnoredThread::where('userId', $user->userId)->where('threadId', $threadId);
-        Condition::precondition($item->count() == 0, 404, 'You are not currently ignoring this thread');
+        Condition::precondition($item->count('threadId') == 0, 404, 'You are not currently ignoring this thread');
 
         $item->delete();
 
-        Logger::user($user->userId, $request->ip(), Action::UNIGNORED_THREAD, [ 'threadId' => $threadId ]);
+        Logger::user($user->userId, $request->ip(), Action::UNIGNORED_THREAD, ['threadId' => $threadId]);
         return response()->json();
     }
 
@@ -89,9 +89,9 @@ class ThreadActionController extends Controller {
         $threadPoll = ThreadPoll::where('threadId', $threadId)->first();
         Condition::precondition(!$threadPoll, 404, 'The thread do not have a poll');
         Condition::precondition(ThreadPollAnswer::where('threadPollId', $threadPoll->threadPollId)
-                ->where('userId', $user->userId)->count() > 0, 400, 'You have already voted');
+                ->where('userId', $user->userId)->count('threadPollId') > 0, 400, 'You have already voted');
 
-        $option = Iterables::find(json_decode($threadPoll->options), function($opt) use ($answerId) {
+        $option = Iterables::find(json_decode($threadPoll->options), function ($opt) use ($answerId) {
             return $opt->id == $answerId;
         });
         Condition::precondition(!$option, 404, 'The answer do not exist');
@@ -112,7 +112,7 @@ class ThreadActionController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createThreadSubscription ($threadId) {
+    public function createThreadSubscription($threadId) {
         $userId = Cache::get('auth')->userId;
         $thread = Thread::find($threadId);
         Condition::precondition(!$thread, 404, 'Thread do not exist');
@@ -134,7 +134,7 @@ class ThreadActionController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteThreadSubscription ($threadId) {
+    public function deleteThreadSubscription($threadId) {
         $user = Cache::get('auth');
 
         ThreadSubscription::where('userId', $user->userId)->where('threadId', $threadId)->delete();

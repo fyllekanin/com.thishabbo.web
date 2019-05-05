@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin\Moderation;
 
-use App\EloquentModels\Infraction\AutoBan;
 use App\EloquentModels\Forum\Post;
 use App\EloquentModels\Forum\Thread;
+use App\EloquentModels\Infraction\AutoBan;
 use App\Helpers\ConfigHelper;
 use App\Helpers\DataHelper;
 use App\Helpers\PermissionHelper;
@@ -22,7 +22,7 @@ class ForumController extends Controller {
      *
      * @param ForumService $forumService
      */
-    public function __construct (ForumService $forumService) {
+    public function __construct(ForumService $forumService) {
         parent::__construct();
         $this->forumService = $forumService;
     }
@@ -33,15 +33,15 @@ class ForumController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getAutoBans (Request $request, $page) {
+    public function getAutoBans(Request $request, $page) {
         $filter = $request->input('filter');
         $autoBansSql = AutoBan::where('title', 'LIKE', '%' . $filter . '%')
             ->orderBy('title', 'ASC')
             ->skip($this->getOffset($page))
             ->take($this->perPage);
 
-        $total = DataHelper::getPage($autoBansSql->count());
-        $items = $autoBansSql->map(function($item) {
+        $total = DataHelper::getPage($autoBansSql->count('autoBanId'));
+        $items = $autoBansSql->map(function ($item) {
             return [
                 'autoBanId' => $item->autoBanId,
                 'title' => $item->title,
@@ -63,7 +63,7 @@ class ForumController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getModeratePosts () {
+    public function getModeratePosts() {
         $user = Cache::get('auth');
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
 
@@ -75,7 +75,7 @@ class ForumController extends Controller {
             ->get();
 
         foreach ($posts as $key => $post) {
-            $isFirstPost = Thread::where('firstPostId', $post->postId)->count() > 0;
+            $isFirstPost = Thread::where('firstPostId', $post->postId)->count('threadId') > 0;
             if ($isFirstPost) {
                 unset($posts[$key]);
                 continue;
@@ -93,7 +93,7 @@ class ForumController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getModerateThreads () {
+    public function getModerateThreads() {
         $user = Cache::get('auth');
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
 

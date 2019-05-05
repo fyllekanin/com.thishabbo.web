@@ -30,9 +30,10 @@ class UserThcController extends Controller {
 
     /**
      * Get all the existing requests
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getThcRequests () {
+    public function getThcRequests() {
         return response()->json(RequestThc::all()->map(function ($request) {
             return [
                 'requestThcId' => $request->requestThcId,
@@ -49,7 +50,7 @@ class UserThcController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateThcRequests (Request $request) {
+    public function updateThcRequests(Request $request) {
         $user = Cache::get('auth');
         $requests = $request->input('requests');
 
@@ -76,7 +77,7 @@ class UserThcController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getVoucherCodes (Request $request, $page) {
+    public function getVoucherCodes(Request $request, $page) {
         $filter = $request->input('filter');
         $voucherCodeSql = VoucherCode::orderBy('createdAt', 'ASC');
 
@@ -84,13 +85,13 @@ class UserThcController extends Controller {
             $voucherCodeSql->where('note', 'LIKE', '%' . $filter . '%');
         }
 
-        $total = $voucherCodeSql->count();
+        $total = $voucherCodeSql->count('voucherCodeId');
 
         return response()->json([
             'total' => DataHelper::getPage($total),
             'page' => $page,
             'items' => $voucherCodeSql->orderBy('createdAt', 'ASC')->take($this->perPage)->skip($this->getOffset($page))
-                ->get()->map(function($item) {
+                ->get()->map(function ($item) {
                     $claimLog = LogUser::where('action', Action::CLAIMED_VOUCHER_CODE['id'])
                         ->where('contentId', $item->voucherCodeId)
                         ->first();
@@ -163,7 +164,7 @@ class UserThcController extends Controller {
      *
      * @return string
      */
-    private function generateCode () {
+    private function generateCode() {
         $token = openssl_random_pseudo_bytes(8);
         $token = bin2hex($token);
         return implode('', str_split($token, 4));
