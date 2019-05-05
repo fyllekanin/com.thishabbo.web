@@ -17,6 +17,8 @@ import { VisitorMessageComponent } from './profile/visitor-message/visitor-messa
 import { PaginationModule } from 'shared/app-views/pagination/pagination.module';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 import { FormsModule } from '@angular/forms';
+import { InfractionModule } from 'shared/components/infraction/infraction.module';
+import { ReportComponent } from './profile/report/report.component';
 
 @NgModule({
     imports: [
@@ -32,15 +34,20 @@ import { FormsModule } from '@angular/forms';
         ButtonModule,
         PaginationModule,
         SafeHtmlModule,
-        FormsModule
+        FormsModule,
+        InfractionModule
     ],
     declarations: [
         ProfileComponent,
         ActivitiesComponent,
-        VisitorMessageComponent
+        VisitorMessageComponent,
+        ReportComponent
     ],
     providers: [
         ProfileService
+    ],
+    entryComponents: [
+        ReportComponent
     ],
     exports: [
         RouterModule

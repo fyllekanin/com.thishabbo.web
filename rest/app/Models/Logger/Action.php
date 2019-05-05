@@ -1370,4 +1370,11 @@ class Action {
         'data' => [],
         'log' => 'log_user'
     ];
+
+    const REPORTED_VISITOR_MESSAGE = [
+        'id' => 159,
+        'description' => 'Reported visitor message',
+        'data' => [],
+        'log' => 'log_user'
+    ];
 }
