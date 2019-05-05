@@ -58,7 +58,7 @@ class ForumStatisticsController extends Controller {
                 'month' => $month,
                 'posts' => Post::where('createdAt', '>=', $start->getTimestamp())
                     ->where('createdAt', '<=', $end->getTimestamp())
-                    ->count('userId')
+                    ->count('postId')
             ];
         }
         return $statistics;
