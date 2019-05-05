@@ -59,6 +59,7 @@ Route::group(['middleware' => ['maintenance']], function () {
         Route::post('/profile/visitor-message', 'ProfileController@createVisitorMessage');
         Route::post('/profile/visitor-message/{visitorMessageId}/like', 'ProfileController@createVisitorMessageLike');
         Route::delete('/profile/visitor-message/{visitorMessageId}/like', 'ProfileController@deleteVisitorMessageLike');
+        Route::post('/profile/visitor-message/{visitorMessageId}/report', 'ProfileController@createReportVisitorMessage');
 
         Route::put('puller/notifications/read/all/notifications', 'Puller\NotificationController@readAllNotifications');
         Route::put('puller/notifications/read/all/messages', 'Puller\NotificationController@readAllMessages');

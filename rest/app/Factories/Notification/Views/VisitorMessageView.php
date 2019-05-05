@@ -29,7 +29,7 @@ class VisitorMessageView {
         }
         $this->host = UserHelper::getSlimUser($visitorMessage->hostId);
 
-        $this->subjectId = $visitorMessage->parentId > 0 ? $visitorMessage->parentId : $visitorMessage->visitorMessageId;
+        $this->subjectId = $visitorMessage->isComment() ? $visitorMessage->parentId : $visitorMessage->visitorMessageId;
         return DataHelper::getPage(VisitorMessage::isSubject()
             ->where('visitorMessageId', '>', $this->subjectId)
             ->where('hostId', $visitorMessage->hostId)

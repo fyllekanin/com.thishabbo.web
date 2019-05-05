@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\EloquentModels\Forum\Category;
 use App\EloquentModels\User\Follower;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\VisitorMessage;
@@ -10,12 +11,15 @@ use App\Factories\Notification\NotificationFactory;
 use App\Helpers\ConfigHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
+use App\Http\Controllers\Forum\Thread\ThreadCrudController;
 use App\Logger;
 use App\Models\Logger\Action;
 use App\Services\ActivityService;
 use App\Services\ForumService;
+use App\Services\ForumValidatorService;
 use App\Utils\BBcodeUtil;
 use App\Utils\Condition;
+use App\Views\VisitorMessageReportView;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -198,6 +202,37 @@ class ProfileController extends Controller {
         $visitorMessageLike->delete();
 
         Logger::user($user->userId, $request->ip(), Action::DELETED_VISITOR_MESSAGE_LIKE, [], $visitorMessage->visitorMessageId);
+        return response()->json();
+    }
+
+    /**
+     * @param Request $request
+     * @param ForumService $forumService
+     * @param ForumValidatorService $validatorService
+     * @param $visitorMessageId
+     *
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function createReportVisitorMessage(Request $request, ForumService $forumService,
+                                               ForumValidatorService $validatorService, $visitorMessageId) {
+        $user = Cache::get('auth');
+        $visitorMessage = VisitorMessage::find($visitorMessageId);
+        $message = $request->input('message');
+
+        Condition::precondition(!$visitorMessage, 404, 'No visitor message with that ID');
+        Condition::precondition(!isset($message) || empty($message), 400, 'Message can not be empty');
+
+        $threadSkeleton = VisitorMessageReportView::of($user, $visitorMessage, $message);
+        $reportCategories = Category::isReportCategory()->get();
+        $threadController = new ThreadCrudController($forumService, $validatorService);
+
+        foreach ($reportCategories as $category) {
+            $threadSkeleton->categoryId = $category->categoryId;
+            $threadController->doThread($user, null, $threadSkeleton, null, true);
+        }
+
+        Logger::user($user->userId, $request->ip(), Action::REPORTED_VISITOR_MESSAGE, [], $visitorMessage->visitorMessageId);
         return response()->json();
     }
 

@@ -4,6 +4,7 @@ import { TimeHelper } from 'shared/helpers/time.helper';
 import { ProfileService } from '../profile.service';
 import { AuthService } from 'core/services/auth/auth.service';
 import { NotificationService } from 'core/services/notification/notification.service';
+import { InfractionService } from 'shared/components/infraction/infraction.service';
 
 @Component({
     selector: 'app-user-profile-visitor-message',
@@ -23,7 +24,8 @@ export class VisitorMessageComponent implements AfterContentInit {
     constructor (
         private _profileService: ProfileService,
         private _authService: AuthService,
-        private _notificationService: NotificationService
+        private _notificationService: NotificationService,
+        private _infractionService: InfractionService
     ) {
     }
 
@@ -47,6 +49,25 @@ export class VisitorMessageComponent implements AfterContentInit {
 
     get visitorMessage (): ProfileVisitorMessage {
         return this._visitorMessage;
+    }
+
+    infract (event, visitorMessage: ProfileVisitorMessage): void {
+        event.stopPropagation();
+        this._infractionService.infract(visitorMessage.user.userId);
+    }
+
+    report (event, visitorMessage: ProfileVisitorMessage): void {
+        event.stopPropagation();
+        this._profileService.report(visitorMessage);
+    }
+
+    canReport (visitorMessage: ProfileVisitorMessage): boolean {
+        return this._authService.isLoggedIn() && visitorMessage.user.userId !== this._authService.authUser.userId;
+    }
+
+    canInfract (visitorMessage: ProfileVisitorMessage): boolean {
+        return this._authService.isLoggedIn() && visitorMessage.user.userId !== this._authService.authUser.userId &&
+            this._authService.adminPermissions.canDoInfractions;
     }
 
     ngAfterContentInit (): void {
