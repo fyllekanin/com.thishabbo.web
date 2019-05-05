@@ -152,7 +152,7 @@ export class ProfileComponent extends Page implements OnDestroy {
         this.pagination = new PaginationModel({
             total: data.data.visitorMessages.total,
             page: data.data.visitorMessages.page,
-            url: '/user/profile/Tovven/page/:page'
+            url: `/user/profile/${this._data.user.nickname}/page/:page`
         });
     }
 

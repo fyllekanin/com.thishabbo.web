@@ -90,7 +90,7 @@ h2 {
 }
 
 .mobile-hidden {
-    display: inherit;
+    display: initial;
 }
 
 @media screen and (max-width: 1200px) {

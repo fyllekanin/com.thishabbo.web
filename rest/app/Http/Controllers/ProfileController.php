@@ -284,13 +284,13 @@ class ProfileController extends Controller {
      * @return array
      */
     private function getVisitorMessages(User $user, $page) {
-        $visitorMessagesSql = VisitorMessage::where('hostId', $user->userId)->isSubject()->take($this->perPage)->skip($this->getOffset($page));
+        $visitorMessagesSql = VisitorMessage::where('hostId', $user->userId)->isSubject();
         $total = ceil($visitorMessagesSql->count() / $this->perPage);
 
         return [
             'total' => $total,
             'page' => $page,
-            'items' => $visitorMessagesSql->orderBy('visitorMessageId', 'DESC')->get()->map(function ($item) {
+            'items' => $visitorMessagesSql->take($this->perPage)->skip($this->getOffset($page))->orderBy('visitorMessageId', 'DESC')->get()->map(function ($item) {
                 return $this->mapVisitorMessage($item);
             })
         ];
