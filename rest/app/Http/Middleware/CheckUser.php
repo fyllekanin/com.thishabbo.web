@@ -16,16 +16,16 @@ class CheckUser {
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  \Closure                 $next
+     * @param  \Closure $next
      *
      * @return mixed
      */
-    public function handle ($request, Closure $next) {
+    public function handle($request, Closure $next) {
         $accessToken = RequestUtil::getAccessToken($request);
         $token = Token::where('ip', $request->ip())
             ->where('accessToken', $accessToken)
             ->first();
-
+        
         if ($token && $request->getPathInfo() != $this->refreshRoute && $token->expiresAt < time()) {
             throw new HttpException(419);
         }
@@ -35,7 +35,7 @@ class CheckUser {
             $user->lastActivity = time();
             $user->save();
         }
-        Cache::add('auth',  $user, 9999);
+        Cache::add('auth', $user, 9999);
 
         return $next($request);
     }

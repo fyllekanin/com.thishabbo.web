@@ -27,6 +27,6 @@ class Bet extends DeletableModel {
     }
 
     public function getBackersCountAttribute() {
-        return UserBet::where('betId', $this->betId)->count();
+        return UserBet::where('betId', $this->betId)->count('userBetId');
     }
 }

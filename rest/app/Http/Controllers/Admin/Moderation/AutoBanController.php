@@ -19,15 +19,15 @@ class AutoBanController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getAutoBans (Request $request, $page) {
+    public function getAutoBans(Request $request, $page) {
         $filter = $request->input('filter');
         $autoBansSql = AutoBan::where('title', 'LIKE', '%' . $filter . '%')
             ->orderBy('title', 'ASC')
             ->skip($this->getOffset($page))
             ->take($this->perPage);
 
-        $total = DataHelper::getPage($autoBansSql->count());
-        $items = $autoBansSql->get()->map(function($item) {
+        $total = DataHelper::getPage($autoBansSql->count('autoBanId'));
+        $items = $autoBansSql->get()->map(function ($item) {
             return [
                 'autoBanId' => $item->autoBanId,
                 'title' => $item->title,
@@ -70,7 +70,7 @@ class AutoBanController extends Controller {
      */
     public function createAutoBan(Request $request) {
         $user = Cache::get('auth');
-        $autoBan = (object) $request->input('autoBan');
+        $autoBan = (object)$request->input('autoBan');
         $this->validateAutoBanInput($autoBan);
 
         $newAutoBan = new AutoBan([
@@ -95,7 +95,7 @@ class AutoBanController extends Controller {
      */
     public function updateAutoBan(Request $request, $autoBanId) {
         $user = Cache::get('auth');
-        $newAutoBan = (object) $request->input('autoBan');
+        $newAutoBan = (object)$request->input('autoBan');
         $autoBan = AutoBan::find($autoBanId);
         Condition::precondition(!$autoBan, 404, 'No autoban with this ID exist');
         $this->validateAutoBanInput($newAutoBan);
@@ -139,7 +139,7 @@ class AutoBanController extends Controller {
         Condition::precondition(!isset($autoBan->banLength) || empty($autoBan->banLength || !is_numeric($autoBan->banLength)),
             400, 'Ban length needs to be set');
         Condition::precondition(!isset($autoBan->reason) || empty($autoBan->reason), 400, 'Reason needs to be set');
-        Condition::precondition(AutoBan::where('amount', $autoBan->amount)->count() > 0,
+        Condition::precondition(AutoBan::where('amount', $autoBan->amount)->count('autoBanId') > 0,
             400, 'There is already an automatic ban for this amount of points');
     }
 }

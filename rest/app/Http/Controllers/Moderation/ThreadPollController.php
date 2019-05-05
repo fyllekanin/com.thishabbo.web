@@ -25,7 +25,7 @@ class ThreadPollController extends Controller {
      *
      * @param ForumService $forumService
      */
-    public function __construct (ForumService $forumService) {
+    public function __construct(ForumService $forumService) {
         parent::__construct();
         $this->forumService = $forumService;
     }
@@ -47,10 +47,10 @@ class ThreadPollController extends Controller {
         return response()->json([
             'thread' => $thread->title,
             'question' => $thread->poll->question,
-            'answers' => array_map(function($option) {
+            'answers' => array_map(function ($option) {
                 return [
                     'answer' => $option->label,
-                    'users' => ThreadPollAnswer::where('answer', $option->id)->get()->map(function($answer) {
+                    'users' => ThreadPollAnswer::where('answer', $option->id)->get()->map(function ($answer) {
                         return [
                             'userId' => $answer->userId,
                             'nickname' => User::find($answer->userId)->nickname
@@ -79,14 +79,14 @@ class ThreadPollController extends Controller {
             ->orderBy('threads.title', 'ASC')
             ->select('threads.title', 'threads.threadId', 'thread_polls.*');
 
-        $total = DataHelper::getPage($getPollsSql->count());
+        $total = DataHelper::getPage($getPollsSql->count('thread_polls.threadPollId'));
         $polls = $getPollsSql->take($this->perPage)->skip($this->getOffset($page))->get()->map(function ($poll) {
             return [
                 'threadPollId' => $poll->threadPollId,
                 'thread' => $poll->thread->title,
                 'question' => $poll->question,
                 'threadId' => $poll->threadId,
-                'votes' => ThreadPollAnswer::where('threadPollId', $poll->threadPollId)->count()
+                'votes' => ThreadPollAnswer::where('threadPollId', $poll->threadPollId)->count('threadPollId')
             ];
         });
 
@@ -104,7 +104,7 @@ class ThreadPollController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deletePoll (Request $request, $threadId) {
+    public function deletePoll(Request $request, $threadId) {
         $user = Cache::get('auth');
         $thread = Thread::find($threadId);
         $threadPoll = ThreadPoll::where('threadId', $thread->threadId)->first();
@@ -117,7 +117,7 @@ class ThreadPollController extends Controller {
         $threadPoll->isDeleted = true;
         $threadPoll->save();
 
-        ThreadPollAnswer::where('threadPollId', $threadPoll->threadPollId)->update([ 'isDeleted' => true ]);
+        ThreadPollAnswer::where('threadPollId', $threadPoll->threadPollId)->update(['isDeleted' => true]);
 
         Logger::mod($user->userId, $request->ip(), Action::DELETED_POLL, ['poll' => $threadPoll->question]);
         return response()->json();

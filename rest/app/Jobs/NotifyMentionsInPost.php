@@ -35,7 +35,7 @@ class NotifyMentionsInPost implements ShouldQueue {
      * @param $postId
      * @param $userId
      */
-    public function __construct ($content, $postId, $userId) {
+    public function __construct($content, $postId, $userId) {
         $this->content = $content;
         $this->postId = $postId;
         $this->userId = $userId;
@@ -45,7 +45,7 @@ class NotifyMentionsInPost implements ShouldQueue {
     /**
      * Executes the job
      */
-    public function handle () {
+    public function handle() {
         $quotedPostIds = $this->getQuotedUserIds($this->content);
         $content = preg_replace($this->quoteRegex, '', $this->content);
         $mentionedIds = $this->getMentionedIds($content, $this->mentionTypeUser);
@@ -83,7 +83,7 @@ class NotifyMentionsInPost implements ShouldQueue {
         DB::table('notifications')->insert($inserts);
     }
 
-    private function createNotificationInserts ($userIds, $senderId, $type, $postId, $earlier) {
+    private function createNotificationInserts($userIds, $senderId, $type, $postId, $earlier) {
         $inserts = [];
         foreach ($userIds as $mentionedId) {
             $ignoredNotifications = $this->isUserIgnoringNotification($mentionedId, $type);
@@ -100,12 +100,12 @@ class NotifyMentionsInPost implements ShouldQueue {
         return $inserts;
     }
 
-    private function isUserIgnoringNotification ($userId, $type) {
+    private function isUserIgnoringNotification($userId, $type) {
         $notificationType = $type == Type::getType(Type::MENTION) ?
             $this->ignoredNotificationTypes->MENTION_NOTIFICATIONS :
             $this->ignoredNotificationTypes->QUOTE_NOTIFICATIONS;
         return User::where('userId', $userId)
-                ->whereRaw('(ignoredNotifications & ' . $notificationType . ')')->count() > 0;
+                ->whereRaw('(ignoredNotifications & ' . $notificationType . ')')->count('userId') > 0;
     }
 
     private function getQuotedUserIds($content) {
@@ -115,7 +115,7 @@ class NotifyMentionsInPost implements ShouldQueue {
         return [];
     }
 
-    private function getMentionedIds ($content, $mentionType) {
+    private function getMentionedIds($content, $mentionType) {
         if ($mentionType == $this->mentionTypeUser && preg_match_all($this->mentionRegex, $content, $matches)) {
             return User::whereIn('nickname', $matches[1])->pluck('userId');
         }
@@ -127,7 +127,7 @@ class NotifyMentionsInPost implements ShouldQueue {
         return [];
     }
 
-    private function addTaggedGroupMembers ($content, $mentionedIds) {
+    private function addTaggedGroupMembers($content, $mentionedIds) {
         $groupIds = $this->getMentionedIds($content, $this->mentionTypeGroup);
         $groupOptions = ConfigHelper::getGroupOptionsConfig();
 

@@ -59,9 +59,9 @@ class ThreadCrudController extends Controller {
     public function getPosters($threadId, $page) {
         $query = Post::where('posts.threadId', $threadId)
             ->join('users', 'users.userId', '=', 'posts.userId')
-            ->select('users.userId', DB::raw('COUNT(*) as amount'))
+            ->select('users.userId', 'posts.postId', DB::raw('COUNT(*) as amount'))
             ->groupBy('users.userId');
-        $total = DataHelper::getPage($query->count());
+        $total = DataHelper::getPage($query->count('posts.postId'));
 
         return response()->json([
             'total' => $total,
@@ -90,7 +90,7 @@ class ThreadCrudController extends Controller {
             ->whereNotIn('categoryId', $ignoredCategoryIds)
             ->whereNotIn('threadId', $ignoredThreadIds)
             ->orderBy('createdAt', 'DESC');
-        $total = DataHelper::getPage($threadSql->count());
+        $total = DataHelper::getPage($threadSql->count('threadId'));
 
         return response()->json([
             'page' => $page,
@@ -255,7 +255,7 @@ class ThreadCrudController extends Controller {
         $permissions = $this->forumService->getForumPermissionsForUserInCategory($user->userId, $thread->categoryId);
 
         if ($permissions->canApprovePosts) {
-            $thread->posts += $thread->threadPosts()->where('isApproved', false)->count();
+            $thread->posts += $thread->threadPosts()->where('isApproved', false)->count('threadId');
         }
 
         $thread->load(['threadPosts' => function ($query) use ($permissions, $page) {
@@ -268,10 +268,10 @@ class ThreadCrudController extends Controller {
         $thread->contentApproval = PermissionHelper::haveGroupOption($user->userId, ConfigHelper::getGroupOptionsConfig()->contentNeedApproval);
         $thread->total = DataHelper::getPage($thread->posts);
         $thread->forumPermissions = $permissions;
-        $thread->isSubscribed = ThreadSubscription::where('userId', $user->userId)->where('threadId', $threadId)->count() > 0;
+        $thread->isSubscribed = ThreadSubscription::where('userId', $user->userId)->where('threadId', $threadId)->count('threadId') > 0;
         $thread->append('categoryIsOpen');
         $thread->poll = $this->getThreadPoll($thread->threadId, $user->userId);
-        $thread->isIgnored = IgnoredThread::where('userId', $user->userId)->where('threadId', $thread->threadId)->count() > 0;
+        $thread->isIgnored = IgnoredThread::where('userId', $user->userId)->where('threadId', $thread->threadId)->count('threadId') > 0;
         $thread->template = $thread->category->template;
 
         if ($thread->template === ConfigHelper::getCategoryTemplatesConfig()->QUEST) {
@@ -383,13 +383,13 @@ class ThreadCrudController extends Controller {
         $answers = json_decode($threadPoll->options);
         foreach ($answers as $answer) {
             $answer->answers = ThreadPollAnswer::where('threadPollId', $threadPoll->threadPollId)
-                ->where('answer', $answer->id)->count();
+                ->where('answer', $answer->id)->count('threadPollId');
         }
         return [
             'question' => $threadPoll->question,
             'answers' => $answers,
             'haveVoted' => ThreadPollAnswer::where('threadPollId', $threadPoll->threadPollId)
-                    ->where('userId', $userId)->count() > 0
+                    ->where('userId', $userId)->count('threadPollId') > 0
         ];
     }
 

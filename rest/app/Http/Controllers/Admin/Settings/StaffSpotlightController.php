@@ -21,7 +21,7 @@ class StaffSpotlightController extends Controller {
      * StaffSpotlightController constructor.
      * Fetch the setting keys and store them in an instance variable
      */
-    public function __construct () {
+    public function __construct() {
         parent::__construct();
         $this->settingKeys = ConfigHelper::getKeyConfig();
         $this->botKeys = [
@@ -36,7 +36,7 @@ class StaffSpotlightController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getMemberOfTheMonth () {
+    public function getMemberOfTheMonth() {
         $motm = json_decode(SettingsHelper::getSettingValue($this->settingKeys->memberOfTheMonth));
 
         return response()->json([
@@ -53,15 +53,15 @@ class StaffSpotlightController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
 
-    public function updateMemberOfTheMonth (Request $request){
+    public function updateMemberOfTheMonth(Request $request) {
         $user = Cache::get('auth');
-        $information = (object) $request->input('information');
+        $information = (object)$request->input('information');
 
-        foreach($information as $key => $value) {
+        foreach ($information as $key => $value) {
             Condition::precondition(!isset($value) || empty($value), 400, $key . ' is missing');
         }
 
-        Condition::precondition(User::withNickname($information->member)->count() == 0, 404, 'No user with that nickname');
+        Condition::precondition(User::withNickname($information->member)->count('userId') == 0, 404, 'No user with that nickname');
 
         $newInformation = [
             'member' => $information->member,
@@ -80,7 +80,7 @@ class StaffSpotlightController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getStaffOfTheWeek () {
+    public function getStaffOfTheWeek() {
         $sotw = json_decode(SettingsHelper::getSettingValue($this->settingKeys->staffOfTheWeek));
 
         $returnedSOTW = [];
@@ -100,11 +100,11 @@ class StaffSpotlightController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
 
-    public function updateStaffOfTheWeek (Request $request){
+    public function updateStaffOfTheWeek(Request $request) {
         $user = Cache::get('auth');
-        $information = (object) $request->input('information');
+        $information = (object)$request->input('information');
 
-        foreach($information as $key => $value) {
+        foreach ($information as $key => $value) {
             Condition::precondition(!isset($value) || empty($value), 400, $key . ' is missing');
         }
 

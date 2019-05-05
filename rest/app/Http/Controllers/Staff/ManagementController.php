@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Cache;
 class ManagementController extends Controller {
     private $settingKeys;
 
-    public function __construct () {
+    public function __construct() {
         parent::__construct();
         $this->settingKeys = ConfigHelper::getKeyConfig();
     }
@@ -33,7 +33,7 @@ class ManagementController extends Controller {
      */
     public function getCurrentListeners() {
         $listeners = Iterables::unique($this->getListenersFromServer(), 'hostname');
-        return array_map(function($listener) {
+        return array_map(function ($listener) {
             $userId = Login::where('ip', $listener->hostname)->value('userId');
             return [
                 'user' => UserHelper::getSlimUser($userId),
@@ -47,7 +47,7 @@ class ManagementController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getDoNotHireList () {
+    public function getDoNotHireList() {
         $items = json_decode(SettingsHelper::getSettingValue($this->settingKeys->doNotHire));
 
         foreach ($items as $item) {
@@ -66,12 +66,12 @@ class ManagementController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getDoNotHire ($nickname) {
+    public function getDoNotHire($nickname) {
         $entries = json_decode(SettingsHelper::getSettingValue($this->settingKeys->doNotHire));
         $entryInfo = new \stdClass();
 
-        foreach($entries as $entry){
-            if($entry->nickname == $nickname){
+        foreach ($entries as $entry) {
+            if ($entry->nickname == $nickname) {
                 $entryInfo = $entry;
             }
         }
@@ -87,7 +87,7 @@ class ManagementController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateDoNotHire (Request $request, $nickname) {
+    public function updateDoNotHire(Request $request, $nickname) {
         $user = Cache::get('auth');
 
         $information = (object)$request->input('information');
@@ -98,7 +98,7 @@ class ManagementController extends Controller {
         Condition::precondition(!isset($information->reason), 400, 'Reason missing');
 
         foreach ($oldEntries as $entry) {
-            if($entry->nickname == $nickname){
+            if ($entry->nickname == $nickname) {
                 $entry = [
                     'nickname' => $information->nickname,
                     'reason' => $information->reason,
@@ -124,7 +124,7 @@ class ManagementController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createDoNotHire (Request $request) {
+    public function createDoNotHire(Request $request) {
         $user = Cache::get('auth');
 
         $information = (object)$request->input('information');
@@ -155,11 +155,11 @@ class ManagementController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteDoNotHire (Request $request, $nickname) {
+    public function deleteDoNotHire(Request $request, $nickname) {
         $user = Cache::get('auth');
         $oldEntries = json_decode(SettingsHelper::getSettingValue($this->settingKeys->doNotHire));
 
-        $entries = Iterables::filter($oldEntries, function($entry) use ($nickname) {
+        $entries = Iterables::filter($oldEntries, function ($entry) use ($nickname) {
             return $entry->nickname != $nickname;
         });
 
@@ -197,7 +197,7 @@ class ManagementController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createPermShow (Request $request) {
+    public function createPermShow(Request $request) {
         $user = Cache::get('auth');
         $booking = (object)$request->input('booking');
 
@@ -209,7 +209,7 @@ class ManagementController extends Controller {
         $bookingForUser = User::withNickname(Value::objectProperty($booking, 'nickname', ''))->first();
         Condition::precondition(!$bookingForUser, 404, 'There is no user with that nickname');
 
-        $isPermExisting = Timetable::where('day', $booking->day)->where('hour', $booking->hour)->where('type', $booking->type)->isPerm()->count() > 0;
+        $isPermExisting = Timetable::where('day', $booking->day)->where('hour', $booking->hour)->where('type', $booking->type)->isPerm()->count('timetableId') > 0;
         Condition::precondition($isPermExisting, 400, 'Perm show already exists on this slot');
 
         $existing = Timetable::where('day', $booking->day)->where('hour', $booking->hour)->where('type', $booking->type)->isActive()->first();
@@ -245,7 +245,7 @@ class ManagementController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updatePermShow (Request $request, $timetableId) {
+    public function updatePermShow(Request $request, $timetableId) {
         $user = Cache::get('auth');
 
         $booking = (object)$request->input('booking');
@@ -296,7 +296,7 @@ class ManagementController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deletePermShow (Request $request, $timetableId) {
+    public function deletePermShow(Request $request, $timetableId) {
         $user = Cache::get('auth');
         $booking = Timetable::find($timetableId);
         Condition::precondition(!$booking, 404, 'Booking does not exist');
@@ -317,9 +317,9 @@ class ManagementController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPermShows ($page) {
+    public function getPermShows($page) {
         $permShows = Timetable::isPerm()->take($this->perPage)->skip($this->getOffset($page))->get();
-        $total = DataHelper::getPage(Timetable::isPerm()->count());
+        $total = DataHelper::getPage(Timetable::isPerm()->count('timetableId'));
 
         return response()->json([
             'permShows' => $permShows->map(function ($item) {
@@ -337,7 +337,7 @@ class ManagementController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPermShow ($timetableId) {
+    public function getPermShow($timetableId) {
         $permShow = $timetableId == 'new' ? new \stdClass() : Timetable::find($timetableId)->permShow;
         return response()->json($permShow);
     }

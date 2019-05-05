@@ -21,7 +21,7 @@ class BansController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getUserBans ($userId) {
+    public function getUserBans($userId) {
         $user = Cache::get('auth');
         $current = UserHelper::getSlimUser($userId);
 
@@ -43,7 +43,7 @@ class BansController extends Controller {
      *
      * @return array
      */
-    public function createUserBan (Request $request, $userId) {
+    public function createUserBan(Request $request, $userId) {
         $user = Cache::get('auth');
         $current = UserHelper::getUser($userId);
         $banData = (object)$request->input('reason');
@@ -75,7 +75,7 @@ class BansController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function liftUserBan (Request $request, $userId, $banId) {
+    public function liftUserBan(Request $request, $userId, $banId) {
         $user = Cache::get('auth');
         $current = UserHelper::getUser($userId);
         $ban = Ban::find($banId);
@@ -102,11 +102,11 @@ class BansController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getBannedUsers (Request $request, $page) {
+    public function getBannedUsers(Request $request, $page) {
         $user = Cache::get('auth');
         $filter = $request->input('nickname');
         $bansSql = Ban::active()->withImmunityLessThan(User::getImmunity($user->userId))->withNicknameLike($filter);
-        $total = DataHelper::getPage($bansSql->count());
+        $total = DataHelper::getPage($bansSql->count('banId'));
         $bans = $bansSql->take($this->perPage)->skip($this->getOffset($page))->get()->map(function ($ban) {
             return $this->mapBan($ban);
         });
@@ -118,7 +118,7 @@ class BansController extends Controller {
         ]);
     }
 
-    private function mapBan ($ban) {
+    private function mapBan($ban) {
         return [
             'banId' => $ban->banId,
             'banner' => UserHelper::getSlimUser($ban->userId),

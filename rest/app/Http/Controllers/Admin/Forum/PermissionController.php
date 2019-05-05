@@ -31,7 +31,7 @@ class PermissionController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateGroupForumPermissions (Request $request, $categoryId) {
+    public function updateGroupForumPermissions(Request $request, $categoryId) {
         $user = Cache::get('auth');
         $immunity = User::getImmunity($user->userId);
         $groups = $request->input('groups');
@@ -50,7 +50,7 @@ class PermissionController extends Controller {
 
             $permission = ForumPermission::where('categoryId', $categoryId)->where('groupId', $groupToBeUpdated->groupId);
 
-            if ($permission->count() == 0) {
+            if ($permission->count('categoryId') == 0) {
                 $perm = new ForumPermission([
                     'categoryId' => $categoryId,
                     'groupId' => $groupToBeUpdated->groupId,
@@ -79,7 +79,7 @@ class PermissionController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getGroupForumPermissions ($categoryId, $groupId) {
+    public function getGroupForumPermissions($categoryId, $groupId) {
         $user = Cache::get('auth');
         $immunity = User::getImmunity($user->userId);
         $category = Category::select('categoryId', 'title')->where('categoryId', $categoryId)->first();
@@ -111,13 +111,13 @@ class PermissionController extends Controller {
      * @param $groupId
      * @param $permissions
      */
-    private function updateCategoryAndChildrenForumPermissions ($categoryId, $groupId, $permissions) {
+    private function updateCategoryAndChildrenForumPermissions($categoryId, $groupId, $permissions) {
         $categories = Category::where('parentId', $categoryId)->get();
 
         foreach ($categories as $category) {
             $sqlSelection = ForumPermission::where('categoryId', $category->categoryId)->where('groupId', $groupId);
 
-            if ($sqlSelection->count() > 0) {
+            if ($sqlSelection->count('categoryId') > 0) {
                 $sqlSelection->update([
                     'permissions' => $permissions
                 ]);
@@ -139,7 +139,7 @@ class PermissionController extends Controller {
      *
      * @return array
      */
-    private function buildForumPermissions ($permissions) {
+    private function buildForumPermissions($permissions) {
         $forumPermissions = [];
 
         if (!isset($permissions)) {
@@ -153,7 +153,7 @@ class PermissionController extends Controller {
         return $forumPermissions;
     }
 
-    private function nameToNumberForumPermissions ($permissions) {
+    private function nameToNumberForumPermissions($permissions) {
         $forumPermissions = 0;
 
         foreach (ConfigHelper::getForumConfig() as $key => $value) {

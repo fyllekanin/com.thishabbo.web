@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers\Puller;
 
-use App\EloquentModels\Log\LogUser;
 use App\EloquentModels\SiteMessage;
 use App\EloquentModels\User\User;
 use App\Helpers\ConfigHelper;
 use App\Helpers\SettingsHelper;
-use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
-use App\Models\Logger\Action;
 use App\Models\Radio\RadioSettings;
 use App\Services\ActivityService;
 use App\Services\ForumService;
@@ -33,7 +30,7 @@ class StreamController extends Controller {
      * @param ForumService $forumService
      * @param ActivityService $activityService
      */
-    public function __construct (NotificationService $notificationService, ForumService $forumService, ActivityService $activityService) {
+    public function __construct(NotificationService $notificationService, ForumService $forumService, ActivityService $activityService) {
         parent::__construct();
         $this->settingKeys = ConfigHelper::getKeyConfig();
         $this->notificationService = $notificationService;
@@ -49,7 +46,7 @@ class StreamController extends Controller {
      *
      * @return StreamedResponse
      */
-    public function getStream (Request $request) {
+    public function getStream(Request $request) {
         $response = new StreamedResponse();
         $response->headers->set('Content-Type', 'text/event-stream');
         $response->headers->set('Cache-Control', 'no-cache');
@@ -89,7 +86,7 @@ class StreamController extends Controller {
      *
      * @return object
      */
-    private function getRadioStats () {
+    private function getRadioStats() {
         $stats = new RadioSettings(SettingsHelper::getSettingValue($this->settingKeys->radio));
         $stats->adminPassword = null;
         $stats->password = null;
@@ -106,10 +103,10 @@ class StreamController extends Controller {
             ->where('readAt', 0)
             ->where('userId', $userId)
             ->get(['contentId', 'type'])
-            ->filter(function($notification) use ($userId) {
+            ->filter(function ($notification) use ($userId) {
                 return $this->notificationService
                     ->isNotificationValid($notification->contentId, $notification->type);
-            })->count();
+            })->count('notificationId');
     }
 
     /**
@@ -117,7 +114,7 @@ class StreamController extends Controller {
      */
     private function getSiteMessages() {
         return SiteMessage::isActive()->orderBy('createdAt', 'DESC')->get(['title', 'content', 'type', 'siteMessageId'])
-            ->map(function($siteMessage) {
+            ->map(function ($siteMessage) {
                 return [
                     'siteMessageId' => $siteMessage->siteMessageId,
                     'title' => $siteMessage->title,

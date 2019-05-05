@@ -166,7 +166,7 @@ class PageController extends Controller {
         });
 
         $threadsSql = Thread::isApproved()->orderBy('threadId', 'DESC')->whereIn('categoryId', $categoryIds);
-        $total = DataHelper::getPage($threadsSql->count(), $perPage);
+        $total = DataHelper::getPage($threadsSql->count('threadId'), $perPage);
 
         $items = $threadsSql->take($perPage)->skip($this->getOffset($page, $perPage))->get()->map(function ($item) {
             return $this->mapArticle($item);

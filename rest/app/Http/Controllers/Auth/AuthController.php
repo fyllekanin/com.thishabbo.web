@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\EloquentModels\User\Ban;
 use App\EloquentModels\Forum\ForumPermission;
+use App\EloquentModels\User\Ban;
 use App\EloquentModels\User\Token;
 use App\EloquentModels\User\User;
 use App\Helpers\ConfigHelper;
@@ -13,8 +13,8 @@ use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
 use App\Services\AuthService;
-use App\Services\HabboService;
 use App\Services\BotService;
+use App\Services\HabboService;
 use App\Utils\Condition;
 use App\Utils\RequestUtil;
 use Illuminate\Http\Request;
@@ -37,7 +37,7 @@ class AuthController extends Controller {
      * @param AuthService $authService
      * @param HabboService $habboService
      */
-    public function __construct (BotService $botService, AuthService $authService, HabboService $habboService) {
+    public function __construct(BotService $botService, AuthService $authService, HabboService $habboService) {
         parent::__construct();
         $this->botService = $botService;
         $this->authService = $authService;
@@ -47,7 +47,7 @@ class AuthController extends Controller {
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getRegisterPage () {
+    public function getRegisterPage() {
         return response()->json([
             'nicknames' => User::pluck('nickname'),
             'usernames' => User::pluck('username')
@@ -74,7 +74,7 @@ class AuthController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function register (Request $request) {
+    public function register(Request $request) {
         $data = (object)$request->input('data');
         $data->username = trim($data->username);
         $data->nickname = trim($data->nickname);
@@ -118,7 +118,7 @@ class AuthController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function refresh (Request $request) {
+    public function refresh(Request $request) {
         $refreshToken = $request->header('RefreshAuthorization');
         $accessToken = RequestUtil::getAccessToken($request);
         Condition::precondition(!$accessToken, 400);
@@ -186,7 +186,7 @@ class AuthController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function logout (Request $request) {
+    public function logout(Request $request) {
         $accessToken = RequestUtil::getAccessToken($request);
         $token = Token::where('accessToken', $accessToken)->where('ip', $request->ip())->first();
 
@@ -205,7 +205,7 @@ class AuthController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login (Request $request) {
+    public function login(Request $request) {
         $loginName = $request->input('loginName');
         $password = $request->input('password');
 
@@ -263,7 +263,7 @@ class AuthController extends Controller {
      *
      * @return null
      */
-    private function findUser ($loginName, $password) {
+    private function findUser($loginName, $password) {
         $userWithUsername = User::withUsername($loginName)->first();
         $userWithHabbo = User::withHabbo($loginName)->first();
 
@@ -280,7 +280,7 @@ class AuthController extends Controller {
      *
      * @return string
      */
-    private function generateToken () {
+    private function generateToken() {
         $token = openssl_random_pseudo_bytes(24);
         $token = bin2hex($token);
         return implode('', str_split($token, 4));
@@ -295,7 +295,7 @@ class AuthController extends Controller {
      * @param $expiresAt
      * @param $request
      */
-    private function updateOrSetUserToken ($userId, $accessToken, $refreshToken, $expiresAt, $request) {
+    private function updateOrSetUserToken($userId, $accessToken, $refreshToken, $expiresAt, $request) {
         Token::where('userId', $userId)
             ->where('ip', $request->ip())
             ->delete();
@@ -317,7 +317,7 @@ class AuthController extends Controller {
     /**
      * @param $data
      */
-    private function registerValidation ($data) {
+    private function registerValidation($data) {
         Condition::precondition(!isset($data->gdpr) || !$data->gdpr, 400, 'You need to accept GDPR to sign up');
         Condition::precondition(!$this->authService->isNicknameValid($data->nickname),
             400, 'Nickname is not valid');
@@ -332,7 +332,7 @@ class AuthController extends Controller {
         $habbo = $this->habboService->getHabboByName($data->habbo);
         Condition::precondition(!$habbo, 404, 'There is no Habbo with that name!');
         Condition::precondition($habbo->motto != 'thishabbo-register', 400, 'Your motto needs to be "thishabbo-register"');
-        Condition::precondition(User::withHabbo($data->habbo)->count() > 0, 400, 'The Habbo Name is already taken. Contact Support!');
+        Condition::precondition(User::withHabbo($data->habbo)->count('userId') > 0, 400, 'The Habbo Name is already taken. Contact Support!');
 
         $oneMonthAgo = time() - 2419200;
         Condition::precondition(strtotime($habbo->memberSince) > $oneMonthAgo, 400, 'Your Habbo needs to be at least one month old! Contact Support!');
@@ -343,7 +343,7 @@ class AuthController extends Controller {
      *
      * @return array
      */
-    private function buildAdminPermissions ($user) {
+    private function buildAdminPermissions($user) {
         $obj = ['isAdmin' => false];
         $adminPermissions = ConfigHelper::getAdminConfig();
         $forumPermissions = ConfigHelper::getForumConfig();
@@ -357,15 +357,15 @@ class AuthController extends Controller {
         $obj['canModerateThreads'] = PermissionHelper::isSuperAdmin($user->userId) ||
             ForumPermission::withGroups($user->groupIds)
                 ->withPermission($forumPermissions->canApproveThreads)
-                ->count() > 0;
+                ->count('categoryId') > 0;
         $obj['canModeratePosts'] = PermissionHelper::isSuperAdmin($user->userId) ||
             ForumPermission::withGroups($user->groupIds)
                 ->withPermission($forumPermissions->canApprovePosts)
-                ->count() > 0;
+                ->count('categoryId') > 0;
         $obj['canManagePolls'] = PermissionHelper::isSuperAdmin($user->userId) ||
             ForumPermission::withGroups($user->groupIds)
                 ->withPermission($forumPermissions->canManagePolls)
-                ->count() > 0;
+                ->count('categoryId') > 0;
 
         foreach ($obj as $key => $value) {
             if ($value) {
@@ -382,7 +382,7 @@ class AuthController extends Controller {
      *
      * @return array
      */
-    private function buildStaffPermissions ($user) {
+    private function buildStaffPermissions($user) {
         $obj = [];
         $staffPermissions = ConfigHelper::getStaffConfig();
 

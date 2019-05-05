@@ -3,6 +3,7 @@
 namespace App\Console\Radio;
 
 use App\EloquentModels\RadioStatsLog;
+use App\EloquentModels\Staff\Timetable;
 use App\EloquentModels\User\User;
 use App\Helpers\ConfigHelper;
 use App\Helpers\SettingsHelper;
@@ -14,11 +15,11 @@ class RadioStats {
     private $settingKeys;
     private $isRadioDown = false;
 
-    public function __construct () {
+    public function __construct() {
         $this->settingKeys = ConfigHelper::getKeyConfig();
     }
 
-    public function init () {
+    public function init() {
         if ($this->isRadioDown) {
             return;
         }
@@ -36,6 +37,7 @@ class RadioStats {
         }
 
         $user = $this->getCurrentDjUser((string)$formatted->servergenre);
+        $radio->nextDj = $this->getNextDj();
         $radio->nickname = $user->nickname;
         $radio->likes = $user->likes;
         $radio->userId = $user->userId;
@@ -45,7 +47,24 @@ class RadioStats {
         SettingsHelper::createOrUpdateSetting($this->settingKeys->radio, json_encode($radio));
     }
 
-    private function getStatsData (RadioSettings $radio) {
+    private function getNextDj() {
+        $day = date('N');
+        $hour = date('G') + 1;
+
+        if ($hour > 23) {
+            $hour -= 24;
+            $day += 1;
+        }
+
+        if ($day > 7) {
+            $day -= 7;
+        }
+
+        $nextSlot = Timetable::radio()->where('day', $day)->where('hour', $hour)->first();
+        return $nextSlot ? $nextSlot->user->nickname : null;
+    }
+
+    private function getStatsData(RadioSettings $radio) {
         $url = $radio->ip . ':' . $radio->port . '/stats?sid=1&json=1';
 
         $curl = curl_init();
@@ -62,7 +81,7 @@ class RadioStats {
         return $data;
     }
 
-    private function getCurrentDjUser ($nickname) {
+    private function getCurrentDjUser($nickname) {
         $user = User::withNickname($nickname)->first();
         return (object)[
             'userId' => Value::objectProperty($user, 'userId', 0),
@@ -71,7 +90,7 @@ class RadioStats {
         ];
     }
 
-    private function getAlbumArt ($song) {
+    private function getAlbumArt($song) {
         $url = 'https://itunes.apple.com/search?term=' . urlencode($song) . '&entity=album&limit=1';
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);

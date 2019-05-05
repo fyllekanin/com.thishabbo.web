@@ -16,7 +16,7 @@ class VisitorMessageReportView {
             ->isSubject()
             ->where('visitorMessageId', '<', $subjectId)
             ->where('hostId', $visitorMessage->hostId)
-            ->count());
+            ->count('visitorMessageId'));
         $threadSkeleton->content = "[mention]@" . $user->nickname . "[/mention] reported a visitor message.
 
         [b]User reported:[/b] [mention]@" . $visitorMessage->user->nickname . "[/mention]

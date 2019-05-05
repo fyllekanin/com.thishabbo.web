@@ -62,8 +62,8 @@ class LogsController extends Controller {
             $log->whereIn('userId', $userIds);
         }
 
-        $total = DataHelper::getPage($log->count());
-        $items = $log->take($this->perPage)->skip($this->getOffset($page))->get()->map(function($item) {
+        $total = DataHelper::getPage($log->count('logId'));
+        $items = $log->take($this->perPage)->skip($this->getOffset($page))->get()->map(function ($item) {
             $data = null;
             try {
                 $data = json_decode($item->data);
@@ -71,7 +71,7 @@ class LogsController extends Controller {
                 // Left empty intentionally
             }
 
-            return (object) [
+            return (object)[
                 'user' => UserHelper::getSlimUser($item->userId),
                 'action' => Action::getActionFromId($item->action)['description'],
                 'data' => $data,
@@ -81,8 +81,8 @@ class LogsController extends Controller {
 
         return response()->json([
             'total' => $total,
-            'actions' => array_map(function($action) {
-                return [ 'id' => $action['id'], 'description' => $action['description'] ];
+            'actions' => array_map(function ($action) {
+                return ['id' => $action['id'], 'description' => $action['description']];
             }, $actions),
             'page' => $page,
             'items' => $items

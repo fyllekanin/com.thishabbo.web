@@ -12,7 +12,7 @@ class PermissionHelper {
 
     private static $superAdmins = [1];
 
-    public static function isSuperAdmin ($userId) {
+    public static function isSuperAdmin($userId) {
         return in_array($userId, self::$superAdmins);
     }
 
@@ -20,7 +20,7 @@ class PermissionHelper {
         return self::$superAdmins;
     }
 
-    public static function haveGroupOption ($userId, $option) {
+    public static function haveGroupOption($userId, $option) {
         $user = UserHelper::getUserFromId($userId);
         $groups = $user->userId > 0 ? $user->groups : [];
 
@@ -32,12 +32,12 @@ class PermissionHelper {
         return false;
     }
 
-    public static function haveForumOption ($categoryId, $option) {
+    public static function haveForumOption($categoryId, $option) {
         $category = Category::find($categoryId);
         return $category && $category->options & $option;
     }
 
-    public static function haveForumPermission ($userId, $permission, $categoryId) {
+    public static function haveForumPermission($userId, $permission, $categoryId) {
         $cacheString = 'forum-permission-' . $userId . '-' . $permission . '-' . $categoryId;
         if (Cache::has($cacheString)) {
             return Cache::get($cacheString);
@@ -54,27 +54,27 @@ class PermissionHelper {
         $result = ForumPermission::where('categoryId', $categoryId)
                 ->whereIn('groupId', $user->groupIds)
                 ->whereRaw('(permissions & ' . $permission . ')')
-                ->count() > 0;
+                ->count('categoryId') > 0;
 
         Cache::add($cacheString, $result, 10);
         return $result;
     }
 
-    public static function haveStaffPermission ($userId, $permission) {
+    public static function haveStaffPermission($userId, $permission) {
         return self::checkPermission('staffPermissions', $userId, $permission);
     }
 
-    public static function haveForumPermissionWithException ($userId, $permission, $categoryId, $message, $status = 403) {
+    public static function haveForumPermissionWithException($userId, $permission, $categoryId, $message, $status = 403) {
         if (!self::haveForumPermission($userId, $permission, $categoryId)) {
             abort($status, $message);
         }
     }
 
-    public static function haveAdminPermission ($userId, $permission) {
+    public static function haveAdminPermission($userId, $permission) {
         return self::checkPermission('adminPermissions', $userId, $permission);
     }
 
-    public static function nameToNumberOptions ($category) {
+    public static function nameToNumberOptions($category) {
         $options = 0;
         $categoryOptions = (array)$category->options;
 
@@ -86,7 +86,7 @@ class PermissionHelper {
         return $options;
     }
 
-    public static function getStaffMiddleware ($permission) {
+    public static function getStaffMiddleware($permission) {
         if (is_array($permission)) {
             $permissions = implode('|', $permission);
             return ['staff_permission.check:' . $permissions];
@@ -94,7 +94,7 @@ class PermissionHelper {
         return ['staff_permission.check:' . $permission];
     }
 
-    public static function getAdminMiddleware ($permission) {
+    public static function getAdminMiddleware($permission) {
         if (is_array($permission)) {
             $permissions = implode('|', $permission);
             return ['admin_permission.check:' . $permissions];
@@ -102,7 +102,7 @@ class PermissionHelper {
         return ['admin_permission.check:' . $permission];
     }
 
-    private static function checkPermission ($type, $userId, $permission) {
+    private static function checkPermission($type, $userId, $permission) {
         $availableTypes = ['adminPermissions', 'staffPermissions'];
         if (self::isSuperAdmin($userId)) {
             return true;
@@ -119,6 +119,6 @@ class PermissionHelper {
 
         return Group::whereIn('groupId', $user->groupIds)
                 ->whereRaw('(' . $type . ' & ' . $permission . ')')
-                ->count() > 0;
+                ->count('groupId') > 0;
     }
 }

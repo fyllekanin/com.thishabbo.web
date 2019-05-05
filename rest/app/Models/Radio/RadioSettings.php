@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models\Radio;
 
 /**
@@ -16,8 +17,9 @@ class RadioSettings {
     public $song = '';
     public $albumArt = '';
     public $djSays = '';
+    public $nextDj = '';
 
-    public function __construct ($data) {
+    public function __construct($data) {
         try {
             $data = json_decode($data);
             $this->ip = $data->ip;
@@ -31,13 +33,14 @@ class RadioSettings {
             $this->song = $data->song;
             $this->albumArt = $data->albumArt;
             $this->djSays = $data->djSays;
-        } catch(\Exception $exception) {
+            $this->nextDj = $data->nextDj;
+        } catch (\Exception $exception) {
 
         }
     }
 
     public function jsonSerialize() {
-        return (object) [
+        return (object)[
             'ip' => $this->ip,
             'port' => $this->port,
             'password' => $this->password,
@@ -48,7 +51,8 @@ class RadioSettings {
             'listeners' => $this->listeners,
             'song' => $this->song,
             'albumArt' => $this->albumArt,
-            'djSays' => $this->djSays
+            'djSays' => $this->djSays,
+            'nextDj' => $this->nextDj
         ];
     }
 }
