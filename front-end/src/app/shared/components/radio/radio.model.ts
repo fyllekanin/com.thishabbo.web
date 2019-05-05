@@ -19,8 +19,10 @@ export class RadioModel {
     ip: string;
     @primitive()
     port: string;
+    @primitive()
+    nextDj: string;
 
-    constructor(source: Partial<RadioModel>) {
+    constructor (source: Partial<RadioModel>) {
         ClassHelper.assign(this, source);
     }
 }

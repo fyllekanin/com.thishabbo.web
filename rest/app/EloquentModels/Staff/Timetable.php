@@ -17,28 +17,32 @@ class Timetable extends DeletableModel {
     protected $hidden = ['userId', 'eventId', 'permShow'];
     protected $appends = ['user', 'event', 'name'];
 
-    public function event () {
+    public function event() {
         return $this->hasMany('App\EloquentModels\Staff\Event', 'eventId', 'eventId');
     }
 
-    public function getUserAttribute () {
+    public function user() {
+        return $this->hasOne('App\EloquentModels\User\User', 'userId', 'userId');
+    }
+
+    public function getUserAttribute() {
         return UserHelper::getUser($this->userId);
     }
 
-    public function getEventAttribute () {
+    public function getEventAttribute() {
         return Event::find($this->eventId);
     }
 
-    public function getNameAttribute () {
+    public function getNameAttribute() {
         $data = $this->timetableData()->first();
         return $data ? $data->name : null;
     }
 
-    public function timetableData () {
+    public function timetableData() {
         return $this->hasOne('App\EloquentModels\Staff\TimetableData', 'timetableId');
     }
 
-    public function getPermShowAttribute () {
+    public function getPermShowAttribute() {
         return isset($this->timetableData) ? [
             'timetableId' => $this->timetableId,
             'day' => $this->day,
@@ -51,19 +55,19 @@ class Timetable extends DeletableModel {
 
     }
 
-    public function scopeIsActive ($query) {
+    public function scopeIsActive($query) {
         return $query->where('isActive', true);
     }
 
-    public function scopeRadio (Builder $query) {
+    public function scopeRadio(Builder $query) {
         return $query->where('type', false);
     }
 
-    public function scopeIsPerm (Builder $query) {
+    public function scopeIsPerm(Builder $query) {
         return $query->where('isPerm', true);
     }
 
-    public function scopeEvents (Builder $query) {
+    public function scopeEvents(Builder $query) {
         return $query->where('type', true);
     }
 
