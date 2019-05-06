@@ -255,7 +255,7 @@ class ThreadCrudController extends Controller {
         $permissions = $this->forumService->getForumPermissionsForUserInCategory($user->userId, $thread->categoryId);
 
         if ($permissions->canApprovePosts) {
-            $thread->posts += $thread->threadPosts()->where('isApproved', false)->count('threadId');
+            $thread->posts += $thread->threadPosts()->where('isApproved', '<', 1)->count('threadId');
         }
 
         $thread->load(['threadPosts' => function ($query) use ($permissions, $page) {

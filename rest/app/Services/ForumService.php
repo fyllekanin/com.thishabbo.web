@@ -123,7 +123,7 @@ class ForumService {
      */
     public function getCategoriesUserCantSeeOthersThreadsIn($userId) {
         $forumPermissions = ConfigHelper::getForumConfig();
-        $categories = Category::select('categoryId')->where('isDeleted', 0)->get();
+        $categories = Category::select('categoryId')->get();
         $categoryIds = [];
 
         foreach ($categories as $category) {

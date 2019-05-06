@@ -26,7 +26,7 @@ class PostController extends Controller {
      *
      * @param ForumService $forumService
      */
-    public function __construct (ForumService $forumService) {
+    public function __construct(ForumService $forumService) {
         parent::__construct();
         $this->forumService = $forumService;
     }
@@ -53,7 +53,7 @@ class PostController extends Controller {
             }
         }
 
-        $postIds = Iterables::filter($postIds, function($postId) use ($firstPostId) {
+        $postIds = Iterables::filter($postIds, function ($postId) use ($firstPostId) {
             return $postId != $firstPostId;
         });
 
@@ -89,7 +89,7 @@ class PostController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deletePosts (Request $request) {
+    public function deletePosts(Request $request) {
         $user = Cache::get('auth');
         $postIds = $request->input('postIds');
 
@@ -107,7 +107,7 @@ class PostController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function approvePosts (Request $request) {
+    public function approvePosts(Request $request) {
         $user = Cache::get('auth');
         $postIds = $request->input('postIds');
 
@@ -146,7 +146,7 @@ class PostController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function unApprovePosts (Request $request) {
+    public function unApprovePosts(Request $request) {
         $user = Cache::get('auth');
         $postIds = $request->input('postIds');
 
@@ -205,7 +205,7 @@ class PostController extends Controller {
         Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, $forumPermissions->canChangeOwner, $posts->get(0)->thread->categoryId),
             400, 'You do not have permission to change post owner');
 
-        $sameThreadId = Iterables::every($posts, function($post) use ($threadId) {
+        $sameThreadId = Iterables::every($posts, function ($post) use ($threadId) {
             return $post->threadId == $threadId;
         });
         Condition::precondition(!$sameThreadId, 400, 'You are trying to change owners of posts from different threads');
@@ -261,7 +261,7 @@ class PostController extends Controller {
 
         if ($post->thread->lastPostId == $post->postId) {
             $post->thread->lastPostId = Post::where('threadId', $post->threadId)
-                ->where('isApproved', true)
+                ->where('isApproved', '>', 0)
                 ->orderBy('postId', 'DESC')
                 ->first()->postId;
             $post->thread->posts--;

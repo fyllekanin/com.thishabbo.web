@@ -49,7 +49,7 @@ class Category extends DeletableModel {
     }
 
     public function scopeNonHidden(Builder $query) {
-        return $query->where('isHidden', 0);
+        return $query->where('isHidden', '<', 1);
     }
 
     public function scopeDefault(Builder $query) {

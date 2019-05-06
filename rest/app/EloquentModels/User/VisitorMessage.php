@@ -44,6 +44,6 @@ class VisitorMessage extends DeletableModel {
     }
 
     public function scopeIsSubject(Builder $query) {
-        return $query->where('parentId', 0);
+        return $query->where('parentId', '<', 0);
     }
 }

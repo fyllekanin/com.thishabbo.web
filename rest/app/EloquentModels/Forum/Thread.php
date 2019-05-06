@@ -115,7 +115,7 @@ class Thread extends DeletableModel {
     }
 
     public function scopeIsApproved(Builder $query, $canApprove = 0) {
-        return $query->where('isApproved', ($canApprove ? '<=' : '='), 1);
+        return $query->where('isApproved', ($canApprove ? '>=' : '>'), 0);
     }
 
     public function scopeCreatedAfter(Builder $query, $createdAfter) {
@@ -123,22 +123,22 @@ class Thread extends DeletableModel {
     }
 
     public function scopeUnapproved(Builder $query) {
-        return $query->where('isApproved', 0);
+        return $query->where('isApproved', '<', 1);
     }
 
     public function scopeOpen(Builder $query) {
-        return $query->where('isOpen', 1);
+        return $query->where('isOpen', '>', 0);
     }
 
     public function scopeClosed(Builder $query) {
-        return $query->where('isOpen', 0);
+        return $query->where('isOpen', '<', 1);
     }
 
     public function scopeIsSticky(Builder $query) {
-        return $query->where('isSticky', 1);
+        return $query->where('isSticky', '>', 0);
     }
 
     public function scopeNonStickied(Builder $query) {
-        return $query->where('isSticky', 0);
+        return $query->where('isSticky', '<', 1);
     }
 }

@@ -8,7 +8,7 @@ class DeletableModel extends UnixTimeModel {
     protected static function boot() {
         parent::boot();
         static::addGlobalScope('nonHardDeleted', function (Builder $builder) {
-            $builder->where($builder->getModel()->getTable() . '.isDeleted', 0);
+            $builder->where($builder->getModel()->getTable() . '.isDeleted', '<', 1);
         });
     }
 }

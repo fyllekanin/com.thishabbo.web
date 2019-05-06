@@ -98,14 +98,13 @@ class CategoryCrudController extends Controller {
             'No permissions to access this category');
 
         $category = Category::where('categoryId', $categoryId)->first();
-        $category->append('parents');
         $forumPermissions = $this->getCategoryPermissions($categoryId, $user->userId);
 
         $sortedBy = $this->queryParamService->getSortedBy($sortedByQuery);
         $fromThe = $this->queryParamService->getFromThe($fromTheQuery);
         $sortOrder = isset($sortOrderQuery) && !empty($sortOrderQuery) ? $sortOrderQuery : 'desc';
-        $threadSql = Thread::nonStickied()
-            ->where('categoryId', $categoryId)
+        $threadSql = Thread::where('categoryId', $categoryId)
+            ->nonStickied()
             ->isApproved($forumPermissions->canApproveThreads)
             ->orderBy($sortedBy, $sortOrder);
 

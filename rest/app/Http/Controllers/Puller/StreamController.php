@@ -100,7 +100,7 @@ class StreamController extends Controller {
      */
     private function getAmountOfUnreadNotifications($userId) {
         return DB::table('notifications')
-            ->where('readAt', 0)
+            ->where('readAt', '<', 1)
             ->where('userId', $userId)
             ->get(['contentId', 'type'])
             ->filter(function ($notification) use ($userId) {
