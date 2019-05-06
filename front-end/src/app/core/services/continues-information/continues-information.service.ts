@@ -1,4 +1,4 @@
-import { interval, Observable, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { HttpService } from 'core/services/http/http.service';
 import { Injectable, NgZone } from '@angular/core';
 import { NotificationModel } from 'shared/app-views/top-bar/top-bar.model';
@@ -10,16 +10,16 @@ import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 
 @Injectable()
 export class ContinuesInformationService implements Resolve<void> {
-    private _event: EventSource;
     private _onContinuesInformationSubject: Subject<ContinuesInformationModel> = new Subject();
-    private _lastStreamError = 0;
 
     private _lastNotificationCheck = 0;
     private _notificationsSubject: Subject<Array<NotificationModel<any>>> = new Subject();
     private _notifications: Array<NotificationModel<any>> = [];
 
-    private _intervalSubscription;
-    private _intervalSpeed = (1000 * 60) * 5;
+    private _timer: NodeJS.Timer;
+    private _fastInterval = 1000 * 5;
+    private _slowInterval = (1000 * 60) * 5;
+    private _currentInterval = this._fastInterval;
 
     private _onTabsUpdatedSubject: Subject<void> = new Subject();
 
@@ -29,16 +29,12 @@ export class ContinuesInformationService implements Resolve<void> {
         private _authService: AuthService,
         userService: UserService
     ) {
+        this.updateInterval();
         userService.onUserActivityChange.subscribe(isUserActive => {
-            this.updateIntervalTime(isUserActive);
             this.onUserActivityChange(isUserActive);
         });
         this._authService.onUserChange.subscribe(() => {
-            if (this._authService.isLoggedIn()) {
-                this.stopEventStream();
-                this.startEventStream();
-            } else {
-                console.log(1);
+            if (!this._authService.isLoggedIn()) {
                 this._notifications = [];
                 this._notificationsSubject.next(this._notifications);
                 this._lastNotificationCheck = 0;
@@ -79,51 +75,29 @@ export class ContinuesInformationService implements Resolve<void> {
     }
 
     private onUserActivityChange (isUserActive): void {
-        if (this._event && isUserActive) {
+        if (this.isFastInterval() && isUserActive) {
             return;
         }
 
-        if (!this._event && isUserActive) {
-            this.startEventStream();
-        } else if (this._event && !isUserActive) {
-            this.stopEventStream();
+        if (!this.isFastInterval() && isUserActive) {
+            this._currentInterval = this._fastInterval;
+        } else if (this.isFastInterval() && !isUserActive) {
+            this._currentInterval = this._slowInterval;
         }
+        this.updateInterval();
     }
 
-    private stopEventStream (): void {
-        this._event.close();
-        this._event = null;
+    private doRequest (): void {
+        this._httpService.get('puller/pull')
+            .subscribe(this.onContinuesInformationData.bind(this));
     }
 
-    private startEventStream (): void {
-        if (this._event) {
-            return;
+    private updateInterval (): void {
+        clearInterval(this._timer);
+        if (this.isFastInterval()) {
+            this.doRequest();
         }
-        const query = this._authService.isLoggedIn() ? `?userId=${this._authService.authUser.userId}` : '';
-        this._event = new EventSource(`/rest/api/puller/stream${query}`);
-        this._event.onmessage = this.onContinuesInformationData.bind(this);
-        this._event.onerror = () => {
-            const current = new Date().getTime();
-            this.stopEventStream();
-            if (this._lastStreamError < (current - 5000)) {
-                this.startEventStream();
-            }
-            this._lastStreamError = current;
-        };
-    }
-
-    private updateIntervalTime (isUserActive: boolean): void {
-        if (isUserActive && this._intervalSubscription) {
-            this._intervalSubscription.unsubscribe();
-            this._intervalSubscription = null;
-            return;
-        } else if (!isUserActive && !this._intervalSubscription) {
-            this.startInterval();
-        }
-    }
-
-    private startInterval (): void {
-        this._intervalSubscription = interval(this._intervalSpeed).subscribe(this.fetchNotifications.bind(this));
+        this._timer = setInterval(this.doRequest.bind(this), this._currentInterval);
     }
 
     private fetchNotifications (): void {
@@ -136,8 +110,8 @@ export class ContinuesInformationService implements Resolve<void> {
         });
     }
 
-    private onContinuesInformationData (event: { data: string }): void {
-        const data = new ContinuesInformationModel(JSON.parse(event.data));
+    private onContinuesInformationData (response): void {
+        const data = new ContinuesInformationModel(response);
         this._onContinuesInformationSubject.next(data);
 
         if (this._notifications.length < data.unreadNotifications) {
@@ -157,5 +131,9 @@ export class ContinuesInformationService implements Resolve<void> {
 
         this._notificationsSubject.next(this._notifications);
         this._lastNotificationCheck = Math.floor(new Date().getTime() / 1000);
+    }
+
+    private isFastInterval () {
+        return this._currentInterval === this._fastInterval;
     }
 }
