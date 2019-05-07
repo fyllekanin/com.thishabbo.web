@@ -18,7 +18,7 @@ class SnakeController extends Controller {
      * SnakeController constructor.
      * Fetch the available game types and store in instance variable
      */
-    public function __construct () {
+    public function __construct() {
         parent::__construct();
         $this->gameTypes = ConfigHelper::getGameTypesConfig();
     }
@@ -30,10 +30,10 @@ class SnakeController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getSnakeHighscoreTable ($asJson = false) {
+    public function getSnakeHighscoreTable($asJson = false) {
         $highScore = Game::orderBy('score', 'DESC')
             ->where('gameType', $this->gameTypes->snake)
-            ->where('isFinished', true)
+            ->where('isFinished', '>', 0)
             ->take(15)
             ->get();
 
@@ -47,7 +47,7 @@ class SnakeController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getSnakeGame (Request $request) {
+    public function getSnakeGame(Request $request) {
         $user = Cache::get('auth');
 
         $game = new Game([
@@ -67,7 +67,7 @@ class SnakeController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createSnakeScore (Request $request) {
+    public function createSnakeScore(Request $request) {
         $user = Cache::get('auth');
         $result = (object)$request->input('result');
         $game = Game::find($result->gameId);

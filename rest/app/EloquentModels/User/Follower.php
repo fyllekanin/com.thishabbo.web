@@ -22,6 +22,6 @@ class Follower extends UnixTimeModel {
     }
 
     public function scopeIsApproved(Builder $query) {
-        return $query->where('isApproved', true);
+        return $query->where('isApproved', '>', 0);
     }
 }

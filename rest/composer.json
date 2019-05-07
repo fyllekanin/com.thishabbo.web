@@ -26,7 +26,8 @@
     "phpunit/phpunit": "^7.0",
     "orangehill/iseed": "^2.6.1",
     "overtrue/phplint": "^1.1",
-    "phpmd/phpmd": "^2.6"
+    "phpmd/phpmd": "^2.6",
+    "lanin/laravel-api-debugger": "^3.0"
   },
   "autoload": {
     "classmap": [

@@ -12,9 +12,8 @@ use App\Services\ActivityService;
 use App\Services\ForumService;
 use App\Services\NotificationService;
 use App\Utils\BBcodeUtil;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class StreamController extends Controller {
     private $settingKeys;
@@ -42,43 +41,21 @@ class StreamController extends Controller {
      * Radio stats response stream, stream the radio stats every 5sec from the database.
      * The stats are updated every 5sec in a cron job.
      *
-     * @param Request $request
-     *
-     * @return StreamedResponse
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function getStream(Request $request) {
-        $response = new StreamedResponse();
-        $response->headers->set('Content-Type', 'text/event-stream');
-        $response->headers->set('Cache-Control', 'no-cache');
-        $userId = $request->input('userId');
+    public function getPull() {
+        $user = Cache::get('auth');
+        $activeUsers = $this->getActiveUsers();
+        $siteMessages = $this->getSiteMessages();
+        $activities = $this->activityService->getLatestActivities($this->forumService->getAccessibleCategories($user->userId));
 
-        $response->setCallback(function () use ($userId) {
-            $activeUsers = $this->getActiveUsers();
-            $siteMessages = $this->getSiteMessages();
-            $activities = $this->activityService->getLatestActivities($this->forumService->getAccessibleCategories($userId));
-
-            for ($i = 0; $i < 6; $i++) {
-                $stats = [
-                    'radio' => $this->getRadioStats(),
-                    'unreadNotifications' => $this->getAmountOfUnreadNotifications($userId),
-                    'siteMessages' => $siteMessages,
-                    'activeUsers' => $activeUsers,
-                    'activities' => $activities
-                ];
-
-                echo 'data: ' . json_encode($stats) . "\n\n";
-                ob_flush();
-                flush();
-
-                if ($i == 5) {
-                    sleep(3);
-                    break;
-                }
-
-                sleep(5);
-            }
-        });
-        return $response;
+        return response()->json([
+            'radio' => $this->getRadioStats(),
+            'unreadNotifications' => $this->getAmountOfUnreadNotifications($user->userId),
+            'siteMessages' => $siteMessages,
+            'activeUsers' => $activeUsers,
+            'activities' => $activities
+        ]);
     }
 
     /**
@@ -100,7 +77,7 @@ class StreamController extends Controller {
      */
     private function getAmountOfUnreadNotifications($userId) {
         return DB::table('notifications')
-            ->where('readAt', 0)
+            ->where('readAt', '<', 1)
             ->where('userId', $userId)
             ->get(['contentId', 'type'])
             ->filter(function ($notification) use ($userId) {

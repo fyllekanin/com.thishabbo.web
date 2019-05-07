@@ -35,7 +35,7 @@ class NotificationController extends Controller {
         ];
 
         DB::table('notifications')
-            ->where('readAt', 0)
+            ->where('readAt', '<', 1)
             ->where('userId', $user->userId)
             ->whereIN('type', $types)
             ->update(['readAt' => time()]);
@@ -52,7 +52,7 @@ class NotificationController extends Controller {
         ];
 
         DB::table('notifications')
-            ->where('readAt', 0)
+            ->where('readAt', '<', 1)
             ->where('userId', $user->userId)
             ->whereIN('type', $types)
             ->update(['readAt' => time()]);
@@ -90,7 +90,7 @@ class NotificationController extends Controller {
 
         $notifications = DB::table('notifications')
             ->where('createdAt', '>=', $createdAfter)
-            ->where('readAt', 0)
+            ->where('readAt', '<', 1)
             ->where('userId', $user->userId)
             ->get()->toArray();
 

@@ -34,7 +34,7 @@ class FastTyperController extends Controller {
     public function getFastTyperHighscoreTable($asJson = false) {
         $highScore = Game::orderBy('score', 'DESC')
             ->where('gameType', $this->gameTypes->fastTyper)
-            ->where('isFinished', true)
+            ->where('isFinished', '>', 0)
             ->take(15)
             ->get();
 

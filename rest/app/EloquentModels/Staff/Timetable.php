@@ -56,19 +56,19 @@ class Timetable extends DeletableModel {
     }
 
     public function scopeIsActive($query) {
-        return $query->where('isActive', true);
+        return $query->where('isActive', '>', 0);
     }
 
     public function scopeRadio(Builder $query) {
-        return $query->where('type', false);
+        return $query->where('type', '<', 1);
     }
 
     public function scopeIsPerm(Builder $query) {
-        return $query->where('isPerm', true);
+        return $query->where('isPerm', '>', 0);
     }
 
     public function scopeEvents(Builder $query) {
-        return $query->where('type', true);
+        return $query->where('type', '>', 0);
     }
 
 }

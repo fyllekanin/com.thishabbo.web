@@ -13,20 +13,20 @@ class UserItem extends UnixTimeModel {
     protected $primaryKey = 'userItemId';
     protected $fillable = ['type', 'userId', 'itemId', 'isActive'];
 
-    public function __construct (array $attributes = []) {
+    public function __construct(array $attributes = []) {
         parent::__construct($attributes);
         $this->itemTypes = ConfigHelper::getTypesConfig();
     }
 
-    public function user () {
+    public function user() {
         return $this->belongsTo('App\EloquentModels\User\User', 'userId', 'userId');
     }
 
-    public function scopeBadge (Builder $query) {
+    public function scopeBadge(Builder $query) {
         return $query->where('type', $this->itemTypes->badge);
     }
 
-    public function scopeIsActive (Builder $query) {
-        return $query->where('isActive', true);
+    public function scopeIsActive(Builder $query) {
+        return $query->where('isActive', '>', 0);
     }
 }
