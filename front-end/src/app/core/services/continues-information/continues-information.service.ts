@@ -93,11 +93,15 @@ export class ContinuesInformationService implements Resolve<void> {
     }
 
     private updateInterval (): void {
-        clearInterval(this._timer);
-        if (this.isFastInterval()) {
-            this.doRequest();
-        }
-        this._timer = setInterval(this.doRequest.bind(this), this._currentInterval);
+        this._ngZone.runOutsideAngular(() => {
+            clearInterval(this._timer);
+            if (this.isFastInterval()) {
+                this.doRequest();
+            }
+            this._timer = setInterval(() => {
+                this._ngZone.run(this.doRequest.bind(this));
+            }, this._currentInterval);
+        });
     }
 
     private fetchNotifications (): void {
