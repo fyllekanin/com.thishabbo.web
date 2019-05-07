@@ -109,6 +109,10 @@ class Thread extends DeletableModel {
         return Value::objectProperty($this->templateData, 'roomLink', '');
     }
 
+    public function scopeWithNickname(Builder $query) {
+        return $query->leftJoin('users', 'users.userId', '=', 'threads.userId')
+            ->select('threads.*', 'users.nickname');
+    }
 
     public function scopeBelongsToUser(Builder $query, $userId) {
         return $query->where('userId', $userId);
