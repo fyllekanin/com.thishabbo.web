@@ -115,34 +115,34 @@ class Thread extends DeletableModel {
     }
 
     public function scopeBelongsToUser(Builder $query, $userId) {
-        return $query->where('userId', $userId);
+        return $query->where('threads.userId', $userId);
     }
 
     public function scopeIsApproved(Builder $query, $canApprove = 0) {
-        return $query->where('isApproved', ($canApprove ? '>=' : '>'), 0);
+        return $query->where('threads.isApproved', ($canApprove ? '>=' : '>'), 0);
     }
 
     public function scopeCreatedAfter(Builder $query, $createdAfter) {
-        return $query->where('createdAt', '>', $createdAfter);
+        return $query->where('threads.createdAt', '>', $createdAfter);
     }
 
     public function scopeUnapproved(Builder $query) {
-        return $query->where('isApproved', '<', 1);
+        return $query->where('threads.isApproved', '<', 1);
     }
 
     public function scopeOpen(Builder $query) {
-        return $query->where('isOpen', '>', 0);
+        return $query->where('threads.isOpen', '>', 0);
     }
 
     public function scopeClosed(Builder $query) {
-        return $query->where('isOpen', '<', 1);
+        return $query->where('threads.isOpen', '<', 1);
     }
 
     public function scopeIsSticky(Builder $query) {
-        return $query->where('isSticky', '>', 0);
+        return $query->where('threads.isSticky', '>', 0);
     }
 
     public function scopeNonStickied(Builder $query) {
-        return $query->where('isSticky', '<', 1);
+        return $query->where('threads.isSticky', '<', 1);
     }
 }
