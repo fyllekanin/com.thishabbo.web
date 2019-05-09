@@ -119,6 +119,8 @@ class CategoryCrudController extends Controller {
         $total = DataHelper::getPage($threadSql->count('threadId'));
         $threads = $threadSql->skip($this->getOffset($page))
             ->take($this->perPage)
+            ->with(['prefix', 'lastPost'])
+            ->withNickname()
             ->get();
 
         return response()->json([
@@ -171,10 +173,7 @@ class CategoryCrudController extends Controller {
      */
     private function buildThreadsForCategory($threads, $userId) {
         foreach ($threads as $thread) {
-            $thread->append('prefix');
-            $user = UserHelper::getUserFromId($thread->userId);
-            $thread->lastPost = $this->forumService->getSlimPost($thread->lastPostId);
-            $thread->nickname = $user ? $user->nickname : 'no-one';
+            $thread->lastPost = $this->mapLastPost($thread, $thread->lastPost);
             $thread->haveRead = $this->forumService->haveReadThread($thread, $userId);
         }
 
@@ -198,16 +197,9 @@ class CategoryCrudController extends Controller {
         if (!$categoryPermissions->canViewOthersThreads) {
             $threadSql->belongsToUser($userId);
         }
-        $threads = $threadSql->get();
+        $threads = $threadSql->with(['prefix', 'lastPost'])->withNickname()->get();
 
-        foreach ($threads as $thread) {
-            $thread->append('prefix');
-            $user = UserHelper::getUserFromId($thread->userId);
-            $thread->lastPost = $this->forumService->getSlimPost($thread->lastPostId);
-            $thread->nickname = $user ? $user->nickname : 'no-one';
-        }
-
-        return $threads;
+        return $this->buildThreadsForCategory($threads, $userId);
     }
 
     /**
@@ -367,5 +359,17 @@ class CategoryCrudController extends Controller {
         }
 
         return $categories;
+    }
+
+    private function mapLastPost($thread, $post) {
+        return [
+            'postId' => $post->postId,
+            'threadId' => $post->threadId,
+            'threadTitle' => $thread->title,
+            'prefix' => $thread->prefix,
+            'user' => UserHelper::getSlimUser($post->userId),
+            'createdAt' => $post->createdAt->timestamp,
+            'page' => DataHelper::getPage($thread->posts)
+        ];
     }
 }
