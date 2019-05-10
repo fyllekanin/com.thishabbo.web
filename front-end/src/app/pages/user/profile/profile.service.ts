@@ -27,6 +27,23 @@ export class ProfileService implements Resolve<ProfileModel> {
             .pipe(map(res => new ProfileModel(res)));
     }
 
+    delete (visitorMessage: ProfileVisitorMessage): Promise<void> {
+        return new Promise(res => {
+            this._dialogService.openConfirmDialog(
+                'Are you sure?',
+                'Are you sure you wanna delete this visitor message / comment?',
+                () => {
+                    this._httpService.delete(`admin/moderation/visitor-message/${visitorMessage.visitorMessageId}`)
+                        .subscribe(() => {
+                            this._notificationService.sendInfoNotification('Visitor message/comment deleted!');
+                            res();
+                            this._dialogService.closeDialog();
+                        }, this._notificationService.failureNotification.bind(this._notificationService));
+                }
+            );
+        });
+    }
+
     report (visitorMessage: ProfileVisitorMessage): void {
         this._dialogService.openDialog({
             title: 'Report visitor message',

@@ -11,6 +11,8 @@
         </div>
         <div class="footer">
             <div class="controls">
+                <span *ngIf="canDeleteVisitorMessage" (click)="delete($event, visitorMessage)" tooltip="Delete"><i
+                        class="fas fa-trash"></i></span>
                 <span *ngIf="canReport(visitorMessage)" (click)="report($event, visitorMessage)" tooltip="Report"><i
                         class="fas fa-exclamation-triangle"></i></span>
                 <span *ngIf="canInfract(visitorMessage)" (click)="infract($event, visitorMessage)"
@@ -42,6 +44,8 @@
             </div>
             <div class="footer">
                 <div class="controls">
+                    <span *ngIf="canDeleteVisitorMessage" (click)="delete($event, comment)" tooltip="Delete"><i
+                            class="fas fa-trash"></i></span>
                     <span *ngIf="canReport(comment)" (click)="report($event, comment)" tooltip="Report"><i
                             class="fas fa-exclamation-triangle"></i></span>
                     <span *ngIf="canInfract(comment)" (click)="infract($event, comment)" tooltip="Warn / Infract"><i

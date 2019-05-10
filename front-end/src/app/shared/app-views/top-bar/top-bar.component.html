@@ -36,7 +36,8 @@
                                 <a class="notification-tool not-clickable">-</a>
                                 <a class="notification-tool" (click)="readAllNotifications()"
                                    *ngIf="notifications.length > 0">Read
-                                    All</a>
+                                    All
+                                </a>
                                 <a class="notification-tool not-clickable" *ngIf="notifications.length > 0">-</a>
                                 <a class="notification-tool"
                                    [routerLink]="['/user/usercp/subscriptions/notification-settings']">Settings</a>
@@ -80,9 +81,10 @@
                                    [routerLink]="['/user/usercp/account/notifications/page/1']">See All</a>
                                 <a class="notification-tool not-clickable">-</a>
                                 <a class="notification-tool" (click)="readAllMessages()"
-                                   *ngIf="notifications.length > 0">Read
-                                    All</a>
-                                <a class="notification-tool not-clickable" *ngIf="notifications.length > 0">-</a>
+                                   *ngIf="messages.length > 0">Read
+                                    All
+                                </a>
+                                <a class="notification-tool not-clickable" *ngIf="messages.length > 0">-</a>
                                 <a class="notification-tool"
                                    [routerLink]="['/user/usercp/subscriptions/notification-settings']">Settings</a>
                             </div>

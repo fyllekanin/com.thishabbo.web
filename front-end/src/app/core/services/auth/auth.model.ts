@@ -196,6 +196,8 @@ export class AdminPermissions {
     canPassPrivate: boolean;
     @primitive()
     canRemoveEssentials: boolean;
+    @primitive()
+    canModerateVisitorMessage: boolean;
 
     constructor (source?: Partial<AdminPermissions>) {
         ClassHelper.assign(this, source);

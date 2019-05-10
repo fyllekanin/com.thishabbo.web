@@ -46,6 +46,10 @@ Route::prefix('moderation')->group(function () use ($permissions) {
     Route::get('polls/page/{page}', 'Moderation\ThreadPollController@getPolls');
     Route::get('polls/{threadId}', 'Moderation\ThreadPollController@getPoll');
 
+    Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canModerateVisitorMessage)], function () {
+        Route::delete('visitor-message/{visitorMessageId}', 'Admin\Moderation\VisitorMessageController@deleteVisitorMessage');
+    });
+
     Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canApprovePublicGroups)], function () {
         Route::get('groups', 'Admin\Group\GroupsController@getGroupApplications');
         Route::post('groups/approve', 'Admin\Group\GroupsController@approveGroupApplication');
