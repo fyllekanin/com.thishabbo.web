@@ -1,6 +1,5 @@
-import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, objectOf, primitive, time } from 'shared/helpers/class.helper';
 import { SlimUser } from 'core/services/auth/auth.model';
-import { TimeHelper } from 'shared/helpers/time.helper';
 
 export class LatestThread {
     @primitive()
@@ -15,15 +14,15 @@ export class LatestThread {
     title: string;
     @objectOf(SlimUser)
     user: SlimUser;
-    @primitive()
-    createdAt: number;
+    @time()
+    createdAt: string;
 
-    constructor(source: Partial<LatestThread>) {
+    constructor (source: Partial<LatestThread>) {
         ClassHelper.assign(this, source);
     }
 
-    get time(): string {
-        return TimeHelper.getTime(this.createdAt);
+    get time (): string {
+        return this.createdAt;
     }
 }
 
@@ -35,7 +34,7 @@ export class LatestThreadsPage {
     @arrayOf(LatestThread)
     items: Array<LatestThread> = [];
 
-    constructor(source: Partial<LatestThreadsPage>) {
+    constructor (source: Partial<LatestThreadsPage>) {
         ClassHelper.assign(this, source);
     }
 }

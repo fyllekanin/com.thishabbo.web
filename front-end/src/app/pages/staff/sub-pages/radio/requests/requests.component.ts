@@ -2,12 +2,8 @@ import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
-import { TimeHelper } from 'shared/helpers/time.helper';
 import { Page } from 'shared/page/page.model';
-import {
-    STAFFCP_BREADCRUM_ITEM,
-    STAFFCP_RADIO_BREADCRUM_ITEM
-} from '../../../staff.constants';
+import { STAFFCP_BREADCRUM_ITEM, STAFFCP_RADIO_BREADCRUM_ITEM } from '../../../staff.constants';
 import { RequestModel } from './requests.model';
 import { INFO_BOX_TYPE, InfoBoxModel } from 'shared/app-views/info-box/info-box.model';
 
@@ -24,7 +20,7 @@ export class RequestsComponent extends Page implements OnDestroy {
         content: `You currently do not have any requests, tell your listeners to request!`
     };
 
-    constructor(
+    constructor (
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService,
         activatedRoute: ActivatedRoute
@@ -40,20 +36,20 @@ export class RequestsComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    getTitle(item: RequestModel): string {
+    getTitle (item: RequestModel): string {
         const ip = item.ip ? ` (ip: ${item.ip})` : '';
-        return `Request made by: ${item.nickname} - ${TimeHelper.getTime(item.createdAt)} ${ip}`;
+        return `Request made by: ${item.nickname} - ${item.createdAt} ${ip}`;
     }
 
-    get requests(): Array<RequestModel> {
+    get requests (): Array<RequestModel> {
         return this._reqeusts;
     }
 
-    private onData(data: { data: Array<RequestModel> }): void {
+    private onData (data: { data: Array<RequestModel> }): void {
         this._reqeusts = data.data;
     }
 }

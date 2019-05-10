@@ -1,23 +1,22 @@
 import { ForumPermissions, ThreadPrefix } from '../forum.model';
 import { CategoryParent } from '../category/category.model';
-import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, objectOf, primitive, time } from 'shared/helpers/class.helper';
 import { PostModel } from '../post/post.model';
 import { SlimUser, User } from 'core/services/auth/auth.model';
 import { ThreadPoll } from './thread-poll/thread-poll.model';
-import { TimeHelper } from 'shared/helpers/time.helper';
 
 export class ThreadReader {
     @objectOf(SlimUser)
     user: SlimUser;
-    @primitive()
-    time: number;
+    @time()
+    time: string;
 
     constructor (source: Partial<ThreadReader>) {
         ClassHelper.assign(this, source);
     }
 
     get timeAgo (): string {
-        return TimeHelper.getTime(this.time);
+        return this.time;
     }
 }
 

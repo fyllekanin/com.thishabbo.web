@@ -2,7 +2,6 @@ import { Component, EventEmitter, HostListener, Input, Output } from '@angular/c
 import { NotificationView } from 'shared/components/notification-views/notification-views.model';
 import { ThreadView } from 'app/shared/components/notification-views/thread-view/thread-view.model';
 import { NotificationModel, NotificationTypes } from 'shared/app-views/top-bar/top-bar.model';
-import { TimeHelper } from 'shared/helpers/time.helper';
 import { SlimUser } from 'core/services/auth/auth.model';
 import { Router } from '@angular/router';
 
@@ -18,26 +17,27 @@ export class ThreadViewComponent implements NotificationView {
     onClick = new EventEmitter<number>();
     isAvatarFailing = false;
 
-    constructor(private _router: Router) {}
+    constructor (private _router: Router) {
+    }
 
     @Input()
-    set notification(notification: NotificationModel<ThreadView>) {
+    set notification (notification: NotificationModel<ThreadView>) {
         this._notification = notification;
     }
 
-    get imagePath(): string {
+    get imagePath (): string {
         return `/rest/resources/images/users/${this.user.userId}.gif?${this.user.avatarUpdatedAt}`;
     }
 
-    get user(): SlimUser {
+    get user (): SlimUser {
         return this._notification.item.user;
     }
 
-    get title(): string {
+    get title (): string {
         return this._notification.item.thread.title;
     }
 
-    get text(): string {
+    get text (): string {
         switch (this._notification.type) {
             case NotificationTypes.MENTION:
                 return `mentioned you in`;
@@ -49,12 +49,12 @@ export class ThreadViewComponent implements NotificationView {
         return '';
     }
 
-    getTime(): string {
-        return TimeHelper.getTime(this._notification.createdAt);
+    getTime (): string {
+        return this._notification.createdAt;
     }
 
     @HostListener('click')
-    click(): void {
+    click (): void {
         this.onClick.next(this._notification.notificationId);
 
         const thread = this._notification.item.thread;

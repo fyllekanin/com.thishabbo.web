@@ -1,4 +1,4 @@
-import { ClassHelper, primitive } from 'shared/helpers/class.helper';
+import { ClassHelper, primitive, time } from 'shared/helpers/class.helper';
 import { BadgeView } from 'shared/components/notification-views/badge-view/badge-view.model';
 import { CategoryView } from 'shared/components/notification-views/category-view/category-view.model';
 import { ThreadView } from 'shared/components/notification-views/thread-view/thread-view.model';
@@ -23,8 +23,8 @@ export class NotificationModel<T> {
 
     @primitive()
     notificationId: number;
-    @primitive()
-    createdAt: number;
+    @time()
+    createdAt: string;
     @primitive()
     type: number;
 

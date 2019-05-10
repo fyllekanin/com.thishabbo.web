@@ -2,7 +2,6 @@ import { Component, EventEmitter, HostListener, Input, Output } from '@angular/c
 import { NotificationView } from 'shared/components/notification-views/notification-views.model';
 import { NotificationModel } from 'shared/app-views/top-bar/top-bar.model';
 import { CategoryView } from 'app/shared/components/notification-views/category-view/category-view.model';
-import { TimeHelper } from 'shared/helpers/time.helper';
 import { Router } from '@angular/router';
 import { SlimUser } from 'core/services/auth/auth.model';
 
@@ -18,31 +17,32 @@ export class CategoryViewComponent implements NotificationView {
     onClick = new EventEmitter<number>();
     isAvatarFailing = false;
 
-    constructor(private _router: Router) {}
+    constructor (private _router: Router) {
+    }
 
     @Input()
-    set notification(notification: NotificationModel<CategoryView>) {
+    set notification (notification: NotificationModel<CategoryView>) {
         this._notification = notification;
     }
 
-    get user(): SlimUser {
+    get user (): SlimUser {
         return this._notification.item.user;
     }
 
-    get categoryTitle(): string {
+    get categoryTitle (): string {
         return this._notification.item.thread.categoryTitle;
     }
 
-    get imagePath(): string {
+    get imagePath (): string {
         return `/rest/resources/images/users/${this.user.userId}.gif?${this.user.avatarUpdatedAt}`;
     }
 
-    getTime(): string {
-        return TimeHelper.getTime(this._notification.createdAt);
+    getTime (): string {
+        return this._notification.createdAt;
     }
 
     @HostListener('click')
-    click(): void {
+    click (): void {
         this.onClick.next(this._notification.notificationId);
         this._router.navigateByUrl(`/forum/thread/${this._notification.item.thread.threadId}/page/1`);
     }

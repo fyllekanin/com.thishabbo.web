@@ -1,7 +1,5 @@
-import { ClassHelper, objectOf, arrayOf } from 'shared/helpers/class.helper';
-import { primitive } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, objectOf, primitive, time } from 'shared/helpers/class.helper';
 import { SlimUser } from 'core/services/auth/auth.model';
-import { TimeHelper } from 'shared/helpers/time.helper';
 import { IUserProfile } from 'shared/directives/user-profile.directive';
 
 export class ForumLatestPost {
@@ -21,18 +19,18 @@ export class ForumLatestPost {
     title: string;
     @objectOf(SlimUser)
     user: SlimUser;
-    @primitive()
-    createdAt: number;
+    @time()
+    createdAt: string;
 
-    constructor(source: Partial<ForumLatestPost>) {
+    constructor (source: Partial<ForumLatestPost>) {
         ClassHelper.assign(this, source);
     }
 
-    get time(): string {
-        return TimeHelper.getTime(this.createdAt);
+    get time (): string {
+        return this.createdAt;
     }
 
-    getUserProfile(): IUserProfile {
+    getUserProfile (): IUserProfile {
         return {
             userId: this.user.userId,
             avatarUpdatedAt: this.user.avatarUpdatedAt
@@ -75,7 +73,7 @@ export class ForumPermissions {
     @primitive()
     canOpenCloseOwnThread: boolean;
 
-    constructor(source?: Partial<ForumPermissions>) {
+    constructor (source?: Partial<ForumPermissions>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -88,7 +86,7 @@ export class ThreadPrefix {
     @primitive()
     style: string;
 
-    constructor(source: Partial<ThreadPrefix>) {
+    constructor (source: Partial<ThreadPrefix>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -109,7 +107,7 @@ export class SlimPost {
     @objectOf(ThreadPrefix)
     prefix: ThreadPrefix;
 
-    constructor(source: Partial<SlimPost>) {
+    constructor (source: Partial<SlimPost>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -142,7 +140,7 @@ export class SlimThread {
     @primitive()
     haveRead: boolean;
 
-    constructor(source?: Partial<SlimThread>) {
+    constructor (source?: Partial<SlimThread>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -167,7 +165,7 @@ export class SlimCategory {
     @primitive()
     displayOrder: number;
 
-    constructor(source?: Partial<SlimCategory>) {
+    constructor (source?: Partial<SlimCategory>) {
         ClassHelper.assign(this, source);
     }
 }

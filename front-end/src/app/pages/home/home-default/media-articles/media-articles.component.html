@@ -7,7 +7,8 @@
                     <div class="image" appLazyLoad [image]="getBackgroundImage(item.threadId)"></div>
                     <div class="content">
                         <a class="title" [routerLink]="['/forum', 'thread', item.threadId, 'page', 1]">
-                            <span *ngIf="item.prefix" [style]="item.prefix.style | safeStyle">{{item.prefix.text}} &#xbb;</span> {{item.title}}
+                            <span *ngIf="item.prefix" [style]="item.prefix.style | safeStyle">{{item.prefix.text}}
+                                &#xbb;</span> {{item.title}}
                         </a>
                         <div class="divider"></div>
                         <div class="inner-content" [innerHTML]="item.content | safeHtml"></div>
@@ -15,7 +16,7 @@
                         <div><i class="fas fa-pencil-alt"></i> Authored by
                             <app-user-link [user]="item.user"></app-user-link>
                         </div>
-                        <i class="fas fa-clock"></i> {{getTime(item)}}
+                        <i class="fas fa-clock"></i> {{item.createdAt}}
                     </div>
                 </div>
             </app-content>

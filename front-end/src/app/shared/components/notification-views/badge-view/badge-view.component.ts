@@ -2,7 +2,6 @@ import { Component, EventEmitter, HostListener, Input, Output } from '@angular/c
 import { NotificationView } from 'shared/components/notification-views/notification-views.model';
 import { NotificationModel } from 'shared/app-views/top-bar/top-bar.model';
 import { BadgeView } from 'app/shared/components/notification-views/badge-view/badge-view.model';
-import { TimeHelper } from 'shared/helpers/time.helper';
 
 @Component({
     selector: 'app-top-bar-badge-view',
@@ -16,24 +15,24 @@ export class BadgeViewComponent implements NotificationView {
     onClick = new EventEmitter<number>();
 
     @Input()
-    set notification(notification: NotificationModel<BadgeView>) {
+    set notification (notification: NotificationModel<BadgeView>) {
         this._notification = notification;
     }
 
-    get imagePath(): string {
-        return  `/rest/resources/images/badges/${this._notification.item.badge.badgeId}.gif`;
+    get imagePath (): string {
+        return `/rest/resources/images/badges/${this._notification.item.badge.badgeId}.gif`;
     }
 
-    get name(): string {
+    get name (): string {
         return this._notification.item.badge.name;
     }
 
-    getTime(): string {
-        return TimeHelper.getTime(this._notification.createdAt);
+    getTime (): string {
+        return this._notification.createdAt;
     }
 
     @HostListener('click')
-    click(): void {
+    click (): void {
         this.onClick.next(this._notification.notificationId);
     }
 }

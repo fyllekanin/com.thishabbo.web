@@ -1,12 +1,14 @@
 import 'reflect-metadata';
 import { Type } from '@angular/core';
+import { TimeHelper } from 'shared/helpers/time.helper';
 
 const primitiveSymbol = Symbol('primitiveSymbol');
 const objectSymbol = Symbol('objectSymbol');
-const objcetMapperSymbol = Symbol('objcetMapperSymbol');
+const objectMapperSymbol = Symbol('objectMapperSymbol');
 const arraySymbol = Symbol('arraySymbol');
 const arrayMapperSymbol = Symbol('arrayMapperSymbol');
 const valueSymbol = Symbol('valueSymbol');
+const timeSymbol = Symbol('timeSymbol');
 
 export class ClassHelper {
     private static readonly TYPES = {
@@ -14,20 +16,21 @@ export class ClassHelper {
         OBJ: 'obj',
         VAL: 'val',
         TYPED_ARR: 'typed_arr',
-        MAPPED_ARR: 'mapped_arr'
+        MAPPED_ARR: 'mapped_arr',
+        TIME: 'time'
     };
 
-    private static isType(symbol, target, prop: string) {
+    private static isType (symbol, target, prop: string) {
         return Reflect.hasMetadata(symbol, target, prop);
     }
 
-    private static getMappedType(target, propertyKey: string, element) {
-        const symbol = this.isType(objcetMapperSymbol, target, propertyKey) ? objcetMapperSymbol : arrayMapperSymbol;
+    private static getMappedType (target, propertyKey: string, element) {
+        const symbol = this.isType(objectMapperSymbol, target, propertyKey) ? objectMapperSymbol : arrayMapperSymbol;
         const objectMapper = Reflect.getMetadata(symbol, target, propertyKey);
         return objectMapper.mapper[element[objectMapper.key]];
     }
 
-    private static getMetadata(symbol: symbol, target, prop: string) {
+    private static getMetadata (symbol: symbol, target, prop: string) {
         const type = Reflect.getMetadata(symbol, target, prop);
         if (symbol !== primitiveSymbol) {
             return type;
@@ -40,7 +43,7 @@ export class ClassHelper {
         }
     }
 
-    private static getType(isPrim: boolean, isObj: boolean, isVal: boolean, isTypedArr: boolean, isMappedArr: boolean): string {
+    private static getType (isPrim: boolean, isObj: boolean, isVal: boolean, isTypedArr: boolean, isMappedArr: boolean, isTime: boolean): string {
         if (isPrim) {
             return this.TYPES.PRIM;
         } else if (isObj) {
@@ -51,11 +54,13 @@ export class ClassHelper {
             return this.TYPES.TYPED_ARR;
         } else if (isMappedArr) {
             return this.TYPES.MAPPED_ARR;
+        } else if (isTime) {
+            return this.TYPES.TIME;
         }
         return null;
     }
 
-    static assign<T>(target: T, source?): T {
+    static assign<T> (target: T, source?): T {
         for (const prop in source) {
             if (!source.hasOwnProperty(prop) && source[prop] === undefined) {
                 continue;
@@ -65,18 +70,22 @@ export class ClassHelper {
             }
 
             const isPrim = this.isType(primitiveSymbol, target, prop);
+            const isTime = this.isType(timeSymbol, target, prop);
             const isObj = this.isType(objectSymbol, target, prop) ||
-                this.isType(objcetMapperSymbol, target, prop) && typeof source[prop] === 'object';
+                this.isType(objectMapperSymbol, target, prop) && typeof source[prop] === 'object';
             const isVal = this.isType(valueSymbol, target, prop) && typeof source[prop] === 'string';
             const isTypedArr = this.isType(arraySymbol, target, prop) && Array.isArray(source[prop]);
             const isMappedArr = this.isType(arrayMapperSymbol, target, prop) && Array.isArray(source[prop]);
-            const type: string = this.getType(isPrim, isObj, isVal, isTypedArr, isMappedArr);
+            const type: string = this.getType(isPrim, isObj, isVal, isTypedArr, isMappedArr, isTime);
             let arrayType;
 
             switch (type) {
                 case this.TYPES.PRIM:
                     const primitiveType = this.getMetadata(primitiveSymbol, target, prop);
                     target[prop] = primitiveType(source[prop]);
+                    break;
+                case this.TYPES.TIME:
+                    target[prop] = TimeHelper.getTime(source[prop]);
                     break;
                 case this.TYPES.OBJ:
                     const objectType = this.isType(objectSymbol, target, prop) ?
@@ -115,26 +124,30 @@ export class ClassHelper {
     }
 }
 
-export function primitive<T>(type?: Type<T>) {
+export function primitive<T> (type?: Type<T>) {
     return Reflect.metadata(primitiveSymbol, type || true);
 }
 
-export function primitiveOf<T>(type: Type<T>) {
+export function time () {
+    return Reflect.metadata(timeSymbol, true);
+}
+
+export function primitiveOf<T> (type: Type<T>) {
     return Reflect.metadata(primitiveSymbol, type);
 }
 
-export function objectOf<T>(type: Type<T>) {
+export function objectOf<T> (type: Type<T>) {
     return Reflect.metadata(objectSymbol, type);
 }
 
-export function arrayOf<T>(type: Type<T>) {
+export function arrayOf<T> (type: Type<T>) {
     return Reflect.metadata(arraySymbol, type);
 }
 
-export function isPresent(value): boolean {
+export function isPresent (value): boolean {
     return value !== undefined && value !== null;
 }
 
-export function isAbsent(value): boolean {
+export function isAbsent (value): boolean {
     return !isPresent(value);
 }
