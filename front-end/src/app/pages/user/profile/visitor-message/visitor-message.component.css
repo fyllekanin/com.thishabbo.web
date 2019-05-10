@@ -25,6 +25,7 @@
 
 .message {
     padding: 5px 5px 10px 0;
+    min-height: 55px;
 }
 
 .controls i {

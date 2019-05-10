@@ -104,7 +104,9 @@
                 <div *ngIf="visitorMessages">
                     <app-user-profile-visitor-message *ngFor="let visitorMessage of visitorMessages"
                                                       [hostId]="user.userId"
-                                                      [visitorMessage]="visitorMessage"></app-user-profile-visitor-message>
+                                                      [visitorMessage]="visitorMessage"
+                                                      (onRemove)="onRemove(visitorMessage)">
+                    </app-user-profile-visitor-message>
                     <app-pagination [paginationModel]="pagination"></app-pagination>
                 </div>
             </div>

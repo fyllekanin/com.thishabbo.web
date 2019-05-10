@@ -82,6 +82,11 @@ export class ProfileComponent extends Page implements OnDestroy {
         }
     }
 
+    onRemove (visitorMessage: ProfileVisitorMessage): void {
+        this._data.visitorMessages.items = this._data.visitorMessages.items
+            .filter(item => item.visitorMessageId !== visitorMessage.visitorMessageId);
+    }
+
     get visitorMessages (): Array<ProfileVisitorMessage> {
         return this._data.visitorMessages.items;
     }

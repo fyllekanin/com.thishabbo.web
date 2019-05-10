@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, Input, ViewChild } from '@angular/core';
+import { AfterContentInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ProfileVisitorMessage } from '../profile.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
 import { ProfileService } from '../profile.service';
@@ -16,6 +16,7 @@ export class VisitorMessageComponent implements AfterContentInit {
     private _haveCheckedQueries = false;
 
     @Input() hostId: number;
+    @Output() onRemove: EventEmitter<void> = new EventEmitter();
     @ViewChild('replies') repliesEle;
     isRepliesOpen = false;
 
@@ -49,6 +50,23 @@ export class VisitorMessageComponent implements AfterContentInit {
 
     get visitorMessage (): ProfileVisitorMessage {
         return this._visitorMessage;
+    }
+
+    get canDeleteVisitorMessage (): boolean {
+        return this._authService.adminPermissions.canModerateVisitorMessage;
+    }
+
+    delete (event, visitorMessage: ProfileVisitorMessage): void {
+        event.stopPropagation();
+        this._profileService.delete(visitorMessage).then(() => {
+            if (visitorMessage.visitorMessageId === this._visitorMessage.visitorMessageId) {
+                this.onRemove.emit();
+            } else {
+                this._visitorMessage.comments = this._visitorMessage.comments
+                    .filter(item => item.visitorMessageId !== visitorMessage.visitorMessageId);
+                this._visitorMessage.replies -= 1;
+            }
+        });
     }
 
     infract (event, visitorMessage: ProfileVisitorMessage): void {

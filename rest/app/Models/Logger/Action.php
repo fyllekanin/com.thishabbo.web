@@ -1377,4 +1377,11 @@ class Action {
         'data' => [],
         'log' => 'log_user'
     ];
+
+    const DELETED_VISITOR_MESSAGE = [
+        'id' => 160,
+        'description' => 'Deleted visitor message',
+        'data' => [],
+        'log' => 'log_mod'
+    ];
 }
