@@ -43,7 +43,8 @@ export class ClassHelper {
         }
     }
 
-    private static getType (isPrim: boolean, isObj: boolean, isVal: boolean, isTypedArr: boolean, isMappedArr: boolean, isTime: boolean): string {
+    private static getType (isPrim: boolean, isObj: boolean, isVal: boolean, isTypedArr: boolean,
+                            isMappedArr: boolean, isTime: boolean): string {
         if (isPrim) {
             return this.TYPES.PRIM;
         } else if (isObj) {
