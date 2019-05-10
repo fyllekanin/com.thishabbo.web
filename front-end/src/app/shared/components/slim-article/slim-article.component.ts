@@ -1,5 +1,4 @@
 import { StringHelper } from 'shared/helpers/string.helper';
-import { TimeHelper } from 'shared/helpers/time.helper';
 import { Component, Input } from '@angular/core';
 import { SlimArticle } from 'shared/components/slim-article/slim-article.model';
 
@@ -38,9 +37,5 @@ export class SlimArticleComponent {
 
     get article (): SlimArticle {
         return this._article;
-    }
-
-    get time (): string {
-        return TimeHelper.getTime(this._article.createdAt);
     }
 }
