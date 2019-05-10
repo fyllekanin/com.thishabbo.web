@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { TimeHelper } from 'shared/helpers/time.helper';
 import { SlimArticle } from 'shared/components/slim-article/slim-article.model';
 
 @Component({
@@ -12,10 +11,6 @@ export class MediaArticlesComponent {
 
     getBackgroundImage (articleId: number): string {
         return `url(/rest/resources/images/thumbnails/${articleId}.gif)`;
-    }
-
-    getTime (article: SlimArticle) {
-        return TimeHelper.getTime(article.createdAt);
     }
 
     @Input()

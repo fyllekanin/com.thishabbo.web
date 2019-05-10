@@ -1,4 +1,4 @@
-import { ClassHelper, primitive } from 'shared/helpers/class.helper';
+import { ClassHelper, primitive, time } from 'shared/helpers/class.helper';
 
 export class RequestModel {
     @primitive()
@@ -9,10 +9,10 @@ export class RequestModel {
     content: string;
     @primitive()
     ip: string;
-    @primitive()
-    createdAt: number;
+    @time()
+    createdAt: string;
 
-    constructor(source: Partial<RequestModel>) {
+    constructor (source: Partial<RequestModel>) {
         ClassHelper.assign(this, source);
     }
 }

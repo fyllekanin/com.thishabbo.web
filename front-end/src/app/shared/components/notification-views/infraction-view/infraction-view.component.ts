@@ -1,7 +1,6 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { NotificationView } from 'shared/components/notification-views/notification-views.model';
 import { NotificationModel, NotificationTypes } from 'shared/app-views/top-bar/top-bar.model';
-import { TimeHelper } from 'shared/helpers/time.helper';
 import { InfractionView } from 'app/shared/components/notification-views/infraction-view/infraction-view.model';
 
 @Component({
@@ -16,29 +15,29 @@ export class InfractionViewComponent implements NotificationView {
     onClick = new EventEmitter<number>();
 
     @Input()
-    set notification(notification: NotificationModel<InfractionView>) {
+    set notification (notification: NotificationModel<InfractionView>) {
         this._notification = notification;
     }
 
-    get title(): string {
+    get title (): string {
         return this._notification.item.infraction.title;
     }
 
-    get text(): string {
+    get text (): string {
         return this.isInfractionGivenType ?
             'You received an infraction' : 'One of your infractions got removed';
     }
 
-    get isInfractionGivenType(): boolean {
+    get isInfractionGivenType (): boolean {
         return this._notification.type === NotificationTypes.INFRACTION_GIVE;
     }
 
-    getTime(): string {
-        return TimeHelper.getTime(this._notification.createdAt);
+    getTime (): string {
+        return this._notification.createdAt;
     }
 
     @HostListener('click')
-    click(): void {
+    click (): void {
         this.onClick.next(this._notification.notificationId);
     }
 }

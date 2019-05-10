@@ -1,7 +1,6 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { NotificationView } from 'shared/components/notification-views/notification-views.model';
 import { NotificationModel } from 'shared/app-views/top-bar/top-bar.model';
-import { TimeHelper } from 'shared/helpers/time.helper';
 import { SlimUser } from 'core/services/auth/auth.model';
 import { Router } from '@angular/router';
 import { VisitorMessageView } from 'shared/components/notification-views/visitor-message-view/visitor-message-view.model';
@@ -31,7 +30,7 @@ export class VisitorMessageViewComponent implements NotificationView {
     }
 
     getTime (): string {
-        return TimeHelper.getTime(this._notification.createdAt);
+        return this._notification.createdAt;
     }
 
     get isMyProfile (): boolean {

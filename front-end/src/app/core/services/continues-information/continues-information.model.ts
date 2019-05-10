@@ -1,4 +1,4 @@
-import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, objectOf, primitive, time } from 'shared/helpers/class.helper';
 import { RadioModel } from 'shared/components/radio/radio.model';
 import { INFO_BOX_TYPE } from 'shared/app-views/info-box/info-box.model';
 import { SlimUser } from 'core/services/auth/auth.model';
@@ -63,8 +63,8 @@ export class Activity {
     type: number;
     @objectOf(ActivityThread)
     thread: ActivityThread;
-    @primitive()
-    createdAt: number;
+    @time()
+    createdAt: string;
 
     constructor(source: Partial<Activity>) {
         ClassHelper.assign(this, source);
