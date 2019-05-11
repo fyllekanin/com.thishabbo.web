@@ -11,8 +11,8 @@
     "test:watch": "ng test --watch=true",
     "test:chrome": "ng test --watch=true --browsers=Chrome",
     "lint": "ng lint",
-    "e2e": "webdriver-manager update --maxVersion.chrome 73 && node ./node_modules/protractor/bin/protractor ./e2e/protractor.conf.js",
-    "e2e:jenkins": "webdriver-manager update && node ./node_modules/protractor/bin/protractor ./e2e/protractor-jenkins.conf.js"
+    "e2e": "webdriver-manager update && node ./node_modules/protractor/bin/protractor ./e2e/protractor.conf.js",
+    "e2e:jenkins": "webdriver-manager update --maxVersion.chrome 73 && node ./node_modules/protractor/bin/protractor ./e2e/protractor-jenkins.conf.js"
   },
   "private": true,
   "dependencies": {
