@@ -21,9 +21,8 @@ export class InputUtil {
 
     static searchInSelect (ele: ElementFinder, value: string) {
         browser.wait(ExpectedConditions.presenceOf(ele), 10000, 'Expected element to be present');
-        return browser.actions().move({origin: ele})
-            .press()
-            .release()
+        return browser.actions().mouseMove(ele)
+            .click()
             .sendKeys(protractor.Key.chord(protractor.Key.CONTROL, 'a'))
             .sendKeys(protractor.Key.BACK_SPACE)
             .sendKeys(value)

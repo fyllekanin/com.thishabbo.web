@@ -20,7 +20,7 @@ export class NavigationUtil {
         browser.executeScript('window.scrollTo(0,0);');
         const selector = 'app-top-box .welcome .logged-in .dropdown';
         const userDropdownEle = element(by.css(selector));
-        browser.actions().move({origin: userDropdownEle}).perform();
+        browser.actions().mouseMove(userDropdownEle).perform();
 
         const linkEle = element(by.cssContainingText(`${selector} a`, value));
         CommonUtil.click(linkEle);

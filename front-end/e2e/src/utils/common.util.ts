@@ -21,7 +21,7 @@ export class CommonUtil {
         const loginButton = element(by.cssContainingText('app-top-bar button', 'Login'));
         CommonUtil.click(loginButton);
         browser.sleep(1000);
-        browser.actions().move({origin: element(by.css('app-top-bar')), y: 0, x: 0});
+        browser.actions().mouseMove(element(by.css('app-top-bar')), {y: 0, x: 0});
         browser.sleep(1000);
 
         const experience = element(by.css('app-top-box .experience'));
@@ -35,7 +35,7 @@ export class CommonUtil {
     }
 
     static click (ele: ElementFinder): void {
-        browser.actions().move({origin: ele}).perform();
+        browser.actions().mouseMove(ele).perform();
         browser.wait(ExpectedConditions.elementToBeClickable(ele), 10000, `Expected element to be clickable`);
         ele.click();
 
