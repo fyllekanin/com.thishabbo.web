@@ -1,7 +1,7 @@
 // Protractor configuration file, see link for more information
 // https://github.com/angular/protractor/blob/master/lib/config.ts
 
-const { SpecReporter } = require('jasmine-spec-reporter');
+const {SpecReporter} = require('jasmine-spec-reporter');
 const HtmlScreenshotReporter = require('protractor-jasmine2-screenshot-reporter');
 
 exports.config = {
@@ -28,6 +28,9 @@ exports.config = {
         defaultTimeoutInterval: 600000,
         print: function () {
         }
+    },
+    localSeleniumStandaloneOpts: {
+        loopback: true
     },
     onPrepare() {
         require('ts-node').register({
