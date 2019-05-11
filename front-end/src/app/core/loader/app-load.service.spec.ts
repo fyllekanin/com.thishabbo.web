@@ -25,7 +25,7 @@ describe('AppLoadService', () => {
                 RouterStateService,
                 NotificationService,
                 DialogService,
-                { provide: HttpService, useValue: { get: () => {} } }
+                {provide: HttpService, useValue: {get: () => of(null)}}
             ]
         });
         service = TestBed.get(AppLoadService);

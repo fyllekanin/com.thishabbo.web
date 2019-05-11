@@ -8,6 +8,8 @@ import { RouterStateService } from 'core/services/router/router-state.service';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { DialogService } from 'core/services/dialog/dialog.service';
+import { AuthUser, OAuth } from 'core/services/auth/auth.model';
+import { Router } from '@angular/router';
 
 
 describe('AuthService', () => {
@@ -56,6 +58,52 @@ describe('AuthService', () => {
         });
 
         authService = TestBed.get(AuthService);
+    });
+
+    it('user should set the user and store it in localStorage', () => {
+        // Given
+        const user = new AuthUser({nickname: 'test'});
+
+        // When
+        authService.user = user;
+
+        // Then
+        expect(authService.authUser.nickname).toEqual(user.nickname);
+        expect(JSON.parse(localStorage.getItem(LOCAL_STORAGE.AUTH_USER)).nickname).toEqual(user.nickname);
+    });
+
+    it('navigateToHome should navigate to /home', done => {
+        // Given
+        spyOn(TestBed.get(Router), 'navigateByUrl').and.callFake(url => {
+            expect(url).toEqual('/home');
+            done();
+        });
+
+        // When
+        authService.navigateToHome();
+    });
+
+    describe('getRefreshToken', () => {
+        it('should return empty string if no user set', () => {
+            // Given
+            authService.user = null;
+
+            // When
+            const result = authService.getRefreshToken();
+
+            // Then
+            expect(result).toEqual('');
+        });
+        it('should return the refreshToken if user is set', () => {
+            // Given
+            authService.user = new AuthUser({oauth: new OAuth({refreshToken: 'test'})});
+
+            // When
+            const result = authService.getRefreshToken();
+
+            // Then
+            expect(result).toEqual('test');
+        });
     });
 
     describe('login', () => {

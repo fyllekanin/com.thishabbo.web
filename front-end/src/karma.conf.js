@@ -12,7 +12,6 @@ module.exports = function (config) {
             require('karma-coverage'),
             require('karma-coverage-istanbul-reporter'),
             require('karma-spec-reporter'),
-            require('karma-trx-reporter'),
             require('@angular-devkit/build-angular/plugins/karma')
         ],
         client: {
@@ -20,16 +19,18 @@ module.exports = function (config) {
             clearContext: false // leave Jasmine Spec Runner output visible in browser
         },
         files: [
-            { pattern: './node_modules/@angular/material/prebuilt-themes/indigo-pink.css', includes: true }
+            {pattern: './node_modules/@angular/material/prebuilt-themes/indigo-pink.css', includes: true}
         ],
-        preprocessors: {
-        },
+        preprocessors: {},
         coverageIstanbulReporter: {
-            dir: require('path').join(__dirname, 'coverage'), reports: ['lcovonly', 'cobertura', 'html', 'text-summary', 'text'],
+            dir: require('path').join(__dirname, 'coverage'),
+            reports: ['lcovonly', 'cobertura', 'html', 'text-summary', 'text'],
             fixWebpackSourcePaths: true,
+            skipFilesWithNoCoverage: false,
             'report-config': {
-                cobertura: {
-                    file: 'cobertura-coverage.xml'
+                html: {
+                    // outputs the report in ./coverage/html
+                    subdir: 'html'
                 }
             }
         },
@@ -37,16 +38,12 @@ module.exports = function (config) {
             environment: 'dev',
             codeCoverage: true
         },
-        reporters: ['spec', 'trx', 'coverage-istanbul'],
+        reporters: ['spec', 'coverage-istanbul'],
         specReporter: {
             lateReport: true,
             showSpecTiming: true, // print the time elapsed for each spec
             slowTestTime: 40, // karma-spec-reporter-2
             fastTestTime: 20 // karma-spec-reporter-2
-        },
-        trxReporter: {
-            outputFile: 'coverage/test-results.trx',
-            shortTestName: false
         },
         port: 9876,
         colors: true,

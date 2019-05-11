@@ -1,4 +1,4 @@
-import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, objectOf, primitive, time } from 'shared/helpers/class.helper';
 import { SlimUser } from 'core/services/auth/auth.model';
 import { Activity } from 'core/services/continues-information/continues-information.model';
 
@@ -9,12 +9,12 @@ export class ProfileStats {
     threads: number;
     @primitive()
     likes: number;
-    @primitive()
-    createdAt: number;
+    @time()
+    createdAt: string;
     @primitive()
     userId: number;
-    @primitive()
-    lastActivity: number;
+    @time()
+    lastActivity: string;
 
     constructor (source: Partial<ProfileStats>) {
         ClassHelper.assign(this, source);
