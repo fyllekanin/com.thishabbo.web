@@ -9,7 +9,6 @@ import {
 } from './profile.model';
 import { Page } from 'shared/page/page.model';
 import { ActivatedRoute } from '@angular/router';
-import { TimeHelper } from 'shared/helpers/time.helper';
 import { SlimUser } from 'core/services/auth/auth.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { AuthService } from 'core/services/auth/auth.service';
@@ -113,11 +112,6 @@ export class ProfileComponent extends Page implements OnDestroy {
 
     get avatar (): string {
         return `/rest/resources/images/users/${this._data.user.userId}.gif?${this._data.user.avatarUpdatedAt}`;
-    }
-
-    get joined (): string {
-        const date = new Date(this._data.stats.createdAt * 1000);
-        return `${TimeHelper.FULL_MONTHS[date.getMonth()]} ${date.getFullYear()}`;
     }
 
     get stats (): ProfileStats {

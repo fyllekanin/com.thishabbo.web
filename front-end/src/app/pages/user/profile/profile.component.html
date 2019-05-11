@@ -20,9 +20,6 @@
                     <div class="profile-name">
                         <app-user-link [user]="user"></app-user-link>
                     </div>
-                    <div class="profile-joined">
-                        Joined {{joined}}
-                    </div>
 
                     <div class="profile-avatar">
                         <img [src]="avatar" alt="Avatar">
@@ -38,13 +35,13 @@
                         <div class="post-bit-row">
                             <strong>Last Active:</strong>
                             <div class="float-right">
-                                {{timeAgo(stats.lastActivity)}}
+                                {{stats.lastActivity}}
                             </div>
                         </div>
                         <div class="post-bit-row">
                             <strong>Registered:</strong>
                             <div class="float-right">
-                                {{timeAgo(stats.createdAt)}}
+                                {{stats.createdAt}}
                             </div>
                         </div>
                         <div class="post-bit-row">
