@@ -12,17 +12,17 @@ use App\Models\Logger\Action;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class StaffController extends Controller {
 
     /**
+     * @param Request $request
      * @param $startOfWeek
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getDashboardStats($startOfWeek) {
-        $user = Cache::get('auth');
+    public function getDashboardStats(Request $request, $startOfWeek) {
+        $user = $request->get('auth');
 
         return response()->json([
             'general' => [
@@ -44,7 +44,7 @@ class StaffController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createRequestThc(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $requests = $request->input('requests');
         $this->validateRequests($requests);
 

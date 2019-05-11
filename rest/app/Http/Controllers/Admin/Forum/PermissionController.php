@@ -13,7 +13,6 @@ use App\Logger;
 use App\Models\Logger\Action;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class PermissionController extends Controller {
     private $defaultGroup = [
@@ -32,7 +31,7 @@ class PermissionController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateGroupForumPermissions(Request $request, $categoryId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $immunity = User::getImmunity($user->userId);
         $groups = $request->input('groups');
         $cascade = $request->input('cascade');
@@ -74,13 +73,14 @@ class PermissionController extends Controller {
     /**
      * Get request to get current forum permissions for group in given category
      *
+     * @param Request $request
      * @param         $categoryId
      * @param         $groupId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getGroupForumPermissions($categoryId, $groupId) {
-        $user = Cache::get('auth');
+    public function getGroupForumPermissions(Request $request, $categoryId, $groupId) {
+        $user = $request->get('auth');
         $immunity = User::getImmunity($user->userId);
         $category = Category::select('categoryId', 'title')->where('categoryId', $categoryId)->first();
 

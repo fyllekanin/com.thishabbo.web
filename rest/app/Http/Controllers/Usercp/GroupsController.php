@@ -12,7 +12,6 @@ use App\Models\Logger\Action;
 use App\Utils\Condition;
 use App\Utils\Iterables;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class GroupsController extends Controller {
 
@@ -24,7 +23,7 @@ class GroupsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function applyForGroup(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $groupId = $request->input('groupId');
 
         $group = Group::find($groupId);
@@ -53,7 +52,7 @@ class GroupsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function leaveGroup(Request $request, $groupId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
 
         $group = Group::find($groupId);
         Condition::precondition(!$group, 404, 'Group does not exist');
@@ -74,8 +73,8 @@ class GroupsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getGroups() {
-        $user = Cache::get('auth');
+    public function getGroups(Request $request) {
+        $user = $request->get('auth');
         $groups = Group::select('groupId', 'name', 'isPublic')
             ->get();
 
@@ -99,7 +98,7 @@ class GroupsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateDisplayGroup(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $groupId = $request->input('groupId');
         $group = Group::find($groupId);
 

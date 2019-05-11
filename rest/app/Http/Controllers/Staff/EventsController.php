@@ -18,7 +18,6 @@ use App\Utils\Condition;
 use App\Utils\Iterables;
 use App\Utils\Value;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class EventsController extends Controller {
 
@@ -70,7 +69,7 @@ class EventsController extends Controller {
      */
     public function updateBanOnSight(Request $request, $entryId) {
         $settingKeys = ConfigHelper::getKeyConfig();
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $information = (object)$request->input('information');
         $oldEntries = json_decode(SettingsHelper::getSettingValue($settingKeys->banOnSight));
 
@@ -104,7 +103,7 @@ class EventsController extends Controller {
      */
     public function createBanOnSight(Request $request) {
         $settingKeys = ConfigHelper::getKeyConfig();
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $information = (object)$request->input('information');
         $entries = json_decode(SettingsHelper::getSettingValue($settingKeys->banOnSight));
 
@@ -135,7 +134,7 @@ class EventsController extends Controller {
      */
     public function deleteBanOnSight(Request $request, $entryId) {
         $settingKeys = ConfigHelper::getKeyConfig();
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $oldEntries = json_decode(SettingsHelper::getSettingValue($settingKeys->banOnSight));
         $oldEntry = Iterables::find($oldEntries, function ($entry) use ($entryId) {
             return $entry->id == $entryId;
@@ -218,7 +217,7 @@ class EventsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createEventType(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $newEvent = (object)$request->input('event');
 
         Condition::precondition(!$newEvent, 400, 'Empty body!');
@@ -247,7 +246,7 @@ class EventsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateEventType(Request $request, $eventId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $newEvent = (object)$request->input('event');
         $event = Event::find($eventId);
 
@@ -273,7 +272,7 @@ class EventsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteEventType(Request $request, $eventId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $event = Event::find($eventId);
 
         Condition::precondition(!$event, 404, 'Event type do not exist');
@@ -308,7 +307,7 @@ class EventsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteBooking(Request $request, $timetableId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
 
         $booking = Timetable::find($timetableId);
         Condition::precondition(!$booking, 404, 'Booking does not exist');
@@ -334,7 +333,7 @@ class EventsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createBooking(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $booking = (object)$request->input('booking');
 
         Condition::precondition(!isset($booking), 400, 'Stupid developer');

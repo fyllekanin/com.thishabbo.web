@@ -12,7 +12,6 @@ use App\Models\Logger\Action;
 use App\Services\ForumService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class PrefixController extends Controller {
     private $forumService;
@@ -22,7 +21,7 @@ class PrefixController extends Controller {
      *
      * @param ForumService $forumService
      */
-    public function __construct (ForumService $forumService) {
+    public function __construct(ForumService $forumService) {
         parent::__construct();
         $this->forumService = $forumService;
     }
@@ -30,12 +29,13 @@ class PrefixController extends Controller {
     /**
      * Get request to get all the available prefixes
      *
+     * @param Request $request
      * @param         $prefixId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPrefix ($prefixId) {
-        $user = Cache::get('auth');
+    public function getPrefix(Request $request, $prefixId) {
+        $user = $request->get('auth');
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
         $prefix = null;
 
@@ -67,8 +67,8 @@ class PrefixController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createPrefix (Request $request) {
-        $user = Cache::get('auth');
+    public function createPrefix(Request $request) {
+        $user = $request->get('auth');
         $prefix = (object)$request->input('prefix');
         $categoryIds = isset($prefix->categoryIds) ? $prefix->categoryIds : [];
 
@@ -101,8 +101,8 @@ class PrefixController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updatePrefix (Request $request, $prefixId) {
-        $user = Cache::get('auth');
+    public function updatePrefix(Request $request, $prefixId) {
+        $user = $request->get('auth');
         $prefix = (object)$request->input('prefix');
         $categoryIds = isset($prefix->categoryIds) ? $prefix->categoryIds : [];
         $existing = Prefix::find($prefixId);
@@ -136,8 +136,8 @@ class PrefixController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deletePrefix (Request $request, $prefixId) {
-        $user = Cache::get('auth');
+    public function deletePrefix(Request $request, $prefixId) {
+        $user = $request->get('auth');
 
         $prefix = Prefix::find($prefixId);
         Condition::precondition(!$prefix, 404, 'The prefix do not exist');
@@ -154,7 +154,7 @@ class PrefixController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPrefixes () {
+    public function getPrefixes() {
         return response()->json(Prefix::all());
     }
 }

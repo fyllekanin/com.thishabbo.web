@@ -12,7 +12,6 @@ use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Services\ForumService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class ForumController extends Controller {
     private $forumService;
@@ -64,7 +63,7 @@ class ForumController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function getModeratePosts() {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
 
         $posts = Post::withoutGlobalScope('nonHardDeleted')
@@ -94,7 +93,7 @@ class ForumController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function getModerateThreads() {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
 
         foreach ($categoryIds as $key => $value) {

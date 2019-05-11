@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class GroupsListController extends Controller {
 
@@ -17,7 +16,7 @@ class GroupsListController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getGroupsList () {
+    public function getGroupsList() {
         return response()->json(Group::leftJoin('groups_list', 'groups_list.groupId', '=', 'groups.groupId')
             ->where('groups.isDeleted', 0)
             ->select('groups.groupId', 'groups.name', 'groups_list.displayOrder', 'groups_list.color')
@@ -32,8 +31,8 @@ class GroupsListController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
-    public function updateGroupsList (Request $request) {
-        $user = Cache::get('auth');
+    public function updateGroupsList(Request $request) {
+        $user = $request->get('auth');
         GroupList::truncate();
         $groups = $request->input('groups');
 

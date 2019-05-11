@@ -20,7 +20,6 @@ use App\Utils\BBcodeUtil;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class RadioController extends Controller {
 
@@ -81,10 +80,12 @@ class RadioController extends Controller {
     }
 
     /**
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getDjSays() {
-        $user = Cache::get('auth');
+    public function getDjSays(Request $request) {
+        $user = $request->get('auth');
         $settingKeys = ConfigHelper::getKeyConfig();
 
         $radio = new RadioSettings(SettingsHelper::getSettingValue($settingKeys->radio));
@@ -102,7 +103,7 @@ class RadioController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateDjSays(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $says = $request->input('says');
         $settingKeys = ConfigHelper::getKeyConfig();
         $radio = new RadioSettings(SettingsHelper::getSettingValue($settingKeys->radio));
@@ -125,7 +126,7 @@ class RadioController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function kickOffDj(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
 
         $settingKeys = ConfigHelper::getKeyConfig();
         $radio = new RadioSettings(SettingsHelper::getSettingValue($settingKeys->radio));
@@ -159,7 +160,7 @@ class RadioController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createDjLike(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $nowMinus30Min = time() - 1800;
         $settings = ConfigHelper::getKeyConfig();
         $radio = new RadioSettings(SettingsHelper::getSettingValue($settings->radio));
@@ -190,7 +191,7 @@ class RadioController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createRequest(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $nickname = $user ? $user->nickname : $request->input('nickname');
         $content = $request->input('content');
         $ipAddress = request()->ip();
@@ -218,10 +219,12 @@ class RadioController extends Controller {
     /**
      * Get an array of all requests which are made less then two hours ago.
      *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getRequests() {
-        $user = Cache::get('auth');
+    public function getRequests(Request $request) {
+        $user = $request->get('auth');
         $canSeeRequestIp = PermissionHelper::haveStaffPermission($user->userId, ConfigHelper::getStaffConfig()->canSeeIpOnRequests);
 
         $radioRequests = RadioRequest::twoHours()->orderBy('requestId', 'DESC')->getQuery()->get();
@@ -257,7 +260,7 @@ class RadioController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteBooking(Request $request, $timetableId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
 
         $booking = Timetable::find($timetableId);
         Condition::precondition(!$booking, 404, 'Booking does not exist');
@@ -283,7 +286,7 @@ class RadioController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createBooking(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $booking = (object)$request->input('booking');
 
         Condition::precondition(!isset($booking), 400, 'Stupid developer');
@@ -325,7 +328,7 @@ class RadioController extends Controller {
      */
 
     public function updateConnectionInfo(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $information = (object)$request->input('information');
         $settingKeys = ConfigHelper::getKeyConfig();
         $oldInformation = new RadioSettings(SettingsHelper::getSettingValue($settingKeys->radio));

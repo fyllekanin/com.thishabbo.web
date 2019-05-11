@@ -11,7 +11,6 @@ use App\Models\Logger\Action;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class StaffSpotlightController extends Controller {
     private $botKeys = [];
@@ -54,7 +53,7 @@ class StaffSpotlightController extends Controller {
      */
 
     public function updateMemberOfTheMonth(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $information = (object)$request->input('information');
 
         foreach ($information as $key => $value) {
@@ -101,7 +100,7 @@ class StaffSpotlightController extends Controller {
      */
 
     public function updateStaffOfTheWeek(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $information = (object)$request->input('information');
 
         foreach ($information as $key => $value) {

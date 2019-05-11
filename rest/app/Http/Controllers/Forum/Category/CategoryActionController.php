@@ -14,7 +14,6 @@ use App\Services\ForumService;
 use App\Services\QueryParamService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class CategoryActionController extends Controller {
     private $categoryTemplates = null;
@@ -43,7 +42,7 @@ class CategoryActionController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createIgnore(Request $request, $categoryId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $isAlreadyIgnoring = IgnoredCategory::where('userId', $user->userId)->where('categoryId', $categoryId)->count('threadId') > 0;
         Condition::precondition($isAlreadyIgnoring, 400, 'You are already ignoring this category');
 
@@ -68,7 +67,7 @@ class CategoryActionController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteIgnore(Request $request, $categoryId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $item = IgnoredCategory::where('userId', $user->userId)->where('categoryId', $categoryId);
         Condition::precondition($item->count('threadId') == 0, 404, 'You are not currently ignoring this category');
 
@@ -85,7 +84,7 @@ class CategoryActionController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createSubscription(Request $request, $categoryId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $category = Category::find($categoryId);
 
         Condition::precondition(!$category, 404, 'There is not category with that ID');
@@ -111,7 +110,7 @@ class CategoryActionController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteSubscription(Request $request, $categoryId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $category = Category::find($categoryId);
 
         Condition::precondition(!$category, 404, 'There is not category with that ID');

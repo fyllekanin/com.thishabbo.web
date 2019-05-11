@@ -13,7 +13,6 @@ use App\Services\ForumService;
 use App\Services\ForumValidatorService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class PostActionController extends Controller {
     private $forumService;
@@ -40,7 +39,7 @@ class PostActionController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function likePost(Request $request, $postId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $post = Post::find($postId);
         Condition::precondition(!$post, 404, 'Post do not exist');
         Condition::precondition(!$post->thread, 404, 'Thread do not exist');
@@ -80,7 +79,7 @@ class PostActionController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function unlikePost(Request $request, $postId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
 
         $post = Post::with('thread:threadId,categoryId')->where('postId', $postId)->first(['threadId', 'userId']);
         Condition::precondition(!$post, 404, 'Post do not exist');

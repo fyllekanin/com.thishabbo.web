@@ -12,7 +12,7 @@ use App\Services\ActivityService;
 use App\Services\ForumService;
 use App\Services\NotificationService;
 use App\Utils\BBcodeUtil;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class StreamController extends Controller {
@@ -41,10 +41,12 @@ class StreamController extends Controller {
      * Radio stats response stream, stream the radio stats every 5sec from the database.
      * The stats are updated every 5sec in a cron job.
      *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPull() {
-        $user = Cache::get('auth');
+    public function getPull(Request $request) {
+        $user = $request->get('auth');
         $activeUsers = $this->getActiveUsers();
         $siteMessages = $this->getSiteMessages();
         $activities = $this->activityService->getLatestActivities($this->forumService->getAccessibleCategories($user->userId));

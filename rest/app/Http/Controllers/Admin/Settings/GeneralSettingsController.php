@@ -12,7 +12,6 @@ use App\Services\ForumService;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class GeneralSettingsController extends Controller {
     private $welcomeBotKeys = [];
@@ -26,7 +25,7 @@ class GeneralSettingsController extends Controller {
      *
      * @param ForumService $forumService
      */
-    public function __construct (ForumService $forumService) {
+    public function __construct(ForumService $forumService) {
         parent::__construct();
         $this->forumService = $forumService;
         $this->settingKeys = ConfigHelper::getKeyConfig();
@@ -62,8 +61,8 @@ class GeneralSettingsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createSiteMessage(Request $request) {
-        $user = Cache::get('auth');
-        $data = (object) $request->input('data');
+        $user = $request->get('auth');
+        $data = (object)$request->input('data');
 
         Condition::precondition(!isset($data->title) || empty($data->title), 400,
             'Title can not be empty!');
@@ -93,9 +92,9 @@ class GeneralSettingsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateSiteMessage(Request $request, $siteMessageId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $siteMessage = SiteMessage::find($siteMessageId);
-        $data = (object) $request->input('data');
+        $data = (object)$request->input('data');
 
         Condition::precondition(!$siteMessage, 404, 'Site message with that ID do not exist');
         Condition::precondition(!is_numeric($data->type) || $data->type > 3 || $data->type < 1, 400,
@@ -124,7 +123,7 @@ class GeneralSettingsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteSiteMessage(Request $request, $siteMessageId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $siteMessage = SiteMessage::find($siteMessageId);
 
         $siteMessage->isDeleted = true;
@@ -139,14 +138,14 @@ class GeneralSettingsController extends Controller {
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getNavigation () {
+    public function getNavigation() {
         $navigation = null;
         try {
             $navigation = json_decode(SettingsHelper::getSettingValue($this->settingKeys->navigation));
         } catch (\Exception $e) {
             $navigation = [];
         }
-        return response()->json(is_array($navigation) ? $navigation :  []);
+        return response()->json(is_array($navigation) ? $navigation : []);
     }
 
     /**
@@ -154,8 +153,8 @@ class GeneralSettingsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateNavigation (Request $request) {
-        $user = Cache::get('auth');
+    public function updateNavigation(Request $request) {
+        $user = $request->get('auth');
         $navigation = json_encode($request->input('navigation'));
         $oldNavigation = json_decode(SettingsHelper::getSettingValue($this->settingKeys->navigation));
 
@@ -172,7 +171,7 @@ class GeneralSettingsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getMaintenance () {
+    public function getMaintenance() {
         return response()->json([
             'content' => SettingsHelper::getSettingValue($this->settingKeys->maintenanceContent)
         ]);
@@ -185,8 +184,8 @@ class GeneralSettingsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateMaintenance (Request $request) {
-        $user = Cache::get('auth');
+    public function updateMaintenance(Request $request) {
+        $user = $request->get('auth');
         $maintenance = (object)$request->input('maintenance');
 
         SettingsHelper::createOrUpdateSetting($this->settingKeys->maintenanceContent, $maintenance->content);

@@ -12,17 +12,17 @@ use App\Logger;
 use App\Models\Logger\Action;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class BansController extends Controller {
 
     /**
+     * @param Request $request
      * @param         $userId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getUserBans($userId) {
-        $user = Cache::get('auth');
+    public function getUserBans(Request $request, $userId) {
+        $user = $request->get('auth');
         $current = UserHelper::getSlimUser($userId);
 
         Condition::precondition(!$current, 404, 'User do not exist');
@@ -44,7 +44,7 @@ class BansController extends Controller {
      * @return array
      */
     public function createUserBan(Request $request, $userId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $current = UserHelper::getUser($userId);
         $banData = (object)$request->input('reason');
 
@@ -76,7 +76,7 @@ class BansController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function liftUserBan(Request $request, $userId, $banId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $current = UserHelper::getUser($userId);
         $ban = Ban::find($banId);
         $liftData = (object)$request->input('reason');
@@ -103,7 +103,7 @@ class BansController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function getBannedUsers(Request $request, $page) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $filter = $request->input('nickname');
         $bansSql = Ban::active()->withImmunityLessThan(User::getImmunity($user->userId))->withNicknameLike($filter);
         $total = DataHelper::getPage($bansSql->count('banId'));

@@ -87,8 +87,8 @@ class ForumService {
      * @return array|mixed
      */
     public function getAccessibleCategories($userId, $permission = null) {
-        if (Cache::has('accessible-categories')) {
-            return Cache::get('accessible-categories');
+        if (Cache::has('accessible-categories-' . $userId)) {
+            return Cache::get('accessible-categories-' . $userId);
         }
 
         $forumPermission = $permission ? $permission : ConfigHelper::getForumConfig()->canRead;
@@ -101,7 +101,7 @@ class ForumService {
             }
         }
 
-        Cache::add('accessible-categories', $ids, 30);
+        Cache::add('accessible-categories-' . $userId, $ids, 30);
         return $ids;
     }
 

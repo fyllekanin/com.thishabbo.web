@@ -12,7 +12,6 @@ use App\Models\Logger\Action;
 use App\Utils\Condition;
 use App\Utils\Iterables;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class UserGroupsController extends Controller {
 
@@ -25,7 +24,7 @@ class UserGroupsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateUserGroups(Request $request, $userId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $current = UserHelper::getUserFromId($userId);
         Condition::precondition(!$current, 404, 'User do not exist');
 
@@ -79,12 +78,13 @@ class UserGroupsController extends Controller {
     /**
      * Get the page model controller user groups of a user
      *
+     * @param Request $request
      * @param         $userId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getUserGroups($userId) {
-        $user = Cache::get('auth');
+    public function getUserGroups(Request $request, $userId) {
+        $user = $request->get('auth');
         $current = UserHelper::getUserFromId($userId);
         Condition::precondition(!$current, 404, 'User do not exist');
 

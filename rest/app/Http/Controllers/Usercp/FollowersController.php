@@ -10,7 +10,6 @@ use App\Logger;
 use App\Models\Logger\Action;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class FollowersController extends Controller {
 
@@ -22,7 +21,7 @@ class FollowersController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function approveFollower(Request $request, $followerId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $follower = Follower::find($followerId);
         Condition::precondition(!$follower, 404, 'Follower data could not be found');
         Condition::precondition($follower->targetId != $user->userId, 400, 'This is not your follow!');
@@ -41,7 +40,7 @@ class FollowersController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function denyFollower(Request $request, $followerId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $follower = Follower::find($followerId);
         Condition::precondition(!$follower, 404, 'Follower data could not be found');
         Condition::precondition($follower->targetId != $user->userId, 400, 'This is not your follow!');
@@ -60,7 +59,7 @@ class FollowersController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function removeFollower(Request $request, $followerId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $follower = Follower::find($followerId);
         Condition::precondition(!$follower, 404, 'Follower data could not be found');
         Condition::precondition($follower->targetId != $user->userId, 400, 'This is not your follow!');

@@ -18,7 +18,6 @@ use App\Services\HabboService;
 use App\Utils\Condition;
 use App\Utils\RequestUtil;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -55,10 +54,12 @@ class AuthController extends Controller {
     }
 
     /**
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function acceptGdpr() {
-        $user = Cache::get('auth');
+    public function acceptGdpr(Request $request) {
+        $user = $request->get('auth');
 
         $user->gdpr = 1;
         $user->save();
@@ -160,7 +161,7 @@ class AuthController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function getUser(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
 
         $token = Token::where('userId', $user->userId)->where('ip', $request->ip())->first();
         return response()->json([

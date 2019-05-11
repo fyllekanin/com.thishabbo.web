@@ -11,7 +11,6 @@ use App\Services\ForumService;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class InfractionLevelsController extends Controller {
     private $forumService;
@@ -46,7 +45,7 @@ class InfractionLevelsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function getInfractionLevel($infractionLevelId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $infractionLevel = InfractionLevel::find($infractionLevelId);
         $isNew = $infractionLevelId == 'new';
 
@@ -73,7 +72,7 @@ class InfractionLevelsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateInfractionLevel(Request $request, $infractionLevelId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $newInfractionLevel = (object)$request->input('infractionLevel');
         $infractionLevel = InfractionLevel::find($infractionLevelId);
         Condition::precondition(!$infractionLevel, 404, 'No infraction level with that ID exists');
@@ -100,7 +99,7 @@ class InfractionLevelsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteInfractionLevel(Request $request, $infractionLevelId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
 
         $infractionLevel = InfractionLevel::find($infractionLevelId);
         Condition::precondition(!$infractionLevel, 404, 'No infraction level with this ID exists');
@@ -120,7 +119,7 @@ class InfractionLevelsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createInfractionLevel(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $newInfractionLevel = (object)$request->input('infractionLevel');
         $this->validateInfractionLevel($newInfractionLevel);
 

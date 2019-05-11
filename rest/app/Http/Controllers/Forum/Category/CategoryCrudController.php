@@ -17,7 +17,6 @@ use App\Http\Controllers\Controller;
 use App\Services\ForumService;
 use App\Services\QueryParamService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class CategoryCrudController extends Controller {
@@ -41,10 +40,12 @@ class CategoryCrudController extends Controller {
     }
 
     /**
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getCategoryList() {
-        $user = Cache::get('auth');
+    public function getCategoryList(Request $request) {
+        $user = $request->get('auth');
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
 
         return response()->json($this->getCategoryChildren(-1, $categoryIds));
@@ -53,10 +54,12 @@ class CategoryCrudController extends Controller {
     /**
      * Get request to get the forum home resource page
      *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getForumCategories() {
-        $user = Cache::get('auth');
+    public function getForumCategories(Request $request) {
+        $user = $request->get('auth');
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
 
         return response()->json($this->getCategoriesAndFirstLevel($user->userId, $categoryIds));
@@ -64,12 +67,13 @@ class CategoryCrudController extends Controller {
 
     /**
      *
+     * @param Request $request
      * @param         $clientTodayMidnight
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getForumStats($clientTodayMidnight) {
-        $user = Cache::get('auth');
+    public function getForumStats(Request $request, $clientTodayMidnight) {
+        $user = $request->get('auth');
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
 
         return response()->json([
@@ -89,7 +93,7 @@ class CategoryCrudController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function getCategoryPage(Request $request, $categoryId, $page = 1) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $sortedByQuery = $request->input('sortedBy');
         $sortOrderQuery = $request->input('sortOrder');
         $fromTheQuery = $request->input('fromThe');
