@@ -12,7 +12,6 @@ use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Services\ForumService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class ForumController extends Controller {
     private $forumService;
@@ -61,10 +60,12 @@ class ForumController extends Controller {
     /**
      * Get request to fetch all posts awaiting moderation
      *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getModeratePosts() {
-        $user = Cache::get('auth');
+    public function getModeratePosts(Request $request) {
+        $user = $request->get('auth');
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
 
         $posts = Post::withoutGlobalScope('nonHardDeleted')
@@ -91,10 +92,12 @@ class ForumController extends Controller {
     /**
      * Get request to fetch all threads awaiting moderation
      *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getModerateThreads() {
-        $user = Cache::get('auth');
+    public function getModerateThreads(Request $request) {
+        $user = $request->get('auth');
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
 
         foreach ($categoryIds as $key => $value) {

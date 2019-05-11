@@ -15,7 +15,6 @@ use App\Models\Logger\Action;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class GroupsController extends Controller {
 
@@ -27,7 +26,7 @@ class GroupsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function approveGroupApplication(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $groupRequestId = $request->input('groupRequestId');
 
         $groupRequest = GroupRequest::find($groupRequestId);
@@ -60,7 +59,7 @@ class GroupsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function denyGroupApplication(Request $request, $groupRequestId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
 
         $groupRequest = GroupRequest::find($groupRequestId);
         Condition::precondition(!$groupRequest, 404, 'The group request do not exist');
@@ -98,7 +97,7 @@ class GroupsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteGroup(Request $request, $groupId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $immunity = User::getImmunity($user->userId);
 
         $group = Group::find($groupId);
@@ -121,7 +120,7 @@ class GroupsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createGroup(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $group = (object)$request->input('group');
         $immunity = User::getImmunity($user->userId);
 
@@ -162,7 +161,7 @@ class GroupsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateGroup(Request $request, $groupId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $newGroup = (object)$request->input('group');
         $immunity = User::getImmunity($user->userId);
 
@@ -200,12 +199,13 @@ class GroupsController extends Controller {
     /**
      * Get request to fetch resource of given group
      *
+     * @param Request $request
      * @param         $groupId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getGroup($groupId) {
-        $user = Cache::get('auth');
+    public function getGroup(Request $request, $groupId) {
+        $user = $request->get('auth');
         $group = Group::find($groupId);
         $immunity = User::getImmunity($user->userId);
 
@@ -236,7 +236,7 @@ class GroupsController extends Controller {
      */
     public function getGroups(Request $request, $page) {
         $filter = $request->input('filter');
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $immunity = User::getImmunity($user->userId);
 
         $getGroupSql = Group::where('immunity', '<', $immunity)

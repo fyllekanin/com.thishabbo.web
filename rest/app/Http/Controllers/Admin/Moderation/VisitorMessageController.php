@@ -8,7 +8,6 @@ use App\Logger;
 use App\Models\Logger\Action;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class VisitorMessageController extends Controller {
 
@@ -19,7 +18,7 @@ class VisitorMessageController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteVisitorMessage(Request $request, $visitorMessageId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $visitorMessage = VisitorMessage::find($visitorMessageId);
         Condition::precondition(!$visitorMessage, 404, 'There is not visitor message with this ID');
 

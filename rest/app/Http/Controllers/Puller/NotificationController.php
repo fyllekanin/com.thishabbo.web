@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Notification\Type;
 use App\Services\NotificationService;
 use App\Utils\Iterables;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class NotificationController extends Controller {
@@ -19,10 +19,12 @@ class NotificationController extends Controller {
     }
 
     /**
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function readAllNotifications() {
-        $user = Cache::get('auth');
+    public function readAllNotifications(Request $request) {
+        $user = $request->get('auth');
         $types = [
             Type::getType(Type::FOLLOWED),
             Type::getType(Type::BADGE),
@@ -43,10 +45,12 @@ class NotificationController extends Controller {
     }
 
     /**
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function readAllMessages() {
-        $user = Cache::get('auth');
+    public function readAllMessages(Request $request) {
+        $user = $request->get('auth');
         $types = [
             Type::getType(Type::VISITOR_MESSAGE)
         ];
@@ -63,12 +67,13 @@ class NotificationController extends Controller {
      * Performs a read action on the specific notification
      * and mark it as read.
      *
+     * @param Request $request
      * @param         $notificationId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function readNotification($notificationId) {
-        $user = Cache::get('auth');
+    public function readNotification(Request $request, $notificationId) {
+        $user = $request->get('auth');
 
         DB::table('notifications')
             ->where('notificationId', $notificationId)
@@ -81,12 +86,13 @@ class NotificationController extends Controller {
     /**
      * Get request for fetching unread notification
      *
+     * @param Request $request
      * @param         $createdAfter
      *
      * @return array NotificationView
      */
-    public function getUnreadNotifications($createdAfter) {
-        $user = Cache::get('auth');
+    public function getUnreadNotifications(Request $request, $createdAfter) {
+        $user = $request->get('auth');
 
         $notifications = DB::table('notifications')
             ->where('createdAt', '>=', $createdAfter)

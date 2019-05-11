@@ -27,7 +27,6 @@ use App\Services\ForumValidatorService;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class ThreadCrudController extends Controller {
@@ -78,8 +77,14 @@ class ThreadCrudController extends Controller {
         ]);
     }
 
-    public function getLatestThreads($page) {
-        $user = Cache::get('auth');
+    /**
+     * @param Request $request
+     * @param $page
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getLatestThreads(Request $request, $page) {
+        $user = $request->get('auth');
 
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
         $ignoredCategoryIds = array_merge(IgnoredCategory::where('userId', $user->userId)->pluck('categoryId')->toArray(),
@@ -118,7 +123,7 @@ class ThreadCrudController extends Controller {
      * @throws \Illuminate\Validation\ValidationException
      */
     public function createThread(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $thumbnail = $request->file('thumbnail');
         $threadSkeleton = json_decode($request->input('thread'));
 
@@ -133,7 +138,7 @@ class ThreadCrudController extends Controller {
      * @throws \Illuminate\Validation\ValidationException
      */
     public function updateThread(Request $request, $threadId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $thumbnail = $request->file('thumbnail');
         $threadSkeleton = json_decode($request->input('thread'));
         $category = Category::where('categoryId', $threadSkeleton->categoryId)->first(['template', 'options']);
@@ -182,13 +187,15 @@ class ThreadCrudController extends Controller {
     /**
      * Get request to get the resource for creating a new thread or updating existing
      *
+     * @param Request $request
      * @param         $categoryId
      * @param         $threadId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getThreadController($categoryId, $threadId) {
-        $user = Cache::get('auth');
+    public function getThreadController(Request $request
+        , $categoryId, $threadId) {
+        $user = $request->get('auth');
 
         PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumConfig()->canRead,
             $categoryId, 'No permissions to access this category');
@@ -230,13 +237,14 @@ class ThreadCrudController extends Controller {
     /**
      * Get request to fetch a thread resource
      *
+     * @param Request $request
      * @param         $threadId
      * @param int $page
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getThreadPage($threadId, $page = 1) {
-        $user = Cache::get('auth');
+    public function getThreadPage(Request $request, $threadId, $page = 1) {
+        $user = $request->get('auth');
         $thread = Thread::find($threadId);
 
         Condition::precondition(!$thread, 404, 'Thread does not exist');

@@ -9,7 +9,6 @@ use App\Models\Logger\Action;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class BBcodeController extends Controller {
 
@@ -22,7 +21,7 @@ class BBcodeController extends Controller {
      * @throws \Illuminate\Validation\ValidationException
      */
     public function createBBcode(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $file = $request->file('image');
         $bbcode = (object)json_decode($request->input('bbcode'));
         $this->bbcodeChecker($bbcode, $request);
@@ -58,7 +57,7 @@ class BBcodeController extends Controller {
      * @throws \Illuminate\Validation\ValidationException
      */
     public function updateBBcode(Request $request, $bbcodeId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $bbcode = (object)json_decode($request->input('bbcode'));
         $file = $request->file('image');
 
@@ -108,7 +107,7 @@ class BBcodeController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteBBcode(Request $request, $bbcodeId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $bbcode = BBcode::find($bbcodeId);
 
         Condition::precondition(!$bbcode, 404, 'BBcode do not exist');

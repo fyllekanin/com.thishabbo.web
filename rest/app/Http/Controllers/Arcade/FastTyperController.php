@@ -10,7 +10,6 @@ use App\Logger;
 use App\Models\Logger\Action;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class FastTyperController extends Controller {
     private $gameTypes = null;
@@ -50,7 +49,7 @@ class FastTyperController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function getFastTyperParagraph(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
 
         $paragraph = Paragraph::inRandomOrder()->first();
         $game = new Game([
@@ -75,7 +74,7 @@ class FastTyperController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createFastTyperScore(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $result = (object)$request->input('result');
 
         $paragraph = Paragraph::find($result->paragraphId);

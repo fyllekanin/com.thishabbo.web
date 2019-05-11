@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\EloquentModels\Forum\Post;
@@ -9,7 +10,6 @@ use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
 use App\Models\Logger\Action;
 use App\Utils\Value;
-use Illuminate\Support\Facades\Cache;
 
 class ActivityService {
 
@@ -25,7 +25,7 @@ class ActivityService {
         $activities = [];
         $limit = 5;
 
-        while(count($activities) < $limit) {
+        while (count($activities) < $limit) {
             $lastItem = end($activities);
             $item = null;
             $sql = null;
@@ -44,9 +44,9 @@ class ActivityService {
                 break;
             }
 
-            $item->data = isset($item->data) && !empty($item->data) ? (object) json_decode($item->data) : new \stdClass();
+            $item->data = isset($item->data) && !empty($item->data) ? (object)json_decode($item->data) : new \stdClass();
             if ($this->isItemValid($item, $categoryIds)) {
-                $activities[] = $this->convertItem($item);
+                $activities[] = $this->convertItem($userId, $item);
             }
         }
 
@@ -70,7 +70,7 @@ class ActivityService {
      * @return array
      */
     private function getSupportedLogIds() {
-        return array_map(function($action) {
+        return array_map(function ($action) {
             return $action['id'];
         }, [
             Action::CREATED_POST,
@@ -85,27 +85,28 @@ class ActivityService {
     }
 
     /**
+     * @param $userId
      * @param $item
      *
      * @return object
      */
-    private function convertItem($item) {
-        return (object) [
+    private function convertItem($userId, $item) {
+        return (object)[
             'logId' => $item->logId,
             'user' => UserHelper::getSlimUser($item->userId),
             'type' => $item->action,
-            'thread' => $this->isThreadRelatedAction($item) ? $this->createThreadItem($item) : null,
+            'thread' => $this->isThreadRelatedAction($item) ? $this->createThreadItem($userId, $item) : null,
             'createdAt' => $item->createdAt->timestamp
         ];
     }
 
-    private function createThreadItem($item) {
+    private function createThreadItem($userId, $item) {
         $page = 1;
         $threadId = $item->contentId;
         if (in_array($item->action, [Action::CREATED_POST['id'], Action::LIKED_POST['id']])) {
             $post = Post::find($item->contentId);
             $threadId = $post->threadId;
-            $page = $post->getPage(PermissionHelper::haveForumPermission(Cache::get('auth')->userId, ConfigHelper::getForumConfig()->canApprovePosts,
+            $page = $post->getPage(PermissionHelper::haveForumPermission($userId, ConfigHelper::getForumConfig()->canApprovePosts,
                 $post->thread->categoryId));
         }
         $thread = Thread::find($threadId);

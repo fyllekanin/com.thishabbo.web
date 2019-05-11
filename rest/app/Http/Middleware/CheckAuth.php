@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use App\EloquentModels\User\Token;
 use Closure;
-use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class CheckAuth {
@@ -13,12 +12,12 @@ class CheckAuth {
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  \Closure                 $next
+     * @param  \Closure $next
      *
      * @return mixed
      */
-    public function handle ($request, Closure $next) {
-        $user = Cache::get('auth');
+    public function handle($request, Closure $next) {
+        $user = $request->get('auth');
         $token = Token::where('userId', $user->userId)->where('ip', $request->ip())->first();
 
         /** No token or invalid */

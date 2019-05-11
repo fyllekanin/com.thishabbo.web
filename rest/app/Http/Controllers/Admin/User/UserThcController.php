@@ -13,7 +13,6 @@ use App\Models\Logger\Action;
 use App\Services\CreditsService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class UserThcController extends Controller {
     private $creditsService;
@@ -51,7 +50,7 @@ class UserThcController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateThcRequests(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $requests = $request->input('requests');
 
         foreach ($requests as $thcRequest) {
@@ -113,7 +112,7 @@ class UserThcController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteVoucherCode(Request $request, $voucherCodeId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $voucherCode = VoucherCode::find($voucherCodeId);
 
         Condition::precondition(!$voucherCodeId, 404, 'No voucher code with that ID');
@@ -132,7 +131,7 @@ class UserThcController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createVoucherCode(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
 
         $note = $request->input('note');
         $value = $request->input('value');

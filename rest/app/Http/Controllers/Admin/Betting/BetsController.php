@@ -12,7 +12,6 @@ use App\Models\Logger\Action;
 use App\Services\CreditsService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class BetsController extends Controller {
     private $creditsService;
@@ -34,7 +33,7 @@ class BetsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function suspendBet(Request $request, $betId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $bet = Bet::find($betId);
         Condition::precondition(!$bet, 404, 'The specific bet do not exist');
         Condition::precondition($bet->isSuspended, 400, 'The bet is already suspended');
@@ -55,7 +54,7 @@ class BetsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function unsuspendBet(Request $request, $betId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $bet = Bet::find($betId);
         Condition::precondition(!$bet, 404, 'The specific bet do not exist');
         Condition::precondition(!$bet->isSuspended, 400, 'The bet is not suspended');
@@ -76,7 +75,7 @@ class BetsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function setResult(Request $request, $betId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $result = $request->input('result');
         $bet = Bet::find($betId);
 
@@ -140,7 +139,7 @@ class BetsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createBet(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $bet = (object)$request->input('bet');
 
         $this->betConditionCollection($bet);
@@ -164,7 +163,7 @@ class BetsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateBet(Request $request, $betId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $newBet = (object)$request->input('bet');
 
         $bet = Bet::find($betId);
@@ -189,7 +188,7 @@ class BetsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteBet(Request $request, $betId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
 
         $bet = Bet::find($betId);
         Condition::precondition(!$bet, 404, 'The bet does not exist!');

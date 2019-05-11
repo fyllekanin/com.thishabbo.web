@@ -9,7 +9,6 @@ use App\Logger;
 use App\Models\Logger\Action;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 
 class UserEssentialsController extends Controller {
@@ -34,7 +33,7 @@ class UserEssentialsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteAvatar(Request $request, $userId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $path = base_path('/public/rest/resources/images/users/' . $userId . '.gif');
 
         Condition::precondition(!File::exists($path), 404, 'This user do not have a avatar');
@@ -52,7 +51,7 @@ class UserEssentialsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteCoverPhoto(Request $request, $userId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $path = base_path('/public/rest/resources/images/covers/' . $userId . '.gif');
 
         Condition::precondition(!File::exists($path), 404, 'This user do not have a coverphoto');
@@ -70,7 +69,7 @@ class UserEssentialsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteSignature(Request $request, $userId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $userdata = UserData::userId($userId)->first();
 
         Condition::precondition(!$userdata || empty($userdata->signature), 404, 'This user do not have a signature');

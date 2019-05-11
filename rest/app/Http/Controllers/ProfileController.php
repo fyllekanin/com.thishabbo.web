@@ -21,7 +21,6 @@ use App\Utils\BBcodeUtil;
 use App\Utils\Condition;
 use App\Views\VisitorMessageReportView;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class ProfileController extends Controller {
 
@@ -31,7 +30,7 @@ class ProfileController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createFollow(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $userId = $request->input('userId');
 
         Condition::precondition($user->userId == $userId, 400, 'You can not follow yourself');
@@ -61,7 +60,7 @@ class ProfileController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteFollow(Request $request, $userId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
 
         $follow = Follower::where('userId', $user->userId)->where('targetId', $userId)->first();
         Condition::precondition(!$follow, 404, 'You are not following this user');
@@ -78,7 +77,7 @@ class ProfileController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createVisitorMessage(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $data = (object)$request->input('data');
 
         Condition::precondition(VisitorMessage::where('userId', $user->userId)->where('createdAt', '>', $this->nowMinus15)->count('visitorMessageId') > 0,
@@ -101,10 +100,11 @@ class ProfileController extends Controller {
 
         NotificationFactory::newVisitorMessage($visitorMessage);
         Logger::user($user->userId, $request->ip(), Action::CREATED_VISITOR_MESSAGE, [], $visitorMessage->visitorMessageId);
-        return response()->json($this->mapVisitorMessage($visitorMessage));
+        return response()->json($this->mapVisitorMessage($request, $visitorMessage));
     }
 
     /**
+     * @param Request $request
      * @param ActivityService $activityService
      * @param ForumService $forumService
      * @param         $nickname
@@ -113,8 +113,8 @@ class ProfileController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getProfile(ActivityService $activityService, ForumService $forumService, $nickname, $page) {
-        $user = Cache::get('auth');
+    public function getProfile(Request $request, ActivityService $activityService, ForumService $forumService, $nickname, $page) {
+        $user = $request->get('auth');
 
         $profile = User::withNickname($nickname)->first();
         Condition::precondition(!$profile, 404, 'No user with that nickname');
@@ -139,7 +139,7 @@ class ProfileController extends Controller {
                 'createdAt' => $profile->createdAt->timestamp,
                 'lastActivity' => $profile->lastActivity
             ],
-            'visitorMessages' => $this->getVisitorMessages($profile, $page),
+            'visitorMessages' => $this->getVisitorMessages($request, $profile, $page),
             'relations' => !$profile->profile ? [] : [
                 'love' => isset($profile->profile->love) ? UserHelper::getSlimUser($profile->profile->love) : null,
                 'like' => isset($profile->profile->like) ? UserHelper::getSlimUser($profile->profile->like) : null,
@@ -155,7 +155,7 @@ class ProfileController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createVisitorMessageLike(Request $request, $visitorMessageId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $visitorMessage = VisitorMessage::find($visitorMessageId);
         Condition::precondition(!$visitorMessage, 404, 'No visitor message with that ID');
         Condition::precondition($this->isPrivate($user, $visitorMessage->host), 400, 'You can not like this message');
@@ -186,7 +186,7 @@ class ProfileController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteVisitorMessageLike(Request $request, $visitorMessageId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $visitorMessage = VisitorMessage::find($visitorMessageId);
         Condition::precondition(!$visitorMessage, 404, 'No visitor message with that ID');
         Condition::precondition($this->isPrivate($user, $visitorMessage->host), 400, 'You can not un-like this message');
@@ -216,7 +216,7 @@ class ProfileController extends Controller {
      */
     public function createReportVisitorMessage(Request $request, ForumService $forumService,
                                                ForumValidatorService $validatorService, $visitorMessageId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $visitorMessage = VisitorMessage::find($visitorMessageId);
         $message = $request->input('message');
 
@@ -278,41 +278,43 @@ class ProfileController extends Controller {
     }
 
     /**
-     * @param $user
+     * @param Request $request
+     * @param User $user
      * @param int $page
      *
      * @return array
      */
-    private function getVisitorMessages(User $user, $page) {
+    private function getVisitorMessages(Request $request, User $user, $page) {
         $visitorMessagesSql = VisitorMessage::where('hostId', $user->userId)->isSubject();
         $total = ceil($visitorMessagesSql->count('visitorMessageId') / $this->perPage);
 
         return [
             'total' => $total,
             'page' => $page,
-            'items' => $visitorMessagesSql->take($this->perPage)->skip($this->getOffset($page))->orderBy('visitorMessageId', 'DESC')->get()->map(function ($item) {
-                return $this->mapVisitorMessage($item);
+            'items' => $visitorMessagesSql->take($this->perPage)->skip($this->getOffset($page))->orderBy('visitorMessageId', 'DESC')->get()->map(function ($item) use ($request) {
+                return $this->mapVisitorMessage($request, $item);
             })
         ];
     }
 
     /**
+     * @param Request $request
      * @param VisitorMessage $visitorMessage
      *
      * @return object
      */
-    private function mapVisitorMessage(VisitorMessage $visitorMessage) {
+    private function mapVisitorMessage(Request $request, VisitorMessage $visitorMessage) {
         return (object)[
             'visitorMessageId' => $visitorMessage->visitorMessageId,
             'user' => UserHelper::getSlimUser($visitorMessage->userId),
             'content' => $visitorMessage->isComment() ? $visitorMessage->content : BBcodeUtil::bbcodeParser($visitorMessage->content),
             'replies' => $visitorMessage->isComment() ? 0 : $visitorMessage->replies->count('visitorMessageId'),
             'likes' => $visitorMessage->likes || 0,
-            'isLiking' => VisitorMessageLike::where('userId', Cache::get('auth')->userId)->where('visitorMessageId', $visitorMessage->visitorMessageId)->count('visitorMessageLikeId') > 0,
+            'isLiking' => VisitorMessageLike::where('userId', $request->get('user')->userId)->where('visitorMessageId', $visitorMessage->visitorMessageId)->count('visitorMessageLikeId') > 0,
             'comments' => $visitorMessage->isComment() ? [] : VisitorMessage::where('parentId', $visitorMessage->visitorMessageId)->orderBy('visitorMessageId', 'ASC')
                 ->get()
-                ->map(function ($item) {
-                    return $this->mapVisitorMessage($item);
+                ->map(function ($item) use ($request) {
+                    return $this->mapVisitorMessage($request, $item);
                 }),
             'createdAt' => $visitorMessage->createdAt->timestamp
         ];

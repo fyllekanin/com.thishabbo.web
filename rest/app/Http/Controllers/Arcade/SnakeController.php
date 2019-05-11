@@ -9,7 +9,6 @@ use App\Logger;
 use App\Models\Logger\Action;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class SnakeController extends Controller {
     private $gameTypes = null;
@@ -48,7 +47,7 @@ class SnakeController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function getSnakeGame(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
 
         $game = new Game([
             'userId' => $user->userId,
@@ -68,7 +67,7 @@ class SnakeController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createSnakeScore(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $result = (object)$request->input('result');
         $game = Game::find($result->gameId);
 

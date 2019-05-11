@@ -9,7 +9,6 @@ use App\Models\Logger\Action;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class NoticeController extends Controller {
 
@@ -21,7 +20,7 @@ class NoticeController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateNoticeOrder(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $notices = $request->input('notices');
 
         foreach ($notices as $notice) {
@@ -58,7 +57,7 @@ class NoticeController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteNotice(Request $request, $noticeId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
 
         $notice = Notice::find($noticeId);
         $notice->isDeleted = 1;
@@ -74,10 +73,9 @@ class NoticeController extends Controller {
      * @param Request $request
      *
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function createNotice(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $notice = json_decode($request->input('notice'));
         $backgroundImage = $request->file('backgroundImage');
 

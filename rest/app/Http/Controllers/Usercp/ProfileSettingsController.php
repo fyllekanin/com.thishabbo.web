@@ -13,15 +13,16 @@ use App\Utils\BBcodeUtil;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class ProfileSettingsController extends Controller {
 
     /**
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getProfile() {
-        $user = Cache::get('auth');
+    public function getProfile(Request $request) {
+        $user = $request->get('auth');
         $profile = UserProfile::where('userId', $user->userId)->first();
 
         if (!$profile) {
@@ -45,7 +46,7 @@ class ProfileSettingsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateProfile(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $profile = UserProfile::where('userId', $user->userId)->first();
         $data = json_decode(json_encode($request->input('data')), false);
 
@@ -78,10 +79,12 @@ class ProfileSettingsController extends Controller {
     }
 
     /**
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getSocialNetworks() {
-        $user = Cache::get('auth');
+    public function getSocialNetworks(Request $request) {
+        $user = $request->get('auth');
         $userData = UserHelper::getUserDataOrCreate($user->userId);
 
         return response()->json([
@@ -94,7 +97,7 @@ class ProfileSettingsController extends Controller {
      * @param Request $request
      */
     public function updateSocialNetworks(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $twitter = $request->input('twitter');
         $discord = $request->input('discord');
 
@@ -115,10 +118,12 @@ class ProfileSettingsController extends Controller {
      * Get request for getting the maximum size of avatar the
      * requested user can use.
      *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getAvatarSize() {
-        $user = Cache::get('auth');
+    public function getAvatarSize(Request $request) {
+        $user = $request->get('auth');
         $avatarHeight = $this->getMaxAvatarHeight($user);
         $avatarWidth = $this->getMaxAvatarWidth($user);
 
@@ -132,10 +137,9 @@ class ProfileSettingsController extends Controller {
      * @param Request $request
      *
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function updateCover(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $cover = $request->file('cover');
 
         $this->validate($request, [
@@ -157,10 +161,9 @@ class ProfileSettingsController extends Controller {
      * @param Request $request
      *
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function updateAvatar(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $avatar = $request->file('avatar');
         $avatarHeight = $this->getMaxAvatarHeight($user);
         $avatarWidth = $this->getMaxAvatarWidth($user);
@@ -184,10 +187,12 @@ class ProfileSettingsController extends Controller {
     /**
      * Get request to fetch the users current signature
      *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getSignature() {
-        $user = Cache::get('auth');
+    public function getSignature(Request $request) {
+        $user = $request->get('auth');
         $userdata = UserData::where('userId', $user->userId)->first();
 
         return response()->json([
@@ -204,7 +209,7 @@ class ProfileSettingsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateSignature(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $signature = $request->input('signature');
 
         $userData = UserHelper::getUserDataOrCreate($user->userId);

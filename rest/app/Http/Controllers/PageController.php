@@ -19,7 +19,6 @@ use App\Utils\BBcodeUtil;
 use App\Utils\Iterables;
 use App\Utils\Value;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class PageController extends Controller {
     private $categoryTemplates = null;
@@ -34,10 +33,12 @@ class PageController extends Controller {
     }
 
     /**
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function loadInitial() {
-        $user = Cache::get('auth');
+    public function loadInitial(Request $request) {
+        $user = $request->get('auth');
 
         $navigation = null;
         try {
@@ -125,10 +126,12 @@ class PageController extends Controller {
     /**
      * Get the home page resource
      *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getHomePage() {
-        $user = Cache::get('auth');
+    public function getHomePage(Request $request) {
+        $user = $request->get('auth');
 
         return response()->json([
             'articles' => $this->getArticles($user, 8, $this->categoryTemplates->QUEST),
@@ -150,12 +153,13 @@ class PageController extends Controller {
     }
 
     /**
+     * @param Request $request
      * @param $page
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getBadgeGuides($page) {
-        $user = Cache::get('auth');
+    public function getBadgeGuides(Request $request, $page) {
+        $user = $request->get('auth');
         $perPage = 12;
 
         $categories = Category::where('template', $this->categoryTemplates->QUEST)

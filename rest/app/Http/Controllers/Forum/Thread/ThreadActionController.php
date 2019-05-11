@@ -16,7 +16,6 @@ use App\Services\ForumValidatorService;
 use App\Utils\Condition;
 use App\Utils\Iterables;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class ThreadActionController extends Controller {
     private $categoryTemplates = null;
@@ -45,7 +44,7 @@ class ThreadActionController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createIgnore(Request $request, $threadId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $isAlreadyIgnoring = IgnoredThread::where('userId', $user->userId)->where('threadId', $threadId)->count('threadId') > 0;
         Condition::precondition($isAlreadyIgnoring, 400, 'You are already ignoring this thread');
         $ignore = new IgnoredThread([
@@ -65,7 +64,7 @@ class ThreadActionController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteIgnore(Request $request, $threadId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $item = IgnoredThread::where('userId', $user->userId)->where('threadId', $threadId);
         Condition::precondition($item->count('threadId') == 0, 404, 'You are not currently ignoring this thread');
 
@@ -83,7 +82,7 @@ class ThreadActionController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createVote(Request $request, $threadId) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $answerId = $request->input('answerId');
 
         $threadPoll = ThreadPoll::where('threadId', $threadId)->first();
@@ -108,12 +107,13 @@ class ThreadActionController extends Controller {
     }
 
     /**
+     * @param Request $request
      * @param         $threadId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createThreadSubscription($threadId) {
-        $userId = Cache::get('auth')->userId;
+    public function createThreadSubscription(Request $request, $threadId) {
+        $userId = $request->get('user')->userId;
         $thread = Thread::find($threadId);
         Condition::precondition(!$thread, 404, 'Thread do not exist');
 
@@ -130,12 +130,13 @@ class ThreadActionController extends Controller {
     }
 
     /**
+     * @param Request $request
      * @param         $threadId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteThreadSubscription($threadId) {
-        $user = Cache::get('auth');
+    public function deleteThreadSubscription(Request $request, $threadId) {
+        $user = $request->get('auth');
 
         ThreadSubscription::where('userId', $user->userId)->where('threadId', $threadId)->delete();
 

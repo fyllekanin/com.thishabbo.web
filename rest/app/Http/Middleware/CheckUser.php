@@ -6,7 +6,6 @@ use App\EloquentModels\User\Token;
 use App\Helpers\UserHelper;
 use App\Utils\RequestUtil;
 use Closure;
-use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class CheckUser {
@@ -25,7 +24,7 @@ class CheckUser {
         $token = Token::where('ip', $request->ip())
             ->where('accessToken', $accessToken)
             ->first();
-        
+
         if ($token && $request->getPathInfo() != $this->refreshRoute && $token->expiresAt < time()) {
             throw new HttpException(419);
         }
@@ -35,8 +34,8 @@ class CheckUser {
             $user->lastActivity = time();
             $user->save();
         }
-        Cache::add('auth', $user, 9999);
 
+        $request->attributes->set('auth', $user);
         return $next($request);
     }
 }

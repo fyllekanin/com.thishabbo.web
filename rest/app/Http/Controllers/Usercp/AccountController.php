@@ -26,7 +26,6 @@ use App\Services\NotificationService;
 use App\Utils\Condition;
 use App\Utils\Iterables;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -53,13 +52,14 @@ class AccountController extends Controller {
     }
 
     /**
+     * @param Request $request
      * @param NotificationService $notificationService
      * @param $page
      *
      * @return array
      */
-    public function getNotifications(NotificationService $notificationService, $page) {
-        $user = Cache::get('auth');
+    public function getNotifications(Request $request, NotificationService $notificationService, $page) {
+        $user = $request->get('auth');
 
         $notificationsSql = DB::table('notifications')
             ->where('userId', $user->userId)
@@ -87,7 +87,7 @@ class AccountController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function claimVoucherCode(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $code = $request->input('code');
 
         $voucherCode = VoucherCode::where('code', $code)->first();
@@ -104,10 +104,12 @@ class AccountController extends Controller {
     }
 
     /**
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getThemes() {
-        $user = Cache::get('auth');
+    public function getThemes(Request $request) {
+        $user = $request->get('auth');
 
         return response()->json(Theme::get()->map(function ($item) use ($user) {
             return [
@@ -125,7 +127,7 @@ class AccountController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateTheme(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $themeId = $request->input('themeId');
         $theme = $themeId == 0 ? (object)['title' => 'Default'] : Theme::find($themeId);
         Condition::precondition(!$theme, 404, 'No theme with that ID');
@@ -140,10 +142,12 @@ class AccountController extends Controller {
     /**
      * Get request for fetching users current verified habbo
      *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getHabbo() {
-        $user = Cache::get('auth');
+    public function getHabbo(Request $request) {
+        $user = $request->get('auth');
         return response()->json([
             'habbo' => $user->habbo
         ]);
@@ -159,7 +163,7 @@ class AccountController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateHabbo(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $requiredMotto = 'thishabbo-' . $user->userId;
 
         $name = $request->input('habbo');
@@ -186,7 +190,7 @@ class AccountController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateNickname(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $nickname = $request->input('nickname');
         $oneWeek = 604800;
         $oneMonth = 2419200;
@@ -221,30 +225,36 @@ class AccountController extends Controller {
     }
 
     /**
+     * @param Request $request
+     *
      * @return mixed
      */
-    public function getIgnoredThreads() {
-        $user = Cache::get('auth');
+    public function getIgnoredThreads(Request $request) {
+        $user = $request->get('auth');
         return IgnoredThread::where('userId', $user->userId)->get()->map(function ($ignoredThread) {
             return ['threadId' => $ignoredThread->threadId, 'title' => $ignoredThread->thread->title];
         });
     }
 
     /**
+     * @param Request $request
+     *
      * @return mixed
      */
-    public function getIgnoredCategories() {
-        $user = Cache::get('auth');
+    public function getIgnoredCategories(Request $request) {
+        $user = $request->get('auth');
         return IgnoredCategory::where('userId', $user->userId)->get()->map(function ($ignoredCategory) {
             return ['categoryId' => $ignoredCategory->categoryId, 'title' => $ignoredCategory->category->title];
         });
     }
 
     /**
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getNotificationSettings() {
-        $user = Cache::get('auth');
+    public function getNotificationSettings(Request $request) {
+        $user = $request->get('auth');
 
         return response()->json($this->buildIgnoredNotificationTypes($user));
     }
@@ -255,7 +265,7 @@ class AccountController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateNotificationSettings(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $ignoredNotifications = $this->convertIgnoredNotificationTypes($request->input('ignoredNotificationTypes'));
 
         $user->ignoredNotifications = $ignoredNotifications;
@@ -271,7 +281,7 @@ class AccountController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateHomePage(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $homePage = $request->input('homePage');
 
         $userData = UserHelper::getUserDataOrCreate($user->userId);
@@ -291,7 +301,7 @@ class AccountController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updatePassword(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $password = $request->input('password');
         $repassword = $request->input('repassword');
         $currentPassword = $request->input('currentPassword');
@@ -314,10 +324,12 @@ class AccountController extends Controller {
     /**
      * Get request for fetching users current post bit option
      *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPostBit() {
-        $user = Cache::get('auth');
+    public function getPostBit(Request $request) {
+        $user = $request->get('auth');
         $selectedBadgeIds = UserItem::where('userId', $user->userId)->badge()->isActive()->pluck('itemId');
 
         return response()->json([
@@ -327,10 +339,12 @@ class AccountController extends Controller {
     }
 
     /**
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getAvailableBadges() {
-        $user = Cache::get('auth');
+    public function getAvailableBadges(Request $request) {
+        $user = $request->get('auth');
         $availableBadgeIds = UserItem::where('userId', $user->userId)->badge()->pluck('itemId');
 
         return response()->json(Badge::whereIn('badgeId', $availableBadgeIds)->get(['badgeId', 'name', 'updatedAt'])->map(function ($badge) use ($user) {
@@ -347,7 +361,7 @@ class AccountController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updatePostBit(Request $request) {
-        $user = Cache::get('auth');
+        $user = $request->get('auth');
         $data = (object)$request->input('data');
         $badgeIds = array_map(function ($badge) {
             return $badge['badgeId'];
@@ -367,10 +381,12 @@ class AccountController extends Controller {
     }
 
     /**
+     * @param Request $request
+     *
      * @return mixed
      */
-    public function getThreadSubscriptions() {
-        $user = Cache::get('auth');
+    public function getThreadSubscriptions(Request $request) {
+        $user = $request->get('auth');
 
         return ThreadSubscription::where('userId', $user->userId)->get()->map(function ($subscription) {
             return [
@@ -381,10 +397,12 @@ class AccountController extends Controller {
     }
 
     /**
+     * @param Request $request
+     *
      * @return mixed
      */
-    public function getCategorySubscriptions() {
-        $user = Cache::get('auth');
+    public function getCategorySubscriptions(Request $request) {
+        $user = $request->get('auth');
 
         return CategorySubscription::where('userId', $user->userId)->get()->map(function ($subscription) {
             return [
