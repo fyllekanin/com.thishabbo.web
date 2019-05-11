@@ -16,7 +16,7 @@ exports.config = {
         marionette: true,
         acceptInsecureCerts: true,
         chromeOptions: {
-            args: ['no-sandbox', '--disable-gpu', '--window-size=1280,1024']
+            args: ['--headless', 'no-sandbox', '--disable-gpu', '--window-size=1280,1024']
         }
     },
     directConnect: true,
