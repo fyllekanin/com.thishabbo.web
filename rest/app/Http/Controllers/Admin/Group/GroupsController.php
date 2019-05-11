@@ -199,11 +199,12 @@ class GroupsController extends Controller {
     /**
      * Get request to fetch resource of given group
      *
+     * @param Request $request
      * @param         $groupId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getGroup($groupId) {
+    public function getGroup(Request $request, $groupId) {
         $user = $request->get('auth');
         $group = Group::find($groupId);
         $immunity = User::getImmunity($user->userId);

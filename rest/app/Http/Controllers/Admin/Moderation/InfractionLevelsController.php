@@ -40,11 +40,12 @@ class InfractionLevelsController extends Controller {
     }
 
     /**
+     * @param Request $request
      * @param         $infractionLevelId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getInfractionLevel($infractionLevelId) {
+    public function getInfractionLevel(Request $request, $infractionLevelId) {
         $user = $request->get('auth');
         $infractionLevel = InfractionLevel::find($infractionLevelId);
         $isNew = $infractionLevelId == 'new';

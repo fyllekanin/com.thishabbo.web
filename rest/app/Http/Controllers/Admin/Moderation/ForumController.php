@@ -60,9 +60,11 @@ class ForumController extends Controller {
     /**
      * Get request to fetch all posts awaiting moderation
      *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getModeratePosts() {
+    public function getModeratePosts(Request $request) {
         $user = $request->get('auth');
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
 
@@ -90,9 +92,11 @@ class ForumController extends Controller {
     /**
      * Get request to fetch all threads awaiting moderation
      *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getModerateThreads() {
+    public function getModerateThreads(Request $request) {
         $user = $request->get('auth');
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
 
