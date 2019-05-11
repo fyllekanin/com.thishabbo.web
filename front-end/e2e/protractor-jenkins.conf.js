@@ -17,7 +17,7 @@ exports.config = {
         marionette: true,
         acceptInsecureCerts: true,
         chromeOptions: {
-            args: ['--headless', 'no-sandbox', '--disable-gpu', '--window-size=1200,800']
+            args: ['--headless', 'no-sandbox', '--disable-gpu', '--window-size=1280,1024']
         }
     },
     directConnect: false,
@@ -43,6 +43,5 @@ exports.config = {
             captureOnlyFailedSpecs: true
         }));
         browser.waitForAngularEnabled(true);
-        browser.driver.manage().window().setSize(1280, 1024);
     }
 };
