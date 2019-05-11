@@ -310,7 +310,7 @@ class ProfileController extends Controller {
             'content' => $visitorMessage->isComment() ? $visitorMessage->content : BBcodeUtil::bbcodeParser($visitorMessage->content),
             'replies' => $visitorMessage->isComment() ? 0 : $visitorMessage->replies->count('visitorMessageId'),
             'likes' => $visitorMessage->likes || 0,
-            'isLiking' => VisitorMessageLike::where('userId', $request->get('user')->userId)->where('visitorMessageId', $visitorMessage->visitorMessageId)->count('visitorMessageLikeId') > 0,
+            'isLiking' => VisitorMessageLike::where('userId', $request->get('auth')->userId)->where('visitorMessageId', $visitorMessage->visitorMessageId)->count('visitorMessageLikeId') > 0,
             'comments' => $visitorMessage->isComment() ? [] : VisitorMessage::where('parentId', $visitorMessage->visitorMessageId)->orderBy('visitorMessageId', 'ASC')
                 ->get()
                 ->map(function ($item) use ($request) {

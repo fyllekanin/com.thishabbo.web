@@ -113,7 +113,7 @@ class ThreadActionController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createThreadSubscription(Request $request, $threadId) {
-        $userId = $request->get('user')->userId;
+        $userId = $request->get('auth')->userId;
         $thread = Thread::find($threadId);
         Condition::precondition(!$thread, 404, 'Thread do not exist');
 
