@@ -119,13 +119,16 @@ class PermissionController extends Controller {
 
             if ($sqlSelection->count('categoryId') > 0) {
                 $sqlSelection->update([
-                    'permissions' => $permissions
+                    'permissions' => $permissions,
+                    'updatedAt' => time()
                 ]);
             } else {
                 $sqlSelection->insert([
                     'categoryId' => $category->categoryId,
                     'groupId' => $groupId,
-                    'permissions' => $permissions
+                    'permissions' => $permissions,
+                    'createdAt' => time(),
+                    'updatedAt' => time()
                 ]);
             }
             $this->updateCategoryAndChildrenForumPermissions($category->categoryId, $groupId, $permissions);
