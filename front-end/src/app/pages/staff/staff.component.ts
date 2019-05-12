@@ -8,38 +8,38 @@ import { AuthService } from 'core/services/auth/auth.service';
 @Component({
     selector: 'app-staff',
     template: `
-    <div class="grid-container">
-        <div class="grid-x margin-x">
-            <div class="cell small-12 medium-9 position-relative">
-                <router-outlet></router-outlet>
+        <div class="grid-container">
+            <div class="grid-x margin-x">
+                <div class="cell small-12 medium-9 position-relative">
+                    <router-outlet></router-outlet>
+                </div>
+                <div class="cell small-12 medium-3">
+                    <app-side-menu [blocks]="blocks"></app-side-menu>
+                </div>
             </div>
-            <div class="cell small-12 medium-3">
-                <app-side-menu [blocks]="blocks"></app-side-menu>
-            </div>
-        </div>
-    </div>`
+        </div>`
 })
 
 export class StaffComponent extends Page implements OnDestroy, OnInit {
 
     blocks: Array<SideMenuBlock> = [];
 
-    constructor(
+    constructor (
         private _authService: AuthService,
         breadcrumbService: BreadcrumbService,
         elementRef: ElementRef
     ) {
         super(elementRef);
-        breadcrumbService.breadcrumb = new Breadcrumb({ current: 'StaffCP' });
+        breadcrumbService.breadcrumb = new Breadcrumb({current: 'StaffCP'});
     }
 
-    ngOnInit(): void {
+    ngOnInit (): void {
         this.blocks = [
             new SideMenuBlock({
                 title: 'All Staff',
                 items: [
-                    new SideMenuItem({ title: 'Dashboard', link: '/staff/dashboard' }),
-                    new SideMenuItem({ title: 'Request THC', link: '/staff/request-thc' })
+                    new SideMenuItem({title: 'Dashboard', link: '/staff/dashboard'}),
+                    new SideMenuItem({title: 'Request THC', link: '/staff/request-thc'})
                 ]
             }),
             new SideMenuBlock({
@@ -94,6 +94,11 @@ export class StaffComponent extends Page implements OnDestroy, OnInit {
                         title: 'BOS List',
                         link: '/staff/events/ban-on-sight',
                         isApplicable: this._authService.staffPermissions.canEvent
+                    }),
+                    new SideMenuItem({
+                        title: 'Events Say',
+                        link: '/staff/events/say',
+                        isApplicable: this._authService.staffPermissions.canSetEventsText
                     })
                 ]
             }),
@@ -130,7 +135,7 @@ export class StaffComponent extends Page implements OnDestroy, OnInit {
         ];
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 }

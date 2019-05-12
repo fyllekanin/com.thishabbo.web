@@ -11,13 +11,14 @@
                 <div class="dj-position song"><i class="fas fa-headphones"></i>
                     <marquee class="marquee-chat" scrolldelay="150">{{song}}</marquee>
                 </div>
-                <div class="dj-position next-dj"><i class="fas fa-arrow-right"></i> <b> Dez</b></div>
+                <div class="dj-position next-dj"><i class="fas fa-arrow-right"></i> <strong> {{nextDj}}</strong></div>
                 <div class="dj-position"><i class="fas fa-comment"></i>
                     <marquee class="marquee-chat-radio" scrolldelay="150">{{djSays}}</marquee>
                 </div>
             </div>
             <div>
-                <div class="radio-button blue-button"(click)="openRequest()"><i class="fas fa-comment icon-position"></i></div>
+                <div class="radio-button blue-button" (click)="openRequest()"><i
+                        class="fas fa-comment icon-position"></i></div>
                 <div class="radio-button red-button" (click)="likeDj()"><i class="fas fa-heart icon-position"></i></div>
             </div>
         </div>
@@ -30,15 +31,15 @@
                 <div class="events-box-button red-button"><i class="fas fa-heart icon-position-events"></i></div>
             </div>
             <div class="inner-box">
-                <div class="event-name"><i class="fas fa-user"></i> <b> Dez</b> <i> (122)</i><br/>
-                    <i class="fas fa-users"></i> Dangerzone
+                <div class="event-name"><i class="fas fa-user"></i> <strong> {{currentHost}}</strong><br/>
+                    <i class="fas fa-users"></i> {{currentEvent}}
                 </div>
-                <div class="event-name event-position"><i class="fas fa-arrow-right"></i> <b> Dez</b> <i> (122)</i><br/>
+                <div class="event-name event-position"><i class="fas fa-arrow-right"></i> <strong> {{nextHost}}</strong><br/>
                     <i class="fas fa-arrow-right"></i>
-                    Banzai Cart Races
+                    {{nextEvent}}
                 </div>
                 <div class="djInfo current-event"><i class="fas fa-comment"></i>
-                    <marquee class="marquee-chat-radio" scrolldelay="150">Come on down to the event, come on!</marquee>
+                    <marquee class="marquee-chat-radio" scrolldelay="150">{{eventsSay}}</marquee>
                 </div>
             </div>
         </div>

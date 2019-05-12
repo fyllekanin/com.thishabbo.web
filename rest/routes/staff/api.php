@@ -43,6 +43,11 @@ Route::prefix('radio')->group(function () use ($permissions) {
 });
 
 Route::prefix('events')->group(function () use ($permissions) {
+    Route::group(['middleware' => PermissionHelper::getStaffMiddleware($permissions->canSetEventsText)], function () {
+        Route::get('say', 'Staff\EventsController@getEventsSay');
+        Route::put('say', 'Staff\EventsController@updateEventsSay');
+    });
+
     Route::group(['middleware' => PermissionHelper::getStaffMiddleware($permissions->canEvent)], function () {
         Route::get('/timetable', 'Staff\EventsController@getTimetable');
         Route::post('/timetable', 'Staff\EventsController@createBooking');

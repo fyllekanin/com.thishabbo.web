@@ -10,7 +10,7 @@ class ConfigHelper {
     private static $TEMPLATES = 'templates';
     private static $SETTINGS = 'settings';
     private static $ARCADE = 'arcade';
-    private static $ITEMS = 'items';
+    private static $SHOP = 'shop';
 
     public static function getForumConfig() {
         return (object)Config::get(self::$PERMISSIONS . '.FORUM');
@@ -53,6 +53,10 @@ class ConfigHelper {
     }
 
     public static function getTypesConfig() {
-        return (object)Config::get(self::$ITEMS . '.TYPES');
+        return (object)Config::get(self::$SHOP . '.TYPES');
+    }
+
+    public static function getSubscriptionOptions() {
+        return (object)Config::get(self::$SHOP . '.SUBSCRIPTION_OPTIONS');
     }
 }

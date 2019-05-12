@@ -1,5 +1,5 @@
 import { arrayOf, ClassHelper, objectOf, primitive, time } from 'shared/helpers/class.helper';
-import { RadioModel } from 'shared/components/radio/radio.model';
+import { EventsModel, RadioModel } from 'shared/components/radio/radio.model';
 import { INFO_BOX_TYPE } from 'shared/app-views/info-box/info-box.model';
 import { SlimUser } from 'core/services/auth/auth.model';
 
@@ -13,11 +13,11 @@ export class SlimSiteMessage {
     @primitive()
     content: string;
 
-    constructor(source: Partial<SlimSiteMessage>) {
+    constructor (source: Partial<SlimSiteMessage>) {
         ClassHelper.assign(this, source);
     }
 
-    getType(): INFO_BOX_TYPE {
+    getType (): INFO_BOX_TYPE {
         switch (this.type) {
             case 1:
                 return INFO_BOX_TYPE.WARNING;
@@ -36,7 +36,7 @@ export class ActiveUser {
     @primitive()
     nickname: string;
 
-    constructor(source: Partial<ActiveUser>) {
+    constructor (source: Partial<ActiveUser>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -49,7 +49,7 @@ export class ActivityThread {
     @primitive()
     page: number;
 
-    constructor(source: Partial<ActivityThread>) {
+    constructor (source: Partial<ActivityThread>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -66,7 +66,7 @@ export class Activity {
     @time()
     createdAt: string;
 
-    constructor(source: Partial<Activity>) {
+    constructor (source: Partial<Activity>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -74,6 +74,8 @@ export class Activity {
 export class ContinuesInformationModel {
     @objectOf(RadioModel)
     radio: RadioModel;
+    @objectOf(EventsModel)
+    events: EventsModel;
     @primitive()
     unreadNotifications: number;
     @arrayOf(SlimSiteMessage)
@@ -83,7 +85,7 @@ export class ContinuesInformationModel {
     @arrayOf(Activity)
     activities: Array<Activity> = [];
 
-    constructor(source?: Partial<ContinuesInformationModel>) {
+    constructor (source?: Partial<ContinuesInformationModel>) {
         ClassHelper.assign(this, source);
     }
 }
