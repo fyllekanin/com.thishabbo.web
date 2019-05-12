@@ -134,8 +134,8 @@ export class TreeDiagramComponent implements AfterViewInit {
     }
 
     private zoomed (): void {
-        let x = d3.event.transform.x + this._size.left;
-        let y = d3.event.transform.y + this._size.top;
+        const x = d3.event.transform.x + this._size.left;
+        const y = d3.event.transform.y + this._size.top;
         this._svg.attr('transform', `translate(${x},${y}) scale(1)`);
     }
 
