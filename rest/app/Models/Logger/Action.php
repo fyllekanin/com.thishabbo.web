@@ -1384,4 +1384,11 @@ class Action {
         'data' => [],
         'log' => 'log_mod'
     ];
+
+    const UPDATED_EVENTS_SAY = [
+        'id' => 161,
+        'description' => 'Updated the events say text',
+        'data' => [],
+        'log' => 'log_staff'
+    ];
 }

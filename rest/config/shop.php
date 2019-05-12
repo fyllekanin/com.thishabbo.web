@@ -11,5 +11,8 @@ return [
         'rare' => 50,
         'epic' => 30,
         'legendary' => 10
+    ],
+    'SUBSCRIPTION_OPTIONS' => [
+        'customColour' => 1
     ]
 ];

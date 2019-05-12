@@ -1,6 +1,6 @@
 import { AuthService } from 'core/services/auth/auth.service';
 import { Component } from '@angular/core';
-import { RadioModel } from 'shared/components/radio/radio.model';
+import { EventsModel, RadioModel } from 'shared/components/radio/radio.model';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { Activity, ContinuesInformationModel } from 'core/services/continues-information/continues-information.model';
@@ -47,12 +47,31 @@ export class HeaderComponent {
             return;
         }
 
-        const queryParameters = {queryParams: {text: this.text}};
-        this.text = '';
-        this._router.navigateByUrl(this._router.createUrlTree(
-            ['/home/search/threads/page/1'],
-            queryParameters
-        ));
+        const doABarrelRoll = 'do a barrel roll';
+        new Promise(res => {
+            if (this.text !== doABarrelRoll) {
+                res();
+                return;
+            }
+
+            let degree = 1;
+            const timer = setInterval(() => {
+                if (degree === 0) {
+                    res();
+                    clearInterval(timer);
+                }
+                // @ts-ignore
+                $(document.body).css('transform', `rotate(${degree}deg)`);
+                degree = degree >= 360 ? 0 : degree + 1;
+            }, 5);
+        }).then(() => {
+            const queryParameters = {queryParams: {text: this.text}};
+            this.text = '';
+            this._router.navigateByUrl(this._router.createUrlTree(
+                ['/home/search/threads/page/1'],
+                queryParameters
+            ));
+        });
     }
 
     goToAdvancedSearch (): void {
@@ -61,6 +80,10 @@ export class HeaderComponent {
 
     get radioStats (): RadioModel {
         return this._info ? this._info.radio : null;
+    }
+
+    get eventStats (): EventsModel {
+        return this._info ? this._info.events : null;
     }
 
     get activities (): Array<Activity> {

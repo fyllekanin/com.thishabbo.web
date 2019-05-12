@@ -49,6 +49,10 @@ class ManagementController extends Controller {
     public function getDoNotHireList() {
         $items = json_decode(SettingsHelper::getSettingValue($this->settingKeys->doNotHire));
 
+        if (!$items) {
+            $items = [];
+        }
+
         foreach ($items as $item) {
             $item->addedBy = User::where('userId', $item->addedBy)->value('nickname');
         }
@@ -68,6 +72,10 @@ class ManagementController extends Controller {
     public function getDoNotHire($nickname) {
         $entries = json_decode(SettingsHelper::getSettingValue($this->settingKeys->doNotHire));
         $entryInfo = new \stdClass();
+
+        if (!$entries) {
+            $entries = [];
+        }
 
         foreach ($entries as $entry) {
             if ($entry->nickname == $nickname) {
@@ -92,6 +100,10 @@ class ManagementController extends Controller {
         $information = (object)$request->input('information');
         $oldEntries = json_decode(SettingsHelper::getSettingValue($this->settingKeys->doNotHire));
         $newEntries = [];
+
+        if (!$oldEntries) {
+            $oldEntries = [];
+        }
 
         Condition::precondition(!isset($information->nickname), 400, 'Nickname missing');
         Condition::precondition(!isset($information->reason), 400, 'Reason missing');

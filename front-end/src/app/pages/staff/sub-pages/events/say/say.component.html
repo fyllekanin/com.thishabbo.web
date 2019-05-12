@@ -1,0 +1,5 @@
+<app-title [title]="'Events Say'" [tabs]="tabs" (onTabClick)="onSave()"></app-title>
+<app-content>
+    <label>Text that should be displayed in events box</label>
+    <input name="say" [(ngModel)]="say" type="text" placeholder="Events say text">
+</app-content>

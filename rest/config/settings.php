@@ -12,7 +12,8 @@ return [
         'staffOfTheWeek' => 'staff_of_the_week',
         'memberOfTheMonth' => 'member_of_the_month',
         'banOnSight' => 'ban_on_sight',
-        'doNotHire' => 'no_not_hire'
+        'doNotHire' => 'no_not_hire',
+        'eventsSay' => 'events_say'
     ],
     'IGNORED_NOTIFICATIONS' => [
         'QUOTE_NOTIFICATIONS' => 1,

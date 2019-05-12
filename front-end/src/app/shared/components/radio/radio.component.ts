@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { RadioModel } from 'shared/components/radio/radio.model';
+import { EventsModel, RadioModel } from 'shared/components/radio/radio.model';
 import { RadioService } from './services/radio.service';
 
 @Component({
@@ -9,42 +9,73 @@ import { RadioService } from './services/radio.service';
 })
 export class RadioComponent {
     private _stats: RadioModel;
+    private _eventStats: EventsModel;
     private readonly loading = 'Loading...';
 
-    constructor(
+    constructor (
         private _radioService: RadioService
-    ) {}
+    ) {
+    }
 
     @Input()
-    set stats(stats: RadioModel) {
+    set stats (stats: RadioModel) {
         this._stats = stats;
     }
 
-    openRequest(): void {
+    @Input()
+    set eventStats (stats: EventsModel) {
+        this._eventStats = stats;
+    }
+
+    openRequest (): void {
         this._radioService.openRequest();
     }
 
-    likeDj(): void {
+    likeDj (): void {
         this._radioService.likeDj();
     }
 
-    get nickname(): string {
+    get currentHost (): string {
+        return this._eventStats && this._eventStats.nickname ? this._eventStats.nickname : 'Not Booked';
+    }
+
+    get currentEvent (): string {
+        return this._eventStats && this._eventStats.event ? this._eventStats.event : '';
+    }
+
+    get nextHost (): string {
+        return this._eventStats && this._eventStats.nextHost ? this._eventStats.nextHost : 'Not Booked';
+    }
+
+    get nextEvent (): string {
+        return this._eventStats && this._eventStats.nextEvent ? this._eventStats.nextEvent : '';
+    }
+
+    get eventsSay (): string {
+        return this._eventStats && this._eventStats.says ? this._eventStats.says : '';
+    }
+
+    get nickname (): string {
         return this._stats && this._stats.nickname ? this._stats.nickname : this.loading;
     }
 
-    get song(): string {
+    get nextDj (): string {
+        return this._stats && this._stats.nextDj ? this._stats.nextDj : 'Not Booked';
+    }
+
+    get song (): string {
         return this._stats && this._stats.song ? this._stats.song : this.loading;
     }
 
-    get likes(): number {
+    get likes (): number {
         return this._stats ? this._stats.likes : 0;
     }
 
-    get djSays(): string {
+    get djSays (): string {
         return this._stats ? this._stats.djSays : '';
     }
 
-    get albumArt(): string {
+    get albumArt (): string {
         return this._stats ? this._stats.albumArt : '';
     }
 }

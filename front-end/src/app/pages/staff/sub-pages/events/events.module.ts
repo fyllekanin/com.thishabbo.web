@@ -18,6 +18,8 @@ import { BanOnSightListComponent } from './ban-on-sight/list/ban-on-sight-list.c
 import { BanOnSightListResolver } from './services/ban-on-sight-list.resolver';
 import { BanOnSightComponent } from './ban-on-sight/ban-on-sight.component';
 import { BanOnSightResolver } from './services/ban-on-sight.resolver';
+import { SayResolver } from './services/say.resolver';
+import { SayComponent } from './say/say.component';
 
 @NgModule({
     imports: [
@@ -36,13 +38,15 @@ import { BanOnSightResolver } from './services/ban-on-sight.resolver';
         TypesComponent,
         TypeComponent,
         BanOnSightListComponent,
-        BanOnSightComponent
+        BanOnSightComponent,
+        SayComponent
     ],
     providers: [
         TimetableResolver,
         TypesReolver,
         BanOnSightListResolver,
-        BanOnSightResolver
+        BanOnSightResolver,
+        SayResolver
     ],
     entryComponents: [
         TypeComponent

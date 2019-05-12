@@ -1,5 +1,22 @@
 import { ClassHelper, primitive } from 'shared/helpers/class.helper';
 
+export class EventsModel {
+    @primitive()
+    nickname: string;
+    @primitive()
+    event: string;
+    @primitive()
+    nextHost: string;
+    @primitive()
+    nextEvent: string;
+    @primitive()
+    says: string;
+
+    constructor (source: Partial<EventsModel>) {
+        ClassHelper.assign(this, source);
+    }
+}
+
 export class RadioModel {
     @primitive()
     nickname: string;
