@@ -4,6 +4,8 @@ import { GroupsListResolver } from './services/groups-list.resolver';
 import { GroupsListComponent } from './list/groups-list.component';
 import { PageComponent } from 'shared/page/page.component';
 import { Routes } from '@angular/router';
+import { ForumPermissionsComponent } from './forum-permissions/forum-permissions.component';
+import { ForumPermissionsResolver } from './services/forum-permissions.resolver';
 
 export const groupRoutes: Routes = [
     {
@@ -26,6 +28,13 @@ export const groupRoutes: Routes = [
                 component: GroupComponent,
                 resolve: {
                     data: GroupResolver
+                }
+            },
+            {
+                path: ':groupId/forum-permissions',
+                component: ForumPermissionsComponent,
+                resolve: {
+                    data: ForumPermissionsResolver
                 }
             }
         ]

@@ -9,12 +9,13 @@ export class GroupsListPage {
     @primitive()
     total: number;
 
-    constructor(source?: Partial<GroupsListPage>) {
+    constructor (source?: Partial<GroupsListPage>) {
         ClassHelper.assign(this, source);
     }
 }
 
 export enum GroupListActions {
     EDIT_GROUP,
-    DELETE_GROUP
+    DELETE_GROUP,
+    VIEW_FORUM_PERMISSIONS
 }

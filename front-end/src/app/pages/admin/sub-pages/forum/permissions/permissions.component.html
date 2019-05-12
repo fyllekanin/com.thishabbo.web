@@ -9,18 +9,22 @@
             </div>
 
             <div class="cell small-6 permission-container">
-                <label class="checkbox-container" *ngFor="let group of leftHalf">
-                    {{group.name}}
-                    <input type="checkbox" [(ngModel)]="group.isChecked">
-                    <span class="checkmark"></span>
-                </label>
+                <div *ngFor="let group of leftHalf">
+                    <label class="checkbox-container">
+                        {{group.name}}
+                        <input type="checkbox" [(ngModel)]="group.isChecked">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
             </div>
             <div class="cell small-6 permission-container">
-                <label class="checkbox-container" *ngFor="let group of rightHalf">
-                    {{group.name}}
-                    <input type="checkbox" [(ngModel)]="group.isChecked">
-                    <span class="checkmark"></span>
-                </label>
+                <div *ngFor="let group of rightHalf">
+                    <label class="checkbox-container">
+                        {{group.name}}
+                        <input type="checkbox" [(ngModel)]="group.isChecked">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
             </div>
 
             <div class="cell small-12">
@@ -38,36 +42,48 @@
         <div class="grid-x grid-margin-x">
             <div class="cell small-6">
                 <div class="label">General Permissions</div>
-                <label class="checkbox-container">
-                    Access to this Category?
-                    <input type="checkbox" [(ngModel)]="permissions.canRead">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Can Post in this Category?
-                    <input type="checkbox" [(ngModel)]="permissions.canPost">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Can Create Threads in this Category?
-                    <input type="checkbox" [(ngModel)]="permissions.canCreateThreads">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Can View Thread Content?
-                    <input type="checkbox" [(ngModel)]="permissions.canViewThreadContent">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Can View Others Threads?
-                    <input type="checkbox" [(ngModel)]="permissions.canViewOthersThreads">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Can Open / Close Own Threads?
-                    <input type="checkbox" [(ngModel)]="permissions.canOpenCloseOwnThread">
-                    <span class="checkmark"></span>
-                </label>
+                <div>
+                    <label class="checkbox-container">
+                        Access to this Category?
+                        <input type="checkbox" [(ngModel)]="permissions.canRead">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can Post in this Category?
+                        <input type="checkbox" [(ngModel)]="permissions.canPost">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can Create Threads in this Category?
+                        <input type="checkbox" [(ngModel)]="permissions.canCreateThreads">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can View Thread Content?
+                        <input type="checkbox" [(ngModel)]="permissions.canViewThreadContent">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can View Others Threads?
+                        <input type="checkbox" [(ngModel)]="permissions.canViewOthersThreads">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can Open / Close Own Threads?
+                        <input type="checkbox" [(ngModel)]="permissions.canOpenCloseOwnThread">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
             </div>
             <div class="cell small-6">
                 <div class="label">Moderation Permissions</div>

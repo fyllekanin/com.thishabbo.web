@@ -89,6 +89,8 @@ Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions-
     Route::get('/groups/list/page/{page}', 'Admin\Group\GroupsController@getGroups');
     Route::get('/groups/{groupId}', 'Admin\Group\GroupsController@getGroup');
     Route::delete('/groups/{groupId}', 'Admin\Group\GroupsController@deleteGroup');
+
+    Route::get('/groups/{groupId}/forum-permissions', 'Admin\Group\GroupPermissionsController@getGroupForumPermissions');
 });
 
 Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canSeeIps)], function () {

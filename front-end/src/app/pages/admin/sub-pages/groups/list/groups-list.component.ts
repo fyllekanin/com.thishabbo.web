@@ -1,4 +1,3 @@
-
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
@@ -21,7 +20,7 @@ import { Page } from 'shared/page/page.model';
 import { map } from 'rxjs/operators';
 import { HttpService } from 'core/services/http/http.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
-import { SITECP_BREADCRUMB_ITEM, CATEGORY_LIST_BREADCRUMB_ITEM } from '../../../admin.constants';
+import { CATEGORY_LIST_BREADCRUMB_ITEM, SITECP_BREADCRUMB_ITEM } from '../../../admin.constants';
 import { QueryParameters } from 'core/services/http/http.model';
 
 @Component({
@@ -33,15 +32,16 @@ export class GroupsListComponent extends Page implements OnDestroy {
     private _filterTimer;
     private _filter: QueryParameters;
     private _actions: Array<TableAction> = [
-        new TableAction({ title: 'Edit Group', value: GroupListActions.EDIT_GROUP }),
-        new TableAction({ title: 'Delete Group', value: GroupListActions.DELETE_GROUP })
+        new TableAction({title: 'Edit Group', value: GroupListActions.EDIT_GROUP}),
+        new TableAction({title: 'View Forum Permissions', value: GroupListActions.VIEW_FORUM_PERMISSIONS}),
+        new TableAction({title: 'Delete Group', value: GroupListActions.DELETE_GROUP})
     ];
 
-    tabs: Array<TitleTab> = [new TitleTab({ title: 'New Group', link: '/admin/groups/new' })];
+    tabs: Array<TitleTab> = [new TitleTab({title: 'New Group', link: '/admin/groups/new'})];
     tableConfig: TableConfig;
     pagination: PaginationModel;
 
-    constructor(
+    constructor (
         private _notificationService: NotificationService,
         private _dialogService: DialogService,
         private _router: Router,
@@ -58,14 +58,17 @@ export class GroupsListComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onAction(action: Action): void {
+    onAction (action: Action): void {
         switch (action.value) {
             case GroupListActions.EDIT_GROUP:
                 this._router.navigateByUrl(`/admin/groups/${action.rowId}`);
+                break;
+            case GroupListActions.VIEW_FORUM_PERMISSIONS:
+                this._router.navigateByUrl(`/admin/groups/${action.rowId}/forum-permissions`);
                 break;
             case GroupListActions.DELETE_GROUP:
                 const grp = this._groupsListPage.groups.find(group => group.groupId.toString() === action.rowId);
@@ -78,19 +81,19 @@ export class GroupsListComponent extends Page implements OnDestroy {
         }
     }
 
-    onFilter(filter: QueryParameters): void {
+    onFilter (filter: QueryParameters): void {
         clearTimeout(this._filterTimer);
         this._filter = filter;
 
         this._filterTimer = setTimeout(() => {
             this._httpService.get(`admin/groups/list/page/1`, filter)
                 .pipe(map(data => {
-                    return { data: new GroupsListPage(data) };
+                    return {data: new GroupsListPage(data)};
                 })).subscribe(this.onPage.bind(this));
         }, 200);
     }
 
-    private onDelete(groupId: number): void {
+    private onDelete (groupId: number): void {
         this._httpService.delete(`admin/groups/${groupId}`)
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
@@ -104,7 +107,7 @@ export class GroupsListComponent extends Page implements OnDestroy {
             });
     }
 
-    private onPage(data: { data: GroupsListPage }): void {
+    private onPage (data: { data: GroupsListPage }): void {
         this._groupsListPage = data.data;
         this.createOrUpdateTable();
 
@@ -116,7 +119,7 @@ export class GroupsListComponent extends Page implements OnDestroy {
         });
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -133,25 +136,25 @@ export class GroupsListComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         return this._groupsListPage.groups.map(group => {
             return new TableRow({
                 id: String(group.groupId),
                 cells: [
-                    new TableCell({ title: group.name }),
-                    new TableCell({ title: (group.immunity || 0).toString() }),
-                    new TableCell({ title: this.timeAgo(group.updatedAt) })
+                    new TableCell({title: group.name}),
+                    new TableCell({title: (group.immunity || 0).toString()}),
+                    new TableCell({title: this.timeAgo(group.updatedAt)})
                 ],
                 actions: this._actions
             });
         });
     }
 
-    private static getTableHeaders(): Array<TableHeader> {
+    private static getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'Name' }),
-            new TableHeader({ title: 'Immunity' }),
-            new TableHeader({ title: 'Last modified' })
+            new TableHeader({title: 'Name'}),
+            new TableHeader({title: 'Immunity'}),
+            new TableHeader({title: 'Last modified'})
         ];
     }
 }

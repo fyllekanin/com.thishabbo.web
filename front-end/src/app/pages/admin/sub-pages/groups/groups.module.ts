@@ -13,6 +13,9 @@ import { PageModule } from 'shared/page/page.module';
 import { TableModule } from 'shared/components/table/table.module';
 import { PaginationModule } from 'shared/app-views/pagination/pagination.module';
 import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
+import { ForumPermissionsComponent } from './forum-permissions/forum-permissions.component';
+import { TreeDiagramModule } from 'shared/components/graph/tree-diagram/tree-diagram.module';
+import { ForumPermissionsResolver } from './services/forum-permissions.resolver';
 
 @NgModule({
     imports: [
@@ -24,18 +27,22 @@ import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
         ContentModule,
         FormsModule,
         CommonModule,
-        SafeStyleModule
+        SafeStyleModule,
+        TreeDiagramModule
     ],
     declarations: [
         GroupsListComponent,
-        GroupComponent
+        GroupComponent,
+        ForumPermissionsComponent
     ],
     providers: [
         GroupsListResolver,
-        GroupResolver
+        GroupResolver,
+        ForumPermissionsResolver
     ],
     exports: [
         RouterModule
     ]
 })
-export class GroupsModule {}
+export class GroupsModule {
+}
