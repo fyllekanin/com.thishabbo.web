@@ -54,7 +54,7 @@ export class TreeDiagramComponent implements AfterViewInit {
         this._root = d3.hierarchy(this._data, d => d.children) as any;
         this._root.x0 = this._size.height / 2;
         this._root.y0 = 0;
-        this._root.children.forEach(this.collapse.bind(this));
+        (this._root.children || []).forEach(this.collapse.bind(this));
         this.update(this._root);
     }
 

@@ -10,6 +10,7 @@ use App\Factories\Notification\Views\InfractionView;
 use App\Factories\Notification\Views\ThreadView;
 use App\Factories\Notification\Views\VisitorMessageView;
 use App\Models\Notification\Type;
+use App\Utils\Iterables;
 use Illuminate\Support\Facades\DB;
 
 class NotificationFactory {
@@ -89,8 +90,8 @@ class NotificationFactory {
                     $receiverIds[] = $userId;
                 });
         }
-
-        $receiverIds = array_filter($receiverIds, function ($userId) use ($visitorMessage) {
+        
+        $receiverIds = Iterables::filter($receiverIds, function ($userId) use ($visitorMessage) {
             return $userId != $visitorMessage->userId;
         });
         $notifications = array_map(function ($userId) use ($visitorMessage) {
