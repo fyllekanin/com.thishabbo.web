@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
  # This is a skeleton of a bash daemon. To use for yourself, just set the
  # daemonName variable and then enter in the commands to run in the doCommands
