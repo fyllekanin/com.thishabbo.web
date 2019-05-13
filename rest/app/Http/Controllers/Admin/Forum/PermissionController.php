@@ -100,7 +100,7 @@ class PermissionController extends Controller {
         return response()->json([
             'category' => $category,
             'group' => $group,
-            'groups' => Group::where('groupId', '!=', $groupId)->get(['groupId', 'name'])
+            'groups' => Group::where('groupId', '!=', $groupId)->orderBy('name', 'ASC')->get(['groupId', 'name'])
         ]);
     }
 

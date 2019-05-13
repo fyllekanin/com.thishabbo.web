@@ -7,6 +7,7 @@ use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserGroup;
 use App\Helpers\ConfigHelper;
 use App\Models\Notification\Type;
+use App\Utils\Iterables;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -66,13 +67,13 @@ class NotifyMentionsInPost implements ShouldQueue {
 
         $mentionedFromEarlier = array_map(function ($notification) {
             return $notification->userId;
-        }, array_filter($notifiedUsers, function ($notification) use ($mentionType) {
+        }, Iterables::filter($notifiedUsers, function ($notification) use ($mentionType) {
             return $notification->type == $mentionType;
         }));
 
         $quotedFromEarlier = array_map(function ($notification) {
             return $notification->userId;
-        }, array_filter($notifiedUsers, function ($notification) use ($quoteType) {
+        }, Iterables::filter($notifiedUsers, function ($notification) use ($quoteType) {
             return $notification->type == $quoteType;
         }));
 
@@ -140,7 +141,7 @@ class NotifyMentionsInPost implements ShouldQueue {
             $groupMembers = UserGroup::where('groupId', $groupId)->select('userId')->get()->toArray();
             $groupMemberIds = array_map(function ($groupMember) {
                 return $groupMember['userId'];
-            }, array_filter($groupMembers, function ($groupMember) use ($mentionedIds) {
+            }, Iterables::filter($groupMembers, function ($groupMember) use ($mentionedIds) {
                 return !in_array($groupMember['userId'], $mentionedIds);
             }));
             $mentionedIds = array_merge($mentionedIds, $groupMemberIds);

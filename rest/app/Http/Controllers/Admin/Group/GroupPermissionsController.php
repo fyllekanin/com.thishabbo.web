@@ -9,6 +9,7 @@ use App\EloquentModels\User\User;
 use App\Helpers\ConfigHelper;
 use App\Http\Controllers\Controller;
 use App\Utils\Condition;
+use App\Utils\Iterables;
 use Illuminate\Http\Request;
 
 class GroupPermissionsController extends Controller {
@@ -26,17 +27,21 @@ class GroupPermissionsController extends Controller {
         Condition::precondition(!$group, 404, 'There is no group with that ID');
         Condition::precondition($group->immunity >= User::getImmunity($user->userId), 400, 'You can not see this group');
 
+        $accessibleCategoryIds = ForumPermission::where('groupId', $groupId)
+            ->whereRaw('(permissions & ' . $this->forumPermissions->canRead . ')')
+            ->pluck('categoryId');
+
         return response()->json([
             'name' => $group->name,
-            'children' => $this->getChildren(-1, $group->groupId)
+            'children' => $this->getChildren(-1, $group->groupId, $accessibleCategoryIds)
         ]);
     }
 
-    private function getChildren($parentId, $groupId) {
-        $categories = Category::where('parentId', $parentId)->get(['categoryId', 'title']);
+    private function getChildren($parentId, $groupId, $accessibleCategoryIds) {
+        $categories = Category::where('parentId', $parentId)->whereIn('categoryId', $accessibleCategoryIds)->get(['categoryId', 'title']);
 
-        return $categories->map(function ($category) use ($groupId) {
-            $children = $this->getChildren($category->categoryId, $groupId);
+        return $categories->map(function ($category) use ($groupId, $accessibleCategoryIds) {
+            $children = $this->getChildren($category->categoryId, $groupId, $accessibleCategoryIds);
             $children[] = $this->getPermissions($category->categoryId, $groupId);
             return [
                 'name' => $category->title,
@@ -56,11 +61,12 @@ class GroupPermissionsController extends Controller {
         ];
 
         $permission = ForumPermission::where('categoryId', $categoryId)->where('groupId', $groupId)->value('permissions');
+        
         return [
             'name' => 'Permissions',
             'children' => array_map(function ($item) {
                 return ['name' => $item->name, 'children' => []];
-            }, array_filter($permissions, function ($item) use ($permission) {
+            }, Iterables::filter($permissions, function ($item) use ($permission) {
                 return $permission & $item->value;
             }))
         ];
