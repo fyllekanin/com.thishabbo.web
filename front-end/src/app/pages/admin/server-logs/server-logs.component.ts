@@ -13,7 +13,7 @@ import { SITECP_BREADCRUMB_ITEM } from '../admin.constants';
 export class ServerLogsComponent extends Page implements OnDestroy {
 
     serverLogs: Array<string> = [];
-    log: string = '';
+    log = '';
     content: string = null;
 
     constructor (
