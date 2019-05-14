@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => 'stack',
+    'default' => 'daily',
 
     /*
     |--------------------------------------------------------------------------
@@ -49,7 +49,7 @@ return [
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),
             'level' => 'debug',
-            'days' => 7,
+            'days' => 1,
         ],
 
         'slack' => [

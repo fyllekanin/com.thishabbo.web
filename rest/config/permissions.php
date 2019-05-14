@@ -14,7 +14,7 @@ return [
         'canManageGroupsList' => 512,
         'canEditUserBasic' => 1024,
         'canEditUserAdvanced' => 2048,
-        'canEditUserProfile' => 4096,
+        'canReadServerLogs' => 4096,
         'canBanUser' => 8192,
         'canMergeUsers' => 16384,
         'canManageBetting' => 32768,

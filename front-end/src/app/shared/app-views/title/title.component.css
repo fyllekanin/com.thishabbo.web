@@ -95,7 +95,7 @@ a:hover {
 }
 
 .pink-top {
-    border-top: 3px solid #ee6db7;
+    border-top: 3px solid #e887bf;
 }
 
 .green-top {
@@ -104,6 +104,14 @@ a:hover {
 
 .red-top {
     border-top: 3px solid #ad6262;
+}
+
+.black-top {
+    border-top: 3px solid #000000;
+}
+
+.purple-top {
+    border-top: 3px solid #925779;
 }
 
 .checkbox {

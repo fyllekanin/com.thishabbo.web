@@ -3,6 +3,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { Routes } from '@angular/router';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 import { PING_TYPES } from 'core/services/continues-information/continues-information.model';
+import { ServerLogsComponent } from './server-logs/server-logs.component';
+import { ServerLogsService } from './server-logs/server-logs.service';
 
 
 export const adminRoutes: Routes = [
@@ -22,6 +24,13 @@ export const adminRoutes: Routes = [
                 },
                 data: {
                     type: PING_TYPES.ADMIN
+                }
+            },
+            {
+                path: 'server-logs',
+                component: ServerLogsComponent,
+                resolve: {
+                    data: ServerLogsService
                 }
             },
             {

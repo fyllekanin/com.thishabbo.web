@@ -8,6 +8,11 @@ $permissions = ConfigHelper::getAdminConfig();
 
 Route::get('/ping', 'PageController@getPing');
 
+Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canReadServerLogs)], function () {
+    Route::get('server-logs', 'Admin\LogsController@getServerLogs');
+    Route::get('server-logs/{fileName}', 'Admin\LogsController@getServerLog');
+});
+
 Route::prefix('statistics')->group(function () {
     Route::get('/users/{year}/{month}', 'Admin\Statistics\UserStatisticsController@getUsersLoggedIn');
     Route::get('/posts/{year}/{month}', 'Admin\Statistics\ForumStatisticsController@getPosts');
@@ -97,7 +102,7 @@ Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions-
     Route::get('/users/ip-search', 'IpSearchController@getIpSearch');
 });
 
-Route::group(['middleware' => PermissionHelper::getAdminMiddleware([$permissions->canEditUserBasic, $permissions->canEditUserAdvanced, $permissions->canEditUserProfile,
+Route::group(['middleware' => PermissionHelper::getAdminMiddleware([$permissions->canEditUserBasic, $permissions->canEditUserAdvanced,
     $permissions->canBanUser, $permissions->canRemoveEssentials, $permissions->canDoInfractions])], function () use ($permissions) {
 
     Route::get('/users/list/page/{page}', 'Admin\User\UserController@getUsers');

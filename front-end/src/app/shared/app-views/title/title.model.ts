@@ -29,4 +29,8 @@ export class TitleTopBorder {
     static readonly GREEN = 'green-top';
 
     static readonly RED = 'red-top';
+
+    static readonly BLACK = 'black-top';
+
+    static readonly PURPLE = 'purple-top';
 }

@@ -11,11 +11,36 @@ use App\Helpers\DataHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Logger\Action;
+use App\Utils\BBcodeUtil;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Mockery\Exception;
 
 class LogsController extends Controller {
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getServerLogs() {
+        $files = array_map(function ($file) {
+            return $file->getFilename();
+        }, File::files(storage_path('logs')));
+        asort($files);
+        return response()->json($files);
+    }
+
+    /**
+     * @param $fileName
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getServerLog($fileName) {
+        Condition::precondition(!File::exists(storage_path('logs/' . $fileName)), 404, 'Log do not exist');
+
+        $content = BBcodeUtil::arrowsToEntry(File::get(storage_path('logs/' . $fileName)));
+        return response()->json(nl2br($content));
+    }
 
     /**
      * @param Request $request

@@ -938,8 +938,8 @@ class Action {
         'id' => 105,
         'description' => 'Merged users',
         'data' => [
-            'srcUserId' => 'Id of source user',
-            'destUserId' => 'Id of destination user'
+            'sourceUser' => 'Source user',
+            'destinationUser' => 'Destination user'
         ],
         'log' => 'log_admin'
     ];
@@ -1390,5 +1390,14 @@ class Action {
         'description' => 'Updated the events say text',
         'data' => [],
         'log' => 'log_staff'
+    ];
+
+    const SEARCHED = [
+        'id' => 162,
+        'description' => 'User did a search',
+        'data' => [
+            'text' => 'Search text'
+        ],
+        'log' => 'log_user'
     ];
 }

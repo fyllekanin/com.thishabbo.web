@@ -52,6 +52,9 @@ class UserController extends Controller {
         Condition::precondition(!$srcUser, 404, 'Source user does not exist');
         Condition::precondition(!$destUser, 404, 'Destination user does not exist');
 
+        $sourceUser = $srcUser;
+        $destinationUser = $destUser;
+
         Thread::where('userId', $srcUser->userId)->update([
             'userId' => $destUser->userId
         ]);
@@ -71,7 +74,10 @@ class UserController extends Controller {
         $destUser->save();
         $srcUser->delete();
 
-        Logger::admin($user->userId, $request->ip(), Action::MERGED_USERS, ['srcUser' => $srcUser->userId, 'destUser' => $destUser->userId]);
+        Logger::admin($user->userId, $request->ip(), Action::MERGED_USERS, [
+            'sourceUser' => $sourceUser->toJson(),
+            'destinationUser' => $destinationUser->toJson()
+        ]);
 
         return response()->json();
     }
