@@ -7,6 +7,8 @@ use App\EloquentModels\Forum\Thread;
 use App\EloquentModels\User\User;
 use App\Helpers\DataHelper;
 use App\Helpers\UserHelper;
+use App\Logger;
+use App\Models\Logger\Action;
 use App\Services\ForumService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
@@ -50,6 +52,7 @@ class SearchController extends Controller {
                 break;
         }
 
+        Logger::user($user->userId, $request->ip(), Action::SEARCHED, ['text' => $request->input('text')]);
         return response()->json([
             'total' => $result->total,
             'page' => $page,

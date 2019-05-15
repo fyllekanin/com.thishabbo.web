@@ -42,6 +42,10 @@ export class AdminComponent extends Page implements OnDestroy, OnInit {
                         link: '/admin/dashboard'
                     }),
                     new SideMenuItem({
+                        title: 'Server Logs',
+                        link: '/admin/server-logs'
+                    }),
+                    new SideMenuItem({
                         title: 'Manage BBCode',
                         link: '/admin/content/bbcodes',
                         isApplicable: this._authService.adminPermissions.canManageBBcodes
@@ -206,7 +210,6 @@ export class AdminComponent extends Page implements OnDestroy, OnInit {
     get canManageUsers (): boolean {
         return this._authService.adminPermissions.canEditUserBasic ||
             this._authService.adminPermissions.canEditUserAdvanced ||
-            this._authService.adminPermissions.canEditUserProfile ||
             this._authService.adminPermissions.canBanUser ||
             this._authService.adminPermissions.canRemoveEssentials ||
             this._authService.adminPermissions.canDoInfractions;

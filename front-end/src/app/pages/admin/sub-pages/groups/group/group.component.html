@@ -162,13 +162,6 @@
                 </div>
                 <div>
                     <label class="checkbox-container">
-                        Access to edit a users Profile Images <em>(avatar, signature, images etc)</em>
-                        <input type="checkbox" [(ngModel)]="adminPermissions.canEditUserProfile">
-                        <span class="checkmark"></span>
-                    </label>
-                </div>
-                <div>
-                    <label class="checkbox-container">
                         Access to Ban/Unban a User
                         <input type="checkbox" [(ngModel)]="adminPermissions.canBanUser">
                         <span class="checkmark"></span>
@@ -199,6 +192,13 @@
                     <label class="checkbox-container">
                         Can see user, mod, staff and admin logs?
                         <input type="checkbox" [(ngModel)]="adminPermissions.canSeeLogs">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can read server logs? (laravel, cron etc)
+                        <input type="checkbox" [(ngModel)]="adminPermissions.canReadServerLogs">
                         <span class="checkmark"></span>
                     </label>
                 </div>

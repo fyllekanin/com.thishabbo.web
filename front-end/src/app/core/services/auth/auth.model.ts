@@ -171,8 +171,6 @@ export class AdminPermissions {
     @primitive()
     canEditUserAdvanced: boolean;
     @primitive()
-    canEditUserProfile: boolean;
-    @primitive()
     canBanUser: boolean;
     @primitive()
     canMergeUsers: boolean;
@@ -200,6 +198,8 @@ export class AdminPermissions {
     canRemoveEssentials: boolean;
     @primitive()
     canModerateVisitorMessage: boolean;
+    @primitive()
+    canReadServerLogs: boolean;
 
     constructor (source?: Partial<AdminPermissions>) {
         ClassHelper.assign(this, source);

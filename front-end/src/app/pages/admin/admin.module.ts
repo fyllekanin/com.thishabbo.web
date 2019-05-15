@@ -11,6 +11,9 @@ import { NgModule } from '@angular/core';
 import { SideMenuModule } from 'shared/app-views/side-menu/side-menu.module';
 import { TableModule } from 'shared/components/table/table.module';
 import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.module';
+import { ServerLogsComponent } from './server-logs/server-logs.component';
+import { ServerLogsService } from './server-logs/server-logs.service';
+import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 
 @NgModule({
     imports: [
@@ -22,13 +25,17 @@ import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.modul
         CommonModule,
         SideMenuModule,
         TableModule,
-        StatsBoxesModule
+        StatsBoxesModule,
+        SafeHtmlModule
     ],
     declarations: [
         AdminComponent,
-        DashboardComponent
+        DashboardComponent,
+        ServerLogsComponent
     ],
-    providers: [],
+    providers: [
+        ServerLogsService
+    ],
     exports: [
         RouterModule
     ]
