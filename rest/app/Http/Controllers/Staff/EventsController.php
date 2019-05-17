@@ -385,7 +385,7 @@ class EventsController extends Controller {
             'isPerm' => 0,
             'type' => 1,
             'eventId' => $event->eventId,
-            'link' => $booking->link
+            'link' => Value::objectProperty($booking, 'link', null)
         ]);
         $timetable->save();
 
@@ -396,7 +396,8 @@ class EventsController extends Controller {
             'timetableId' => $timetable->timetableId,
             'createdAt' => time(),
             'user' => UserHelper::getUser($userId),
-            'event' => $event
+            'event' => $event,
+            'link' => $timetable->link
         ]);
     }
 }

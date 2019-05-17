@@ -1,5 +1,5 @@
 import { User } from 'core/services/auth/auth.model';
-import { arrayOf, ClassHelper, objectOf, primitive, primitiveOf } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
 import { EventType } from '../../events/types/types.model';
 
 export class TimetableModel {
@@ -17,8 +17,8 @@ export class TimetableModel {
     name: string;
     @objectOf(EventType)
     event: EventType;
-    @primitiveOf(String)
-    link = '';
+    @primitive()
+    link: string;
     @primitive()
     createdAt: number;
     @objectOf(User)
