@@ -127,6 +127,11 @@ Route::group(['middleware' => PermissionHelper::getAdminMiddleware([$permissions
     Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canEditUserAdvanced)], function () {
         Route::get('/users/{userId}/groups', 'Admin\User\UserGroupsController@getUserGroups');
         Route::put('/users/{userId}/groups', 'Admin\User\UserGroupsController@updateUserGroups');
+
+        Route::get('/users/{userId}/accolades', 'Admin\User\AccoladesController@getAccoladePage');
+        Route::post('/users/{userId}/accolades', 'Admin\User\AccoladesController@createAccolade');
+        Route::put('/users/{userId}/accolades/{accoladeId}', 'Admin\User\AccoladesController@updateAccolade');
+        Route::delete('/users/{userId}/accolades/{accoladeId}', 'Admin\User\AccoladesController@deleteAccolade');
     });
 
     Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canBanUser)], function () {

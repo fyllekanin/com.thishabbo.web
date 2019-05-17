@@ -66,6 +66,11 @@ export class AdminComponent extends Page implements OnDestroy, OnInit {
                 title: 'Shop',
                 items: [
                     new SideMenuItem({
+                        title: 'Subscriptions',
+                        link: '/admin/shop/subscriptions/page/1',
+                        isApplicable: this._authService.adminPermissions.canManageShop
+                    }),
+                    new SideMenuItem({
                         title: 'Items',
                         link: '/admin/shop/items/page/1',
                         isApplicable: this._authService.adminPermissions.canManageShop

@@ -36,5 +36,6 @@ export enum UserListAction {
     MANAGE_BANS,
     MERGE_USER,
     MANAGE_ESSENTIALS,
-    GIVE_INFRACTION
+    GIVE_INFRACTION,
+    EDIT_ACCOLADES
 }

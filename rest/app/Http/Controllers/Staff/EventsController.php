@@ -384,7 +384,8 @@ class EventsController extends Controller {
             'hour' => $booking->hour,
             'isPerm' => 0,
             'type' => 1,
-            'eventId' => $event->eventId
+            'eventId' => $event->eventId,
+            'link' => $booking->link
         ]);
         $timetable->save();
 

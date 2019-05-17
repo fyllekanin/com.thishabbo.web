@@ -64,12 +64,16 @@
                         </div>
                     </div>
                 </app-content>
-                <app-title [title]="'Accolades'"></app-title>
-                <app-content>
-                    <div class="latest-post"><span style="color: #c66464"><i
-                            class="fa fa-trophy"></i> <b> Ownership »</b></span> 2010 - Present
-                    </div>
-                </app-content>
+                <div *ngIf="accolades.length > 0">
+                    <app-title [title]="'Accolades'"></app-title>
+                    <app-content>
+                        <div *ngFor="let accolade of accolades">
+                            <span [style.color]="accolade.color"><i [ngClass]="accolade.icon"></i> {{accolade.role}}
+                                »</span>
+                            {{accolade.getStartLabel()}} - {{accolade.getEndLabel()}}
+                        </div>
+                    </app-content>
+                </div>
 
                 <app-title [title]="'All Time Stats'"></app-title>
                 <app-content>

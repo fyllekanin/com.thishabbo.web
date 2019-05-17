@@ -10,7 +10,7 @@ class CreateTimetableTable extends Migration {
      *
      * @return void
      */
-    public function up () {
+    public function up() {
         Schema::create('timetable', function (Blueprint $table) {
             $table->increments('timetableId');
             $table->bigInteger('userId');
@@ -21,6 +21,7 @@ class CreateTimetableTable extends Migration {
             $table->integer('isActive')->default(1);
             $table->integer('eventId')->default(0);
             $table->integer('isDeleted')->default(0);
+            $table->string('link')->nullable();
             $table->bigInteger('createdAt');
             $table->bigInteger('updatedAt');
 
@@ -41,7 +42,7 @@ class CreateTimetableTable extends Migration {
      *
      * @return void
      */
-    public function down () {
+    public function down() {
         Schema::dropIfExists('timetable');
     }
 }

@@ -1,5 +1,5 @@
 import { Component, ComponentFactoryResolver, ElementRef, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'core/services/auth/auth.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
@@ -16,13 +16,13 @@ import {
     STAFFCP_EVENTS_BREADCRUM_ITEM,
     STAFFCP_RADIO_BREADCRUM_ITEM
 } from '../../../staff.constants';
-import { TimetablePage, TimetableModel } from './timetable.model';
+import { TimetableModel, TimetablePage } from './timetable.model';
 import { SelectionComponent } from './selection/selection.component';
 
 @Component({
     selector: 'app-staff-timetable',
     templateUrl: 'timetable.component.html',
-    styleUrls: [ 'timetable.component.css' ]
+    styleUrls: ['timetable.component.css']
 })
 export class TimetableComponent extends Page implements OnDestroy {
     private readonly _type;
@@ -68,7 +68,8 @@ export class TimetableComponent extends Page implements OnDestroy {
 
     getNickname (hour: number): string {
         const timetable = this.getTimetableByHour(hour);
-        return `<span style="${timetable.user.styling}">${timetable.user.nickname}</span> ${this.getLogName(timetable)}`;
+        const linkIcon = this._type === 'events' ? (timetable.link ? '<i class="far fa-thumbs-up"></i>' : '<i class="far fa-thumbs-down"></i>') : '';
+        return `<span style="${timetable.user.styling}">${timetable.user.nickname}</span> <br /> ${this.getEventName(timetable)} ${linkIcon}`;
     }
 
     clickHour (hour: number): void {
@@ -90,7 +91,7 @@ export class TimetableComponent extends Page implements OnDestroy {
         return hour === date.getHours();
     }
 
-    private getLogName(timetable: TimetableModel): string {
+    private getEventName (timetable: TimetableModel): string {
         if (!timetable.isPerm) {
             return this.isEvents() ? `(${timetable.event ? timetable.event.name : 'unknown'})` : '';
         }
@@ -104,10 +105,10 @@ export class TimetableComponent extends Page implements OnDestroy {
                 new DialogCloseButton('Close'),
                 new DialogButton({
                     title: 'Book',
-                    callback: (res: { nickname: string, eventId: number }) => this.onBook(hour, res)
+                    callback: (res: { nickname: string, eventId: number, link: string }) => this.onBook(hour, res)
                 })
             ],
-            component: this.isEvents() || this.canBookRadioForOther()  ?
+            component: this.isEvents() || this.canBookRadioForOther() ?
                 this._componentFactory.resolveComponentFactory(SelectionComponent) : null,
             content: 'Sure you wanna book this slot?',
             data: {
@@ -119,19 +120,19 @@ export class TimetableComponent extends Page implements OnDestroy {
         });
     }
 
-    private canBookEventForOther(): boolean {
+    private canBookEventForOther (): boolean {
         return this._authService.staffPermissions.canBookEventForOthers;
     }
 
-    private canBookRadioForOther(): boolean {
+    private canBookRadioForOther (): boolean {
         return this._authService.staffPermissions.canBookRadioForOthers;
     }
 
-    private isEvents(): boolean {
+    private isEvents (): boolean {
         return this._type === 'events';
     }
 
-    private onBook (hour: number, res: { nickname: string, eventId: number }): void {
+    private onBook (hour: number, res: { nickname: string, eventId: number, link: string }): void {
         const currentDay = this.getCurrentDay();
 
         const offsetInHours = hour + (new Date().getTimezoneOffset() / 60);
@@ -143,14 +144,15 @@ export class TimetableComponent extends Page implements OnDestroy {
                 day: convertedDay,
                 hour: convertedHour,
                 nickname: res.nickname,
-                eventId: res.eventId
+                eventId: res.eventId,
+                link: res.link
             }
         })
             .subscribe(this.onSuccessBooking.bind(this, currentDay, hour),
                 this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private onSuccessBooking(day, hour, item): void {
+    private onSuccessBooking (day, hour, item): void {
         this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'Slot booked'
@@ -162,7 +164,8 @@ export class TimetableComponent extends Page implements OnDestroy {
             isPerm: false,
             user: item.user,
             createdAt: item.createdAt,
-            event: item.event
+            event: item.event,
+            link: item.link
         }));
         this._dialogService.closeDialog();
     }
@@ -197,7 +200,7 @@ export class TimetableComponent extends Page implements OnDestroy {
         this.tabs = TimeHelper.DAYS.map(day => new TitleTab({
             title: day.abbr,
             value: day.number,
-            isActive: Number(params[ 'day' ]) === day.number
+            isActive: Number(params['day']) === day.number
         })).reverse();
     }
 
@@ -217,7 +220,7 @@ export class TimetableComponent extends Page implements OnDestroy {
         });
     }
 
-    private getDay(convertedHour: number, day: number): number {
+    private getDay (convertedHour: number, day: number): number {
         if (convertedHour > 23) {
             return day === 7 ? 1 : day + 1;
         } else if (convertedHour < 0) {
@@ -226,7 +229,7 @@ export class TimetableComponent extends Page implements OnDestroy {
         return day;
     }
 
-    private getHour(convertedHour: number): number {
+    private getHour (convertedHour: number): number {
         if (convertedHour > 23) {
             return convertedHour - 24;
         } else if (convertedHour < 0) {

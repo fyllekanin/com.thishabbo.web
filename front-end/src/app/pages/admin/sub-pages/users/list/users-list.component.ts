@@ -82,6 +82,9 @@ export class UsersListComponent extends Page implements OnDestroy {
             case UserListAction.MANAGE_BANS:
                 this._router.navigateByUrl(`/admin/users/${action.rowId}/bans`);
                 break;
+            case UserListAction.EDIT_ACCOLADES:
+                this._router.navigateByUrl(`/admin/users/${action.rowId}/accolades`);
+                break;
             case UserListAction.MERGE_USER:
                 this.openMergeDialog(action.rowId);
                 break;
@@ -144,6 +147,11 @@ export class UsersListComponent extends Page implements OnDestroy {
             {
                 title: 'Edit User Groups',
                 value: UserListAction.EDIT_USER_GROUPS,
+                condition: adminPermissions.canEditUserAdvanced
+            },
+            {
+                title: 'Edit Accolades',
+                value: UserListAction.EDIT_ACCOLADES,
                 condition: adminPermissions.canEditUserAdvanced
             },
             {title: 'Manage Bans', value: UserListAction.MANAGE_BANS, condition: adminPermissions.canBanUser},

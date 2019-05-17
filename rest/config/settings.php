@@ -19,5 +19,42 @@ return [
         'QUOTE_NOTIFICATIONS' => 1,
         'MENTION_NOTIFICATIONS' => 2,
         'AUTO_SUBSCRIBE_THREAD' => 4
+    ],
+    'ACCOLADE_TYPES' => [
+        [
+            'id' => 1,
+            'icon' => 'fa fa-trophy',
+            'color' => '#FFB400'
+        ],
+        [
+            'id' => 2,
+            'icon' => 'fa fa-trophy',
+            'color' => '#C66464'
+        ],
+        [
+            'id' => 3,
+            'icon' => 'fa fa-trophy',
+            'color' => '#79B14E'
+        ],
+        [
+            'id' => 4,
+            'icon' => 'fa fa-trophy',
+            'color' => '#4E4E4E'
+        ],
+        [
+            'id' => 5,
+            'icon' => 'fa fa-trophy',
+            'color' => '#B4B6B9'
+        ],
+        [
+            'id' => 6,
+            'icon' => 'fa fa-trophy',
+            'color' => '#437682'
+        ],
+        [
+            'id' => 7,
+            'icon' => 'fa fa-trophy',
+            'color' => '#FFC0CB'
+        ]
     ]
 ];

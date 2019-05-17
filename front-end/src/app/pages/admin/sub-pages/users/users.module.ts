@@ -28,6 +28,9 @@ import { InfractionModule } from 'shared/components/infraction/infraction.module
 import { EssentialsComponent } from './essentials/essentials.component';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 import { EssentialsService } from './services/essentials.service';
+import { AccoladesComponent } from './accolades/accolades.component';
+import { AccoladeComponent } from './accolades/accolade/accolade.component';
+import { AccoladesService } from './services/accolades.service';
 
 @NgModule({
     imports: [
@@ -53,7 +56,9 @@ import { EssentialsService } from './services/essentials.service';
         IpSearchComponent,
         VoucherCodesComponent,
         VoucherCodeComponent,
-        EssentialsComponent
+        EssentialsComponent,
+        AccoladesComponent,
+        AccoladeComponent
     ],
     providers: [
         UsersListService,
@@ -62,11 +67,13 @@ import { EssentialsService } from './services/essentials.service';
         BanService,
         ThcRequestsService,
         VoucherCodesResolver,
-        EssentialsService
+        EssentialsService,
+        AccoladesService
     ],
     entryComponents: [
         MergeUsersComponent,
-        VoucherCodeComponent
+        VoucherCodeComponent,
+        AccoladeComponent
     ],
     exports: [
         RouterModule

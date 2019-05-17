@@ -59,4 +59,8 @@ class ConfigHelper {
     public static function getSubscriptionOptions() {
         return (object)Config::get(self::$SHOP . '.SUBSCRIPTION_OPTIONS');
     }
+
+    public static function getAccoladeTypes() {
+        return Config::get(self::$SETTINGS . '.ACCOLADE_TYPES');
+    }
 }
