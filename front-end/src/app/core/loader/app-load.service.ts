@@ -11,11 +11,18 @@ import { RouterStateService } from 'core/services/router/router-state.service';
 @Injectable()
 export class AppLoadService {
 
-    constructor(
-       private _injector: Injector
-    ) {}
+    constructor (
+        private _injector: Injector
+    ) {
+    }
 
-    initializeNavigation(): Promise<any> {
+    initializeApp (): Promise<any> {
+        return this.initializeUser().then(() => {
+            return this.initializeNavigation();
+        });
+    }
+
+    initializeNavigation (): Promise<any> {
         const httpService = this._injector.get(HttpService);
         this.clearAutoSaves();
         return new Promise(resolve => {
@@ -29,7 +36,7 @@ export class AppLoadService {
         });
     }
 
-    initializeUser(): Promise<any> {
+    initializeUser (): Promise<any> {
         const httpService = this._injector.get(HttpService);
         const authService = this._injector.get(AuthService);
         const routerStateService = this._injector.get(RouterStateService);
@@ -50,7 +57,7 @@ export class AppLoadService {
         });
     }
 
-    private clearAutoSaves(): void {
+    private clearAutoSaves (): void {
         const currentTime = new Date().getTime() / 1000;
         Object.keys(localStorage).filter(key => key.indexOf(AutoSaveHelper.AUTO_SAVE_PREFIX) > -1)
             .forEach(key => {
