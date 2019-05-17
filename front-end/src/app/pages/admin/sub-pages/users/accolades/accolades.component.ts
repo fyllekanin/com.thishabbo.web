@@ -141,7 +141,7 @@ export class AccoladesComponent extends Page implements OnDestroy {
     }
 
     private getRoleHtml (item: AccoladeItem): string {
-        const type = this._data.types.find(type => type.id === item.type);
+        const type = this._data.types.find(t => t.id === item.type);
         return `<span style="color: ${type.color}"><i class="${type.icon}"></i> ${item.role}</span>`;
     }
 

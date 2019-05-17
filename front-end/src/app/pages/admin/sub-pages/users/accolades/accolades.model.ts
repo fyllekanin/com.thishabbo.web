@@ -2,6 +2,16 @@ import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.
 import { SlimUser } from 'core/services/auth/auth.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
 
+export const ACCOLADE_LABEL_MAP = new Map([
+    [1, 'Award'],
+    [2, 'Admin'],
+    [3, 'Management'],
+    [4, 'Moderator'],
+    [5, 'Veteran'],
+    [6, 'Developer'],
+    [7, 'Audio Producer']
+]);
+
 export class AccoladeItem {
     @primitive()
     accoladeId: number;
@@ -61,16 +71,6 @@ export class AccoladesPage {
         ClassHelper.assign(this, source);
     }
 }
-
-export const ACCOLADE_LABEL_MAP = new Map([
-    [1, 'Award'],
-    [2, 'Admin'],
-    [3, 'Management'],
-    [4, 'Moderator'],
-    [5, 'Veteran'],
-    [6, 'Developer'],
-    [7, 'Audio Producer']
-]);
 
 export enum AccoladeActions {
     EDIT,
