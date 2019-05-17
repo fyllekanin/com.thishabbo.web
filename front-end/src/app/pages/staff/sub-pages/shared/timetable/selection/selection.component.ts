@@ -5,18 +5,20 @@ import { EventType } from '../../../events/types/types.model';
 @Component({
     selector: 'app-staff-radio-timetable-selection',
     templateUrl: 'selection.component.html',
-    styleUrls: [ 'selection.component.css' ]
+    styleUrls: ['selection.component.css']
 })
 export class SelectionComponent extends InnerDialogComponent {
     private _data: { events: Array<EventType>, canBookRadioForOther: boolean, canBookEventForOther: boolean, isEvents: boolean } = null;
 
     nickname: string;
     eventId: number;
+    link: string;
 
     getData () {
         return {
             nickname: this.nickname,
-            eventId: this.eventId
+            eventId: this.eventId,
+            link: this.link
         };
     }
 

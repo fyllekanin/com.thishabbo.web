@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import {
     Followers,
+    ProfileAccolade,
     ProfileActions,
     ProfileModel,
     ProfileRelations,
@@ -84,6 +85,10 @@ export class ProfileComponent extends Page implements OnDestroy {
     onRemove (visitorMessage: ProfileVisitorMessage): void {
         this._data.visitorMessages.items = this._data.visitorMessages.items
             .filter(item => item.visitorMessageId !== visitorMessage.visitorMessageId);
+    }
+
+    get accolades (): Array<ProfileAccolade> {
+        return this._data.accolades;
     }
 
     get visitorMessages (): Array<ProfileVisitorMessage> {

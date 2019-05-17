@@ -1,0 +1,43 @@
+<div class="grid-container content-margin">
+    <div class="grid-x grid-margin-x">
+        <div class="cell small-6">
+            <label>Role</label>
+            <input name="role" [(ngModel)]="accolade.role" type="text" placeholder="">
+        </div>
+        <div class="cell small-6">
+            <label>Type</label>
+            <select [(ngModel)]="accolade.type">
+                <option [disabled]="true" [value]="undefined">Type..</option>
+                <option *ngFor="let type of types" [value]="type.id">
+                    {{type.label}}
+                </option>
+            </select>
+        </div>
+        <div class="cell small-6">
+            <label>Start Month</label>
+            <select [value]="this.start.month" (change)="onStartMonthChange($event)">
+                <option [disabled]="true" [value]="undefined">Month..</option>
+                <option *ngFor="let month of months" [value]="month.number">
+                    {{month.label}}
+                </option>
+            </select>
+        </div>
+        <div class="cell small-6">
+            <label>Start Year</label>
+            <input name="startYear" [(ngModel)]="start.year" type="number" placeholder="">
+        </div>
+        <div class="cell small-6">
+            <label>End Month</label>
+            <select [value]="this.end.month" (change)="onEndMonthChange($event)">
+                <option [value]="undefined">Month..</option>
+                <option *ngFor="let month of months" [value]="month.number">
+                    {{month.label}}
+                </option>
+            </select>
+        </div>
+        <div class="cell small-6">
+            <label>End Year</label>
+            <input name="endYear" [(ngModel)]="end.year" type="number" placeholder="">
+        </div>
+    </div>
+</div>

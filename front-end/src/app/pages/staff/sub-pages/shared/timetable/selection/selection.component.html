@@ -5,4 +5,7 @@
     <select [(ngModel)]="eventId">
         <option *ngFor="let item of events" [value]="item.eventId">{{item.name}}</option>
     </select>
+
+    <label>Room Link <em>(Can be empty, but should be filled before event!)</em></label>
+    <input name="username" [(ngModel)]="link" type="text" placeholder="">
 </div>

@@ -1,6 +1,7 @@
 import { arrayOf, ClassHelper, objectOf, primitive, time } from 'shared/helpers/class.helper';
 import { SlimUser } from 'core/services/auth/auth.model';
 import { Activity } from 'core/services/continues-information/continues-information.model';
+import { TimeHelper } from 'shared/helpers/time.helper';
 
 export class ProfileStats {
     @primitive()
@@ -85,6 +86,36 @@ export class ProfileVisitorMessages {
     }
 }
 
+export class ProfileAccolade {
+    @primitive()
+    icon: string;
+    @primitive()
+    role: string;
+    @primitive()
+    color: string;
+    @primitive()
+    start: number;
+    @primitive()
+    end: number;
+
+    constructor (source: Partial<ProfileAccolade>) {
+        ClassHelper.assign(this, source);
+    }
+
+    getStartLabel (): string {
+        const date = new Date(this.start * 1000);
+        return `${TimeHelper.FULL_MONTHS[date.getMonth()]} ${date.getFullYear()}`;
+    }
+
+    getEndLabel (): string {
+        if (!this.end) {
+            return 'Present';
+        }
+        const date = new Date(this.end * 1000);
+        return `${TimeHelper.FULL_MONTHS[date.getMonth()]} ${date.getFullYear()}`;
+    }
+}
+
 export class ProfileModel {
     @objectOf(SlimUser)
     user: SlimUser;
@@ -100,6 +131,9 @@ export class ProfileModel {
     relations: ProfileRelations;
     @objectOf(ProfileVisitorMessages)
     visitorMessages: ProfileVisitorMessages;
+    @arrayOf(ProfileAccolade)
+    accolades: Array<ProfileAccolade> = [];
+
 
     constructor (source: Partial<ProfileModel>) {
         ClassHelper.assign(this, source);

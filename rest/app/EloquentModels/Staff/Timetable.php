@@ -13,7 +13,7 @@ class Timetable extends DeletableModel {
 
     protected $table = 'timetable';
     protected $primaryKey = 'timetableId';
-    protected $fillable = ['userId', 'day', 'hour', 'isPerm', 'type', 'eventId', 'isActive'];
+    protected $fillable = ['userId', 'day', 'hour', 'isPerm', 'type', 'eventId', 'isActive', 'link'];
     protected $hidden = ['userId', 'eventId', 'permShow'];
     protected $appends = ['user', 'event', 'name'];
 

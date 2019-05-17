@@ -18,6 +18,8 @@ export class TimetableModel {
     @objectOf(EventType)
     event: EventType;
     @primitive()
+    link: string;
+    @primitive()
     createdAt: number;
     @objectOf(User)
     user: User;

@@ -1400,4 +1400,31 @@ class Action {
         ],
         'log' => 'log_user'
     ];
+
+    const CREATED_ACCOLADE = [
+        'id' => 163,
+        'description' => 'Created accolade for user',
+        'data' => [
+            'userId' => 'User that got the accolade'
+        ],
+        'log' => 'log_admin'
+    ];
+
+    const UPDATED_ACCOLADE = [
+        'id' => 164,
+        'description' => 'Updated accolade for user',
+        'data' => [
+            'userId' => 'ID of user for the accolade'
+        ],
+        'log' => 'log_admin'
+    ];
+
+    const DELETED_ACCOLADE = [
+        'id' => 165,
+        'description' => 'Deleted accolade for user',
+        'data' => [
+            'userId' => 'ID of user for the accolade'
+        ],
+        'log' => 'log_admin'
+    ];
 }

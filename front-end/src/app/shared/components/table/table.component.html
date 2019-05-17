@@ -1,14 +1,15 @@
 <div *ngIf="isSet">
     <app-title *ngIf="!isSlim"
-        [title]="title"
-        [tabs]="tabs"
-        [top]="topBorder"
-        (onTabClick)="tabClick($event)">
+               [title]="title"
+               [tabs]="tabs"
+               [top]="topBorder"
+               (onTabClick)="tabClick($event)">
     </app-title>
     <app-content [isContracted]="isContracted">
         <div class="grid-container full position-relative">
             <div class="grid-x grid-margin-x filter" *ngIf="filterConfigs.length > 0">
-                <div class="cell" [ngClass]="filterConfigs.length > 1 ? 'small-6' : 'small-12'" *ngFor="let filterConfig of filterConfigs">
+                <div class="cell" [ngClass]="filterConfigs.length > 1 ? 'small-6' : 'small-12'"
+                     *ngFor="let filterConfig of filterConfigs">
                     <div *ngIf="!filterConfig.isSelect()">
                         <div class="label" *ngIf="filterConfig.title">{{filterConfig.title}}</div>
                         <input type="text" name="filter" placeholder="{{filterConfig.placeholder}}"
@@ -35,7 +36,8 @@
                 </div>
             </div>
 
-            <div *ngFor="let row of rows" [ngClass]="row.isExpandable && row.data ? 'clickable' : ''" (click)="toggleRow(row)">
+            <div *ngFor="let row of rows" [ngClass]="row.isExpandable && row.data ? 'clickable' : ''"
+                 (click)="toggleRow(row)">
                 <div class="grid-x row">
                     <div class="cell" [ngClass]="columnSize.column" *ngFor="let cell of row.cells; let index = index">
                         <div *ngIf="cell.statusBox">
@@ -58,12 +60,15 @@
                         </div>
                     </div>
 
-                    <div class="cell action" [ngClass]="row.actions.length === 1 ? columnSize.actions : columnSize.actions" *ngIf="haveActions">
+                    <div class="cell action"
+                         [ngClass]="row.actions.length === 1 ? columnSize.actions : columnSize.actions"
+                         *ngIf="haveActions">
                         <select (change)="onChange(row, $event)" *ngIf="row.actions.length > 1">
                             <option [value]="null" disabled="disabled">{{ row.actionsPlaceholder || 'Choose' }}</option>
                             <option *ngFor="let item of row.actions" [value]="item.value">{{item.title}}</option>
                         </select>
-                        <button appButton *ngIf="row.actions.length === 1" [disabled]="row.actions[0].isDisabled" (onClick)="onActionClick(row.id, row.actions[0].value)">
+                        <button appButton *ngIf="row.actions.length === 1" [disabled]="row.actions[0].isDisabled"
+                                (onClick)="onActionClick(row.id, row.actions[0].value)">
                             {{row.actions[0].title}}
                         </button>
                     </div>
@@ -73,7 +78,7 @@
                     <div [innerHTML]="row.data | safeHtml"></div>
                 </div>
             </div>
-            <div *ngIf="rows.length === 0">
+            <div *ngIf="rows.length === 0" class="align-center">
                 There no data! ¯\_(ツ)_/¯
             </div>
         </div>

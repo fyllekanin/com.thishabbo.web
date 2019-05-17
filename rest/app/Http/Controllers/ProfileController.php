@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\EloquentModels\Forum\Category;
+use App\EloquentModels\User\Accolade;
 use App\EloquentModels\User\Follower;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\VisitorMessage;
@@ -19,6 +20,7 @@ use App\Services\ForumService;
 use App\Services\ForumValidatorService;
 use App\Utils\BBcodeUtil;
 use App\Utils\Condition;
+use App\Utils\Iterables;
 use App\Views\VisitorMessageReportView;
 use Illuminate\Http\Request;
 
@@ -144,7 +146,8 @@ class ProfileController extends Controller {
                 'love' => isset($profile->profile->love) ? UserHelper::getSlimUser($profile->profile->love) : null,
                 'like' => isset($profile->profile->like) ? UserHelper::getSlimUser($profile->profile->like) : null,
                 'hate' => isset($profile->profile->hate) ? UserHelper::getSlimUser($profile->profile->hate) : null
-            ]
+            ],
+            'accolades' => $this->getAccolades($profile->userId)
         ]);
     }
 
@@ -318,5 +321,23 @@ class ProfileController extends Controller {
                 }),
             'createdAt' => $visitorMessage->createdAt->timestamp
         ];
+    }
+
+    private function getAccolades($userId) {
+        $accolades = Accolade::where('userId', $userId)->orderBy('start', 'ASC')->get();
+        $types = ConfigHelper::getAccoladeTypes();
+
+        return $accolades->map(function ($accolade) use ($types) {
+            $type = (object)Iterables::find($types, function ($item) use ($accolade) {
+                return $accolade->type == $item['id'];
+            });
+            return [
+                'icon' => $type->icon,
+                'color' => $type->color,
+                'role' => $accolade->role,
+                'start' => $accolade->start,
+                'end' => $accolade->end
+            ];
+        });
     }
 }

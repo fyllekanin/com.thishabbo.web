@@ -17,6 +17,8 @@ import { VoucherCodesComponent } from './voucher-codes/voucher-codes.component';
 import { VoucherCodesResolver } from './services/voucher-codes.resolver';
 import { EssentialsComponent } from './essentials/essentials.component';
 import { EssentialsService } from './services/essentials.service';
+import { AccoladesComponent } from './accolades/accolades.component';
+import { AccoladesService } from './services/accolades.service';
 
 export const usersRoutes: Routes = [
     {
@@ -84,6 +86,13 @@ export const usersRoutes: Routes = [
                 component: EssentialsComponent,
                 resolve: {
                     data: EssentialsService
+                }
+            },
+            {
+                path: ':userId/accolades',
+                component: AccoladesComponent,
+                resolve: {
+                    data: AccoladesService
                 }
             }
         ]
