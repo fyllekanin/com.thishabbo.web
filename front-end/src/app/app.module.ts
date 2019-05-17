@@ -14,12 +14,8 @@ import { AppLoadService } from 'core/loader/app-load.service';
 import { SiteMessagesModule } from 'shared/app-views/site-messages/site-messages.module';
 import { FooterModule } from 'shared/app-views/footer/footer.module';
 
-export function init_nav(appLoadService: AppLoadService) {
-    return () => appLoadService.initializeNavigation();
-}
-
-export function init_user(appLoadService: AppLoadService) {
-    return () => appLoadService.initializeUser();
+export function init_app (appLoadService: AppLoadService) {
+    return () => appLoadService.initializeApp();
 }
 
 @NgModule({
@@ -45,10 +41,10 @@ export function init_user(appLoadService: AppLoadService) {
     ],
     providers: [
         AppLoadService,
-        { provide: APP_INITIALIZER, useFactory: init_user, deps: [AppLoadService], multi: true },
-        { provide: APP_INITIALIZER, useFactory: init_nav, deps: [AppLoadService], multi: true }
+        {provide: APP_INITIALIZER, useFactory: init_app, deps: [AppLoadService], multi: true}
     ],
     bootstrap: [AppComponent]
 })
 
-export class AppModule { }
+export class AppModule {
+}
