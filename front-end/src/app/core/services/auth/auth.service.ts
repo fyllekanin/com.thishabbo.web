@@ -18,7 +18,7 @@ export class AuthService {
 
     private _onUserChangeSubject: Subject<void> = new Subject();
 
-    constructor(
+    constructor (
         private _routerState: RouterStateService,
         private _activatedRoute: ActivatedRoute,
         private _notificationService: NotificationService,
@@ -28,13 +28,13 @@ export class AuthService {
     ) {
     }
 
-    set user(user: AuthUser) {
+    set user (user: AuthUser) {
         this._user = user;
         this.storeAuthUser(this._user);
     }
 
-    login(loginName: string, password: string, onFailure?: () => void): Subscription {
-        return this._httpService.post('auth/login', { loginName: loginName, password: password })
+    login (loginName: string, password: string, onFailure?: () => void): Subscription {
+        return this._httpService.post('auth/login', {loginName: loginName, password: password})
             .subscribe(this.doLogin.bind(this), res => {
                 this._user = null;
                 this._notificationService.failureNotification(res);
@@ -44,7 +44,7 @@ export class AuthService {
             });
     }
 
-    logout(isRedirect: boolean): void {
+    logout (isRedirect: boolean): void {
         this.clearUserAndNavigate(isRedirect);
         this._onUserChangeSubject.next();
         this._httpService.post('auth/logout', null).subscribe(() => {
@@ -55,20 +55,20 @@ export class AuthService {
         });
     }
 
-    isLoggedIn(): boolean {
+    isLoggedIn (): boolean {
         return Boolean(this._user);
     }
 
-    navigateToHome(): void {
+    navigateToHome (): void {
         this._router.navigateByUrl('/home');
     }
 
-    getRefreshToken(): string {
+    getRefreshToken (): string {
         const user = this.getAuthUser();
         return user ? user.oauth.refreshToken : '';
     }
 
-    refreshToken(): Observable<string> {
+    refreshToken (): Observable<string> {
         return this._httpService.get('auth/refresh', null, {
             headers: new HttpHeaders().set('RefreshAuthorization', this.getRefreshToken())
         }).pipe(map((res: AuthUser) => {
@@ -86,33 +86,33 @@ export class AuthService {
         }));
     }
 
-    getAccessToken(): string {
+    getAccessToken (): string {
         const user = this.getAuthUser();
         return user ? user.oauth.accessToken : '';
     }
 
-    get onUserChange(): Observable<void> {
+    get onUserChange (): Observable<void> {
         return this._onUserChangeSubject.asObservable();
     }
 
-    get adminPermissions(): AdminPermissions {
+    get adminPermissions (): AdminPermissions {
         return this._user ? this._user.adminPermissions : new AdminPermissions();
     }
 
-    get staffPermissions(): StaffPermissions {
+    get staffPermissions (): StaffPermissions {
         return this._user ? this._user.staffPermissions : new StaffPermissions();
     }
 
-    get authUser(): AuthUser {
+    get authUser (): AuthUser {
         return this._user;
     }
 
-    getAuthUser(): AuthUser {
+    getAuthUser (): AuthUser {
         const user = localStorage.getItem(LOCAL_STORAGE.AUTH_USER);
-        return user ? JSON.parse(user) : null;
+        return user ? JSON.parse(atob(user)) : null;
     }
 
-    private doLogin(res: AuthUser): void {
+    private doLogin (res: AuthUser): void {
         this._user = new AuthUser(res);
         this.storeAuthUser(res);
         this.checkGdpr();
@@ -151,7 +151,7 @@ export class AuthService {
         }
     }
 
-    private checkGdpr(): void {
+    private checkGdpr (): void {
         if (this._user.gdpr) {
             return;
         }
@@ -184,17 +184,17 @@ Until you accept our terms and conditions you will not be able to use most of th
         });
     }
 
-    private clearUserAndNavigate(isRedirect: boolean): void {
+    private clearUserAndNavigate (isRedirect: boolean): void {
         this._user = null;
         this.storeAuthUser(null);
         this.navigateToLogin(isRedirect);
     }
 
-    private navigateToLogin(isRedirect: boolean): void {
+    private navigateToLogin (isRedirect: boolean): void {
         this._router.navigateByUrl(`/auth/login${isRedirect ? '?redirected=true' : ''}`);
     }
 
-    private storeAuthUser(user: AuthUser): void {
-        localStorage.setItem(LOCAL_STORAGE.AUTH_USER, JSON.stringify(user) || '');
+    private storeAuthUser (user: AuthUser): void {
+        localStorage.setItem(LOCAL_STORAGE.AUTH_USER, btoa(JSON.stringify(user) || ''));
     }
 }
