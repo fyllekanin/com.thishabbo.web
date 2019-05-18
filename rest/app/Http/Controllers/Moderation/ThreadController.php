@@ -43,7 +43,7 @@ class ThreadController extends Controller {
         Condition::precondition(count($threadIds) < 1, 400, 'No threads selected!');
         $category = Category::find($categoryId);
 
-        $forumPermissions = ConfigHelper::getForumConfig();
+        $forumPermissions = ConfigHelper::getForumPermissions();
 
         Condition::precondition(!$category, 404, 'Category with that ID do not exist');
         Condition::precondition($category->parentId <= 0, 400, 'You can not choose a top level category');
@@ -92,7 +92,7 @@ class ThreadController extends Controller {
         $user = $request->get('auth');
         $threadIds = $request->input('threadIds');
 
-        $forumPermissions = ConfigHelper::getForumConfig();
+        $forumPermissions = ConfigHelper::getForumPermissions();
 
         $newOwner = User::withNickname($request->input('nickname'))->first();
         Condition::precondition(!$newOwner, 404, 'No user with that nickname');
@@ -167,8 +167,8 @@ class ThreadController extends Controller {
         Condition::precondition(!$thread, 404, 'Thread do not exist');
         Condition::precondition(!$thread->isOpen, 400, 'Thread is already closed');
 
-        $canClose = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canCloseOpenThread, $thread->categoryId) ||
-            (PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canOpenCloseOwnThread, $thread->categoryId) && $user->userId == $thread->userId);
+        $canClose = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canCloseOpenThread, $thread->categoryId) ||
+            (PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canOpenCloseOwnThread, $thread->categoryId) && $user->userId == $thread->userId);
         Condition::precondition(!$canClose, 400, 'You do not have permission to close/open threads here');
 
         $thread->isOpen = false;
@@ -191,8 +191,8 @@ class ThreadController extends Controller {
         Condition::precondition(!$thread, 404, 'Thread do not exist');
         Condition::precondition($thread->isOpen, 400, 'Thread is already open');
 
-        $canOpen = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canCloseOpenThread, $thread->categoryId) ||
-            (PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canOpenCloseOwnThread, $thread->categoryId) && $user->userId == $thread->userId);
+        $canOpen = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canCloseOpenThread, $thread->categoryId) ||
+            (PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canOpenCloseOwnThread, $thread->categoryId) && $user->userId == $thread->userId);
         Condition::precondition(!$canOpen, 400, 'You do not have permission to close/open threads here');
 
         $thread->isOpen = true;
@@ -214,7 +214,7 @@ class ThreadController extends Controller {
         $user = $request->get('auth');
         $thread = Thread::find($threadId);
         Condition::precondition(!$thread, 404, 'Thread does not exist');
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumConfig()->canStickyThread, $thread->categoryId,
+        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canStickyThread, $thread->categoryId,
             'You do not have permission to sticky threads here');
 
         $thread->isSticky = true;
@@ -236,7 +236,7 @@ class ThreadController extends Controller {
         $user = $request->get('auth');
         $thread = Thread::find($threadId);
         Condition::precondition(!$thread, 404, 'Thread does not exist');
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumConfig()->canStickyThread, $thread->categoryId,
+        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canStickyThread, $thread->categoryId,
             'You do not have permission to unsticky threads here');
 
         $thread->isSticky = 0;
@@ -259,7 +259,7 @@ class ThreadController extends Controller {
         $thread = Thread::find($threadId);
         Condition::precondition(!$thread, 404, 'Thread does not exist!');
         Condition::precondition(!$thread->isApproved, 400, 'Thread is already unapproved');
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumConfig()->canApproveThreads, $thread->categoryId,
+        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canApproveThreads, $thread->categoryId,
             'You dont have permission to unapprove this thread');
 
         $thread->isApproved = false;
@@ -291,7 +291,7 @@ class ThreadController extends Controller {
         $thread = Thread::find($threadId);
         Condition::precondition(!$thread, 404, 'Thread does not exist!');
         Condition::precondition($thread->isApproved, 400, 'Thread is already approved');
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumConfig()->canApproveThreads, $thread->categoryId,
+        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canApproveThreads, $thread->categoryId,
             'You dont have permission to unapprove this thread');
 
         $thread->isApproved = true;
@@ -323,7 +323,7 @@ class ThreadController extends Controller {
         $thread = Thread::find($threadId);
 
         Condition::precondition(!$thread, 404, 'Thread does not exist!');
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumConfig()->canDeletePosts, $thread->categoryId,
+        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canDeletePosts, $thread->categoryId,
             'You dont have permission to delete this thread');
 
         $posts = Post::where('threadId', $thread->threadId)->where('isApproved', '>', 0)->get();

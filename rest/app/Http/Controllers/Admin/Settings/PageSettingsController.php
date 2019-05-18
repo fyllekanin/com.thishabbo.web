@@ -2,25 +2,63 @@
 
 namespace App\Http\Controllers\Admin\Settings;
 
+use App\EloquentModels\Forum\Category;
 use App\EloquentModels\Page;
 use App\Helpers\ConfigHelper;
+use App\Helpers\PermissionHelper;
 use App\Helpers\SettingsHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
+use App\Services\ForumService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
 
 class PageSettingsController extends Controller {
     private $settingKeys;
+    private $forumService;
 
     /**
      * GeneralSettingsController constructor.
      * Fetch the setting keys and store them in an instance variable
+     *
+     * @param ForumService $forumService
      */
-    public function __construct() {
+    public function __construct(ForumService $forumService) {
         parent::__construct();
+        $this->forumService = $forumService;
         $this->settingKeys = ConfigHelper::getKeyConfig();
+    }
+
+    public function getHomePageThreads(Request $request) {
+        $user = $request->get('auth');
+
+        $categoryIds = json_decode(SettingsHelper::getSettingValue($this->settingKeys->homePageThreads));
+        return response()->json([
+            'categoryIds' => is_array($categoryIds) ? $categoryIds : [],
+            'categories' => Category::whereIn('categoryId', $this->forumService->getAccessibleCategories($user->userId))
+                ->orderBy('title', 'ASC')
+                ->get(['categoryId', 'title'])
+        ]);
+    }
+
+    public function updateHomePageThreads(Request $request) {
+        $user = $request->get('auth');
+        $data = $request->input('data');
+        $permissions = ConfigHelper::getForumPermissions();
+
+        if (!is_array($data)) {
+            $data = [];
+        }
+
+        foreach ($data as $item) {
+            Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, $permissions->canRead, $item), 400,
+                'You do not have access to one or more of the categories');
+        }
+
+        SettingsHelper::createOrUpdateSetting($this->settingKeys->homePageThreads, json_encode($data));
+        Logger::admin($user->userId, $request->ip(), Action::UPDATED_HOME_PAGE_THREADS);
+        return response()->json();
     }
 
     /**

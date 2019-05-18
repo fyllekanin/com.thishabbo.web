@@ -91,7 +91,7 @@ class ForumService {
             return Cache::get('accessible-categories-' . $userId);
         }
 
-        $forumPermission = $permission ? $permission : ConfigHelper::getForumConfig()->canRead;
+        $forumPermission = $permission ? $permission : ConfigHelper::getForumPermissions()->canRead;
         $categoryIds = Category::pluck('categoryId');
         $ids = [];
 
@@ -122,7 +122,7 @@ class ForumService {
      * @return array
      */
     public function getCategoriesUserCantSeeOthersThreadsIn($userId) {
-        $forumPermissions = ConfigHelper::getForumConfig();
+        $forumPermissions = ConfigHelper::getForumPermissions();
         $categories = Category::select('categoryId')->get();
         $categoryIds = [];
 
@@ -195,7 +195,7 @@ class ForumService {
      * @return object
      */
     public function getForumPermissionsForUserInCategory($userId, $categoryId) {
-        $forumPermissions = ConfigHelper::getForumConfig();
+        $forumPermissions = ConfigHelper::getForumPermissions();
         $permissions = [];
 
         foreach ($forumPermissions as $key => $value) {
@@ -276,7 +276,7 @@ class ForumService {
      * @return mixed
      */
     public function getCategoryTree($user, $ignoreIds = [], $parentId = -1) {
-        $forumPermissions = ConfigHelper::getForumConfig();
+        $forumPermissions = ConfigHelper::getForumPermissions();
         $categories = Category::where('parentId', $parentId)->select('categoryId', 'title')->getQuery()->get();
         Iterables::filter(Category::where('parentId', $parentId)->select('categoryId', 'title')->getQuery()->get()->toArray(),
             function ($category) use ($ignoreIds, $forumPermissions, $user) {

@@ -183,6 +183,9 @@ Route::prefix('content')->group(function () use ($permissions) {
         Route::delete('/themes/{themeId}', 'Admin\Settings\ThemeController@deleteTheme');
         Route::put('/themes/default/clear', 'Admin\Settings\ThemeController@clearDefault');
         Route::put('/themes/default/{themeId}', 'Admin\Settings\ThemeController@makeThemeDefault');
+
+        Route::get('/home-page-threads', 'Admin\Settings\PageSettingsController@getHomePageThreads');
+        Route::put('/home-page-threads', 'Admin\Settings\PageSettingsController@updateHomePageThreads');
     });
 
     Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canManageBBcodes)], function () {

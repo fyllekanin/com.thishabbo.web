@@ -35,6 +35,10 @@ import { ThemesComponent } from './themes/list/themes.component';
 import { ThemesResolver } from './services/themes.resolver';
 import { ThemeResolver } from './services/theme.resolver';
 import { ThemeComponent } from './themes/theme/theme.component';
+import { HomePageThreadsResolver } from './services/home-page-threads.resolver';
+import { HomePageThreadsComponent } from './home-page-threads/home-page-threads.component';
+import { SelectModule } from 'shared/components/form/select/select.module';
+import { ButtonModule } from 'shared/directives/button/button.module';
 
 @NgModule({
     imports: [
@@ -45,7 +49,9 @@ import { ThemeComponent } from './themes/theme/theme.component';
         TableModule,
         ContentModule,
         EditorModule,
-        NoticeModule
+        NoticeModule,
+        SelectModule,
+        ButtonModule
     ],
     declarations: [
         WelcomeBotComponent,
@@ -62,7 +68,8 @@ import { ThemeComponent } from './themes/theme/theme.component';
         PagesComponent,
         PageComponent,
         ThemesComponent,
-        ThemeComponent
+        ThemeComponent,
+        HomePageThreadsComponent
     ],
     entryComponents: [
         NavigationItemComponent
@@ -79,10 +86,12 @@ import { ThemeComponent } from './themes/theme/theme.component';
         PagesResolver,
         PageResolver,
         ThemesResolver,
-        ThemeResolver
+        ThemeResolver,
+        HomePageThreadsResolver
     ],
     exports: [
         RouterModule
     ]
 })
-export class WebsiteSettingsModule {}
+export class WebsiteSettingsModule {
+}

@@ -88,7 +88,7 @@ class CategoryActionController extends Controller {
         $category = Category::find($categoryId);
 
         Condition::precondition(!$category, 404, 'There is not category with that ID');
-        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canRead, $category->categoryId),
+        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canRead, $category->categoryId),
             400, 'You do not have access to this category');
         Condition::precondition(CategorySubscription::where('userId', $user->userId)->where('categoryId', $category->categoryId)->count('categoryId') > 0,
             400, 'You are already subscribed to this category');

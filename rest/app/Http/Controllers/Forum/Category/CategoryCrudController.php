@@ -98,7 +98,7 @@ class CategoryCrudController extends Controller {
         $sortOrderQuery = $request->input('sortOrder');
         $fromTheQuery = $request->input('fromThe');
 
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumConfig()->canRead, $categoryId,
+        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId,
             'No permissions to access this category');
 
         $category = Category::where('categoryId', $categoryId)->first();
@@ -159,7 +159,7 @@ class CategoryCrudController extends Controller {
     private function getCategoryPermissions($categoryId, $userId) {
         $permissions = [];
 
-        foreach (ConfigHelper::getForumConfig() as $key => $value) {
+        foreach (ConfigHelper::getForumPermissions() as $key => $value) {
             $permissions[$key] = PermissionHelper::haveForumPermission($userId, $value, $categoryId);
         }
 
@@ -249,10 +249,10 @@ class CategoryCrudController extends Controller {
         $childs = [];
 
         foreach ($children as $child) {
-            if (PermissionHelper::haveForumPermission($userId, ConfigHelper::getForumConfig()->canViewOthersThreads, $child->categoryId)) {
+            if (PermissionHelper::haveForumPermission($userId, ConfigHelper::getForumPermissions()->canViewOthersThreads, $child->categoryId)) {
                 $child->lastPost = $this->forumService->getSlimPost($child->lastPostId);
             } else {
-                $canApproveThreads = PermissionHelper::haveForumPermission($userId, ConfigHelper::getForumConfig()->canApproveThreads, $child->categoryId);
+                $canApproveThreads = PermissionHelper::haveForumPermission($userId, ConfigHelper::getForumPermissions()->canApproveThreads, $child->categoryId);
                 $categoryIdsChain = $this->getCategoryIdsChain($child->categoryId, $categoryIds);
                 $last = Thread::belongsToUser($userId)
                     ->isApproved($canApproveThreads)

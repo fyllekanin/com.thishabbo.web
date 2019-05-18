@@ -82,8 +82,8 @@ class ForumController extends Controller {
                 continue;
             }
             $post->user = UserHelper::getUser($post->userId);
-            $post->canApprove = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canApproveThreads, $post->categoryId);
-            $post->canDelete = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canDeletePosts, $post->categoryId);
+            $post->canApprove = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canApproveThreads, $post->categoryId);
+            $post->canDelete = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canDeletePosts, $post->categoryId);
         }
 
         return response()->json($posts);
@@ -101,7 +101,7 @@ class ForumController extends Controller {
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
 
         foreach ($categoryIds as $key => $value) {
-            if (!PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canApproveThreads, $value)) {
+            if (!PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canApproveThreads, $value)) {
                 unset($categoryIds[$key]);
             }
         }
@@ -115,8 +115,8 @@ class ForumController extends Controller {
 
         foreach ($threads as $thread) {
             $thread->user = UserHelper::getUser($thread->userId);
-            $thread->canApprove = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canApproveThreads, $thread->categoryId);
-            $thread->canDelete = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canDeletePosts, $thread->categoryId);
+            $thread->canApprove = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canApproveThreads, $thread->categoryId);
+            $thread->canDelete = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canDeletePosts, $thread->categoryId);
         }
 
         return response()->json($threads);

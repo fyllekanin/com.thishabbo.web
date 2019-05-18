@@ -38,7 +38,7 @@ class ThreadPollController extends Controller {
     public function getPoll(Request $request, $threadId) {
         $user = $request->get('auth');
         $thread = Thread::find($threadId);
-        $permission = ConfigHelper::getForumConfig()->canManagePolls;
+        $permission = ConfigHelper::getForumPermissions()->canManagePolls;
 
         Condition::precondition(!$thread, 404, 'No thread with that ID');
         Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, $thread->categoryId, $permission),
@@ -70,7 +70,7 @@ class ThreadPollController extends Controller {
     public function getPolls(Request $request, $page) {
         $filter = $request->input('filter');
         $user = $request->get('auth');
-        $categoryIds = $this->forumService->getAccessibleCategories($user->userId, ConfigHelper::getForumConfig()->canManagePolls);
+        $categoryIds = $this->forumService->getAccessibleCategories($user->userId, ConfigHelper::getForumPermissions()->canManagePolls);
         $threadIds = Thread::whereIn('categoryId', $categoryIds)->pluck('threadId');
 
         $getPollsSql = ThreadPoll::join('threads', 'threads.threadId', '=', 'thread_polls.threadId')
@@ -111,7 +111,7 @@ class ThreadPollController extends Controller {
 
         Condition::precondition(!$threadPoll, 404, 'No thread poll exist with that ID');
         Condition::precondition(!PermissionHelper::haveForumPermission($user->userId,
-            ConfigHelper::getForumConfig()->canManagePolls, $thread->categoryId),
+            ConfigHelper::getForumPermissions()->canManagePolls, $thread->categoryId),
             400, 'You do not have permission to delete this poll');
 
         $threadPoll->isDeleted = true;

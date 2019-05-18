@@ -1427,4 +1427,11 @@ class Action {
         ],
         'log' => 'log_admin'
     ];
+
+    const UPDATED_HOME_PAGE_THREADS = [
+        'id' => 166,
+        'description' => 'Updated category ids to fetch threads from',
+        'data' => [],
+        'log' => 'log_admin'
+    ];
 }

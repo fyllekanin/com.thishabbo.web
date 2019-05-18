@@ -17,7 +17,7 @@ class GroupPermissionsController extends Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->forumPermissions = ConfigHelper::getForumConfig();
+        $this->forumPermissions = ConfigHelper::getForumPermissions();
     }
 
     public function getGroupForumPermissions(Request $request, $groupId) {

@@ -44,7 +44,7 @@ class PermissionController extends Controller {
 
             Condition::precondition(!$groupToBeUpdated, 404, 'The group do not exist');
             Condition::precondition($groupToBeUpdated->immunity >= $immunity, 400, 'The group have higher immunity then you');
-            PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumConfig()->canRead, $categoryId,
+            PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId,
                 'You do not have access to this category');
 
             $permission = ForumPermission::where('categoryId', $categoryId)->where('groupId', $groupToBeUpdated->groupId);
@@ -149,7 +149,7 @@ class PermissionController extends Controller {
             return $forumPermissions;
         }
 
-        foreach (ConfigHelper::getForumConfig() as $key => $value) {
+        foreach (ConfigHelper::getForumPermissions() as $key => $value) {
             $forumPermissions[$key] = $permissions->permissions & $value;
         }
 
@@ -159,7 +159,7 @@ class PermissionController extends Controller {
     private function nameToNumberForumPermissions($permissions) {
         $forumPermissions = 0;
 
-        foreach (ConfigHelper::getForumConfig() as $key => $value) {
+        foreach (ConfigHelper::getForumPermissions() as $key => $value) {
             if (isset($permissions[$key]) && $permissions[$key]) {
                 $forumPermissions += $value;
             }

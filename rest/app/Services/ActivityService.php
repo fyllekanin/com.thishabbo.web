@@ -106,7 +106,7 @@ class ActivityService {
         if (in_array($item->action, [Action::CREATED_POST['id'], Action::LIKED_POST['id']])) {
             $post = Post::find($item->contentId);
             $threadId = $post->threadId;
-            $page = $post->getPage(PermissionHelper::haveForumPermission($userId, ConfigHelper::getForumConfig()->canApprovePosts,
+            $page = $post->getPage(PermissionHelper::haveForumPermission($userId, ConfigHelper::getForumPermissions()->canApprovePosts,
                 $post->thread->categoryId));
         }
         $thread = Thread::find($threadId);

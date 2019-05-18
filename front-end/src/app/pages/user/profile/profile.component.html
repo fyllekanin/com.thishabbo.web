@@ -128,23 +128,26 @@
                     </div>
                 </app-content>
 
-                <app-user-profile-activities [activities]="activities"></app-user-profile-activities>
+                <app-user-profile-activities *ngIf="activities.length > 0"
+                                             [activities]="activities"></app-user-profile-activities>
 
-                <app-title [title]="'Relations'"></app-title>
-                <app-content>
-                    <div class="relation" *ngIf="relations.love">
-                        <img src="/assets/images/heart.png"/>
-                        <app-user-link [user]="relations.love"></app-user-link>
-                    </div>
-                    <div class="relation" *ngIf="relations.like">
-                        <img src="/assets/images/smile.png"/>
-                        <app-user-link [user]="relations.like"></app-user-link>
-                    </div>
-                    <div class="relation" *ngIf="relations.hate">
-                        <img src="/assets/images/skull.png"/>
-                        <app-user-link [user]="relations.hate"></app-user-link>
-                    </div>
-                </app-content>
+                <div *ngIf="relations.love || relations.like || relations.hate">
+                    <app-title [title]="'Relations'"></app-title>
+                    <app-content>
+                        <div class="relation" *ngIf="relations.love">
+                            <img src="/assets/images/heart.png"/>
+                            <app-user-link [user]="relations.love"></app-user-link>
+                        </div>
+                        <div class="relation" *ngIf="relations.like">
+                            <img src="/assets/images/smile.png"/>
+                            <app-user-link [user]="relations.like"></app-user-link>
+                        </div>
+                        <div class="relation" *ngIf="relations.hate">
+                            <img src="/assets/images/skull.png"/>
+                            <app-user-link [user]="relations.hate"></app-user-link>
+                        </div>
+                    </app-content>
+                </div>
 
                 <div *ngIf="youtube">
                     <app-title [title]="'YouTube'"></app-title>

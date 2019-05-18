@@ -347,7 +347,7 @@ class AuthController extends Controller {
     private function buildAdminPermissions($user) {
         $obj = ['isAdmin' => false];
         $adminPermissions = ConfigHelper::getAdminConfig();
-        $forumPermissions = ConfigHelper::getForumConfig();
+        $forumPermissions = ConfigHelper::getForumPermissions();
 
         // General admin permissions
         foreach ($adminPermissions as $key => $value) {

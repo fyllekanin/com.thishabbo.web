@@ -113,7 +113,7 @@ class PostController extends Controller {
         foreach ($postIds as $postId) {
             $post = Post::with('thread')->where('postId', $postId)->first();
             Condition::precondition(!$post, 404, 'One of the posts do not exist');
-            PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumConfig()->canApprovePosts, $post->thread->categoryId,
+            PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canApprovePosts, $post->thread->categoryId,
                 'You cant approve posts in this category');
             Condition::precondition(!$post->thread, 404, 'Posts thread does not exist');
 
@@ -152,7 +152,7 @@ class PostController extends Controller {
         foreach ($postIds as $postId) {
             $post = Post::find($postId);
             Condition::precondition(!$post, 404, 'One of the posts do not exist');
-            PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumConfig()->canApprovePosts, $post->thread->categoryId,
+            PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canApprovePosts, $post->thread->categoryId,
                 'You cant approve posts in this category');
             Condition::precondition(!$post->thread, 404, 'Posts thread does not exist');
 
@@ -186,7 +186,7 @@ class PostController extends Controller {
         $user = $request->get('auth');
         $postIds = $request->input('postIds');
 
-        $forumPermissions = ConfigHelper::getForumConfig();
+        $forumPermissions = ConfigHelper::getForumPermissions();
 
         $newOwner = User::withNickname($request->input('nickname'))->first();
         Condition::precondition(!$newOwner, 404, 'No user with that nickname');
@@ -243,7 +243,7 @@ class PostController extends Controller {
     private function deletePost($postId, $user, $ipAddress) {
         $post = Post::with('thread')->where('postId', $postId)->first();
         Condition::precondition(!$post, 404, 'One of the posts do not exist');
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumConfig()->canApprovePosts, $post->thread->categoryId,
+        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canApprovePosts, $post->thread->categoryId,
             'You cant approve posts in this category');
         Condition::precondition(!$post->thread, 404, 'Posts thread does not exist');
 

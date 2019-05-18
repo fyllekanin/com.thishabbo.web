@@ -27,6 +27,8 @@ import { ThemesResolver } from './services/themes.resolver';
 import { ThemeComponent } from './themes/theme/theme.component';
 import { ThemeResolver } from './services/theme.resolver';
 import { PING_TYPES } from 'core/services/continues-information/continues-information.model';
+import { HomePageThreadsComponent } from './home-page-threads/home-page-threads.component';
+import { HomePageThreadsResolver } from './services/home-page-threads.resolver';
 
 export const websiteSettingsRoutes: Routes = [
     {
@@ -103,11 +105,11 @@ export const websiteSettingsRoutes: Routes = [
         }
     },
     {
-       path: 'pages',
-       component: PagesComponent,
-       resolve: {
-           data: PagesResolver
-       }
+        path: 'pages',
+        component: PagesComponent,
+        resolve: {
+            data: PagesResolver
+        }
     },
     {
         path: 'pages/:pageId',
@@ -122,13 +124,19 @@ export const websiteSettingsRoutes: Routes = [
         resolve: {
             data: ThemesResolver
         }
-    }
-    ,
+    },
     {
         path: 'themes/:themeId',
         component: ThemeComponent,
         resolve: {
             data: ThemeResolver
+        }
+    },
+    {
+        path: 'home-page-threads',
+        component: HomePageThreadsComponent,
+        resolve: {
+            data: HomePageThreadsResolver
         }
     }
 ];

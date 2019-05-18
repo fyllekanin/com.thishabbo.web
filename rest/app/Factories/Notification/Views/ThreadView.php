@@ -23,11 +23,11 @@ class ThreadView {
 
     private function getThread($notification, $user) {
         $post = Post::find($notification->contentId);
-        if (!$post || !PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canRead, $post->thread->categoryId)) {
+        if (!$post || !PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canRead, $post->thread->categoryId)) {
             return null;
         }
 
-        $canApprovePosts = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canApprovePosts, $post->thread->categoryId);
+        $canApprovePosts = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canApprovePosts, $post->thread->categoryId);
         return (object)[
             'threadId' => $post->thread->threadId,
             'title' => $post->thread->title,

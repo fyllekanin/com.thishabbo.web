@@ -1,7 +1,7 @@
 import { Notice } from 'shared/components/notice/notice.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
-import { HomeDefaultPage } from './home-default.model';
+import { HomeDefaultPage, HomePageThread } from './home-default.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Page } from 'shared/page/page.model';
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
@@ -41,6 +41,10 @@ export class HomeDefaultComponent extends Page implements OnInit, OnDestroy {
 
     seeMoreBadgeArticles (): void {
         this._router.navigateByUrl('/page/badge-articles/page/1');
+    }
+
+    get threads (): Array<HomePageThread> {
+        return this._page.threads;
     }
 
     get isLoggedIn (): boolean {

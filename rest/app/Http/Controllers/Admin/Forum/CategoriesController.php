@@ -34,7 +34,7 @@ class CategoriesController extends Controller {
         $orders = $request->input('updates');
 
         foreach ($orders as $order) {
-            if (PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canRead, $order['categoryId'])) {
+            if (PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canRead, $order['categoryId'])) {
                 Category::where('categoryId', $order['categoryId'])->update(['displayOrder' => $order['order']]);
             }
         }
@@ -58,7 +58,7 @@ class CategoriesController extends Controller {
         $parent = Category::find($newCategory->parentId);
         $user = $request->get('auth');
 
-        $cantAddChildren = $newCategory->parentId > 0 && !PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canRead, $parent->categoryId);
+        $cantAddChildren = $newCategory->parentId > 0 && !PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canRead, $parent->categoryId);
         Condition::precondition($newCategory->parentId > 0 && !$parent, 400, 'Invalid parent');
         Condition::precondition($cantAddChildren, 400, 'You dont have permission to add children to this parent');
         Condition::precondition(empty($newCategory->title), 400, 'Title cant be empty');
@@ -98,7 +98,7 @@ class CategoriesController extends Controller {
         $user = $request->get('auth');
         $category = Category::find($categoryId);
 
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumConfig()->canRead, $categoryId,
+        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId,
             'You do not have access to this category');
         Condition::precondition(!$category, 404, 'The category do not exist');
 
@@ -124,10 +124,10 @@ class CategoriesController extends Controller {
         $parent = Category::find($newCategory->parentId);
         $user = $request->get('auth');
 
-        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canRead, $categoryId), 400, 'You do not have access to this category');
+        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId), 400, 'You do not have access to this category');
         Condition::precondition($newCategory->parentId > 0 && !$parent, 400, 'Invalid parent');
 
-        $cantAddChildren = $newCategory->parentId > 0 && !PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canRead, $parent->categoryId);
+        $cantAddChildren = $newCategory->parentId > 0 && !PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canRead, $parent->categoryId);
         Condition::precondition($cantAddChildren, 400, 'You dont have permission to add children to this parent');
         Condition::precondition(!$category, 404, 'Category do not exist');
         Condition::precondition(empty($newCategory->title), 400, 'Title cant be empty');

@@ -134,9 +134,10 @@ class PageController extends Controller {
         $user = $request->get('auth');
 
         return response()->json([
-            'articles' => $this->getArticles($user, 8, $this->categoryTemplates->QUEST),
+            'articles' => $this->getArticles($user, 4, $this->categoryTemplates->QUEST),
             'mediaArticles' => $this->getArticles($user, 5, $this->categoryTemplates->MEDIA),
-            'notices' => $this->getNotices()
+            'notices' => $this->getNotices(),
+            'threads' => $this->getLatestThreads($user)
         ]);
     }
 
@@ -166,7 +167,7 @@ class PageController extends Controller {
             ->pluck('categoryId')->toArray();
 
         $categoryIds = Iterables::filter($categories, function ($categoryId) use ($user) {
-            return PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canRead, $categoryId);
+            return PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId);
         });
 
         $threadsSql = Thread::isApproved()->orderBy('threadId', 'DESC')->whereIn('categoryId', $categoryIds);
@@ -181,6 +182,27 @@ class PageController extends Controller {
             'page' => $page,
             'items' => $items
         ]);
+    }
+
+    private function getLatestThreads($user) {
+        $categoryIds = json_decode(SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->homePageThreads));
+        if (!is_array($categoryIds)) {
+            return [];
+        }
+
+        $categoryIds = Iterables::filter($categoryIds, function ($categoryId) use ($user) {
+            return PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId);
+        });
+
+        return Thread::whereIn('categoryId', $categoryIds)->take(10)->orderBy('threadId', 'DESC')->with(['prefix'])->get()->map(function ($thread) {
+            return [
+                'threadId' => $thread->threadId,
+                'title' => $thread->title,
+                'user' => UserHelper::getSlimUser($thread->userId),
+                'prefix' => $thread->prefix,
+                'createdAt' => $thread->createdAt->timestamp
+            ];
+        });
     }
 
     /**
@@ -213,7 +235,7 @@ class PageController extends Controller {
             ->pluck('categoryId')->toArray();
 
         $categoryIds = Iterables::filter($categories, function ($categoryId) use ($user) {
-            return PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canRead, $categoryId);
+            return PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId);
         });
 
         return Thread::isApproved()->orderBy('threadId', 'DESC')->whereIn('categoryId', $categoryIds)->take($amount)->get()->map(function ($item) {

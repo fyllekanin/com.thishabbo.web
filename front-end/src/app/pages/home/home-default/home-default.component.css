@@ -89,3 +89,10 @@ h2 {
 .badge-articles-header {
     margin-bottom: 5px;
 }
+
+.thread {
+    padding: 10px;
+    background: #fbfbfb;
+    border-right: 1px solid #eaeaea;
+    border-bottom: 1px solid #eaeaea;
+}
