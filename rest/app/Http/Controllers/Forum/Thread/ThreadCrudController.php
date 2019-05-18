@@ -181,7 +181,7 @@ class ThreadCrudController extends Controller {
             'oldContent' => $oldContent,
             'newContent' => $thread->firstPost->content
         ]);
-        return $this->getThreadController($thread->categoryId, $thread->threadId);
+        return $this->getThreadController($request, $thread->categoryId, $thread->threadId);
     }
 
     /**
@@ -373,7 +373,7 @@ class ThreadCrudController extends Controller {
             'thread' => $thread->title,
             'threadId' => $thread->threadId,
             'categoryId' => $thread->categoryId
-        ]);
+        ], $thread->threadId);
     }
 
     /**

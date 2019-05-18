@@ -51,6 +51,8 @@ export class AuthenticationInterceptor implements HttpInterceptor {
                             }));
                             this._router.navigateByUrl('/page/access');
                             return observableThrowError(error);
+                        case 500:
+                            return observableThrowError(error);
                         case 503:
                             this._notificationService.sendNotification(new NotificationMessage({
                                 title: 'Oh no!',
