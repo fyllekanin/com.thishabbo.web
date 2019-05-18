@@ -69,9 +69,9 @@ class ForumValidatorService {
         Condition::precondition($titleContentMissing, 400, 'Title and/or content is not set!');
         Condition::precondition(empty($threadSkeleton->categoryId), 400, 'Category ID is not set!');
 
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumConfig()->canRead,
+        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead,
             $threadSkeleton->categoryId, 'No permissions to access this category');
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumConfig()->canCreateThreads,
+        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canCreateThreads,
             $threadSkeleton->categoryId, 'No permissions to create threads in this category');
     }
 }

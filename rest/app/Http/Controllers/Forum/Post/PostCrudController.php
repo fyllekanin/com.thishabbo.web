@@ -74,7 +74,7 @@ class PostCrudController extends Controller {
      */
     public function getEditHistory(Request $request, $postId) {
         $user = $request->get('auth');
-        $forumPermissions = ConfigHelper::getForumConfig();
+        $forumPermissions = ConfigHelper::getForumPermissions();
         $post = Post::find($postId);
 
         Condition::precondition(!$post, 404, 'No post with that ID exists');
@@ -152,7 +152,7 @@ class PostCrudController extends Controller {
         Condition::precondition(empty($postModel->content), 400, 'Content can\'t be empty');
 
         $canUpdatePost = $post->userId == $user->userId ||
-            PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canEditOthersPosts, $thread->categoryId);
+            PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canEditOthersPosts, $thread->categoryId);
         Condition::precondition(!$canUpdatePost, 550, 'You don\'t have permission to update this post');
 
         $oldContent = $post->content;
@@ -192,18 +192,18 @@ class PostCrudController extends Controller {
 
         $thread = Thread::with('category')->where('threadId', $threadId)->first();
 
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumConfig()->canRead, $thread->categoryId,
+        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead, $thread->categoryId,
             'No permissions to access this category');
 
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumConfig()->canRead, $thread->categoryId,
+        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead, $thread->categoryId,
             'No permissions to post', 550);
 
-        $canPost = ($thread->isOpen || PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canCloseOpenThread, $thread->categoryId))
+        $canPost = ($thread->isOpen || PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canCloseOpenThread, $thread->categoryId))
             && $thread->categoryIsOpen;
         Condition::precondition(!$canPost, 550, 'Thread or category is closed, no permission to post');
         Condition::precondition(empty($content), 550, 'Content can\'t be empty');
 
-        if ($toggleThread && PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canCloseOpenThread, $thread->categoryId)) {
+        if ($toggleThread && PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canCloseOpenThread, $thread->categoryId)) {
             $thread->isOpen = !$thread->isOpen;
         }
 

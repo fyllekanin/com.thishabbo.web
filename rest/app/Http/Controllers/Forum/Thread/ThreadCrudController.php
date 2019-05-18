@@ -153,7 +153,7 @@ class ThreadCrudController extends Controller {
         $this->validatorService->validateCreateUpdateThread($user, $threadSkeleton, $category, $request);
         $thread = Thread::find($threadId);
 
-        if (!PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canEditOthersPosts, $thread->categoryId)) {
+        if (!PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canEditOthersPosts, $thread->categoryId)) {
             Condition::precondition($thread && $thread->userId != $user->userId, 403,
                 'You don\'t have permission to edit someone elses thread in here');
         }
@@ -197,9 +197,9 @@ class ThreadCrudController extends Controller {
         , $categoryId, $threadId) {
         $user = $request->get('auth');
 
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumConfig()->canRead,
+        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead,
             $categoryId, 'No permissions to access this category');
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumConfig()->canCreateThreads,
+        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canCreateThreads,
             $categoryId, 'No permissions to create threads in this category');
 
         $newThread = new \stdClass();
@@ -222,7 +222,7 @@ class ThreadCrudController extends Controller {
             $thread->template = Category::find($categoryId)->template;
         }
 
-        if (!PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canEditOthersPosts, $thread->categoryId)) {
+        if (!PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canEditOthersPosts, $thread->categoryId)) {
             Condition::precondition($thread && isset($thread->createdAt) && $thread->userId != $user->userId, 403,
                 'You don\'t have permission to edit someone elses thread in here');
         }
@@ -248,15 +248,15 @@ class ThreadCrudController extends Controller {
         $thread = Thread::find($threadId);
 
         Condition::precondition(!$thread, 404, 'Thread does not exist');
-        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canViewThreadContent, $thread->categoryId), 403, 'You can not view thread content');
+        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canViewThreadContent, $thread->categoryId), 403, 'You can not view thread content');
 
         $this->forumService->updateReadThread($thread->threadId, $user->userId);
         $isCreator = $thread->userId == $user->userId;
-        Condition::precondition(!$isCreator && !PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canViewOthersThreads, $thread->categoryId), 403,
+        Condition::precondition(!$isCreator && !PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canViewOthersThreads, $thread->categoryId), 403,
             'You can not view others thread content');
 
-        $canAccessCategory = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canRead, $thread->categoryId);
-        $cantAccessUnapproved = !$thread->isApproved && !PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canApproveThreads, $thread->categoryId);
+        $canAccessCategory = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canRead, $thread->categoryId);
+        $cantAccessUnapproved = !$thread->isApproved && !PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canApproveThreads, $thread->categoryId);
         Condition::precondition(!$canAccessCategory, 403, 'No permissions to access this category');
         Condition::precondition($cantAccessUnapproved, 400, 'You cant access a unapproved thread');
 

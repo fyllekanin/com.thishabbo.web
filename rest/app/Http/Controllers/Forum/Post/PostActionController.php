@@ -50,7 +50,7 @@ class PostActionController extends Controller {
 
         Condition::precondition($post->userId == $user->userId, 400, 'You can not like your own post');
         Condition::precondition($haveLiked, 400, 'You already liked this post');
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumConfig()->canRead, $post->thread->categoryId,
+        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead, $post->thread->categoryId,
             'You do not have access to like this post');
 
         $postUser = $post->user()->first();
@@ -91,7 +91,7 @@ class PostActionController extends Controller {
 
         Condition::precondition(!$haveLiked, '400', 'Can not unlike a post you havent liked');
         Condition::precondition($post->userId == $user->userId, 400, 'You can not unlike your own post');
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumConfig()->canRead, $post->thread->categoryId,
+        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead, $post->thread->categoryId,
             'You do not have access to unlike this post');
 
         $postUser = $post->user()->first();

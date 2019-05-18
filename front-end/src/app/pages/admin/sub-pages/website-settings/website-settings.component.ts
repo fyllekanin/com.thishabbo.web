@@ -70,19 +70,25 @@ export class WebsiteSettingsComponent extends Page implements OnDestroy, OnInit 
             path: '/admin/website-settings/themes',
             name: 'Themes',
             description: 'Manage the themes'
+        },
+        {
+            id: 'home-page-threads',
+            path: '/admin/website-settings/home-page-threads',
+            name: 'Home Page Threads',
+            description: 'Set from which categories to fetch threads from on home page'
         }
     ];
 
     tableConfig: TableConfig;
 
-    constructor(
+    constructor (
         private _router: Router,
         elementRef: ElementRef
     ) {
         super(elementRef);
     }
 
-    onAction(action: Action): void {
+    onAction (action: Action): void {
         const page = this.PAGES
             .find(item => item.id === action.rowId);
         if (page) {
@@ -90,31 +96,31 @@ export class WebsiteSettingsComponent extends Page implements OnDestroy, OnInit 
         }
     }
 
-    ngOnInit(): void {
+    ngOnInit (): void {
         this.tableConfig = new TableConfig({
             title: 'Website Settings',
             headers: WebsiteSettingsComponent.getTableHeaders(),
             rows: this.PAGES.map(page => new TableRow({
                 id: page.id,
                 cells: [
-                    new TableCell({ title: page.name }),
-                    new TableCell({ title: page.description })
+                    new TableCell({title: page.name}),
+                    new TableCell({title: page.description})
                 ],
                 actions: [
-                    new TableAction({ title: 'Configure', value: null })
+                    new TableAction({title: 'Configure', value: null})
                 ]
             }))
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    static getTableHeaders(): Array<TableHeader> {
+    static getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'Page' }),
-            new TableHeader({ title: 'Description' })
+            new TableHeader({title: 'Page'}),
+            new TableHeader({title: 'Description'})
         ];
     }
 }

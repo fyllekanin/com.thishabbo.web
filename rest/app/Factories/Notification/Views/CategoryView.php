@@ -22,7 +22,7 @@ class CategoryView {
 
     private function getThread($notification, $user) {
         $thread = Thread::find($notification->contentId);
-        if (!$thread || !PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumConfig()->canRead, $thread->categoryId)) {
+        if (!$thread || !PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canRead, $thread->categoryId)) {
             return null;
         }
 

@@ -73,7 +73,7 @@ class PrefixController extends Controller {
         $categoryIds = isset($prefix->categoryIds) ? $prefix->categoryIds : [];
 
         foreach ($categoryIds as $categoryId) {
-            PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumConfig()->canRead, $categoryId,
+            PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId,
                 'You do not have access to one of the forum');
         }
 
@@ -110,7 +110,7 @@ class PrefixController extends Controller {
         Condition::precondition(!$existing, 404, 'Prefix do not exist');
 
         foreach ($categoryIds as $categoryId) {
-            PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumConfig()->canRead, $categoryId,
+            PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId,
                 'You do not have access to one of the forum');
         }
 

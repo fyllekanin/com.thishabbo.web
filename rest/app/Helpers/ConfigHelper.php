@@ -12,7 +12,7 @@ class ConfigHelper {
     private static $ARCADE = 'arcade';
     private static $SHOP = 'shop';
 
-    public static function getForumConfig() {
+    public static function getForumPermissions() {
         return (object)Config::get(self::$PERMISSIONS . '.FORUM');
     }
 
