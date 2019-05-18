@@ -104,7 +104,7 @@ class RadioStats {
         }
 
         $formatted = json_decode($data);
-        if ($formatted->resultCount > 0) {
+        if ($formatted->resultCount == 0) {
             if (strpos($song, '-' !== false)) {
                 $artist = explode('-', $song);
                 return count($artist) > 0 ? $this->getAlbumArt($artist[0]) : '';
