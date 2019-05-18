@@ -69,7 +69,7 @@ describe('AppLoadService', () => {
     describe('initializeUser', () => {
         it('should fetch auth user and set to authService', done => {
             // Given
-            localStorage.setItem(LOCAL_STORAGE.AUTH_USER, '{}');
+            localStorage.setItem(LOCAL_STORAGE.AUTH_USER, btoa('{}'));
             const httpService = TestBed.get(HttpService);
             const authService = TestBed.get(AuthService);
             spyOn(httpService, 'get').and.returnValue(of({}));
@@ -82,7 +82,7 @@ describe('AppLoadService', () => {
         });
         it('should set user to null and resolve if BE returns error', done => {
             // Given
-            localStorage.setItem(LOCAL_STORAGE.AUTH_USER, '{}');
+            localStorage.setItem(LOCAL_STORAGE.AUTH_USER, btoa('{}'));
             const httpService = TestBed.get(HttpService);
             const authService = TestBed.get(AuthService);
             spyOn(httpService, 'get').and.returnValue(throwError(null));
