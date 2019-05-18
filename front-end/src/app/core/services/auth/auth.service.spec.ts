@@ -69,7 +69,7 @@ describe('AuthService', () => {
 
         // Then
         expect(authService.authUser.nickname).toEqual(user.nickname);
-        expect(JSON.parse(localStorage.getItem(LOCAL_STORAGE.AUTH_USER)).nickname).toEqual(user.nickname);
+        expect(JSON.parse(atob(localStorage.getItem(LOCAL_STORAGE.AUTH_USER))).nickname).toEqual(user.nickname);
     });
 
     it('navigateToHome should navigate to /home', done => {
@@ -165,13 +165,13 @@ describe('AuthService', () => {
 
         // Then
         expect(authService.authUser).toBeNull();
-        expect(localStorage.getItem(LOCAL_STORAGE.AUTH_USER)).toBe('null');
+        expect(localStorage.getItem(LOCAL_STORAGE.AUTH_USER)).toBe(btoa('null'));
     });
 
     it('getAccessToken should return "access-token" from localStorage', () => {
         // Given
         const user = {oauth: {accessToken: 'token'}};
-        localStorage.setItem(LOCAL_STORAGE.AUTH_USER, JSON.stringify(user));
+        localStorage.setItem(LOCAL_STORAGE.AUTH_USER, btoa(JSON.stringify(user)));
 
         // When
         const result = authService.getAccessToken();
