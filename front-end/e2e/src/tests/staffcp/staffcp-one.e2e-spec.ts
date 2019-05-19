@@ -71,6 +71,7 @@ describe('StaffCP #1', () => {
         StaffCpPage.setPermanentShowHour('12:00 PM');
 
         NavigationUtil.clickTab('Save');
+        NavigationUtil.clickTab('Cancel');
         expect(CommonUtil.getTableRows().count()).toEqual(1);
     });
 

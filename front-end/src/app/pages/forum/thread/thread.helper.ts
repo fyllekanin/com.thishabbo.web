@@ -161,7 +161,8 @@ export class ThreadActionExecutor {
                 new DialogCloseButton('Cancel'),
                 new DialogButton({
                     title: 'Done', callback: categoryId => {
-                        this._httpService.put(`forum/moderation/thread/move/category/${categoryId}`, {threadIds: [this._threadPage.threadId]})
+                        this._httpService.put(`forum/moderation/thread/move/category/${categoryId}`,
+                            {threadIds: [this._threadPage.threadId]})
                             .subscribe(() => {
                                 this._notificationService.sendInfoNotification('Thread is moved!');
                                 this._dialogService.closeDialog();
