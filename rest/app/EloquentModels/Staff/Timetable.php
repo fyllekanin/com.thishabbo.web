@@ -50,6 +50,7 @@ class Timetable extends DeletableModel {
             'name' => $this->timetableData->name,
             'nickname' => $this->user->nickname,
             'type' => $this->type,
+            'link' => $this->link,
             'description' => $this->timetableData->description,
             'createdAt' => $this->timetableData->createdAt->timestamp
         ] : [];

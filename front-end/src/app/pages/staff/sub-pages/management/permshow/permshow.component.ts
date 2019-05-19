@@ -76,7 +76,8 @@ export class PermShowComponent extends Page implements OnDestroy {
             name: this._permShow.name,
             description: this._permShow.description,
             createdAt: this._permShow.createdAt,
-            type: this._permShow.type
+            type: this._permShow.type,
+            link: this._permShow.link
         };
 
         if (this._permShow.createdAt) {
@@ -131,6 +132,8 @@ export class PermShowComponent extends Page implements OnDestroy {
             title: 'Success',
             message: 'Permanent show created!'
         }));
+        this._permShow.createdAt = new Date().getTime() / 1000;
+        this.setTabs();
     }
 
     private onSuccessUpdate (): void {
@@ -145,6 +148,10 @@ export class PermShowComponent extends Page implements OnDestroy {
         this._permShow.hour = TimeHelper.getConvertedHour(this._permShow.hour + TimeHelper.getTimeOffsetInHours());
         this._permShow.day = TimeHelper.getConvertedDay(this._permShow.hour, this._permShow.day);
 
+        this.setTabs();
+    }
+
+    private setTabs (): void {
         const tabs = [
             {title: 'Save', value: PermShowActions.SAVE, condition: true},
             {title: 'Delete', value: PermShowActions.DELETE, condition: this._permShow.createdAt},
