@@ -232,6 +232,7 @@ class ManagementController extends Controller {
             'userId' => $bookingForUser->userId,
             'day' => $booking->day,
             'hour' => $booking->hour,
+            'link' => Value::objectProperty($booking, 'link', ''),
             'isPerm' => 1,
             'type' => $booking->type
         ]);
@@ -277,21 +278,20 @@ class ManagementController extends Controller {
         Condition::precondition(!isset($bookingForUser), 400, $bookingForUser);
 
         $existing = Timetable::where('day', $booking->day)->where('hour', $booking->hour)->where('type', $booking->type)->isActive()->first();
-        if ($existing) {
+        if ($existing && $existing->timetableId != $slot->timetableId) {
             $existing->delete();
         }
 
-        $slot->update([
-            'day' => $booking->day,
-            'hour' => $booking->hour,
-            'type' => $booking->type,
-            'userId' => $bookingForUser
-        ]);
+        $slot->day = $booking->day;
+        $slot->hour = $booking->hour;
+        $slot->type = $booking->type;
+        $slot->link = Value::objectProperty($booking, 'link', '');
+        $slot->userId = $bookingForUser;
+        $slot->save();
 
-        $slot->timetableData->update([
-            'name' => $booking->name,
-            'description' => $booking->description
-        ]);
+        $slot->timetableData->name = $booking->name;
+        $slot->timetableData->description = $booking->description;
+        $slot->timetableData->save();
 
         Logger::staff($user->userId, $request->ip(), Action::EDITED_PERM_SLOT, [
             'show' => $booking->name

@@ -16,25 +16,31 @@ export class PermShow {
     @primitive()
     description: string;
     @primitive()
+    link: string;
+    @primitive()
     createdAt: number;
 
-    set hour(num: number) {
+    set hour (num: number) {
         this._hour = Number(num);
     }
 
-    get hour(): number {
+    get hour (): number {
         return this._hour;
     }
 
-    set day(num: number) {
+    set day (num: number) {
         this._day = Number(num);
     }
 
-    get day(): number {
+    get day (): number {
         return this._day;
     }
 
-    constructor(source?: Partial<PermShow>) {
+    get isEvents (): boolean {
+        return Number(this.type) === 1;
+    }
+
+    constructor (source?: Partial<PermShow>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -47,7 +53,7 @@ export class PermShowsListPage {
     @primitive()
     page: number;
 
-    constructor(source?: Partial<PermShowsListPage>) {
+    constructor (source?: Partial<PermShowsListPage>) {
         ClassHelper.assign(this, source);
     }
 }
