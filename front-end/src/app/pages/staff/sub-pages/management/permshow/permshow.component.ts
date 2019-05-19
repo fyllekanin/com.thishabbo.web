@@ -8,12 +8,13 @@ import { HttpService } from 'core/services/http/http.service';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import {
-    STAFFCP_BREADCRUM_ITEM, STAFFCP_MANAGEMENT_BREADCRUMB_ITEM,
+    STAFFCP_BREADCRUM_ITEM,
+    STAFFCP_MANAGEMENT_BREADCRUMB_ITEM,
     STAFFCP_PERM_SHOW_BREADCRUM_ITEM
 } from 'app/pages/staff/staff.constants';
 import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TimeHelper, Day, Hour } from 'shared/helpers/time.helper';
+import { Day, Hour, TimeHelper } from 'shared/helpers/time.helper';
 
 @Component({
     selector: 'app-staff-management-permshow',
@@ -25,7 +26,7 @@ export class PermShowComponent extends Page implements OnDestroy {
     days: Array<Day> = TimeHelper.DAYS;
     hours: Array<Hour> = TimeHelper.getHours();
 
-    constructor(
+    constructor (
         private _dialogService: DialogService,
         private _notificationService: NotificationService,
         private _httpService: HttpService,
@@ -80,11 +81,11 @@ export class PermShowComponent extends Page implements OnDestroy {
 
         if (this._permShow.createdAt) {
             this._httpService.put(`staff/management/permanent-shows/${this._permShow.timetableId}`,
-                { booking: booking })
-                    .subscribe(this.onSuccessUpdate.bind(this, this._permShow),
-                        this._notificationService.failureNotification.bind(this._notificationService));
+                {booking: booking})
+                .subscribe(this.onSuccessUpdate.bind(this, this._permShow),
+                    this._notificationService.failureNotification.bind(this._notificationService));
         } else {
-            this._httpService.post('staff/management/permanent-shows', { booking: booking })
+            this._httpService.post('staff/management/permanent-shows', {booking: booking})
                 .subscribe(this.onSuccessCreate.bind(this, this._permShow),
                     this._notificationService.failureNotification.bind(this._notificationService));
         }
@@ -98,7 +99,7 @@ export class PermShowComponent extends Page implements OnDestroy {
         );
     }
 
-    private cancel(): void {
+    private cancel (): void {
         this._router.navigateByUrl('/staff/management/permanent-shows/page/1');
     }
 
@@ -108,7 +109,7 @@ export class PermShowComponent extends Page implements OnDestroy {
             `Creating Permanent Show: ${this._permShow.name}`;
     }
 
-    get perm ():  PermShow {
+    get perm (): PermShow {
         return this._permShow;
     }
 
@@ -130,8 +131,6 @@ export class PermShowComponent extends Page implements OnDestroy {
             title: 'Success',
             message: 'Permanent show created!'
         }));
-        this._router.navigateByUrl('/staff/management/permanent-shows/page/1');
-
     }
 
     private onSuccessUpdate (): void {
@@ -139,8 +138,6 @@ export class PermShowComponent extends Page implements OnDestroy {
             title: 'Success',
             message: 'Permanent show updated!'
         }));
-        this._router.navigateByUrl('/staff/management/permanent-shows/page/1');
-
     }
 
     private onPage (data: { data: PermShow }): void {
@@ -149,9 +146,9 @@ export class PermShowComponent extends Page implements OnDestroy {
         this._permShow.day = TimeHelper.getConvertedDay(this._permShow.hour, this._permShow.day);
 
         const tabs = [
-            { title: 'Save', value: PermShowActions.SAVE, condition: true },
-            { title: 'Delete', value: PermShowActions.DELETE, condition: this._permShow.createdAt },
-            { title: 'Cancel', value: PermShowActions.CANCEL, condition: true }
+            {title: 'Save', value: PermShowActions.SAVE, condition: true},
+            {title: 'Delete', value: PermShowActions.DELETE, condition: this._permShow.createdAt},
+            {title: 'Cancel', value: PermShowActions.CANCEL, condition: true}
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));

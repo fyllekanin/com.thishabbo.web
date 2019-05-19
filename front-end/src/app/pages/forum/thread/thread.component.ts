@@ -59,7 +59,7 @@ export class ThreadComponent extends Page implements OnDestroy {
         private _service: ThreadService
     ) {
         super(_elementRef);
-        this._isToolsVisible = Boolean(localStorage.getItem(LOCAL_STORAGE.THREAD_TOOLS));
+        this._isToolsVisible = Boolean(localStorage.getItem(LOCAL_STORAGE.FORUM_TOOLS));
         this.addSubscription(this._activatedRoute.data, this.onThread.bind(this));
     }
 
@@ -368,13 +368,11 @@ export class ThreadComponent extends Page implements OnDestroy {
         ];
 
         if (this._threadPage.forumPermissions.canCloseOpenThread && this._threadPage.isOpen) {
-            buttons.push(new EditorAction({title: 'Post & Close Thread', value: ThreadActions.POST_CLOSE}));
             buttons.push(new EditorAction({
                 title: 'Post & Close Thread',
                 value: ThreadActions.POST_CLOSE
             }));
         } else if (this._threadPage.forumPermissions.canCloseOpenThread && !this._threadPage.isOpen) {
-            buttons.push(new EditorAction({title: 'Post & Open Thread', value: ThreadActions.POST_OPEN}));
             buttons.push(new EditorAction({
                 title: 'Post & Open Thread',
                 value: ThreadActions.POST_OPEN

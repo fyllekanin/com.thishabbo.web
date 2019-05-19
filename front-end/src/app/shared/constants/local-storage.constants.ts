@@ -13,5 +13,5 @@ export const LOCAL_STORAGE = {
     FIXED_MENU: 'fixed-menu',
     TABS: 'tabs',
     VOLUME: 'volume',
-    THREAD_TOOLS: 'thread-tools'
+    FORUM_TOOLS: 'forum-tools'
 };

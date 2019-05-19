@@ -43,7 +43,7 @@ class CategoryActionController extends Controller {
      */
     public function createIgnore(Request $request, $categoryId) {
         $user = $request->get('auth');
-        $isAlreadyIgnoring = IgnoredCategory::where('userId', $user->userId)->where('categoryId', $categoryId)->count('threadId') > 0;
+        $isAlreadyIgnoring = IgnoredCategory::where('userId', $user->userId)->where('categoryId', $categoryId)->count('categoryId') > 0;
         Condition::precondition($isAlreadyIgnoring, 400, 'You are already ignoring this category');
 
         $categoryIds = $this->forumService->getCategoryIdsDownStream($categoryId);
@@ -69,7 +69,7 @@ class CategoryActionController extends Controller {
     public function deleteIgnore(Request $request, $categoryId) {
         $user = $request->get('auth');
         $item = IgnoredCategory::where('userId', $user->userId)->where('categoryId', $categoryId);
-        Condition::precondition($item->count('threadId') == 0, 404, 'You are not currently ignoring this category');
+        Condition::precondition($item->count('categoryId') == 0, 404, 'You are not currently ignoring this category');
 
         $item->delete();
 

@@ -22,7 +22,7 @@ export class DashboardComponent extends Page implements OnDestroy {
     haveFixedMenu: boolean;
     showThreadTools: boolean;
     saveTab: Array<TitleTab> = [
-        new TitleTab({ title: 'Save' })
+        new TitleTab({title: 'Save'})
     ];
 
     stats: Array<StatsBoxModel> = [
@@ -75,10 +75,10 @@ export class DashboardComponent extends Page implements OnDestroy {
         this.isEditorSourceMode = Boolean(localStorage.getItem(LOCAL_STORAGE.EDITOR_MODE));
         this.doIgnoreSignatures = Boolean(localStorage.getItem(LOCAL_STORAGE.IGNORE_SIGNATURES));
         this.haveFixedMenu = Boolean(localStorage.getItem(LOCAL_STORAGE.FIXED_MENU));
-        this.showThreadTools = Boolean(localStorage.getItem(LOCAL_STORAGE.THREAD_TOOLS));
+        this.showThreadTools = Boolean(localStorage.getItem(LOCAL_STORAGE.FORUM_TOOLS));
     }
 
-    onSave(): void {
+    onSave (): void {
         this.updateEditorSourceMode();
         this.updateIgnoreSignatures();
         this.updateFixedMenu();
@@ -86,7 +86,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         this._notificationService.sendInfoNotification('Device settings saved!');
     }
 
-    onRemove(tab: TabModel): void {
+    onRemove (tab: TabModel): void {
         this._tabs = this._tabs.filter(item => item.label.toLowerCase() !== tab.label.toLowerCase());
         localStorage.setItem(LOCAL_STORAGE.TABS, JSON.stringify(this._tabs));
         this._continuesInformation.tabsUpdated();
@@ -96,7 +96,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         super.destroy();
     }
 
-    private updateEditorSourceMode(): void {
+    private updateEditorSourceMode (): void {
         if (this.isEditorSourceMode) {
             localStorage.setItem(LOCAL_STORAGE.EDITOR_MODE, 'true');
         } else {
@@ -104,7 +104,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         }
     }
 
-    private updateIgnoreSignatures(): void {
+    private updateIgnoreSignatures (): void {
         if (this.doIgnoreSignatures) {
             localStorage.setItem(LOCAL_STORAGE.IGNORE_SIGNATURES, 'true');
         } else {
@@ -112,7 +112,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         }
     }
 
-    private updateFixedMenu(): void {
+    private updateFixedMenu (): void {
         if (this.haveFixedMenu) {
             localStorage.setItem(LOCAL_STORAGE.FIXED_MENU, 'true');
         } else {
@@ -120,15 +120,15 @@ export class DashboardComponent extends Page implements OnDestroy {
         }
     }
 
-    private updateThreadTools(): void {
+    private updateThreadTools (): void {
         if (this.showThreadTools) {
-            localStorage.setItem(LOCAL_STORAGE.THREAD_TOOLS, 'true');
+            localStorage.setItem(LOCAL_STORAGE.FORUM_TOOLS, 'true');
         } else {
-            localStorage.removeItem(LOCAL_STORAGE.THREAD_TOOLS);
+            localStorage.removeItem(LOCAL_STORAGE.FORUM_TOOLS);
         }
     }
 
-    get tabs(): Array<TabModel> {
+    get tabs (): Array<TabModel> {
         return this._tabs;
     }
 }

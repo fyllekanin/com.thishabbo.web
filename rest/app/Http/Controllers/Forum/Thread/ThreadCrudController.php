@@ -58,9 +58,9 @@ class ThreadCrudController extends Controller {
     public function getPosters($threadId, $page) {
         $query = Post::where('posts.threadId', $threadId)
             ->join('users', 'users.userId', '=', 'posts.userId')
-            ->select('users.userId', 'posts.postId', DB::raw('COUNT(*) as amount'))
+            ->select('users.userId', DB::raw('COUNT(*) as amount'))
             ->groupBy('users.userId');
-        $total = DataHelper::getPage($query->count('posts.postId'));
+        $total = DataHelper::getPage($query->count());
 
         return response()->json([
             'total' => $total,
@@ -180,7 +180,7 @@ class ThreadCrudController extends Controller {
             'postId' => $thread->firstPostId,
             'oldContent' => $oldContent,
             'newContent' => $thread->firstPost->content
-        ]);
+        ], $thread->threadId);
         return $this->getThreadController($request, $thread->categoryId, $thread->threadId);
     }
 

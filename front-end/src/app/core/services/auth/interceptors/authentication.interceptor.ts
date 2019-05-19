@@ -62,11 +62,9 @@ export class AuthenticationInterceptor implements HttpInterceptor {
                             this._router.navigateByUrl('/access/maintenance');
                             return observableThrowError(error);
                         default:
-                            this._router.navigateByUrl('/home');
                             return observableThrowError(error);
                     }
                 } else {
-                    this._router.navigateByUrl('/home');
                     return observableThrowError(error);
                 }
             }));

@@ -65,7 +65,7 @@ class ForumValidatorService {
             ->count('threadId');
 
         $titleContentMissing = empty($threadSkeleton->title) || empty($threadSkeleton->content);
-        Condition::precondition($postedInRecently > 0, 550, 'You are creating threads to quick!');
+        Condition::precondition($postedInRecently > 0, 400, 'You are creating threads to quick!');
         Condition::precondition($titleContentMissing, 400, 'Title and/or content is not set!');
         Condition::precondition(empty($threadSkeleton->categoryId), 400, 'Category ID is not set!');
 
