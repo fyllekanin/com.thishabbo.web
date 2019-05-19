@@ -284,6 +284,7 @@ class ManagementController extends Controller {
         $slot->update([
             'day' => $booking->day,
             'hour' => $booking->hour,
+            'type' => $booking->type,
             'userId' => $bookingForUser
         ]);
 

@@ -26,11 +26,11 @@ export class ThcRequestsComponent extends Page implements OnDestroy {
     private _data: Array<ThcRequestModel> = [];
 
     tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Approve All' })
+        new TitleTab({title: 'Approve All'})
     ];
     tableConfig: TableConfig;
 
-    constructor(
+    constructor (
         private _notificationService: NotificationService,
         private _service: ThcRequestsService,
         elementRef: ElementRef,
@@ -48,45 +48,45 @@ export class ThcRequestsComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    approveAll(): void {
+    approveAll (): void {
         const requests = this._data.map(item => {
-            return { requestThcId: item.requestThcId, isApproved: true };
+            return {requestThcId: item.requestThcId, isApproved: true};
         });
         this.updateRequests(requests, true);
     }
 
-    onAction(action: Action): void {
+    onAction (action: Action): void {
         switch (action.value) {
             case ThcRequestActions.APPROVE_REQUEST:
-                this.updateRequests([{ requestThcId: Number(action.rowId), isApproved: true }], false);
+                this.updateRequests([{requestThcId: Number(action.rowId), isApproved: true}], false);
                 break;
             case ThcRequestActions.DENY_REQUEST:
-                this.updateRequests([{ requestThcId: Number(action.rowId), isApproved: false }], false);
+                this.updateRequests([{requestThcId: Number(action.rowId), isApproved: false}], false);
                 break;
         }
     }
 
-    private updateRequests(requests: Array<{ requestThcId: number, isApproved: boolean }>, isBatch: boolean): void {
+    private updateRequests (requests: Array<{ requestThcId: number, isApproved: boolean }>, isBatch: boolean): void {
         this._service.updateRequests(requests).subscribe(() => {
             this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Success',
                 message: isBatch ? 'All requests approved!' : 'Request done'
             }));
-            this._data = isBatch ? [] : this._data.filter(item => item.requestThcId === requests[0].requestThcId);
+            this._data = isBatch ? [] : this._data.filter(item => item.requestThcId !== requests[0].requestThcId);
             this.createOrUpdateTable();
         });
     }
 
-    private onData(data: { data: Array<ThcRequestModel> }): void {
+    private onData (data: { data: Array<ThcRequestModel> }): void {
         this._data = data.data;
         this.createOrUpdateTable();
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -98,29 +98,29 @@ export class ThcRequestsComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         const actions = [
-            new TableAction({ title: 'Approve', value: ThcRequestActions.APPROVE_REQUEST }),
-            new TableAction({ title: 'Deny', value: ThcRequestActions.DENY_REQUEST })
+            new TableAction({title: 'Approve', value: ThcRequestActions.APPROVE_REQUEST}),
+            new TableAction({title: 'Deny', value: ThcRequestActions.DENY_REQUEST})
         ];
         return this._data.map(item => new TableRow({
             id: String(item.requestThcId),
             cells: [
-                new TableCell({ title: item.requester.nickname }),
-                new TableCell({ title: item.amount.toString() }),
-                new TableCell({ title: item.reason }),
-                new TableCell({ title: item.receiver.nickname })
+                new TableCell({title: item.requester.nickname}),
+                new TableCell({title: item.amount.toString()}),
+                new TableCell({title: item.reason}),
+                new TableCell({title: item.receiver.nickname})
             ],
             actions: actions
         }));
     }
 
-    private getTableHeaders(): Array<TableHeader> {
+    private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'Requester' }),
-            new TableHeader({ title: 'Amount' }),
-            new TableHeader({ title: 'Reason' }),
-            new TableHeader({ title: 'Receiver' })
+            new TableHeader({title: 'Requester'}),
+            new TableHeader({title: 'Amount'}),
+            new TableHeader({title: 'Reason'}),
+            new TableHeader({title: 'Receiver'})
         ];
     }
 }

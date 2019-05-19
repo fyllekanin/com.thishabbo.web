@@ -7,7 +7,6 @@ import { NotificationService } from 'core/services/notification/notification.ser
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ThreadControllerActions, ThreadSkeleton } from './thread-controller.model';
-import { CategoryParent } from '../category.model';
 import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { EditorAction } from 'shared/components/editor/editor.model';
@@ -33,7 +32,7 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
 
     editorButtons: Array<EditorAction> = [];
 
-    constructor(
+    constructor (
         private _dialogService: DialogService,
         private _httpClient: HttpClient,
         private _router: Router,
@@ -46,22 +45,23 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
         this.addSubscription(activatedRoute.data, this.onSkeleton.bind(this));
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    removeAnswer(answerId: string): void {
+    removeAnswer (answerId: string): void {
         this._threadSkeleton.poll.answers = this._threadSkeleton.poll.answers
             .filter(answer => answer.id !== answerId);
     }
 
-    onButtonClick(button: EditorAction): void {
+    onButtonClick (button: EditorAction): void {
         switch (button.value) {
             case ThreadControllerActions.CANCEL:
-                const categoryId = this._threadSkeleton.parents.reduce((curr: CategoryParent, acc: CategoryParent) => {
-                    return acc.displayOrder < curr.displayOrder ? acc : curr;
-                }, { categoryId: 0, displayOrder: Number.MAX_SAFE_INTEGER }).categoryId;
-                this._router.navigateByUrl(`/forum/category/${categoryId}/page/1`);
+                if (this.isNew) {
+                    this._router.navigateByUrl(`/forum/category/${this._threadSkeleton.categoryId}/page/1`);
+                } else {
+                    this._router.navigateByUrl(`/forum/thread/${this._threadSkeleton.threadId}/page/1`);
+                }
                 break;
             case ThreadControllerActions.SAVE:
                 this.saveThread();
@@ -75,11 +75,11 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
         }
     }
 
-    haveTag(tag: string): boolean {
+    haveTag (tag: string): boolean {
         return this._threadSkeleton.tags.indexOf(tag) > -1;
     }
 
-    toggleTag($event, tag: string): void {
+    toggleTag ($event, tag: string): void {
         $event.stopPropagation();
         $event.preventDefault();
         if (this.haveTag(tag)) {
@@ -89,7 +89,7 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
         }
     }
 
-    onKeyUp(content: string): void {
+    onKeyUp (content: string): void {
         AutoSaveHelper.save({
             title: this.thread.title,
             content: content,
@@ -98,57 +98,57 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
         });
     }
 
-    onPollToggle(): void {
-        this._threadSkeleton.poll = !this._threadSkeleton.poll ? new ThreadPoll({ isNew: true }) : null;
+    onPollToggle (): void {
+        this._threadSkeleton.poll = !this._threadSkeleton.poll ? new ThreadPoll({isNew: true}) : null;
         if (this._threadSkeleton.poll) {
             this.addThreadAnswer();
             this.addThreadAnswer();
         }
     }
 
-    addThreadAnswer(): void {
+    addThreadAnswer (): void {
         this._threadSkeleton.poll.answers.push(new ThreadAnswer());
     }
 
-    get thread(): ThreadSkeleton {
+    get thread (): ThreadSkeleton {
         return this._threadSkeleton;
     }
 
-    get pageTitle(): string {
+    get pageTitle (): string {
         return !this.isNew ?
             `Edit Thread: ${this._threadSkeleton.title}` :
             `Creating New Thread: ${this._threadSkeleton.title}`;
     }
 
-    get badge(): string {
+    get badge (): string {
         return this._threadSkeleton.badge;
     }
 
-    set badge(value: string) {
+    set badge (value: string) {
         this._threadSkeleton.badge = value;
     }
 
-    get isNew(): boolean {
+    get isNew (): boolean {
         return !Boolean(this._threadSkeleton && this._threadSkeleton.createdAt);
     }
 
-    get shouldHaveThumbnail(): boolean {
+    get shouldHaveThumbnail (): boolean {
         return CategoryTemplates.DEFAULT !== this._threadSkeleton.template;
     }
 
-    get isQuestTemplate(): boolean {
+    get isQuestTemplate (): boolean {
         return CategoryTemplates.QUEST === this._threadSkeleton.template;
     }
 
-    get badgeUrl(): string {
+    get badgeUrl (): string {
         return this._threadSkeleton.badge ? `https://habboo-a.akamaihd.net/c_images/album1584/${this._threadSkeleton.badge}.gif` : '';
     }
 
-    get badeHaveError(): boolean {
+    get badeHaveError (): boolean {
         return Boolean(this._threadSkeleton.badge && this._threadSkeleton.badge.match(new RegExp(/[^A-Za-z0-9]+/)));
     }
 
-    private onOpenAutoSave(): void {
+    private onOpenAutoSave (): void {
         const autoSave = AutoSaveHelper.get(AutoSave.THREAD, this._threadSkeleton.categoryId);
         this.thread.title = autoSave.title;
         this.editor.content = autoSave.content;
@@ -156,15 +156,15 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
         this.editorButtons = this.editorButtons.filter(button => button.value !== ThreadControllerActions.AUTO_SAVE);
     }
 
-    private onSkeleton(data: { data: ThreadSkeleton }): void {
+    private onSkeleton (data: { data: ThreadSkeleton }): void {
         this._threadSkeleton = data.data;
         this.setPrefix();
         this.setBreadcrum();
 
         this.editorButtons = [
-            new EditorAction({ title: 'Save', value: ThreadControllerActions.SAVE }),
-            new EditorAction({ title: 'Toggle Poll', value: ThreadControllerActions.TOGGLE_POLL }),
-            new EditorAction({ title: 'Cancel', value: ThreadControllerActions.CANCEL, buttonColor: Button.BLUE })
+            new EditorAction({title: 'Save', value: ThreadControllerActions.SAVE}),
+            new EditorAction({title: 'Toggle Poll', value: ThreadControllerActions.TOGGLE_POLL}),
+            new EditorAction({title: 'Cancel', value: ThreadControllerActions.CANCEL, buttonColor: Button.BLUE})
         ];
 
         if (this._threadSkeleton.poll) {
@@ -180,8 +180,8 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
         }
     }
 
-    private setBreadcrum(): void {
-        const threadCrum = this.isNew ? [] : [ new BreadcrumbItem({
+    private setBreadcrum (): void {
+        const threadCrum = this.isNew ? [] : [new BreadcrumbItem({
             title: this._threadSkeleton.title,
             url: `/forum/thread/${this._threadSkeleton.threadId}/page/1`
         })];
@@ -196,13 +196,13 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
         });
     }
 
-    private setPrefix(): void {
+    private setPrefix (): void {
         this._threadSkeleton.prefixId =
             this._threadSkeleton.prefixes.findIndex(prefix => prefix.prefixId === this._threadSkeleton.prefixId) > -1 ?
                 this._threadSkeleton.prefixId : 0;
     }
 
-    private saveThread(): void {
+    private saveThread (): void {
         this._threadSkeleton.content = this.editor.getEditorValue();
         const form = new FormData();
         if (this._threadSkeleton.template !== CategoryTemplates.DEFAULT && this.fileInput.nativeElement.files) {
@@ -213,15 +213,15 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
         if (!this.isNew) {
             this._httpClient.post(`rest/api/forum/thread/update/${this._threadSkeleton.threadId}`, form)
                 .subscribe(this.onSuccessUpdate.bind(this),
-                this._notificationService.failureNotification.bind(this._notificationService));
+                    this._notificationService.failureNotification.bind(this._notificationService));
         } else {
             this._httpClient.post('rest/api/forum/thread', form)
                 .subscribe(this.onSuccessCreate.bind(this),
-                this._notificationService.failureNotification.bind(this._notificationService));
+                    this._notificationService.failureNotification.bind(this._notificationService));
         }
     }
 
-    private onSuccessUpdate(res: ThreadSkeleton): void {
+    private onSuccessUpdate (res: ThreadSkeleton): void {
         this._threadSkeleton = new ThreadSkeleton(res);
         AutoSaveHelper.remove(AutoSave.THREAD, this._threadSkeleton.categoryId);
         this._notificationService.sendNotification(new NotificationMessage({
@@ -230,7 +230,7 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
         }));
     }
 
-    private onSuccessCreate(data: { threadId: number }): void {
+    private onSuccessCreate (data: { threadId: number }): void {
         AutoSaveHelper.remove(AutoSave.THREAD, this._threadSkeleton.categoryId);
         if (this._threadSkeleton.contentApproval) {
             this._dialogService.openDialog({
@@ -238,10 +238,12 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
                 content: `Your thread is placed under the category of "unapproved" threads,
                     and it await approval from the Moderators before being visible!`,
                 buttons: [
-                    new DialogButton({ title: 'Ok', callback: () => {
-                        this._dialogService.closeDialog();
-                        this._router.navigateByUrl(`/forum/category/${this._threadSkeleton.categoryId}/page/1`);
-                    }})
+                    new DialogButton({
+                        title: 'Ok', callback: () => {
+                            this._dialogService.closeDialog();
+                            this._router.navigateByUrl(`/forum/category/${this._threadSkeleton.categoryId}/page/1`);
+                        }
+                    })
                 ]
             });
         } else {

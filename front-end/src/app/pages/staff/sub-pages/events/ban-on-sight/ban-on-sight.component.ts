@@ -1,5 +1,5 @@
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
-import { BanOnSightItem, BanOnSightActions } from './ban-on-sight.model';
+import { BanOnSightActions, BanOnSightItem } from './ban-on-sight.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Page } from 'shared/page/page.model';
 import { Component, ElementRef, OnDestroy } from '@angular/core';
@@ -20,7 +20,7 @@ export class BanOnSightComponent extends Page implements OnDestroy {
     private _data = new BanOnSightItem();
     tabs: Array<TitleTab> = [];
 
-    constructor(
+    constructor (
         private _dialogService: DialogService,
         private _notificationService: NotificationService,
         private _httpService: HttpService,
@@ -53,15 +53,15 @@ export class BanOnSightComponent extends Page implements OnDestroy {
         }
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    private cancel(): void {
+    private cancel (): void {
         this._router.navigateByUrl('/staff/events/ban-on-sight');
     }
 
-    private delete(): void {
+    private delete (): void {
         this._dialogService.openConfirmDialog(
             `Deleting BOS Entry`,
             `Are you sure that you wanna delete this?`,
@@ -72,11 +72,11 @@ export class BanOnSightComponent extends Page implements OnDestroy {
     private save (): void {
         if (this._data.createdAt) {
             this._httpService.put(`staff/events/ban-on-sight/${this._data.id}`,
-                { information: this._data })
+                {information: this._data})
                 .subscribe(this.onSuccessUpdate.bind(this, this._data),
                     this._notificationService.failureNotification.bind(this._notificationService));
         } else {
-            this._httpService.post('staff/events/ban-on-sight', { information: this._data })
+            this._httpService.post('staff/events/ban-on-sight', {information: this._data})
                 .subscribe(this.onSuccessCreate.bind(this, this._data),
                     this._notificationService.failureNotification.bind(this._notificationService));
         }
@@ -113,7 +113,7 @@ export class BanOnSightComponent extends Page implements OnDestroy {
 
     }
 
-    get model(): BanOnSightItem {
+    get model (): BanOnSightItem {
         return this._data;
     }
 
@@ -123,13 +123,13 @@ export class BanOnSightComponent extends Page implements OnDestroy {
             `Adding to Do Not Hire list`;
     }
 
-    private onData(data: { data: BanOnSightItem }): void {
+    private onData (data: { data: BanOnSightItem }): void {
         this._data = data.data;
 
         const tabs = [
-            { title: 'Cancel', value: BanOnSightActions.CANCEL, condition: true },
-            { title: 'Delete', value: BanOnSightActions.DELETE, condition: this._data.createdAt },
-            { title: 'Save', value: BanOnSightActions.SAVE, condition: true }
+            {title: 'Save', value: BanOnSightActions.SAVE, condition: true},
+            {title: 'Delete', value: BanOnSightActions.DELETE, condition: this._data.createdAt},
+            {title: 'Cancel', value: BanOnSightActions.CANCEL, condition: true}
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));

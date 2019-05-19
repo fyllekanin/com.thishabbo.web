@@ -27,14 +27,14 @@ describe('User #2', () => {
         expect(UserCpPage.getCurrentHabbo().getText()).toEqual(newHabbo);
     });
 
-    it('should default thread tools to hidden and test device setting', () => {
+    it('should default forum tools to hidden and test device setting', () => {
         NavigationUtil.clickNavigation('Forum');
         NavigationUtil.clickCategory('Welcome!');
         NavigationUtil.clickThread('Welcome test!');
         expect(ForumPage.getFixedToolsElement('Post Tools').isPresent()).toBeFalsy();
 
         NavigationUtil.clickUserNavigation('UserCP');
-        UserCpPage.toggleSetting('Thread Tools');
+        UserCpPage.toggleSetting('Forum Tools');
         NavigationUtil.clickTab('Save');
 
         NavigationUtil.clickNavigation('Forum');
@@ -43,7 +43,7 @@ describe('User #2', () => {
         expect(ForumPage.getFixedToolsElement('Post Tools').isPresent()).toBeTruthy();
 
         NavigationUtil.clickUserNavigation('UserCP');
-        UserCpPage.toggleSetting('Thread Tools');
+        UserCpPage.toggleSetting('Forum Tools');
         NavigationUtil.clickTab('Save');
     });
 });

@@ -2,9 +2,10 @@
 
 <app-title [title]="'Device Settings'" [tabs]="saveTab" (onTabClick)="onSave()"></app-title>
 <app-content>
-        <em>These are settings which are bound to the current device you are using. <br />
-        If you visit ThisHabbo on another device these settings will be default until changed. Once ticked, the page will automatically save your changes.</em>
-        <br /><br />
+    <em>These are settings which are bound to the current device you are using. <br/>
+        If you visit ThisHabbo on another device these settings will be default until changed. Once ticked, the page
+        will automatically save your changes.</em>
+    <br/><br/>
     <div>
         <label class="checkbox-container">
             Default BBcode mode in editor
@@ -30,7 +31,7 @@
 
     <div>
         <label class="checkbox-container">
-            Thread Tools <em>- Should tools be default visible? (default tools are hidden until toggled)</em>
+            Forum Tools <em>- Should tools be default visible? (default tools are hidden until toggled)</em>
             <input type="checkbox" [(ngModel)]="showThreadTools">
             <span class="checkmark"></span>
         </label>
@@ -39,8 +40,9 @@
 
 <app-title [title]="'Device Tabs'"></app-title>
 <app-content>
-    <em>These are the device locked tabs in the header, you can only remove them from here. If you wanna add a new one you need to click in the header</em>
-    <br /><br />
+    <em>These are the device locked tabs in the header, you can only remove them from here. If you wanna add a new one
+        you need to click in the header</em>
+    <br/><br/>
     <div *ngIf="tabs.length > 0">
         <div class="grid-container">
             <div class="grid-x">

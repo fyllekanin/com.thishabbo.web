@@ -2,7 +2,7 @@ import { ClassHelper, primitive } from 'shared/helpers/class.helper';
 
 export class BanOnSightItem {
     @primitive()
-    id: string;
+    id: number;
     @primitive()
     name: string;
     @primitive()
@@ -12,7 +12,7 @@ export class BanOnSightItem {
     @primitive()
     createdAt: number;
 
-    constructor(source?: Partial<BanOnSightItem>) {
+    constructor (source?: Partial<BanOnSightItem>) {
         ClassHelper.assign(this, source);
     }
 }

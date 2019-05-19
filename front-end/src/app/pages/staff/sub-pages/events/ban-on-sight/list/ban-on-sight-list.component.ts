@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, OnInit} from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { STAFFCP_BREADCRUM_ITEM, STAFFCP_EVENTS_BREADCRUM_ITEM } from '../../../../staff.constants';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,13 +6,20 @@ import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Page } from 'shared/page/page.model';
 import { BanOnSightActions, BanOnSightItem } from '../ban-on-sight.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
-import { TableCell, TableConfig, TableHeader, TableRow, TableAction, Action } from 'shared/components/table/table.model';
+import {
+    Action,
+    TableAction,
+    TableCell,
+    TableConfig,
+    TableHeader,
+    TableRow
+} from 'shared/components/table/table.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
-import {AuthService} from 'core/services/auth/auth.service';
+import { AuthService } from 'core/services/auth/auth.service';
 
 @Component({
     selector: 'app-staff-ban-on-sight-list',
@@ -23,12 +30,13 @@ import {AuthService} from 'core/services/auth/auth.service';
 export class BanOnSightListComponent extends Page implements OnDestroy, OnInit {
     private _data: Array<BanOnSightItem> = [];
     private _actions: Array<TableAction> = [
-        new TableAction({ title: 'Edit', value: BanOnSightActions.EDIT_BOS_ENTRY }),
-        new TableAction({ title: 'Delete', value: BanOnSightActions.DELETE_BOS_ENTRY })
+        new TableAction({title: 'Edit', value: BanOnSightActions.EDIT_BOS_ENTRY}),
+        new TableAction({title: 'Delete', value: BanOnSightActions.DELETE_BOS_ENTRY})
     ];
     tabs: Array<TitleTab> = [];
     tableConfig: TableConfig;
-    constructor(
+
+    constructor (
         private _authService: AuthService,
         private _dialogService: DialogService,
         private _notificationService: NotificationService,
@@ -49,17 +57,17 @@ export class BanOnSightListComponent extends Page implements OnDestroy, OnInit {
         });
     }
 
-    ngOnInit(): void {
+    ngOnInit (): void {
         this.tabs = !this._authService.staffPermissions.canManageBanOnSight ? [] : [
-            new TitleTab({ title: 'New Entry', link: '/staff/events/ban-on-sight/new' })
+            new TitleTab({title: 'New Entry', link: '/staff/events/ban-on-sight/new'})
         ];
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onAction(action: Action): void {
+    onAction (action: Action): void {
         switch (action.value) {
             case BanOnSightActions.DELETE_BOS_ENTRY:
                 this.delete(Number(action.rowId));
@@ -70,7 +78,7 @@ export class BanOnSightListComponent extends Page implements OnDestroy, OnInit {
         }
     }
 
-    private delete(rowId: number): void {
+    private delete (rowId: number): void {
         this._dialogService.openConfirmDialog(
             `Deleting BOS Entry`,
             `Are you sure that you wanna delete this?`,
@@ -78,7 +86,7 @@ export class BanOnSightListComponent extends Page implements OnDestroy, OnInit {
         );
     }
 
-    private onDelete(entryId: string): void {
+    private onDelete (entryId: number): void {
         this._httpService.delete(`staff/events/ban-on-sight/${entryId}`)
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
@@ -92,12 +100,12 @@ export class BanOnSightListComponent extends Page implements OnDestroy, OnInit {
             });
     }
 
-    private onData(data: { data: Array<BanOnSightItem> }): void {
+    private onData (data: { data: Array<BanOnSightItem> }): void {
         this._data = data.data;
         this.createOrUpdateTable();
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -109,27 +117,27 @@ export class BanOnSightListComponent extends Page implements OnDestroy, OnInit {
         });
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         return this._data.map(item => {
             return new TableRow({
-                id: item.id,
+                id: item.id.toString(),
                 cells: [
-                    new TableCell({ title: item.name }),
-                    new TableCell({ title: item.reason }),
-                    new TableCell({ title: item.addedBy }),
-                    new TableCell({ title: TimeHelper.getTime(item.createdAt) })
+                    new TableCell({title: item.name}),
+                    new TableCell({title: item.reason}),
+                    new TableCell({title: item.addedBy}),
+                    new TableCell({title: TimeHelper.getTime(item.createdAt)})
                 ],
                 actions: this._authService.staffPermissions.canManageBanOnSight ? this._actions : []
             });
         });
     }
 
-    private static getTableHeaders(): Array<TableHeader> {
+    private static getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'Name' }),
-            new TableHeader({ title: 'Reason' }),
-            new TableHeader({ title: 'Added By' }),
-            new TableHeader({ title: 'Added On' })
+            new TableHeader({title: 'Name'}),
+            new TableHeader({title: 'Reason'}),
+            new TableHeader({title: 'Added By'}),
+            new TableHeader({title: 'Added On'})
         ];
     }
 }

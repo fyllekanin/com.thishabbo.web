@@ -52,9 +52,6 @@ class StaffController extends Controller {
             $nickname = Value::arrayProperty($thcRequest, 'nickname', '');
             $habbo = Value::arrayProperty($thcRequest, 'habbo', '');
             $account = $this->findAccount($nickname, $habbo);
-            if ($account->lastActivity < strtotime('-1 month')) {
-                continue;
-            }
 
             $newRequest = new RequestThc([
                 'requesterId' => $user->userId,

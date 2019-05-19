@@ -21,7 +21,7 @@ export class ThreadActionExecutor {
     private readonly _threadPage: ThreadPage;
     private readonly _action: number;
 
-    constructor(builder: Builder) {
+    constructor (builder: Builder) {
         this._httpService = builder.getHttpService();
         this._notificationService = builder.getNotificationService();
         this._dialogService = builder.getDialogService();
@@ -34,12 +34,12 @@ export class ThreadActionExecutor {
         this.execute();
     }
 
-    static newBuilder(): Builder {
+    static newBuilder (): Builder {
         // tslint:disable-next-line
         return new Builder();
     }
 
-    private execute(): void {
+    private execute (): void {
         switch (this._action) {
             case ThreadActions.DELETE_THREAD:
                 this.onDeleteThread();
@@ -108,7 +108,7 @@ export class ThreadActionExecutor {
         }
     }
 
-    private onPostHistory(postId: number): void {
+    private onPostHistory (postId: number): void {
         this._httpService.get(`forum/thread/post/${postId}/history`)
             .subscribe((data: Array<any>) => {
                 if (data.length < 1) {
@@ -132,17 +132,17 @@ export class ThreadActionExecutor {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private onMergePosts(): void {
+    private onMergePosts (): void {
         const selectedPostIds = this._threadPage.threadPosts.filter(post => post.isSelected).map(post => post.postId);
         if (selectedPostIds.length < 2) {
             this._notificationService.sendErrorNotification('You most select at least two posts to merge');
             return;
         }
 
-        this._httpService.put(`forum/moderation/thread/merge-posts/${this._threadPage.threadId}`, { postIds: selectedPostIds })
+        this._httpService.put(`forum/moderation/thread/merge-posts/${this._threadPage.threadId}`, {postIds: selectedPostIds})
             .subscribe(newPost => {
                 this._notificationService.sendInfoNotification('Posts are merged');
-                this._threadPage.threadPosts =  this._threadPage.threadPosts.filter(item => {
+                this._threadPage.threadPosts = this._threadPage.threadPosts.filter(item => {
                     return selectedPostIds.indexOf(item.postId) === -1 || item.postId === newPost.postId;
                 });
                 const post = this._threadPage.threadPosts.find(item => item.postId === newPost.postId);
@@ -153,36 +153,39 @@ export class ThreadActionExecutor {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private onMoveThread(): void {
+    private onMoveThread (): void {
         this._dialogService.openDialog({
             title: `Move thread: ${this._threadPage.title}`,
             component: this._componentFactory.resolveComponentFactory(MoveThreadComponent),
             buttons: [
                 new DialogCloseButton('Cancel'),
-                new DialogButton({ title: 'Done', callback: categoryId => {
-                    this._httpService.put(`forum/moderation/thread/move/category/${categoryId}`, { threadIds: [this._threadPage.threadId]})
-                        .subscribe(() => {
-                            this._notificationService.sendInfoNotification('Thread is moved!');
-                            this._dialogService.closeDialog();
-                            this._router.navigateByUrl(`/forum/thread/${this._threadPage.threadId}/page/${this._threadPage.page}`);
-                        }, this._notificationService.failureNotification.bind(this._notificationService));
-                }})
+                new DialogButton({
+                    title: 'Done', callback: categoryId => {
+                        this._httpService.put(`forum/moderation/thread/move/category/${categoryId}`,
+                            {threadIds: [this._threadPage.threadId]})
+                            .subscribe(() => {
+                                this._notificationService.sendInfoNotification('Thread is moved!');
+                                this._dialogService.closeDialog();
+                                this._router.navigateByUrl(`/forum/thread/${this._threadPage.threadId}/page/${this._threadPage.page}`);
+                            }, this._notificationService.failureNotification.bind(this._notificationService));
+                    }
+                })
             ]
         });
     }
 
-    private changeThreadOwner(): void {
+    private changeThreadOwner (): void {
         this._dialogService.openDialog({
             title: `Change owner of ${this._threadPage.title}`,
             component: this._componentFactory.resolveComponentFactory(ChangeOwnerComponent),
             buttons: [
                 new DialogCloseButton('Close'),
-                new DialogButton({ title: 'Done', callback: this.onChangeThreadOwner.bind(this) })
+                new DialogButton({title: 'Done', callback: this.onChangeThreadOwner.bind(this)})
             ]
         });
     }
 
-    private changePostOwner(): void {
+    private changePostOwner (): void {
         const selectedPostIds = this._threadPage.threadPosts.filter(post => post.isSelected).map(post => post.postId);
         if (selectedPostIds.length === 0) {
             this._notificationService.sendErrorNotification('You have no posts selected');
@@ -193,13 +196,13 @@ export class ThreadActionExecutor {
             component: this._componentFactory.resolveComponentFactory(ChangeOwnerComponent),
             buttons: [
                 new DialogCloseButton('Close'),
-                new DialogButton({ title: 'Done', callback: this.onChangePostOwner.bind(this, selectedPostIds) })
+                new DialogButton({title: 'Done', callback: this.onChangePostOwner.bind(this, selectedPostIds)})
             ]
         });
     }
 
-    private onChangePostOwner(postIds: Array<number>, nickname: string): void {
-        this._httpService.put(`forum/moderation/thread/posts/change-owner`, { nickname: nickname, postIds: postIds })
+    private onChangePostOwner (postIds: Array<number>, nickname: string): void {
+        this._httpService.put(`forum/moderation/thread/posts/change-owner`, {nickname: nickname, postIds: postIds})
             .subscribe(user => {
                 const newOwner = new User(user);
                 this._threadPage.threadPosts.forEach(post => {
@@ -211,8 +214,11 @@ export class ThreadActionExecutor {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private onChangeThreadOwner(nickname: string): void {
-        this._httpService.put(`forum/moderation/thread/change-owner`, { nickname: nickname, threadIds: [this._threadPage.threadId] })
+    private onChangeThreadOwner (nickname: string): void {
+        this._httpService.put(`forum/moderation/thread/change-owner`, {
+            nickname: nickname,
+            threadIds: [this._threadPage.threadId]
+        })
             .subscribe(user => {
                 const newOwner = new User(user);
                 if (this._threadPage.page === 1) {
@@ -224,7 +230,7 @@ export class ThreadActionExecutor {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private onOpenThread(): void {
+    private onOpenThread (): void {
         this._httpService.put(`forum/moderation/thread/open/${this._threadPage.threadId}`)
             .subscribe(() => {
                 this._threadPage.isOpen = true;
@@ -233,7 +239,7 @@ export class ThreadActionExecutor {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private onCloseThread(): void {
+    private onCloseThread (): void {
         this._httpService.put(`forum/moderation/thread/close/${this._threadPage.threadId}`)
             .subscribe(() => {
                 this._threadPage.isOpen = false;
@@ -242,7 +248,7 @@ export class ThreadActionExecutor {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private onDeletePoll(): void {
+    private onDeletePoll (): void {
         this._dialogService.openConfirmDialog(
             `Delete poll`,
             `Are you sure you wanna delete the poll?`,
@@ -258,7 +264,7 @@ export class ThreadActionExecutor {
         );
     }
 
-    private onStickyThread(): void {
+    private onStickyThread (): void {
         this._httpService.put(`forum/moderation/thread/sticky/${this._threadPage.threadId}`)
             .subscribe(() => {
                 this._notificationService.sendInfoNotification(`${this._threadPage.title} is now stickied!`);
@@ -267,7 +273,7 @@ export class ThreadActionExecutor {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private onUnStickyThread(): void {
+    private onUnStickyThread (): void {
         this._httpService.put(`forum/moderation/thread/unsticky/${this._threadPage.threadId}`)
             .subscribe(() => {
                 this._notificationService.sendInfoNotification(`${this._threadPage.title} is now unstickied!`);
@@ -276,27 +282,29 @@ export class ThreadActionExecutor {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private onApproveThread(): void {
+    private onApproveThread (): void {
         this._httpService.put(`forum/moderation/thread/approve/${this._threadPage.threadId}`)
             .subscribe(() => {
                 this._threadPage.isApproved = true;
+                this._threadPage.threadPosts.forEach(post => post.isApproved = true);
                 this._notificationService.sendInfoNotification(`${this._threadPage.title} is now approved!`);
                 this._buildModerationTools();
             });
     }
 
-    private onUnApproveThread(): void {
+    private onUnApproveThread (): void {
         this._httpService.put(`forum/moderation/thread/unapprove/${this._threadPage.threadId}`)
             .subscribe(() => {
                 this._threadPage.isApproved = false;
+                this._threadPage.threadPosts.forEach(post => post.isApproved = false);
                 this._notificationService.sendInfoNotification(`${this._threadPage.title} is now unapproved!`);
                 this._buildModerationTools();
             });
     }
 
-    private onUnApprovePosts(): void {
+    private onUnApprovePosts (): void {
         const selectedPostIds = this._threadPage.threadPosts.filter(post => post.isSelected).map(post => post.postId);
-        this._httpService.put('forum/moderation/thread/unapprove/posts', { postIds: selectedPostIds })
+        this._httpService.put('forum/moderation/thread/unapprove/posts', {postIds: selectedPostIds})
             .subscribe(() => {
                 this._threadPage.threadPosts = this._threadPage.threadPosts.map(post => {
                     post.isApproved = post.isSelected ? false : post.isApproved;
@@ -307,9 +315,9 @@ export class ThreadActionExecutor {
             });
     }
 
-    private onApprovePosts(): void {
+    private onApprovePosts (): void {
         const selectedPostIds = this._threadPage.threadPosts.filter(post => post.isSelected).map(post => post.postId);
-        this._httpService.put('forum/moderation/thread/approve/posts', { postIds: selectedPostIds })
+        this._httpService.put('forum/moderation/thread/approve/posts', {postIds: selectedPostIds})
             .subscribe(() => {
                 this._threadPage.threadPosts = this._threadPage.threadPosts.map(post => {
                     post.isApproved = post.isSelected ? true : post.isApproved;
@@ -320,7 +328,7 @@ export class ThreadActionExecutor {
             });
     }
 
-    private onDeleteThread(): void {
+    private onDeleteThread (): void {
         this._dialogService.openConfirmDialog(
             `Delete thread`,
             `Are you sure you wanna delete the thread: ${this._threadPage.title}?`,
@@ -346,80 +354,80 @@ class Builder {
     private _action: number;
     private _buildModerationTools: () => void;
 
-    withHttpService(httpService: HttpService): Builder {
+    withHttpService (httpService: HttpService): Builder {
         this._httpService = httpService;
         return this;
     }
 
-    withNotificationService(notificationService: NotificationService): Builder {
+    withNotificationService (notificationService: NotificationService): Builder {
         this._notificationService = notificationService;
         return this;
     }
 
-    withThreadPage(threadPage: ThreadPage): Builder {
+    withThreadPage (threadPage: ThreadPage): Builder {
         this._threadPage = threadPage;
         return this;
     }
 
-    withAction(action: number): Builder {
+    withAction (action: number): Builder {
         this._action = action;
         return this;
     }
 
-    withDialogService(dialogService: DialogService): Builder {
+    withDialogService (dialogService: DialogService): Builder {
         this._dialogService = dialogService;
         return this;
     }
 
-    withRouter(router: Router): Builder {
+    withRouter (router: Router): Builder {
         this._router = router;
         return this;
     }
 
-    withComponentFactory(componentFactory: ComponentFactoryResolver): Builder {
+    withComponentFactory (componentFactory: ComponentFactoryResolver): Builder {
         this._componentFactory = componentFactory;
         return this;
     }
 
-    withBuildModerationTools(callback: () => void): Builder {
+    withBuildModerationTools (callback: () => void): Builder {
         this._buildModerationTools = callback;
         return this;
     }
 
-    getHttpService(): HttpService {
+    getHttpService (): HttpService {
         return this._httpService;
     }
 
-    getNotificationService(): NotificationService {
+    getNotificationService (): NotificationService {
         return this._notificationService;
     }
 
-    getThreadPage(): ThreadPage {
+    getThreadPage (): ThreadPage {
         return this._threadPage;
     }
 
-    getAction(): number {
+    getAction (): number {
         return this._action;
     }
 
-    getDialogService(): DialogService {
+    getDialogService (): DialogService {
         return this._dialogService;
     }
 
-    getRouter(): Router {
+    getRouter (): Router {
         return this._router;
     }
 
-    getComponentFactory(): ComponentFactoryResolver {
+    getComponentFactory (): ComponentFactoryResolver {
         return this._componentFactory;
     }
 
-    getBuildModerationTools(): () => void {
+    getBuildModerationTools (): () => void {
         // tslint:disable-next-line
         return this._buildModerationTools;
     }
 
-    execute(): void {
+    execute (): void {
         // tslint:disable-next-line
         new ThreadActionExecutor(this);
     }

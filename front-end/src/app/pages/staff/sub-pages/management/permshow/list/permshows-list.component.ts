@@ -7,11 +7,7 @@ import { NotificationService } from 'core/services/notification/notification.ser
 import { HttpService } from 'core/services/http/http.service';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
-import {
-    STAFFCP_BREADCRUM_ITEM,
-    STAFFCP_MANAGEMENT_BREADCRUMB_ITEM
-
-} from 'app/pages/staff/staff.constants';
+import { STAFFCP_BREADCRUM_ITEM, STAFFCP_MANAGEMENT_BREADCRUMB_ITEM } from 'app/pages/staff/staff.constants';
 import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import {
     Action,
@@ -32,15 +28,18 @@ import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 export class PermShowsListComponent extends Page implements OnDestroy {
     private _permShowsListPage: PermShowsListPage = new PermShowsListPage();
     private _actions: Array<TableAction> = [
-        new TableAction({ title: 'Edit', value: PermShowActions.EDIT_PERM_SHOW }),
-        new TableAction({ title: 'Delete', value: PermShowActions.DELETE_PERM_SHOW })
+        new TableAction({title: 'Edit', value: PermShowActions.EDIT_PERM_SHOW}),
+        new TableAction({title: 'Delete', value: PermShowActions.DELETE_PERM_SHOW})
     ];
 
-    tabs: Array<TitleTab> = [new TitleTab({ title: 'New Permanent Show', link: '/staff/management/permanent-shows/new' })];
+    tabs: Array<TitleTab> = [new TitleTab({
+        title: 'New Permanent Show',
+        link: '/staff/management/permanent-shows/new'
+    })];
     tableConfig: TableConfig;
     pagination: PaginationModel;
 
-    constructor(
+    constructor (
         private _dialogService: DialogService,
         private _notificationService: NotificationService,
         private _httpService: HttpService,
@@ -60,7 +59,7 @@ export class PermShowsListComponent extends Page implements OnDestroy {
         });
     }
 
-    onAction(action: Action): void {
+    onAction (action: Action): void {
         switch (action.value) {
             case PermShowActions.DELETE_PERM_SHOW:
                 this.delete(Number(action.rowId));
@@ -71,11 +70,11 @@ export class PermShowsListComponent extends Page implements OnDestroy {
         }
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -87,32 +86,32 @@ export class PermShowsListComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableHeaders(): Array<TableHeader> {
+    private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'DJ' }),
-            new TableHeader({ title: 'Name' }),
-            new TableHeader({ title: 'Day' }),
-            new TableHeader({ title: 'Hour' })
+            new TableHeader({title: 'DJ'}),
+            new TableHeader({title: 'Name'}),
+            new TableHeader({title: 'Day & Hour'}),
+            new TableHeader({title: 'Type'})
         ];
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         const actions = [].concat(this._actions);
         return this._permShowsListPage.permShows.map(item => {
             return new TableRow({
                 id: String(item.timetableId),
                 cells: [
-                    new TableCell({ title: item.nickname }),
-                    new TableCell({ title: item.name }),
-                    new TableCell({ title: TimeHelper.getDay(item.day).label }),
-                    new TableCell({ title: TimeHelper.getHours()[item.hour].label })
+                    new TableCell({title: item.nickname}),
+                    new TableCell({title: item.name}),
+                    new TableCell({title: `${TimeHelper.getDay(item.day).label} - ${TimeHelper.getHours()[item.hour].label}`}),
+                    new TableCell({title: item.type === 0 ? 'Radio' : 'Events'})
                 ],
                 actions: actions
             });
         });
     }
 
-    private delete(rowId: number): void {
+    private delete (rowId: number): void {
         this._dialogService.openConfirmDialog(
             `Deleting permanent show`,
             `Are you sure that you wanna delete this? You can just pause it this week by unbooking it`,
@@ -120,7 +119,7 @@ export class PermShowsListComponent extends Page implements OnDestroy {
         );
     }
 
-    private onDelete(permShowId: number): void {
+    private onDelete (permShowId: number): void {
         this._httpService.delete(`staff/management/permanent-shows/${permShowId}`)
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
@@ -135,7 +134,7 @@ export class PermShowsListComponent extends Page implements OnDestroy {
     }
 
 
-    private onPage(data: { data: PermShowsListPage }): void {
+    private onPage (data: { data: PermShowsListPage }): void {
         this._permShowsListPage = data.data;
         this._permShowsListPage.permShows.forEach(item => {
             const convertedHour = item.hour + TimeHelper.getTimeOffsetInHours();
