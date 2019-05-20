@@ -48,6 +48,24 @@ export class RadioService {
         }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
+    likeHost(): void {
+        if (!this._authService.isLoggedIn()) {
+            this._notificationService.sendNotification(new NotificationMessage({
+                title: 'Error',
+                message: 'You need to be logged in when liking a host',
+                type: NotificationType.ERROR
+            }));
+            return;
+        }
+        this._httpService.post('event/like', null).subscribe(() => {
+            this._notificationService.sendNotification(new NotificationMessage({
+               title: 'Success',
+               message: 'You liked the event host!'
+            }));
+        }, this._notificationService.failureNotification.bind(this._notificationService));
+    }
+
+
     openInfo(stats: RadioModel): void {
         this._dialogService.openDialog({
             title: 'Radio Info',

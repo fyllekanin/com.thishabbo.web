@@ -55,6 +55,8 @@ Route::group(['middleware' => ['maintenance']], function () {
     Route::group(['middleware' => ['auth.check']], function () {
         Route::get('/auth/user', 'Auth\AuthController@getUser');
         Route::post('/radio/like', 'Staff\RadioController@createDjLike');
+        Route::post('/event/like', 'Staff\EventsController@createHostLike');
+
 
         Route::post('/profile/visitor-message', 'ProfileController@createVisitorMessage');
         Route::post('/profile/visitor-message/{visitorMessageId}/like', 'ProfileController@createVisitorMessageLike');

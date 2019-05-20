@@ -1434,4 +1434,13 @@ class Action {
         'data' => [],
         'log' => 'log_admin'
     ];
+
+    const LIKED_HOST = [
+        'id' => 167,
+        'description' => 'Liked the current host',
+        'data' => [
+            'host' => 'Host that was liked'
+        ],
+        'log' => 'log_user'
+    ];
 }
