@@ -33,35 +33,21 @@ export class RadioService {
 
     likeDj(): void {
         if (!this._authService.isLoggedIn()) {
-            this._notificationService.sendNotification(new NotificationMessage({
-                title: 'Error',
-                message: 'You need to be logged in when liking a DJ',
-                type: NotificationType.ERROR
-            }));
+            this._notificationService.sendErrorNotification('You need to be logged in when liking a DJ');
             return;
         }
         this._httpService.post('radio/like', null).subscribe(() => {
-            this._notificationService.sendNotification(new NotificationMessage({
-               title: 'Success',
-               message: 'You liked the DJ!'
-            }));
+            this._notificationService.sendInfoNotification('You liked the DJ!');
         }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     likeHost(): void {
         if (!this._authService.isLoggedIn()) {
-            this._notificationService.sendNotification(new NotificationMessage({
-                title: 'Error',
-                message: 'You need to be logged in when liking a host',
-                type: NotificationType.ERROR
-            }));
+            this._notificationService.sendErrorNotification("You need to be logged in when liking a host");
             return;
         }
         this._httpService.post('event/like', null).subscribe(() => {
-            this._notificationService.sendNotification(new NotificationMessage({
-               title: 'Success',
-               message: 'You liked the event host!'
-            }));
+            this._notificationService.sendInfoNotification('You liked the events host!');
         }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 

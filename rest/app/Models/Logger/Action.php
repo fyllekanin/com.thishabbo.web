@@ -1438,9 +1438,7 @@ class Action {
     const LIKED_HOST = [
         'id' => 167,
         'description' => 'Liked the current host',
-        'data' => [
-            'host' => 'Host that was liked'
-        ],
+        'data' => [],
         'log' => 'log_user'
     ];
 }

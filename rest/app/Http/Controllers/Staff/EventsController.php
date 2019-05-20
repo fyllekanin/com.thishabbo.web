@@ -65,14 +65,15 @@ class EventsController extends Controller {
 
         $hour = date('G');
         $day = date('N');
-        $current = Timetable::events()->with(['user', 'event'])->where('day', $day)->where('hour', $hour)->first();
+        $current = Timetable::events()->with(['user'])->where('day', $day)->where('hour', $hour)->first();
 
         Condition::precondition(!$current, 404, 'No current event!');
         $eventUser = User::find($current->userId);
 
-        Condition::precondition(!$eventUser, 404, 'Cannot find host!');
+        Condition::precondition(!$current->user, 404, 'Cannot find host!');
         Condition::precondition($user->userId == 0, 400, 'You need to be logged in to like a host!');
-        Condition::precondition($user->userId == $eventUser->userId, 400, 'You can not like yourself');
+        Condition::precondition($user->userId == $current->user->userId, 400, 'You can not like yourself');
+
         $haveLikedWithInLimit = LogUser::where('userId', $user->userId)
                 ->where('action', Action::getAction(Action::LIKED_HOST))
                 ->where('createdAt', '>', $nowMinus30Min)
@@ -82,7 +83,7 @@ class EventsController extends Controller {
         $eventUser->likes++;
         $eventUser->save();
 
-        Logger::user($user->userId, $request->ip(), Action::LIKED_HOST, ['djId' => $eventUser->userId]);
+        Logger::user($user->userId, $request->ip(), Action::LIKED_HOST, [], $current->user->userId);
         return response()->json();
     }
 
