@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Staff;
 
+use App\EloquentModels\Log\LogUser;
 use App\EloquentModels\Log\LogStaff;
 use App\EloquentModels\Staff\Event;
 use App\EloquentModels\Staff\Timetable;
@@ -49,6 +50,41 @@ class EventsController extends Controller {
         $says = SettingsHelper::getSettingValue($settingKeys->eventsSay);
 
         return response()->json($says);
+    }
+
+     /**
+     * Post request for liking Host, validation for Current Host and last time since like
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function createHostLike(Request $request) {
+        $user = $request->get('auth');
+        $nowMinus30Min = time() - 1800;
+
+        $hour = date('G');
+        $day = date('N');
+        $current = Timetable::events()->with(['user'])->where('day', $day)->where('hour', $hour)->first();
+
+        Condition::precondition(!$current, 404, 'No current event!');
+        $eventUser = User::find($current->userId);
+
+        Condition::precondition(!$current->user, 404, 'Cannot find host!');
+        Condition::precondition($user->userId == 0, 400, 'You need to be logged in to like a host!');
+        Condition::precondition($user->userId == $current->user->userId, 400, 'You can not like yourself');
+
+        $haveLikedWithInLimit = LogUser::where('userId', $user->userId)
+                ->where('action', Action::getAction(Action::LIKED_HOST))
+                ->where('createdAt', '>', $nowMinus30Min)
+                ->count('logId') > 0;
+        Condition::precondition($haveLikedWithInLimit, 400, 'You are trying to like to fast!');
+
+        $eventUser->likes++;
+        $eventUser->save();
+
+        Logger::user($user->userId, $request->ip(), Action::LIKED_HOST, [], $current->user->userId);
+        return response()->json();
     }
 
     /**

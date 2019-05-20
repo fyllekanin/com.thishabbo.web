@@ -35,6 +35,10 @@ export class RadioComponent {
         this._radioService.likeDj();
     }
 
+    likeHost (): void {
+        this._radioService.likeHost();
+    }
+
     get currentHost (): string {
         return this._eventStats && this._eventStats.nickname ? this._eventStats.nickname : 'Not Booked';
     }

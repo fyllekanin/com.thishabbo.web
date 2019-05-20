@@ -13,3 +13,4 @@ npm-debug.log
 yarn-error.log
 thishabbo-job.pid
 thishabbo-job.log
+.env
