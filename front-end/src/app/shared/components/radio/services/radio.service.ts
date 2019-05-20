@@ -5,7 +5,6 @@ import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { DialogCloseButton, DialogButton } from 'shared/app-views/dialog/dialog.model';
 import { RequestComponent } from '../request/request.component';
-import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { RadioModel } from '../radio.model';
 
 @Injectable()
