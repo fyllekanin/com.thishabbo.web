@@ -228,11 +228,17 @@ class ManagementController extends Controller {
             $existing->delete();
         }
 
+        $link = '';
+        if (isset($booking->link) && !empty($booking->link)) {
+            $link = $booking->link;
+            Condition::precondition(!preg_match(ConfigHelper::getRegex()->HABBO_ROOM, $link), 400, 'The room link is not valid');
+        }
+
         $timetable = new Timetable([
             'userId' => $bookingForUser->userId,
             'day' => $booking->day,
             'hour' => $booking->hour,
-            'link' => Value::objectProperty($booking, 'link', ''),
+            'link' => $link,
             'isPerm' => 1,
             'type' => $booking->type
         ]);
@@ -282,10 +288,16 @@ class ManagementController extends Controller {
             $existing->delete();
         }
 
+        $link = '';
+        if (isset($booking->link) && !empty($booking->link)) {
+            $link = $booking->link;
+            Condition::precondition(!preg_match(ConfigHelper::getRegex()->HABBO_ROOM, $link), 400, 'The room link is not valid');
+        }
+
         $slot->day = $booking->day;
         $slot->hour = $booking->hour;
         $slot->type = $booking->type;
-        $slot->link = Value::objectProperty($booking, 'link', '');
+        $slot->link = $link;
         $slot->userId = $bookingForUser;
         $slot->save();
 
