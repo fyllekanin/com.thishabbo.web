@@ -63,4 +63,8 @@ class ConfigHelper {
     public static function getAccoladeTypes() {
         return Config::get(self::$SETTINGS . '.ACCOLADE_TYPES');
     }
+
+    public static function getRegex() {
+        return (object)Config::get(self::$SETTINGS . '.REGEX');
+    }
 }

@@ -378,6 +378,12 @@ class EventsController extends Controller {
         Condition::precondition($existing, 400, 'Booking already exists on this slot');
         $userId = $bookingForUser ? $bookingForUser->userId : $user->userId;
 
+        $link = '';
+        if (isset($booking->link) && !empty($booking->link)) {
+            $link = $booking->link;
+            Condition::precondition(!preg_match(ConfigHelper::getRegex()->HABBO_ROOM, $link), 400, 'The room link is not valid');
+        }
+
         $timetable = new Timetable([
             'userId' => $userId,
             'day' => $booking->day,
@@ -385,7 +391,7 @@ class EventsController extends Controller {
             'isPerm' => 0,
             'type' => 1,
             'eventId' => $event->eventId,
-            'link' => Value::objectProperty($booking, 'link', null)
+            'link' => $link
         ]);
         $timetable->save();
 

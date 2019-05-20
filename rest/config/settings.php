@@ -21,6 +21,9 @@ return [
         'MENTION_NOTIFICATIONS' => 2,
         'AUTO_SUBSCRIBE_THREAD' => 4
     ],
+    'REGEX' => [
+        'HABBO_ROOM' => '/(http(s)?:\/\/)?(www.)?habbo\.com\/hotel\?room=([0-9]+|(http(s)?:\/\/)?(www.)?habbo\.com\/hotel\?room=[0-9]+)?/si'
+    ],
     'ACCOLADE_TYPES' => [
         [
             'id' => 1,
