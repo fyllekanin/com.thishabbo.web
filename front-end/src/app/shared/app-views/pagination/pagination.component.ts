@@ -129,6 +129,7 @@ export class PaginationComponent {
     private getForwardItems (): Array<PaginationItem> {
         return this.thereIsGapForward() ? [
             {value: this._paginationModel.page + 1, title: (this._paginationModel.page + 1).toString()},
+            {value: this._paginationModel.page + 2, title: (this._paginationModel.page + 2).toString()},
             {value: -1, title: '...'},
             {value: this._paginationModel.total - 2, title: (this._paginationModel.total - 2).toString()},
             {value: this._paginationModel.total - 1, title: (this._paginationModel.total - 1).toString()},
