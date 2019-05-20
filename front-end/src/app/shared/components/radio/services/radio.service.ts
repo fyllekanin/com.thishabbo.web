@@ -43,7 +43,7 @@ export class RadioService {
 
     likeHost(): void {
         if (!this._authService.isLoggedIn()) {
-            this._notificationService.sendErrorNotification("You need to be logged in when liking a host");
+            this._notificationService.sendErrorNotification('You need to be logged in when liking a host');
             return;
         }
         this._httpService.post('event/like', null).subscribe(() => {
