@@ -91,7 +91,7 @@ export class ProfileComponent extends Page implements OnDestroy {
 
     timestampToDate (timestamp: number): string {
         const date = new Date(timestamp * 1000);
-        return TimeHelper.getDay(date.getDay()).label + ' @ ' + date.getHours() + ':00';
+        return `${TimeHelper.getDay(date.getDay()).label} @ ${date.getHours()}:00`;
     }
 
 

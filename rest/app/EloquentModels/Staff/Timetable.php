@@ -5,6 +5,7 @@ namespace App\EloquentModels\Staff;
 use App\EloquentModels\Models\DeletableModel;
 use App\Helpers\UserHelper;
 use Illuminate\Database\Eloquent\Builder;
+use DateTime;
 
 /**
  * @property mixed timetableId
@@ -41,7 +42,7 @@ class Timetable extends DeletableModel {
     public function getTimestampAttribute() {
         $year = date('Y');
         $week = date('W');
-        return strtotime((new \DateTime())->setISODate($year, $week, $this->day)->format('Y-m-d')) + 3600 * $this->hour;
+        return strtotime((new DateTime())->setISODate($year, $week, $this->day)->format('Y-m-d')) + 3600 * $this->hour;
     }
 
     public function timetableData() {
