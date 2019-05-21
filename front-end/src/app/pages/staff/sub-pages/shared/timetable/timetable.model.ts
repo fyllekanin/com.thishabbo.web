@@ -23,6 +23,8 @@ export class TimetableModel {
     createdAt: number;
     @objectOf(User)
     user: User;
+    @primitive()
+    timestamp: number;
 
     constructor (source: Partial<TimetableModel>) {
         ClassHelper.assign(this, source);

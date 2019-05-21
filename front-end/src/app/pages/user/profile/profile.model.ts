@@ -2,6 +2,18 @@ import { arrayOf, ClassHelper, objectOf, primitive, time } from 'shared/helpers/
 import { SlimUser } from 'core/services/auth/auth.model';
 import { Activity } from 'core/services/continues-information/continues-information.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
+import { TimetableModel } from 'app/pages/staff/sub-pages/shared/timetable/timetable.model';
+
+export class ProfileSlots {
+    @arrayOf(TimetableModel)
+    radio: Array<TimetableModel> = [];
+    @arrayOf(TimetableModel)
+    events: Array<TimetableModel> = [];
+
+    constructor (source: Partial<ProfileStats>) {
+        ClassHelper.assign(this, source);
+    }
+}
 
 export class ProfileStats {
     @primitive()
@@ -133,6 +145,8 @@ export class ProfileModel {
     visitorMessages: ProfileVisitorMessages;
     @arrayOf(ProfileAccolade)
     accolades: Array<ProfileAccolade> = [];
+    @objectOf(ProfileSlots)
+    slots: ProfileSlots;
 
 
     constructor (source: Partial<ProfileModel>) {

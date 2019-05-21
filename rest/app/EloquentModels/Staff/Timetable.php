@@ -5,6 +5,7 @@ namespace App\EloquentModels\Staff;
 use App\EloquentModels\Models\DeletableModel;
 use App\Helpers\UserHelper;
 use Illuminate\Database\Eloquent\Builder;
+use DateTime;
 
 /**
  * @property mixed timetableId
@@ -15,7 +16,7 @@ class Timetable extends DeletableModel {
     protected $primaryKey = 'timetableId';
     protected $fillable = ['userId', 'day', 'hour', 'isPerm', 'type', 'eventId', 'isActive', 'link'];
     protected $hidden = ['userId', 'eventId', 'permShow'];
-    protected $appends = ['user', 'event', 'name'];
+    protected $appends = ['user', 'event', 'name', 'timestamp'];
 
     public function event() {
         return $this->hasMany('App\EloquentModels\Staff\Event', 'eventId', 'eventId');
@@ -36,6 +37,12 @@ class Timetable extends DeletableModel {
     public function getNameAttribute() {
         $data = $this->timetableData()->first();
         return $data ? $data->name : null;
+    }
+
+    public function getTimestampAttribute() {
+        $year = date('Y');
+        $week = date('W');
+        return strtotime((new DateTime())->setISODate($year, $week, $this->day)->format('Y-m-d')) + 3600 * $this->hour;
     }
 
     public function timetableData() {
