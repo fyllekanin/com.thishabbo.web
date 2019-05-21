@@ -1,6 +1,5 @@
 import { arrayOf, ClassHelper, objectOf, primitive, time } from 'shared/helpers/class.helper';
 import { SlimUser } from 'core/services/auth/auth.model';
-import { IUserProfile } from 'shared/directives/user-profile.directive';
 
 export class ForumLatestPost {
     @primitive()
@@ -28,13 +27,6 @@ export class ForumLatestPost {
 
     get time (): string {
         return this.createdAt;
-    }
-
-    getUserProfile (): IUserProfile {
-        return {
-            userId: this.user.userId,
-            avatarUpdatedAt: this.user.avatarUpdatedAt
-        };
     }
 }
 

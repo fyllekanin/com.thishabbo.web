@@ -4,6 +4,9 @@ namespace App\EloquentModels\Shop;
 
 use App\EloquentModels\Models\DeletableModel;
 
+/**
+ * @property mixed subscriptionId
+ */
 class Subscription extends DeletableModel {
     protected $primaryKey = 'subscriptionId';
     protected $table = 'subscriptions';

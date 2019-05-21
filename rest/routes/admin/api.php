@@ -223,6 +223,12 @@ Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions-
 
 Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canManageShop)], function () {
     Route::post('/shop/items/page/{page}', 'Admin\Shop\ItemsController@getItems');
+
+    Route::get('/shop/subscriptions/page/{page}', 'Admin\Shop\SubscriptionsController@getSubscriptions');
+    Route::get('/shop/subscriptions/{subscriptionId}', 'Admin\Shop\SubscriptionsController@getSubscription');
+    Route::post('/shop/subscriptions', 'Admin\Shop\SubscriptionsController@createSubscription');
+    Route::put('/shop/subscriptions/{subscriptionId}', 'Admin\Shop\SubscriptionsController@updateSubscription');
+    Route::delete('/shop/subscriptions/{subscriptionId}', 'Admin\Shop\SubscriptionsController@deleteSubscription');
 });
 
 Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canManageBetting)], function () {

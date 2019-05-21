@@ -9,7 +9,11 @@ import { TableModule } from 'shared/components/table/table.module';
 import { PaginationModule } from 'shared/app-views/pagination/pagination.module';
 import { ButtonModule } from 'shared/directives/button/button.module';
 import { shopRoutes } from './shop.routes';
-import { ListComponent } from './items/list/list.component';
+import { ItemsListComponent } from './items/list/items-list.component';
+import { SubscriptionsListComponent } from './subscriptions/list/subscriptions-list.component';
+import { SubscriptionsListService } from './services/subscriptions-list.service';
+import { SubscriptionService } from './services/subscription.service';
+import { SubscriptionComponent } from './subscriptions/subscription/subscription.component';
 
 @NgModule({
     imports: [
@@ -24,9 +28,14 @@ import { ListComponent } from './items/list/list.component';
         ButtonModule
     ],
     declarations: [
-        ListComponent
+        ItemsListComponent,
+        SubscriptionsListComponent,
+        SubscriptionComponent
     ],
-    providers: [],
+    providers: [
+        SubscriptionsListService,
+        SubscriptionService
+    ],
     exports: [
         RouterModule
     ]

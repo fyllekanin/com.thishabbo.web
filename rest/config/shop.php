@@ -13,6 +13,6 @@ return [
         'legendary' => 10
     ],
     'SUBSCRIPTION_OPTIONS' => [
-        'customColour' => 1
+        'canHaveCustomNameColor' => 1
     ]
 ];
