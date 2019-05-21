@@ -17,9 +17,9 @@
                 </div>
             </div>
             <div>
-                <div class="radio-button blue-button" (click)="openRequest()"><i
-                        class="fas fa-comment icon-position"></i></div>
-                <div class="radio-button red-button" (click)="likeDj()"><i class="fas fa-heart icon-position"></i></div>
+                <button class="radio-button blue-button" (click)="openRequest()"><i
+                        class="fas fa-comment icon-position"></i></button>
+                <button [disabled]="radioOffline" class="radio-button red-button" (click)="likeDj()"><i class="fas fa-heart icon-position"></i></button>
             </div>
         </div>
     </div>
@@ -27,8 +27,8 @@
     <div class="events-box">
         <div class="event-info">
             <div class="event-buttons">
-                <div class="events-box-button green-button"><i class="fas fa-arrow-up icon-position-events"></i></div>
-                <div class="events-box-button red-button" (click)="likeHost()"><i class="fas fa-heart icon-position-events"></i></div>
+                <button [disabled]="!eventsLink" class="events-box-button green-button" (click)="visitEvent()"><i class="fas fa-arrow-up icon-position-events"></i></button>
+                <button [disabled]="noEvent" class="events-box-button red-button" (click)="likeHost()"><i class="fas fa-heart icon-position-events"></i></button>
             </div>
             <div class="inner-box">
                 <div class="event-name"><i class="fas fa-user"></i> <strong> {{currentHost}}</strong><br/>
