@@ -18,7 +18,7 @@
                 </div>
                 <div>
                     <strong>Status: </strong>
-                    <span *ngIf="group.isMember">Is member (<span class="apply" (click)="leave(group.groupId)">Leave</span>)</span>
+                    <span *ngIf="group.isMember">Is member <span class="apply" *ngIf="group.isPublic" (click)="leave(group.groupId)">(Leave)</span></span>
                 </div>
             </div>
         </div>
