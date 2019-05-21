@@ -74,7 +74,8 @@ class StreamController extends Controller {
             'event' => $current ? $current->event->name : null,
             'nextHost' => $next ? $next->user->nickname : null,
             'nextEvent' => $next ? $next->event->name : null,
-            'says' => SettingsHelper::getSettingValue($settingKeys->eventsSay)
+            'says' => SettingsHelper::getSettingValue($settingKeys->eventsSay),
+            'link' => $current ? $current->link : null
         ];
     }
 

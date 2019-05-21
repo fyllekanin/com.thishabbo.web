@@ -11,6 +11,8 @@ export class EventsModel {
     nextEvent: string;
     @primitive()
     says: string;
+    @primitive()
+    link: string;
 
     constructor (source: Partial<EventsModel>) {
         ClassHelper.assign(this, source);

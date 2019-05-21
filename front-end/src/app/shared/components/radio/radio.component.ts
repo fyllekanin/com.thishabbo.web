@@ -39,6 +39,19 @@ export class RadioComponent {
         this._radioService.likeHost();
     }
 
+    visitEvent (): void {
+        window.open(this._eventStats.link, '_blank');
+        window.focus();
+    }
+
+    get radioOffline (): boolean {
+        return this._stats ? false : true;
+    }
+
+    get noEvent(): boolean {
+        return this._eventStats ? false : true;
+    }
+
     get currentHost (): string {
         return this._eventStats && this._eventStats.nickname ? this._eventStats.nickname : 'Not Booked';
     }
@@ -81,5 +94,9 @@ export class RadioComponent {
 
     get albumArt (): string {
         return this._stats ? this._stats.albumArt : '';
+    }
+
+    get eventsLink () : string {
+        return this._eventStats.link ? this._eventStats.link : '';
     }
 }
