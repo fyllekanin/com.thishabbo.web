@@ -88,7 +88,7 @@ export class RadioComponent {
         return this._stats ? this._stats.albumArt : '';
     }
 
-    get eventsLink () : string {
+    get eventsLink (): string {
         return this._eventStats.link ? this._eventStats.link : '';
     }
 }
