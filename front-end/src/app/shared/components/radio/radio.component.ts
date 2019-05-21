@@ -44,14 +44,6 @@ export class RadioComponent {
         window.focus();
     }
 
-    get radioOffline (): boolean {
-        return this._stats ? false : true;
-    }
-
-    get noEvent(): boolean {
-        return this._eventStats ? false : true;
-    }
-
     get currentHost (): string {
         return this._eventStats && this._eventStats.nickname ? this._eventStats.nickname : 'Not Booked';
     }
