@@ -69,3 +69,8 @@ export const SHOP_ITEMS_BREADCRUMB_ITEMS = new BreadcrumbItem({
     title: 'Shop Items',
     url: '/admin/shop/items/page/1'
 });
+
+export const SHOP_SUBSCRIPTIONS_BREADCRUMB_ITEMS = new BreadcrumbItem({
+    title: 'Subscriptions',
+    url: '/admin/shop/subscriptions/page/1'
+});

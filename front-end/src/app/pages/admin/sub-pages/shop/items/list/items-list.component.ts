@@ -11,15 +11,15 @@ import { SHOP_ITEM_RARITIES, SHOP_ITEM_TYPES } from '../../shop.helper';
 
 @Component({
     selector: 'app-admin-shop-items-list',
-    templateUrl: 'list.component.html'
+    templateUrl: 'items-list.component.html'
 })
-export class ListComponent extends Page implements OnDestroy {
+export class ItemsListComponent extends Page implements OnDestroy {
     private _data: ShopListPage;
 
     tableConfig: TableConfig;
     pagination: PaginationModel;
 
-    constructor(
+    constructor (
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService,
         activatedRoute: ActivatedRoute
@@ -38,13 +38,13 @@ export class ListComponent extends Page implements OnDestroy {
         super.destroy();
     }
 
-    private onData(data: { data: ShopListPage }): void {
+    private onData (data: { data: ShopListPage }): void {
         this._data = data.data;
 
         this.createOrUpdateTable();
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -56,21 +56,21 @@ export class ListComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableHeaders(): Array<TableHeader> {
+    private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'Title' }),
-            new TableHeader({ title: 'Type' }),
-            new TableHeader({ title: 'Rarity' })
+            new TableHeader({title: 'Title'}),
+            new TableHeader({title: 'Type'}),
+            new TableHeader({title: 'Rarity'})
         ];
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         return this._data.items.map(item => new TableRow({
             id: String(item.shopItemId),
             cells: [
-                new TableCell({ title: item.title }),
-                new TableCell({ title: SHOP_ITEM_TYPES.find(type => type.id === item.type).name }),
-                new TableCell({ title: SHOP_ITEM_RARITIES.find(rarity => rarity.percentage === item.rarity ).name })
+                new TableCell({title: item.title}),
+                new TableCell({title: SHOP_ITEM_TYPES.find(type => type.id === item.type).name}),
+                new TableCell({title: SHOP_ITEM_RARITIES.find(rarity => rarity.percentage === item.rarity).name})
             ]
         }));
     }

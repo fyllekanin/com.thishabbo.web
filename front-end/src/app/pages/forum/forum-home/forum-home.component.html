@@ -3,11 +3,11 @@
         <div class="cell small-12 medium-9">
             <div *ngFor="let category of categories">
                 <app-title
-                    [title]="category.title"
-                    [titlePointer]="true"
-                    [tabs]="[toggleTab]"
-                    (onTabClick)="toggleCategory(category)"
-                    (onTitleClick)="onTitleClick(category)">
+                        [title]="category.title"
+                        [titlePointer]="true"
+                        [tabs]="[toggleTab]"
+                        (onTabClick)="toggleCategory(category)"
+                        (onTitleClick)="onTitleClick(category)">
                 </app-title>
                 <app-content [isContracted]="isCategoryContracted(category)">
                     <app-forum-slim-category *ngFor="let child of category.childs.sort(sortCategories)"
@@ -24,7 +24,8 @@
             </div>
         </div>
         <div class="cell small-12 medium-3">
-            <app-title [title]="'Latest Posts'" [top]="latestPostersTop" [tabs]="[refreshTab]" (onTabClick)="updateForumStats()"></app-title>
+            <app-title [title]="'Latest Posts'" [top]="latestPostersTop" [tabs]="[refreshTab]"
+                       (onTabClick)="updateForumStats()"></app-title>
             <app-content>
                 <div *ngIf="!latestPosts">
                     Loading...
@@ -34,19 +35,21 @@
                 </div>
                 <div *ngFor="let latestPost of latestPosts;" class="latest-post-row">
                     <span class="image">
-                        <img appUserProfile [isSmall]="true" [info]="latestPost.getUserProfile()"/>
+                        <img appUserProfile [isSmall]="true" [info]="latestPost.user"/>
                     </span>
                     <span class="data">
-                        <a class="title" [routerLink]="['/forum', 'thread', latestPost.threadId, 'page', latestPost.page]" [queryParams]="{ scrollTo: 'post-' + latestPost.postId}">
+                        <a class="title"
+                           [routerLink]="['/forum', 'thread', latestPost.threadId, 'page', latestPost.page]"
+                           [queryParams]="{ scrollTo: 'post-' + latestPost.postId}">
                                 <span *ngIf="latestPost.text" [style]="latestPost.style | safeStyle">
                                     {{latestPost.text}} &#xbb;
                                 </span>
                             {{latestPost.title}}
                         </a>
-                        <br />
+                        <br/>
                         Latest: <app-user-link [user]="latestPost.user"></app-user-link>
                         - {{latestPost.time}}
-                        <br />
+                        <br/>
                         In {{latestPost.category}}
                     </span>
                 </div>

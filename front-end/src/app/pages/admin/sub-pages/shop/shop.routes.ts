@@ -1,6 +1,10 @@
 import { PageComponent } from 'shared/page/page.component';
 import { Routes } from '@angular/router';
-import { ListComponent } from './items/list/list.component';
+import { ItemsListComponent } from './items/list/items-list.component';
+import { SubscriptionsListService } from './services/subscriptions-list.service';
+import { SubscriptionsListComponent } from './subscriptions/list/subscriptions-list.component';
+import { SubscriptionComponent } from './subscriptions/subscription/subscription.component';
+import { SubscriptionService } from './services/subscription.service';
 
 export const shopRoutes: Routes = [
     {
@@ -13,7 +17,21 @@ export const shopRoutes: Routes = [
             },
             {
                 path: 'items/page/:page',
-                component: ListComponent
+                component: ItemsListComponent
+            },
+            {
+                path: 'subscriptions/page/:page',
+                component: SubscriptionsListComponent,
+                resolve: {
+                    data: SubscriptionsListService
+                }
+            },
+            {
+                path: 'subscriptions/:subscriptionId',
+                component: SubscriptionComponent,
+                resolve: {
+                    data: SubscriptionService
+                }
             }
         ]
     }

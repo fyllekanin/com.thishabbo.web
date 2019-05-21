@@ -1,6 +1,5 @@
 import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
 import { SlimUser } from 'core/services/auth/auth.model';
-import { IUserProfile } from 'shared/directives/user-profile.directive';
 
 export enum SearchTypes {
     THREADS = 'threads',
@@ -22,7 +21,7 @@ export class SearchParameters {
     @primitive()
     order: string;
 
-    constructor(source: Partial<SearchParameters>) {
+    constructor (source: Partial<SearchParameters>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -41,12 +40,8 @@ export class SearchResult {
     @primitive()
     createdAt: number;
 
-    constructor(source: Partial<SearchResult>) {
+    constructor (source: Partial<SearchResult>) {
         ClassHelper.assign(this, source);
-    }
-
-    getUserProfile(): IUserProfile {
-        return { userId: this.user.userId, avatarUpdatedAt: this.user.avatarUpdatedAt };
     }
 }
 
@@ -60,7 +55,7 @@ export class SearchPage {
     @objectOf(SearchParameters)
     parameters: SearchParameters;
 
-    constructor(source: Partial<SearchPage>) {
+    constructor (source: Partial<SearchPage>) {
         ClassHelper.assign(this, source);
     }
 }
