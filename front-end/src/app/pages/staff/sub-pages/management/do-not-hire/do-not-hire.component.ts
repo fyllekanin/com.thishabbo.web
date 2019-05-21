@@ -16,6 +16,7 @@ import { NotificationService } from 'core/services/notification/notification.ser
     templateUrl: 'do-not-hire.component.html'
 })
 export class DoNotHireComponent extends Page implements OnDestroy {
+    private _editing;
     private _data = new DoNotHireItem();
     tabs: Array<TitleTab> = [];
 
@@ -76,8 +77,8 @@ export class DoNotHireComponent extends Page implements OnDestroy {
             createdAt: this._data.createdAt
         };
 
-        if (this._data.createdAt) {
-            this._httpService.put(`staff/management/do-not-hire/${this._data.nickname}`,
+        if (this._editing) {
+            this._httpService.put(`staff/management/do-not-hire/${this._editing}`,
                 { information: information })
                     .subscribe(this.onSuccessUpdate.bind(this, this._data),
                         this._notificationService.failureNotification.bind(this._notificationService));
@@ -115,7 +116,6 @@ export class DoNotHireComponent extends Page implements OnDestroy {
             title: 'Success',
             message: 'Do Not Hire updated!'
         }));
-        this._router.navigateByUrl('/staff/management/do-not-hire');
 
     }
 
@@ -131,6 +131,9 @@ export class DoNotHireComponent extends Page implements OnDestroy {
 
     private onData(data: { data: DoNotHireItem }): void {
         this._data = data.data;
+        if (this._data.createdAt) {
+            this._editing = this._data.nickname;
+        }
 
         const tabs = [
             { title: 'Save', value: DoNotHireActions.SAVE, condition: true },
