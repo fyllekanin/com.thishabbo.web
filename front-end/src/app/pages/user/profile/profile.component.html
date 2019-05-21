@@ -113,6 +113,20 @@
             </div>
 
             <div class="cell small-12 medium-3">
+                <app-title [title]="'Radio Slots'"></app-title>
+                <app-content>
+                    <div class="radio-slot" *ngFor="let slot of slots.radio">
+                        {{ timestampToDate(slot.timestamp) }}
+                    </div>
+                </app-content>
+
+                <app-title [title]="'Events Slots'"></app-title>
+                <app-content>
+                    <div class="event-slot" *ngFor="let slot of slots.events">
+                        {{ timestampToDate(slot.timestamp) }} - {{ slot.event.name }}
+                    </div>
+                </app-content>
+
                 <app-title [title]="'Followers (' + followers.total + ')'" [tabs]="followerTabs"
                            (onTabClick)="onFollowerTabClick($event)"></app-title>
                 <app-content>

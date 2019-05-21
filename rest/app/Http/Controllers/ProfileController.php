@@ -23,6 +23,7 @@ use App\Utils\Condition;
 use App\Utils\Iterables;
 use App\Views\VisitorMessageReportView;
 use Illuminate\Http\Request;
+use App\EloquentModels\Staff\Timetable;
 
 class ProfileController extends Controller {
 
@@ -147,7 +148,8 @@ class ProfileController extends Controller {
                 'like' => isset($profile->profile->like) ? UserHelper::getSlimUser($profile->profile->like) : null,
                 'hate' => isset($profile->profile->hate) ? UserHelper::getSlimUser($profile->profile->hate) : null
             ],
-            'accolades' => $this->getAccolades($profile->userId)
+            'accolades' => $this->getAccolades($profile->userId),
+            'slots' => $this->getSlots($profile->userId)
         ]);
     }
 
@@ -259,6 +261,20 @@ class ProfileController extends Controller {
         }
 
         return Follower::where('userId', $user->userId)->where('targetId', $profile->userId)->isApproved()->count('followerId') === 0;
+    }
+
+    /**
+     * @param $userId - ID of the user that own the profile
+     *
+     * @return array
+     */
+    private function getSlots($userId) {
+        $eventsSlots = Timetable::where('userId', $userId)->isActive()->events()->get();
+        $radioSlots = Timetable::where('userId', $userId)->isActive()->radio()->get();
+        return [
+            'events' => $eventsSlots,
+            'radio' => $radioSlots
+        ];
     }
 
     /**

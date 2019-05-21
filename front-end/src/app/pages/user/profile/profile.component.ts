@@ -6,7 +6,8 @@ import {
     ProfileModel,
     ProfileRelations,
     ProfileStats,
-    ProfileVisitorMessage
+    ProfileVisitorMessage,
+    ProfileSlots
 } from './profile.model';
 import { Page } from 'shared/page/page.model';
 import { ActivatedRoute } from '@angular/router';
@@ -22,6 +23,7 @@ import { Activity } from 'core/services/continues-information/continues-informat
 import { EditorAction } from 'shared/components/editor/editor.model';
 import { EditorComponent } from 'shared/components/editor/editor.component';
 import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
+import { TimeHelper } from 'shared/helpers/time.helper';
 
 @Component({
     selector: 'app-user-profile',
@@ -87,6 +89,12 @@ export class ProfileComponent extends Page implements OnDestroy {
             .filter(item => item.visitorMessageId !== visitorMessage.visitorMessageId);
     }
 
+    timestampToDate (timestamp: number): string {
+        const date = new Date(timestamp * 1000);
+        return TimeHelper.getDay(date.getDay()).label + " @ " + date.getHours() + ":00";
+    }
+
+
     get accolades (): Array<ProfileAccolade> {
         return this._data.accolades;
     }
@@ -123,6 +131,10 @@ export class ProfileComponent extends Page implements OnDestroy {
         return this._data.stats;
     }
 
+    get slots (): ProfileSlots {
+        return this._data.slots;
+    }
+
     get youtube (): SafeResourceUrl {
         return this._data.youtube ? this._sanitizer.bypassSecurityTrustResourceUrl(this._data.youtube) : null;
     }
@@ -153,6 +165,7 @@ export class ProfileComponent extends Page implements OnDestroy {
         this._data = data.data;
         this.setFollowerTabs();
 
+        this.slots.events
         this.pagination = new PaginationModel({
             total: data.data.visitorMessages.total,
             page: data.data.visitorMessages.page,
