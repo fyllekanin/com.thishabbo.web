@@ -16,6 +16,7 @@ class CreateUserSubscriptionsTable extends Migration {
             $table->bigInteger('subscriptionId');
             $table->bigInteger('userId');
             $table->bigInteger('expiresAt');
+            $table->integer('isActive')->default(1);
             $table->bigInteger('createdAt');
             $table->bigInteger('updatedAt');
         });
@@ -23,7 +24,7 @@ class CreateUserSubscriptionsTable extends Migration {
 
     /**
      * Reverse the migrations.
-     *
+     *git
      * @return void
      */
     public function down() {
