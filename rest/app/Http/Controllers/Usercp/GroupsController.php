@@ -85,7 +85,7 @@ class GroupsController extends Controller {
         }
 
         return response()->json([
-            'displayGroupId' => Iterables::find($groups, function ($group) use ($user) {
+            'displayGroup' => Iterables::find($groups, function ($group) use ($user) {
                 return $group->groupId == $user->displayGroupId;
             }),
             'groups' => $groups
