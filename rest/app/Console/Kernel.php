@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel {
      * @return void
      */
     protected function schedule (Schedule $schedule) {
-        $schedule->command('queue:clearsubs')->twiceDaily();
+        $schedule->call(new ClearSubscriptions)->twiceDaily();
     }
 
     /**
@@ -49,14 +49,11 @@ class RadioWorker extends Command {
     }
 }
 
-class ClearSubscriptions extends Command {
-    protected $signature = 'queue:clearsubs';
+class ClearSubscriptions {
 
-    public function handle()
+    public function __invoke()
     {
         $time = time();
-        Subscription::active()->where('expiresAt', '<', $time)->update([
-            'isActive' => 0
-        ]);
+        Subscription::active()->where('expiresAt', '<', $time)->delete();
     }
 }
