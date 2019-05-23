@@ -1462,4 +1462,25 @@ class Action {
         'data' => [],
         'log' => 'log_admin'
     ];
+
+    const CREATED_USER_SUBSCRIPTION = [
+        'id' => 171,
+        'description' => 'Created user subscription',
+        'data' => [],
+        'log' => 'log_admin'
+    ];
+
+    const UPDATED_USER_SUBSCRIPTION = [
+        'id' => 172,
+        'description' => 'Updated user subscription',
+        'data' => [],
+        'log' => 'log_admin'
+    ];
+
+    const DELETED_USER_SUBSCRIPTION = [
+        'id' => 173,
+        'description' => 'Deleted user subscription',
+        'data' => [],
+        'log' => 'log_admin'
+    ];
 }

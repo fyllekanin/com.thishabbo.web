@@ -31,6 +31,9 @@ import { EssentialsService } from './services/essentials.service';
 import { AccoladesComponent } from './accolades/accolades.component';
 import { AccoladeComponent } from './accolades/accolade/accolade.component';
 import { AccoladesService } from './services/accolades.service';
+import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
+import { SubscriptionsService } from './services/subscriptions.service';
+import { SubscriptionComponent } from './subscriptions/subscription/subscription.component';
 
 @NgModule({
     imports: [
@@ -58,7 +61,9 @@ import { AccoladesService } from './services/accolades.service';
         VoucherCodeComponent,
         EssentialsComponent,
         AccoladesComponent,
-        AccoladeComponent
+        AccoladeComponent,
+        SubscriptionsComponent,
+        SubscriptionComponent
     ],
     providers: [
         UsersListService,
@@ -68,12 +73,14 @@ import { AccoladesService } from './services/accolades.service';
         ThcRequestsService,
         VoucherCodesResolver,
         EssentialsService,
-        AccoladesService
+        AccoladesService,
+        SubscriptionsService
     ],
     entryComponents: [
         MergeUsersComponent,
         VoucherCodeComponent,
-        AccoladeComponent
+        AccoladeComponent,
+        SubscriptionComponent
     ],
     exports: [
         RouterModule

@@ -103,9 +103,17 @@ Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions-
 });
 
 Route::group(['middleware' => PermissionHelper::getAdminMiddleware([$permissions->canEditUserBasic, $permissions->canEditUserAdvanced,
-    $permissions->canBanUser, $permissions->canRemoveEssentials, $permissions->canDoInfractions])], function () use ($permissions) {
+    $permissions->canBanUser, $permissions->canRemoveEssentials, $permissions->canDoInfractions, $permissions->canManageSubscriptions])], function () use ($permissions) {
 
     Route::get('/users/list/page/{page}', 'Admin\User\UserController@getUsers');
+
+    Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canManageSubscriptions)], function () {
+        Route::get('/users/{userId}/subscriptions', 'Admin\User\UserSubscriptionsController@getUserSubscriptions');
+
+        Route::post('/users/{userId}/subscriptions', 'Admin\User\UserSubscriptionsController@createUserSubscription');
+        Route::put('/users/subscriptions/{userSubscriptionId}', 'Admin\User\UserSubscriptionsController@updateUserSubscription');
+        Route::delete('/users/subscriptions/{userSubscriptionId}', 'Admin\User\UserSubscriptionsController@deleteUserSubscription');
+    });
 
     Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canRemoveEssentials)], function () {
         Route::get('/users/{userId}/essentials', 'Admin\User\UserEssentialsController@getUser');
@@ -223,7 +231,9 @@ Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions-
 
 Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canManageShop)], function () {
     Route::post('/shop/items/page/{page}', 'Admin\Shop\ItemsController@getItems');
+});
 
+Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canManageSubscriptions)], function () {
     Route::get('/shop/subscriptions/page/{page}', 'Admin\Shop\SubscriptionsController@getSubscriptions');
     Route::get('/shop/subscriptions/{subscriptionId}', 'Admin\Shop\SubscriptionsController@getSubscription');
     Route::post('/shop/subscriptions', 'Admin\Shop\SubscriptionsController@createSubscription');

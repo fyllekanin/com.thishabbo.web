@@ -7,7 +7,7 @@ return [
         'canManageForumPermissions' => 4,
         'canManageGroups' => 8,
         'canEditWebsiteSettings' => 16,
-        'canEditDefaultPermissions' => 32,
+        'canManageSubscriptions' => 32,
         'canApprovePublicGroups' => 64,
         'canManageBBcodes' => 128,
         'canManagePrefixes' => 256,

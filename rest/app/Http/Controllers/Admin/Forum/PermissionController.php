@@ -89,7 +89,7 @@ class PermissionController extends Controller {
         $permissions = ForumPermission::where('categoryId', $categoryId)->where('groupId', $groupId)->first();
 
         Condition::precondition(!$group, 404, 'Group does not exist');
-        Condition::precondition($groupId == 0 && !PermissionHelper::haveAdminPermission($user->userId, ConfigHelper::getAdminConfig()->canEditDefaultPermissions),
+        Condition::precondition($groupId == 0 && !PermissionHelper::haveAdminPermission($user->userId, ConfigHelper::getAdminConfig()->canManageForumPermissions),
             400, 'You do not have permission to edit default forum permissions');
 
         Condition::precondition(!$category, 404, 'Either the category or group do not exist');
