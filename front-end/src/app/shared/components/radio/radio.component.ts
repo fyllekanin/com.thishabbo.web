@@ -45,11 +45,11 @@ export class RadioComponent {
     }
 
     get radioOffline (): boolean {
-        return this._stats && this._stats.nickname ? false : true;
+        return !this._stats || !this._stats.nickname;
     }
 
-    get noEvent(): boolean {
-        return this._eventStats && this._eventStats.nickname ? false : true;
+    get noEvent (): boolean {
+        return !this._eventStats || !this._eventStats.nickname;
 
     }
 
@@ -98,6 +98,6 @@ export class RadioComponent {
     }
 
     get eventsLink (): string {
-        return this._eventStats.link ? this._eventStats.link : '';
+        return this._eventStats && this._eventStats.link ? this._eventStats.link : '';
     }
 }

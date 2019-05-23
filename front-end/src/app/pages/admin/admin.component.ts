@@ -68,7 +68,7 @@ export class AdminComponent extends Page implements OnDestroy, OnInit {
                     new SideMenuItem({
                         title: 'Subscriptions',
                         link: '/admin/shop/subscriptions/page/1',
-                        isApplicable: this._authService.adminPermissions.canManageShop
+                        isApplicable: this._authService.adminPermissions.canManageSubscriptions
                     }),
                     new SideMenuItem({
                         title: 'Items',
@@ -217,6 +217,7 @@ export class AdminComponent extends Page implements OnDestroy, OnInit {
             this._authService.adminPermissions.canEditUserAdvanced ||
             this._authService.adminPermissions.canBanUser ||
             this._authService.adminPermissions.canRemoveEssentials ||
-            this._authService.adminPermissions.canDoInfractions;
+            this._authService.adminPermissions.canDoInfractions ||
+            this._authService.adminPermissions.canManageSubscriptions;
     }
 }

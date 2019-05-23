@@ -149,8 +149,6 @@ export class AdminPermissions {
     @primitive()
     canManageForumPermissions: boolean;
     @primitive()
-    canEditDefaultPermissions: boolean;
-    @primitive()
     canManageGroups: boolean;
     @primitive()
     canEditWebsiteSettings: boolean;
@@ -200,6 +198,8 @@ export class AdminPermissions {
     canModerateVisitorMessage: boolean;
     @primitive()
     canReadServerLogs: boolean;
+    @primitive()
+    canManageSubscriptions: boolean;
 
     constructor (source?: Partial<AdminPermissions>) {
         ClassHelper.assign(this, source);

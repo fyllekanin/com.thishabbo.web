@@ -94,6 +94,8 @@ export class UsersListComponent extends Page implements OnDestroy {
             case UserListAction.MANAGE_ESSENTIALS:
                 this._router.navigateByUrl(`/admin/users/${action.rowId}/essentials`);
                 break;
+            case UserListAction.MANAGE_SUBSCRIPTIONS:
+                this._router.navigateByUrl(`/admin/users/${action.rowId}/subscriptions`);
         }
     }
 
@@ -148,6 +150,11 @@ export class UsersListComponent extends Page implements OnDestroy {
                 title: 'Edit User Groups',
                 value: UserListAction.EDIT_USER_GROUPS,
                 condition: adminPermissions.canEditUserAdvanced
+            },
+            {
+                title: 'Manage Subscriptions',
+                value: UserListAction.MANAGE_SUBSCRIPTIONS,
+                condition: adminPermissions.canManageSubscriptions
             },
             {
                 title: 'Edit Accolades',
