@@ -71,12 +71,12 @@ export class GroupsListComponent extends Page implements OnDestroy {
                 this._router.navigateByUrl(`/admin/groups/${action.rowId}/forum-permissions`);
                 break;
             case GroupListActions.DELETE_GROUP:
-                const grp = this._groupsListPage.groups.find(group => group.groupId.toString() === action.rowId);
-                this._dialogService.openConfirmDialog(
-                    `Deleting group`,
-                    `Are you sure that you want to delete the group ${grp.name}?`,
-                    this.onDelete.bind(this, action.rowId)
-                );
+                const group = this._groupsListPage.groups.find(item => item.groupId.toString() === action.rowId);
+                this._dialogService.confirm({
+                    title: `Deleting group`,
+                    content: `Are you sure that you want to delete the group ${group.name}?`,
+                    callback: this.onDelete.bind(this, action.rowId)
+                });
                 break;
         }
     }

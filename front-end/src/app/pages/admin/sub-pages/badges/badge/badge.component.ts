@@ -8,7 +8,7 @@ import { NotificationService } from 'core/services/notification/notification.ser
 import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { Page } from 'shared/page/page.model';
-import { SITECP_BREADCRUMB_ITEM, BADGE_LIST_BREADCRUMB_ITEM } from '../../../admin.constants';
+import { BADGE_LIST_BREADCRUMB_ITEM, SITECP_BREADCRUMB_ITEM } from '../../../admin.constants';
 import { Badge, BadgeActions } from '../badges.model';
 
 @Component({
@@ -21,7 +21,7 @@ export class BadgeComponent extends Page implements OnDestroy {
     @ViewChild('file') fileInput;
     tabs: Array<TitleTab> = [];
 
-    constructor(
+    constructor (
         private _dialogService: DialogService,
         private _notificationService: NotificationService,
         private _httpClient: HttpClient,
@@ -41,7 +41,7 @@ export class BadgeComponent extends Page implements OnDestroy {
         });
     }
 
-    onTabClick(value: number): void {
+    onTabClick (value: number): void {
         switch (value) {
             case BadgeActions.SAVE:
                 this.save();
@@ -55,11 +55,11 @@ export class BadgeComponent extends Page implements OnDestroy {
         }
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    save(): void {
+    save (): void {
         const form = new FormData();
         const file = this.fileInput.nativeElement.files ? this.fileInput.nativeElement.files[0] : null;
         form.append('badgeImage', file);
@@ -83,33 +83,33 @@ export class BadgeComponent extends Page implements OnDestroy {
         }
     }
 
-    delete(): void {
-        this._dialogService.openConfirmDialog(
-            `Deleting badge`,
-            `Are you sure that you want to delete the badge ${this._badge.name}?`,
-            this.onDelete.bind(this)
-        );
+    delete (): void {
+        this._dialogService.confirm({
+            title: `Deleting badge`,
+            content: `Are you sure that you want to delete the badge ${this._badge.name}?`,
+            callback: this.onDelete.bind(this)
+        });
     }
 
-    cancel(): void {
+    cancel (): void {
         this._router.navigateByUrl('/admin/badges/page/1');
     }
 
-    get title(): string {
+    get title (): string {
         return this._badge.createdAt ?
             `Editing Badge: ${this._badge.name}` :
             `Creating Badge: ${this._badge.name}`;
     }
 
-    get badge(): Badge {
+    get badge (): Badge {
         return this._badge;
     }
 
-    get badgesImage(): string {
+    get badgesImage (): string {
         return `${this._badge.badgeId}.gif?${this._badge.updatedAt}`;
     }
 
-    private onDelete(): void {
+    private onDelete (): void {
         this._httpClient.delete(`rest/api/admin/badges/${this._badge.badgeId}`)
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
@@ -122,13 +122,13 @@ export class BadgeComponent extends Page implements OnDestroy {
             });
     }
 
-    private onPage(data: { data: Badge }): void {
+    private onPage (data: { data: Badge }): void {
         this._badge = data.data;
 
         const tabs = [
-            { title: 'Cancel', value: BadgeActions.CANCEL, condition: true },
-            { title: 'Delete', value: BadgeActions.DELETE, condition: this._badge.createdAt },
-            { title: 'Save', value: BadgeActions.SAVE, condition: true }
+            {title: 'Cancel', value: BadgeActions.CANCEL, condition: true},
+            {title: 'Delete', value: BadgeActions.DELETE, condition: this._badge.createdAt},
+            {title: 'Save', value: BadgeActions.SAVE, condition: true}
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));

@@ -112,11 +112,11 @@ export class PermShowsListComponent extends Page implements OnDestroy {
     }
 
     private delete (rowId: number): void {
-        this._dialogService.openConfirmDialog(
-            `Deleting permanent show`,
-            `Are you sure that you wanna delete this? You can just pause it this week by unbooking it`,
-            this.onDelete.bind(this, rowId)
-        );
+        this._dialogService.confirm({
+            title: `Deleting permanent show`,
+            content: `Are you sure that you wanna delete this? You can just pause it this week by unbooking it`,
+            callback: this.onDelete.bind(this, rowId)
+        });
     }
 
     private onDelete (permShowId: number): void {

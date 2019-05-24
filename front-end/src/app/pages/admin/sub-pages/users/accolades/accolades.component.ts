@@ -82,15 +82,16 @@ export class AccoladesComponent extends Page implements OnDestroy {
                 });
                 break;
             case AccoladeActions.DELETE:
-                this._dialogService.openConfirmDialog(
-                    'Are you sure?',
-                    'Are you sure you wanna delete this accolade?',
-                    () => {
+                this._dialogService.confirm({
+                    title: 'Are you sure?',
+                    content: 'Are you sure you wanna delete this accolade?',
+                    callback: () => {
                         this._service.onDeleteAccolade(this._data, Number(action.rowId)).subscribe(accoladeId => {
                             this._data.items = this._data.items.filter(item => item.accoladeId !== accoladeId);
                             this.createOrUpdateTable();
                         });
-                    });
+                    }
+                });
                 break;
         }
     }

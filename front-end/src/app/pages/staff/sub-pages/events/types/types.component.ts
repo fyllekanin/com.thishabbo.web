@@ -30,17 +30,17 @@ import { QueryParameters } from 'core/services/http/http.model';
     templateUrl: 'types.component.html'
 })
 export class TypesComponent extends Page implements OnDestroy {
-    private _page: EventTypesPage;
+    private _data: EventTypesPage;
     private _filterTimer;
     private _filter: QueryParameters;
 
     tableConfig: TableConfig;
     pagination: PaginationModel;
     tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Create New' })
+        new TitleTab({title: 'Create New'})
     ];
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService,
         private _dialogService: DialogService,
@@ -60,31 +60,31 @@ export class TypesComponent extends Page implements OnDestroy {
         });
     }
 
-    onFilter(filter: QueryParameters): void {
+    onFilter (filter: QueryParameters): void {
         clearTimeout(this._filterTimer);
         this._filter = filter;
 
         this._filterTimer = setTimeout(() => {
             this._httpService.get(`staff/events/types/page/1`, filter)
                 .subscribe(res => {
-                    this.onData({ data: new EventTypesPage(res) });
+                    this.onData({data: new EventTypesPage(res)});
                 });
         }, 200);
     }
 
-    onTabClick(): void {
+    onTabClick (): void {
         this._dialogService.openDialog({
             title: 'Creating Event',
             buttons: [
                 new DialogCloseButton('Close'),
-                new DialogButton({ title: 'Create', callback: this.createEvent.bind(this) })
+                new DialogButton({title: 'Create', callback: this.createEvent.bind(this)})
             ],
             component: this._componentFactory.resolveComponentFactory(TypeComponent),
             data: new EventType()
         });
     }
 
-    onAction(action: Action): void {
+    onAction (action: Action): void {
         switch (action.value) {
             case EventTypesListActions.EDIT_TYPE:
                 this.onEdit(Number(action.rowId));
@@ -95,11 +95,11 @@ export class TypesComponent extends Page implements OnDestroy {
         }
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    private onEdit(eventId: number): void {
+    private onEdit (eventId: number): void {
         this._dialogService.openDialog({
             title: 'Creating Event',
             buttons: [
@@ -110,15 +110,15 @@ export class TypesComponent extends Page implements OnDestroy {
                 })
             ],
             component: this._componentFactory.resolveComponentFactory(TypeComponent),
-            data: this._page.events.find(event => event.eventId === eventId)
+            data: this._data.events.find(event => event.eventId === eventId)
         });
     }
 
-    private onDelete(eventId: number): void {
-        this._dialogService.openConfirmDialog(
-            `Deleting Event`,
-            `Are you sure you wanna delete this event?`,
-            () => {
+    private onDelete (eventId: number): void {
+        this._dialogService.confirm({
+            title: `Deleting Event`,
+            content: `Are you sure you wanna delete this event?`,
+            callback: () => {
                 this._httpService.delete(`staff/events/types/${eventId}`)
                     .subscribe(() => {
                         this._notificationService.sendNotification(new NotificationMessage({
@@ -126,53 +126,53 @@ export class TypesComponent extends Page implements OnDestroy {
                             message: 'Event deleted!'
                         }));
                         this._dialogService.closeDialog();
-                        this._page.events = this._page.events.filter(event => event.eventId !== eventId);
+                        this._data.events = this._data.events.filter(event => event.eventId !== eventId);
                         this.createOrUpdateTable();
                     }, this._notificationService.failureNotification.bind(this._notificationService));
             }
-        );
+        });
     }
 
-    private saveEvent(event: EventType): void {
-        this._httpService.put(`staff/events/types/${event.eventId}`, { event: event })
+    private saveEvent (event: EventType): void {
+        this._httpService.put(`staff/events/types/${event.eventId}`, {event: event})
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Event saved!'
                 }));
-                this._page.events = this._page.events.filter(evt => evt.eventId !== event.eventId);
-                this._page.events.push(event);
+                this._data.events = this._data.events.filter(evt => evt.eventId !== event.eventId);
+                this._data.events.push(event);
                 this._dialogService.closeDialog();
                 this.createOrUpdateTable();
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private createEvent(event: EventType): void {
-        this._httpService.post('staff/events/types', { event: event })
+    private createEvent (event: EventType): void {
+        this._httpService.post('staff/events/types', {event: event})
             .subscribe(res => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Event created!'
                 }));
-                this._page.events.push(new EventType(res));
+                this._data.events.push(new EventType(res));
                 this._dialogService.closeDialog();
                 this.createOrUpdateTable();
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private onData(data: { data: EventTypesPage }): void {
-        this._page = data.data;
+    private onData (data: { data: EventTypesPage }): void {
+        this._data = data.data;
         this.createOrUpdateTable();
 
         this.pagination = new PaginationModel({
-            page: this._page.page,
-            total: this._page.total,
+            page: this._data.page,
+            total: this._data.total,
             url: `/staff/events/types/page/:page`,
             params: this._filter
         });
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -189,24 +189,24 @@ export class TypesComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableRows(): Array<TableRow> {
-        return this._page.events.map(event => new TableRow({
+    private getTableRows (): Array<TableRow> {
+        return this._data.events.map(event => new TableRow({
             id: String(event.eventId),
             cells: [
-                new TableCell({ title: event.name, value: 'Name' }),
-                new TableCell({ title: TimeHelper.getTime(event.createdAt), value: 'Created At' })
+                new TableCell({title: event.name, value: 'Name'}),
+                new TableCell({title: TimeHelper.getTime(event.createdAt), value: 'Created At'})
             ],
             actions: [
-                new TableAction({ title: 'Edit', value: EventTypesListActions.EDIT_TYPE }),
-                new TableAction({ title: 'Delete', value: EventTypesListActions.DELETE_TYPE })
+                new TableAction({title: 'Edit', value: EventTypesListActions.EDIT_TYPE}),
+                new TableAction({title: 'Delete', value: EventTypesListActions.DELETE_TYPE})
             ]
         }));
     }
 
-    private getTableHeaders(): Array<TableHeader> {
+    private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'Name' }),
-            new TableHeader({ title: 'Created At' })
+            new TableHeader({title: 'Name'}),
+            new TableHeader({title: 'Created At'})
         ];
     }
 }

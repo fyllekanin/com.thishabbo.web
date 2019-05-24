@@ -31,16 +31,16 @@ export class BadgesListComponent extends Page implements OnDestroy {
     private _filterTimer: NodeJS.Timer = null;
     private _filter: QueryParameters;
     private _actions: Array<TableAction> = [
-        new TableAction({ title: 'Edit Badge', value: BadgeListActions.EDIT_BADGE }),
-        new TableAction({ title: 'Manage Users', value: BadgeListActions.MANAGE_USERS }),
-        new TableAction({ title: 'Delete Badge', value: BadgeListActions.DELETE_BADGE })
+        new TableAction({title: 'Edit Badge', value: BadgeListActions.EDIT_BADGE}),
+        new TableAction({title: 'Manage Users', value: BadgeListActions.MANAGE_USERS}),
+        new TableAction({title: 'Delete Badge', value: BadgeListActions.DELETE_BADGE})
     ];
 
-    tabs: Array<TitleTab> = [new TitleTab({ title: 'New Badge', link: '/admin/badges/new' })];
+    tabs: Array<TitleTab> = [new TitleTab({title: 'New Badge', link: '/admin/badges/new'})];
     tableConfig: TableConfig;
     pagination: PaginationModel;
 
-    constructor(
+    constructor (
         private _notificationService: NotificationService,
         private _dialogService: DialogService,
         private _router: Router,
@@ -57,22 +57,22 @@ export class BadgesListComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onAction(action: Action): void {
+    onAction (action: Action): void {
         switch (action.value) {
             case BadgeListActions.EDIT_BADGE:
                 this._router.navigateByUrl(`/admin/badges/${action.rowId}`);
                 break;
             case BadgeListActions.DELETE_BADGE:
-                const bdg = this._badgesListPage.badges.find(badge => badge.badgeId.toString() === action.rowId);
-                this._dialogService.openConfirmDialog(
-                    `Delete badge`,
-                    `Are you sure that you want to delete the badge ${bdg.name}?`,
-                    this.onDelete.bind(this, action.rowId)
-                );
+                const badge = this._badgesListPage.badges.find(item => item.badgeId.toString() === action.rowId);
+                this._dialogService.confirm({
+                    title: `Delete badge`,
+                    content: `Are you sure that you want to delete the badge ${badge.name}?`,
+                    callback: this.onDelete.bind(this, action.rowId)
+                });
                 break;
             case BadgeListActions.MANAGE_USERS:
                 this._router.navigateByUrl(`/admin/badges/${action.rowId}/users`);
@@ -80,19 +80,19 @@ export class BadgesListComponent extends Page implements OnDestroy {
         }
     }
 
-    onFilter(filter: QueryParameters): void {
+    onFilter (filter: QueryParameters): void {
         clearTimeout(this._filterTimer);
         this._filter = filter;
 
         this._filterTimer = setTimeout(() => {
             this._httpService.get(`admin/badges/list/page/1`, filter)
                 .subscribe(data => {
-                    this.onPage({ data: new BadgesListPage(data) });
+                    this.onPage({data: new BadgesListPage(data)});
                 });
         }, 200);
     }
 
-    private onDelete(badgeId: number): void {
+    private onDelete (badgeId: number): void {
         this._httpService.delete(`admin/badges/${badgeId}`)
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
@@ -106,7 +106,7 @@ export class BadgesListComponent extends Page implements OnDestroy {
             });
     }
 
-    private onPage(data: { data: BadgesListPage }): void {
+    private onPage (data: { data: BadgesListPage }): void {
         this._badgesListPage = data.data;
         this.createOrUpdateTable();
 
@@ -118,7 +118,7 @@ export class BadgesListComponent extends Page implements OnDestroy {
         });
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -135,7 +135,7 @@ export class BadgesListComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         return this._badgesListPage.badges.map(badge => {
             return new TableRow({
                 id: badge.badgeId,
@@ -143,21 +143,21 @@ export class BadgesListComponent extends Page implements OnDestroy {
                     new TableCell({
                         title: `<img src="/rest/resources/images/badges/${badge.badgeId}.gif?${badge.updatedAt}" />`
                     }),
-                    new TableCell({ title: badge.name }),
-                    new TableCell({ title: badge.description }),
-                    new TableCell({ title: this.timeAgo(badge.updatedAt) })
+                    new TableCell({title: badge.name}),
+                    new TableCell({title: badge.description}),
+                    new TableCell({title: this.timeAgo(badge.updatedAt)})
                 ],
                 actions: this._actions
             });
         });
     }
 
-    private getTableHeaders(): Array<TableHeader> {
+    private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'Icon' }),
-            new TableHeader({ title: 'Name' }),
-            new TableHeader({ title: 'Description' }),
-            new TableHeader({ title: 'Last modified' })
+            new TableHeader({title: 'Icon'}),
+            new TableHeader({title: 'Name'}),
+            new TableHeader({title: 'Description'}),
+            new TableHeader({title: 'Last modified'})
         ];
     }
 }

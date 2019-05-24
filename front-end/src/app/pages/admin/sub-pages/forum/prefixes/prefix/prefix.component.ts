@@ -19,7 +19,7 @@ export class PrefixComponent extends Page implements OnDestroy {
 
     tabs: Array<TitleTab> = [];
 
-    constructor(
+    constructor (
         private _dialogService: DialogService,
         private _notificationService: NotificationService,
         private _httpService: HttpService,
@@ -31,47 +31,47 @@ export class PrefixComponent extends Page implements OnDestroy {
         this.addSubscription(activatedRoute.data, this.onData.bind(this));
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onTabClick(value: number): void {
+    onTabClick (value: number): void {
         switch (value) {
             case PrefixActions.CANCEL:
                 this._router.navigateByUrl('/admin/forum/prefixes');
                 break;
             case PrefixActions.SAVE:
                 if (this._prefix.createdAt) {
-                    this._httpService.put(`admin/prefixes/${this._prefix.prefixId}`, { prefix: this._prefix })
+                    this._httpService.put(`admin/prefixes/${this._prefix.prefixId}`, {prefix: this._prefix})
                         .subscribe(res => {
                             this._notificationService.sendNotification(new NotificationMessage({
                                 title: 'Success',
                                 message: 'Prefix updated'
                             }));
-                            this.onData({ data: new Prefix(res) });
+                            this.onData({data: new Prefix(res)});
                         }, this._notificationService.failureNotification.bind(this._notificationService));
                 } else {
-                    this._httpService.post('admin/prefixes', { prefix: this._prefix })
+                    this._httpService.post('admin/prefixes', {prefix: this._prefix})
                         .subscribe(res => {
                             this._notificationService.sendNotification(new NotificationMessage({
                                 title: 'Success',
                                 message: 'Prefix created'
                             }));
-                            this.onData({ data: new Prefix(res) });
+                            this.onData({data: new Prefix(res)});
                         }, this._notificationService.failureNotification.bind(this._notificationService));
-                    }
+                }
                 break;
             case PrefixActions.DELETE:
-                this._dialogService.openConfirmDialog(
-                    `Delete Prefix`,
-                    `Are you sure that you want to delete the prefix?`,
-                    this.onDelete.bind(this)
-                );
+                this._dialogService.confirm({
+                    title: `Delete Prefix`,
+                    content: `Are you sure that you want to delete the prefix?`,
+                    callback: this.onDelete.bind(this)
+                });
                 break;
         }
     }
 
-    toggle(categoryId: number): void {
+    toggle (categoryId: number): void {
         if (this.isSelected(categoryId)) {
             this._prefix.categoryIds = this._prefix.categoryIds.filter(id => id !== categoryId);
         } else {
@@ -79,29 +79,29 @@ export class PrefixComponent extends Page implements OnDestroy {
         }
     }
 
-    isSelected(categoryId: number): boolean {
+    isSelected (categoryId: number): boolean {
         return this._prefix.categoryIds.indexOf(categoryId) > -1;
     }
 
-    get categories(): Array<PrefixCategory> {
+    get categories (): Array<PrefixCategory> {
         return this._categories;
     }
 
-    get title(): string {
+    get title (): string {
         return this._prefix.createdAt ?
             `Editing Prefix: ${this._prefix.text}` :
             `Creating Prefix: ${this._prefix.text}`;
     }
 
-    get prefix(): Prefix {
+    get prefix (): Prefix {
         return this._prefix;
     }
 
-    get preview(): string {
+    get preview (): string {
         return `<span style="${this._prefix.style}">${this._prefix.text}</span>`;
     }
 
-    private onDelete(): void {
+    private onDelete (): void {
         this._httpService.delete(`admin/prefixes/${this._prefix.prefixId}`)
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
@@ -113,7 +113,7 @@ export class PrefixComponent extends Page implements OnDestroy {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private flat(array: Array<PrefixCategory>, prefix: string = '', shouldAppend: boolean = true) {
+    private flat (array: Array<PrefixCategory>, prefix: string = '', shouldAppend: boolean = true) {
         let result = [];
         array.forEach((item: PrefixCategory) => {
             item.title = `${prefix} ${item.title}`;
@@ -125,15 +125,15 @@ export class PrefixComponent extends Page implements OnDestroy {
         return result;
     }
 
-    private onData(data: { data: Prefix }): void {
+    private onData (data: { data: Prefix }): void {
         this._prefix = data.data;
-        const categories = [new PrefixCategory({ title: 'All', categoryId: -1 })];
+        const categories = [new PrefixCategory({title: 'All', categoryId: -1})];
         this._categories = categories.concat(this.flat(this._prefix.categories, '--'));
 
         const tabs = [
-            { title: 'Save', value: PrefixActions.SAVE, condition: true },
-            { title: 'Delete', value: PrefixActions.DELETE, condition: this._prefix.createdAt },
-            { title: 'Cancel', value: PrefixActions.CANCEL, condition: true }
+            {title: 'Save', value: PrefixActions.SAVE, condition: true},
+            {title: 'Delete', value: PrefixActions.DELETE, condition: this._prefix.createdAt},
+            {title: 'Cancel', value: PrefixActions.CANCEL, condition: true}
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));

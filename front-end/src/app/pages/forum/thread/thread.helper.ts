@@ -85,10 +85,11 @@ export class ThreadActionExecutor {
                 this.changePostOwner();
                 break;
             case ThreadActions.MERGE_POSTS:
-                this._dialogService.openConfirmDialog(
-                    'Are you sure?',
-                    'Are you sure you wanna merge these posts?',
-                    this.onMergePosts.bind(this));
+                this._dialogService.confirm({
+                    title: 'Are you sure?',
+                    content: 'Are you sure you wanna merge these posts?',
+                    callback: this.onMergePosts.bind(this)
+                });
                 break;
             case ThreadActions.MOVE_THREAD:
                 this.onMoveThread();
@@ -249,10 +250,10 @@ export class ThreadActionExecutor {
     }
 
     private onDeletePoll (): void {
-        this._dialogService.openConfirmDialog(
-            `Delete poll`,
-            `Are you sure you wanna delete the poll?`,
-            () => {
+        this._dialogService.confirm({
+            title: `Delete poll`,
+            content: `Are you sure you wanna delete the poll?`,
+            callback: () => {
                 this._httpService.delete(`forum/moderation/thread/poll/delete/${this._threadPage.threadId}`)
                     .subscribe(() => {
                         this._notificationService.sendInfoNotification('Poll is deleted');
@@ -261,7 +262,7 @@ export class ThreadActionExecutor {
                         this._buildModerationTools();
                     }, this._notificationService.failureNotification.bind(this._notificationService));
             }
-        );
+        });
     }
 
     private onStickyThread (): void {
@@ -329,10 +330,10 @@ export class ThreadActionExecutor {
     }
 
     private onDeleteThread (): void {
-        this._dialogService.openConfirmDialog(
-            `Delete thread`,
-            `Are you sure you wanna delete the thread: ${this._threadPage.title}?`,
-            () => {
+        this._dialogService.confirm({
+            title: `Delete thread`,
+            content: `Are you sure you wanna delete the thread: ${this._threadPage.title}?`,
+            callback: () => {
                 this._httpService.delete(`forum/moderation/thread/delete/${this._threadPage.threadId}`)
                     .subscribe(() => {
                         this._notificationService.sendInfoNotification(`${this._threadPage.title} is now deleted!`);
@@ -340,7 +341,7 @@ export class ThreadActionExecutor {
                         this._router.navigateByUrl(`/forum/category/${this._threadPage.categoryId}/page/1`);
                     });
             }
-        );
+        });
     }
 }
 

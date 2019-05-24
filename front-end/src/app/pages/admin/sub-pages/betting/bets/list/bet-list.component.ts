@@ -37,10 +37,10 @@ export class BetListComponent extends Page implements OnDestroy {
     tableConfig: TableConfig;
     pagination: PaginationModel;
     tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Create Bet', link: '/admin/betting/bets/new' })
+        new TitleTab({title: 'Create Bet', link: '/admin/betting/bets/new'})
     ];
 
-    constructor(
+    constructor (
         private _componentFactory: ComponentFactoryResolver,
         private _notificationService: NotificationService,
         private _dialogService: DialogService,
@@ -60,23 +60,23 @@ export class BetListComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onFilter(filter: QueryParameters): void {
+    onFilter (filter: QueryParameters): void {
         clearTimeout(this._filterTimer);
         this._filter = filter;
 
         this._filterTimer = setTimeout(() => {
             this._httpService.get(`admin/betting/bets/1`, filter)
                 .subscribe(res => {
-                    this.onData({ data: new BetsListPage(res) });
+                    this.onData({data: new BetsListPage(res)});
                 });
         }, 200);
     }
 
-    onAction(action: Action): void {
+    onAction (action: Action): void {
         const row = this.tableConfig.rows.find(item => item.id === action.rowId);
         const model = this._data.bets.find(bet => bet.betId === Number(row.id));
         switch (action.value) {
@@ -87,11 +87,11 @@ export class BetListComponent extends Page implements OnDestroy {
                 this._router.navigateByUrl(`/admin/betting/bets/${row.id}`);
                 break;
             case BetActions.DELETE_BET:
-                this._dialogService.openConfirmDialog(
-                    `Deleting ${model.name}`,
-                    `Are you sure you wanna delete ${model.name}?`,
-                    this.doDelete.bind(this, model)
-                );
+                this._dialogService.confirm({
+                    title: `Deleting ${model.name}`,
+                    content: `Are you sure you wanna delete ${model.name}?`,
+                    callback: this.doDelete.bind(this, model)
+                });
                 break;
             case BetActions.SUSPEND_BET:
                 this._httpService.put(`admin/betting/bet/${action.rowId}/suspend`)
@@ -120,19 +120,19 @@ export class BetListComponent extends Page implements OnDestroy {
         }
     }
 
-    private openResultDialog(model: BetModel): void {
+    private openResultDialog (model: BetModel): void {
         this._dialogService.openDialog({
             title: `Set Result on bet: ${model.name}`,
             component: this._componentFactory.resolveComponentFactory(ResultComponent),
             buttons: [
                 new DialogCloseButton('Close'),
-                new DialogButton({ title: 'Done', callback: this.setResult.bind(this) })
+                new DialogButton({title: 'Done', callback: this.setResult.bind(this)})
             ],
             data: model
         });
     }
 
-    private setResult(model: BetModel): void {
+    private setResult (model: BetModel): void {
         if (isAbsent(model.result)) {
             this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
@@ -142,7 +142,7 @@ export class BetListComponent extends Page implements OnDestroy {
             return;
         }
 
-        this._httpService.put(`admin/betting/bet/${model.betId}/result`, { result: Boolean(model.result) })
+        this._httpService.put(`admin/betting/bet/${model.betId}/result`, {result: Boolean(model.result)})
             .subscribe(res => {
                     this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
@@ -155,7 +155,7 @@ export class BetListComponent extends Page implements OnDestroy {
                 this._dialogService.closeDialog.bind(this._dialogService));
     }
 
-    private doDelete(bet: BetModel): void {
+    private doDelete (bet: BetModel): void {
         this._httpService.delete(`admin/betting/bet/${bet.betId}`)
             .subscribe(() => {
                     this._notificationService.sendNotification(new NotificationMessage({
@@ -169,7 +169,7 @@ export class BetListComponent extends Page implements OnDestroy {
                 this._dialogService.closeDialog.bind(this._dialogService));
     }
 
-    private onData(data: { data: BetsListPage }): void {
+    private onData (data: { data: BetsListPage }): void {
         this._data = data.data;
         this.createOrUpdateTable();
 
@@ -181,7 +181,7 @@ export class BetListComponent extends Page implements OnDestroy {
         });
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -198,21 +198,21 @@ export class BetListComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         return this._data.bets.map(bet => {
             const actions = [
-                { title: 'Edit', value: BetActions.EDIT_BET, condition: true },
-                { title: 'Set Result', value: BetActions.SET_RESULT, condition: !bet.isFinished },
-                { title: 'Delete', value: BetActions.DELETE_BET, condition: true },
-                { title: 'Suspend', value: BetActions.SUSPEND_BET, condition: !bet.isSuspended },
-                { title: 'Unsuspend', value: BetActions.UNSUSPEND_BET, condition: bet.isSuspended }
+                {title: 'Edit', value: BetActions.EDIT_BET, condition: true},
+                {title: 'Set Result', value: BetActions.SET_RESULT, condition: !bet.isFinished},
+                {title: 'Delete', value: BetActions.DELETE_BET, condition: true},
+                {title: 'Suspend', value: BetActions.SUSPEND_BET, condition: !bet.isSuspended},
+                {title: 'Unsuspend', value: BetActions.UNSUSPEND_BET, condition: bet.isSuspended}
             ];
             return new TableRow({
                 id: String(bet.betId),
                 cells: [
-                    new TableCell({ title: bet.name }),
-                    new TableCell({ title: bet.isFinished ? 'Finished' : (bet.isSuspended ? 'Suspended' : 'Ongoing') }),
-                    new TableCell({ title: `${bet.leftSide}/${bet.rightSide}` })
+                    new TableCell({title: bet.name}),
+                    new TableCell({title: bet.isFinished ? 'Finished' : (bet.isSuspended ? 'Suspended' : 'Ongoing')}),
+                    new TableCell({title: `${bet.leftSide}/${bet.rightSide}`})
                 ],
                 actions: actions.filter(action => action.condition)
                     .map(action => new TableAction(action))
@@ -220,11 +220,11 @@ export class BetListComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableHeaders(): Array<TableHeader> {
+    private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'Name' }),
-            new TableHeader({ title: 'Status' }),
-            new TableHeader({ title: 'Odds' })
+            new TableHeader({title: 'Name'}),
+            new TableHeader({title: 'Status'}),
+            new TableHeader({title: 'Odds'})
         ];
     }
 }

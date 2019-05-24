@@ -42,7 +42,7 @@ export class AutoBansListComponent extends Page implements OnDestroy {
         })
     ];
 
-    constructor(
+    constructor (
         private _service: AutoBansService,
         private _router: Router,
         private _dialogService: DialogService,
@@ -62,33 +62,33 @@ export class AutoBansListComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onFilter(filter: QueryParameters): void {
+    onFilter (filter: QueryParameters): void {
         clearTimeout(this._filterTimer);
         this._filter = filter;
 
         this._filterTimer = setTimeout(() => {
             this._service.getData(filter, 1)
                 .subscribe(data => {
-                    this.onData({ data: data });
+                    this.onData({data: data});
                 });
         }, 200);
     }
 
-    onAction(action: Action): void {
+    onAction (action: Action): void {
         switch (action.value) {
             case AutoBansActions.EDIT:
                 this._router.navigateByUrl(`/admin/moderation/auto-bans/${action.rowId}`);
                 break;
             case AutoBansActions.DELETE:
                 const title = this._data.items.find(item => item.autoBanId === Number(action.rowId)).title;
-                this._dialogService.openConfirmDialog(
-                    `Are you sure?`,
-                    `Are you sure you wanna delete ${title}?`,
-                    () => {
+                this._dialogService.confirm({
+                    title: `Are you sure?`,
+                    content: `Are you sure you wanna delete ${title}?`,
+                    callback: () => {
                         this._httpService.delete(`admin/moderation/auto-bans/${action.rowId}`)
                             .subscribe(() => {
                                 this._notificationService.sendNotification(new NotificationMessage({
@@ -100,11 +100,11 @@ export class AutoBansListComponent extends Page implements OnDestroy {
                                 this.buildTableConfig();
                             }, this._notificationService.failureNotification.bind(this._notificationService));
                     }
-                );
+                });
         }
     }
 
-    private onData(data: { data: AutoBansListPage }): void {
+    private onData (data: { data: AutoBansListPage }): void {
         this._data = data.data;
         this.buildTableConfig();
 
@@ -116,7 +116,7 @@ export class AutoBansListComponent extends Page implements OnDestroy {
         });
     }
 
-    private buildTableConfig(): void {
+    private buildTableConfig (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -133,27 +133,27 @@ export class AutoBansListComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         const actions = [
-            new TableAction({ title: 'Edit', value: AutoBansActions.EDIT }),
-            new TableAction({ title: 'Delete', value: AutoBansActions.DELETE })
+            new TableAction({title: 'Edit', value: AutoBansActions.EDIT}),
+            new TableAction({title: 'Delete', value: AutoBansActions.DELETE})
         ];
 
         return this._data.items.map(item => {
             return new TableRow({
                 id: String(item.autoBanId),
                 cells: [
-                    new TableCell({ title: item.title }),
-                    new TableCell({ title: String(item.amount) }),
-                    new TableCell({ title: AutoBansListComponent.getAmountOfDays(item.banLength) })
+                    new TableCell({title: item.title}),
+                    new TableCell({title: String(item.amount)}),
+                    new TableCell({title: AutoBansListComponent.getAmountOfDays(item.banLength)})
                 ],
                 actions: actions
             });
         });
     }
 
-    private static getAmountOfDays(length: number): string {
-        const hour =  3600;
+    private static getAmountOfDays (length: number): string {
+        const hour = 3600;
         const day = hour * 24;
 
         if (length < day) {
@@ -162,11 +162,11 @@ export class AutoBansListComponent extends Page implements OnDestroy {
         return `${length / day} Day(s)`;
     }
 
-    private static getTableHeaders(): Array<TableHeader> {
+    private static getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'Title' }),
-            new TableHeader({ title: 'Amount' }),
-            new TableHeader({ title: 'Ban Length' })
+            new TableHeader({title: 'Title'}),
+            new TableHeader({title: 'Amount'}),
+            new TableHeader({title: 'Ban Length'})
         ];
     }
 }

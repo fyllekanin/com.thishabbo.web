@@ -34,10 +34,10 @@ export class ListComponent extends Page implements OnDestroy {
     tableConfig: TableConfig;
     pagination: PaginationModel;
     tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Create Category', link: '/admin/betting/categories/new' })
+        new TitleTab({title: 'Create Category', link: '/admin/betting/categories/new'})
     ];
 
-    constructor(
+    constructor (
         private _dialogService: DialogService,
         private _notificationService: NotificationService,
         private _router: Router,
@@ -56,19 +56,19 @@ export class ListComponent extends Page implements OnDestroy {
         });
     }
 
-    onFilter(filter: QueryParameters): void {
+    onFilter (filter: QueryParameters): void {
         clearTimeout(this._filterTimer);
         this._filter = filter;
 
         this._filterTimer = setTimeout(() => {
             this._httpService.get(`admin/betting/categories/1`, filter)
                 .subscribe(res => {
-                    this.onData({ data: new CategoriesListPage(res) });
+                    this.onData({data: new CategoriesListPage(res)});
                 });
         }, 200);
     }
 
-    onAction(action: Action): void {
+    onAction (action: Action): void {
         const row = this.tableConfig.rows.find(item => item.id === action.rowId);
         const model = this._data.betCategories.find(category => category.betCategoryId === Number(row.id));
         switch (action.value) {
@@ -76,20 +76,20 @@ export class ListComponent extends Page implements OnDestroy {
                 this._router.navigateByUrl(`/admin/betting/categories/${row.id}`);
                 break;
             case BetCategoryActions.DELETE_CATEGORY:
-                this._dialogService.openConfirmDialog(
-                    `Deleting ${model.name}`,
-                    `Are you sure you wanna delete ${model.name}?`,
-                    this.doDelete.bind(this, model)
-                );
+                this._dialogService.confirm({
+                    title: `Deleting ${model.name}`,
+                    content: `Are you sure you wanna delete ${model.name}?`,
+                    callback: this.doDelete.bind(this, model)
+                });
                 break;
         }
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    private doDelete(model: BetCategoryModel): void {
+    private doDelete (model: BetCategoryModel): void {
         this._httpService.delete(`admin/betting/category/${model.betCategoryId}`)
             .subscribe(() => {
                     this._notificationService.sendNotification(new NotificationMessage({
@@ -103,7 +103,7 @@ export class ListComponent extends Page implements OnDestroy {
                 this._dialogService.closeDialog.bind(this._dialogService));
     }
 
-    private onData(data: { data: CategoriesListPage }): void {
+    private onData (data: { data: CategoriesListPage }): void {
         this._data = data.data;
         this.createOrUpdateTable();
 
@@ -115,7 +115,7 @@ export class ListComponent extends Page implements OnDestroy {
         });
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -132,26 +132,26 @@ export class ListComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         return this._data.betCategories.map(category => {
             return new TableRow({
                 id: String(category.betCategoryId),
                 cells: [
-                    new TableCell({ title: category.name }),
-                    new TableCell({ title: category.displayOrder.toString() })
+                    new TableCell({title: category.name}),
+                    new TableCell({title: category.displayOrder.toString()})
                 ],
                 actions: [
-                    new TableAction({ title: 'Edit', value: BetCategoryActions.EDIT_CATEGORY }),
-                    new TableAction({ title: 'Delete', value: BetCategoryActions.DELETE_CATEGORY })
+                    new TableAction({title: 'Edit', value: BetCategoryActions.EDIT_CATEGORY}),
+                    new TableAction({title: 'Delete', value: BetCategoryActions.DELETE_CATEGORY})
                 ]
             });
         });
     }
 
-    private static getTableHeaders(): Array<TableHeader> {
+    private static getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'Name' }),
-            new TableHeader({ title: 'Display Order' })
+            new TableHeader({title: 'Name'}),
+            new TableHeader({title: 'Display Order'})
         ];
     }
 }

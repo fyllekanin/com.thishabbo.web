@@ -16,15 +16,21 @@ export class DialogCloseButton {
     title: string;
     type = Button.GRAY;
 
-    constructor(title: string) {
+    constructor (title: string) {
         this.title = title;
     }
 }
 
 export abstract class InnerDialogComponent {
-    abstract getData();
+    abstract getData ();
 
     abstract setData (data);
+}
+
+export interface DialogConfirm {
+    title: string;
+    content: string;
+    callback: () => void;
 }
 
 export interface DialogConfig {
