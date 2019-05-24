@@ -6,6 +6,10 @@
                 <label>Name Colour (Hex Code):<br>For gradients, enter a list of hex codes (separated by commas)</label>
                 <input [(ngModel)]="colours" type="text"/>
             </div>
+            <div class="cell small-6 position-relative">
+                Preview:<br>
+                <span class="username" [style]="nameStyle | safeStyle">{{ name }}</span>
+            </div>
         </div>
     </div>
 </app-content>

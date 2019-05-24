@@ -21,6 +21,7 @@ import { ProfileService } from './services/profile.service';
 import { BadgesComponent } from './post-bit/badges/badges.component';
 import { NameColourService } from './services/name-colour.service';
 import { NameColourComponent } from './name-colour/name-colour.component';
+import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
 
 @NgModule({
     imports: [
@@ -30,7 +31,8 @@ import { NameColourComponent } from './name-colour/name-colour.component';
         TitleModule,
         ContentModule,
         EditorModule,
-        SafeHtmlModule
+        SafeHtmlModule,
+        SafeStyleModule
     ],
     declarations: [
         AvatarComponent,

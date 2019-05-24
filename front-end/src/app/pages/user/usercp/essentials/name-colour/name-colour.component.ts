@@ -8,6 +8,8 @@ import { USERCP_BREADCRUM_ITEM } from "../../usercp.constants";
 import { NameColour } from "./name-colour.model";
 import { NameColourService } from "../services/name-colour.service";
 import { ActivatedRoute } from "@angular/router";
+import { UserHelper } from "shared/helpers/user.helper";
+import { AuthService } from "core/services/auth/auth.service";
 
 @Component({
     selector: 'app-usercp-cover',
@@ -23,6 +25,7 @@ export class NameColourComponent extends Page implements OnDestroy {
     constructor(
         private _service: NameColourService,
         private _notificationService: NotificationService,
+        private _authService: AuthService,
         activatedRoute: ActivatedRoute,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService
@@ -62,6 +65,14 @@ export class NameColourComponent extends Page implements OnDestroy {
             }
         })
         return valid;
+    }
+
+    get name (): string {
+        return this._authService.authUser.nickname;
+    }
+
+    get nameStyle(): string {
+        return UserHelper.getNameColour(this._data.colours);
     }
 
     get colours (): string {
