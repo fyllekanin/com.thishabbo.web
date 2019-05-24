@@ -1,0 +1,11 @@
+<app-title [title]="'Edit name colour'" [tabs]="tabs" (onTabClick)="onSave()"></app-title>
+<app-content>
+    <div class="grid-container">
+        <div class="grid-x margin-x">
+            <div class="cell small-6 position-relative">
+                <label>Name Colour (Hex Code):<br>For gradients, enter a list of hex codes (separated by commas)</label>
+                <input [(ngModel)]="colours" type="text"/>
+            </div>
+        </div>
+    </div>
+</app-content>
