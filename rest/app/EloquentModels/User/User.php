@@ -11,6 +11,8 @@ use Illuminate\Notifications\Notifiable;
  * @property mixed nickname
  * @property mixed userId
  * @method static withNickname($love)
+ *
+ * @SuppressWarnings(PHPMD.ExcessivePublicCount)
  */
 class User extends Authenticatable {
     use Notifiable;
