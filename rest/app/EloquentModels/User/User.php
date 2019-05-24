@@ -12,7 +12,7 @@ use Illuminate\Notifications\Notifiable;
  * @property mixed userId
  * @method static withNickname($love)
  *
- * @SuppressWarnings(PHPMD.ExcessivePublicCount)
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class User extends Authenticatable {
     use Notifiable;
