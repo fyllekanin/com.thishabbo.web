@@ -1462,4 +1462,11 @@ class Action {
         'data' => [],
         'log' => 'log_admin'
     ];
+
+    const UPDATED_NAME_COLOURS = [
+        'id' => 171,
+        'description' => 'User updated name colours',
+        'data' => [],
+        'log' => 'log_user'
+    ];
 }

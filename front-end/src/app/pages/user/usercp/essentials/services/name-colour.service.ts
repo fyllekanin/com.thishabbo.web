@@ -3,7 +3,6 @@ import { HttpService } from 'core/services/http/http.service';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { Signature } from '../signature/signature.model';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { NameColour } from '../name-colour/name-colour.model';
 
@@ -18,7 +17,7 @@ export class NameColourService implements Resolve<NameColour> {
 
     resolve(): Observable<NameColour> {
         return this._httpService.get('usercp/name-colour')
-            .pipe(map((res => new NameColour(res))));
+            .pipe(map(res => new NameColour(res)));
     }
 
     save(colours: Array<string>): Observable<NameColour> {

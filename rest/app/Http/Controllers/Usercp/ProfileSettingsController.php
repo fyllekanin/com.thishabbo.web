@@ -254,4 +254,49 @@ class ProfileSettingsController extends Controller {
         }
         return $height;
     }
+
+    /**
+     * Get request to fetch the users current name colours
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getNameColours(Request $request) {
+        $user = $request->get('auth');
+        $userdata = UserData::where('userId', $user->userId)->first();
+        return response()->json([
+            'colours' => Value::objectJsonProperty($userdata, 'nameColours', [])
+        ]);
+    }
+
+    /**
+     * Put request to update the user name colours
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateNameColours(Request $request) {
+        $user = $request->get('auth');
+        $colours = $request->input('colours');
+
+        $valid = true;
+        $regex = '/^#[0-9a-f]{3}(?:[0-9a-f]{3})?$/';
+        foreach($colours as $colour) {
+            if(!preg_match($regex, $colour)) {
+                $valid = false;
+            }
+        }
+        Condition::precondition(!$valid, 400, 'Invalid Hex Codes');
+
+        $userData = UserHelper::getUserDataOrCreate($user->userId);
+        $userData->nameColours = json_encode($colours);
+        $userData->save();
+
+        Logger::user($user->userId, $request->ip(), Action::UPDATED_NAME_COLOURS);
+        return response()->json([
+            'colours' => $colours
+        ]);
+    }
 }

@@ -5,9 +5,9 @@ import { NotificationService } from "core/services/notification/notification.ser
 import { BreadcrumbService } from "core/services/breadcrum/breadcrumb.service";
 import { Breadcrumb } from "core/services/breadcrum/breadcrum.model";
 import { USERCP_BREADCRUM_ITEM } from "../../usercp.constants";
-import { HttpClient } from "@angular/common/http";
 import { NameColour } from "./name-colour.model";
 import { NameColourService } from "../services/name-colour.service";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
     selector: 'app-usercp-cover',
@@ -23,10 +23,12 @@ export class NameColourComponent extends Page implements OnDestroy {
     constructor(
         private _service: NameColourService,
         private _notificationService: NotificationService,
+        activatedRoute: ActivatedRoute,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService
     ) {
         super(elementRef);
+        this.addSubscription(activatedRoute.data, this.onData.bind(this));
         breadcrumbService.breadcrumb = new Breadcrumb({
             current: 'Name Colour',
             items: [
@@ -68,5 +70,9 @@ export class NameColourComponent extends Page implements OnDestroy {
 
     set colours (colours: string) {
         this._data.colours = colours.split(',');
+    }
+
+    private onData(data: { data: NameColour }): void {
+        this._data = data.data;
     }
 }
