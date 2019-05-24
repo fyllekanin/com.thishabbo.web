@@ -10,74 +10,79 @@ use Illuminate\Notifications\Notifiable;
 /**
  * @property mixed nickname
  * @property mixed userId
+ * @method static withNickname($love)
  */
 class User extends Authenticatable {
     use Notifiable;
 
-    protected $fillable = ['username','nickname', 'habbo', 'gdpr', 'password',
+    protected $fillable = ['username', 'nickname', 'habbo', 'gdpr', 'password',
         'likes', 'displayGroupId', 'posts', 'threads', 'theme', 'lastActivity', 'referralId'];
     protected $hidden = ['username', 'password'];
     protected $primaryKey = 'userId';
     const CREATED_AT = 'createdAt';
     const UPDATED_AT = 'updatedAt';
 
-    public function getDateFormat () {
+    public function getDateFormat() {
         return 'U';
     }
 
-    public function userdata () {
+    public function userdata() {
         return $this->hasOne('App\EloquentModels\User\UserData', 'userId', 'userId');
     }
 
-    public function profile () {
+    public function profile() {
         return $this->hasOne('App\EloquentModels\User\UserProfile', 'userId', 'userId');
     }
 
-    public function threads () {
+    public function threads() {
         return $this->hasMany('App\EloquentModels\Forum\Thread', 'userId');
     }
 
-    public function userGroups () {
+    public function userGroups() {
         return $this->hasMany('App\EloquentModels\User\UserGroup', 'userId');
     }
 
-    public function posts () {
+    public function posts() {
         return $this->hasMany('App\EloquentModels\Forum\Post', 'userId');
     }
 
-    public function displayGroup () {
+    public function displayGroup() {
         return $this->belongsTo('App\EloquentModels\Group\Group', 'displayGroupId', 'groupId');
     }
 
-    public function scopeWithNicknameLike (Builder $query, $nickname) {
+    public function subscriptions() {
+        return $this->hasMany('App\EloquentModels\Shop\UserSubscription', 'userId', 'userId');
+    }
+
+    public function scopeWithNicknameLike(Builder $query, $nickname) {
         return $query->where('nickname', 'LIKE', '%' . $nickname . '%');
     }
 
-    public function scopeWithNickname (Builder $query, $nickname) {
+    public function scopeWithNickname(Builder $query, $nickname) {
         return $query->whereRaw('lower(nickname) = ?', [strtolower($nickname)]);
     }
 
-    public function scopeWithUsername (Builder $query, $username) {
+    public function scopeWithUsername(Builder $query, $username) {
         return $query->whereRaw('lower(username) = ?', [strtolower($username)]);
     }
 
-    public function scopeWithHabbo (Builder $query, $habbo) {
+    public function scopeWithHabbo(Builder $query, $habbo) {
         return $query->whereRaw('lower(habbo) = ?', [strtolower($habbo)]);
     }
 
-    public static function getImmunity ($userId) {
+    public static function getImmunity($userId) {
         if (PermissionHelper::isSuperAdmin($userId)) {
             return 101;
         }
 
-        return (int) self::select('users.userId', 'groups.immunity')
+        return (int)self::select('users.userId', 'groups.immunity')
             ->where('users.userId', $userId)
             ->leftJoin('user_groups', 'user_groups.userId', '=', 'users.userId')
             ->leftJoin('groups', 'groups.groupId', '=', 'user_groups.groupId')
             ->max('groups.immunity');
     }
 
-    public function getGroupIdsAttribute () {
+    public function getGroupIdsAttribute() {
         $groupIds = $this->userGroups()->getResults()->map(function ($group) {
             return $group->groupId;
         })->toArray();
@@ -85,9 +90,15 @@ class User extends Authenticatable {
         return $groupIds;
     }
 
-    public function getGroupsAttribute () {
-        return $this->userGroups()->getResults()->map(function($group) {
+    public function getGroupsAttribute() {
+        return $this->userGroups()->getResults()->map(function ($group) {
             return $group->group;
+        });
+    }
+
+    public function getSubscriptionsAttribute() {
+        return $this->subscriptions()->getResults()->map(function ($userSubscription) {
+            return $userSubscription->subscription;
         });
     }
 }

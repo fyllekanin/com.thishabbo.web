@@ -124,12 +124,11 @@ class ProfileSettingsController extends Controller {
      */
     public function getAvatarSize(Request $request) {
         $user = $request->get('auth');
-        $avatarHeight = $this->getMaxAvatarHeight($user);
-        $avatarWidth = $this->getMaxAvatarWidth($user);
+        $avatarSize = UserHelper::getMaxAvatarSize($user->userId);
 
         return response()->json([
-            'width' => $avatarWidth,
-            'height' => $avatarHeight
+            'width' => $avatarSize->width,
+            'height' => $avatarSize->height
         ]);
     }
 
@@ -165,11 +164,10 @@ class ProfileSettingsController extends Controller {
     public function updateAvatar(Request $request) {
         $user = $request->get('auth');
         $avatar = $request->file('avatar');
-        $avatarHeight = $this->getMaxAvatarHeight($user);
-        $avatarWidth = $this->getMaxAvatarWidth($user);
+        $avatarSize = UserHelper::getMaxAvatarSize($user->userId);
 
         $this->validate($request, [
-            'avatar' => 'required|mimes:jpg,jpeg,bmp,png,gif|dimensions:max_width=' . $avatarWidth . ',max_height=' . $avatarHeight,
+            'avatar' => 'required|mimes:jpg,jpeg,bmp,png,gif|dimensions:max_width=' . $avatarSize->width . ',max_height=' . $avatarSize->height,
         ]);
 
         $fileName = $user->userId . '.gif';
@@ -221,37 +219,5 @@ class ProfileSettingsController extends Controller {
             'signature' => $signature,
             'parsedSignature' => BBcodeUtil::bbcodeParser($signature)
         ]);
-    }
-
-    /**
-     * Get the maximum width the supplied user can use
-     *
-     * @param $user
-     *
-     * @return int
-     */
-    private function getMaxAvatarWidth($user) {
-        $width = 200;
-
-        foreach ($user->groups as $group) {
-            $width = $group->avatarWidth > $width ? $group->avatarWidth : $width;
-        }
-        return $width;
-    }
-
-    /**
-     * Get the maximum height the supplied user can use
-     *
-     * @param $user
-     *
-     * @return int
-     */
-    private function getMaxAvatarHeight($user) {
-        $height = 200;
-
-        foreach ($user->groups as $group) {
-            $height = $group->avatarHeight > $height ? $group->avatarHeight : $height;
-        }
-        return $height;
     }
 }
