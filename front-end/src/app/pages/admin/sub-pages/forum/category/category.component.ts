@@ -9,7 +9,7 @@ import { NotificationMessage } from 'shared/app-views/global-notification/global
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { isAbsent } from 'shared/helpers/class.helper';
 import { Page } from 'shared/page/page.model';
-import { SITECP_BREADCRUMB_ITEM, CATEGORY_LIST_BREADCRUMB_ITEM } from '../../../admin.constants';
+import { CATEGORY_LIST_BREADCRUMB_ITEM, SITECP_BREADCRUMB_ITEM } from '../../../admin.constants';
 import { Category, CategoryActions, CategoryLeaf, CategoryOptions, CategoryPage } from './category.model';
 
 @Component({
@@ -62,24 +62,24 @@ export class CategoryComponent extends Page implements OnDestroy {
 
     private save (): void {
         if (this._categoryPage.category.createdAt) {
-            this._httpService.put(`admin/categories/${this._categoryPage.category.categoryId}`, { category: this._categoryPage.category })
+            this._httpService.put(`admin/categories/${this._categoryPage.category.categoryId}`, {category: this._categoryPage.category})
                 .subscribe(this.onSuccessUpdate.bind(this),
                     this._notificationService.failureNotification.bind(this._notificationService));
         } else {
-            this._httpService.post('admin/categories', { category: this._categoryPage.category })
+            this._httpService.post('admin/categories', {category: this._categoryPage.category})
                 .subscribe(this.onSuccessCreate.bind(this),
                     this._notificationService.failureNotification.bind(this._notificationService));
         }
     }
 
     private delete (): void {
-        this._dialogService.openConfirmDialog(
-            `Deleting category`,
-            `Are you sure that you want to delete the category ${this._categoryPage.category.title}? <br />
-            <li>All threads & posts will be deleted</li>
-            <li>All Sub categories will be without parent</li>`,
-            this.onDelete.bind(this)
-        );
+        this._dialogService.confirm({
+            title: `Deleting category`,
+            content: `Are you sure that you want to delete the category ${this._categoryPage.category.title}? <br />
+                <li>All threads & posts will be deleted</li>
+                <li>All Sub categories will be without parent</li>`,
+            callback: this.onDelete.bind(this)
+        });
     }
 
     private cancel (): void {
@@ -142,7 +142,7 @@ export class CategoryComponent extends Page implements OnDestroy {
     }
 
     private onSuccessCreate (category: CategoryPage): void {
-        this.onPage({ data: new CategoryPage(category) });
+        this.onPage({data: new CategoryPage(category)});
         this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'Category Created!'
@@ -150,7 +150,7 @@ export class CategoryComponent extends Page implements OnDestroy {
     }
 
     private onSuccessUpdate (category: CategoryPage): void {
-        this.onPage({ data: new CategoryPage(category) });
+        this.onPage({data: new CategoryPage(category)});
         this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'Category Updated!'
@@ -164,9 +164,9 @@ export class CategoryComponent extends Page implements OnDestroy {
         }
 
         const tabs = [
-            { title: 'Save', value: CategoryActions.SAVE, condition: true },
-            { title: 'Delete', value: CategoryActions.DELETE, condition: this._categoryPage.category.createdAt },
-            { title: 'Cancel', value: CategoryActions.CANCEL, condition: true }
+            {title: 'Save', value: CategoryActions.SAVE, condition: true},
+            {title: 'Delete', value: CategoryActions.DELETE, condition: this._categoryPage.category.createdAt},
+            {title: 'Cancel', value: CategoryActions.CANCEL, condition: true}
         ];
 
         this.categories = this.flat(this._categoryPage.forumTree, '');

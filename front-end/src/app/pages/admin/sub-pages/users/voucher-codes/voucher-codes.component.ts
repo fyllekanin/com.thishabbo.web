@@ -33,16 +33,16 @@ export class VoucherCodesComponent extends Page implements OnDestroy {
     private _filterTimer = null;
     private _filter: QueryParameters;
     private _actions: Array<TableAction> = [
-        new TableAction({ title: 'Delete' })
+        new TableAction({title: 'Delete'})
     ];
 
     tableConfig: TableConfig;
     pagination: PaginationModel;
     tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Create New' })
+        new TitleTab({title: 'Create New'})
     ];
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _dialogService: DialogService,
         private _notificationService: NotificationService,
@@ -66,47 +66,49 @@ export class VoucherCodesComponent extends Page implements OnDestroy {
         super.destroy();
     }
 
-    onFilter(filter: QueryParameters): void {
+    onFilter (filter: QueryParameters): void {
         clearTimeout(this._filterTimer);
         this._filter = filter;
 
         this._filterTimer = setTimeout(() => {
             this._httpService.get(`admin/voucher-codes/page/1`, filter)
                 .subscribe(data => {
-                    this.onData({ data: new VoucherCodesPage(data) });
+                    this.onData({data: new VoucherCodesPage(data)});
                 });
         }, 200);
     }
 
-    onCreateNew(): void {
+    onCreateNew (): void {
         this._dialogService.openDialog({
             title: 'Voucher Code',
             component: this._componentResolver.resolveComponentFactory(VoucherCodeComponent),
             buttons: [
                 new DialogCloseButton('Cancel'),
-                new DialogButton({ title: 'Create', callback: this.onCreateCode.bind(this) })
+                new DialogButton({title: 'Create', callback: this.onCreateCode.bind(this)})
             ]
         });
     }
 
-    onDelete(action: Action): void {
-        this._dialogService.openConfirmDialog(
-            'Are you sure?',
-            'Are you sure you wanna delete this voucher code?',
-            () => this._httpService.delete(`admin/voucher-codes/${action.rowId}`)
-                .subscribe(() => {
-                    this._data.items = this._data.items.filter(item => item.voucherCodeId !== Number(action.rowId));
-                    this.createOrUpdateTable();
-                    this._notificationService.sendNotification(new NotificationMessage({
-                        title: 'Success',
-                        message: 'Voucher code deleted!'
-                    }));
-                    this._dialogService.closeDialog();
-                }, this._notificationService.failureNotification.bind(this))
-        );
+    onDelete (action: Action): void {
+        this._dialogService.confirm({
+            title: 'Are you sure?',
+            content: 'Are you sure you wanna delete this voucher code?',
+            callback: () => {
+                this._httpService.delete(`admin/voucher-codes/${action.rowId}`)
+                    .subscribe(() => {
+                        this._data.items = this._data.items.filter(item => item.voucherCodeId !== Number(action.rowId));
+                        this.createOrUpdateTable();
+                        this._notificationService.sendNotification(new NotificationMessage({
+                            title: 'Success',
+                            message: 'Voucher code deleted!'
+                        }));
+                        this._dialogService.closeDialog();
+                    }, this._notificationService.failureNotification.bind(this));
+            }
+        });
     }
 
-    private onCreateCode(data: { note: string, value: number }): void {
+    private onCreateCode (data: { note: string, value: number }): void {
         if (!data.note) {
             this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Failure',
@@ -116,7 +118,7 @@ export class VoucherCodesComponent extends Page implements OnDestroy {
             return;
         }
 
-        this._httpService.post('admin/voucher-codes', { note: data.note, value: data.value })
+        this._httpService.post('admin/voucher-codes', {note: data.note, value: data.value})
             .subscribe(res => {
                 this._data.items.push(new VoucherCode(res));
                 this._dialogService.closeDialog();
@@ -128,7 +130,7 @@ export class VoucherCodesComponent extends Page implements OnDestroy {
             }, this._notificationService.failureNotification.bind(this));
     }
 
-    private onData(data: { data: VoucherCodesPage }): void {
+    private onData (data: { data: VoucherCodesPage }): void {
         this._data = data.data;
         this.createOrUpdateTable();
         this.pagination = new PaginationModel({
@@ -139,7 +141,7 @@ export class VoucherCodesComponent extends Page implements OnDestroy {
         });
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -158,25 +160,25 @@ export class VoucherCodesComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         return this._data.items.map(item => new TableRow({
             id: String(item.voucherCodeId),
             cells: [
-                new TableCell({ title: item.code }),
-                new TableCell({ title: item.note }),
-                new TableCell({ title: item.claimer ? `Claimed by: ${item.claimer.nickname}` : 'Not Claimed' }),
-                new TableCell({ title: String(item.value) })
+                new TableCell({title: item.code}),
+                new TableCell({title: item.note}),
+                new TableCell({title: item.claimer ? `Claimed by: ${item.claimer.nickname}` : 'Not Claimed'}),
+                new TableCell({title: String(item.value)})
             ],
             actions: this._actions
         }));
     }
 
-    private getTableHeaders(): Array<TableHeader> {
+    private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'Code' }),
-            new TableHeader({ title: 'Note' }),
-            new TableHeader({ title: 'Status' }),
-            new TableHeader({ title: 'Value' })
+            new TableHeader({title: 'Code'}),
+            new TableHeader({title: 'Note'}),
+            new TableHeader({title: 'Status'}),
+            new TableHeader({title: 'Value'})
         ];
     }
 }

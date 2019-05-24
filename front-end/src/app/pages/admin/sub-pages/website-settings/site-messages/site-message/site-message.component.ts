@@ -27,7 +27,7 @@ export class SiteMessageComponent extends Page implements OnDestroy {
     @ViewChild('editor') editor: EditorComponent;
     tabs: Array<TitleTab> = [];
 
-    constructor(
+    constructor (
         private _router: Router,
         private _httpService: HttpService,
         private _dialogService: DialogService,
@@ -48,11 +48,11 @@ export class SiteMessageComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onTabClick(value: number): void {
+    onTabClick (value: number): void {
         switch (value) {
             case SiteMessagesActions.SAVE:
                 this.onSave();
@@ -63,33 +63,33 @@ export class SiteMessageComponent extends Page implements OnDestroy {
         }
     }
 
-    get model(): SiteMessageModel {
+    get model (): SiteMessageModel {
         return this._data;
     }
 
-    get title(): string {
+    get title (): string {
         return this._data && this._data.createdAt ? `Editing: ${this._data.title}` : `Creating: ${this._data.title}`;
     }
 
-    private onData(data: { data: SiteMessageModel }): void {
+    private onData (data: { data: SiteMessageModel }): void {
         this._data = data.data;
         this.setTabs();
     }
 
-    private setTabs(): void {
+    private setTabs (): void {
         const tabs = [
-            { title: 'Save', value: SiteMessagesActions.SAVE, condition: true },
-            { title: 'Delete', value: SiteMessagesActions.DELETE, condition: this._data.createdAt },
-            { title: 'Cancel', link: '/admin/website-settings/site-messages', condition: true }
+            {title: 'Save', value: SiteMessagesActions.SAVE, condition: true},
+            {title: 'Delete', value: SiteMessagesActions.DELETE, condition: this._data.createdAt},
+            {title: 'Cancel', link: '/admin/website-settings/site-messages', condition: true}
         ];
 
         this.tabs = tabs.filter(item => item.condition).map(item => new TitleTab(item));
     }
 
-    private onSave(): void {
+    private onSave (): void {
         this._data.content = this.editor.getEditorValue();
         if (this._data.createdAt) {
-            this._httpService.put(`admin/content/site-messages/${this._data.siteMessageId}`, { data: this._data })
+            this._httpService.put(`admin/content/site-messages/${this._data.siteMessageId}`, {data: this._data})
                 .subscribe(() => {
                     this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
@@ -97,7 +97,7 @@ export class SiteMessageComponent extends Page implements OnDestroy {
                     }));
                 }, this._notificationService.failureNotification.bind(this._notificationService));
         } else {
-            this._httpService.post(`admin/content/site-messages`, { data: this._data })
+            this._httpService.post(`admin/content/site-messages`, {data: this._data})
                 .subscribe(() => {
                     this._data.createdAt = new Date().getTime() / 1000;
                     this.setTabs();
@@ -109,11 +109,11 @@ export class SiteMessageComponent extends Page implements OnDestroy {
         }
     }
 
-    private onDelete(): void {
-        this._dialogService.openConfirmDialog(
-            'Are you sure?',
-            'Are you sure you wanna delete this site message?',
-            () => {
+    private onDelete (): void {
+        this._dialogService.confirm({
+            title: 'Are you sure?',
+            content: 'Are you sure you wanna delete this site message?',
+            callback: () => {
                 this._httpService.delete(`admin/content/site-messages/${this._data.siteMessageId}`)
                     .subscribe(() => {
                         this._notificationService.sendNotification(new NotificationMessage({
@@ -123,6 +123,6 @@ export class SiteMessageComponent extends Page implements OnDestroy {
                         this._router.navigateByUrl('/admin/website-settings/site-messages');
                     });
             }
-        );
+        });
     }
 }

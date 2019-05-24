@@ -62,11 +62,11 @@ export class BanOnSightComponent extends Page implements OnDestroy {
     }
 
     private delete (): void {
-        this._dialogService.openConfirmDialog(
-            `Deleting BOS Entry`,
-            `Are you sure that you wanna delete this?`,
-            this.onDelete.bind(this, this._data.id)
-        );
+        this._dialogService.confirm({
+            title: `Deleting BOS Entry`,
+            content: `Are you sure that you wanna delete this?`,
+            callback: this.onDelete.bind(this, this._data.id)
+        });
     }
 
     private save (): void {

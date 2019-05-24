@@ -20,10 +20,10 @@ export class GroupsComponent extends Page implements OnDestroy {
     private _data: UserCpGroupsPage;
 
     tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Save' })
+        new TitleTab({title: 'Save'})
     ];
 
-    constructor(
+    constructor (
         private _notificationService: NotificationService,
         private _dialogService: DialogService,
         private _service: GroupsService,
@@ -41,50 +41,50 @@ export class GroupsComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    updateDisplayGroup(): void {
+    updateDisplayGroup (): void {
         this._service.updateDisplayGroup(this._data.displayGroup);
     }
 
-    apply(groupId: number): void {
+    apply (groupId: number): void {
         const group = this._data.groups.find(gr => gr.groupId === groupId);
-        this._dialogService.openConfirmDialog(
-            `Apply for group`,
-            `Are you sure you wanna apply for ${group.name}?`,
-            this.onApply.bind(this, groupId)
-        );
+        this._dialogService.confirm({
+            title: `Apply for group`,
+            content: `Are you sure you wanna apply for ${group.name}?`,
+            callback: this.onApply.bind(this, groupId)
+        });
     }
 
-    leave(groupId: number): void {
+    leave (groupId: number): void {
         const group = this._data.groups.find(gr => gr.groupId === groupId);
-        this._dialogService.openConfirmDialog(
-            `Leave group`,
-            `Are you sure you wanna leave ${group.name}?`,
-            this.onLeave.bind(this, groupId)
-        );
+        this._dialogService.confirm({
+            title: `Apply for group`,
+            content: `Are you sure you wanna apply for ${group.name}?`,
+            callback: this.onLeave.bind(this, groupId)
+        });
     }
 
-    get nonMemberPublicGroups(): Array<UserCpGroup> {
+    get nonMemberPublicGroups (): Array<UserCpGroup> {
         return this._data.groups.filter(group => !group.isMember)
             .filter(group => group.isPublic);
     }
 
-    get memberGroups(): Array<UserCpGroup> {
+    get memberGroups (): Array<UserCpGroup> {
         return this._data.groups.filter(group => group.isMember);
     }
 
-    get displayGroupId(): number {
+    get displayGroupId (): number {
         return this._data.displayGroup ? this._data.displayGroup.groupId : 0;
     }
 
-    set displayGroupId(groupId: number) {
+    set displayGroupId (groupId: number) {
         this._data.displayGroup = this._data.groups.find(group => group.groupId === Number(groupId));
     }
 
-    private onApply(groupId: number): void {
+    private onApply (groupId: number): void {
         this._service.apply(groupId).subscribe(() => {
             this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Success',
@@ -96,7 +96,7 @@ export class GroupsComponent extends Page implements OnDestroy {
         });
     }
 
-    private onLeave(groupId: number): void {
+    private onLeave (groupId: number): void {
         this._service.leave(groupId).subscribe(() => {
             this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Success',
@@ -110,7 +110,7 @@ export class GroupsComponent extends Page implements OnDestroy {
         });
     }
 
-    private onData(data: { data: UserCpGroupsPage }): void {
+    private onData (data: { data: UserCpGroupsPage }): void {
         this._data = data.data;
     }
 }

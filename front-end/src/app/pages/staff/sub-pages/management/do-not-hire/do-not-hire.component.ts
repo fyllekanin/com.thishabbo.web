@@ -1,5 +1,5 @@
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
-import { DoNotHireItem, DoNotHireActions } from './do-not-hire.model';
+import { DoNotHireActions, DoNotHireItem } from './do-not-hire.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Page } from 'shared/page/page.model';
 import { Component, ElementRef, OnDestroy } from '@angular/core';
@@ -20,7 +20,7 @@ export class DoNotHireComponent extends Page implements OnDestroy {
     private _data = new DoNotHireItem();
     tabs: Array<TitleTab> = [];
 
-    constructor(
+    constructor (
         private _dialogService: DialogService,
         private _notificationService: NotificationService,
         private _httpService: HttpService,
@@ -54,20 +54,20 @@ export class DoNotHireComponent extends Page implements OnDestroy {
         }
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    private cancel(): void {
+    private cancel (): void {
         this._router.navigateByUrl('/staff/management/do-not-hire');
     }
 
-    private delete(): void {
-        this._dialogService.openConfirmDialog(
-            `Deleting DNH Entry`,
-            `Are you sure that you wanna delete this?`,
-            this.onDelete.bind(this, this._data.nickname)
-        );
+    private delete (): void {
+        this._dialogService.confirm({
+            title: `Deleting DNH Entry`,
+            content: `Are you sure that you wanna delete this?`,
+            callback: this.onDelete.bind(this, this._data.nickname)
+        });
     }
 
     private save (): void {
@@ -79,11 +79,11 @@ export class DoNotHireComponent extends Page implements OnDestroy {
 
         if (this._editing) {
             this._httpService.put(`staff/management/do-not-hire/${this._editing}`,
-                { information: information })
-                    .subscribe(this.onSuccessUpdate.bind(this, this._data),
-                        this._notificationService.failureNotification.bind(this._notificationService));
+                {information: information})
+                .subscribe(this.onSuccessUpdate.bind(this, this._data),
+                    this._notificationService.failureNotification.bind(this._notificationService));
         } else {
-            this._httpService.post('staff/management/do-not-hire', { information: information })
+            this._httpService.post('staff/management/do-not-hire', {information: information})
                 .subscribe(this.onSuccessCreate.bind(this, this._data),
                     this._notificationService.failureNotification.bind(this._notificationService));
         }
@@ -119,7 +119,7 @@ export class DoNotHireComponent extends Page implements OnDestroy {
 
     }
 
-    get model(): DoNotHireItem {
+    get model (): DoNotHireItem {
         return this._data;
     }
 
@@ -129,16 +129,16 @@ export class DoNotHireComponent extends Page implements OnDestroy {
             `Adding to Do Not Hire list`;
     }
 
-    private onData(data: { data: DoNotHireItem }): void {
+    private onData (data: { data: DoNotHireItem }): void {
         this._data = data.data;
         if (this._data.createdAt) {
             this._editing = this._data.nickname;
         }
 
         const tabs = [
-            { title: 'Save', value: DoNotHireActions.SAVE, condition: true },
-            { title: 'Delete', value: DoNotHireActions.DELETE, condition: this._data.createdAt },
-            { title: 'Cancel', value: DoNotHireActions.CANCEL, condition: true }
+            {title: 'Save', value: DoNotHireActions.SAVE, condition: true},
+            {title: 'Delete', value: DoNotHireActions.DELETE, condition: this._data.createdAt},
+            {title: 'Cancel', value: DoNotHireActions.CANCEL, condition: true}
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));

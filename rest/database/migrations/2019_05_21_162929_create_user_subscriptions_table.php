@@ -23,7 +23,7 @@ class CreateUserSubscriptionsTable extends Migration {
 
     /**
      * Reverse the migrations.
-     *
+     *git
      * @return void
      */
     public function down() {

@@ -28,7 +28,7 @@ export class PostsModerationComponent extends Page implements OnDestroy {
 
     tableConfig: TableConfig;
 
-    constructor(
+    constructor (
         private _notificationService: NotificationService,
         private _httpService: HttpService,
         private _dialogService: DialogService,
@@ -46,26 +46,26 @@ export class PostsModerationComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onAction(action: Action): void {
+    onAction (action: Action): void {
         const post = this._posts.find(po => po.postId === Number(action.rowId));
         switch (action.value) {
             case PostModerationActions.APPROVE_POST:
-                this._dialogService.openConfirmDialog(
-                    `Approve post`,
-                    `Are you sure you wanna approve the post?`,
-                    this.approvePost.bind(this, post)
-                );
+                this._dialogService.confirm({
+                    title: `Approve post`,
+                    content: `Are you sure you wanna approve the post?`,
+                    callback: this.approvePost.bind(this, post)
+                });
                 break;
             case PostModerationActions.DELETE_POST:
-                this._dialogService.openConfirmDialog(
-                    `Delete post`,
-                    `Are you sure you wanna delete the post?`,
-                    this.deletePost.bind(this, post)
-                );
+                this._dialogService.confirm({
+                    title: `Delete post`,
+                    content: `Are you sure you wanna delete the post?`,
+                    callback: this.deletePost.bind(this, post)
+                });
                 break;
             case PostModerationActions.WATCH_CONTENT:
                 this._dialogService.openDialog({
@@ -77,8 +77,8 @@ export class PostsModerationComponent extends Page implements OnDestroy {
         }
     }
 
-    private approvePost(post: PostModerate): void {
-        this._httpService.put(`forum/moderation/thread/approve/posts`, { postIds: [post.postId] })
+    private approvePost (post: PostModerate): void {
+        this._httpService.put(`forum/moderation/thread/approve/posts`, {postIds: [post.postId]})
             .subscribe(() => {
                 this._posts = this._posts.filter(po => po.postId !== post.postId);
                 this.createOrUpdateTable();
@@ -90,8 +90,8 @@ export class PostsModerationComponent extends Page implements OnDestroy {
             });
     }
 
-    private deletePost(post: PostModerate): void {
-        this._httpService.put(`forum/moderation/thread/delete/posts`, { postIds: [post.postId] })
+    private deletePost (post: PostModerate): void {
+        this._httpService.put(`forum/moderation/thread/delete/posts`, {postIds: [post.postId]})
             .subscribe(() => {
                 this._posts = this._posts.filter(po => po.postId !== post.postId);
                 this.createOrUpdateTable();
@@ -103,12 +103,12 @@ export class PostsModerationComponent extends Page implements OnDestroy {
             });
     }
 
-    private onPage(data: { data: Array<PostModerate> }): void {
+    private onPage (data: { data: Array<PostModerate> }): void {
         this._posts = data.data;
         this.createOrUpdateTable();
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -120,28 +120,28 @@ export class PostsModerationComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         return this._posts.map(post => {
             const actions = [
-                { title: 'Approve', value: PostModerationActions.APPROVE_POST, condition: post.canApprove },
-                { title: 'See Content', value: PostModerationActions.WATCH_CONTENT, condition: true },
-                { title: 'Delete', value: PostModerationActions.DELETE_POST, condition: post.canDelete }
+                {title: 'Approve', value: PostModerationActions.APPROVE_POST, condition: post.canApprove},
+                {title: 'See Content', value: PostModerationActions.WATCH_CONTENT, condition: true},
+                {title: 'Delete', value: PostModerationActions.DELETE_POST, condition: post.canDelete}
             ];
             return new TableRow({
                 id: String(post.postId),
                 cells: [
-                    new TableCell({ title: post.threadTitle }),
-                    new TableCell({ title: post.user.nickname })
+                    new TableCell({title: post.threadTitle}),
+                    new TableCell({title: post.user.nickname})
                 ],
                 actions: actions.filter(action => action.condition).map(action => new TableAction(action))
             });
         });
     }
 
-    private getTableHeaders(): Array<TableHeader> {
+    private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'Thread' }),
-            new TableHeader({ title: 'User' })
+            new TableHeader({title: 'Thread'}),
+            new TableHeader({title: 'User'})
         ];
     }
 }

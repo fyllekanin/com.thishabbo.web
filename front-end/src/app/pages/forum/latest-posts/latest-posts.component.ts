@@ -14,11 +14,11 @@ import { FORUM_BREADCRUM_ITEM } from '../forum.constants';
     styleUrls: ['latest-posts.component.css']
 })
 export class LatestPostsComponent extends Page implements OnDestroy {
-    private _page: LatestPostsPage;
+    private _data: LatestPostsPage;
 
     pagination: PaginationModel;
 
-    constructor(
+    constructor (
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute,
         breadcrumbService: BreadcrumbService
@@ -33,20 +33,20 @@ export class LatestPostsComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    get items(): Array<ForumLatestPost> {
-        return this._page.items;
+    get items (): Array<ForumLatestPost> {
+        return this._data.items;
     }
 
-    private onPage(data: { data: LatestPostsPage }): void {
-        this._page = data.data;
+    private onPage (data: { data: LatestPostsPage }): void {
+        this._data = data.data;
 
         this.pagination = new PaginationModel({
-            page: this._page.page,
-            total: this._page.total,
+            page: this._data.page,
+            total: this._data.total,
             url: '/forum/latest-posts/page/:page'
         });
     }

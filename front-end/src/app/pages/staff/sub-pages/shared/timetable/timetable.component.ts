@@ -26,7 +26,7 @@ import { SelectionComponent } from './selection/selection.component';
 })
 export class TimetableComponent extends Page implements OnDestroy {
     private readonly _type;
-    private _page: TimetablePage = new TimetablePage();
+    private _data: TimetablePage = new TimetablePage();
 
     tabs: Array<TitleTab> = [];
 
@@ -114,7 +114,7 @@ export class TimetableComponent extends Page implements OnDestroy {
                 this._componentFactory.resolveComponentFactory(SelectionComponent) : null,
             content: 'Sure you wanna book this slot?',
             data: {
-                events: this._page.events,
+                events: this._data.events,
                 canBookRadioForOther: this.canBookRadioForOther(),
                 canBookEventForOther: this.canBookEventForOther(),
                 isEvents: this.isEvents()
@@ -159,7 +159,7 @@ export class TimetableComponent extends Page implements OnDestroy {
             title: 'Success',
             message: 'Slot booked'
         }));
-        this._page.timetable.push(new TimetableModel({
+        this._data.timetable.push(new TimetableModel({
             timetableId: item.timetableId,
             day: day,
             hour: hour,
@@ -181,10 +181,10 @@ export class TimetableComponent extends Page implements OnDestroy {
             return;
         }
 
-        this._dialogService.openConfirmDialog(
-            `Sure you wanna unbook?`,
-            `Are you sure you wanna unbook ${timetable.user.nickname}'s slot?`,
-            () => {
+        this._dialogService.confirm({
+            title: `Sure you wanna unbook?`,
+            content: `Are you sure you wanna unbook ${timetable.user.nickname}'s slot?`,
+            callback: () => {
                 this._dialogService.closeDialog();
                 this._httpService.delete(`staff/${this._type}/timetable/${timetable.timetableId}`)
                     .subscribe(() => {
@@ -192,10 +192,10 @@ export class TimetableComponent extends Page implements OnDestroy {
                             title: 'Success',
                             message: 'Slot unbooked'
                         }));
-                        this._page.timetable = this._page.timetable.filter(item => item.timetableId !== timetable.timetableId);
+                        this._data.timetable = this._data.timetable.filter(item => item.timetableId !== timetable.timetableId);
                     });
             }
-        );
+        });
     }
 
     private onDayChange (params): void {
@@ -208,14 +208,14 @@ export class TimetableComponent extends Page implements OnDestroy {
 
     private getTimetableByHour (hour: number): TimetableModel {
         const currentDay = this.getCurrentDay();
-        return this._page.timetable
+        return this._data.timetable
             .filter(timetable => timetable.day === currentDay)
             .find(timetable => timetable.hour === hour);
     }
 
     private onData (data: { data: TimetablePage }): void {
-        this._page = data.data;
-        this._page.timetable.forEach(booking => {
+        this._data = data.data;
+        this._data.timetable.forEach(booking => {
             const convertedHour = booking.hour + TimeHelper.getTimeOffsetInHours();
             booking.day = this.getDay(convertedHour, booking.day);
             booking.hour = this.getHour(convertedHour);

@@ -27,7 +27,7 @@ export class ThreadsModerationComponent extends Page implements OnDestroy {
 
     tableConfig: TableConfig;
 
-    constructor(
+    constructor (
         private _notificationService: NotificationService,
         private _httpService: HttpService,
         private _dialogService: DialogService,
@@ -45,31 +45,31 @@ export class ThreadsModerationComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onAction(action: Action): void {
+    onAction (action: Action): void {
         const thread = this._threads.find(th => th.threadId === Number(action.rowId));
         switch (action.value) {
             case ThreadModerationActions.APPROVE_THREAD:
-                this._dialogService.openConfirmDialog(
-                    `Approve thread`,
-                    `Are you sure you wanna approve thread: ${thread.title}?`,
-                    this.approveThread.bind(this, thread)
-                );
+                this._dialogService.confirm({
+                    title: `Approve thread`,
+                    content: `Are you sure you wanna approve thread: ${thread.title}?`,
+                    callback: this.approveThread.bind(this, thread)
+                });
                 break;
             case ThreadModerationActions.DELETE_THREAD:
-                this._dialogService.openConfirmDialog(
-                    `Delete thread`,
-                    `Are you sure you wanna delete thread: ${thread.title}?`,
-                    this.deleteThread.bind(this, thread)
-                );
+                this._dialogService.confirm({
+                    title: `Delete thread`,
+                    content: `Are you sure you wanna delete thread: ${thread.title}?`,
+                    callback: this.deleteThread.bind(this, thread)
+                });
                 break;
         }
     }
 
-    private approveThread(thread: ThreadModerate): void {
+    private approveThread (thread: ThreadModerate): void {
         this._httpService.put(`forum/moderation/thread/approve/${thread.threadId}`)
             .subscribe(() => {
                 this._threads = this._threads.filter(th => th.threadId !== thread.threadId);
@@ -82,7 +82,7 @@ export class ThreadsModerationComponent extends Page implements OnDestroy {
             });
     }
 
-    private deleteThread(thread: ThreadModerate): void {
+    private deleteThread (thread: ThreadModerate): void {
         this._httpService.delete(`forum/moderation/thread/delete/${thread.threadId}`)
             .subscribe(() => {
                 this._threads = this._threads.filter(th => th.threadId !== thread.threadId);
@@ -95,12 +95,12 @@ export class ThreadsModerationComponent extends Page implements OnDestroy {
             });
     }
 
-    private onPage(data: { data: Array<ThreadModerate> }): void {
+    private onPage (data: { data: Array<ThreadModerate> }): void {
         this._threads = data.data;
         this.createOrUpdateTable();
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -112,29 +112,29 @@ export class ThreadsModerationComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         return this._threads.map(thread => {
             const actions = [
-                { title: 'Approve', value: ThreadModerationActions.APPROVE_THREAD, condition: thread.canApprove },
-                { title: 'Delete', value: ThreadModerationActions.DELETE_THREAD, condition: thread.canDelete }
+                {title: 'Approve', value: ThreadModerationActions.APPROVE_THREAD, condition: thread.canApprove},
+                {title: 'Delete', value: ThreadModerationActions.DELETE_THREAD, condition: thread.canDelete}
             ];
             return new TableRow({
                 id: String(thread.threadId),
                 cells: [
-                    new TableCell({ title: thread.title }),
-                    new TableCell({ title: thread.user.nickname }),
-                    new TableCell({ title: thread.categoryTitle })
+                    new TableCell({title: thread.title}),
+                    new TableCell({title: thread.user.nickname}),
+                    new TableCell({title: thread.categoryTitle})
                 ],
                 actions: actions.filter(action => action.condition).map(action => new TableAction(action))
             });
         });
     }
 
-    private getTableHeaders(): Array<TableHeader> {
+    private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'Thread' }),
-            new TableHeader({ title: 'User' }),
-            new TableHeader({ title: 'Category' })
+            new TableHeader({title: 'Thread'}),
+            new TableHeader({title: 'User'}),
+            new TableHeader({title: 'Category'})
         ];
     }
 }

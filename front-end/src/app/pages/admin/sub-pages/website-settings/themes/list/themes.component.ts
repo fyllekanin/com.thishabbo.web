@@ -5,7 +5,8 @@ import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import {
-    SITECP_BREADCRUMB_ITEM, THEMES_BREADCRUMB_ITEM,
+    SITECP_BREADCRUMB_ITEM,
+    THEMES_BREADCRUMB_ITEM,
     WEBSITE_SETTINGS_BREADCRUMB_ITEM
 } from '../../../../admin.constants';
 import {
@@ -30,18 +31,18 @@ import { NotificationMessage } from 'shared/app-views/global-notification/global
 export class ThemesComponent extends Page implements OnDestroy {
     private _data: Array<Theme> = [];
     private _actions: Array<TableAction> = [
-        new TableAction({ title: 'Edit', value: ThemeActions.EDIT }),
-        new TableAction({ title: 'Make Default', value: ThemeActions.DEFAULT }),
-        new TableAction({ title: 'Delete', value: ThemeActions.DELETE })
+        new TableAction({title: 'Edit', value: ThemeActions.EDIT}),
+        new TableAction({title: 'Make Default', value: ThemeActions.DEFAULT}),
+        new TableAction({title: 'Delete', value: ThemeActions.DELETE})
     ];
 
     tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Create New', link: '/admin/website-settings/themes/new' }),
-        new TitleTab({ title: 'Clear Default', value: ThemeActions.CLEAR_DEFAULT })
+        new TitleTab({title: 'Create New', link: '/admin/website-settings/themes/new'}),
+        new TitleTab({title: 'Clear Default', value: ThemeActions.CLEAR_DEFAULT})
     ];
     tableConfig: TableConfig;
 
-    constructor(
+    constructor (
         private _router: Router,
         private _httpService: HttpService,
         private _dialogService: DialogService,
@@ -56,7 +57,7 @@ export class ThemesComponent extends Page implements OnDestroy {
             current: THEMES_BREADCRUMB_ITEM.title,
             items: [
                 SITECP_BREADCRUMB_ITEM,
-                WEBSITE_SETTINGS_BREADCRUMB_ITEM,
+                WEBSITE_SETTINGS_BREADCRUMB_ITEM
             ]
         });
     }
@@ -65,7 +66,7 @@ export class ThemesComponent extends Page implements OnDestroy {
         super.destroy();
     }
 
-    onTabClick(value: number): void {
+    onTabClick (value: number): void {
         if (value !== ThemeActions.CLEAR_DEFAULT) {
             return;
         }
@@ -82,7 +83,7 @@ export class ThemesComponent extends Page implements OnDestroy {
             });
     }
 
-    onAction(action: Action): void {
+    onAction (action: Action): void {
         switch (action.value) {
             case ThemeActions.EDIT:
                 this._router.navigateByUrl(`/admin/website-settings/themes/${action.rowId}`);
@@ -96,11 +97,11 @@ export class ThemesComponent extends Page implements OnDestroy {
         }
     }
 
-    private onMakeDefault(themeId: number): void {
-        this._dialogService.openConfirmDialog(
-            'Are you sure?',
-            'Are you sure you wanna make this theme default?',
-            () => {
+    private onMakeDefault (themeId: number): void {
+        this._dialogService.confirm({
+            title: 'Are you sure?',
+            content: 'Are you sure you wanna make this theme default?',
+            callback: () => {
                 this._httpService.put(`admin/content/themes/default/${themeId}`)
                     .subscribe(() => {
                         this._data.forEach(item => {
@@ -114,14 +115,14 @@ export class ThemesComponent extends Page implements OnDestroy {
                         }));
                     });
             }
-        );
+        });
     }
 
-    private onDelete(themeId: number): void {
-        this._dialogService.openConfirmDialog(
-            'Are you sure?',
-            'Are you sure you wanna delete this theme?',
-            () => {
+    private onDelete (themeId: number): void {
+        this._dialogService.confirm({
+            title: 'Are you sure?',
+            content: 'Are you sure you wanna delete this theme?',
+            callback: () => {
                 this._httpService.delete(`admin/content/themes/${themeId}`)
                     .subscribe(() => {
                         this._data = this._data.filter(item => item.themeId !== Number(themeId));
@@ -133,15 +134,15 @@ export class ThemesComponent extends Page implements OnDestroy {
                         }));
                     });
             }
-        );
+        });
     }
 
-    private onData(data: { data: Array<Theme> }): void {
+    private onData (data: { data: Array<Theme> }): void {
         this._data = data.data;
         this.createOrUpdateTable();
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -153,23 +154,23 @@ export class ThemesComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         return this._data.map(item => new TableRow({
             id: item.themeId.toString(),
             cells: [
-                new TableCell({ title: item.title }),
-                new TableCell({ title: item.isDefault ? 'Yes' : 'No' }),
-                new TableCell({ title: TimeHelper.getLongDateWithTime(item.updatedAt) })
+                new TableCell({title: item.title}),
+                new TableCell({title: item.isDefault ? 'Yes' : 'No'}),
+                new TableCell({title: TimeHelper.getLongDateWithTime(item.updatedAt)})
             ],
             actions: this._actions
         }));
     }
 
-    private getTableHeaders(): Array<TableHeader> {
+    private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'Title' }),
-            new TableHeader({ title: 'Is Default' }),
-            new TableHeader({ title: 'Last Modified' })
+            new TableHeader({title: 'Title'}),
+            new TableHeader({title: 'Is Default'}),
+            new TableHeader({title: 'Last Modified'})
         ];
     }
 }

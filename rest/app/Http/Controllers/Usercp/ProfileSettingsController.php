@@ -126,12 +126,11 @@ class ProfileSettingsController extends Controller {
      */
     public function getAvatarSize(Request $request) {
         $user = $request->get('auth');
-        $avatarHeight = $this->getMaxAvatarHeight($user);
-        $avatarWidth = $this->getMaxAvatarWidth($user);
+        $avatarSize = UserHelper::getMaxAvatarSize($user->userId);
 
         return response()->json([
-            'width' => $avatarWidth,
-            'height' => $avatarHeight
+            'width' => $avatarSize->width,
+            'height' => $avatarSize->height
         ]);
     }
 
@@ -167,11 +166,10 @@ class ProfileSettingsController extends Controller {
     public function updateAvatar(Request $request) {
         $user = $request->get('auth');
         $avatar = $request->file('avatar');
-        $avatarHeight = $this->getMaxAvatarHeight($user);
-        $avatarWidth = $this->getMaxAvatarWidth($user);
+        $avatarSize = UserHelper::getMaxAvatarSize($user->userId);
 
         $this->validate($request, [
-            'avatar' => 'required|mimes:jpg,jpeg,bmp,png,gif|dimensions:max_width=' . $avatarWidth . ',max_height=' . $avatarHeight,
+            'avatar' => 'required|mimes:jpg,jpeg,bmp,png,gif|dimensions:max_width=' . $avatarSize->width . ',max_height=' . $avatarSize->height,
         ]);
 
         $fileName = $user->userId . '.gif';

@@ -27,7 +27,7 @@ export class PageComponent extends Page implements OnDestroy {
 
     tabs: Array<TitleTab> = [];
 
-    constructor(
+    constructor (
         private _router: Router,
         private _httpService: HttpService,
         private _dialogService: DialogService,
@@ -48,11 +48,11 @@ export class PageComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onTabClick(action: number): void {
+    onTabClick (action: number): void {
         switch (action) {
             case PageActions.CANCEL:
                 this._router.navigateByUrl(PAGES_BREADCRUMB_ITEM.url);
@@ -66,18 +66,18 @@ export class PageComponent extends Page implements OnDestroy {
         }
     }
 
-    get title(): string {
+    get title (): string {
         return this._data.createdAt ? `Editing: ${this._data.title}` : `Creating: ${this._data.title}`;
     }
 
-    get model(): PageModel {
+    get model (): PageModel {
         return this._data;
     }
 
-    private onSave(): void {
+    private onSave (): void {
         this._data.content = this.editor.getEditorValue();
         if (this._data.createdAt) {
-            this._httpService.put(`admin/content/pages/${this._data.pageId}`, { data: this._data })
+            this._httpService.put(`admin/content/pages/${this._data.pageId}`, {data: this._data})
                 .subscribe(() => {
                     this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
@@ -85,7 +85,7 @@ export class PageComponent extends Page implements OnDestroy {
                     }));
                 });
         } else {
-            this._httpService.post(`admin/content/pages`, { data: this._data })
+            this._httpService.post(`admin/content/pages`, {data: this._data})
                 .subscribe(() => {
                     this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
@@ -97,11 +97,11 @@ export class PageComponent extends Page implements OnDestroy {
         }
     }
 
-    private onDelete(): void {
-        this._dialogService.openConfirmDialog(
-            'Are you sure?',
-            'Are you sure you wanna delete this page?',
-            () => {
+    private onDelete (): void {
+        this._dialogService.confirm({
+            title: 'Are you sure?',
+            content: 'Are you sure you wanna delete this page?',
+            callback: () => {
                 this._httpService.delete(`admin/content/pages/${this._data.pageId}`)
                     .subscribe(() => {
                         this._notificationService.sendNotification(new NotificationMessage({
@@ -111,19 +111,19 @@ export class PageComponent extends Page implements OnDestroy {
                         this._router.navigateByUrl(PAGES_BREADCRUMB_ITEM.url);
                     }, this._notificationService.failureNotification.bind(this._notificationService));
             }
-        );
+        });
     }
 
-    private onData(data: { data: PageModel }): void {
+    private onData (data: { data: PageModel }): void {
         this._data = data.data;
         this.updateTabs();
     }
 
-    private updateTabs(): void {
+    private updateTabs (): void {
         const tabs = [
-            { title: 'Save', value: PageActions.SAVE, condition: true },
-            { title: 'Delete', value: PageActions.DELETE, condition: this._data.createdAt && !this._data.isSystem },
-            { title: 'Cancel', value: PageActions.CANCEL, condition: true }
+            {title: 'Save', value: PageActions.SAVE, condition: true},
+            {title: 'Delete', value: PageActions.DELETE, condition: this._data.createdAt && !this._data.isSystem},
+            {title: 'Cancel', value: PageActions.CANCEL, condition: true}
         ];
         this.tabs = tabs.filter(item => item.condition).map(item => new TitleTab(item));
     }

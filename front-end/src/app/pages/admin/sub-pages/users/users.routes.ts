@@ -19,6 +19,8 @@ import { EssentialsComponent } from './essentials/essentials.component';
 import { EssentialsService } from './services/essentials.service';
 import { AccoladesComponent } from './accolades/accolades.component';
 import { AccoladesService } from './services/accolades.service';
+import { SubscriptionsService } from './services/subscriptions.service';
+import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
 
 export const usersRoutes: Routes = [
     {
@@ -93,6 +95,13 @@ export const usersRoutes: Routes = [
                 component: AccoladesComponent,
                 resolve: {
                     data: AccoladesService
+                }
+            },
+            {
+                path: ':userId/subscriptions',
+                component: SubscriptionsComponent,
+                resolve: {
+                    data: SubscriptionsService
                 }
             }
         ]

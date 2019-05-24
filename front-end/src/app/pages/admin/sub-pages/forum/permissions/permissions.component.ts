@@ -6,8 +6,8 @@ import { NotificationService } from 'core/services/notification/notification.ser
 import { HttpService } from 'core/services/http/http.service';
 import { AuthService } from 'core/services/auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PermissionsPage, PermissionGroup } from './permissions.model';
-import { OnDestroy, ElementRef, Component } from '@angular/core';
+import { PermissionGroup, PermissionsPage } from './permissions.model';
+import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 
@@ -19,7 +19,7 @@ export class PermissionsComponent extends Page implements OnDestroy {
     private _permissionsPage: PermissionsPage = new PermissionsPage();
     private _selectableGroups: Array<PermissionGroup> = [];
 
-    constructor(
+    constructor (
         private _notificationService: NotificationService,
         private _httpService: HttpService,
         private _authService: AuthService,
@@ -39,24 +39,28 @@ export class PermissionsComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onGroupChange(groupId: number): void {
+    onGroupChange (groupId: number): void {
         this._router.navigateByUrl(`/admin/forum/categories/${this._permissionsPage.category.categoryId}/permissions/${groupId}`);
     }
 
-    cancel(): void {
+    cancel (): void {
         this._router.navigateByUrl('/admin/forum/categories/page/1');
     }
 
-    save(cascade: boolean): void {
+    save (cascade: boolean): void {
         const url = `admin/categories/permissions/${this._permissionsPage.category.categoryId}`;
         const groups = this._permissionsPage.groups.filter(item => item.isChecked);
-        groups.push(new PermissionGroup({ groupId: this._permissionsPage.group.groupId }));
+        groups.push(new PermissionGroup({groupId: this._permissionsPage.group.groupId}));
 
-        this._httpService.put(url, { groups: groups, cascade: cascade, permissions: this._permissionsPage.group.forumPermissions })
+        this._httpService.put(url, {
+            groups: groups,
+            cascade: cascade,
+            permissions: this._permissionsPage.group.forumPermissions
+        })
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
@@ -65,44 +69,39 @@ export class PermissionsComponent extends Page implements OnDestroy {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    get permissions(): ForumPermissions {
+    get permissions (): ForumPermissions {
         return this._permissionsPage.group.forumPermissions || new ForumPermissions();
     }
 
-    get title(): string {
+    get title (): string {
         return this._permissionsPage ?
             `Forum Permissions for Category: ${this._permissionsPage.category.title}` : '';
     }
 
-    get group(): PermissionGroup {
+    get group (): PermissionGroup {
         return this._permissionsPage.group;
     }
 
-    get groups(): Array<PermissionGroup> {
+    get groups (): Array<PermissionGroup> {
         return this._selectableGroups;
     }
 
-    get groupTitle(): string {
+    get groupTitle (): string {
         return `Editing Group: ${this._permissionsPage.group.name} Forum Permissions`;
     }
 
-    get leftHalf(): Array<PermissionGroup> {
+    get leftHalf (): Array<PermissionGroup> {
         return this._permissionsPage.groups.slice(0, Math.ceil(this._permissionsPage.groups.length / 2));
     }
 
-    get rightHalf(): Array<PermissionGroup> {
+    get rightHalf (): Array<PermissionGroup> {
         return this._permissionsPage.groups.slice(Math.ceil(this._permissionsPage.groups.length / 2));
     }
 
-    get additionalGroupsTitle(): string {
-        const selectedGroups = this._permissionsPage.groups.filter(item => item.isChecked);
-        return `Additional Groups to include in update (${selectedGroups.length} selected)`;
-    }
-
-    private onPage(data: { data: PermissionsPage }): void {
+    private onPage (data: { data: PermissionsPage }): void {
         this._permissionsPage = new PermissionsPage(data.data);
-        if (this._authService.adminPermissions.canEditDefaultPermissions && this._permissionsPage.group.groupId !== 0) {
-            this._permissionsPage.groups.unshift(new PermissionGroup({ name: 'Default', groupId: 0}));
+        if (this._authService.adminPermissions.canManageForumPermissions && this._permissionsPage.group.groupId !== 0) {
+            this._permissionsPage.groups.unshift(new PermissionGroup({name: 'Default', groupId: 0}));
         }
 
         this._selectableGroups = [].concat(this._permissionsPage.groups);

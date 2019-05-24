@@ -79,11 +79,11 @@ export class BanOnSightListComponent extends Page implements OnDestroy, OnInit {
     }
 
     private delete (rowId: number): void {
-        this._dialogService.openConfirmDialog(
-            `Deleting BOS Entry`,
-            `Are you sure that you wanna delete this?`,
-            this.onDelete.bind(this, rowId)
-        );
+        this._dialogService.confirm({
+            title: `Deleting BOS Entry`,
+            content: `Are you sure that you wanna delete this?`,
+            callback: this.onDelete.bind(this, rowId)
+        });
     }
 
     private onDelete (entryId: number): void {

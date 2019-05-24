@@ -29,7 +29,7 @@ class SubscriptionsController extends Controller {
                 return [
                     'subscriptionId' => $subscription->subscriptionId,
                     'title' => $subscription->title,
-                    'membersCount' => UserSubscription::isActive()->where('subscriptionId', $subscription->subscriptionId)->count()
+                    'membersCount' => UserSubscription::where('subscriptionId', $subscription->subscriptionId)->count()
                 ];
             })
         ]);
