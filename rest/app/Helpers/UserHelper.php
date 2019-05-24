@@ -19,7 +19,7 @@ class UserHelper {
      *
      * @return mixed|null
      */
-    public static function getSlimUser ($userId) {
+    public static function getSlimUser($userId) {
         if (!$userId && $userId != 0) {
             return null;
         }
@@ -50,7 +50,7 @@ class UserHelper {
      *
      * @return null|\stdClass
      */
-    public static function getUser ($userId) {
+    public static function getUser($userId) {
         if (!$userId) {
             return null;
         }
@@ -66,7 +66,7 @@ class UserHelper {
         }
 
         $userdata = self::getUserDataOrCreate($userId);
-        $postBit = (object) self::getUserPostBit($userdata);
+        $postBit = (object)self::getUserPostBit($userdata);
 
         $user = new \stdClass();
         $user->userId = $userId;
@@ -76,7 +76,7 @@ class UserHelper {
         $user->createdAt = $postBit->hideJoinDate ? null : $userObj->createdAt->timestamp;
         $user->posts = $postBit->hidePostCount ? null : $userObj->posts;
         $user->likes = $postBit->hideLikesCount ? null : $userObj->likes;
-        $user->badges = UserItem::badge()->where('userId', $user->userId)->isActive()->pluck('itemId')->map(function($badgeId) {
+        $user->badges = UserItem::badge()->where('userId', $user->userId)->isActive()->pluck('itemId')->map(function ($badgeId) {
             $badge = Badge::find($badgeId);
             return [
                 'badgeId' => $badgeId,
@@ -97,7 +97,7 @@ class UserHelper {
      *
      * @return mixed|string
      */
-    public static function getNicknameStylingFromId ($userId) {
+    public static function getNicknameStylingFromId($userId) {
         $user = self::getUserFromId($userId);
         $displayGroupId = Value::objectProperty($user, 'displayGroupId', 0);
         $group = Group::find($displayGroupId);
@@ -110,7 +110,7 @@ class UserHelper {
      *
      * @return object
      */
-    public static function getUserFromId ($userId) {
+    public static function getUserFromId($userId) {
         $defaultUser = (object)[
             'userId' => 0,
             'groupIds' => [0],
@@ -119,7 +119,8 @@ class UserHelper {
             'posts' => 0,
             'likes' => 0,
             'lastActivity' => 0,
-            'save' => function() {}
+            'save' => function () {
+            }
         ];
 
         if ($userId == 0) {
@@ -148,7 +149,7 @@ class UserHelper {
      *
      * @return UserData
      */
-    public static function getUserDataOrCreate ($userId) {
+    public static function getUserDataOrCreate($userId) {
         $userData = UserData::userId($userId)->first();
 
         if ($userData) {
@@ -167,7 +168,7 @@ class UserHelper {
      *
      * @return array
      */
-    public static function getUserPostBit ($userdata) {
+    public static function getUserPostBit($userdata) {
         $obj = [];
         $postBitOptions = ConfigHelper::getPostBitConfig();
 
@@ -184,12 +185,49 @@ class UserHelper {
      *
      * @return bool
      */
-    public static function canManageUser ($user, $currentId) {
+    public static function canManageUser($user, $currentId) {
         return $user->userId == $currentId ||
             User::getImmunity($user->userId) > User::getImmunity($currentId);
     }
 
-    private static function getUserBars ($userId) {
+    public static function getMaxAvatarSize($userId) {
+        $user = User::find($userId);
+        if (!$user) {
+            return (object)['width' => 200, 'height' => 200];
+        }
+        return (object)[
+            'width' => self::getMaxAvatarWidth($user),
+            'height' => self::getMaxAvatarHeight($user)
+        ];
+    }
+
+    private static function getMaxAvatarWidth($user) {
+        $size = 200;
+
+        foreach ($user->groups as $group) {
+            $size = $group->avatarWidth > $size ? $group->avatarWidth : $size;
+        }
+
+        foreach ($user->subscriptions as $subscription) {
+            $size = $subscription->avatarWidth > $size ? $subscription->avatarWidth : $size;
+        }
+        return $size;
+    }
+
+    private static function getMaxAvatarHeight($user) {
+        $size = 200;
+
+        foreach ($user->groups as $group) {
+            $size = $group->avatarHeight > $size ? $group->avatarHeight : $size;
+        }
+
+        foreach ($user->subscriptions as $subscription) {
+            $size = $subscription->avatarHeight > $size ? $subscription->avatarHeight : $size;
+        }
+        return $size;
+    }
+
+    private static function getUserBars($userId) {
         return UserGroup::where('userId', $userId)->get()->map(function ($userGroup) {
             return [
                 'name' => $userGroup->group->name,
@@ -198,9 +236,9 @@ class UserHelper {
         });
     }
 
-    private static function setUserDataFields ($user, $userdata, $postBit) {
+    private static function setUserDataFields($user, $userdata, $postBit) {
         $user->signature = $userdata ? BBcodeUtil::bbcodeParser($userdata->signature) : '';
-        $user->social = $userdata && !$postBit->hideSocials ? (object) [
+        $user->social = $userdata && !$postBit->hideSocials ? (object)[
             'discord' => $userdata->discord,
             'twitter' => $userdata->twitter
         ] : null;
