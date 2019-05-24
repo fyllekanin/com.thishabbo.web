@@ -7,10 +7,11 @@ import { Breadcrumb } from "core/services/breadcrum/breadcrum.model";
 import { USERCP_BREADCRUM_ITEM } from "../../usercp.constants";
 import { HttpClient } from "@angular/common/http";
 import { NameColour } from "./name-colour.model";
+import { NameColourService } from "../services/name-colour.service";
 
 @Component({
     selector: 'app-usercp-cover',
-    templateUrl: 'cover-photo.component.html'
+    templateUrl: 'name-colour.component.html'
 })
 export class NameColourComponent extends Page implements OnDestroy {
     private _data: NameColour = new NameColour();
@@ -20,7 +21,7 @@ export class NameColourComponent extends Page implements OnDestroy {
     ];
 
     constructor(
-        private _httpClient: HttpClient,
+        private _service: NameColourService,
         private _notificationService: NotificationService,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService
@@ -40,9 +41,7 @@ export class NameColourComponent extends Page implements OnDestroy {
 
     onSave(): void {
         if(this.validate()) {
-            this._httpClient.post('rest/api/usercp/name', {
-                'colours': this._data.colours
-            }).subscribe(() => {
+            this._service.save(this._data.colours).subscribe(() => {
                     this._notificationService.sendInfoNotification("Name Colour Updated");
                 }, error => {
                     this._notificationService.sendErrorNotification(error.error.errors.comver[0]);
@@ -50,7 +49,6 @@ export class NameColourComponent extends Page implements OnDestroy {
         } else {
             this._notificationService.sendErrorNotification("Hex codes invalid");
         }
-
     }
 
     private validate () {

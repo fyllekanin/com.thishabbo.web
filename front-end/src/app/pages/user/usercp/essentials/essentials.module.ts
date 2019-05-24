@@ -19,6 +19,8 @@ import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 import { ProfileComponent } from './profile/profile.component';
 import { ProfileService } from './services/profile.service';
 import { BadgesComponent } from './post-bit/badges/badges.component';
+import { NameColourService } from './services/name-colour.service';
+import { NameColourComponent } from './name-colour/name-colour.component';
 
 @NgModule({
     imports: [
@@ -37,7 +39,8 @@ import { BadgesComponent } from './post-bit/badges/badges.component';
         SignatureComponent,
         SocialNetworksComponent,
         ProfileComponent,
-        BadgesComponent
+        BadgesComponent,
+        NameColourComponent
     ],
     entryComponents: [
         BadgesComponent
@@ -47,7 +50,8 @@ import { BadgesComponent } from './post-bit/badges/badges.component';
         PostBitService,
         SignatureService,
         SocialNetworksService,
-        ProfileService
+        ProfileService,
+        NameColourService
     ],
     exports: [
         RouterModule
