@@ -13,11 +13,11 @@ import { LatestThread, LatestThreadsPage } from './latest-threads.model';
     styleUrls: ['latest-threads.component.css']
 })
 export class LatestThreadsComponent extends Page implements OnDestroy {
-    private _page: LatestThreadsPage;
+    private _data: LatestThreadsPage;
 
     pagination: PaginationModel;
 
-    constructor(
+    constructor (
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute,
         breadcrumbService: BreadcrumbService
@@ -32,20 +32,20 @@ export class LatestThreadsComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    get items(): Array<LatestThread> {
-        return this._page.items;
+    get items (): Array<LatestThread> {
+        return this._data.items;
     }
 
-    private onPage(data: { data: LatestThreadsPage }): void {
-        this._page = data.data;
+    private onPage (data: { data: LatestThreadsPage }): void {
+        this._data = data.data;
 
         this.pagination = new PaginationModel({
-            page: this._page.page,
-            total: this._page.total,
+            page: this._data.page,
+            total: this._data.total,
             url: '/forum/latest-threads/page/:page'
         });
     }

@@ -23,7 +23,7 @@ export class NoticeBoardComponent {
         link: '/admin/website-settings/notice-board/create'
     })];
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService,
         private _dialogService: DialogService,
@@ -42,15 +42,15 @@ export class NoticeBoardComponent {
         });
     }
 
-    deleteNotice(notice: Notice): void {
-        this._dialogService.openConfirmDialog(
-            `Deleting notice`,
-            `Are you sure that you want to delete the notice ${notice.title}?`,
-            this.onDelete.bind(this, notice)
-        );
+    deleteNotice (notice: Notice): void {
+        this._dialogService.confirm({
+            title: `Deleting notice`,
+            content: `Are you sure that you want to delete the notice ${notice.title}?`,
+            callback: this.onDelete.bind(this, notice)
+        });
     }
 
-    moveDown(noticeId: number): void {
+    moveDown (noticeId: number): void {
         const noti = this._notices.find(notice => notice.noticeId === noticeId);
         const newOrder = noti.order + 1;
         const noticeWithOrder = this._notices.find(notice => notice.order === newOrder);
@@ -59,7 +59,7 @@ export class NoticeBoardComponent {
         this.updateOrder();
     }
 
-    moveUp(noticeId): void {
+    moveUp (noticeId): void {
         const noti = this._notices.find(notice => notice.noticeId === noticeId);
         const newOrder = noti.order - 1;
         const noticeWithOrder = this._notices.find(notice => notice.order === newOrder);
@@ -68,7 +68,7 @@ export class NoticeBoardComponent {
         this.updateOrder();
     }
 
-    get notices(): Array<Notice> {
+    get notices (): Array<Notice> {
         return this._notices.sort((a, b) => {
             if (a.order > b.order) {
                 return 1;
@@ -79,8 +79,8 @@ export class NoticeBoardComponent {
         });
     }
 
-    private updateOrder(): void {
-        this._httpService.put('admin/content/notices', { notices: this._notices }).subscribe(() => {
+    private updateOrder (): void {
+        this._httpService.put('admin/content/notices', {notices: this._notices}).subscribe(() => {
             this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Success!',
                 message: 'Notice order updated'
@@ -88,15 +88,15 @@ export class NoticeBoardComponent {
         }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private onDelete(notice: Notice): void {
+    private onDelete (notice: Notice): void {
         this._httpService.delete(`admin/content/notices/${notice.noticeId}`)
             .subscribe(this.onSuccessDelete.bind(this, notice),
-            this._notificationService.failureNotification.bind(this._notificationService), () => {
-                this._dialogService.closeDialog();
-            });
+                this._notificationService.failureNotification.bind(this._notificationService), () => {
+                    this._dialogService.closeDialog();
+                });
     }
 
-    private onSuccessDelete(notice: Notice): void {
+    private onSuccessDelete (notice: Notice): void {
         this._notices = this._notices.filter(noti => noti.noticeId !== notice.noticeId);
         this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success!',

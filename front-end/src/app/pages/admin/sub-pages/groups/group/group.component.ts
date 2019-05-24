@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AdminPermissions } from 'core/services/auth/auth.model';
+import { AdminPermissions, StaffPermissions } from 'core/services/auth/auth.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
@@ -9,9 +9,8 @@ import { NotificationService } from 'core/services/notification/notification.ser
 import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { Page } from 'shared/page/page.model';
-import { SITECP_BREADCRUMB_ITEM, GROUP_LIST_BREADCRUMB_ITEM } from '../../../admin.constants';
+import { GROUP_LIST_BREADCRUMB_ITEM, SITECP_BREADCRUMB_ITEM } from '../../../admin.constants';
 import { Group, GroupActions, GroupOptions } from '../groups.model';
-import { StaffPermissions } from 'core/services/auth/auth.model';
 
 @Component({
     selector: 'app-groups-group',
@@ -62,27 +61,28 @@ export class GroupComponent extends Page implements OnDestroy {
 
     save (): void {
         if (this._group.createdAt) {
-            this._httpService.put(`admin/groups/${this._group.groupId}`, { group: this._group })
+            this._httpService.put(`admin/groups/${this._group.groupId}`, {group: this._group})
                 .subscribe(this.onSuccessUpdate.bind(this),
                     this._notificationService.failureNotification.bind(this._notificationService));
         } else {
-            this._httpService.post('admin/groups', { group: this._group })
+            this._httpService.post('admin/groups', {group: this._group})
                 .subscribe(this.onSuccessCreate.bind(this),
                     this._notificationService.failureNotification.bind(this._notificationService));
         }
     }
 
     delete (): void {
-        this._dialogService.openConfirmDialog(
-            `Deleting group`,
-            `Are you sure that you want to delete the group ${this._group.name}?`,
-            this.onDelete.bind(this)
-        );
+        this._dialogService.confirm({
+            title: `Deleting group`,
+            content: `Are you sure that you want to delete the group ${this._group.name}?`,
+            callback: this.onDelete.bind(this)
+        });
     }
 
     cancel (): void {
         this._router.navigateByUrl('/admin/groups/page/1');
     }
+
     onImmunityChange (): void {
         if (this._group.immunity > this._group.maxImmunity) {
             this._group.immunity = this._group.maxImmunity;
@@ -91,11 +91,11 @@ export class GroupComponent extends Page implements OnDestroy {
         }
     }
 
-    get userBarStyle(): string {
+    get userBarStyle (): string {
         return this._group.userBarStyling;
     }
 
-    get nicknameStyle(): string {
+    get nicknameStyle (): string {
         return this._group.nameStyling;
     }
 
@@ -138,9 +138,9 @@ export class GroupComponent extends Page implements OnDestroy {
         this._group = data.data;
 
         const tabs = [
-            { title: 'Save', value: GroupActions.SAVE, condition: true },
-            { title: 'Delete', value: GroupActions.DELETE, condition: this._group.createdAt },
-            { title: 'Cancel', value: GroupActions.CANCEL, condition: true }
+            {title: 'Save', value: GroupActions.SAVE, condition: true},
+            {title: 'Delete', value: GroupActions.DELETE, condition: this._group.createdAt},
+            {title: 'Cancel', value: GroupActions.CANCEL, condition: true}
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));
@@ -155,7 +155,7 @@ export class GroupComponent extends Page implements OnDestroy {
     }
 
     private onSuccessCreate (group: Group): void {
-        this.onPage({ data: new Group(group) });
+        this.onPage({data: new Group(group)});
         this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'Group created!'

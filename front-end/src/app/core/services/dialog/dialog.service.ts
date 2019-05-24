@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { DialogButton, DialogCloseButton, DialogConfig } from 'shared/app-views/dialog/dialog.model';
+import { DialogButton, DialogCloseButton, DialogConfig, DialogConfirm } from 'shared/app-views/dialog/dialog.model';
 
 @Injectable()
 export class DialogService {
@@ -15,13 +15,13 @@ export class DialogService {
         this._dialogConfigSubject.next(config);
     }
 
-    openConfirmDialog (title: string, content: string, callback: () => void): void {
+    confirm (config: DialogConfirm): void {
         this.openDialog({
-            title: title,
-            content: content,
+            title: config.title,
+            content: config.content,
             buttons: [
                 new DialogCloseButton('Close'),
-                new DialogButton({ title: 'Yes', callback: callback })
+                new DialogButton({title: 'Yes', callback: config.callback})
             ]
         });
     }

@@ -29,10 +29,10 @@ export class ProfileService implements Resolve<ProfileModel> {
 
     delete (visitorMessage: ProfileVisitorMessage): Promise<void> {
         return new Promise(res => {
-            this._dialogService.openConfirmDialog(
-                'Are you sure?',
-                'Are you sure you wanna delete this visitor message / comment?',
-                () => {
+            this._dialogService.confirm({
+                title: 'Are you sure?',
+                content: 'Are you sure you wanna delete this visitor message / comment?',
+                callback: () => {
                     this._httpService.delete(`admin/moderation/visitor-message/${visitorMessage.visitorMessageId}`)
                         .subscribe(() => {
                             this._notificationService.sendInfoNotification('Visitor message/comment deleted!');
@@ -40,7 +40,7 @@ export class ProfileService implements Resolve<ProfileModel> {
                             this._dialogService.closeDialog();
                         }, this._notificationService.failureNotification.bind(this._notificationService));
                 }
-            );
+            });
         });
     }
 

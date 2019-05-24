@@ -14,7 +14,7 @@ import { NotificationMessage } from 'shared/app-views/global-notification/global
 export class KickDjComponent extends Page implements OnDestroy {
 
     tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Kick DJ' })
+        new TitleTab({title: 'Kick DJ'})
     ];
     infoModel: InfoBoxModel = {
         title: 'Warning!',
@@ -23,7 +23,7 @@ export class KickDjComponent extends Page implements OnDestroy {
 you should be prepared or any other DJ to jump on air after this button click.`
     };
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService,
         private _dialogService: DialogService,
@@ -32,19 +32,19 @@ you should be prepared or any other DJ to jump on air after this button click.`
         super(elementRef);
     }
 
-    onKick(): void {
-        this._dialogService.openConfirmDialog(
-            `Kicking current DJ`,
-            `Are you sure you wanna kick the current DJ?`,
-            this.doKick.bind(this)
-        );
+    onKick (): void {
+        this._dialogService.confirm({
+            title: `Kicking current DJ`,
+            content: `Are you sure you wanna kick the current DJ?`,
+            callback: this.doKick.bind(this)
+        });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    private doKick(): void {
+    private doKick (): void {
         this._httpService.post('staff/radio/kick/dj', {})
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({

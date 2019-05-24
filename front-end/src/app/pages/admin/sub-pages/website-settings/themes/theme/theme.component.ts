@@ -5,7 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Theme, ThemeActions } from '../theme.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import {
-    SITECP_BREADCRUMB_ITEM, THEMES_BREADCRUMB_ITEM,
+    SITECP_BREADCRUMB_ITEM,
+    THEMES_BREADCRUMB_ITEM,
     WEBSITE_SETTINGS_BREADCRUMB_ITEM
 } from '../../../../admin.constants';
 import { TitleTab } from 'shared/app-views/title/title.model';
@@ -24,7 +25,7 @@ export class ThemeComponent extends Page implements OnDestroy {
 
     tabs: Array<TitleTab> = [];
 
-    constructor(
+    constructor (
         private _router: Router,
         private _httpService: HttpService,
         private _dialogService: DialogService,
@@ -49,31 +50,31 @@ export class ThemeComponent extends Page implements OnDestroy {
         super.destroy();
     }
 
-    onTabClick(action: number): void {
-       switch (action) {
-           case ThemeActions.SAVE:
-               this.onSave();
-               break;
-           case ThemeActions.DEFAULT:
-               this.onDelete();
-               break;
-           case ThemeActions.CANCEL:
-               this._router.navigateByUrl('/admin/website-settings/themes');
-               break;
-       }
+    onTabClick (action: number): void {
+        switch (action) {
+            case ThemeActions.SAVE:
+                this.onSave();
+                break;
+            case ThemeActions.DEFAULT:
+                this.onDelete();
+                break;
+            case ThemeActions.CANCEL:
+                this._router.navigateByUrl('/admin/website-settings/themes');
+                break;
+        }
     }
 
-    get model(): Theme {
+    get model (): Theme {
         return this._data;
     }
 
-    get title(): string {
+    get title (): string {
         return this._data.createdAt ? `Editing: ${this._data.title}` : `Creating: ${this._data.title}`;
     }
 
-    private onSave(): void {
+    private onSave (): void {
         if (this._data.createdAt) {
-            this._httpService.put(`admin/content/themes/${this._data.themeId}`, { theme: this._data })
+            this._httpService.put(`admin/content/themes/${this._data.themeId}`, {theme: this._data})
                 .subscribe(() => {
                     this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
@@ -81,7 +82,7 @@ export class ThemeComponent extends Page implements OnDestroy {
                     }));
                 }, this._notificationService.failureNotification.bind(this._notificationService));
         } else {
-            this._httpService.post('admin/content/themes', { theme: this._data })
+            this._httpService.post('admin/content/themes', {theme: this._data})
                 .subscribe(() => {
                     this._data.createdAt = new Date().getTime() / 1000;
                     this.updateTabs();
@@ -93,11 +94,11 @@ export class ThemeComponent extends Page implements OnDestroy {
         }
     }
 
-    private onDelete(): void {
-        this._dialogService.openConfirmDialog(
-            'Are you sure?',
-            'Are you sure you wanna delete this theme?',
-            () => {
+    private onDelete (): void {
+        this._dialogService.confirm({
+            title: 'Are you sure?',
+            content: 'Are you sure you wanna delete this theme?',
+            callback: () => {
                 this._httpService.delete(`admin/content/themes/${this._data.themeId}`)
                     .subscribe(() => {
                         this._notificationService.sendNotification(new NotificationMessage({
@@ -108,19 +109,19 @@ export class ThemeComponent extends Page implements OnDestroy {
                         this._router.navigateByUrl('/admin/website-settings/themes');
                     });
             }
-        );
+        });
     }
 
-    private onData(data: { data: Theme }): void {
+    private onData (data: { data: Theme }): void {
         this._data = data.data;
         this.updateTabs();
     }
 
-    private updateTabs(): void {
+    private updateTabs (): void {
         const tabs = [
-            { title: 'Save', value: ThemeActions.SAVE, condition: true },
-            { title: 'Delete', value: ThemeActions.DELETE, condition: this._data.createdAt },
-            { title: 'Cancel', value: ThemeActions.CANCEL, condition: true }
+            {title: 'Save', value: ThemeActions.SAVE, condition: true},
+            {title: 'Delete', value: ThemeActions.DELETE, condition: this._data.createdAt},
+            {title: 'Cancel', value: ThemeActions.CANCEL, condition: true}
         ];
         this.tabs = tabs.filter(item => item.condition).map(item => new TitleTab(item));
     }

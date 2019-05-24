@@ -18,7 +18,7 @@ import {
 } from 'shared/components/table/table.model';
 import { ArrayHelper } from 'shared/helpers/array.helper';
 import { Page } from 'shared/page/page.model';
-import { SITECP_BREADCRUMB_ITEM, CATEGORY_LIST_BREADCRUMB_ITEM } from '../../../admin.constants';
+import { CATEGORY_LIST_BREADCRUMB_ITEM, SITECP_BREADCRUMB_ITEM } from '../../../admin.constants';
 import { CategoryListActions, ListCategory } from './categories-list.model';
 
 @Component({
@@ -34,16 +34,16 @@ export class CategoriesListComponent extends Page implements OnDestroy {
         value: CategoryListActions.EDIT_PERMISSIONS
     });
     private _actions: Array<TableAction> = [
-        new TableAction({ title: 'Edit Category', value: CategoryListActions.EDIT_CATEGORY }),
-        new TableAction({ title: 'Delete Category', value: CategoryListActions.DELETE_CATEGORY })
+        new TableAction({title: 'Edit Category', value: CategoryListActions.EDIT_CATEGORY}),
+        new TableAction({title: 'Delete Category', value: CategoryListActions.DELETE_CATEGORY})
     ];
 
     tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'New Category', link: '/admin/forum/categories/new' }),
-        new TitleTab({ title: 'Save Order', value: CategoryListActions.SAVE_ORDER })
+        new TitleTab({title: 'New Category', link: '/admin/forum/categories/new'}),
+        new TitleTab({title: 'Save Order', value: CategoryListActions.SAVE_ORDER})
     ];
 
-    constructor(
+    constructor (
         private _notificationService: NotificationService,
         private _dialogService: DialogService,
         private _httpService: HttpService,
@@ -57,29 +57,29 @@ export class CategoriesListComponent extends Page implements OnDestroy {
         this.addSubscription(activatedRoute.data, this.onPage.bind(this));
         breadcrumbService.breadcrumb = new Breadcrumb({
             current: CATEGORY_LIST_BREADCRUMB_ITEM.title,
-            items: [ SITECP_BREADCRUMB_ITEM ]
+            items: [SITECP_BREADCRUMB_ITEM]
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    getTableConfigFor(item: ListCategory) {
+    getTableConfigFor (item: ListCategory) {
         return this._tableConfigs.find(config => config.id === item.categoryId);
     }
 
-    onSaveOrder(): void {
+    onSaveOrder (): void {
         const data = this._tableConfigs.reduce((prev, curr) => {
             return prev.concat(curr.rows);
         }, []).map(row => {
             const cell = row.cells.find(c => c.title === 'displayOrder');
-            return { categoryId: row.id, order: cell.value };
+            return {categoryId: row.id, order: cell.value};
         });
         this.updateCategoryDisplayOrder(data);
     }
 
-    onTabClick(action: number): void {
+    onTabClick (action: number): void {
         switch (action) {
             case CategoryListActions.SAVE_ORDER:
                 this.onSaveOrder();
@@ -87,7 +87,7 @@ export class CategoriesListComponent extends Page implements OnDestroy {
         }
     }
 
-    onAction(action: Action): void {
+    onAction (action: Action): void {
         switch (action.value) {
             case CategoryListActions.EDIT_PERMISSIONS:
                 this._router.navigateByUrl(`/admin/forum/categories/${action.rowId}/permissions/0`);
@@ -96,34 +96,34 @@ export class CategoriesListComponent extends Page implements OnDestroy {
                 this._router.navigateByUrl(`/admin/forum/categories/${action.rowId}`);
                 break;
             case CategoryListActions.DELETE_CATEGORY:
-                this._dialogService.openConfirmDialog(
-                    `Deleting category`,
-                    `Are you sure that you want to delete the category? <br />
+                this._dialogService.confirm({
+                    title: `Deleting category`,
+                    content: `Are you sure that you want to delete the category? <br />
                         <li>All threads & posts will be deleted</li>
                         <li>All Sub categories will be without parent</li>`,
-                    this.onDelete.bind(this, Number(action.rowId))
-                );
+                    callback: this.onDelete.bind(this, Number(action.rowId))
+                });
                 break;
         }
     }
 
-    get mainCategories(): Array<ListCategory> {
+    get mainCategories (): Array<ListCategory> {
         return this._categories;
     }
 
-    private updateCategoryDisplayOrder(data): void {
-        this._httpService.put(`admin/categories/orders/update`, { updates: data })
+    private updateCategoryDisplayOrder (data): void {
+        this._httpService.put(`admin/categories/orders/update`, {updates: data})
             .subscribe(res => {
                 const categories = res.map(item => new ListCategory(item));
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Orders updated!'
                 }));
-                this.onPage({ data: categories });
+                this.onPage({data: categories});
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private getTableConfig(item: ListCategory) {
+    private getTableConfig (item: ListCategory) {
         return new TableConfig({
             id: item.categoryId,
             title: item.title,
@@ -132,7 +132,7 @@ export class CategoriesListComponent extends Page implements OnDestroy {
         });
     }
 
-    private onDelete(categoryId: number): void {
+    private onDelete (categoryId: number): void {
         this._httpService.delete(`admin/categories/${categoryId}`)
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
@@ -151,24 +151,24 @@ export class CategoriesListComponent extends Page implements OnDestroy {
                 } else {
                     this._categories = this._categories.filter(category => category.categoryId !== categoryId);
                 }
-                this.onPage({ data: this._categories });
+                this.onPage({data: this._categories});
             }, this._notificationService.failureNotification.bind(this._notificationService), () => {
                 this._dialogService.closeDialog();
             });
     }
 
-    private onPage(data: { data: Array<ListCategory> }): void {
+    private onPage (data: { data: Array<ListCategory> }): void {
         this._categories = data.data;
         this._categories.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'displayOrder'));
         this.buildTableConfigs();
     }
 
-    private buildTableConfigs(): void {
+    private buildTableConfigs (): void {
         this._tableConfigs = ArrayHelper.copyArray(this._categories)
             .map(this.getTableConfig.bind(this));
     }
 
-    private getTableRows(item: ListCategory): Array<TableRow> {
+    private getTableRows (item: ListCategory): Array<TableRow> {
         const actions = [].concat(this._actions);
 
         if (this._authService.adminPermissions.canManageForumPermissions) {
@@ -178,7 +178,7 @@ export class CategoriesListComponent extends Page implements OnDestroy {
         const main = new TableRow({
             id: String(item.categoryId),
             cells: [
-                new TableCell({ title: item.title }),
+                new TableCell({title: item.title}),
                 new TableCell({
                     title: item.isHidden ? 'Hidden' : 'Visible'
                 }),
@@ -194,7 +194,7 @@ export class CategoriesListComponent extends Page implements OnDestroy {
             return new TableRow({
                 id: category.categoryId,
                 cells: [
-                    new TableCell({ title: category.title }),
+                    new TableCell({title: category.title}),
                     new TableCell({
                         title: category.isHidden ? 'Hidden' : 'Visible'
                     }),
@@ -211,15 +211,15 @@ export class CategoriesListComponent extends Page implements OnDestroy {
         return [main].concat(childRows);
     }
 
-    private getTableHeaders(): Array<TableHeader> {
+    private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'Category', width: '20rem' }),
-            new TableHeader({ title: 'Hidden', width: '5rem' }),
-            new TableHeader({ title: 'Display Order', width: '10rem' })
+            new TableHeader({title: 'Category', width: '20rem'}),
+            new TableHeader({title: 'Hidden', width: '5rem'}),
+            new TableHeader({title: 'Display Order', width: '10rem'})
         ];
     }
 
-    private flat(array: Array<ListCategory>, prefix = '', shouldAppend = true) {
+    private flat (array: Array<ListCategory>, prefix = '', shouldAppend = true) {
         let result = [];
         array.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'displayOrder'));
         array.forEach((item: ListCategory) => {

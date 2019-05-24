@@ -3,7 +3,7 @@ import { Page } from 'shared/page/page.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
-import { SITECP_BREADCRUMB_ITEM, BETTING_CATEGORIES_BREADCRUMB_ITEM } from '../../../../admin.constants';
+import { BETTING_CATEGORIES_BREADCRUMB_ITEM, SITECP_BREADCRUMB_ITEM } from '../../../../admin.constants';
 import { BetCategoryActions, BetCategoryModel } from '../categories.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { DialogService } from 'core/services/dialog/dialog.service';
@@ -20,7 +20,7 @@ export class CategoryComponent extends Page implements OnDestroy {
 
     tabs: Array<TitleTab> = [];
 
-    constructor(
+    constructor (
         private _notificationService: NotificationService,
         private _httpService: HttpService,
         private _dialogService: DialogService,
@@ -40,11 +40,11 @@ export class CategoryComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onTabClick(value: number): void {
+    onTabClick (value: number): void {
         switch (value) {
             case BetCategoryActions.SAVE:
                 this.onSave();
@@ -58,47 +58,47 @@ export class CategoryComponent extends Page implements OnDestroy {
         }
     }
 
-    get model(): BetCategoryModel {
+    get model (): BetCategoryModel {
         return this._data;
     }
 
-    get title(): string {
+    get title (): string {
         return this._data.createdAt ?
             `Editing Betting Category: ${this._data.name}` :
             `Creating Betting Category: ${this._data.name || ''}`;
     }
 
-    private onSave(): void {
+    private onSave (): void {
         if (this._data.createdAt) {
-            this._httpService.put(`admin/betting/category/${this._data.betCategoryId}`, { betCategory: this._data })
+            this._httpService.put(`admin/betting/category/${this._data.betCategoryId}`, {betCategory: this._data})
                 .subscribe(res => {
                     this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: `${this._data.name} updated!`
                     }));
-                    this.onData({ data: new BetCategoryModel(res) });
+                    this.onData({data: new BetCategoryModel(res)});
                 }, this._notificationService.failureNotification.bind(this._notificationService));
         } else {
-            this._httpService.post(`admin/betting/category`, { betCategory: this._data })
+            this._httpService.post(`admin/betting/category`, {betCategory: this._data})
                 .subscribe(res => {
                     this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: `${this._data.name} created!`
                     }));
-                    this.onData({ data: new BetCategoryModel(res) });
+                    this.onData({data: new BetCategoryModel(res)});
                 }, this._notificationService.failureNotification.bind(this._notificationService));
         }
     }
 
-    private onDelete(): void {
-        this._dialogService.openConfirmDialog(
-            `Deleting ${this._data.name}`,
-            `Are you sure you wanna delete ${this._data.name}?`,
-            this.doDelete.bind(this)
-        );
+    private onDelete (): void {
+        this._dialogService.confirm({
+            title: `Deleting ${this._data.name}`,
+            content: `Are you sure you wanna delete ${this._data.name}?`,
+            callback: this.doDelete.bind(this)
+        });
     }
 
-    private doDelete(): void {
+    private doDelete (): void {
         this._httpService.delete(`admin/betting/category/${this._data.betCategoryId}`)
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
@@ -109,13 +109,13 @@ export class CategoryComponent extends Page implements OnDestroy {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private onData(data: { data: BetCategoryModel }): void {
+    private onData (data: { data: BetCategoryModel }): void {
         this._data = data.data;
 
         const tabs = [
-            { title: 'Save', value: BetCategoryActions.SAVE, condition: true },
-            { title: 'Delete', value: BetCategoryActions.DELETE, condition: this._data.createdAt },
-            { title: 'Cancel', value: BetCategoryActions.CANCEL, condition: true }
+            {title: 'Save', value: BetCategoryActions.SAVE, condition: true},
+            {title: 'Delete', value: BetCategoryActions.DELETE, condition: this._data.createdAt},
+            {title: 'Cancel', value: BetCategoryActions.CANCEL, condition: true}
         ];
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));
     }

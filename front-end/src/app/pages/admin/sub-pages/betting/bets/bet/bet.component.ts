@@ -18,7 +18,7 @@ export class BetComponent extends Page implements OnDestroy {
 
     tabs: Array<TitleTab> = [];
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService,
         private _dialogService: DialogService,
@@ -30,11 +30,11 @@ export class BetComponent extends Page implements OnDestroy {
         this.addSubscription(activatedRoute.data, this.onData.bind(this));
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onTabClick(value: number): void {
+    onTabClick (value: number): void {
         switch (value) {
             case BetActions.SAVE:
                 this.onSave();
@@ -48,7 +48,7 @@ export class BetComponent extends Page implements OnDestroy {
         }
     }
 
-    get title(): string {
+    get title (): string {
         const isCreated = this._data.bet && this._data.bet.createdAt;
         const name = this._data.bet && this._data.bet.name ? this._data.bet.name : '';
         return isCreated ?
@@ -56,59 +56,59 @@ export class BetComponent extends Page implements OnDestroy {
             `Creating New Bet ${name}`;
     }
 
-    get model(): BetPage {
+    get model (): BetPage {
         return this._data;
     }
 
-    private onDelete(): void {
-        this._dialogService.openConfirmDialog(
-            `Delete Bet?`,
-            `Are you sure you wanna delete ${this._data.bet.name}?`,
-            this.doDelete.bind(this)
-        );
+    private onDelete (): void {
+        this._dialogService.confirm({
+            title: `Delete Bet?`,
+            content: `Are you sure you wanna delete ${this._data.bet.name}?`,
+            callback: this.doDelete.bind(this)
+        });
     }
 
-    private doDelete(): void {
+    private doDelete (): void {
         this._httpService.delete(`admin/betting/bet/${this._data.bet.betId}`)
             .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationMessage({
-                    title: 'Success',
-                    message: `${this._data.bet.name} is deleted!`
-                }));
-                this._router.navigateByUrl('/admin/betting/bets/page/1');
-            }, this._notificationService.failureNotification.bind(this._notificationService),
+                    this._notificationService.sendNotification(new NotificationMessage({
+                        title: 'Success',
+                        message: `${this._data.bet.name} is deleted!`
+                    }));
+                    this._router.navigateByUrl('/admin/betting/bets/page/1');
+                }, this._notificationService.failureNotification.bind(this._notificationService),
                 this._dialogService.closeDialog.bind(this._dialogService));
     }
 
-    private onSave(): void {
+    private onSave (): void {
         if (this._data.bet.createdAt) {
-            this._httpService.put(`admin/betting/bet/${this._data.bet.betId}`, { bet: this._data.bet })
+            this._httpService.put(`admin/betting/bet/${this._data.bet.betId}`, {bet: this._data.bet})
                 .subscribe(res => {
                     this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: `${this._data.bet.name} is updated!`
                     }));
-                    this.onData({ data: new BetPage(res) });
+                    this.onData({data: new BetPage(res)});
                 }, this._notificationService.failureNotification.bind(this._notificationService));
         } else {
-            this._httpService.post('admin/betting/bet', { bet: this._data.bet })
+            this._httpService.post('admin/betting/bet', {bet: this._data.bet})
                 .subscribe(res => {
                     this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: `${this._data.bet.name} is created!`
                     }));
-                    this.onData({ data: new BetPage(res) });
+                    this.onData({data: new BetPage(res)});
                 }, this._notificationService.failureNotification.bind(this._notificationService));
         }
     }
 
-    private onData(data: { data: BetPage }): void {
+    private onData (data: { data: BetPage }): void {
         this._data = data.data;
 
         const tabs = [
-            { title: 'Save', value: BetActions.SAVE, condition: true },
-            { title: 'Delete', value: BetActions.DELETE, condition: this._data.bet.createdAt },
-            { title: 'Cancel', value: BetActions.CANCEL, condition: true }
+            {title: 'Save', value: BetActions.SAVE, condition: true},
+            {title: 'Delete', value: BetActions.DELETE, condition: this._data.bet.createdAt},
+            {title: 'Cancel', value: BetActions.CANCEL, condition: true}
         ];
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));
     }

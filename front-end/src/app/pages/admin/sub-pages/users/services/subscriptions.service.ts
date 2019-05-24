@@ -46,10 +46,10 @@ export class SubscriptionsService implements Resolve<UserSubscriptionsPage> {
 
     delete (userSubscriptionId: number): Promise<void> {
         return new Promise(res => {
-            this._dialogService.openConfirmDialog(
-                'Are you sure?',
-                'Are you sure you wanna dele this user subscription?',
-                () => {
+            this._dialogService.confirm({
+                title: 'Are you sure?',
+                content: 'Are you sure you wanna dele this user subscription?',
+                callback: () => {
                     this._httpService.delete(`admin/users/subscriptions/${userSubscriptionId}`)
                         .subscribe(() => {
                             this._notificationService.sendInfoNotification('User subscription deleted');
@@ -57,7 +57,7 @@ export class SubscriptionsService implements Resolve<UserSubscriptionsPage> {
                             res();
                         }, this._notificationService.failureNotification.bind(this._notificationService));
                 }
-            );
+            });
         });
     }
 }

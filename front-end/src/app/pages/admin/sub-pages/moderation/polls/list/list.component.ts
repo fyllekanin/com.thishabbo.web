@@ -34,7 +34,7 @@ export class ListComponent extends Page implements OnDestroy {
     tableConfig: TableConfig;
     pagination: PaginationModel;
 
-    constructor(
+    constructor (
         private _notificationService: NotificationService,
         private _dialogService: DialogService,
         private _httpService: HttpService,
@@ -54,7 +54,7 @@ export class ListComponent extends Page implements OnDestroy {
         });
     }
 
-    onAction(action: Action): void {
+    onAction (action: Action): void {
         const threadPoll = this._data.polls.find(poll => poll.threadPollId === Number(action.rowId));
 
         switch (action.value) {
@@ -70,32 +70,32 @@ export class ListComponent extends Page implements OnDestroy {
         }
     }
 
-    onFilter(filter: QueryParameters): void {
+    onFilter (filter: QueryParameters): void {
         clearTimeout(this._filterTimer);
         this._filter = filter;
 
         this._filterTimer = setTimeout(() => {
             this._service.getPolls(filter, 1)
                 .subscribe(data => {
-                    this.onData({ data: data });
+                    this.onData({data: data});
                 });
         }, 200);
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    private onDelete(threadPollId: number): void {
+    private onDelete (threadPollId: number): void {
         const poll = this._data.polls.find(item => item.threadPollId === threadPollId);
-        this._dialogService.openConfirmDialog(
-            `Delete poll`,
-            `Are you sure you wanna delete the poll?`,
-            this.deletePoll.bind(this, threadPollId, poll)
-        );
+        this._dialogService.confirm({
+            title: `Delete poll`,
+            content: `Are you sure you wanna delete the poll?`,
+            callback: this.deletePoll.bind(this, threadPollId, poll)
+        });
     }
 
-    private deletePoll(threadPollId: number, poll: PollListModel): void {
+    private deletePoll (threadPollId: number, poll: PollListModel): void {
         this._httpService.delete(`forum/moderation/thread/poll/delete/${poll.threadId}`)
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
@@ -108,7 +108,7 @@ export class ListComponent extends Page implements OnDestroy {
             });
     }
 
-    private onData(data: { data: PollsListModel }): void {
+    private onData (data: { data: PollsListModel }): void {
         this._data = data.data;
         this.createOrUpdateTable();
 
@@ -120,7 +120,7 @@ export class ListComponent extends Page implements OnDestroy {
         });
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -137,30 +137,30 @@ export class ListComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         const actions = [
-            new TableAction({ title: 'View', value: PollsActions.VIEW }),
-            new TableAction({ title: 'View Thread', value: PollsActions.VIEW_THREAD }),
-            new TableAction({ title: 'Delete', value: PollsActions.DELETE })
+            new TableAction({title: 'View', value: PollsActions.VIEW}),
+            new TableAction({title: 'View Thread', value: PollsActions.VIEW_THREAD}),
+            new TableAction({title: 'Delete', value: PollsActions.DELETE})
         ];
         return this._data.polls.map(poll => {
             return new TableRow({
                 id: String(poll.threadPollId),
                 cells: [
-                    new TableCell({ title: poll.thread }),
-                    new TableCell({ title: poll.question }),
-                    new TableCell({ title: String(poll.votes )})
+                    new TableCell({title: poll.thread}),
+                    new TableCell({title: poll.question}),
+                    new TableCell({title: String(poll.votes)})
                 ],
                 actions: actions
             });
         });
     }
 
-    private getTableHeaders(): Array<TableHeader> {
+    private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'Thread' }),
-            new TableHeader({ title: 'Question' }),
-            new TableHeader({ title: 'Votes' })
+            new TableHeader({title: 'Thread'}),
+            new TableHeader({title: 'Question'}),
+            new TableHeader({title: 'Votes'})
         ];
     }
 }

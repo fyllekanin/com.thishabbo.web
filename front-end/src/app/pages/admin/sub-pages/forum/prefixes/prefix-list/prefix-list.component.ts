@@ -26,10 +26,10 @@ export class PrefixListComponent extends Page implements OnDestroy {
 
     tableConfig: TableConfig;
     tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'New Prefix', link: '/admin/forum/prefixes/new' })
+        new TitleTab({title: 'New Prefix', link: '/admin/forum/prefixes/new'})
     ];
 
-    constructor(
+    constructor (
         private _router: Router,
         private _notificationService: NotificationService,
         private _dialogService: DialogService,
@@ -41,27 +41,27 @@ export class PrefixListComponent extends Page implements OnDestroy {
         this.addSubscription(activatedRoute.data, this.onData.bind(this));
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onAction(action: Action): void {
+    onAction (action: Action): void {
         const prefix = this._prefixes.find(item => item.prefixId === Number(action.rowId));
         switch (action.value) {
             case PrefixActions.EDIT_PREFIX:
                 this._router.navigateByUrl(`/admin/forum/prefixes/${action.rowId}`);
                 break;
             case PrefixActions.DELETE_PREFIX:
-                this._dialogService.openConfirmDialog(
-                    `Delete Prefix`,
-                    `Are you sure that you want to delete the prefix?`,
-                    this.onDelete.bind(this, prefix)
-                );
+                this._dialogService.confirm({
+                    title: `Delete Prefix`,
+                    content: `Are you sure that you want to delete the prefix?`,
+                    callback: this.onDelete.bind(this, prefix)
+                });
                 break;
         }
     }
 
-    private onDelete(prefix: Prefix): void {
+    private onDelete (prefix: Prefix): void {
         this._httpService.delete(`admin/prefixes/${prefix.prefixId}`)
             .subscribe(() => {
                 this._prefixes = this._prefixes.filter(pre => pre.prefixId !== prefix.prefixId);
@@ -74,12 +74,12 @@ export class PrefixListComponent extends Page implements OnDestroy {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private onData(data: { data: Array<Prefix> }): void {
+    private onData (data: { data: Array<Prefix> }): void {
         this._prefixes = data.data;
         this.createOrUpdateTable();
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -91,25 +91,25 @@ export class PrefixListComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         const actions = [
-            new TableAction({ title: 'Edit Prefix', value: PrefixActions.EDIT_PREFIX }),
-            new TableAction({ title: 'Delete Prefix', value: PrefixActions.DELETE_PREFIX })
+            new TableAction({title: 'Edit Prefix', value: PrefixActions.EDIT_PREFIX}),
+            new TableAction({title: 'Delete Prefix', value: PrefixActions.DELETE_PREFIX})
         ];
         return this._prefixes.map(prefix => {
             return new TableRow({
                 id: String(prefix.prefixId),
                 cells: [
-                    new TableCell({ title: `<span style="${prefix.style}">${prefix.text}</span>`, innerHTML: true })
+                    new TableCell({title: `<span style="${prefix.style}">${prefix.text}</span>`, innerHTML: true})
                 ],
                 actions: actions
             });
         });
     }
 
-    private getTableHeaders(): Array<TableHeader> {
+    private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'Text' })
+            new TableHeader({title: 'Text'})
         ];
     }
 }

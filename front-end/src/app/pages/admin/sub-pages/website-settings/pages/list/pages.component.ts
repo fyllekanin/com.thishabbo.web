@@ -71,10 +71,10 @@ export class PagesComponent extends Page implements OnDestroy {
     }
 
     private onDelete (pageId: number): void {
-        this._dialogService.openConfirmDialog(
-            'Are you sure?',
-            'Are you sure you wanna delete this page?',
-            () => {
+        this._dialogService.confirm({
+            title: 'Are you sure?',
+            content: 'Are you sure you wanna delete this page?',
+            callback: () => {
                 this._httpService.delete(`admin/content/pages/${pageId}`)
                     .subscribe(() => {
                         this._data = this._data.filter(item => item.pageId !== pageId);
@@ -85,7 +85,7 @@ export class PagesComponent extends Page implements OnDestroy {
                         }));
                     }, this._notificationService.failureNotification.bind(this._notificationService));
             }
-        );
+        });
     }
 
     private onData (data: { data: Array<PageModel> }): void {

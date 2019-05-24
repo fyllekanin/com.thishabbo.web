@@ -15,7 +15,7 @@ import { SlimArticle } from 'shared/components/slim-article/slim-article.model';
 })
 
 export class HomeDefaultComponent extends Page implements OnInit, OnDestroy {
-    private _page: HomeDefaultPage = new HomeDefaultPage();
+    private _data: HomeDefaultPage = new HomeDefaultPage();
 
     constructor (
         private _authService: AuthService,
@@ -36,7 +36,7 @@ export class HomeDefaultComponent extends Page implements OnInit, OnDestroy {
     }
 
     ngOnInit (): void {
-        this._page = this._activatedRoute.snapshot.data['data'];
+        this._data = this._activatedRoute.snapshot.data['data'];
     }
 
     seeMoreBadgeArticles (): void {
@@ -44,7 +44,7 @@ export class HomeDefaultComponent extends Page implements OnInit, OnDestroy {
     }
 
     get threads (): Array<HomePageThread> {
-        return this._page.threads;
+        return this._data.threads;
     }
 
     get isLoggedIn (): boolean {
@@ -52,15 +52,15 @@ export class HomeDefaultComponent extends Page implements OnInit, OnDestroy {
     }
 
     get articles (): Array<SlimArticle> {
-        return this._page.articles;
+        return this._data.articles;
     }
 
     get mediaArticles (): Array<SlimArticle> {
-        return this._page.mediaArticles;
+        return this._data.mediaArticles;
     }
 
     get notices (): Array<Notice> {
-        return this._page.notices.sort((a, b) => {
+        return this._data.notices.sort((a, b) => {
             if (a.order > b.order) {
                 return 1;
             } else if (a.order < b.order) {
