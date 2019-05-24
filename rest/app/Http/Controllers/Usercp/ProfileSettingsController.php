@@ -13,6 +13,8 @@ use App\Utils\BBcodeUtil;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
+use App\EloquentModels\Shop\UserSubscription;
+use App\Helpers\ConfigHelper;
 
 class ProfileSettingsController extends Controller {
 
@@ -264,9 +266,13 @@ class ProfileSettingsController extends Controller {
      */
     public function getNameColours(Request $request) {
         $user = $request->get('auth');
+
+        $subscription = UserSubscription::where('userId', $user->userId)->first();
+        $canUpdateColour = $subscription && ConfigHelper::getSubscriptionOptions()['canHaveCustomNameColor'] & $subscription->subscription->options == 0;
         $userdata = UserData::where('userId', $user->userId)->first();
         return response()->json([
-            'colours' => Value::objectJsonProperty($userdata, 'nameColours', [])
+            'colours' => Value::objectJsonProperty($userdata, 'nameColours', []),
+            'canUpdateColor' => $canUpdateColour
         ]);
     }
 
@@ -279,6 +285,11 @@ class ProfileSettingsController extends Controller {
      */
     public function updateNameColours(Request $request) {
         $user = $request->get('auth');
+
+        $subscription = UserSubscription::where('userId', $user->userId)->first();
+        $canUpdateColour = $subscription && ConfigHelper::getSubscriptionOptions()['canHaveCustomNameColor'] & $subscription->subscription->options == 0;
+
+        Condition::precondition(!$canUpdateColour, 400, 'You do not have the permissions to edit name colour!');
         $colours = $request->input('colours');
 
         $valid = true;

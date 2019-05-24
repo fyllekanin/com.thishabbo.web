@@ -22,6 +22,7 @@ import { BadgesComponent } from './post-bit/badges/badges.component';
 import { NameColourService } from './services/name-colour.service';
 import { NameColourComponent } from './name-colour/name-colour.component';
 import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
+import { InfoBoxModule } from 'shared/app-views/info-box/info-box.module';
 
 @NgModule({
     imports: [
@@ -32,7 +33,8 @@ import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
         ContentModule,
         EditorModule,
         SafeHtmlModule,
-        SafeStyleModule
+        SafeStyleModule,
+        InfoBoxModule
     ],
     declarations: [
         AvatarComponent,

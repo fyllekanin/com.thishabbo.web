@@ -1,6 +1,8 @@
 <app-title [title]="'Edit name colour'" [tabs]="tabs" (onTabClick)="onSave()"></app-title>
 <app-content>
-    <div class="grid-container">
+    <app-info-box [model]="infoModel" *ngIf="!canUpdateColour">
+    </app-info-box>
+    <div *ngIf="canUpdateColour" class="grid-container">
         <div class="grid-x margin-x">
             <div class="cell small-6 position-relative">
                 <label>Name Colour (Hex Code):<br>For gradients, enter a list of hex codes (separated by commas)</label>
