@@ -3,7 +3,6 @@ import { HttpService } from 'core/services/http/http.service';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { NotificationService } from 'core/services/notification/notification.service';
 import { NameColour } from '../name-colour/name-colour.model';
 
 @Injectable()

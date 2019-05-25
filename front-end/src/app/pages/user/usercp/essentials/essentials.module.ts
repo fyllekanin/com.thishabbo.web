@@ -22,6 +22,7 @@ import { NameColourService } from './services/name-colour.service';
 import { NameColourComponent } from './name-colour/name-colour.component';
 import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
 import { InfoBoxModule } from 'shared/app-views/info-box/info-box.module';
+import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 
 @NgModule({
     imports: [
@@ -32,6 +33,7 @@ import { InfoBoxModule } from 'shared/app-views/info-box/info-box.module';
         ContentModule,
         EditorModule,
         SafeStyleModule,
+        SafeHtmlModule,
         InfoBoxModule
     ],
     declarations: [
