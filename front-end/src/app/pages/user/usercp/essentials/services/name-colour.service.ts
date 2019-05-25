@@ -10,8 +10,7 @@ import { NameColour } from '../name-colour/name-colour.model';
 export class NameColourService implements Resolve<NameColour> {
 
     constructor(
-        private _httpService: HttpService,
-        private _notificationService: NotificationService
+        private _httpService: HttpService
     ) {
     }
 
@@ -21,7 +20,6 @@ export class NameColourService implements Resolve<NameColour> {
     }
 
     save(colours: Array<string>): Observable<NameColour> {
-        return this._httpService.put('usercp/name-colour', { colours: colours })
-            .pipe(catchError(this._notificationService.failureNotification.bind(this._notificationService)));
+        return this._httpService.put('usercp/name-colour', { colours: colours });
     }
 }

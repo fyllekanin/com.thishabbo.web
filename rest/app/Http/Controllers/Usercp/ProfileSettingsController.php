@@ -224,38 +224,6 @@ class ProfileSettingsController extends Controller {
     }
 
     /**
-     * Get the maximum width the supplied user can use
-     *
-     * @param $user
-     *
-     * @return int
-     */
-    private function getMaxAvatarWidth($user) {
-        $width = 200;
-
-        foreach ($user->groups as $group) {
-            $width = $group->avatarWidth > $width ? $group->avatarWidth : $width;
-        }
-        return $width;
-    }
-
-    /**
-     * Get the maximum height the supplied user can use
-     *
-     * @param $user
-     *
-     * @return int
-     */
-    private function getMaxAvatarHeight($user) {
-        $height = 200;
-
-        foreach ($user->groups as $group) {
-            $height = $group->avatarHeight > $height ? $group->avatarHeight : $height;
-        }
-        return $height;
-    }
-
-    /**
      * Get request to fetch the users current name colours
      *
      * @param Request $request

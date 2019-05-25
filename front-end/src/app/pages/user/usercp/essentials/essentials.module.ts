@@ -15,7 +15,6 @@ import { SignatureService } from './services/signature.service';
 import { SocialNetworksService } from './services/social-networks.service';
 import { essentialsRoutes } from './essentials.routes';
 import { EditorModule } from 'shared/components/editor/editor.module';
-import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 import { ProfileComponent } from './profile/profile.component';
 import { ProfileService } from './services/profile.service';
 import { BadgesComponent } from './post-bit/badges/badges.component';
@@ -32,7 +31,6 @@ import { InfoBoxModule } from 'shared/app-views/info-box/info-box.module';
         TitleModule,
         ContentModule,
         EditorModule,
-        SafeHtmlModule,
         SafeStyleModule,
         InfoBoxModule
     ],

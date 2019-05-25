@@ -3,12 +3,12 @@
     <app-info-box [model]="infoModel" *ngIf="!canUpdateColour">
     </app-info-box>
     <div *ngIf="canUpdateColour" class="grid-container">
-        <div class="grid-x margin-x">
-            <div class="cell small-6 position-relative">
+        <div class="grid-x">
+            <div class="cell small-6">
                 <label>Name Colour (Hex Code):<br>For gradients, enter a list of hex codes (separated by commas)</label>
                 <input [(ngModel)]="colours" type="text"/>
             </div>
-            <div class="cell small-6 position-relative">
+            <div class="cell small-6">
                 Preview:<br>
                 <span class="username" [style]="nameStyle | safeStyle">{{ name }}</span>
             </div>

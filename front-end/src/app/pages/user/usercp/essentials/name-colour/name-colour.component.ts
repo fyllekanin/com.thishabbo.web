@@ -13,7 +13,7 @@ import { AuthService } from 'core/services/auth/auth.service';
 import { InfoBoxModel, INFO_BOX_TYPE } from 'shared/app-views/info-box/info-box.model';
 
 @Component({
-    selector: 'app-usercp-cover',
+    selector: 'app-usercp-name-colour',
     templateUrl: 'name-colour.component.html'
 })
 export class NameColourComponent extends Page implements OnDestroy {
@@ -55,23 +55,15 @@ export class NameColourComponent extends Page implements OnDestroy {
         if (this.validate()) {
             this._service.save(this._data.colours).subscribe(() => {
                     this._notificationService.sendInfoNotification('Name Colour Updated');
-                }, error => {
-                    this._notificationService.sendErrorNotification(error.error.errors.comver[0]);
-                });
+                }, this._notificationService.failureNotification.bind(this._notificationService));
         } else {
             this._notificationService.sendErrorNotification('Hex codes invalid');
         }
     }
 
     private validate () {
-        let valid = true;
         const regex = /^#[0-9a-f]{3}(?:[0-9a-f]{3})?$/;
-        this._data.colours.forEach(colour => {
-            if (!regex.test(colour)) {
-                valid = false;
-            }
-        });
-        return valid;
+        return this._data.colours.every(colour => regex.test(colour));
     }
 
     get name (): string {

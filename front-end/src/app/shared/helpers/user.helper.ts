@@ -18,8 +18,6 @@ export class UserHelper {
             style += '); -webkit-background-clip: text; -webkit-text-fill-color: transparent;';
         }
 
-        console.log(style);
-
         return style;
     }
 }
