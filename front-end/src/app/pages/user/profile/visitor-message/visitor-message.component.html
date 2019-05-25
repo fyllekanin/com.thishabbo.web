@@ -1,4 +1,10 @@
+<app-title [title]="'Visitor Message'" [top]="redHeader"></app-title>
 <app-content [ngClass]="'vmId-' + visitorMessage.visitorMessageId">
+    <div class="position-relative">
+        <div class="post-bit-row">
+            <i  class="fas fa-clock"></i> {{getTime(visitorMessage.createdAt)}}
+        </div>
+    </div>
     <div class="toggle-replies" (click)="isRepliesOpen = !isRepliesOpen; toggleReplies();">
         <div class="avatar">
             <img appUserProfile [info]="visitorMessage.user"/>
@@ -18,8 +24,7 @@
                 <span *ngIf="canInfract(visitorMessage)" (click)="infract($event, visitorMessage)"
                       tooltip="Warn / Infract"><i
                         class="fa fa-bell"></i></span>
-                <span *ngIf="canReport(visitorMessage) || canInfract(visitorMessage)">|</span>
-                {{getTime(visitorMessage.createdAt)}}
+                <span *ngIf="canReport(visitorMessage) || canInfract(visitorMessage)"></span>
             </div>
             <div class="user-controls">
                 <span tooltip="Likes" [ngClass]="visitorMessage.isLiking ? 'likes' : ''"

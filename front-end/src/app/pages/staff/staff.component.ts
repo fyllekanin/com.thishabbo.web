@@ -96,7 +96,7 @@ export class StaffComponent extends Page implements OnDestroy, OnInit {
                         isApplicable: this._authService.staffPermissions.canEvent
                     }),
                     new SideMenuItem({
-                        title: 'Events Say',
+                        title: 'Events Says',
                         link: '/staff/events/say',
                         isApplicable: this._authService.staffPermissions.canSetEventsText
                     })

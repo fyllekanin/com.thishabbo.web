@@ -150,7 +150,7 @@ export class BansComponent extends Page implements OnDestroy {
             filterConfigs: [
                 new FilterConfig({
                     title: 'Nickname',
-                    placeholder: 'Search for user',
+                    placeholder: 'Search for user...',
                     key: 'nickname'
                 })
             ]

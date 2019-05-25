@@ -183,7 +183,7 @@ export class TypesComponent extends Page implements OnDestroy {
             rows: this.getTableRows(),
             filterConfigs: [new FilterConfig({
                 title: 'Filter',
-                placeholder: 'Search for event types',
+                placeholder: 'Search for Event Types...',
                 key: 'filter'
             })]
         });
