@@ -1,4 +1,3 @@
-import { catchError, map } from 'rxjs/operators';
 import { HttpService } from 'core/services/http/http.service';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
