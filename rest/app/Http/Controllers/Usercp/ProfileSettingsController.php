@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Usercp;
 
+use App\EloquentModels\User\Avatar;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserData;
 use App\EloquentModels\User\UserProfile;
@@ -13,6 +14,7 @@ use App\Utils\BBcodeUtil;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class ProfileSettingsController extends Controller {
 
@@ -166,9 +168,11 @@ class ProfileSettingsController extends Controller {
         $avatar = $request->file('avatar');
         $avatarSize = UserHelper::getMaxAvatarSize($user->userId);
 
-        $this->validate($request, [
+        $request->validate([
             'avatar' => 'required|mimes:jpg,jpeg,bmp,png,gif|dimensions:max_width=' . $avatarSize->width . ',max_height=' . $avatarSize->height,
         ]);
+
+        $this->backupOldAvatarIfExist($user);
 
         $fileName = $user->userId . '.gif';
         $destination = base_path('/public/rest/resources/images/users');
@@ -219,5 +223,20 @@ class ProfileSettingsController extends Controller {
             'signature' => $signature,
             'parsedSignature' => BBcodeUtil::bbcodeParser($signature)
         ]);
+    }
+
+    private function backupOldAvatarIfExist($user) {
+        if (!File::exists(base_path('public/rest/resources/images/users/' . $user->userId . '.gif'))) {
+            dd("hey");
+            return;
+        }
+
+        $avatar = new Avatar([
+            'userId' => $user->userId
+        ]);
+        $avatar->save();
+
+        File::move(base_path('public/rest/resources/images/users/' . $user->userId . '.gif'),
+            base_path('public/rest/resources/images/old-avatars/') . $avatar->avatarId . '.gif');
     }
 }
