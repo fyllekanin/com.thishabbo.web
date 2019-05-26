@@ -11,7 +11,7 @@ export class CommonUtil {
         return element(by.css('app-top-box .welcome .logged-in .dropdown')).isPresent();
     }
 
-    static login (username: string, password: string): void {
+    static login (username: string, password: string, checkSuccess = true): void {
         const usernameInput = element(by.css('app-top-bar input[name="loginName"]'));
         InputUtil.fillInput(usernameInput, username);
 
@@ -20,12 +20,14 @@ export class CommonUtil {
 
         const loginButton = element(by.cssContainingText('app-top-bar button', 'Login'));
         CommonUtil.click(loginButton);
-        browser.sleep(1000);
-        browser.actions().mouseMove(element(by.css('app-top-bar')), {y: 0, x: 0});
-        browser.sleep(1000);
 
-        const experience = element(by.css('app-top-box .experience'));
-        browser.wait(ExpectedConditions.presenceOf(experience), 10000, 'Expected user to be logged in');
+        if (checkSuccess) {
+            browser.sleep(1000);
+            browser.actions().mouseMove(element(by.css('app-top-bar')), {y: 0, x: 0});
+            browser.sleep(1000);
+            const experience = element(by.css('app-top-box .experience'));
+            browser.wait(ExpectedConditions.presenceOf(experience), 10000, 'Expected user to be logged in');
+        }
     }
 
     static getNicknameElement (): ElementFinder {
@@ -53,5 +55,9 @@ export class CommonUtil {
         browser.wait(ExpectedConditions.presenceOf(ele), 10000, `Expected table filter with placeholder "${placeholder}" to be present`);
 
         InputUtil.fillInput(ele, value);
+    }
+
+    static scrollToBottom (): void {
+        browser.executeScript('window.scrollTo(0,document.body.scrollHeight);');
     }
 }

@@ -7,13 +7,13 @@ use Illuminate\Support\Facades\Cache;
 
 class BBcodeUtil {
 
-    public static function arrowsToEntry ($content) {
+    public static function arrowsToEntry($content) {
         $content = str_replace(">", "&#62;", $content);
         $content = str_replace("<", "&#60;", $content);
         return $content;
     }
 
-    public static function bbcodeParser ($content, $nl2br = true) {
+    public static function bbcodeParser($content, $nl2br = true) {
         $bbcodes = null;
         $content = self::arrowsToEntry($content);
 
