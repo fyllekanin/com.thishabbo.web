@@ -7,13 +7,13 @@ use Illuminate\Support\Facades\Cache;
 
 class BBcodeUtil {
 
-    public static function arrowsToEntry ($content) {
+    public static function arrowsToEntry($content) {
         $content = str_replace(">", "&#62;", $content);
         $content = str_replace("<", "&#60;", $content);
         return $content;
     }
 
-    public static function bbcodeParser ($content, $nl2br = true) {
+    public static function bbcodeParser($content, $nl2br = true) {
         $bbcodes = null;
         $content = self::arrowsToEntry($content);
 
@@ -30,7 +30,11 @@ class BBcodeUtil {
                     '<img src="/rest/resources/images/emojis/' . $bbcode->bbcodeId . '.gif" />', $content);
                 continue;
             }
-            $content = preg_replace([$bbcode->pattern], [$bbcode->replace], $content);
+            try {
+                $content = preg_replace([$bbcode->pattern], [$bbcode->replace], $content);
+            } catch (\Exception $e) {
+                dd($bbcode);
+            }
         }
 
         return $nl2br ? nl2br($content) : $content;

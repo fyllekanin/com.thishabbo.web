@@ -28,7 +28,7 @@ describe('SiteCP #1', () => {
         BbcodePage.setName(bbcodeName);
         BbcodePage.setContent('$1');
         BbcodePage.setExample('[new]New[/new]');
-        BbcodePage.setPattern('/\[new\](.?)\]\/new\]/');
+        BbcodePage.setPattern('/\\\\[new\\\\](((?R)|.)*?)\\\\[\\\\/new\\\\]/si');
         BbcodePage.setReplace('<new>$1</new>');
 
         NavigationUtil.clickTab('Save');
