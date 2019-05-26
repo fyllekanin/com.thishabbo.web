@@ -173,7 +173,7 @@ class BetsController extends Controller {
 
         $bet->name = $newBet->name;
         $bet->leftSide = $newBet->leftSide;
-        $bet->rigthSide = $newBet->rightSide;
+        $bet->rightSide = $newBet->rightSide;
         $bet->betCategoryId = $newBet->betCategoryId;
         $bet->save();
 
