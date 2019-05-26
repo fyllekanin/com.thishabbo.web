@@ -146,7 +146,7 @@ describe('SiteCP #1', () => {
         browser.sleep(2000);
         NavigationUtil.clickUserNavigation('Logout');
 
-        CommonUtil.login('test', 'test4321');
+        CommonUtil.login('test', 'test4321', false);
         expect(element(by.cssContainingText('.global-notification-message', 'This account is banned until')));
     });
 });
