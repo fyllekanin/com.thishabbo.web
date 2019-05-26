@@ -75,6 +75,10 @@ export class AvatarComponent extends Page implements OnDestroy {
         });
     }
 
+    getOldAvatarUrl (id: number): string {
+        return `background-image: url('/rest/resources/images/old-avatars/${id}.gif')`;
+    }
+
     get model (): AvatarModel {
         return this._avatarSize;
     }

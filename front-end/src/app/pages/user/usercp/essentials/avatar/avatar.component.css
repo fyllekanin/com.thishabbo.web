@@ -1,11 +1,10 @@
 .old-avatar {
-    border: 1px solid #dedede;
-    transition: 0.5s;
     cursor: pointer;
-    width: 20%;
-    text-align: center;
-}
-
-.old-avatar:hover {
-    border: 1px solid #000000;
+    margin: 1.5rem 3rem;
+    background: no-repeat center;
+    background-size: cover;
+    border: 3px solid #ffffff;
+    border-radius: 50%;
+    width: 10rem;
+    height: 10rem !important;
 }

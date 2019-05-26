@@ -19,8 +19,8 @@
     <div class="grid-container">
         <div class="grid-x grid-margin-x grid-margin-y">
             <div class="cell small-6 medium-4 align-center-middle old-avatar" *ngFor="let id of model.oldAvatarIds"
-                 (click)="onOldAvatar(id)">
-                <img [src]="'/rest/resources/images/old-avatars/' + id + '.gif'"/>
+                 (click)="onOldAvatar(id)"
+                 [style]="getOldAvatarUrl(id) | safeStyle">
             </div>
         </div>
     </div>

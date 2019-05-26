@@ -204,7 +204,7 @@ class ProfileSettingsController extends Controller {
             'The avatar size is bigger then the size you can have');
 
         $this->backupOldAvatarIfExist($user);
-        File::move(base_path('public/rest/resources/images/old-avatars/') . $avatar->avatarId . '.gif',
+        File::copy(base_path('public/rest/resources/images/old-avatars/') . $avatar->avatarId . '.gif',
             base_path('public/rest/resources/images/users/' . $user->userId . '.gif'));
 
         Logger::user($user->userId, $request->ip(), Action::UPDATED_AVATAR);
