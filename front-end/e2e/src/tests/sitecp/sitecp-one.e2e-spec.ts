@@ -4,7 +4,7 @@ import { BbcodePage } from '../../pages/sitecp/bbcode.page';
 import { StaffListPage } from '../../pages/sitecp/staff-list.page';
 import { BettingPage } from '../../pages/sitecp/betting.page';
 import { InputUtil } from '../../utils/input.util';
-import { by, element } from 'protractor';
+import { browser, by, element } from 'protractor';
 
 describe('SiteCP #1', () => {
     const USERNAME = 'tovven';
@@ -143,7 +143,7 @@ describe('SiteCP #1', () => {
         InputUtil.fillInput(element(by.css('app-admin-user-ban-reason input')), 'You are banned');
 
         NavigationUtil.clickButton('Ban');
-        NavigationUtil.clickTab('Cancel');
+        browser.sleep(2000);
         NavigationUtil.clickUserNavigation('Logout');
 
         CommonUtil.login('test', 'test4321');
