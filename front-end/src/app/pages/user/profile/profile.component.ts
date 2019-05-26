@@ -5,9 +5,9 @@ import {
     ProfileActions,
     ProfileModel,
     ProfileRelations,
+    ProfileSlots,
     ProfileStats,
-    ProfileVisitorMessage,
-    ProfileSlots
+    ProfileVisitorMessage
 } from './profile.model';
 import { Page } from 'shared/page/page.model';
 import { ActivatedRoute } from '@angular/router';
@@ -35,7 +35,7 @@ export class ProfileComponent extends Page implements OnDestroy {
 
     @ViewChild('editor') editor: EditorComponent;
     sendButton: Array<EditorAction> = [
-        new EditorAction({title: 'Send Message'})
+        new EditorAction({title: 'Send Message', saveCallback: this.onPost.bind(this)})
     ];
     followerTabs: Array<TitleTab> = [];
     pagination: PaginationModel;
@@ -66,6 +66,7 @@ export class ProfileComponent extends Page implements OnDestroy {
             .subscribe(res => {
                 this._data.visitorMessages.items.unshift(res);
                 this.editor.content = '';
+                this._notificationService.sendInfoNotification('Visitor message posted');
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 

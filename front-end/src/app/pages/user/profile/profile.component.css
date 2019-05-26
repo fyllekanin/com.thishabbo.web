@@ -22,6 +22,7 @@
 .profile-name {
     text-align: center;
     font-size: 0.9rem;
+    margin-bottom: 2px;
 }
 
 .profile-joined {
@@ -49,10 +50,6 @@
     border-radius: 2px;
     box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.04);
     margin: 3px 0 0;
-}
-
-.relation {
-    margin-bottom: 5px;
 }
 
 .relation app-user-link {

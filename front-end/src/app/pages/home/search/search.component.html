@@ -2,7 +2,8 @@
     <div class="cell small-12 medium-9">
         <app-title [title]="'Result'"></app-title>
         <app-content>
-            <div class="grid-x grid-margin-y" *ngFor="let item of items">
+        <div class="grid-container">
+            <div class="grid-x grid-margin-x" *ngFor="let item of items">
                 <div class="cell small-12 search-item">
                     <img appUserProfile [info]="item.user"/>
                     <div class="data">
@@ -31,6 +32,7 @@
                     </div>
                 </div>
             </div>
+        </div>
         </app-content>
         <app-pagination [paginationModel]="pagination"></app-pagination>
     </div>

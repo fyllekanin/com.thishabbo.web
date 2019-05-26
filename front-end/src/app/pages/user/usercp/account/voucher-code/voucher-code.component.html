@@ -1,10 +1,8 @@
 <app-title [title]="'Claim Voucher Code'" [tabs]="tabs" (onTabClick)="onClaim()"></app-title>
 <app-content>
-    Here you can claim voucher codes that you have been given! <br />
-    Just fill in the code below and click "Claim". If the code is correctly <br />
-    a notification will be displayed and your credits in the top will be updated!
+    Here you can claim voucher codes that you have been given for winning either a prize or doing something we appreciate here at ThisHabbo! <br /><br />
+    Just fill in the code below and click "Claim". If the code is correctly a notification will be displayed in the bottom right of your screen and your THC will be applied to your account. You can see your THC updated in the top right, under your name!
     <br />
-    <br />
-    <label>Code:</label>
-    <input [(ngModel)]="code" type="text" name="code">
+    <label>Code</label>
+    <input [(ngModel)]="code" type="text" name="code" placeholder="Enter Voucher code here...">
 </app-content>

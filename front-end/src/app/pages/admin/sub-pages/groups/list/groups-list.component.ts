@@ -125,12 +125,12 @@ export class GroupsListComponent extends Page implements OnDestroy {
             return;
         }
         this.tableConfig = new TableConfig({
-            title: 'Groups',
+            title: 'Usergroups',
             headers: GroupsListComponent.getTableHeaders(),
             rows: this.getTableRows(),
             filterConfigs: [new FilterConfig({
                 title: 'Filter',
-                placeholder: 'Search for groups',
+                placeholder: 'Search for usergroup...',
                 key: 'filter'
             })]
         });

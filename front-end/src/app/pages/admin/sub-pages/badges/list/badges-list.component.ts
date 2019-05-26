@@ -129,7 +129,7 @@ export class BadgesListComponent extends Page implements OnDestroy {
             rows: this.getTableRows(),
             filterConfigs: [new FilterConfig({
                 title: 'Filter',
-                placeholder: 'Search for badges',
+                placeholder: 'Search for badge...',
                 key: 'filter'
             })]
         });

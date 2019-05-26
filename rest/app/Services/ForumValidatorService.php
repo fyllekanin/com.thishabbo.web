@@ -50,7 +50,7 @@ class ForumValidatorService {
 
         if ($category->template !== $categoryTemplates->DEFAULT && $request->hasFile('thumbnail')) {
             $this->validate($request, [
-                'thumbnail' => 'required|mimes:jpg,jpeg,bmp,png,gif',
+                'thumbnail.*' => 'required|mimes:jpg,jpeg,bmp,png,gif',
             ]);
         }
 

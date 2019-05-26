@@ -129,7 +129,7 @@ export class InfractionLevelsListComponent extends Page implements OnDestroy {
             rows: this.getTableRows(),
             filterConfigs: [new FilterConfig({
                 title: 'Filter',
-                placeholder: 'Search for automatic bans',
+                placeholder: 'Search for automatic bans...',
                 key: 'filter'
             })]
         });

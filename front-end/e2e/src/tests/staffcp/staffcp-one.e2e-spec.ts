@@ -53,7 +53,7 @@ describe('StaffCP #1', () => {
         InputUtil.fillInput(StaffCpPage.getNewEventTypeInput(), 'Bank Game');
         NavigationUtil.clickButton('Create');
 
-        CommonUtil.enterTableFilter('Search for event types', 'Bank Game');
+        CommonUtil.enterTableFilter('Search for Event Types...', 'Bank Game');
         expect(CommonUtil.getTableRows().count()).toEqual(1);
     });
 

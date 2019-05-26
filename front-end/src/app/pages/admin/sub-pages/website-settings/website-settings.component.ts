@@ -75,7 +75,7 @@ export class WebsiteSettingsComponent extends Page implements OnDestroy, OnInit 
             id: 'home-page-threads',
             path: '/admin/website-settings/home-page-threads',
             name: 'Home Page Threads',
-            description: 'Set from which categories to fetch threads from on home page'
+            description: 'Manage categories which are fetched from Homepage'
         }
     ];
 
