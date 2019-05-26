@@ -89,21 +89,21 @@ class Action {
 
     const UPDATED_AVATAR = [
         'id' => 6,
-        'description' => 'User updated avatar',
+        'description' => 'User updated a avatar',
         'data' => [],
         'log' => 'log_user'
     ];
 
     const UPDATED_SIGNATURE = [
         'id' => 7,
-        'description' => 'User updated signature',
+        'description' => 'User updated a signature',
         'data' => [],
         'log' => 'log_user'
     ];
 
     const APPLIED_FOR_GROUP = [
         'id' => 8,
-        'description' => 'User applied for group',
+        'description' => 'User applied for a group',
         'data' => [
             'name' => 'Name of group'
         ],
@@ -112,7 +112,7 @@ class Action {
 
     const LEFT_GROUP = [
         'id' => 9,
-        'description' => 'User left group',
+        'description' => 'User left a group',
         'data' => [
             'name' => 'Name of group'
         ],
@@ -137,14 +137,14 @@ class Action {
 
     const UPDATED_PASSWORD = [
         'id' => 12,
-        'description' => 'User updated password',
+        'description' => 'User updated a password',
         'data' => [],
         'log' => 'log_user'
     ];
 
     const UPDATED_POSTBIT = [
         'id' => 14,
-        'description' => 'User updated their postBit',
+        'description' => 'User updated their a postbit',
         'data' => [],
         'log' => 'log_user'
     ];
@@ -160,7 +160,7 @@ class Action {
 
     const UPDATED_DJ_SAYS = [
         'id' => 16,
-        'description' => 'Updated the DJ says',
+        'description' => 'Updated the DJ Says',
         'data' => [
             'says' => 'Updated the says to'
         ],
@@ -169,7 +169,7 @@ class Action {
 
     const KICKED_DJ_OFF = [
         'id' => 17,
-        'description' => 'Kicked current DJ off air',
+        'description' => 'Kicked a current DJ off air',
         'data' => [
             'dj' => 'DJ that was on air'
         ],
@@ -194,7 +194,7 @@ class Action {
 
     const UNBOOKED_RADIO_SLOT = [
         'id' => 20,
-        'description' => 'User unbooked slot',
+        'description' => 'User unbooked a slot',
         'data' => [
             'timetableId' => 'Day the slot was on'
         ],
@@ -203,7 +203,7 @@ class Action {
 
     const BOOKED_RADIO_SLOT = [
         'id' => 21,
-        'description' => 'User booked slot',
+        'description' => 'User booked a slot',
         'data' => [
             'timetableId' => 'timetableId'
         ],
@@ -212,7 +212,7 @@ class Action {
 
     const BOOKED_PERM_SLOT = [
         'id' => 22,
-        'description' => 'User booked permanent slot',
+        'description' => 'User booked a permanent slot',
         'data' => [
             'timetableId' => 'ID of booking'
         ],
@@ -239,7 +239,7 @@ class Action {
 
     const CREATED_EVENT_TYPE = [
         'id' => 25,
-        'description' => 'User created event type',
+        'description' => 'User created a event type',
         'data' => [
             'event' => 'Name of event'
         ],
@@ -248,7 +248,7 @@ class Action {
 
     const UPDATED_EVENT_TYPE = [
         'id' => 26,
-        'description' => 'User created event type',
+        'description' => 'User created a event type',
         'data' => [
             'event' => 'Name of event'
         ],
@@ -257,7 +257,7 @@ class Action {
 
     const DELETED_EVENT_TYPE = [
         'id' => 27,
-        'description' => 'User deleted event type',
+        'description' => 'User deleted a event type',
         'data' => [
             'event' => 'Name of event'
         ],
@@ -266,7 +266,7 @@ class Action {
 
     const UNBOOKED_EVENT_SLOT = [
         'id' => 28,
-        'description' => 'User unbooked slot',
+        'description' => 'User unbooked a slot',
         'data' => [
             'timetableId' => 'ID of slot that got unbooked'
         ],
@@ -275,7 +275,7 @@ class Action {
 
     const BOOKED_EVENT_SLOT = [
         'id' => 29,
-        'description' => 'User booked slot',
+        'description' => 'User booked a slot',
         'data' => [
             'day' => 'Day the slot was on',
             'hour' => 'Hour the slot was on',
@@ -286,7 +286,7 @@ class Action {
 
     const DELETED_POST = [
         'id' => 30,
-        'description' => 'User deleted post',
+        'description' => 'User deleted a post',
         'data' => [
             'thread' => 'Name of thread'
         ],
@@ -295,7 +295,7 @@ class Action {
 
     const APPROVED_POST = [
         'id' => 31,
-        'description' => 'User approved post',
+        'description' => 'User approved a post',
         'data' => [
             'thread' => 'Name of thread'
         ],
@@ -304,7 +304,7 @@ class Action {
 
     const UNAPPROVED_POST = [
         'id' => 32,
-        'description' => 'User unapproved post',
+        'description' => 'User unapproved a post',
         'data' => [
             'thread' => 'Name of thread'
         ],
@@ -313,7 +313,7 @@ class Action {
 
     const STICKIED_THREAD = [
         'id' => 33,
-        'description' => 'User stickied thread',
+        'description' => 'User stickied a thread',
         'data' => [
             'thread' => 'Name of thread'
         ],
@@ -322,7 +322,7 @@ class Action {
 
     const UNSTICKIED_THREAD = [
         'id' => 34,
-        'description' => 'User unstickied thread',
+        'description' => 'User unstickied a thread',
         'data' => [
             'thread' => 'Name of thread'
         ],
@@ -331,7 +331,7 @@ class Action {
 
     const APPROVED_THREAD = [
         'id' => 35,
-        'description' => 'User approved thread',
+        'description' => 'User approved a thread',
         'data' => [
             'thread' => 'Name of thread'
         ],
@@ -340,7 +340,7 @@ class Action {
 
     const UNAPPROVED_THREAD = [
         'id' => 36,
-        'description' => 'User unapproved thread',
+        'description' => 'User unapproved a thread',
         'data' => [
             'thread' => 'Name of thread'
         ],
@@ -349,7 +349,7 @@ class Action {
 
     const DELETED_THREAD = [
         'id' => 37,
-        'description' => 'User deleted thread',
+        'description' => 'User deleted a thread',
         'data' => [
             'thread' => 'Name of thread'
         ],
@@ -358,7 +358,7 @@ class Action {
 
     const UPDATED_THREAD = [
         'id' => 38,
-        'description' => 'User updated thread',
+        'description' => 'User updated a thread',
         'data' => [
             'thread' => 'Name of thread',
             'postId' => 'ID of post for the thread'
@@ -368,7 +368,7 @@ class Action {
 
     const UPDATED_POST = [
         'id' => 39,
-        'description' => 'User updated post',
+        'description' => 'User updated a post',
         'data' => [
             'thread' => 'Name of thread',
             'postId' => 'ID of post for the thread',
@@ -380,7 +380,7 @@ class Action {
 
     const CREATED_POST = [
         'id' => 40,
-        'description' => 'User created post',
+        'description' => 'User created a post',
         'data' => [
             'thread' => 'Name of thread',
             'threadId' => 'Id of thread',
@@ -391,7 +391,7 @@ class Action {
 
     const LIKED_POST = [
         'id' => 41,
-        'description' => 'User liked post',
+        'description' => 'User liked a post',
         'data' => [
             'thread' => 'Name of thread',
             'threadId' => 'Id of thread',
@@ -402,21 +402,21 @@ class Action {
 
     const UNLIKED_POST = [
         'id' => 42,
-        'description' => 'User unliked post',
+        'description' => 'User unliked a post',
         'data' => [],
         'log' => 'log_user'
     ];
 
     const STARTED_SNAKE_GAME = [
         'id' => 43,
-        'description' => 'User started snake game',
+        'description' => 'User started snake a game',
         'data' => [],
         'log' => 'log_user'
     ];
 
     const FINISHED_SNAKE_GAME = [
         'id' => 44,
-        'description' => 'User finished snake game',
+        'description' => 'User finished snake a game',
         'data' => [
             'score' => 'Score the user got in the game'
         ],
@@ -425,14 +425,14 @@ class Action {
 
     const STARTED_FASTEST_TYPE_GAME = [
         'id' => 45,
-        'description' => 'User started fastest type game',
+        'description' => 'User started a fastest type game',
         'data' => [],
         'log' => 'log_user'
     ];
 
     const FINISHED_FASTEST_TYPE_GAME = [
         'id' => 46,
-        'description' => 'User finished fastest type game',
+        'description' => 'User finished a fastest type game',
         'data' => [
             'score' => 'Score the user got in the game'
         ],
@@ -489,14 +489,14 @@ class Action {
 
     const UPDATED_GROUP_LIST = [
         'id' => 53,
-        'description' => 'User updated group list',
+        'description' => 'User updated a group list',
         'data' => [],
         'log' => 'log_admin'
     ];
 
     const APPROVED_GROUP_APPLICATION = [
         'id' => 54,
-        'description' => 'User approved group application',
+        'description' => 'User approved a group application',
         'data' => [
             'group' => 'Name of group',
             'name' => 'Name of user that got approved'
@@ -506,7 +506,7 @@ class Action {
 
     const DENIED_GROUP_APPLICATION = [
         'id' => 55,
-        'description' => 'User denied group application',
+        'description' => 'User denied a group application',
         'data' => [
             'group' => 'Name of group',
             'name' => 'Name of user that got approved'
@@ -516,7 +516,7 @@ class Action {
 
     const DELETED_GROUP = [
         'id' => 56,
-        'description' => 'User deleted group',
+        'description' => 'User deleted a group',
         'data' => [
             'group' => 'Name of group'
         ],
@@ -525,7 +525,7 @@ class Action {
 
     const CREATED_GROUP = [
         'id' => 57,
-        'description' => 'User created group',
+        'description' => 'User created a group',
         'data' => [
             'group' => 'Name of group'
         ],
@@ -534,7 +534,7 @@ class Action {
 
     const UPDATED_GROUP = [
         'id' => 58,
-        'description' => 'User updated group',
+        'description' => 'User updated a group',
         'data' => [
             'group' => 'Name of group'
         ],
@@ -543,7 +543,7 @@ class Action {
 
     const CREATED_BBCODE = [
         'id' => 59,
-        'description' => 'User created bbcode',
+        'description' => 'User created a bbcode',
         'data' => [
             'bbcode' => 'name of bbcode'
         ],
@@ -552,7 +552,7 @@ class Action {
 
     const UPDATED_BBCODE = [
         'id' => 60,
-        'description' => 'User updated bbcode',
+        'description' => 'User updated a bbcode',
         'data' => [
             'bbcode' => 'name of bbcode'
         ],
@@ -561,7 +561,7 @@ class Action {
 
     const DELETED_BBCODE = [
         'id' => 61,
-        'description' => 'User deleted bbcode',
+        'description' => 'User deleted a bbcode',
         'data' => [
             'bbcode' => 'name of bbcode'
         ],
@@ -570,14 +570,14 @@ class Action {
 
     const UPDATED_NOTICES_ORDER = [
         'id' => 62,
-        'description' => 'User updated order of notices',
+        'description' => 'User updated order of a notice',
         'data' => [],
         'log' => 'log_admin'
     ];
 
     const DELETED_NOTICE = [
         'id' => 63,
-        'description' => 'User deleted notice',
+        'description' => 'User deleted a notice',
         'data' => [
             'notice' => 'Title of notice'
         ],
@@ -586,7 +586,7 @@ class Action {
 
     const CREATED_NOTICE = [
         'id' => 64,
-        'description' => 'User created notice',
+        'description' => 'User created a notice',
         'data' => [
             'notice' => 'Title of notice'
         ],
@@ -595,7 +595,7 @@ class Action {
 
     const UPDATED_USERS_WITH_BADGE = [
         'id' => 65,
-        'description' => 'User managed users with badge',
+        'description' => 'User managed users with a badge',
         'data' => [
             'badge' => 'Name of badge'
         ],
@@ -604,7 +604,7 @@ class Action {
 
     const DELETED_BADGE = [
         'id' => 66,
-        'description' => 'User deleted badge',
+        'description' => 'User deleted a badge',
         'data' => [
             'badge' => 'Name of badge'
         ],
@@ -613,7 +613,7 @@ class Action {
 
     const CREATED_BADGE = [
         'id' => 67,
-        'description' => 'User created badge',
+        'description' => 'User created a badge',
         'data' => [
             'badge' => 'Name of badge'
         ],
@@ -622,7 +622,7 @@ class Action {
 
     const UPDATED_BADGE = [
         'id' => 68,
-        'description' => 'User updated badge',
+        'description' => 'User updated a badge',
         'data' => [
             'badge' => 'Name of badge'
         ],
@@ -631,14 +631,14 @@ class Action {
 
     const MANAGED_THC_REQUESTS = [
         'id' => 70,
-        'description' => 'Dealt with THC reqeusts',
+        'description' => 'Dealt with a THC reqeusts',
         'data' => [],
         'log' => 'log_admin'
     ];
 
     const UPDATED_USERS_GROUPS = [
         'id' => 71,
-        'description' => 'Updated users groups',
+        'description' => 'Updated a users group',
         'data' => [
             'name' => 'Name of user',
             'before' => 'Usergroups before update',
@@ -649,7 +649,7 @@ class Action {
 
     const UPDATED_USERS_BASIC_SETTINGS = [
         'id' => 72,
-        'description' => 'Updated basic settings of user',
+        'description' => 'Updated basic settings of a user',
         'data' => [
             'name' => 'Name of user',
             'userId' => 'User id of affected user'
@@ -659,7 +659,7 @@ class Action {
 
     const BANNED_USER = [
         'id' => 73,
-        'description' => 'Banned user',
+        'description' => 'Banned a user',
         'data' => [
             'name' => 'Name of user'
         ],
@@ -668,7 +668,7 @@ class Action {
 
     const UNBANNED_USER = [
         'id' => 74,
-        'description' => 'Unbanned user',
+        'description' => 'Unbanned a user',
         'data' => [
             'name' => 'Name of user'
         ],
@@ -677,7 +677,7 @@ class Action {
 
     const UPDATED_FORUM_PERMISSIONS = [
         'id' => 75,
-        'description' => 'Updated forum permissions on group',
+        'description' => 'Updated a forum permission on group',
         'data' => [
             'wasCascade' => 'If it was cascading permissions'
         ],
@@ -686,14 +686,14 @@ class Action {
 
     const UPDATED_CATEGORIES_ORDER = [
         'id' => 76,
-        'description' => 'Updated display order of categories',
+        'description' => 'Updated display order of a categorie',
         'data' => [],
         'log' => 'log_admin'
     ];
 
     const CREATED_CATEGORY = [
         'id' => 77,
-        'description' => 'User created category',
+        'description' => 'User created a category',
         'data' => [
             'category' => 'Title of category'
         ],
@@ -702,7 +702,7 @@ class Action {
 
     const UPDATED_CATEGORY = [
         'id' => 78,
-        'description' => 'User updated category',
+        'description' => 'User updated a category',
         'data' => [
             'category' => 'Title of category'
         ],
@@ -711,7 +711,7 @@ class Action {
 
     const DELETED_CATEGORY = [
         'id' => 79,
-        'description' => 'User deleted category',
+        'description' => 'User deleted a category',
         'data' => [
             'category' => 'Title of category'
         ],
@@ -720,7 +720,7 @@ class Action {
 
     const CREATED_BETTING_CATEGORY = [
         'id' => 80,
-        'description' => 'User created betting category',
+        'description' => 'User created a betting category',
         'data' => [
             'category' => 'Title of category'
         ],
@@ -729,7 +729,7 @@ class Action {
 
     const UPDATED_BETTING_CATEGORY = [
         'id' => 81,
-        'description' => 'User updated betting category',
+        'description' => 'User updated a betting category',
         'data' => [
             'category' => 'Title of category'
         ],
@@ -738,7 +738,7 @@ class Action {
 
     const DELETED_BETTING_CATEGORY = [
         'id' => 82,
-        'description' => 'User deleted betting category',
+        'description' => 'User deleted a betting category',
         'data' => [
             'category' => 'Title of category'
         ],
@@ -747,7 +747,7 @@ class Action {
 
     const SET_BET_RESULT = [
         'id' => 83,
-        'description' => 'User set result of bet',
+        'description' => 'User set result of a bet',
         'data' => [
             'bet' => 'Name of bet',
             'result' => 'Win or lose'
@@ -757,7 +757,7 @@ class Action {
 
     const CREATED_BET = [
         'id' => 84,
-        'description' => 'User created bet',
+        'description' => 'User created a bet',
         'data' => [
             'bet' => 'Name of bet'
         ],
@@ -766,7 +766,7 @@ class Action {
 
     const DELETED_BET = [
         'id' => 85,
-        'description' => 'User deleted bet',
+        'description' => 'User deleted a bet',
         'data' => [
             'bet' => 'Name of bet'
         ],
@@ -775,7 +775,7 @@ class Action {
 
     const UPDATED_BET = [
         'id' => 86,
-        'description' => 'User updated bet',
+        'description' => 'User updated a bet',
         'data' => [
             'bet' => 'Name of bet'
         ],
@@ -784,7 +784,7 @@ class Action {
 
     const CREATED_THREAD = [
         'id' => 88,
-        'description' => 'User created thread',
+        'description' => 'User created a thread',
         'data' => [
             'thread' => 'Name of thread',
             'threadId' => 'Id of thread',
@@ -795,7 +795,7 @@ class Action {
 
     const UPDATED_DISPLAY_GROUP = [
         'id' => 89,
-        'description' => 'User updated display group',
+        'description' => 'User updated a display group',
         'data' => [
             'group' => 'Name of group'
         ],
@@ -818,7 +818,7 @@ class Action {
 
     const DELETED_POLL = [
         'id' => 92,
-        'description' => 'User deleted poll',
+        'description' => 'User deleted a poll',
         'data' => [
             'poll' => 'Question of poll'
         ],
@@ -827,7 +827,7 @@ class Action {
 
     const CLOSED_THREAD = [
         'id' => 93,
-        'description' => 'Mod closed thread',
+        'description' => 'Mod closed a thread',
         'data' => [
             'thread' => 'Title of thread'
         ],
@@ -836,7 +836,7 @@ class Action {
 
     const OPEN_THREAD = [
         'id' => 94,
-        'description' => 'Mod opened thread',
+        'description' => 'Mod opened a thread',
         'data' => [
             'thread' => 'Title of thread'
         ],
@@ -845,7 +845,7 @@ class Action {
 
     const SUBSCRIBE_CATEGORY = [
         'id' => 95,
-        'description' => 'User subscribed to category',
+        'description' => 'User subscribed to a category',
         'data' => [
             'categoryId' => 'Id of category'
         ],
@@ -854,7 +854,7 @@ class Action {
 
     const UNSUBSCRIBE_CATEGORY = [
         'id' => 96,
-        'description' => 'User unsubscribed to category',
+        'description' => 'User unsubscribed to a category',
         'data' => [
             'categoryId' => 'Id of category'
         ],
@@ -863,7 +863,7 @@ class Action {
 
     const CHANGE_THREAD_OWNER = [
         'id' => 97,
-        'description' => 'Changed owner of thread',
+        'description' => 'Changed owner of a thread',
         'data' => [
             'threadId' => 'Id of thread',
             'originalOwner' => 'Id of original owner',
@@ -956,7 +956,7 @@ class Action {
 
     const CREATED_AUTO_BAN = [
         'id' => 107,
-        'description' => 'Created auto ban',
+        'description' => 'Created a auto ban',
         'data' => [
             'title' => 'Title of automatic ban'
         ],
@@ -965,7 +965,7 @@ class Action {
 
     const DELETED_AUTO_BAN = [
         'id' => 108,
-        'description' => 'Deleted auto ban',
+        'description' => 'Deleted a auto ban',
         'data' => [
             'title' => 'Title of automatic ban'
         ],
@@ -974,7 +974,7 @@ class Action {
 
     const UPDATED_AUTO_BAN = [
         'id' => 109,
-        'description' => 'Deleted auto ban',
+        'description' => 'Deleted a auto ban',
         'data' => [
             'title' => 'Title of automatic ban'
         ],
@@ -997,7 +997,7 @@ class Action {
 
     const DELETED_INFRACTION_LEVEL = [
         'id' => 112,
-        'description' => 'Deleted infraction level',
+        'description' => 'Deleted a infraction level',
         'data' => [
             'infractionLevelId' => 'Id of infraction level'
         ],
@@ -1006,7 +1006,7 @@ class Action {
 
     const CREATED_INFRACTION_LEVEL = [
         'id' => 113,
-        'description' => 'Created infraction level',
+        'description' => 'Created a infraction level',
         'data' => [
             'infractionLevelId' => 'Id of infraction level'
         ],
@@ -1015,7 +1015,7 @@ class Action {
 
     const UPDATED_INFRACTION_LEVEL = [
         'id' => 114,
-        'description' => 'Update infraction level',
+        'description' => 'Update a iinfraction level',
         'data' => [
             'infractionLevelId' => 'Id of infraction level'
         ],
@@ -1024,7 +1024,7 @@ class Action {
 
     const CREATED_INFRACTION = [
         'id' => 115,
-        'description' => 'Infracted user',
+        'description' => 'Infracted a user',
         'data' => [
             'userId' => 'Id of user infracted',
             'reason' => 'Reason for infraction'
@@ -1034,7 +1034,7 @@ class Action {
 
     const CREATED_DO_NOT_HIRE = [
         'id' => 116,
-        'description' => 'Added Do Not Hire entry.',
+        'description' => 'Added a Do Not Hire entry.',
         'data' => [
             'nickname' => 'Name of the user.'
         ],
@@ -1043,7 +1043,7 @@ class Action {
 
     const UPDATED_DO_NOT_HIRE = [
         'id' => 117,
-        'description' => 'Updated Do Not Hire entry.',
+        'description' => 'Updated a Do Not Hire entry.',
         'data' => [
             'nickname' => 'Name of the user.'
         ],
@@ -1052,7 +1052,7 @@ class Action {
 
     const DELETED_DO_NOT_HIRE = [
         'id' => 118,
-        'description' => 'Deleted Do Not Hire entry.',
+        'description' => 'Deleted a Do Not Hire entry.',
         'data' => [
             'nickname' => 'Name of the user.'
         ],
@@ -1061,7 +1061,7 @@ class Action {
 
     const DELETED_INFRACTION = [
         'id' => 119,
-        'description' => 'Deleted infraction',
+        'description' => 'Deleted a Infraction',
         'data' => [
             'infractionId' => 'Id of infraction'
         ],
@@ -1070,7 +1070,7 @@ class Action {
 
     const CREATED_BAN_ON_SIGHT = [
         'id' => 120,
-        'description' => 'Added Ban On Sight entry',
+        'description' => 'Added a Ban On Sight entry',
         'data' => [
             'name' => 'Name of the user'
         ],
@@ -1079,7 +1079,7 @@ class Action {
 
     const UPDATED_BAN_ON_SIGHT = [
         'id' => 121,
-        'description' => 'Updated Ban On Sight entry',
+        'description' => 'Updated a Ban On Sight entry',
         'data' => [
             'name' => 'Name of the user'
         ],
@@ -1088,7 +1088,7 @@ class Action {
 
     const DELETED_BAN_ON_SIGHT = [
         'id' => 122,
-        'description' => 'Deleted Ban On Sight entry',
+        'description' => 'Deleted a Ban On Sight entry',
         'data' => [
             'name' => 'Name of the user'
         ],
@@ -1097,7 +1097,7 @@ class Action {
 
     const UPDATED_NAVIGATION = [
         'id' => 126,
-        'description' => 'Updated navigation',
+        'description' => 'Updated site navigation',
         'data' => [
             'oldNavigation' => 'Json formatted old navigation',
             'newNavigation' => 'Json formatted new navigation'
@@ -1107,7 +1107,7 @@ class Action {
 
     const UPDATED_HABBO = [
         'id' => 127,
-        'description' => 'Updated habbo',
+        'description' => 'Updated a Habbo name',
         'data' => [
             'from' => 'had habbo name',
             'to' => 'new habbo name'
@@ -1117,7 +1117,7 @@ class Action {
 
     const CREATED_SITE_MESSAGE = [
         'id' => 128,
-        'description' => 'Created site message',
+        'description' => 'Created a site message',
         'data' => [
             'siteMessageId' => 'Id of the site message'
         ],
@@ -1126,7 +1126,7 @@ class Action {
 
     const UPDATED_SITE_MESSAGE = [
         'id' => 129,
-        'description' => 'Updated site message',
+        'description' => 'Updated a site message',
         'data' => [
             'siteMessageId' => 'Id of the site message'
         ],
@@ -1154,7 +1154,7 @@ class Action {
 
     const CREATED_PAGE = [
         'id' => 132,
-        'description' => 'Created page',
+        'description' => 'Created a page',
         'data' => [
             'title' => 'Title of page'
         ],
@@ -1163,7 +1163,7 @@ class Action {
 
     const UPDATED_PAGE = [
         'id' => 133,
-        'description' => 'Updated page',
+        'description' => 'Updated a page',
         'data' => [
             'title' => 'Title of page'
         ],
@@ -1172,7 +1172,7 @@ class Action {
 
     const DELETED_PAGE = [
         'id' => 134,
-        'description' => 'Deleted page',
+        'description' => 'Deleted a page',
         'data' => [
             'title' => 'Title of page'
         ],
@@ -1181,7 +1181,7 @@ class Action {
 
     const SUSPENDED_BET = [
         'id' => 135,
-        'description' => 'Suspended bet',
+        'description' => 'Suspended a bet',
         'data' => [
             'bet' => 'Title bet'
         ],
@@ -1190,7 +1190,7 @@ class Action {
 
     const UNSUSPENDED_BET = [
         'id' => 136,
-        'description' => 'Unsuspended bet',
+        'description' => 'Unsuspended a bet',
         'data' => [
             'bet' => 'Title bet'
         ],
@@ -1199,7 +1199,7 @@ class Action {
 
     const CREATED_THEME = [
         'id' => 137,
-        'description' => 'Created Theme',
+        'description' => 'Created a Theme',
         'data' => [
             'theme' => 'Title of theme'
         ],
@@ -1208,7 +1208,7 @@ class Action {
 
     const UPDATED_THEME = [
         'id' => 138,
-        'description' => 'Updated Theme',
+        'description' => 'Updated a Theme',
         'data' => [
             'theme' => 'Title of theme'
         ],
@@ -1217,7 +1217,7 @@ class Action {
 
     const DELETED_THEME = [
         'id' => 139,
-        'description' => 'Deleted Theme',
+        'description' => 'Deleted a Theme',
         'data' => [
             'theme' => 'Title of theme'
         ],
@@ -1242,7 +1242,7 @@ class Action {
 
     const SELECTED_THEME = [
         'id' => 142,
-        'description' => 'User selected theme',
+        'description' => 'User selected a theme',
         'data' => [
             'theme' => 'Title of the theme'
         ],
@@ -1251,21 +1251,21 @@ class Action {
 
     const CREATED_VOUCHER_CODE = [
         'id' => 143,
-        'description' => 'Created voucher code',
+        'description' => 'Created a voucher code',
         'data' => [],
         'log' => 'log_admin'
     ];
 
     const DELETED_VOUCHER_CODE = [
         'id' => 144,
-        'description' => 'Deleted voucher code',
+        'description' => 'Deleted a voucher code',
         'data' => [],
         'log' => 'log_admin'
     ];
 
     const CLAIMED_VOUCHER_CODE = [
         'id' => 145,
-        'description' => 'Claimed voucher code',
+        'description' => 'Claimed a voucher code',
         'data' => [],
         'log' => 'log_user'
     ];
@@ -1297,14 +1297,14 @@ class Action {
 
     const UPDATED_PROFILE = [
         'id' => 149,
-        'description' => 'User updated profile settings',
+        'description' => 'User updated profile a setting',
         'data' => [],
         'log' => 'log_user'
     ];
 
     const APPROVED_FOLLOWER = [
         'id' => 150,
-        'description' => 'Approved follower request',
+        'description' => 'Approved a follower request',
         'data' => [
             'user' => 'Nickname of user that got denied'
         ],
@@ -1313,7 +1313,7 @@ class Action {
 
     const DENIED_FOLLOWER = [
         'id' => 151,
-        'description' => 'Denied follower request',
+        'description' => 'Denied a follower request',
         'data' => [
             'user' => 'Nickname of user that got denied'
         ],
@@ -1324,28 +1324,28 @@ class Action {
         'id' => 152,
         'description' => 'Removed follower',
         'data' => [
-            'user' => 'Nickanem of user that got removed'
+            'user' => 'Nickname of user that got removed!'
         ],
         'log' => 'log_user'
     ];
 
     const DELETED_AVATAR = [
         'id' => 153,
-        'description' => 'Deleted avatar',
+        'description' => 'Deleted a avatar',
         'data' => [],
         'log' => 'log_admin'
     ];
 
     const DELETED_COVER_PHOTO = [
         'id' => 154,
-        'description' => 'Deleted cover photo',
+        'description' => 'Deleted a cover photo',
         'data' => [],
         'log' => 'log_admin'
     ];
 
     const DELETED_SIGNATURE = [
         'id' => 155,
-        'description' => 'Deleted signature',
+        'description' => 'Deleted a signature',
         'data' => [],
         'log' => 'log_admin'
     ];
@@ -1373,21 +1373,21 @@ class Action {
 
     const REPORTED_VISITOR_MESSAGE = [
         'id' => 159,
-        'description' => 'Reported visitor message',
+        'description' => 'Reported a visitor message',
         'data' => [],
         'log' => 'log_user'
     ];
 
     const DELETED_VISITOR_MESSAGE = [
         'id' => 160,
-        'description' => 'Deleted visitor message',
+        'description' => 'Deleted a visitor message',
         'data' => [],
         'log' => 'log_mod'
     ];
 
     const UPDATED_EVENTS_SAY = [
         'id' => 161,
-        'description' => 'Updated the events say text',
+        'description' => 'Updated the Events Shout text',
         'data' => [],
         'log' => 'log_staff'
     ];
@@ -1403,7 +1403,7 @@ class Action {
 
     const CREATED_ACCOLADE = [
         'id' => 163,
-        'description' => 'Created accolade for user',
+        'description' => 'Created a accolade for user',
         'data' => [
             'userId' => 'User that got the accolade'
         ],
@@ -1412,7 +1412,7 @@ class Action {
 
     const UPDATED_ACCOLADE = [
         'id' => 164,
-        'description' => 'Updated accolade for user',
+        'description' => 'Updated a accolade for user',
         'data' => [
             'userId' => 'ID of user for the accolade'
         ],
@@ -1421,7 +1421,7 @@ class Action {
 
     const DELETED_ACCOLADE = [
         'id' => 165,
-        'description' => 'Deleted accolade for user',
+        'description' => 'Deleted a accolade for user',
         'data' => [
             'userId' => 'ID of user for the accolade'
         ],
@@ -1430,7 +1430,7 @@ class Action {
 
     const UPDATED_HOME_PAGE_THREADS = [
         'id' => 166,
-        'description' => 'Updated category ids to fetch threads from',
+        'description' => 'Updated a category id to fetch threads from',
         'data' => [],
         'log' => 'log_admin'
     ];
@@ -1444,42 +1444,42 @@ class Action {
 
     const CREATED_SUBSCRIPTION = [
         'id' => 168,
-        'description' => 'Created subscription',
+        'description' => 'Created a subscription',
         'data' => [],
         'log' => 'log_admin'
     ];
 
     const UPDATED_SUBSCRIPTION = [
         'id' => 169,
-        'description' => 'Updated subscription',
+        'description' => 'Updated a subscription',
         'data' => [],
         'log' => 'log_admin'
     ];
 
     const DELETED_SUBSCRIPTION = [
         'id' => 170,
-        'description' => 'Deleted subscription',
+        'description' => 'Deleted a subscription',
         'data' => [],
         'log' => 'log_admin'
     ];
 
     const CREATED_USER_SUBSCRIPTION = [
         'id' => 171,
-        'description' => 'Created user subscription',
+        'description' => 'Created a user subscription',
         'data' => [],
         'log' => 'log_admin'
     ];
 
     const UPDATED_USER_SUBSCRIPTION = [
         'id' => 172,
-        'description' => 'Updated user subscription',
+        'description' => 'Updated a user subscription',
         'data' => [],
         'log' => 'log_admin'
     ];
 
     const DELETED_USER_SUBSCRIPTION = [
         'id' => 173,
-        'description' => 'Deleted user subscription',
+        'description' => 'Deleted a user subscription',
         'data' => [],
         'log' => 'log_admin'
     ];

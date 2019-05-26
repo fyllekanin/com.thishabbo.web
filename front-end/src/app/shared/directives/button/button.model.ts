@@ -29,4 +29,10 @@ export class Button {
         color: '#ffffff',
         class: 'gray-button'
     };
+
+    static readonly RED: ButtonColor = {
+        background: '-webkit-linear-gradient(top, rgb(228, 120, 120) 0px, rgb(220, 107, 107) 100%)',
+        color: '#ffffff',
+        class: 'red-button'
+    };
 }

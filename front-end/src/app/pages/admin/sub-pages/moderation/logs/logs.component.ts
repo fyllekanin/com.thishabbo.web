@@ -99,7 +99,7 @@ export class LogsComponent extends Page implements OnDestroy {
             filterConfigs: [
                 new FilterConfig({
                     title: 'User',
-                    placeholder: 'Search for specific user',
+                    placeholder: 'Search for specific user...',
                     key: 'user'
                 }),
                 new FilterConfig({

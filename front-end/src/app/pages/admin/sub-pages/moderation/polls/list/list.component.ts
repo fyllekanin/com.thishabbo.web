@@ -131,7 +131,7 @@ export class ListComponent extends Page implements OnDestroy {
             rows: this.getTableRows(),
             filterConfigs: [new FilterConfig({
                 title: 'Filter',
-                placeholder: 'Search on thread title',
+                placeholder: 'Search...',
                 key: 'filter'
             })]
         });

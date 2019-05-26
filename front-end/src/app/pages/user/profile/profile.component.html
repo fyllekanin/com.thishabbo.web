@@ -26,37 +26,37 @@
                     </div>
 
                     <div class="post-bit">
-                        <div class="post-bit-row">
+                        <div class="gray-content-wrapper">
                             <strong>ThisHabbo ID:</strong>
                             <div class="float-right">
                                 #{{stats.userId}}
                             </div>
                         </div>
-                        <div class="post-bit-row">
+                        <div class="gray-content-wrapper">
                             <strong>Last Active:</strong>
                             <div class="float-right">
                                 {{stats.lastActivity}}
                             </div>
                         </div>
-                        <div class="post-bit-row">
+                        <div class="gray-content-wrapper">
                             <strong>Registered:</strong>
                             <div class="float-right">
                                 {{stats.createdAt}}
                             </div>
                         </div>
-                        <div class="post-bit-row">
+                        <div class="gray-content-wrapper">
                             <strong>Likes:</strong>
                             <div class="float-right">
                                 {{stats.likes | number: '1.'}}
                             </div>
                         </div>
-                        <div class="post-bit-row">
+                        <div class="gray-content-wrapper">
                             <strong>Threads Created:</strong>
                             <div class="float-right">
                                 {{stats.threads | number: '1.'}}
                             </div>
                         </div>
-                        <div class="post-bit-row">
+                        <div class="gray-content-wrapper">
                             <strong>Posts Created:</strong>
                             <div class="float-right">
                                 {{stats.posts | number: '1.'}}
@@ -77,24 +77,31 @@
 
                 <app-title [title]="'All Time Stats'"></app-title>
                 <app-content>
-                    <div class="latest-post"><i class="fas fa-trophy gold-trophy"></i><b> Best Season:</b> 3rd (Season
+                    <div class="gray-content-wrapper"><i class="fas fa-trophy gold-trophy"></i><b> Best Season:</b> 3rd
+                        (Season
                         11)
                     </div>
-                    <div class="latest-post"><i class="fas fa-trophy gold-trophy"></i><b> Participated in:</b> 8 Seasons
+                    <div class="gray-content-wrapper"><i class="fas fa-trophy gold-trophy"></i><b> Participated in:</b>
+                        8 Seasons
                     </div>
-                    <div class="latest-post"><i class="fas fa-trophy gold-trophy"></i><b> Most Events:</b> 20 (Season
+                    <div class="gray-content-wrapper"><i class="fas fa-trophy gold-trophy"></i><b> Most Events:</b> 20
+                        (Season
                         11)
                     </div>
-                    <div class="latest-post"><i class="fas fa-trophy gold-trophy"></i><b> Most Radio Slots:</b> 20
+                    <div class="gray-content-wrapper"><i class="fas fa-trophy gold-trophy"></i><b> Most Radio Slots:</b>
+                        20
                         (Season 8)
                     </div>
-                    <div class="latest-post"><i class="fas fa-trophy gold-trophy"></i><b> Most Radio Slots:</b> 20
+                    <div class="gray-content-wrapper"><i class="fas fa-trophy gold-trophy"></i><b> Most Radio Slots:</b>
+                        20
                         (Season 8)
                     </div>
-                    <div class="latest-post"><i class="fas fa-trophy gold-trophy"></i><b> Most Posts in Season:</b> 9
+                    <div class="gray-content-wrapper"><i class="fas fa-trophy gold-trophy"></i><b> Most Posts in
+                        Season:</b> 9
                         (203)
                     </div>
-                    <div class="latest-post"><i class="fas fa-trophy gold-trophy"></i><b> Most Threads in Season:</b> 3
+                    <div class="gray-content-wrapper"><i class="fas fa-trophy gold-trophy"></i><b> Most Threads in
+                        Season:</b> 3
                         (23)
                     </div>
                 </app-content>
@@ -148,15 +155,15 @@
                 <div *ngIf="relations.love || relations.like || relations.hate">
                     <app-title [title]="'Relations'"></app-title>
                     <app-content>
-                        <div class="relation" *ngIf="relations.love">
+                        <div class="gray-content-wrapper" *ngIf="relations.love">
                             <img src="/assets/images/heart.png"/>
                             <app-user-link [user]="relations.love"></app-user-link>
                         </div>
-                        <div class="relation" *ngIf="relations.like">
+                        <div class="gray-content-wrapper" *ngIf="relations.like">
                             <img src="/assets/images/smile.png"/>
                             <app-user-link [user]="relations.like"></app-user-link>
                         </div>
-                        <div class="relation" *ngIf="relations.hate">
+                        <div class="gray-content-wrapper" *ngIf="relations.hate">
                             <img src="/assets/images/skull.png"/>
                             <app-user-link [user]="relations.hate"></app-user-link>
                         </div>

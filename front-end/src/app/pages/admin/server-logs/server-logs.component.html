@@ -1,7 +1,7 @@
 <app-title [title]="'Server Logs'"></app-title>
 <app-content>
     <select (change)="onChange($event)" [ngModel]="log">
-        <option [value]="''">Choose Log..</option>
+        <option [value]="''">Choose log...</option>
         <option *ngFor="let item of serverLogs" [value]="item">{{item}}</option>
     </select>
 </app-content>

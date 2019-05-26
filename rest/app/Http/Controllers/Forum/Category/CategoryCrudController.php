@@ -123,7 +123,7 @@ class CategoryCrudController extends Controller {
         $total = DataHelper::getPage($threadSql->count('threadId'));
         $threads = $threadSql->skip($this->getOffset($page))
             ->take($this->perPage)
-            ->with(['prefix', 'lastPost'])
+            ->with(['prefix', 'latestPost'])
             ->withNickname()
             ->get();
 
@@ -177,10 +177,9 @@ class CategoryCrudController extends Controller {
      */
     private function buildThreadsForCategory($threads, $userId) {
         foreach ($threads as $thread) {
-            $thread->lastPost = $this->mapLastPost($thread, $thread->lastPost);
+            $thread->lastPost = $this->mapLastPost($thread, $thread->latestPost);
             $thread->haveRead = $this->forumService->haveReadThread($thread, $userId);
         }
-
         return $threads;
     }
 
@@ -201,7 +200,7 @@ class CategoryCrudController extends Controller {
         if (!$categoryPermissions->canViewOthersThreads) {
             $threadSql->belongsToUser($userId);
         }
-        $threads = $threadSql->with(['prefix', 'lastPost'])->withNickname()->get();
+        $threads = $threadSql->with(['prefix', 'latestPost'])->withNickname()->get();
 
         return $this->buildThreadsForCategory($threads, $userId);
     }
@@ -366,7 +365,7 @@ class CategoryCrudController extends Controller {
     }
 
     private function mapLastPost($thread, $post) {
-        return [
+        return (object)[
             'postId' => $post->postId,
             'threadId' => $post->threadId,
             'threadTitle' => $thread->title,

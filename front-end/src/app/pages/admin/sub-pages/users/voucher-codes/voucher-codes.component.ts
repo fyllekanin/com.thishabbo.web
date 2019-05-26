@@ -153,7 +153,7 @@ export class VoucherCodesComponent extends Page implements OnDestroy {
             filterConfigs: [
                 new FilterConfig({
                     title: 'Filter',
-                    placeholder: 'Filter by note',
+                    placeholder: 'Filter by note...',
                     key: 'filter'
                 })
             ]
