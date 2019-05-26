@@ -227,7 +227,6 @@ class ProfileSettingsController extends Controller {
 
     private function backupOldAvatarIfExist($user) {
         if (!File::exists(base_path('public/rest/resources/images/users/' . $user->userId . '.gif'))) {
-            dd("hey");
             return;
         }
 
