@@ -54,4 +54,11 @@ export class CommonUtil {
 
         InputUtil.fillInput(ele, value);
     }
+
+    static scrollIntoView (ele: ElementFinder): void {
+        const scrollIntoView = function () {
+            arguments[0].scrollIntoView();
+        };
+        browser.executeScript(scrollIntoView, ele.getWebElement());
+    }
 }
