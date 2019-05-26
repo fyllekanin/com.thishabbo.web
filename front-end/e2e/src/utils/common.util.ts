@@ -55,10 +55,7 @@ export class CommonUtil {
         InputUtil.fillInput(ele, value);
     }
 
-    static scrollIntoView (ele: ElementFinder): void {
-        const scrollIntoView = function () {
-            arguments[0].scrollIntoView();
-        };
-        browser.executeScript(scrollIntoView, ele.getWebElement());
+    static scrollToBottom (): void {
+        browser.executeScript('window.scrollTo(0,document.body.scrollHeight);');
     }
 }

@@ -133,7 +133,7 @@ describe('SiteCP #1', () => {
     });
 
     it('should be possible to ban a user', () => {
-        CommonUtil.scrollIntoView(element(by.cssContainingText('app-admin app-side-menu app-content span', 'Manage Users')));
+        CommonUtil.scrollToBottom();
         NavigationUtil.clickSiteCpTool('Manage Users');
         CommonUtil.enterTableFilter('Search for users...', 'test');
         InputUtil.clickRowAction(0, 'Manage bans');
