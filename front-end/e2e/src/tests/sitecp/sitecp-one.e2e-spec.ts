@@ -136,7 +136,7 @@ describe('SiteCP #1', () => {
         CommonUtil.scrollToBottom();
         NavigationUtil.clickSiteCpTool('Manage Users');
         CommonUtil.enterTableFilter('Search for users...', 'test');
-        InputUtil.clickRowAction(0, 'Manage bans');
+        InputUtil.clickRowAction(0, 'Manage Bans');
 
         NavigationUtil.clickTab('Ban');
         InputUtil.selectOption(element(by.css('app-admin-user-ban-reason select')), '1 hour');
