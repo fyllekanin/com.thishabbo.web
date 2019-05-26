@@ -1,0 +1,10 @@
+.old-avatar {
+    cursor: pointer;
+    margin: 1.5rem 3rem;
+    background: no-repeat center;
+    background-size: cover;
+    border: 3px solid #ffffff;
+    border-radius: 50%;
+    width: 10rem;
+    height: 10rem !important;
+}

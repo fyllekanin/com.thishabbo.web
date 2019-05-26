@@ -3,12 +3,24 @@
     <div class="grid-container">
         <div class="grid-x margin-x">
             <div class="cell small-12 position-relative">
-                <strong>Max Width:</strong> {{avatarSize.width}}
-                <strong>Max Height:</strong> {{avatarSize.height}}
+                <strong>Max Width:</strong> {{model.width}}
+                <strong>Max Height:</strong> {{model.height}}
             </div>
             <div class="cell small-6 position-relative">
                 <label>Upload Avatar:</label>
                 <input #avatar accept="image/*" type="file"/>
+            </div>
+        </div>
+    </div>
+</app-content>
+
+<app-title [title]="'Previous avatars'"></app-title>
+<app-content>
+    <div class="grid-container">
+        <div class="grid-x grid-margin-x grid-margin-y">
+            <div class="cell small-6 medium-4 align-center-middle old-avatar" *ngFor="let id of model.oldAvatarIds"
+                 (click)="onOldAvatar(id)"
+                 [style]="getOldAvatarUrl(id) | safeStyle">
             </div>
         </div>
     </div>
