@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Usercp;
 
+use App\EloquentModels\Shop\UserSubscription;
 use App\EloquentModels\User\Avatar;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserData;
 use App\EloquentModels\User\UserProfile;
+use App\Helpers\ConfigHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
@@ -14,8 +16,6 @@ use App\Utils\BBcodeUtil;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
-use App\EloquentModels\Shop\UserSubscription;
-use App\Helpers\ConfigHelper;
 use Illuminate\Support\Facades\File;
 
 class ProfileSettingsController extends Controller {
@@ -132,7 +132,8 @@ class ProfileSettingsController extends Controller {
 
         return response()->json([
             'width' => $avatarSize->width,
-            'height' => $avatarSize->height
+            'height' => $avatarSize->height,
+            'oldAvatarIds' => Avatar::where('userId', $user->userId)->take(5)->orderBy('avatarId', 'DESC')->pluck('avatarId')
         ]);
     }
 
@@ -185,7 +186,29 @@ class ProfileSettingsController extends Controller {
         $userdata->save();
 
         Logger::user($user->userId, $request->ip(), Action::UPDATED_AVATAR);
-        return response()->json(time());
+        return $this->getAvatarSize($request);
+    }
+
+    public function switchToAvatar(Request $request, $avatarId) {
+        $user = $request->get('auth');
+        $avatar = Avatar::find($avatarId);
+        $avatarSize = UserHelper::getMaxAvatarSize($user->userId);
+
+        Condition::precondition(!$avatar, 404, 'No avatar saved with that ID');
+        Condition::precondition($avatar->userId != $user->userId, 400,
+            'This is not your old avatar');
+
+        $size = getimagesize(base_path('public/rest/resources/images/old-avatars/') . $avatar->avatarId . '.gif');
+
+        Condition::precondition($size[0] > $avatarSize->width || $size[1] > $avatarSize->height, 400,
+            'The avatar size is bigger then the size you can have');
+
+        $this->backupOldAvatarIfExist($user);
+        File::move(base_path('public/rest/resources/images/old-avatars/') . $avatar->avatarId . '.gif',
+            base_path('public/rest/resources/images/users/' . $user->userId . '.gif'));
+
+        Logger::user($user->userId, $request->ip(), Action::UPDATED_AVATAR);
+        return $this->getAvatarSize($request);
     }
 
     /**
@@ -264,8 +287,8 @@ class ProfileSettingsController extends Controller {
 
         $valid = true;
         $regex = '/^#[0-9a-f]{3}(?:[0-9a-f]{3})?$/';
-        foreach($colours as $colour) {
-            if(!preg_match($regex, $colour)) {
+        foreach ($colours as $colour) {
+            if (!preg_match($regex, $colour)) {
                 $valid = false;
             }
         }

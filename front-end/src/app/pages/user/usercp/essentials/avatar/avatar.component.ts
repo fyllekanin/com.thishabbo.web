@@ -9,23 +9,27 @@ import { AvatarService } from '../services/avatar.service';
 import { UsercpAvatarCoverPreviewService } from '../../../cover/usercp-avatar-cover-preview.service';
 import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { NotificationService } from 'core/services/notification/notification.service';
+import { AvatarModel } from './avatar.model';
+import { DialogService } from 'core/services/dialog/dialog.service';
 
 @Component({
     selector: 'app-usercp-avatar',
-    templateUrl: 'avatar.component.html'
+    templateUrl: 'avatar.component.html',
+    styleUrls: ['avatar.component.css']
 })
 export class AvatarComponent extends Page implements OnDestroy {
-    private _avatarSize: { height: number; width: number; } = { height: 200, width: 200 };
+    private _avatarSize: AvatarModel = new AvatarModel({height: 200, width: 200});
 
     @ViewChild('avatar') avatarInput;
     tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Save' })
+        new TitleTab({title: 'Save'})
     ];
 
-    constructor(
+    constructor (
         private _service: AvatarService,
         private _previewService: UsercpAvatarCoverPreviewService,
         private _notificationService: NotificationService,
+        private _dialogService: DialogService,
         activatedRoute: ActivatedRoute,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService
@@ -41,17 +45,18 @@ export class AvatarComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
         this._previewService.hide();
     }
 
-    onSave(): void {
+    onSave (): void {
         const form = new FormData();
         const file = this.avatarInput.nativeElement.files ? this.avatarInput.nativeElement.files[0] : null;
         form.append('avatar', file);
         this._service.save(form)
-            .subscribe(() => {
+            .subscribe(res => {
+                this.onData({data: res});
                 this._previewService.update();
             }, error => {
                 this._notificationService.sendNotification(new NotificationMessage({
@@ -62,11 +67,27 @@ export class AvatarComponent extends Page implements OnDestroy {
             });
     }
 
-    get avatarSize(): { height: number; width: number; } {
+    onOldAvatar (id: number): void {
+        this._dialogService.confirm({
+            title: 'Are you sure?',
+            content: 'Are you sure you wanna switch back to this avatar?',
+            callback: this.onSwitchBack.bind(this, id)
+        });
+    }
+
+    get model (): AvatarModel {
         return this._avatarSize;
     }
 
-    private onData(data: { data: { height: number; width: number; } }): void {
+    private onSwitchBack (id: number): void {
+        this._dialogService.closeDialog();
+        this._service.switchBack(id).subscribe(res => {
+            this.onData({data: res});
+            this._previewService.update();
+        });
+    }
+
+    private onData (data: { data: AvatarModel }): void {
         this._avatarSize = data.data;
     }
 }

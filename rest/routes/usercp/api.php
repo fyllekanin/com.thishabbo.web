@@ -18,6 +18,7 @@ Route::put('homepage', 'Usercp\AccountController@updateHomePage');
 
 Route::post('cover', 'Usercp\ProfileSettingsController@updateCover');
 Route::post('avatar', 'Usercp\ProfileSettingsController@updateAvatar');
+Route::put('avatar/{avatarId}', 'Usercp\ProfileSettingsController@switchToAvatar');
 Route::get('avatar', 'Usercp\ProfileSettingsController@getAvatarSize');
 
 Route::get('post-bit', 'Usercp\AccountController@getPostBit');
