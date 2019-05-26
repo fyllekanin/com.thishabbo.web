@@ -4,6 +4,7 @@ import { BbcodePage } from '../../pages/sitecp/bbcode.page';
 import { StaffListPage } from '../../pages/sitecp/staff-list.page';
 import { BettingPage } from '../../pages/sitecp/betting.page';
 import { InputUtil } from '../../utils/input.util';
+import { by, element } from 'protractor';
 
 describe('SiteCP #1', () => {
     const USERNAME = 'tovven';
@@ -129,5 +130,21 @@ describe('SiteCP #1', () => {
         InputUtil.clickRowAction(0, 'Delete');
         NavigationUtil.clickButton('Yes');
         expect(CommonUtil.getTableRows().count()).toEqual(0);
+    });
+
+    it('should be possible to ban a user', () => {
+        NavigationUtil.clickSiteCpTool('Manage Users');
+        CommonUtil.enterTableFilter('Search for users...', 'test');
+        InputUtil.clickRowAction(0, 'Manage bans');
+
+        NavigationUtil.clickTab('Ban');
+        InputUtil.selectOption(element(by.css('app-admin-user-ban-reason select')), '1 hour');
+        InputUtil.fillInput(element(by.css('app-admin-user-ban-reason input')), 'You are banned');
+
+        NavigationUtil.clickButton('Ban');
+        NavigationUtil.clickUserNavigation('Logout');
+
+        CommonUtil.login('test', 'test4321');
+        expect(element(by.cssContainingText('.global-notification-message', 'This account is banned until')));
     });
 });

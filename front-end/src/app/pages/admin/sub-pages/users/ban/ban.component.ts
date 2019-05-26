@@ -25,14 +25,14 @@ export class BanComponent extends Page implements OnDestroy {
     private _data: BanModel = new BanModel();
 
     tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Cancel', link: '/admin/users/page/1' }),
-        new TitleTab({ title: 'Ban' })
+        new TitleTab({title: 'Ban'}),
+        new TitleTab({title: 'Cancel', link: '/admin/users/page/1'})
     ];
     banTabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Lift Ban' })
+        new TitleTab({title: 'Lift Ban'})
     ];
 
-    constructor(
+    constructor (
         private _notificationService: NotificationService,
         private _service: BanService,
         private _dialogService: DialogService,
@@ -52,61 +52,61 @@ export class BanComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    getTime(expiresAt: number): string {
+    getTime (expiresAt: number): string {
         return expiresAt === 0 ? 'Never' : TimeHelper.getLongDateWithTime(expiresAt);
     }
 
-    canLift(ban: Ban): boolean {
+    canLift (ban: Ban): boolean {
         if (ban.isLifted) {
             return false;
         }
         return ban.expiresAt === 0 || (new Date().getTime() / 1000) < ban.expiresAt;
     }
 
-    liftBan(banId: number): void {
+    liftBan (banId: number): void {
         this._dialogService.openDialog({
             title: `Lifting ban on ${this._data.user.nickname}`,
             component: this._componentFactory.resolveComponentFactory(ReasonComponent),
             buttons: [
                 new DialogCloseButton('Close'),
-                new DialogButton({ title: 'Lift', callback: this.doLift.bind(this, banId) })
+                new DialogButton({title: 'Lift', callback: this.doLift.bind(this, banId)})
             ],
-            data: { isBanning: false }
+            data: {isBanning: false}
         });
     }
 
-    createBan(): void {
+    createBan (): void {
         this._dialogService.openDialog({
             title: `New ban on ${this._data.user.nickname}`,
             component: this._componentFactory.resolveComponentFactory(ReasonComponent),
             buttons: [
                 new DialogCloseButton('Close'),
-                new DialogButton({ title: 'Ban', callback: this.doBan.bind(this) })
+                new DialogButton({title: 'Ban', callback: this.doBan.bind(this)})
             ],
-            data: { isBanning: true }
+            data: {isBanning: true}
         });
     }
 
-    get title(): string {
+    get title (): string {
         if (!this._data) {
             return '';
         }
         return `${this._data.user.nickname} ban page`;
     }
 
-    get bans(): Array<Ban> {
+    get bans (): Array<Ban> {
         return this._data.bans.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'banId'));
     }
 
-    private onData(data: { data: BanModel }): void {
+    private onData (data: { data: BanModel }): void {
         this._data = data.data;
     }
 
-    private doLift(banId: number, reason: IReason): void {
+    private doLift (banId: number, reason: IReason): void {
         if (!reason.reason) {
             this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
@@ -117,18 +117,18 @@ export class BanComponent extends Page implements OnDestroy {
         }
 
         this._service.liftBan(this._data.user.userId, banId, reason).subscribe(res => {
-            this._notificationService.sendNotification(new NotificationMessage({
-                title: 'Success',
-                message: `${this._data.user.nickname}s ban is now liften`
-            }));
+                this._notificationService.sendNotification(new NotificationMessage({
+                    title: 'Success',
+                    message: `${this._data.user.nickname}s ban is now liften`
+                }));
 
-            this._data.bans = this._data.bans.filter(item => item.banId !== banId);
-            this._data.bans.push(new Ban(res));
-        }, this._notificationService.failureNotification.bind(this._notificationService),
+                this._data.bans = this._data.bans.filter(item => item.banId !== banId);
+                this._data.bans.push(new Ban(res));
+            }, this._notificationService.failureNotification.bind(this._notificationService),
             this._dialogService.closeDialog.bind(this._dialogService));
     }
 
-    private doBan(reason: IReason): void {
+    private doBan (reason: IReason): void {
         if (!reason.length) {
             this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
@@ -147,14 +147,14 @@ export class BanComponent extends Page implements OnDestroy {
         }
 
         this._service.banUser(this._data.user.userId, reason).subscribe(res => {
-            this._notificationService.sendNotification(new NotificationMessage({
-                title: 'Success',
-                message: `${this._data.user.nickname} is now banned`
-            }));
+                this._notificationService.sendNotification(new NotificationMessage({
+                    title: 'Success',
+                    message: `${this._data.user.nickname} is now banned`
+                }));
 
-            const ban = new Ban(res);
-            this._data.bans.push(ban);
-        }, this._notificationService.failureNotification.bind(this._notificationService),
+                const ban = new Ban(res);
+                this._data.bans.push(ban);
+            }, this._notificationService.failureNotification.bind(this._notificationService),
             this._dialogService.closeDialog.bind(this._dialogService));
     }
 }

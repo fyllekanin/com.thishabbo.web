@@ -29,13 +29,17 @@ export class InputUtil {
             .perform();
     }
 
-    static clickRowAction (index: number, action: string): void {
-        const ele = element.all(by.css('app-table .row')).get(index);
-        browser.wait(ExpectedConditions.presenceOf(ele), 10000, `Expected row ${index} to be present`);
-
-        const actionEle = ele.element(by.cssContainingText('select option', action));
-        browser.wait(ExpectedConditions.presenceOf(actionEle), 10000, `Expected row ${index} action ${action} to be present`);
+    static selectOption (selectElement: ElementFinder, value): void {
+        const actionEle = selectElement.element(by.cssContainingText('option', value));
+        browser.wait(ExpectedConditions.presenceOf(actionEle), 10000, `Expected value ${value} to be present`);
 
         CommonUtil.click(actionEle);
+    }
+
+    static clickRowAction (index: number, action: string): void {
+        const ele = element.all(by.css('app-table .row select')).get(index);
+        browser.wait(ExpectedConditions.presenceOf(ele), 10000, `Expected row ${index} to be present`);
+
+        InputUtil.selectOption(ele, action);
     }
 }
