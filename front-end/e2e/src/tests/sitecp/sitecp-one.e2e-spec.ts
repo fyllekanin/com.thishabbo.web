@@ -143,6 +143,7 @@ describe('SiteCP #1', () => {
         InputUtil.fillInput(element(by.css('app-admin-user-ban-reason input')), 'You are banned');
 
         NavigationUtil.clickButton('Ban');
+        NavigationUtil.clickTab('Cancel');
         NavigationUtil.clickUserNavigation('Logout');
 
         CommonUtil.login('test', 'test4321');
