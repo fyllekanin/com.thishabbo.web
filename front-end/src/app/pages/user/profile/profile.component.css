@@ -52,14 +52,6 @@
     margin: 3px 0 0;
 }
 
-.relation {
-    margin: 0 0 2px 0;
-    padding: 5px;
-    width: 100%;
-    background: #fbfbfb;
-    box-shadow: inset 0 1px 2px rgba(197, 197, 197, 0.09);
-}
-
 .relation app-user-link {
     margin-top: 1px;
 }
@@ -70,20 +62,4 @@
     height: 16px;
     border-radius: 2px;
     box-shadow: 0 1px white, 0 1px 7px #00000042;
-}
-
-.latest-post {
-    margin: 0 0 2px 0;
-    padding: 5px;
-    width: 100%;
-    background: #fbfbfb;
-    box-shadow: inset 0 1px 2px rgba(197, 197, 197, 0.09);
-}
-
-.post-bit-row {
-    margin: 0 0 2px 0;
-    padding: 5px;
-    width: 100%;
-    background: #fbfbfb;
-    box-shadow: inset 0 1px 2px rgba(197, 197, 197, 0.09);
 }

@@ -1,8 +1,8 @@
 <app-title [title]="'Visitor Message'" [top]="redHeader"></app-title>
 <app-content [ngClass]="'vmId-' + visitorMessage.visitorMessageId">
     <div class="position-relative">
-        <div class="post-bit-row">
-            <i  class="fas fa-clock"></i> {{getTime(visitorMessage.createdAt)}}
+        <div class="time-wrapper">
+            <i class="fas fa-clock"></i> {{getTime(visitorMessage.createdAt)}}
         </div>
     </div>
     <div class="toggle-replies" (click)="isRepliesOpen = !isRepliesOpen; toggleReplies();">
@@ -24,7 +24,6 @@
                 <span *ngIf="canInfract(visitorMessage)" (click)="infract($event, visitorMessage)"
                       tooltip="Warn / Infract"><i
                         class="fa fa-bell"></i></span>
-                <span *ngIf="canReport(visitorMessage) || canInfract(visitorMessage)"></span>
             </div>
             <div class="user-controls">
                 <span tooltip="Likes" [ngClass]="visitorMessage.isLiking ? 'likes' : ''"
@@ -37,7 +36,10 @@
         </div>
     </div>
     <div #replies class="replies hidden">
-        <div *ngFor="let comment of comments">
+        <div class="position-relative" *ngFor="let comment of comments">
+            <div class="time-wrapper">
+                <i class="fas fa-clock"></i> {{getTime(comment.createdAt)}}
+            </div>
             <div class="avatar">
                 <img appUserProfile [info]="comment.user"/>
             </div>
@@ -55,8 +57,6 @@
                             class="fas fa-exclamation-triangle"></i></span>
                     <span *ngIf="canInfract(comment)" (click)="infract($event, comment)" tooltip="Warn / Infract"><i
                             class="fa fa-bell"></i></span>
-                    <span *ngIf="canReport(comment) || canInfract(comment)">|</span>
-                    {{ getTime(comment.createdAt) }}
                 </div>
                 <div class="user-controls">
                     <span tooltip="Likes" [ngClass]="comment.isLiking ? 'likes' : ''"
@@ -67,8 +67,8 @@
             </div>
         </div>
         <div class="new-message" *ngIf="isLoggedIn">
-            <input [(ngModel)]="content" type="text" placeholder="Reply..."/>
-            <button appButton [float]="'right'" (onClick)="onComment()">Send</button>
+            <input [(ngModel)]="content" type="text" (keyup)="onCommentKeyUp($event)" placeholder="Reply..."/>
+            <button appButton [float]="'right'" [color]="redButton" (onClick)="onComment()">Send</button>
         </div>
     </div>
 </app-content>

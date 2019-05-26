@@ -234,12 +234,15 @@ h2 {
     text-align: center;
 }
 
-.label {
-    font-size: .7rem;
-    font-weight: 700;
-    padding: 5px 0 5px 0px;
-}
-summary {   
+summary {
     outline: 0;
     cursor: pointer;
+}
+
+.gray-content-wrapper {
+    margin: 0 0 2px 0;
+    padding: 5px;
+    width: 100%;
+    background: #fbfbfb;
+    box-shadow: inset 0 1px 2px rgba(197, 197, 197, 0.09);
 }

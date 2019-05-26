@@ -6,6 +6,7 @@ import { AuthService } from 'core/services/auth/auth.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { InfractionService } from 'shared/components/infraction/infraction.service';
 import { TitleTopBorder } from 'shared/app-views/title/title.model';
+import { Button } from 'shared/directives/button/button.model';
 
 @Component({
     selector: 'app-user-profile-visitor-message',
@@ -21,6 +22,7 @@ export class VisitorMessageComponent implements AfterContentInit {
     @ViewChild('replies') repliesEle;
     isRepliesOpen = false;
     redHeader = TitleTopBorder.RED;
+    redButton = Button.RED;
 
     content: string;
 
@@ -145,6 +147,12 @@ export class VisitorMessageComponent implements AfterContentInit {
         } else {
             // @ts-ignore
             $(this.repliesEle.nativeElement).slideUp('slow');
+        }
+    }
+
+    onCommentKeyUp (event): void {
+        if (event.keyCode === 13) {
+            this.onComment();
         }
     }
 }
