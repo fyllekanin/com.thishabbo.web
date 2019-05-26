@@ -15,10 +15,14 @@ import { SignatureService } from './services/signature.service';
 import { SocialNetworksService } from './services/social-networks.service';
 import { essentialsRoutes } from './essentials.routes';
 import { EditorModule } from 'shared/components/editor/editor.module';
-import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 import { ProfileComponent } from './profile/profile.component';
 import { ProfileService } from './services/profile.service';
 import { BadgesComponent } from './post-bit/badges/badges.component';
+import { NameColourService } from './services/name-colour.service';
+import { NameColourComponent } from './name-colour/name-colour.component';
+import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
+import { InfoBoxModule } from 'shared/app-views/info-box/info-box.module';
+import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 
 @NgModule({
     imports: [
@@ -28,7 +32,9 @@ import { BadgesComponent } from './post-bit/badges/badges.component';
         TitleModule,
         ContentModule,
         EditorModule,
-        SafeHtmlModule
+        SafeStyleModule,
+        SafeHtmlModule,
+        InfoBoxModule
     ],
     declarations: [
         AvatarComponent,
@@ -37,7 +43,8 @@ import { BadgesComponent } from './post-bit/badges/badges.component';
         SignatureComponent,
         SocialNetworksComponent,
         ProfileComponent,
-        BadgesComponent
+        BadgesComponent,
+        NameColourComponent
     ],
     entryComponents: [
         BadgesComponent
@@ -47,7 +54,8 @@ import { BadgesComponent } from './post-bit/badges/badges.component';
         PostBitService,
         SignatureService,
         SocialNetworksService,
-        ProfileService
+        ProfileService,
+        NameColourService
     ],
     exports: [
         RouterModule

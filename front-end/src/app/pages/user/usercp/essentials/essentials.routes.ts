@@ -10,6 +10,8 @@ import { SocialNetworksComponent } from './social-networks/social-networks.compo
 import { SocialNetworksService } from './services/social-networks.service';
 import { ProfileComponent } from './profile/profile.component';
 import { ProfileService } from './services/profile.service';
+import { NameColourComponent } from './name-colour/name-colour.component';
+import { NameColourService } from './services/name-colour.service';
 
 export const essentialsRoutes: Routes = [
     {
@@ -53,6 +55,13 @@ export const essentialsRoutes: Routes = [
         component: ProfileComponent,
         resolve: {
             data: ProfileService
+        }
+    },
+    {
+        path: 'name-colour',
+        component: NameColourComponent,
+        resolve: {
+            data: NameColourService
         }
     }
 ];

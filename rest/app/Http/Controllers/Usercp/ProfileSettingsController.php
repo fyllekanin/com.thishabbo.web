@@ -14,6 +14,8 @@ use App\Utils\BBcodeUtil;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
+use App\EloquentModels\Shop\UserSubscription;
+use App\Helpers\ConfigHelper;
 use Illuminate\Support\Facades\File;
 
 class ProfileSettingsController extends Controller {
@@ -222,6 +224,60 @@ class ProfileSettingsController extends Controller {
         return response()->json([
             'signature' => $signature,
             'parsedSignature' => BBcodeUtil::bbcodeParser($signature)
+        ]);
+    }
+
+    /**
+     * Get request to fetch the users current name colours
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getNameColours(Request $request) {
+        $user = $request->get('auth');
+
+        $subscription = UserSubscription::where('userId', $user->userId)->first();
+        $canUpdateColour = $subscription && ConfigHelper::getSubscriptionOptions()['canHaveCustomNameColor'] & $subscription->subscription->options == 0;
+        $userdata = UserData::where('userId', $user->userId)->first();
+        return response()->json([
+            'colours' => Value::objectJsonProperty($userdata, 'nameColours', []),
+            'canUpdateColor' => $canUpdateColour
+        ]);
+    }
+
+    /**
+     * Put request to update the user name colours
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateNameColours(Request $request) {
+        $user = $request->get('auth');
+
+        $subscription = UserSubscription::where('userId', $user->userId)->first();
+        $canUpdateColour = $subscription && ConfigHelper::getSubscriptionOptions()['canHaveCustomNameColor'] & $subscription->subscription->options == 0;
+
+        Condition::precondition(!$canUpdateColour, 400, 'You do not have the permissions to edit name colour!');
+        $colours = $request->input('colours');
+
+        $valid = true;
+        $regex = '/^#[0-9a-f]{3}(?:[0-9a-f]{3})?$/';
+        foreach($colours as $colour) {
+            if(!preg_match($regex, $colour)) {
+                $valid = false;
+            }
+        }
+        Condition::precondition(!$valid, 400, 'Invalid Hex Codes');
+
+        $userData = UserHelper::getUserDataOrCreate($user->userId);
+        $userData->nameColours = json_encode($colours);
+        $userData->save();
+
+        Logger::user($user->userId, $request->ip(), Action::UPDATED_NAME_COLOURS);
+        return response()->json([
+            'colours' => $colours
         ]);
     }
 

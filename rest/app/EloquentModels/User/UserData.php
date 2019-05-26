@@ -31,7 +31,8 @@ class UserData extends UnixTimeModel {
         'homePage',
         'discord',
         'twitter',
-        'badges'
+        'badges',
+        'nameColours'
     ];
 
     public function user () {
