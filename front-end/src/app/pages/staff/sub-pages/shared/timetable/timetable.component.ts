@@ -158,7 +158,7 @@ export class TimetableComponent extends Page implements OnDestroy {
     private onSuccessBooking (day, hour, item): void {
         this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
-            message: 'Slot booked'
+            message: 'Slot booked, thank you!'
         }));
         this._data.timetable.push(new TimetableModel({
             timetableId: item.timetableId,

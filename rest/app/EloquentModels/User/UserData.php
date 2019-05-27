@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property mixed badges
  * @property mixed createdAt
  * @property mixed updatedAt
+ * @property false|string nameColours
  */
 class UserData extends UnixTimeModel {
     protected $table = 'userdata';
@@ -35,11 +36,11 @@ class UserData extends UnixTimeModel {
         'nameColours'
     ];
 
-    public function user () {
+    public function user() {
         return $this->belongsTo('App\EloquentModels\User\User', 'userId', 'userId');
     }
 
-    public function scopeUserId (Builder $query, $userId) {
+    public function scopeUserId(Builder $query, $userId) {
         return $query->where('userId', $userId);
     }
 }

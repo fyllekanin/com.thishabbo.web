@@ -191,12 +191,12 @@ export class UsersListComponent extends Page implements OnDestroy {
             filterConfigs: [
                 new FilterConfig({
                     title: 'Nickname',
-                    placeholder: 'Search for users',
+                    placeholder: 'Search for users...',
                     key: 'nickname'
                 }),
                 new FilterConfig({
                     title: 'Habbo',
-                    placeholder: 'Search for habbo',
+                    placeholder: 'Search for Habbo...',
                     key: 'habbo'
                 })
             ]

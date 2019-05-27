@@ -104,8 +104,8 @@ export class InfractionsComponent extends Page implements OnDestroy {
             headers: InfractionsComponent.getTableHeaders(),
             rows: this.getTableRows(),
             filterConfigs: [new FilterConfig({
-                title: 'Search by user',
-                placeholder: 'Nickname..',
+                title: 'Search Nickname',
+                placeholder: 'Search for Nickname...',
                 key: 'filter'
             })]
         });

@@ -3,17 +3,19 @@
     <div class="grid-container">
         <div class="grid-x margin-x">
             <div class="cell small-12 position-relative">
-                <strong>You current set habbo is:</strong> <br />
+                <strong>You current set Habbo is:</strong> <br />
                 <span class="habbo">{{habbo}}</span>
-                <hr />
+                <br/><br/>
                 Update your habbo, to update your habbo you have to prepare with this: <br />
-                <li>Your habbo needs to be one month or older</li>
-                <li>Your habbo motto most be <strong>{{motto}}</strong> and nothing else</li>
+                <li>Your Habbo needs to be <b>one month or older</b>.</li>
+                <li>Your Habbo motto most be <strong>{{motto}}</strong> and nothing else included or it will fail.</li>
                 <br />
-                <em>It may take a few minutes for habbo to update the motto so we can see it, so be patient</em>
+                <em>It may take a few minutes for habbo to update the motto so we can see it, so please patient.</em>
                 <br />
-                Type in your habbo name below which you wanna update to, and then click save up to the right <br />
-                <input type="test" name="habbo" [(ngModel)]="newHabbo" />
+                Type in your habbo name below which you wan to update to and then click save up to the right.<br />
+
+                <label>Habbo Name</label>
+                <input type="test" name="habbo" [(ngModel)]="newHabbo" placeholder="Type your new Habbo name here..."/>
             </div>
         </div>
     </div>

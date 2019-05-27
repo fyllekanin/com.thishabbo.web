@@ -38,7 +38,7 @@ class Thread extends DeletableModel {
         return $this->hasOne('App\EloquentModels\Forum\Post', 'postId', 'firstPostId');
     }
 
-    public function lastPost() {
+    public function latestPost() {
         return $this->hasOne('App\EloquentModels\Forum\Post', 'postId', 'lastPostId');
     }
 
@@ -90,8 +90,8 @@ class Thread extends DeletableModel {
         return $this->firstPost->content;
     }
 
-    public function getLastPostAttribute() {
-        return $this->lastPost()->first();
+    public function getLatestPostAttribute() {
+        return $this->latestPost()->first();
     }
 
     public function getTagsAttribute() {

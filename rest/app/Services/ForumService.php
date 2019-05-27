@@ -145,7 +145,7 @@ class ForumService {
      */
     public function getLatestPosts($categoryIds, $ignoredThreadIds, $ignoredCategoryIds, $amount, $skip = 0) {
         $threadsSql = Thread::select('title', 'categoryId', 'threadId', 'lastPostId')
-            ->with(['prefix', 'lastPost'])
+            ->with(['prefix', 'latestPost'])
             ->isApproved()
             ->whereIn('categoryId', $categoryIds)
             ->whereNotIn('threadId', $ignoredThreadIds)
@@ -163,8 +163,8 @@ class ForumService {
                     'text' => $thread->prefix ? $thread->prefix->text : null,
                     'style' => $thread->prefix ? $thread->prefix->style : null,
                     'postId' => $thread->lastPostId,
-                    'createdAt' => $thread->lastPost ? $thread->lastPost->createdAt->timestamp : 0,
-                    'user' => Userhelper::getSlimUser($thread->lastPost ? $thread->lastPost->userId : 0),
+                    'createdAt' => $thread->latestPost ? $thread->latestPost->createdAt->timestamp : 0,
+                    'user' => Userhelper::getSlimUser($thread->latestPost ? $thread->latestPost->userId : 0),
                     'page' => $page < 1 ? 1 : $page
                 ];
             })

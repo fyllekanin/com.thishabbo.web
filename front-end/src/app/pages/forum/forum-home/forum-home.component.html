@@ -63,7 +63,7 @@
                 <div *ngIf="topPostersToday && topPostersToday.length === 0">
                     No top posters today as of now...
                 </div>
-                <div class="latest-post" *ngFor="let topPoster of topPostersToday; let i = index;">
+                <div class="gray-content-wrapper" *ngFor="let topPoster of topPostersToday; let i = index;">
                     {{i + 1}}.
                     <app-user-link [user]="topPoster.user"></app-user-link>
 
@@ -79,7 +79,7 @@
                 <div *ngIf="topPosters && topPosters.length === 0">
                     No top posters as of now...
                 </div>
-                <div class="latest-post" *ngFor="let topPoster of topPosters; let i = index;">
+                <div class="gray-content-wrapper" *ngFor="let topPoster of topPosters; let i = index;">
                     {{i + 1}}.
                     <app-user-link [user]="topPoster.user"></app-user-link>
 

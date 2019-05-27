@@ -3,7 +3,7 @@
 <app-content>
     <div class="grid-container full">
         <div class="grid-x margin-x">
-            <div class="cell small-12 medium-6 latest-thread" *ngFor="let item of items">
+            <div class="cell small-12 medium-6 latest-thread-page" *ngFor="let item of items">
                 <img appUserProfile appLazyLoad [float]="'left'"
                      [image]="'/rest/resources/images/users/' + item.user.userId + '.gif'" />
                 <span class="latest-thread-info">

@@ -203,9 +203,9 @@ export class BetListComponent extends Page implements OnDestroy {
             const actions = [
                 {title: 'Edit', value: BetActions.EDIT_BET, condition: true},
                 {title: 'Set Result', value: BetActions.SET_RESULT, condition: !bet.isFinished},
-                {title: 'Delete', value: BetActions.DELETE_BET, condition: true},
                 {title: 'Suspend', value: BetActions.SUSPEND_BET, condition: !bet.isSuspended},
-                {title: 'Unsuspend', value: BetActions.UNSUSPEND_BET, condition: bet.isSuspended}
+                {title: 'Unsuspend', value: BetActions.UNSUSPEND_BET, condition: bet.isSuspended},
+                {title: 'Delete', value: BetActions.DELETE_BET, condition: true}
             ];
             return new TableRow({
                 id: String(bet.betId),

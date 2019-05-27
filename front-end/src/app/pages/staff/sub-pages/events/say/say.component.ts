@@ -29,7 +29,7 @@ export class SayComponent extends Page implements OnDestroy {
         super(elementRef);
         this.addSubscription(activatedRoute.data, this.onData.bind(this));
         breadcrumbService.breadcrumb = new Breadcrumb({
-            current: 'Events Say',
+            current: 'Events Says',
             items: [
                 STAFFCP_BREADCRUM_ITEM
             ]
