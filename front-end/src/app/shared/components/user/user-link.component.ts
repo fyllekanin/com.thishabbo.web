@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { SlimUser } from 'core/services/auth/auth.model';
+import { UserHelper } from 'shared/helpers/user.helper';
 
 @Component({
     selector: 'app-user-link',
@@ -7,5 +8,10 @@ import { SlimUser } from 'core/services/auth/auth.model';
 })
 export class UserLinkComponent {
     @Input() user = new SlimUser();
+
+    get nameStyling (): string {
+        console.log(this.user.nameColours);
+        return UserHelper.getNameColour(this.user.nameColours);
+    }
 }
 

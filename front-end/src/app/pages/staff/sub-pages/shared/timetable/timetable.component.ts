@@ -11,6 +11,7 @@ import { NotificationMessage } from 'shared/app-views/global-notification/global
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
 import { Page } from 'shared/page/page.model';
+import { UserHelper } from 'shared/helpers/user.helper';
 import {
     STAFFCP_BREADCRUM_ITEM,
     STAFFCP_EVENTS_BREADCRUM_ITEM,
@@ -70,7 +71,7 @@ export class TimetableComponent extends Page implements OnDestroy {
         const timetable = this.getTimetableByHour(hour);
         const linkIcon = this._type === 'events' ? (timetable.link ? '<i class="far fa-thumbs-up"></i>' :
             '<i class="far fa-thumbs-down"></i>') : '';
-        return `<span style="${timetable.user.styling}">${timetable.user.nickname}</span> <br />` +
+        return `<span style="${UserHelper.getNameColour(timetable.user.nameColours)}">${timetable.user.nickname}</span> <br />` +
             `${this.getEventName(timetable)} ${linkIcon}`;
     }
 

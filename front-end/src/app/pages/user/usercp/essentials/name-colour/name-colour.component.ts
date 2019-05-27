@@ -62,7 +62,7 @@ export class NameColourComponent extends Page implements OnDestroy {
     }
 
     private validate () {
-        const regex = /^#[0-9a-f]{3}(?:[0-9a-f]{3})?$/;
+        const regex = /^#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?$/;
         return this._data.colours.every(colour => regex.test(colour));
     }
 

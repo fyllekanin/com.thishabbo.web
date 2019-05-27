@@ -234,11 +234,11 @@ class ProfileSettingsController extends Controller {
         $user = $request->get('auth');
 
         $subscription = UserSubscription::where('userId', $user->userId)->first();
-        $canUpdateColour = $subscription && ConfigHelper::getSubscriptionOptions()['canHaveCustomNameColor'] & $subscription->subscription->options == 0;
+        $canUpdateColour = $subscription && ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor & $subscription->subscription->options;
         $userdata = UserData::where('userId', $user->userId)->first();
         return response()->json([
             'colours' => Value::objectJsonProperty($userdata, 'nameColours', []),
-            'canUpdateColor' => $canUpdateColour
+            'canUpdateColour' => $canUpdateColour
         ]);
     }
 
@@ -253,13 +253,13 @@ class ProfileSettingsController extends Controller {
         $user = $request->get('auth');
 
         $subscription = UserSubscription::where('userId', $user->userId)->first();
-        $canUpdateColour = $subscription && ConfigHelper::getSubscriptionOptions()['canHaveCustomNameColor'] & $subscription->subscription->options == 0;
+        $canUpdateColour = $subscription && ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor & $subscription->subscription->options;
 
         Condition::precondition(!$canUpdateColour, 400, 'You do not have the permissions to edit name colour!');
         $colours = $request->input('colours');
 
         $valid = true;
-        $regex = '/^#[0-9a-f]{3}(?:[0-9a-f]{3})?$/';
+        $regex = '/^#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?$/';
         foreach($colours as $colour) {
             if(!preg_match($regex, $colour)) {
                 $valid = false;

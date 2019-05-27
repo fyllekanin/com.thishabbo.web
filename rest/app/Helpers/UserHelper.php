@@ -32,7 +32,7 @@ class UserHelper {
             ->leftJoin('groups', 'groups.groupId', '=', 'users.displayGroupId')
             ->leftJoin('userdata', 'userdata.userId', '=', 'users.userId')
             ->select('users.userId', 'users.nickname', 'users.createdAt',
-                'users.displayGroupId', 'groups.nameStyling as styling', 'userdata.avatarUpdatedAt')
+                'users.displayGroupId', 'userdata.avatarUpdatedAt')
             ->first();
 
         if (!$slimUser) {
@@ -71,7 +71,7 @@ class UserHelper {
         $user = new \stdClass();
         $user->userId = $userId;
         $user->nickname = $userObj->nickname;
-        $user->styling = self::getNicknameStylingFromId($userId);
+        $user->nameColours = self::getNicknameColoursFromId($userId);
         $user->userBars = self::getUserBars($userId);
         $user->createdAt = $postBit->hideJoinDate ? null : $userObj->createdAt->timestamp;
         $user->posts = $postBit->hidePostCount ? null : $userObj->posts;
@@ -97,12 +97,17 @@ class UserHelper {
      *
      * @return mixed|string
      */
-    public static function getNicknameStylingFromId($userId) {
+    public static function getNicknameColoursFromId($userId) {
         $user = self::getUserFromId($userId);
+
+        if($user->userdata && $user->userdata->nameColours) {
+            return json_decode($user->userdata->nameColours);
+        }
+
         $displayGroupId = Value::objectProperty($user, 'displayGroupId', 0);
         $group = Group::find($displayGroupId);
 
-        return $group ? $group->nameStyling : '';
+        return $group ? [$group->nameColour] : [];
     }
 
     /**
