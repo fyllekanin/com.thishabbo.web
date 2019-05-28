@@ -11,6 +11,7 @@ use App\EloquentModels\User\UserItem;
 use App\Utils\BBcodeUtil;
 use App\Utils\Value;
 use Illuminate\Support\Facades\Cache;
+use App\Utils\Iterables;
 
 class UserHelper {
 
@@ -32,8 +33,11 @@ class UserHelper {
             ->leftJoin('groups', 'groups.groupId', '=', 'users.displayGroupId')
             ->leftJoin('userdata', 'userdata.userId', '=', 'users.userId')
             ->select('users.userId', 'users.nickname', 'users.createdAt',
-                'users.displayGroupId', 'userdata.avatarUpdatedAt')
-            ->first();
+                'users.displayGroupId', 'userdata.avatarUpdatedAt',
+                'userdata.nameColour AS customColour', 'groups.nameColour AS groupColour')->first();
+
+        $slimUser->nameColour = $slimUser->customColour ? $slimUser->customColour : $slimUser->groupColour;
+        $slimUser->nameColour = Value::objectJsonProperty($slimUser, 'nameColour', []);
 
         if (!$slimUser) {
             Cache::add('slim-user-' . $userId, null, 5);
@@ -71,7 +75,6 @@ class UserHelper {
         $user = new \stdClass();
         $user->userId = $userId;
         $user->nickname = $userObj->nickname;
-        $user->nameColours = self::getNicknameColoursFromId($userId);
         $user->userBars = self::getUserBars($userId);
         $user->createdAt = $postBit->hideJoinDate ? null : $userObj->createdAt->timestamp;
         $user->posts = $postBit->hidePostCount ? null : $userObj->posts;
@@ -86,28 +89,17 @@ class UserHelper {
             ];
         });
 
+        if ($userdata->nameColour) {
+            $user->nameColour = $userdata->nameColour;
+        } else {
+            $user->nameColour = $user->displayGroup ? $user->displayGroup->nameColour : [];
+        }
+        $user->nameColour = Value::objectJsonProperty($user, 'nameColour', []);
+
         $user = self::setUserDataFields($user, $userdata, $postBit);
 
         Cache::add('fe-user-' . $userId, $user, 5);
         return $user;
-    }
-
-    /**
-     * @param $userId
-     *
-     * @return mixed|string
-     */
-    public static function getNicknameColoursFromId($userId) {
-        $user = self::getUserFromId($userId);
-
-        if($user->userdata && $user->userdata->nameColours) {
-            return json_decode($user->userdata->nameColours);
-        }
-
-        $displayGroupId = Value::objectProperty($user, 'displayGroupId', 0);
-        $group = Group::find($displayGroupId);
-
-        return $group ? [$group->nameColour] : [];
     }
 
     /**

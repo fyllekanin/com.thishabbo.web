@@ -264,7 +264,7 @@ class ProfileSettingsController extends Controller {
         $canUpdateColour = $subscription && ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor & $subscription->subscription->options;
         $userdata = UserData::where('userId', $user->userId)->first();
         return response()->json([
-            'colours' => Value::objectJsonProperty($userdata, 'nameColours', []),
+            'colours' => Value::objectJsonProperty($userdata, 'nameColour', []),
             'canUpdateColour' => $canUpdateColour
         ]);
     }
@@ -286,16 +286,11 @@ class ProfileSettingsController extends Controller {
         $colours = $request->input('colours');
 
         $valid = true;
-        $regex = '/^#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?$/';
-        foreach($colours as $colour) {
-            if(!preg_match($regex, $colour)) {
-                $valid = false;
-            }
-        }
+
         Condition::precondition(!$valid, 400, 'Invalid Hex Codes');
 
         $userData = UserHelper::getUserDataOrCreate($user->userId);
-        $userData->nameColours = json_encode($colours);
+        $userData->nameColour = json_encode($colours);
         $userData->save();
 
         Logger::user($user->userId, $request->ip(), Action::UPDATED_NAME_COLOURS);

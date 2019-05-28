@@ -30,7 +30,7 @@ export class Group {
     @primitive()
     updatedAt: number;
     @primitive()
-    nameStyling: string;
+    nameColour: string;
     @primitive()
     userBarStyling: string;
     @primitive()

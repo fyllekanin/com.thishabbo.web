@@ -21,7 +21,6 @@ class User extends Authenticatable {
     protected $fillable = ['username', 'nickname', 'habbo', 'gdpr', 'password',
         'likes', 'displayGroupId', 'posts', 'threads', 'theme', 'lastActivity', 'referralId'];
     protected $hidden = ['username', 'password'];
-    protected $appends = ['nameColours'];
     protected $primaryKey = 'userId';
     const CREATED_AT = 'createdAt';
     const UPDATED_AT = 'updatedAt';
@@ -104,9 +103,5 @@ class User extends Authenticatable {
         return $this->subscriptions()->getResults()->map(function ($userSubscription) {
             return $userSubscription->subscription;
         });
-    }
-
-    public function getNameColoursAttribute() {
-        return UserHelper::getNicknameColoursFromId($this->userId);
     }
 }

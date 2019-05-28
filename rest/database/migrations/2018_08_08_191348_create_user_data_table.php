@@ -15,7 +15,7 @@ class CreateUserdataTable extends Migration {
             $table->bigIncrements('userdataId');
             $table->bigInteger('userId')->unique();
             $table->text('signature')->nullable();
-            $table->text('nameColours')->nullable();
+            $table->text('nameColour')->nullable();
             $table->bigInteger('postBit')->default(0);
             $table->bigInteger('avatarUpdatedAt')->default(0);
             $table->bigInteger('credits')->default(0);

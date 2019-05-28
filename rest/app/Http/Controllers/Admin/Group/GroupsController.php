@@ -130,13 +130,16 @@ class GroupsController extends Controller {
         $nameIsUnique = Group::withName($group->name)->count('groupId') == 0;
         Condition::precondition(!$nameIsUnique, 400, 'Name needs to be unique');
 
+        Condition::precondition($group->nameColour && !Value::validateHexColours([$group->nameColour]), 400, 'Invalid Hex Colour!');
+        $group->nameColour = json_encode([$group->nameColour]);
+
         $group->adminPermissions = $this->convertAdminPermissions($group);
         $group->staffPermissions = $this->convertStaffPermissions($group);
         $group->options = $this->convertGroupOptions($group);
 
         $group = new Group([
             'name' => $group->name,
-            'nameStyling' => Value::objectProperty($group, 'nameStyling', ''),
+            'nameColour' => Value::objectProperty($group, 'nameColour', ''),
             'userBarStyling' => Value::objectProperty($group, 'userBarStyling', ''),
             'immunity' => $group->immunity,
             'adminPermissions' => $group->adminPermissions,
@@ -175,13 +178,16 @@ class GroupsController extends Controller {
         $nameIsUnique = Group::withName($newGroup->name)->where('groupId', '!=', $groupId)->count('groupId') == 0;
         Condition::precondition(!$nameIsUnique, 400, 'Name needs to be unique');
 
+        Condition::precondition($newGroup->nameColour && !Value::validateHexColours([$newGroup->nameColour]), 400, 'Invalid Hex Colour!');
+        $newGroup->nameColour = json_encode([$newGroup->nameColour]);
+
         $newGroup->adminPermissions = $this->convertAdminPermissions($newGroup);
         $newGroup->staffPermissions = $this->convertStaffPermissions($newGroup);
         $newGroup->options = $this->convertGroupOptions($newGroup);
 
         Group::where('groupId', $groupId)->update([
             'name' => $newGroup->name,
-            'nameStyling' => Value::objectProperty($newGroup, 'nameStyling', $group->nameStyling),
+            'nameColour' => Value::objectProperty($newGroup, 'nameColour', $group->nameColour),
             'userBarStyling' => Value::objectProperty($newGroup, 'userBarStyling', $group->userBarStyling),
             'immunity' => $newGroup->immunity,
             'adminPermissions' => $newGroup->adminPermissions,
@@ -222,6 +228,9 @@ class GroupsController extends Controller {
         $group->adminPermissions = $this->buildAdminPermissions($group);
         $group->staffPermissions = $this->buildStaffPermissions($group);
         $group->options = $this->buildGroupOptions($group);
+
+        $group->nameColour = Value::objectJsonProperty($group, 'nameColour', '');
+        $group->nameColour = $group->nameColour == '' ? '' : $group->nameColour[0];
 
         return response()->json($group);
     }
