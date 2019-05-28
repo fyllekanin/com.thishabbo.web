@@ -92,7 +92,7 @@ class UserHelper {
         if ($userdata->nameColour) {
             $user->nameColour = $userdata->nameColour;
         } else {
-            $user->nameColour = $userObj->displayGroup ? $userObj->displayGroup->nameColour : [];
+            $user->nameColour = $userObj->displayGroup ? $userObj->displayGroup->nameColour : '';
         }
         $user->nameColour = Value::objectJsonProperty($user, 'nameColour', []);
 
