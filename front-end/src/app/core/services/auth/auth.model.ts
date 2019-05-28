@@ -54,7 +54,7 @@ export class SlimUser {
     @primitive()
     nickname: string;
     @arrayOf(String)
-    nameColours: Array<string> = [];
+    nameColour: Array<string> = [];
     @primitive()
     avatarUpdatedAt: number;
     @primitive()
