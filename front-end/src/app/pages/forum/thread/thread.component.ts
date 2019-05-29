@@ -9,7 +9,7 @@ import { AuthService } from 'core/services/auth/auth.service';
 import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 import { PostModel } from '../post/post.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { getPostTools, getThreadTools, ThreadActions, ThreadPage } from './thread.model';
+import { getPostTools, getStatsBoxes, getThreadTools, ThreadActions, ThreadPage } from './thread.model';
 import { Component, ComponentFactoryResolver, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { EditorAction } from 'shared/components/editor/editor.model';
@@ -27,6 +27,7 @@ import { ThreadPostersComponent } from './thread-posters/thread-posters.componen
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { CategoryTemplates } from 'shared/constants/templates.constants';
 import { StringHelper } from 'shared/helpers/string.helper';
+import { StatsBoxModel } from 'shared/app-views/stats-boxes/stats-boxes.model';
 
 @Component({
     selector: 'app-forum-thread',
@@ -45,6 +46,7 @@ export class ThreadComponent extends Page implements OnDestroy {
     editorButtons: Array<EditorAction> = [];
 
     tabs: Array<TitleTab> = [];
+    stats: Array<StatsBoxModel> = [];
 
     constructor (
         private _dialogService: DialogService,
@@ -273,6 +275,7 @@ export class ThreadComponent extends Page implements OnDestroy {
             page: this._threadPage.page,
             url: `/forum/thread/${this._threadPage.threadId}/page/:page`
         });
+        this.stats = getStatsBoxes(this._threadPage);
         this.setPrefix();
         this.createOrUpdateTabs();
 

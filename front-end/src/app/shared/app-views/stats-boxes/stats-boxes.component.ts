@@ -9,19 +9,28 @@ import { StatsBoxModel } from 'shared/app-views/stats-boxes/stats-boxes.model';
 export class StatsBoxesComponent {
     private _stats: Array<StatsBoxModel> = [];
 
+    @Input() minHeight = null;
+
+    goToExternalIcon (stat: StatsBoxModel): void {
+        if (!stat.externalIconLink) {
+            return;
+        }
+        window.open(stat.externalIconLink, '__blank');
+    }
+
     @Input()
-    set stats(stats: Array<StatsBoxModel>) {
+    set stats (stats: Array<StatsBoxModel>) {
         if (Array.isArray(stats) && stats.length > 4) {
             throw Error('Maximum of 4 stats are allowed');
         }
         this._stats = Array.isArray(stats) ? stats : [];
     }
 
-    get stats(): Array<StatsBoxModel> {
+    get stats (): Array<StatsBoxModel> {
         return this._stats;
     }
 
-    get column(): string {
+    get column (): string {
         switch (this._stats.length) {
             case 1:
                 return 'small-12';

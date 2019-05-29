@@ -19,3 +19,7 @@ div i {
 .margin-width {
     width: 101.2%;
 }
+
+.clickable {
+    cursor: pointer;
+}

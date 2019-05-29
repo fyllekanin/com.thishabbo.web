@@ -11,13 +11,15 @@ export class ContentComponent {
     @ViewChild('content') contentEle;
     topBorder: TitleTopBorder = '';
 
+    @Input() minHeight = null;
+
     @Input()
-    set top(top: TitleTopBorder) {
+    set top (top: TitleTopBorder) {
         this.topBorder = top || '';
     }
 
     @Input()
-    set isContracted(value: boolean) {
+    set isContracted (value: boolean) {
         if (value) {
             // @ts-ignore
             $(this.contentEle.nativeElement).slideUp('slow');

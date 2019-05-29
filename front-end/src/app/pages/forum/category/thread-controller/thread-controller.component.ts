@@ -80,7 +80,6 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
     }
 
     toggleTag ($event, tag: string): void {
-        $event.stopPropagation();
         $event.preventDefault();
         if (this.haveTag(tag)) {
             this._threadSkeleton.tags = this._threadSkeleton.tags.filter(t => t !== tag);
@@ -174,8 +173,7 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
         if (AutoSaveHelper.exists(AutoSave.THREAD, this._threadSkeleton.categoryId)) {
             this.editorButtons.push(new EditorAction({
                 title: 'Open Auto-Save',
-                value: ThreadControllerActions.AUTO_SAVE,
-                asButton: true, buttonColor: Button.YELLOW
+                value: ThreadControllerActions.AUTO_SAVE
             }));
         }
     }

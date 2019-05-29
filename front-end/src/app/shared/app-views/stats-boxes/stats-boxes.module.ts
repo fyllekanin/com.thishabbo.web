@@ -2,11 +2,15 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ContentModule } from 'shared/app-views/content/content.module';
 import { StatsBoxesComponent } from 'shared/app-views/stats-boxes/stats-boxes.component';
+import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
+import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
 
 @NgModule({
     imports: [
         CommonModule,
-        ContentModule
+        ContentModule,
+        SafeHtmlModule,
+        SafeStyleModule
     ],
     declarations: [
         StatsBoxesComponent
@@ -15,4 +19,5 @@ import { StatsBoxesComponent } from 'shared/app-views/stats-boxes/stats-boxes.co
         StatsBoxesComponent
     ]
 })
-export class StatsBoxesModule {}
+export class StatsBoxesModule {
+}
