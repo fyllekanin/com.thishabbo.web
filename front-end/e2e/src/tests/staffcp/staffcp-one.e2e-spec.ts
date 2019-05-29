@@ -36,12 +36,10 @@ describe('StaffCP #1', () => {
         CommonUtil.click(StaffCpPage.getTimetableElement('12PM - Book'));
         StaffCpPage.selectEventType('Dangerzone');
         NavigationUtil.clickButton('Book');
-        expect(StaffCpPage.getTimetableElement('12PM - Tovven<br />(Dangerzone)'
-            + '<i class="far fa-thumbs-down"></i>').isPresent()).toBeTruthy();
+        expect(StaffCpPage.getTimetableElement('12PM - Tovven (Dangerzone)').isPresent()).toBeTruthy();
 
         browser.sleep(1000);
-        CommonUtil.click(StaffCpPage.getTimetableElement('12PM - Tovven<br />(Dangerzone)'
-            + ' <i class="far fa-thumbs-down"></i>'));
+        CommonUtil.click(StaffCpPage.getTimetableElement('12PM - Tovven< (Dangerzone)'));
         NavigationUtil.clickButton('Yes');
 
         browser.sleep(1000);
