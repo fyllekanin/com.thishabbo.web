@@ -6,7 +6,8 @@ export enum ARTICLE_TAG {
     AVAILABLE = 'AVAILABLE',
     EASY = 'EASY',
     FREE = 'FREE',
-    CLOSED = 'CLOSED'
+    CLOSED = 'CLOSED',
+    DIFFICULT = 'DIFFICULT'
 }
 
 export class SlimArticle {
