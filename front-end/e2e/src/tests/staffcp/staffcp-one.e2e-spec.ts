@@ -4,7 +4,7 @@ import { StaffCpPage } from '../../pages/staff-cp.page';
 import { browser } from 'protractor';
 import { InputUtil } from '../../utils/input.util';
 
-fdescribe('StaffCP #1', () => {
+describe('StaffCP #1', () => {
     const USERNAME = 'tovven';
     const PASSWORD = 'test1234';
 
