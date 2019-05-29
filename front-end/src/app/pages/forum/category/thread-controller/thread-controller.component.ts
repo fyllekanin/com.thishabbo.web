@@ -27,8 +27,8 @@ import { ThreadAnswer, ThreadPoll } from '../../thread/thread-poll/thread-poll.m
 export class ThreadControllerComponent extends Page implements OnDestroy {
     private _threadSkeleton: ThreadSkeleton = new ThreadSkeleton();
 
-    @ViewChild('editor') editor: EditorComponent;
-    @ViewChild('file') fileInput;
+    @ViewChild('editor', { static: true }) editor: EditorComponent;
+    @ViewChild('file', { static: false }) fileInput;
 
     editorButtons: Array<EditorAction> = [];
 

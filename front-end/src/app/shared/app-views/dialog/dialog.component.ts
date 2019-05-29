@@ -13,7 +13,7 @@ export class DialogComponent {
     private _buttons: Array<DialogButton | DialogCloseButton> = [];
 
     @HostBinding('class.visible') isVisible = false;
-    @ViewChild('container', { read: ViewContainerRef }) container;
+    @ViewChild('container', { read: ViewContainerRef, static: true }) container;
 
     constructor (
         dialogService: DialogService

@@ -14,7 +14,7 @@ export class GlobalNotificationComponent implements AfterViewInit, OnDestroy {
     private _notificationSubscription: Subscription;
     private _wrapperElement: HTMLDivElement;
 
-    @ViewChild('wrapper') wrapper: ElementRef;
+    @ViewChild('wrapper', { static: true }) wrapper: ElementRef;
 
     constructor(
         private _ngZone: NgZone,

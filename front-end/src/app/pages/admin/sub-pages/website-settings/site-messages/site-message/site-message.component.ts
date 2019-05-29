@@ -24,7 +24,7 @@ import { EditorComponent } from 'shared/components/editor/editor.component';
 export class SiteMessageComponent extends Page implements OnDestroy {
     private _data: SiteMessageModel;
 
-    @ViewChild('editor') editor: EditorComponent;
+    @ViewChild('editor', { static: true }) editor: EditorComponent;
     tabs: Array<TitleTab> = [];
 
     constructor (

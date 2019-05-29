@@ -20,7 +20,7 @@ import { DialogService } from 'core/services/dialog/dialog.service';
 export class AvatarComponent extends Page implements OnDestroy {
     private _avatarSize: AvatarModel = new AvatarModel({height: 200, width: 200});
 
-    @ViewChild('avatar') avatarInput;
+    @ViewChild('avatar', { static: true }) avatarInput;
     tabs: Array<TitleTab> = [
         new TitleTab({title: 'Save'})
     ];

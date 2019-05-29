@@ -19,7 +19,7 @@ export class VisitorMessageComponent implements AfterContentInit {
 
     @Input() hostId: number;
     @Output() onRemove: EventEmitter<void> = new EventEmitter();
-    @ViewChild('replies') repliesEle;
+    @ViewChild('replies', { static: true }) repliesEle;
     isRepliesOpen = false;
     redHeader = TitleTopBorder.RED;
     redButton = Button.RED;

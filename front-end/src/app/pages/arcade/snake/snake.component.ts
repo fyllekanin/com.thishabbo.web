@@ -28,7 +28,7 @@ export class SnakeComponent extends Page implements AfterViewInit, OnDestroy {
     ];
 
     tabs: Array<TitleTab> = [];
-    @ViewChild('game') gameArea: ElementRef;
+    @ViewChild('game', { static: true }) gameArea: ElementRef;
 
     constructor (
         private _notificationService: NotificationService,

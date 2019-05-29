@@ -14,17 +14,17 @@ export const usercpRoutes: Routes = [
             },
             {
                 path: 'account',
-                loadChildren: './account/account.module#AccountModule'
+                loadChildren: () => import('./account/account.module').then(m => m.AccountModule)
             }
             ,
             {
                 path: 'essentials',
-                loadChildren: './essentials/essentials.module#EssentialsModule'
+                loadChildren: () => import('./essentials/essentials.module').then(m => m.EssentialsModule)
             }
             ,
             {
                 path: 'subscriptions',
-                loadChildren: './subscriptions/subscriptions.module#SubscriptionsModule'
+                loadChildren: () => import('./subscriptions/subscriptions.module').then(m => m.SubscriptionsModule)
             }
         ]
     }
