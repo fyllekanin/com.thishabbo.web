@@ -3,47 +3,47 @@ import { Routes } from '@angular/router';
 export const appRoutes: Routes = [
     {
         path: 'auth',
-        loadChildren: './pages/auth/auth.module#AuthModule'
+        loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule)
     },
     {
         path: 'admin',
-        loadChildren: './pages/admin/admin.module#AdminModule'
+        loadChildren: () => import('./pages/admin/admin.module').then(m => m.AdminModule)
     },
     {
         path: 'staff',
-        loadChildren: './pages/staff/staff.module#StaffModule'
+        loadChildren: () => import('./pages/staff/staff.module').then(m => m.StaffModule)
     },
     {
         path: 'forum',
-        loadChildren: './pages/forum/forum.module#ForumModule'
+        loadChildren: () => import('./pages/forum/forum.module').then(m => m.ForumModule)
     },
     {
         path: 'access',
-        loadChildren: './pages/access/access.module#AccessModule'
+        loadChildren: () => import('./pages/access/access.module').then(m => m.AccessModule)
     },
     {
         path: 'user',
-        loadChildren: './pages/user/user.module#UserModule'
+        loadChildren: () => import('./pages/user/user.module').then(m => m.UserModule)
     },
     {
         path: 'arcade',
-        loadChildren: './pages/arcade/arcade.module#ArcadeModule'
+        loadChildren: () => import('./pages/arcade/arcade.module').then(m => m.ArcadeModule)
     },
     {
         path: 'betting',
-        loadChildren: './pages/betting/betting.module#BettingModule'
+        loadChildren: () => import('./pages/betting/betting.module').then(m => m.BettingModule)
     },
     {
         path: 'goodies',
-        loadChildren: './pages/goodies/goodies.module#GoodiesModule'
+        loadChildren: () => import('./pages/goodies/goodies.module').then(m => m.GoodiesModule)
     },
     {
         path: 'page',
-        loadChildren: './pages/custom/custom.module#CustomModule'
+        loadChildren: () => import('./pages/custom/custom.module').then(m => m.CustomModule)
     },
     {
         path: 'home',
-        loadChildren: './pages/home/home.module#HomeModule'
+        loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule)
     },
     {
         path: '',

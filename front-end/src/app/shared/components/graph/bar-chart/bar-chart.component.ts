@@ -24,7 +24,7 @@ export class BarChartComponent implements AfterViewInit {
     private _scaleLinear;
     private _scaleBand;
 
-    @ViewChild('container') container;
+    @ViewChild('container', { static: true }) container;
 
     constructor(private _elementRef: ElementRef) {
     }

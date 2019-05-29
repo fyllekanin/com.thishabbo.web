@@ -13,7 +13,7 @@ export class RadioControlsComponent {
     private _data: RadioModel;
     private _radioUrl = '';
 
-    @ViewChild('player') player: ElementRef<HTMLAudioElement>;
+    @ViewChild('player', { static: true }) player: ElementRef<HTMLAudioElement>;
     isPlaying = false;
     volume = '0.5';
 

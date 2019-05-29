@@ -18,7 +18,7 @@ import { MaintenanceModel } from './maintenance.model';
 export class MaintenanceComponent extends Page implements OnDestroy {
     private _maintenanceModel: MaintenanceModel = new MaintenanceModel();
 
-    @ViewChild('editor') editor: EditorComponent;
+    @ViewChild('editor', { static: true }) editor: EditorComponent;
     buttons: Array<EditorAction> = [
         new EditorAction({ title: 'Save' })
     ];

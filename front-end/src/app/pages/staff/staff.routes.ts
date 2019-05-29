@@ -34,15 +34,15 @@ export const staffRoutes: Routes = [
             },
             {
                 path: 'radio',
-                loadChildren: './sub-pages/radio/radio.module#RadioModule'
+                loadChildren: () => import('./sub-pages/radio/radio.module').then(m => m.RadioModule)
             },
             {
                 path: 'events',
-                loadChildren: './sub-pages/events/events.module#EventsModule'
+                loadChildren: () => import('./sub-pages/events/events.module').then(m => m.EventsModule)
             },
             {
                 path: 'management',
-                loadChildren: './sub-pages/management/management.module#ManagementModule'
+                loadChildren: () => import('./sub-pages/management/management.module').then(m => m.ManagementModule)
             }
         ]
     }

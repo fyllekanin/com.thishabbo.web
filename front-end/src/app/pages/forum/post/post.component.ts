@@ -35,7 +35,7 @@ export class PostComponent extends Page implements OnDestroy {
     private _forumPermission: ForumPermissions = new ForumPermissions();
     private _isInEditMode = false;
 
-    @ViewChild('editor') editor: EditorComponent;
+    @ViewChild('editor', { static: false }) editor: EditorComponent;
     @Input() canPost: boolean;
     @Output() onUpdatePost: EventEmitter<PostModel> = new EventEmitter();
     @Output() onQuotePost: EventEmitter<string> = new EventEmitter();

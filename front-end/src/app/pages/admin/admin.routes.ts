@@ -35,43 +35,43 @@ export const adminRoutes: Routes = [
             },
             {
                 path: 'forum',
-                loadChildren: './sub-pages/forum/forum.module#ForumModule'
+                loadChildren: () => import('./sub-pages/forum/forum.module').then(m => m.ForumModule)
             },
             {
                 path: 'groups',
-                loadChildren: './sub-pages/groups/groups.module#GroupsModule'
+                loadChildren: () => import('./sub-pages/groups/groups.module').then(m => m.GroupsModule)
             },
             {
                 path: 'users',
-                loadChildren: './sub-pages/users/users.module#UsersModule'
+                loadChildren: () => import('./sub-pages/users/users.module').then(m => m.UsersModule)
             },
             {
                 path: 'moderation',
-                loadChildren: './sub-pages/moderation/moderation.module#ModerationModule'
+                loadChildren: () => import('./sub-pages/moderation/moderation.module').then(m => m.ModerationModule)
             },
             {
                 path: 'content',
-                loadChildren: './sub-pages/content/content.module#AdminContentModule'
+                loadChildren: () => import('./sub-pages/content/content.module').then(m => m.AdminContentModule)
             },
             {
                 path: 'badges',
-                loadChildren: './sub-pages/badges/badges.module#BadgesModule'
+                loadChildren: () => import('./sub-pages/badges/badges.module').then(m => m.BadgesModule)
             },
             {
                 path: 'statistics',
-                loadChildren: './sub-pages/statistics/statistics.module#StatisticsModule'
+                loadChildren: () => import('./sub-pages/statistics/statistics.module').then(m => m.StatisticsModule)
             },
             {
                 path: 'betting',
-                loadChildren: './sub-pages/betting/betting.module#BettingModule'
+                loadChildren: () => import('./sub-pages/betting/betting.module').then(m => m.BettingModule)
             },
             {
                 path: 'website-settings',
-                loadChildren: './sub-pages/website-settings/website-settings.module#WebsiteSettingsModule'
+                loadChildren: () => import('./sub-pages/website-settings/website-settings.module').then(m => m.WebsiteSettingsModule)
             },
             {
                 path: 'shop',
-                loadChildren: './sub-pages/shop/shop.module#ShopModule'
+                loadChildren: () => import('./sub-pages/shop/shop.module').then(m => m.ShopModule)
             }
         ]
     }

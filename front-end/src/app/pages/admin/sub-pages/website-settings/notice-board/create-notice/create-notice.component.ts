@@ -19,7 +19,7 @@ export class CreateNoticeComponent {
     private _notice: Notice = new Notice();
     private _previewNotice: Notice;
 
-    @ViewChild('file') fileInput;
+    @ViewChild('file', { static: true }) fileInput;
     tabs: Array<TitleTab> = [
         new TitleTab({ title: 'Cancel', value: NoticeBoardActions.CANCEL}),
         new TitleTab({ title: 'Save', value: NoticeBoardActions.SAVE })

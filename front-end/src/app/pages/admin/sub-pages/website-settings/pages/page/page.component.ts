@@ -23,7 +23,7 @@ import { NotificationMessage } from 'shared/app-views/global-notification/global
 export class PageComponent extends Page implements OnDestroy {
     private _data: PageModel = new PageModel();
 
-    @ViewChild('editor') editor: EditorComponent;
+    @ViewChild('editor', { static: true }) editor: EditorComponent;
 
     tabs: Array<TitleTab> = [];
 

@@ -18,7 +18,7 @@ import { SignatureService } from '../services/signature.service';
 export class SignatureComponent extends Page implements OnDestroy {
     private _signature = new Signature();
 
-    @ViewChild('editor') editor: EditorComponent;
+    @ViewChild('editor', { static: true }) editor: EditorComponent;
 
     saveButton: EditorAction = new EditorAction({ title: 'Save' });
 

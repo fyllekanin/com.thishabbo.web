@@ -28,7 +28,7 @@ export const userRoutes: Routes = [
             },
             {
                 path: 'usercp',
-                loadChildren: './usercp/usercp.module#UsercpModule'
+                loadChildren: () => import('./usercp/usercp.module').then(m => m.UsercpModule)
             }
         ]
     }

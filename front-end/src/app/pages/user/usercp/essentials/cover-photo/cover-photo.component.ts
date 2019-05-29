@@ -14,7 +14,7 @@ import { UsercpAvatarCoverPreviewService } from '../../../cover/usercp-avatar-co
     templateUrl: 'cover-photo.component.html'
 })
 export class CoverPhotoComponent extends Page implements OnDestroy {
-    @ViewChild('cover') coverInput;
+    @ViewChild('cover', { static: true }) coverInput;
     tabs: Array<TitleTab> = [
         new TitleTab({ title: 'Save' })
     ];

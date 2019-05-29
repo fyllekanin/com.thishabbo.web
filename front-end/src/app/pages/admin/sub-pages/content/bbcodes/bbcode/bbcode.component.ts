@@ -18,7 +18,7 @@ import { HttpClient } from '@angular/common/http';
 export class BBcodeComponent extends Page implements OnDestroy {
     private _bbcode: BBcodeModel = new BBcodeModel();
 
-    @ViewChild('image') imageInput;
+    @ViewChild('image', { static: false }) imageInput;
     tabs: Array<TitleTab> = [];
 
     constructor (

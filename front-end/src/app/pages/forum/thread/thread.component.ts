@@ -25,7 +25,6 @@ import { ThreadService } from '../services/thread.service';
 import { ThreadActionExecutor } from './thread.helper';
 import { ThreadPostersComponent } from './thread-posters/thread-posters.component';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
-import { CategoryTemplates } from 'shared/constants/templates.constants';
 import { StringHelper } from 'shared/helpers/string.helper';
 import { StatsBoxModel } from 'shared/app-views/stats-boxes/stats-boxes.model';
 
@@ -39,7 +38,7 @@ export class ThreadComponent extends Page implements OnDestroy {
     private _threadPage: ThreadPage = new ThreadPage();
     private _isToolsVisible = false;
 
-    @ViewChild('editor') editor: EditorComponent;
+    @ViewChild('editor', { static: false }) editor: EditorComponent;
 
     fixedTools: FixedTools;
     pagination: PaginationModel;
@@ -62,7 +61,7 @@ export class ThreadComponent extends Page implements OnDestroy {
     ) {
         super(_elementRef);
         this._isToolsVisible = Boolean(localStorage.getItem(LOCAL_STORAGE.FORUM_TOOLS));
-        this.addSubscription(this._activatedRoute.data, this.onThread.bind(this));
+        this.addSubscription(this._activatedRoute.data, this.onData.bind(this));
     }
 
     prettify (str: string): string {
@@ -208,10 +207,6 @@ export class ThreadComponent extends Page implements OnDestroy {
         return this._threadPage;
     }
 
-    get isQuest (): boolean {
-        return this._threadPage.template === CategoryTemplates.QUEST;
-    }
-
     private doPost (toggleThread: boolean): void {
         const threadId = this._threadPage ? this._threadPage.threadId : 0;
         const content = this.editor ? this.editor.getEditorValue() : '';
@@ -268,7 +263,7 @@ export class ThreadComponent extends Page implements OnDestroy {
         }
     }
 
-    private onThread (data: { data: ThreadPage }): void {
+    private onData (data: { data: ThreadPage }): void {
         this._threadPage = data.data;
         this.pagination = new PaginationModel({
             total: this._threadPage.total,

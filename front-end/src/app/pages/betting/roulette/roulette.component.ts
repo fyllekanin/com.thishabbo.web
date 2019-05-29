@@ -24,8 +24,8 @@ export class RouletteComponent extends Page implements OnDestroy {
     private _data: RouletteModel = new RouletteModel();
     private _numbers: Array<RouletteNumber> = [];
 
-    @ViewChild('wrapper') wrapper;
-    @ViewChild('wheel') wheel;
+    @ViewChild('wrapper', { static: true }) wrapper;
+    @ViewChild('wheel', { static: true }) wheel;
     amount: number;
     betBorder = TitleTopBorder.BLUE;
     rouletteBorder = TitleTopBorder.RED;

@@ -26,7 +26,7 @@ export class TreeDiagramComponent implements AfterViewInit {
     private _root;
     private _index = 0;
 
-    @ViewChild('container') container;
+    @ViewChild('container', { static: true }) container;
 
     ngAfterViewInit () {
         this._size.width = 960 - this._size.left - this._size.right;

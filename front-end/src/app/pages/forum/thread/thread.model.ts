@@ -7,6 +7,7 @@ import { ThreadPoll } from './thread-poll/thread-poll.model';
 import { StatsBoxModel } from 'shared/app-views/stats-boxes/stats-boxes.model';
 import { TitleTopBorder } from 'shared/app-views/title/title.model';
 import { StringHelper } from 'shared/helpers/string.helper';
+import { CategoryTemplates } from 'shared/constants/templates.constants';
 
 export class ThreadReader {
     @objectOf(SlimUser)
@@ -128,6 +129,9 @@ export class PostHistoryModel {
 }
 
 export function getStatsBoxes (thread: ThreadPage): Array<StatsBoxModel> {
+    if (thread.template !== CategoryTemplates.QUEST) {
+        return [];
+    }
     const items = [
         {
             borderColor: TitleTopBorder.GREEN,

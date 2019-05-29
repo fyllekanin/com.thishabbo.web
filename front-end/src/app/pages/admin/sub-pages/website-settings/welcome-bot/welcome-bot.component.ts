@@ -18,7 +18,7 @@ import { SITECP_BREADCRUMB_ITEM, WEBSITE_SETTINGS_BREADCRUMB_ITEM } from '../../
 export class WelcomeBotComponent extends Page implements OnDestroy {
     private _welcomeBot: WelcomeBotModel = new WelcomeBotModel();
 
-    @ViewChild('editor') editor: EditorComponent;
+    @ViewChild('editor', { static: true }) editor: EditorComponent;
     tabs: Array<TitleTab> = [
         new TitleTab({ title: 'Save' })
     ];

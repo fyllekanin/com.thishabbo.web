@@ -18,7 +18,7 @@ import { Badge, BadgeActions } from '../badges.model';
 export class BadgeComponent extends Page implements OnDestroy {
     private _badge: Badge = new Badge();
 
-    @ViewChild('file') fileInput;
+    @ViewChild('file', { static: true }) fileInput;
     tabs: Array<TitleTab> = [];
 
     constructor (

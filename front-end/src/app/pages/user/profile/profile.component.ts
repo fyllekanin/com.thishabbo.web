@@ -33,7 +33,7 @@ import { TimeHelper } from 'shared/helpers/time.helper';
 export class ProfileComponent extends Page implements OnDestroy {
     private _data: ProfileModel;
 
-    @ViewChild('editor') editor: EditorComponent;
+    @ViewChild('editor', { static: false }) editor: EditorComponent;
     sendButton: Array<EditorAction> = [
         new EditorAction({title: 'Send Message', saveCallback: this.onPost.bind(this)})
     ];
