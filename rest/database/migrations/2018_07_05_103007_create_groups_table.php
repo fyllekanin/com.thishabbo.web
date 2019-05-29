@@ -16,7 +16,7 @@ class CreateGroupsTable extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->increments('groupId');
             $table->string('name')->unique();
-            $table->text('nameStyling');
+            $table->text('nameColour');
             $table->text('userBarStyling');
             $table->integer('immunity')->default(0);
             $table->integer('adminPermissions')->default(0);

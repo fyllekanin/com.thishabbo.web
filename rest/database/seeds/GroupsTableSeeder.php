@@ -22,7 +22,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 1,
                 'name' => 'Ownership',
-                'nameStyling' => 'color:#c66464; font-weight:bold;',
+                'nameColour' => '["#c66464"]',
                 'userBarStyling' => 'background-color:#c66464; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 90,
                 'adminPermissions' => 4194271,
@@ -39,7 +39,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 2,
                 'name' => 'Community Admin',
-                'nameStyling' => 'color:#c66464; font-weight:bold;',
+                'nameColour' => '["#c66464"]',
                 'userBarStyling' => 'background-color:#c66464; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 85,
                 'adminPermissions' => 4194271,
@@ -56,7 +56,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 3,
                 'name' => 'Senior Admin',
-                'nameStyling' => 'color:#c66464; font-weight:bold;',
+                'nameColour' => '["#c66464"]',
                 'userBarStyling' => 'background-color:#c66464; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 80,
                 'adminPermissions' => 1195009,
@@ -73,7 +73,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 4,
                 'name' => 'General Admin',
-                'nameStyling' => 'color:#c66464; font-weight:bold;',
+                'nameColour' => '["#c66464"]',
                 'userBarStyling' => 'background-color:#c66464; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 75,
                 'adminPermissions' => 1063937,
@@ -90,7 +90,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 5,
                 'name' => 'EU Management',
-                'nameStyling' => 'color:#79b14e; font-weight:bold;',
+                'nameColour' => '["#79b14e"]',
                 'userBarStyling' => 'background-color:#79b14e; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height: 9px; font-family:verdana; font-size:10px; border-radius: 3px;',
                 'immunity' => 70,
                 'adminPermissions' => 0,
@@ -107,7 +107,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 6,
                 'name' => 'NA Management',
-                'nameStyling' => 'color:#79b14e; font-weight:bold;',
+                'nameColour' => '["#79b14e"]',
                 'userBarStyling' => 'background-color:#79b14e; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height: 9px; font-family:verdana; font-size:10px; border-radius: 3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -124,7 +124,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 7,
                 'name' => 'OC Management',
-                'nameStyling' => 'color:#79b14e; font-weight:bold;',
+                'nameColour' => '["#79b14e"]',
                 'userBarStyling' => 'background-color:#79b14e; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height: 9px; font-family:verdana; font-size:10px; border-radius: 3px;',
                 'immunity' => 70,
                 'adminPermissions' => 0,
@@ -141,7 +141,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 8,
                 'name' => 'Global Management',
-                'nameStyling' => 'color:#79b14e; font-weight:bold;',
+                'nameColour' => '["#79b14e"]',
                 'userBarStyling' => 'background-color:#79b14e; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height: 9px; font-family:verdana; font-size:10px; border-radius: 3px;',
                 'immunity' => 70,
                 'adminPermissions' => 0,
@@ -158,7 +158,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 9,
                 'name' => 'Site Moderators',
-                'nameStyling' => 'color:#4e4e4e; font-weight:bold;',
+                'nameColour' => '["#4e4e4e"]',
                 'userBarStyling' => 'background-color:#4e4e4e; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 667713,
@@ -175,7 +175,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 10,
                 'name' => 'Moderator Trainee',
-                'nameStyling' => 'color:#4e4e4e; font-weight:bold;',
+                'nameColour' => '["#4e4e4e"]',
                 'userBarStyling' => 'background-color:#4e4e4e; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 667713,
@@ -192,7 +192,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 11,
                 'name' => 'Developer',
-                'nameStyling' => 'color:#437682; font-weight:bold;',
+                'nameColour' => '["#437682"]',
                 'userBarStyling' => 'background-color:#437682; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px border-radius:3px;',
                 'immunity' => 65,
                 'adminPermissions' => 4194271,
@@ -209,7 +209,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 12,
                 'name' => 'EU Events Assistant',
-                'nameStyling' => 'color:#a16ead; font-weight:bold;',
+                'nameColour' => '["#a16ead"]',
                 'userBarStyling' => 'background-color:#a16ead; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -226,7 +226,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 13,
                 'name' => 'EU Head DJ',
-                'nameStyling' => 'color:#a16ead; font-weight:bold;',
+                'nameColour' => '["#a16ead"]',
                 'userBarStyling' => 'background-color:#a16ead; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -243,7 +243,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 14,
                 'name' => 'Media Editor',
-                'nameStyling' => 'color:#a16ead; font-weight:bold;',
+                'nameColour' => '["#a16ead"]',
                 'userBarStyling' => 'background-color:#a16ead; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -260,7 +260,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 15,
                 'name' => 'NA Events Assistant',
-                'nameStyling' => 'color:#a16ead; font-weight:bold;',
+                'nameColour' => '["#a16ead"]',
                 'userBarStyling' => 'background-color:#a16ead; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -277,7 +277,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 16,
                 'name' => 'NA Head DJ',
-                'nameStyling' => 'color:#a16ead; font-weight:bold;',
+                'nameColour' => '["#a16ead"]',
                 'userBarStyling' => 'background-color:#a16ead; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -294,7 +294,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 17,
                 'name' => 'OC Events Assistant',
-                'nameStyling' => 'color:#a16ead; font-weight:bold;',
+                'nameColour' => '["#a16ead"]',
                 'userBarStyling' => 'background-color:#a16ead; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -311,7 +311,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 18,
                 'name' => 'OC Head DJ',
-                'nameStyling' => 'color:#a16ead; font-weight:bold;',
+                'nameColour' => '["#a16ead"]',
                 'userBarStyling' => 'background-color:#a16ead; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -328,7 +328,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 19,
                 'name' => 'Senior Audio Producer',
-                'nameStyling' => 'color:#a16ead; font-weight:bold;',
+                'nameColour' => '["#a16ead"]',
                 'userBarStyling' => 'background-color:#a16ead; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -345,7 +345,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 20,
                 'name' => 'Senior Builders',
-                'nameStyling' => 'color:#a16ead; font-weight:bold;',
+                'nameColour' => '["#a16ead"]',
                 'userBarStyling' => 'background-color:#a16ead; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -362,7 +362,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 21,
                 'name' => 'Senior Graphics',
-                'nameStyling' => 'color:#a16ead; font-weight:bold;',
+                'nameColour' => '["#a16ead"]',
                 'userBarStyling' => 'background-color:#a16ead; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -379,7 +379,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 22,
                 'name' => 'Senior Quests',
-                'nameStyling' => 'color:#a16ead; font-weight:bold;',
+                'nameColour' => '["#a16ead"]',
                 'userBarStyling' => 'background-color:#a16ead; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -396,7 +396,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 23,
                 'name' => 'Senior Recruitment',
-                'nameStyling' => 'color:#a16ead; font-weight:bold;',
+                'nameColour' => '["#a16ead"]',
                 'userBarStyling' => 'background-color:#a16ead; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -413,7 +413,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 24,
                 'name' => 'Audio Producer',
-                'nameStyling' => 'color:#FFC0CB; font-weight:bold;',
+                'nameColour' => '["#FFC0CB"]',
                 'userBarStyling' => 'background-color:#FFC0CB; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -430,7 +430,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 25,
                 'name' => 'Builders Team',
-                'nameStyling' => 'color:#3092c3; font-weight:bold;',
+                'nameColour' => '["#3092c3"]',
                 'userBarStyling' => 'background-color:#3092c3; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -447,7 +447,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 26,
                 'name' => 'Columnists',
-                'nameStyling' => 'color:#3092c3; font-weight:bold;',
+                'nameColour' => '["#3092c3"]',
                 'userBarStyling' => 'background-color:#3092c3; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -464,7 +464,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 27,
                 'name' => 'Forum Events',
-                'nameStyling' => 'color:#3092c3; font-weight:bold;',
+                'nameColour' => '["#3092c3"]',
                 'userBarStyling' => 'background-color:#3092c3; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -481,7 +481,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 28,
                 'name' => 'Graphics Artist',
-                'nameStyling' => 'color:#3092c3; font-weight:bold;',
+                'nameColour' => '["#3092c3"]',
                 'userBarStyling' => 'background-color:#3092c3; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -498,7 +498,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 29,
                 'name' => 'Graphics Student',
-                'nameStyling' => 'color:#3092c3; font-weight:bold;',
+                'nameColour' => '["#3092c3"]',
                 'userBarStyling' => 'background-color:#3092c3; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -515,7 +515,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 30,
                 'name' => 'Media Journalist',
-                'nameStyling' => 'color:#3092c3; font-weight:bold;',
+                'nameColour' => '["#3092c3"]',
                 'userBarStyling' => 'background-color:#3092c3; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -532,7 +532,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 31,
                 'name' => 'Recruitment',
-                'nameStyling' => 'color:#3092c3; font-weight:bold;',
+                'nameColour' => '["#3092c3"]',
                 'userBarStyling' => 'background-color:#3092c3; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -549,7 +549,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 32,
                 'name' => 'Recruitment Trainee',
-                'nameStyling' => 'color:#3092c3; font-weight:bold;',
+                'nameColour' => '["#3092c3"]',
                 'userBarStyling' => 'background-color:#3092c3; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -566,7 +566,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 33,
                 'name' => 'Student',
-                'nameStyling' => 'color:#3092c3; font-weight:bold;',
+                'nameColour' => '["#3092c3"]',
                 'userBarStyling' => 'background-color:#3092c3; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -583,7 +583,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 34,
                 'name' => 'EU Events Host',
-                'nameStyling' => 'color:#3092c3; font-weight:bold;',
+                'nameColour' => '["#3092c3"]',
                 'userBarStyling' => 'background-color:#3092c3; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -600,7 +600,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 35,
                 'name' => 'EU Radio DJ',
-                'nameStyling' => 'color:#3092c3; font-weight:bold;',
+                'nameColour' => '["#3092c3"]',
                 'userBarStyling' => 'background-color:#3092c3; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -617,7 +617,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 36,
                 'name' => 'NA Events Host',
-                'nameStyling' => 'color:#3092c3; font-weight:bold;',
+                'nameColour' => '["#3092c3"]',
                 'userBarStyling' => 'background-color:#3092c3; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -634,7 +634,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 37,
                 'name' => 'NA Radio DJ',
-                'nameStyling' => 'color:#3092c3; font-weight:bold;',
+                'nameColour' => '["#3092c3"]',
                 'userBarStyling' => 'background-color:#3092c3; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -651,7 +651,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 38,
                 'name' => 'OC Events Host',
-                'nameStyling' => 'color:#3092c3; font-weight:bold;',
+                'nameColour' => '["#3092c3"]',
                 'userBarStyling' => 'background-color:#3092c3; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -668,7 +668,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 39,
                 'name' => 'OC Radio DJ',
-                'nameStyling' => 'color:#3092c3; font-weight:bold;',
+                'nameColour' => '["#3092c3"]',
                 'userBarStyling' => 'background-color:#3092c3; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -685,7 +685,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 40,
                 'name' => 'Ambassador',
-                'nameStyling' => 'color:#B4B6B9; font-weight:bold;',
+                'nameColour' => '["#B4B6B9"]',
                 'userBarStyling' => 'background-color:#A8A9AB; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -702,7 +702,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 41,
                 'name' => 'Veteran',
-                'nameStyling' => 'color:#B4B6B9; font-weight:bold;',
+                'nameColour' => '["#B4B6B9"]',
                 'userBarStyling' => 'background-color:#A8A9AB; box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.18), 0 3px 0 0px rgba(125, 117, 117, 0.1); font-size:10px; color:#FFF; font-weight:700; margin-top:3px; margin-bottom:3px; text-shadow:0 1px rgba(0, 0, 0, 0.35); padding:10px; line-height:9px; font-family:verdana; font-size:10px; border-radius:3px;',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -719,7 +719,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 42,
                 'name' => 'EU',
-                'nameStyling' => '',
+                'nameColour' => '',
                 'userBarStyling' => '',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -736,7 +736,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 43,
                 'name' => 'NA',
-                'nameStyling' => '',
+                'nameColour' => '',
                 'userBarStyling' => '',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -753,7 +753,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 44,
                 'name' => 'OC',
-                'nameStyling' => '',
+                'nameColour' => '',
                 'userBarStyling' => '',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -770,7 +770,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 45,
                 'name' => 'Female',
-                'nameStyling' => '',
+                'nameColour' => '',
                 'userBarStyling' => '',
                 'immunity' => 0,
                 'adminPermissions' => 0,
@@ -787,7 +787,7 @@ class GroupsTableSeeder extends Seeder
             array(
                 'groupId' => 46,
                 'name' => 'Male',
-                'nameStyling' => '',
+                'nameColour' => '',
                 'userBarStyling' => '',
                 'immunity' => 0,
                 'adminPermissions' => 0,

@@ -11,6 +11,7 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 import { Page } from 'shared/page/page.model';
 import { GROUP_LIST_BREADCRUMB_ITEM, SITECP_BREADCRUMB_ITEM } from '../../../admin.constants';
 import { Group, GroupActions, GroupOptions } from '../groups.model';
+import { UserHelper } from 'shared/helpers/user.helper';
 
 @Component({
     selector: 'app-groups-group',
@@ -96,7 +97,7 @@ export class GroupComponent extends Page implements OnDestroy {
     }
 
     get nicknameStyle (): string {
-        return this._group.nameStyling;
+        return UserHelper.getNameColour([this._group.nameColour]);
     }
 
     get title (): string {
