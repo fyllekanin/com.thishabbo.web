@@ -91,9 +91,10 @@ class UserHelper {
 
         if ($userdata->nameColour) {
             $user->nameColour = $userdata->nameColour;
-        } else {
-            $user->nameColour = $userObj->displayGroup ? $userObj->displayGroup->nameColour : '';
+        } else if ($userObj->displayGroup) {
+            $user->nameColour = $userObj->displayGroup->nameColour;
         }
+
         $user->nameColour = Value::objectJsonProperty($user, 'nameColour', []);
 
         $user = self::setUserDataFields($user, $userdata, $postBit);
