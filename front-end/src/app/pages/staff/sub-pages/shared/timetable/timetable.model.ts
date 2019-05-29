@@ -1,4 +1,4 @@
-import { User } from 'core/services/auth/auth.model';
+import { SlimUser } from 'core/services/auth/auth.model';
 import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
 import { EventType } from '../../events/types/types.model';
 
@@ -21,8 +21,8 @@ export class TimetableModel {
     link: string;
     @primitive()
     createdAt: number;
-    @objectOf(User)
-    user: User;
+    @objectOf(SlimUser)
+    user: SlimUser;
     @primitive()
     timestamp: number;
 

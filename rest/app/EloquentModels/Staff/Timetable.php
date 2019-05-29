@@ -4,8 +4,8 @@ namespace App\EloquentModels\Staff;
 
 use App\EloquentModels\Models\DeletableModel;
 use App\Helpers\UserHelper;
-use Illuminate\Database\Eloquent\Builder;
 use DateTime;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * @property mixed timetableId
@@ -27,7 +27,7 @@ class Timetable extends DeletableModel {
     }
 
     public function getUserAttribute() {
-        return UserHelper::getUser($this->userId);
+        return UserHelper::getSlimUser($this->userId);
     }
 
     public function getEventAttribute() {
