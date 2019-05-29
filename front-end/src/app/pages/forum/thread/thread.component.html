@@ -1,6 +1,7 @@
 <div class="grid-container">
     <div class="grid-x margin-x">
         <div class="cell small-12">
+            <app-stats-boxes [stats]="stats" [minHeight]="'110px'"></app-stats-boxes>
             <app-fixed-tools [tools]="fixedTools" (onAction)="onAction($event)"></app-fixed-tools>
 
             <app-pagination
@@ -10,7 +11,7 @@
             <app-forum-thread-poll *ngIf="thread.poll" [poll]="thread.poll"
                                    [threadId]="thread.threadId"></app-forum-thread-poll>
         </div>
-        <div class="cell small-12" [ngClass]="isQuest ? 'medium-9' : ''">
+        <div class="cell small-12">
             <div class="wrapper-margin-x">
                 <div *ngFor="let post of posts; trackBy: trackPosts; let first = first; let index = index;"
                      class="post-{{post.postId}}"
@@ -63,32 +64,6 @@
                     </span>
                 </app-content>
             </div>
-        </div>
-        <div class="cell small-12 medium-3" *ngIf="isQuest">
-            <app-title [title]="'Information'"></app-title>
-            <app-content>
-                <div class="grid-container">
-                    <div class="grid-x margin-x">
-                        <div class="cell small-6 align-center">
-                            <label>Badge</label>
-                            <img [src]="'https://habboo-a.akamaihd.net/c_images/album1584/' + thread.badge + '.gif'"/>
-                        </div>
-                        <div class="cell small-6 align-center">
-                            <label>Room Link</label>
-                            <a *ngIf="thread.roomLink" [href]="thread.roomLink" target="_blank"><img
-                                    src="/assets/images/room.gif"/></a>
-                            <span *ngIf="!thread.roomLink">No Room</span>
-                        </div>
-                        <div class="cell small-12 align-center">
-                            <label>Tags</label>
-                            <div class="tags">
-                                <span *ngFor="let tag of thread.tags" class="tag"
-                                      [ngClass]="tag">{{prettify(tag)}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </app-content>
         </div>
     </div>
 </div>

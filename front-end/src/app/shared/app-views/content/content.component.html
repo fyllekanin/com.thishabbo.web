@@ -1,4 +1,4 @@
-<div class="content-wrapper" [ngClass]="topBorder">
+<div class="content-wrapper" [ngClass]="topBorder" [style.min-height]="minHeight ? minHeight : null">
     <div #content>
         <ng-content></ng-content>
     </div>

@@ -39,4 +39,6 @@
     overflow: hidden;
     float: left;
     width: 100%;
+    max-height: 494px;
+    text-overflow: ellipsis;
 }

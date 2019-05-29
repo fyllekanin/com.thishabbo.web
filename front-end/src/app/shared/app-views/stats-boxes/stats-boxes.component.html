@@ -1,10 +1,15 @@
 <div class="grid-container full">
     <div class="grid-x margin-x margin-width">
-        <div *ngFor="let stat of stats" class="cell" [ngClass]="column">
-            <app-content [top]="stat.borderColor">
-                <div><i [ngClass]="stat.icon"></i></div>
+        <div *ngFor="let stat of stats" class="cell box" [ngClass]="column">
+            <app-content [top]="stat.borderColor" [minHeight]="minHeight">
+                <div *ngIf="stat.icon"><i [ngClass]="stat.icon"></i></div>
+                <div *ngIf="stat.externalIcon" [style]="stat.externalIconStyle | safeStyle"
+                     (click)="goToExternalIcon(stat)" [ngClass]="stat.externalIconLink ? 'clickable' : ''">
+                    <img [src]="stat.externalIcon"/>
+                </div>
                 <div class="title">{{stat.title}}</div>
-                <div>{{stat.breadText}}</div>
+                <div *ngIf="stat.breadText">{{stat.breadText}}</div>
+                <div *ngIf="stat.innerHTML" [innerHTML]="stat.innerHTML | safeHtml"></div>
             </app-content>
         </div>
     </div>

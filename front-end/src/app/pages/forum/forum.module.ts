@@ -40,6 +40,7 @@ import { LatestThreadsComponent } from './latest-threads/latest-threads.componen
 import { ThreadPostersComponent } from './thread/thread-posters/thread-posters.component';
 import { TableModule } from 'shared/components/table/table.module';
 import { UserLinkModule } from 'shared/components/user/user-link.module';
+import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.module';
 
 @NgModule({
     imports: [
@@ -59,7 +60,8 @@ import { UserLinkModule } from 'shared/components/user/user-link.module';
         SafeStyleModule,
         InfractionModule,
         TableModule,
-        UserLinkModule
+        UserLinkModule,
+        StatsBoxesModule
     ],
     declarations: [
         ForumHomeComponent,

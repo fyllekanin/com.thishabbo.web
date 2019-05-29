@@ -15,4 +15,5 @@ import { NgModule } from '@angular/core';
     ]
 })
 
-export class ContentModule {}
+export class ContentModule {
+}

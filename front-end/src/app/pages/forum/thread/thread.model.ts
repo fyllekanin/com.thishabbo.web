@@ -4,6 +4,9 @@ import { arrayOf, ClassHelper, objectOf, primitive, time } from 'shared/helpers/
 import { PostModel } from '../post/post.model';
 import { SlimUser, User } from 'core/services/auth/auth.model';
 import { ThreadPoll } from './thread-poll/thread-poll.model';
+import { StatsBoxModel } from 'shared/app-views/stats-boxes/stats-boxes.model';
+import { TitleTopBorder } from 'shared/app-views/title/title.model';
+import { StringHelper } from 'shared/helpers/string.helper';
 
 export class ThreadReader {
     @objectOf(SlimUser)
@@ -122,6 +125,37 @@ export class PostHistoryModel {
     constructor (source: Partial<PostHistoryModel>) {
         ClassHelper.assign(this, source);
     }
+}
+
+export function getStatsBoxes (thread: ThreadPage): Array<StatsBoxModel> {
+    const items = [
+        {
+            borderColor: TitleTopBorder.GREEN,
+            externalIcon: `https://habboo-a.akamaihd.net/c_images/album1584/${thread.badge}.gif`,
+            title: 'Badge',
+            breadText: 'The badge earned from this guide',
+            condition: thread.badge
+        },
+        {
+            borderColor: TitleTopBorder.RED,
+            icon: 'fas fa-tags',
+            title: 'Tags',
+            innerHTML: thread.tags.reduce((prev, curr) => {
+                return prev + `<span class="tag ${curr}">${StringHelper.prettifyString(curr)}</span>`;
+            }, ''),
+            condition: true
+        },
+        {
+            borderColor: TitleTopBorder.BLUE,
+            externalIcon: '/assets/images/room.gif',
+            externalIconStyle: thread.roomLink ? '' : '-webkit-filter: grayscale(100%); filter: grayscale(100%);',
+            externalIconLink: thread.roomLink,
+            title: 'Room Link',
+            breadText: thread.roomLink ? 'Click above to open the hotel' : 'There is no link for this',
+            condition: true
+        }
+    ];
+    return items.filter(item => item.condition).map(item => new StatsBoxModel(item));
 }
 
 export function getPostTools (forumPermissions: ForumPermissions) {

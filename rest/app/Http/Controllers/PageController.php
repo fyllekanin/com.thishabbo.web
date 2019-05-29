@@ -257,7 +257,7 @@ class PageController extends Controller {
             'threadId' => $thread->threadId,
             'badge' => isset($thread->templateData) ? $thread->templateData->badge : null,
             'title' => $thread->title,
-            'content' => BBcodeUtil::bbcodeParser($thread->content, false),
+            'content' => BBcodeUtil::bbcodeParser($thread->content, true),
             'tags' => $tags,
             'user' => UserHelper::getSlimUser($thread->userId),
             'createdAt' => $thread->createdAt->timestamp,
