@@ -41,7 +41,7 @@ describe('StaffCP #1', () => {
 
         browser.sleep(1000);
         CommonUtil.click(StaffCpPage.getTimetableElement('12PM - Tovven<br />(Dangerzone)'
-            + ' <i class="far fa-thumbs-down"></i>git'));
+            + ' <i class="far fa-thumbs-down"></i>'));
         NavigationUtil.clickButton('Yes');
 
         browser.sleep(1000);
