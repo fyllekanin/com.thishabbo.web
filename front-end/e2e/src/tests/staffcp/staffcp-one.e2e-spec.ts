@@ -39,7 +39,7 @@ describe('StaffCP #1', () => {
         expect(StaffCpPage.getTimetableElement('12PM - Tovven (Dangerzone)').isPresent()).toBeTruthy();
 
         browser.sleep(1000);
-        CommonUtil.click(StaffCpPage.getTimetableElement('12PM - Tovven< (Dangerzone)'));
+        CommonUtil.click(StaffCpPage.getTimetableElement('12PM - Tovven (Dangerzone)'));
         NavigationUtil.clickButton('Yes');
 
         browser.sleep(1000);
