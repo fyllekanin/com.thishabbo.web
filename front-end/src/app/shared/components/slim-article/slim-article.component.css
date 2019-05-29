@@ -52,22 +52,6 @@
     padding-bottom: 3px;
 }
 
-.AVAILABLE {
-    background-color: #64c667;
-}
-
-.EASY {
-    background-color: #d5e028;
-}
-
-.FREE {
-    background-color: #139bfb;
-}
-
-.CLOSED {
-    background-color: #ee7c7b;
-}
-
 .content {
     margin: 5px 0 5px 0;
     width: 100%;
