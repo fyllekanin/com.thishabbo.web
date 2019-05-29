@@ -4,7 +4,7 @@ import { StaffCpPage } from '../../pages/staff-cp.page';
 import { browser } from 'protractor';
 import { InputUtil } from '../../utils/input.util';
 
-describe('StaffCP #1', () => {
+fdescribe('StaffCP #1', () => {
     const USERNAME = 'tovven';
     const PASSWORD = 'test1234';
 
@@ -36,10 +36,10 @@ describe('StaffCP #1', () => {
         CommonUtil.click(StaffCpPage.getTimetableElement('12PM - Book'));
         StaffCpPage.selectEventType('Dangerzone');
         NavigationUtil.clickButton('Book');
-        expect(StaffCpPage.getTimetableElement('12PM - Tovven (Dangerzone)').isPresent()).toBeTruthy();
+        expect(StaffCpPage.getTimetableElement('12PM - Tovven<br />(Dangerzone)').isPresent()).toBeTruthy();
 
         browser.sleep(1000);
-        CommonUtil.click(StaffCpPage.getTimetableElement('12PM - Tovven (Dangerzone)'));
+        CommonUtil.click(StaffCpPage.getTimetableElement('12PM - Tovven<br />(Dangerzone)'));
         NavigationUtil.clickButton('Yes');
 
         browser.sleep(1000);
