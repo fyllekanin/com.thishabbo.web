@@ -7,11 +7,11 @@ import { ThreadPage } from '../../pages/thread.page';
 
 describe('User #1', () => {
     const USERNAME = 'test';
-    let password = '';
-
     const OLD_PASSWORD = 'test1234';
     const NEW_PASSWORD = 'test4321';
     const NEW_SIGNATURE = 'This is my new signature';
+
+    let password = OLD_PASSWORD;
 
     beforeEach(done => {
         CommonUtil.open('/home');
