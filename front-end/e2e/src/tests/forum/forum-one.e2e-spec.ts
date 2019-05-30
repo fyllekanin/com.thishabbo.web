@@ -11,10 +11,15 @@ describe('Fourm #1', () => {
     const USERNAME = 'tovven';
     const PASSWORD = 'test1234';
 
-    beforeEach(() => {
+    beforeEach(done => {
         CommonUtil.open('/forum');
-        NavigationUtil.clickUserNavigation('Logout');
-        CommonUtil.login(USERNAME, PASSWORD);
+        CommonUtil.isLoggedIn().then(isLoggedIn => {
+            if (isLoggedIn) {
+                NavigationUtil.clickUserNavigation('Logout');
+            }
+            CommonUtil.login(USERNAME, PASSWORD);
+            done();
+        });
     });
 
     it('should be possible to create a thread and be subscribed after', () => {

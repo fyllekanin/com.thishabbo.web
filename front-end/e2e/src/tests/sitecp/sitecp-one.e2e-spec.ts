@@ -10,12 +10,17 @@ describe('SiteCP #1', () => {
     const USERNAME = 'tovven';
     const PASSWORD = 'test1234';
 
-    beforeEach(() => {
+    beforeEach(done => {
         CommonUtil.open('/home');
 
-        NavigationUtil.clickUserNavigation('Logout');
-        CommonUtil.login(USERNAME, PASSWORD);
-        CommonUtil.open('/admin/dashboard');
+        CommonUtil.isLoggedIn().then(isLoggedIn => {
+            if (isLoggedIn) {
+                NavigationUtil.clickUserNavigation('Logout');
+            }
+            CommonUtil.login(USERNAME, PASSWORD);
+            CommonUtil.open('/admin/dashboard');
+            done();
+        });
     });
 
     it('should be possible to create, edit and delete a bbcode', () => {

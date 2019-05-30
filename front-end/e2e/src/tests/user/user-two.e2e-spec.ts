@@ -8,11 +8,16 @@ describe('User #2', () => {
     const USERNAME = 'tovven';
     const PASSWORD = 'test1234';
 
-    beforeEach(() => {
+    beforeEach(done => {
         CommonUtil.open('/home');
-        NavigationUtil.clickUserNavigation('Logout');
-        CommonUtil.login(USERNAME, PASSWORD);
-        CommonUtil.open('/user/usercp');
+        CommonUtil.isLoggedIn().then(isLoggedIn => {
+            if (isLoggedIn) {
+                NavigationUtil.clickUserNavigation('Logout');
+            }
+            CommonUtil.login(USERNAME, PASSWORD);
+            CommonUtil.open('/user/usercp');
+            done();
+        });
     });
 
     it('should be possible to update habbo', () => {

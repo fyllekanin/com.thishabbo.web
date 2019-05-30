@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('CACHE_DRIVER'),
+    'default' => CONST_CACHE_DRIVER,
 
     /*
     |--------------------------------------------------------------------------

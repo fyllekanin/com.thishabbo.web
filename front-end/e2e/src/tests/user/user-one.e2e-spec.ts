@@ -7,18 +7,22 @@ import { ThreadPage } from '../../pages/thread.page';
 
 describe('User #1', () => {
     const USERNAME = 'test';
-    const PASSWORD = 'test1234';
+    const OLD_PASSWORD = 'test1234';
     const NEW_PASSWORD = 'test4321';
     const NEW_SIGNATURE = 'This is my new signature';
 
-    beforeEach(() => {
+    let password = OLD_PASSWORD;
+
+    beforeEach(done => {
         CommonUtil.open('/home');
-    });
-
-    it('should be possible to login', () => {
-        CommonUtil.login(USERNAME, PASSWORD);
-
-        expect(CommonUtil.getNicknameElement().getText()).toEqual('test');
+        CommonUtil.isLoggedIn().then(isLoggedIn => {
+            if (isLoggedIn) {
+                NavigationUtil.clickUserNavigation('Logout');
+            }
+            CommonUtil.login(USERNAME, password);
+            CommonUtil.open('/user/usercp/account');
+            done();
+        });
     });
 
     it('should be possible to change password', () => {
@@ -26,9 +30,10 @@ describe('User #1', () => {
         NavigationUtil.clickUserCpTool('Change Password');
 
         const inputs = UserCpPage.getChangePasswordInputs();
-        InputUtil.fillInput(inputs[2], PASSWORD);
+        InputUtil.fillInput(inputs[2], OLD_PASSWORD);
         InputUtil.fillInput(inputs[0], NEW_PASSWORD);
         InputUtil.fillInput(inputs[1], NEW_PASSWORD);
+        password = NEW_PASSWORD;
 
         NavigationUtil.clickTab('Save');
         NavigationUtil.clickUserNavigation('Logout');
