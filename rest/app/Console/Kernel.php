@@ -2,8 +2,8 @@
 
 namespace App\Console;
 
-use Illuminate\Console\Command;
 use App\Jobs\UserUpdated;
+use Illuminate\Console\Command;
 use App\Console\Radio\RadioStats;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
