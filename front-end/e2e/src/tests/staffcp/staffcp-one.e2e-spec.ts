@@ -9,7 +9,7 @@ describe('StaffCP #1', () => {
     const PASSWORD = 'test1234';
 
     beforeEach(done => {
-        CommonUtil.open('/home');        
+        CommonUtil.open('/home');
         CommonUtil.isLoggedIn().then(isLoggedIn => {
             if (isLoggedIn) {
                 NavigationUtil.clickUserNavigation('Logout');
