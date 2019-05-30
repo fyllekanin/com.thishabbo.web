@@ -8,11 +8,16 @@ describe('StaffCP #1', () => {
     const USERNAME = 'tovven';
     const PASSWORD = 'test1234';
 
-    beforeEach(() => {
-        CommonUtil.open('/home');
-        NavigationUtil.clickUserNavigation('Logout');
-        CommonUtil.login(USERNAME, PASSWORD);
-        CommonUtil.open('/staff/dashboard');
+    beforeEach(done => {
+        CommonUtil.open('/home');        
+        CommonUtil.isLoggedIn().then(isLoggedIn => {
+            if (isLoggedIn) {
+                NavigationUtil.clickUserNavigation('Logout');
+            }
+            CommonUtil.login(USERNAME, PASSWORD);
+            CommonUtil.open('/staff/dashboard');
+            done();
+        });
     });
 
     it('should be possible to book & unbook a radio slot', () => {

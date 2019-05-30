@@ -8,7 +8,7 @@ export class CommonUtil {
     }
 
     static isLoggedIn () {
-        return element(by.css('app-top-box .welcome .logged-in .dropdown')).isPresent();
+        return element(by.css('app-top-box .experience')).isPresent();
     }
 
     static login (username: string, password: string, checkSuccess = true): void {

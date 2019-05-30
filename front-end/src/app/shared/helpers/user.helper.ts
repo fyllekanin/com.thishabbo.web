@@ -2,7 +2,7 @@ export class UserHelper {
     static getNameColour(colours: Array<string>): string {
         let style = `
             font-weight: bold;
-            color: ${colours.length > 0 ? colours[0] : '#000000'};`;
+            color: ${colours.length > 0 ? colours[0] : '#c1c1c1'};`;
 
 
         if (colours.length > 1) {

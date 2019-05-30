@@ -36,7 +36,10 @@
     ],
     "psr-4": {
       "App\\": "app/"
-    }
+    },
+    "files": [
+      "constants.php"
+    ]
   },
   "autoload-dev": {
     "psr-4": {

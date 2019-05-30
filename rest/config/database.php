@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION'),
+    'default' => CONST_DB_CONNECTION,
 
     /*
     |--------------------------------------------------------------------------
@@ -41,11 +41,11 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST'),
-            'port' => env('DB_PORT'),
-            'database' => env('DB_DATABASE'),
-            'username' => env('DB_USERNAME'),
-            'password' => env('DB_PASSWORD'),
+            'host' => CONST_DB_HOST,
+            'port' => CONST_DB_PORT,
+            'database' => CONST_DB_DATABASE,
+            'username' => CONST_DB_USERNAME,
+            'password' => CONST_DB_PASSWORD,
             'unix_socket' => '',
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
