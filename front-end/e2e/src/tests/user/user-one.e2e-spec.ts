@@ -7,7 +7,9 @@ import { ThreadPage } from '../../pages/thread.page';
 
 describe('User #1', () => {
     const USERNAME = 'test';
-    const PASSWORD = 'test1234';
+    let password = '';
+
+    const OLD_PASSWORD = 'test1234';
     const NEW_PASSWORD = 'test4321';
     const NEW_SIGNATURE = 'This is my new signature';
 
@@ -17,25 +19,20 @@ describe('User #1', () => {
             if (isLoggedIn) {
                 NavigationUtil.clickUserNavigation('Logout');
             }
+            CommonUtil.login(USERNAME, password);
             done();
         });
     });
 
-    it('should be possible to login', () => {
-        CommonUtil.login(USERNAME, PASSWORD);
-
-        expect(CommonUtil.getNicknameElement().getText()).toEqual('test');
-    });
-
     it('should be possible to change password', () => {
-        CommonUtil.login(USERNAME, PASSWORD);
         NavigationUtil.clickUserNavigation('UserCP');
         NavigationUtil.clickUserCpTool('Change Password');
 
         const inputs = UserCpPage.getChangePasswordInputs();
-        InputUtil.fillInput(inputs[2], PASSWORD);
+        InputUtil.fillInput(inputs[2], OLD_PASSWORD);
         InputUtil.fillInput(inputs[0], NEW_PASSWORD);
         InputUtil.fillInput(inputs[1], NEW_PASSWORD);
+        password = NEW_PASSWORD;
 
         NavigationUtil.clickTab('Save');
         NavigationUtil.clickUserNavigation('Logout');
@@ -45,7 +42,6 @@ describe('User #1', () => {
     });
 
     it('should be possible to edit home page', () => {
-        CommonUtil.login(USERNAME, NEW_PASSWORD);
         NavigationUtil.clickUserNavigation('UserCP');
         NavigationUtil.clickUserCpTool('Edit Home Page');
 
@@ -59,7 +55,6 @@ describe('User #1', () => {
     });
 
     it('should be possible to update the signature', () => {
-        CommonUtil.login(USERNAME, NEW_PASSWORD);
         NavigationUtil.clickNavigation('Forum');
         NavigationUtil.clickCategory('Reports');
         NavigationUtil.clickCategory('Sorted Reports');
@@ -81,7 +76,6 @@ describe('User #1', () => {
     });
 
     it('should be possible to apply for a public group', () => {
-        CommonUtil.login(USERNAME, NEW_PASSWORD);
         NavigationUtil.clickUserNavigation('UserCP');
         NavigationUtil.clickUserCpTool('Groups');
 
@@ -92,7 +86,6 @@ describe('User #1', () => {
     });
 
     it('should be possible to register on the website', () => {
-        CommonUtil.login(USERNAME, NEW_PASSWORD);
         NavigationUtil.clickUserNavigation('Logout');
         NavigationUtil.clickRegisterPage();
         UserCpPage.fillRegisterInformation({
