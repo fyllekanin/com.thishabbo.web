@@ -3,10 +3,10 @@
 namespace App\Console;
 
 use Illuminate\Console\Command;
+use App\Jobs\UserUpdated;
 use App\Console\Radio\RadioStats;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use Illuminate\Support\Facades\Artisan;
 
 class Kernel extends ConsoleKernel {
     /**
@@ -54,6 +54,13 @@ class ClearSubscriptions {
     public function __invoke()
     {
         $time = time();
-        Subscription::active()->where('expiresAt', '<', $time)->delete();
+        $userSubSql = UserSubscription::where('expiresAt', '<', $time);
+
+        $userIds = $userSubSql->pluck('userId');
+        $userSubSql->delete();
+
+        foreach($userIds as $userId) {
+            UserUpdated::dispatch($userId);
+        }
     }
 }

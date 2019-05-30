@@ -11,6 +11,7 @@ use App\Logger;
 use App\Models\Logger\Action;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
+use App\Jobs\SubscriptionUpdated;
 
 class SubscriptionsController extends Controller {
 
@@ -86,6 +87,8 @@ class SubscriptionsController extends Controller {
         $subscription->options = $this->convertBooleansToOptions($data);
         $subscription->save();
 
+        SubscriptionUpdated::dispatch($subscriptionId);
+
         Logger::admin($user->userId, $request->ip(), Action::UPDATED_SUBSCRIPTION, [], $subscription->subscriptionId);
         return response()->json();
     }
@@ -96,6 +99,9 @@ class SubscriptionsController extends Controller {
 
         $subscription->isDeleted = true;
         $subscription->save();
+
+        UserSubscription::where('subscriptionId', $subscriptionId)->delete();
+        SubscriptionUpdated::dispatch($subscription);
 
         Logger::admin($user->userId, $request->ip(), Action::DELETED_SUBSCRIPTION, [], $subscription->subscriptionId);
         return response()->json();

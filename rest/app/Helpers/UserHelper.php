@@ -199,6 +199,14 @@ class UserHelper {
         ];
     }
 
+    public static function hasSubscriptionFeature($userId, $feature) {
+        $userSubscriptionIds = UserSubscription::where('userId', $userId)->pluck('subscriptionId');
+        return Subscription::whereIn('subscriptionId', $userSubscriptionIds)
+            ->whereRaw('(options & ' . $feature . ')')
+            ->count() > 0;
+    }
+
+
     private static function getMaxAvatarWidth($user) {
         $size = 200;
 
