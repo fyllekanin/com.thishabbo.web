@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 use App\Console\Radio\RadioStats;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Artisan;
 
 class Kernel extends ConsoleKernel {
     /**
