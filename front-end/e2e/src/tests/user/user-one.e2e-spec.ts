@@ -20,6 +20,7 @@ describe('User #1', () => {
                 NavigationUtil.clickUserNavigation('Logout');
             }
             CommonUtil.login(USERNAME, password);
+            CommonUtil.open('/user/usercp/account');
             done();
         });
     });
