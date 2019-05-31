@@ -29,7 +29,7 @@
                 <label>Tags:</label>
                 <div class="grid-container full">
                     <div class="grid-x grid-margin-x">
-                        <div class="cell small-6">
+                        <div class="cell small-4">
                             <div>
                                 <label class="checkbox-container" (click)="toggleTag($event, 'AVAILABLE')">
                                     Available
@@ -45,7 +45,14 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="cell small-6">
+                        <div class="cell small-4">
+                            <div>
+                                <label class="checkbox-container" (click)="toggleTag($event, 'DIFFICULT')">
+                                    Difficult
+                                    <input type="checkbox" [checked]="haveTag('DIFFICULT')">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
                             <div>
                                 <label class="checkbox-container" (click)="toggleTag($event, 'FREE')">
                                     Free
@@ -53,6 +60,8 @@
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
+                        </div>
+                        <div class="cell small-4">
                             <div>
                                 <label class="checkbox-container" (click)="toggleTag($event, 'CLOSED')">
                                     Closed
