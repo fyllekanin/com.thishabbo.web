@@ -87,7 +87,7 @@ class RadioStats {
             $xml = simplexml_load_string($data);
             if ($xml != null && $xml != false) {
                 $radioStats->servergenre = (string)$xml->SERVERGENRE;
-                $radioStats->currentlisteners = (string)$xml->CURRENTLISTENERS;
+                $radioStats->currentlisteners = (string)$xml->REPORTEDLISTENERS;
                 $radioStats->songtitle = (string)$xml->SONGTITLE;
             }
         } catch (\Exception $e) {
