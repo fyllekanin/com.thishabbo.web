@@ -2,6 +2,33 @@
 
 namespace App\Models\Radio;
 
+use ReflectionClass;
+
+class RadioServerTypes {
+    const SHOUT_CAST_V1 = 'shoutCastV1';
+    const SHOUT_CAST_V2 = 'shoutCastV2';
+
+    public static function isValidType($type) {
+        try {
+            foreach (self::getAllConstants() as $serverType) {
+                if ($serverType == $type) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (\ReflectionException $e) {
+        }
+    }
+
+    /**
+     * @return array
+     * @throws \ReflectionException
+     */
+    public static function getAllConstants() {
+        return (new ReflectionClass(get_class()))->getConstants();
+    }
+}
+
 /**
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
@@ -18,6 +45,7 @@ class RadioSettings {
     public $albumArt = '';
     public $djSays = '';
     public $nextDj = '';
+    public $serverType = RadioServerTypes::SHOUT_CAST_V1;
 
     public function __construct($data) {
         try {
@@ -34,6 +62,7 @@ class RadioSettings {
             $this->albumArt = $data->albumArt;
             $this->djSays = $data->djSays;
             $this->nextDj = $data->nextDj;
+            $this->serverType = $data->serverType;
         } catch (\Exception $exception) {
 
         }
@@ -52,7 +81,8 @@ class RadioSettings {
             'song' => $this->song,
             'albumArt' => $this->albumArt,
             'djSays' => $this->djSays,
-            'nextDj' => $this->nextDj
+            'nextDj' => $this->nextDj,
+            'serverType' => $this->serverType
         ];
     }
 }

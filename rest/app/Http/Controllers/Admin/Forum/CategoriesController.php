@@ -40,7 +40,7 @@ class CategoriesController extends Controller {
         }
 
         Logger::admin($user->userId, $request->ip(), Action::UPDATED_CATEGORIES_ORDER);
-        return $this->getCategories();
+        return $this->getCategories($request);
     }
 
     /**
@@ -83,7 +83,7 @@ class CategoriesController extends Controller {
         $this->createForumPermissions($category);
         Logger::admin($user->userId, $request->ip(), Action::CREATED_CATEGORY, ['category' => $category->title]);
 
-        return $this->getCategory($category->categoryId);
+        return $this->getCategory($request, $category->categoryId);
     }
 
     /**
@@ -156,7 +156,7 @@ class CategoriesController extends Controller {
         }
 
         Logger::admin($user->userId, $request->ip(), Action::UPDATED_CATEGORY, ['category' => $newCategory->title]);
-        return $this->getCategory($categoryId);
+        return $this->getCategory($request, $categoryId);
     }
 
     /**

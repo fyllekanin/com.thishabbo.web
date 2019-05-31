@@ -1,14 +1,34 @@
 <app-title [title]="'Updating Connection Information'" [tabs]="tabs" (onTabClick)="onTabClick($event)"></app-title>
 <app-content>
     <label>Radio IP</label>
-    <input name="info-ip" type="text" [(ngModel)]="ip" />
+    <input name="info-ip" type="text" [(ngModel)]="ip"/>
 
     <label>Radio Port</label>
-    <input name="info-port" type="text" [(ngModel)]="port" />
+    <input name="info-port" type="text" [(ngModel)]="port"/>
 
     <label>Radio Password</label>
-    <input name="info-password" type="text" [(ngModel)]="password" />
+    <input name="info-password" type="text" [(ngModel)]="password"/>
 
     <label>Admin Password</label>
-    <input name="info-admin-password" type="text" [(ngModel)]="adminPassword" />
+    <input name="info-admin-password" type="text" [(ngModel)]="adminPassword"/>
+
+    <label>Tags:</label>
+    <div class="grid-container full">
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-3">
+                <label class="checkbox-container" (click)="toggleType($event, 'shoutCastV1')">
+                    ShoutCast V1
+                    <input type="checkbox" [checked]="isServerType('shoutCastV1')">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div class="cell small-3">
+                <label class="checkbox-container" (click)="toggleType($event, 'shoutCastV2')">
+                    ShoutCast V2
+                    <input type="checkbox" [checked]="isServerType('shoutCastV2')">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+        </div>
+    </div>
 </app-content>

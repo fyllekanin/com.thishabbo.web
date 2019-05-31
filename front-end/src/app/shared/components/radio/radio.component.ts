@@ -89,6 +89,10 @@ export class RadioComponent {
         return this._stats ? this._stats.likes : 0;
     }
 
+    get listeners (): number {
+        return this._stats ? this._stats.listeners : 0;
+    }
+
     get djSays (): string {
         return this._stats ? this._stats.djSays : '';
     }

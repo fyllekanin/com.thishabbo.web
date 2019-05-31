@@ -1,6 +1,6 @@
 <div class="grid-container full">
     <div class="grid-x margin-x">
-        <div class="cell small-12 medium-9">
+        <div class="cell small-12 large-9">
             <div *ngFor="let category of categories">
                 <app-title
                         [title]="category.title"
@@ -23,7 +23,7 @@
                 </app-content>
             </div>
         </div>
-        <div class="cell small-12 medium-3">
+        <div class="cell small-12 large-3">
             <app-title [title]="'Latest Posts'" [top]="latestPostersTop" [tabs]="[refreshTab]"
                        (onTabClick)="updateForumStats()"></app-title>
             <app-content>

@@ -1,4 +1,4 @@
-<audio #player [src]="url" style="display: none;"></audio>
+<audio #player [src]="url" preload="none" style="display: none;"></audio>
 <div class="generic-radio-button generic-green-button" (click)="toggleAudio()">
     <i class="fas fa-play" *ngIf="!isPlaying"></i>
     <i class="fas fa-pause" *ngIf="isPlaying"></i>
@@ -14,4 +14,5 @@
     <input type="range" [value]="volume" (input)="onVolumeChange($event)" [disabled]="!isPlaying"/>
 </div>
 <div class="generic-radio-button generic-pink-button desktop-button"><i class="fas fa-sync-alt"></i></div>
-<div class="generic-radio-button generic-pink-button mobile-button" (click)="openInfo()"><i class="fas fa-info"></i></div>
+<div class="generic-radio-button generic-pink-button mobile-button" (click)="openInfo()"><i class="fas fa-info"></i>
+</div>
