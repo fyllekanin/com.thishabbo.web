@@ -38,7 +38,7 @@ export class ThreadComponent extends Page implements OnDestroy {
     private _threadPage: ThreadPage = new ThreadPage();
     private _isToolsVisible = false;
 
-    @ViewChild('editor', { static: false }) editor: EditorComponent;
+    @ViewChild('editor', {static: false}) editor: EditorComponent;
 
     fixedTools: FixedTools;
     pagination: PaginationModel;
@@ -212,8 +212,10 @@ export class ThreadComponent extends Page implements OnDestroy {
         const content = this.editor ? this.editor.getEditorValue() : '';
 
         this._httpService.post(`forum/thread/${threadId}`, {content: content, toggleThread: toggleThread})
-            .subscribe(this.onSuccessPost.bind(this, toggleThread),
-                this._notificationService.failureNotification.bind(this._notificationService));
+            .subscribe(post => {
+                this.onSuccessPost(toggleThread, post);
+                this._notificationService.sendInfoNotification('Post created');
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private onOpenAutoSave (): void {

@@ -25,7 +25,7 @@ export class BookingLogComponent extends Page implements OnDestroy {
     pagination: PaginationModel;
     tableConfig: TableConfig;
 
-    constructor(
+    constructor (
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute,
         breadcrumbService: BreadcrumbService
@@ -42,11 +42,11 @@ export class BookingLogComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    private onData(data: { data: BookingLogModel }): void {
+    private onData (data: { data: BookingLogModel }): void {
         this._data = data.data;
 
         this.createOrUpdateTable();
@@ -57,7 +57,7 @@ export class BookingLogComponent extends Page implements OnDestroy {
         });
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -69,27 +69,26 @@ export class BookingLogComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         const hours = TimeHelper.getHours();
         return this._data.items.map(BookingLogComponent.mapItemToRow.bind(this, hours));
     }
 
-    private static mapItemToRow(hours, item: BookingItem): TableRow {
+    private static mapItemToRow (hours, item: BookingItem): TableRow {
         const hour = TimeHelper.getConvertedHour(item.hour + TimeHelper.getTimeOffsetInHours());
         const day = TimeHelper.getConvertedDay(item.hour + TimeHelper.getTimeOffsetInHours(), item.day);
         return new TableRow({
             cells: [
-                new TableCell({ title: item.user.nickname }),
-                new TableCell({ title: item.affected.nickname }),
-                new TableCell({ title: BookingLogComponent.getActionText(item) }),
-                new TableCell({ title: TimeHelper.getDay(day).label }),
-                new TableCell({ title: hours[hour].label }),
-                new TableCell({ title: TimeHelper.getTime(item.updatedAt) })
+                new TableCell({title: item.user.nickname}),
+                new TableCell({title: item.affected.nickname}),
+                new TableCell({title: BookingLogComponent.getActionText(item)}),
+                new TableCell({title: `${TimeHelper.getDay(day).label} at ${hours[hour].label}`}),
+                new TableCell({title: TimeHelper.getTime(item.updatedAt)})
             ]
         });
     }
 
-    private static getActionText(item: BookingItem): string {
+    private static getActionText (item: BookingItem): string {
         switch (item.action) {
             case BookingActions.UNBOOKED_EVENT:
             case BookingActions.UNBOOKED_RADIO:
@@ -106,14 +105,13 @@ export class BookingLogComponent extends Page implements OnDestroy {
         }
     }
 
-    private static getTableHeaders(): Array<TableHeader> {
+    private static getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'User' }),
-            new TableHeader({ title: 'Affected' }),
-            new TableHeader({ title: 'Action' }),
-            new TableHeader({ title: 'Day' }),
-            new TableHeader({ title: 'Hour' }),
-            new TableHeader({ title: 'Timestamp' })
+            new TableHeader({title: 'User'}),
+            new TableHeader({title: 'Affected'}),
+            new TableHeader({title: 'Action'}),
+            new TableHeader({title: 'Slot'}),
+            new TableHeader({title: 'Timestamp'})
         ];
     }
 }

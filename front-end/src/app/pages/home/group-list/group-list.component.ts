@@ -13,7 +13,7 @@ import { GroupList } from './group-list.model';
 export class GroupListComponent extends Page implements OnDestroy {
     private _data: Array<GroupList> = [];
 
-    constructor(
+    constructor (
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService,
         activatedRoute: ActivatedRoute
@@ -29,11 +29,11 @@ export class GroupListComponent extends Page implements OnDestroy {
         super.destroy();
     }
 
-    get groups(): Array<GroupList> {
+    get groups (): Array<GroupList> {
         return this._data;
     }
 
-    private onData(data: { data: Array<GroupList> }): void {
-        this._data = data.data;
+    private onData (data: { data: Array<GroupList> }): void {
+        this._data = data.data.filter(item => item.users.length > 0);
     }
 }

@@ -18,13 +18,12 @@ class BBcodeController extends Controller {
      * @param Request $request
      *
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function createBBcode(Request $request) {
         $user = $request->get('auth');
         $file = $request->file('image');
         $bbcode = (object)json_decode($request->input('bbcode'));
-        $this->bbcodeChecker($bbcode, $request);
+        $this->bbcodeChecker($bbcode, $request, true);
 
         $newBbcode = new BBcode([
             'name' => $bbcode->name,
@@ -54,7 +53,6 @@ class BBcodeController extends Controller {
      * @param         $bbcodeId
      *
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function updateBBcode(Request $request, $bbcodeId) {
         $user = $request->get('auth');
@@ -135,12 +133,12 @@ class BBcodeController extends Controller {
      *
      * @param bool $isImageRequired
      *
-     * @throws \Illuminate\Validation\ValidationException
      */
-    private function bbcodeChecker($bbcode, $request, $isImageRequired = true) {
+    private function bbcodeChecker($bbcode, $request, $isImageRequired) {
         Condition::precondition(!$bbcode, 400, 'No bbcode sent for creation');
         Condition::precondition(!isset($bbcode->name), 400, 'Name needs to be present');
         Condition::precondition(!isset($bbcode->pattern), 400, 'Pattern needs to be present');
+        Condition::precondition(!is_int(preg_match($bbcode->pattern, '')), 400, 'Pattern is invalid');
         Condition::precondition($isImageRequired && BBcode::where('pattern', $bbcode->pattern)->count('bbcodeId') > 0,
             404, 'Pattern already exists');
         if ($bbcode->isEmoji) {
