@@ -1,10 +1,3 @@
-.display-controller {
-    display: inline-block;
-    margin-right: 1rem;
-}
-
 .display-controller-button {
-    margin-top: 32px;
-    margin-right: 0;
-    float: right;
+    padding-top: 27px;
 }

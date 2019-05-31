@@ -5,7 +5,7 @@ import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { STAFFCP_BREADCRUM_ITEM, STAFFCP_RADIO_BREADCRUM_ITEM } from '../../../staff.constants';
-import { ManageConnectionModel, ManageConnectionActions } from './manage-connection.model';
+import { ManageConnectionActions, ManageConnectionModel } from './manage-connection.model';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
@@ -19,10 +19,10 @@ export class ManageConnectionComponent extends Page implements OnDestroy {
 
     private _manageConnectionModel = new ManageConnectionModel();
     tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Save', value: ManageConnectionActions.SAVE })
+        new TitleTab({title: 'Save', value: ManageConnectionActions.SAVE})
     ];
 
-    constructor(
+    constructor (
         private _notificationService: NotificationService,
         private _httpService: HttpService,
         breadcrumbService: BreadcrumbService,
@@ -40,39 +40,48 @@ export class ManageConnectionComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    get port(): number {
+    toggleType (event, type: string): void {
+        event.preventDefault();
+        this._manageConnectionModel.serverType = type;
+    }
+
+    isServerType (type: string): boolean {
+        return this._manageConnectionModel.serverType === type;
+    }
+
+    get port (): number {
         return this._manageConnectionModel.port;
     }
 
-    get ip(): string {
+    get ip (): string {
         return this._manageConnectionModel.ip;
     }
 
-    get password(): string {
+    get password (): string {
         return this._manageConnectionModel.password;
     }
 
-    get adminPassword(): string {
+    get adminPassword (): string {
         return this._manageConnectionModel.adminPassword;
     }
 
-    set port(port: number) {
+    set port (port: number) {
         this._manageConnectionModel.port = port;
     }
 
-    set ip(ip: string) {
+    set ip (ip: string) {
         this._manageConnectionModel.ip = ip;
     }
 
-    set password(password: string) {
+    set password (password: string) {
         this._manageConnectionModel.password = password;
     }
 
-    set adminPassword(adminPassword: string) {
+    set adminPassword (adminPassword: string) {
         this._manageConnectionModel.adminPassword = adminPassword;
     }
 
@@ -85,7 +94,7 @@ export class ManageConnectionComponent extends Page implements OnDestroy {
     }
 
     private save (): void {
-        this._httpService.put('staff/radio/manage-connection', { information: this._manageConnectionModel })
+        this._httpService.put('staff/radio/manage-connection', {information: this._manageConnectionModel})
             .subscribe(this.onSuccessUpdate.bind(this, this),
                 this._notificationService.failureNotification.bind(this._notificationService));
     }
@@ -97,7 +106,7 @@ export class ManageConnectionComponent extends Page implements OnDestroy {
         }));
     }
 
-    private onData(data: { data: ManageConnectionModel }): void {
+    private onData (data: { data: ManageConnectionModel }): void {
         this._manageConnectionModel = data.data;
     }
 }

@@ -78,10 +78,15 @@
 }
 
 .likes {
-    width: 45%;
     display: inline-block;
     margin: 0 0 1px 5px;
     color: #bb4c4c;
+}
+
+.listeners {
+    display: inline-block;
+    margin: 0 0 1px 5px;
+    color: #7d7d7d;
 }
 
 .current-event {
@@ -150,16 +155,16 @@
 
 .blue-button {
     cursor: pointer;
-    background-image: url(/assets/images/bargradient.png)!important;
+    background-image: url(/assets/images/bargradient.png) !important;
     background: #139bfb;
 }
 
 .green-button {
-    background-image: url(/assets/images/bargradient.png)!important;
+    background-image: url(/assets/images/bargradient.png) !important;
     background: #79b554;
 }
 
 .red-button {
-    background-image: url(/assets/images/bargradient.png)!important;
+    background-image: url(/assets/images/bargradient.png) !important;
     background-color: #c37070;
 }

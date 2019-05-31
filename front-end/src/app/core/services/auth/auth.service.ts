@@ -109,7 +109,14 @@ export class AuthService {
 
     getAuthUser (): AuthUser {
         const user = localStorage.getItem(LOCAL_STORAGE.AUTH_USER);
-        return user ? JSON.parse(atob(user)) : null;
+        if (!user) {
+            return null;
+        }
+        try {
+            return JSON.parse(atob(user));
+        } catch (e) {
+            return null;
+        }
     }
 
     private doLogin (res: AuthUser): void {
