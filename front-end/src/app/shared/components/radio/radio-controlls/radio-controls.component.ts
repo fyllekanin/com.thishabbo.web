@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { RadioModel } from 'shared/components/radio/radio.model';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 import { RadioService } from '../services/radio.service';
@@ -10,20 +10,20 @@ import { NotificationService } from 'core/services/notification/notification.ser
     templateUrl: 'radio-controls.component.html',
     styleUrls: ['radio-controls.component.css']
 })
-export class RadioControlsComponent {
+export class RadioControlsComponent implements AfterViewInit {
     private _data: RadioModel;
     private _radioUrl = '';
 
     @ViewChild('player', {static: true}) player: ElementRef<HTMLAudioElement>;
     isPlaying = false;
-    volume = '0.5';
+    volume = 0.5;
 
     constructor (
         private _radioService: RadioService,
         private _notificationService: NotificationService,
         continuesInformationService: ContinuesInformationService
     ) {
-        this.volume = localStorage.getItem(LOCAL_STORAGE.VOLUME);
+        this.volume = Number(localStorage.getItem(LOCAL_STORAGE.VOLUME));
         continuesInformationService.onContinuesInformation.subscribe(continuesInformation => {
             this._data = continuesInformation.radio;
             this._radioUrl = `${this._data.ip}:${this._data.port}/;stream.nsv`;
@@ -38,11 +38,14 @@ export class RadioControlsComponent {
         return this._radioUrl;
     }
 
-    onVolumeChange (event): void {
-        const volume = event.target.value;
-        localStorage.setItem(LOCAL_STORAGE.VOLUME, String(volume));
+    ngAfterViewInit (): void {
+        this.setVolume();
+    }
 
-        this.player.nativeElement.volume = Number(volume / 100);
+    onVolumeChange (event): void {
+        this.volume = Number(event.target.value);
+        localStorage.setItem(LOCAL_STORAGE.VOLUME, String(this.volume));
+        this.setVolume();
     }
 
     toggleAudio (): void {
@@ -70,4 +73,7 @@ export class RadioControlsComponent {
         this._radioService.openInfo(this._data);
     }
 
+    private setVolume (): void {
+        this.player.nativeElement.volume = Number(this.volume / 100);
+    }
 }

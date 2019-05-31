@@ -1,6 +1,7 @@
 import { TitleTab, TitleTopBorder } from 'shared/app-views/title/title.model';
 import {
-    Action, ColumnSize,
+    Action,
+    ColumnSize,
     FilterConfig,
     TableConfig,
     TableHeader,
@@ -17,7 +18,7 @@ import { QueryParameters } from 'core/services/http/http.model';
 
 export class TableComponent implements DoCheck {
     private _config: TableConfig;
-    private _columnSize: ColumnSize = { column: '', actions: '' };
+    private _columnSize: ColumnSize = {column: '', actions: ''};
 
     @Output() onAction: EventEmitter<Action> = new EventEmitter();
     @Output() onFilter: EventEmitter<QueryParameters> = new EventEmitter();
@@ -25,11 +26,11 @@ export class TableComponent implements DoCheck {
     @Input() tabs: Array<TitleTab> = [];
     @Input() isContracted: boolean;
 
-    tabClick(val: string | number): void {
+    tabClick (val: string | number): void {
         this.onTabClick.emit(val);
     }
 
-    onChange(row: TableRow, item): void {
+    onChange (row: TableRow, item): void {
         this.onAction.emit(new Action({
             rowId: row.id,
             value: item.target.value
@@ -37,14 +38,14 @@ export class TableComponent implements DoCheck {
         item.target.value = null;
     }
 
-    onActionClick(rowId: string, value: number): void {
+    onActionClick (rowId: string, value: number): void {
         this.onAction.emit(new Action({
             rowId: rowId,
             value: value
         }));
     }
 
-    onFilterChange(): void {
+    onFilterChange (): void {
         const params: QueryParameters = this.filterConfigs.reduce((prev, curr) => {
             prev[curr.key] = curr.value;
             return prev;
@@ -52,7 +53,7 @@ export class TableComponent implements DoCheck {
         this.onFilter.emit(params);
     }
 
-    toggleRow(row: TableRow): void {
+    toggleRow (row: TableRow): void {
         if (!row.isExpandable || !row.data) {
             return;
         }
@@ -66,48 +67,48 @@ export class TableComponent implements DoCheck {
     }
 
     @Input()
-    set config(config: TableConfig) {
+    set config (config: TableConfig) {
         this._config = config;
         this._columnSize = this.getColumnSize();
     }
 
-    get isSlim(): boolean {
+    get isSlim (): boolean {
         return this._config.isSlim;
     }
 
-    get columnSize(): ColumnSize {
+    get columnSize (): ColumnSize {
         return this._columnSize;
     }
 
-    get topBorder(): TitleTopBorder {
+    get topBorder (): TitleTopBorder {
         return this._config.topBorder;
     }
 
-    get isSet(): boolean {
+    get isSet (): boolean {
         return Boolean(this._config);
     }
 
-    get title(): string {
+    get title (): string {
         return this._config.title;
     }
 
-    get headers(): Array<TableHeader> {
+    get headers (): Array<TableHeader> {
         return this._config.headers;
     }
 
-    get rows(): Array<TableRow> {
+    get rows (): Array<TableRow> {
         return this._config.rows;
     }
 
-    get haveActions(): boolean {
+    get haveActions (): boolean {
         return this._config.rows.some(item => item.actions.length > 0);
     }
 
-    get filterConfigs(): Array<FilterConfig> {
+    get filterConfigs (): Array<FilterConfig> {
         return this._config.filterConfigs;
     }
 
-    private getColumnSize(): ColumnSize {
+    private getColumnSize (): ColumnSize {
         if (!this._config || !this._config.headers) {
             return null;
         }
@@ -126,6 +127,11 @@ export class TableComponent implements DoCheck {
                 return {
                     column: this.haveActions ? 'small-3' : 'small-4',
                     actions: this.haveActions ? 'small-3' : ''
+                };
+            case 5:
+                return {
+                    column: 'small-2',
+                    actions: 'small-2'
                 };
             case 4:
             default:
