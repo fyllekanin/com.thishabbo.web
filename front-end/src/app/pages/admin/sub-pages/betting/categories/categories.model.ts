@@ -10,7 +10,7 @@ export class BetCategoryModel {
     @primitive()
     createdAt: number;
 
-    constructor(source: Partial<BetCategoryModel>) {
+    constructor (source: Partial<BetCategoryModel>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -23,7 +23,7 @@ export class CategoriesListPage {
     @primitive()
     total: number;
 
-    constructor(source: Partial<CategoriesListPage>) {
+    constructor (source: Partial<CategoriesListPage>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -32,6 +32,6 @@ export enum BetCategoryActions {
     EDIT_CATEGORY,
     DELETE_CATEGORY,
     SAVE,
-    CANCEL,
+    BACK,
     DELETE
 }

@@ -14,7 +14,7 @@ export class AutoBan {
     @primitive()
     updatedAt: number;
 
-    constructor(source?: Partial<AutoBan>) {
+    constructor (source?: Partial<AutoBan>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -22,5 +22,5 @@ export class AutoBan {
 export enum AutoBanActions {
     SAVE,
     DELETE,
-    CANCEL
+    BACK
 }

@@ -1,6 +1,6 @@
 <app-editor #editor
-    [content]="content"
-    [title]="'Maintenance Mode - Content - (Leave empty and press save to disable)'"
-    [buttons]="buttons"
-    (onTabClick)="onSave()">
+            [content]="content"
+            [title]="'Maintenance Mode - Content - (Leave empty and press save to disable)'"
+            [buttons]="buttons"
+            (onTabClick)="onTabClick($event)">
 </app-editor>

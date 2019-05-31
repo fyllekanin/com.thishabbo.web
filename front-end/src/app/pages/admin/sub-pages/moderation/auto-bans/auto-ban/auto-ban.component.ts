@@ -52,7 +52,7 @@ export class AutoBanComponent extends Page implements OnDestroy {
             case AutoBanActions.DELETE:
                 this.onDelete();
                 break;
-            case AutoBanActions.CANCEL:
+            case AutoBanActions.BACK:
                 this._router.navigateByUrl('/admin/moderation/auto-bans/page/1');
                 break;
         }
@@ -112,7 +112,7 @@ export class AutoBanComponent extends Page implements OnDestroy {
         const tabs = [
             {title: 'Save', value: AutoBanActions.SAVE, condition: true},
             {title: 'Delete', value: AutoBanActions.DELETE, condition: this._data.updatedAt},
-            {title: 'Cancel', value: AutoBanActions.CANCEL, condition: true}
+            {title: 'Back', value: AutoBanActions.BACK, condition: true}
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));

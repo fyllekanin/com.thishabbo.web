@@ -7,7 +7,7 @@ export class GroupOptions {
     @primitive()
     canBeTagged: boolean;
 
-    constructor(source?: Partial<GroupOptions>) {
+    constructor (source?: Partial<GroupOptions>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -42,13 +42,13 @@ export class Group {
     @primitive()
     avatarHeight: number;
 
-    constructor(source?: Partial<Group>) {
+    constructor (source?: Partial<Group>) {
         ClassHelper.assign(this, source);
     }
 }
 
 export enum GroupActions {
-    CANCEL,
+    BACK,
     SAVE,
     DELETE
 }

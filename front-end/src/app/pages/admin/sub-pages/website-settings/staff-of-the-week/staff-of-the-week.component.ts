@@ -1,6 +1,6 @@
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
-import { StaffOfTheWeekModel } from './staff-of-the-week.model';
-import { ActivatedRoute } from '@angular/router';
+import { StaffOfTheWeekActions, StaffOfTheWeekModel } from './staff-of-the-week.model';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Page } from 'shared/page/page.model';
 import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { TitleTab } from 'shared/app-views/title/title.model';
@@ -19,12 +19,14 @@ export class StaffOfTheWeekComponent extends Page implements OnDestroy {
     private _data = new StaffOfTheWeekModel();
 
     tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Save' })
+        new TitleTab({title: 'Save', value: StaffOfTheWeekActions.SAVE}),
+        new TitleTab({title: 'Back', value: StaffOfTheWeekActions.BACK})
     ];
 
-    constructor(
+    constructor (
         private _notificationService: NotificationService,
         private _httpService: HttpService,
+        private _router: Router,
         activatedRoute: ActivatedRoute,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService
@@ -40,22 +42,29 @@ export class StaffOfTheWeekComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    get model(): StaffOfTheWeekModel {
+    get model (): StaffOfTheWeekModel {
         return this._data;
     }
 
-    get months(): Array<string> {
+    get months (): Array<string> {
         return TimeHelper.FULL_MONTHS;
     }
 
-    onSave(): void {
-        this._httpService.put('admin/content/staff-of-the-week', { information: this._data })
-            .subscribe(this.onSuccessUpdate.bind(this, this),
-                this._notificationService.failureNotification.bind(this._notificationService));
+    onTabClick (action: number): void {
+        switch (action) {
+            case StaffOfTheWeekActions.SAVE:
+                this._httpService.put('admin/content/staff-of-the-week', {information: this._data})
+                    .subscribe(this.onSuccessUpdate.bind(this, this),
+                        this._notificationService.failureNotification.bind(this._notificationService));
+                break;
+            case StaffOfTheWeekActions.BACK:
+                this._router.navigateByUrl('/admin/website-settings');
+                break;
+        }
     }
 
     private onSuccessUpdate (): void {
@@ -65,7 +74,7 @@ export class StaffOfTheWeekComponent extends Page implements OnDestroy {
         }));
     }
 
-    private onData(data: { data: StaffOfTheWeekModel }): void {
+    private onData (data: { data: StaffOfTheWeekModel }): void {
         this._data = data.data;
     }
 }

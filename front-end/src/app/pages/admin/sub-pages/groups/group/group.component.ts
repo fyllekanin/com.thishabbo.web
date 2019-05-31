@@ -50,7 +50,7 @@ export class GroupComponent extends Page implements OnDestroy {
             case GroupActions.DELETE:
                 this.delete();
                 break;
-            case GroupActions.CANCEL:
+            case GroupActions.BACK:
                 this.cancel();
                 break;
         }
@@ -141,7 +141,7 @@ export class GroupComponent extends Page implements OnDestroy {
         const tabs = [
             {title: 'Save', value: GroupActions.SAVE, condition: true},
             {title: 'Delete', value: GroupActions.DELETE, condition: this._group.createdAt},
-            {title: 'Cancel', value: GroupActions.CANCEL, condition: true}
+            {title: 'Back', value: GroupActions.BACK, condition: true}
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));

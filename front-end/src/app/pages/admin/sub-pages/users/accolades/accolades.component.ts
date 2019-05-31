@@ -28,7 +28,7 @@ export class AccoladesComponent extends Page implements OnDestroy {
     tableConfig: TableConfig;
     tabs: Array<TitleTab> = [
         new TitleTab({title: 'Create Accolade', value: AccoladeActions.CREATE}),
-        new TitleTab({title: 'Cancel', value: AccoladeActions.CANCEL})
+        new TitleTab({title: 'Back', value: AccoladeActions.BACK})
     ];
 
     constructor (
@@ -59,7 +59,7 @@ export class AccoladesComponent extends Page implements OnDestroy {
             case AccoladeActions.CREATE:
                 this.onCreateAccolade();
                 break;
-            case AccoladeActions.CANCEL:
+            case AccoladeActions.BACK:
                 this._router.navigateByUrl('/admin/users/page/1');
                 break;
         }

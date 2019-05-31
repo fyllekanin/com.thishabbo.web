@@ -24,7 +24,7 @@ import { EditorComponent } from 'shared/components/editor/editor.component';
 export class SiteMessageComponent extends Page implements OnDestroy {
     private _data: SiteMessageModel;
 
-    @ViewChild('editor', { static: true }) editor: EditorComponent;
+    @ViewChild('editor', {static: true}) editor: EditorComponent;
     tabs: Array<TitleTab> = [];
 
     constructor (
@@ -80,7 +80,7 @@ export class SiteMessageComponent extends Page implements OnDestroy {
         const tabs = [
             {title: 'Save', value: SiteMessagesActions.SAVE, condition: true},
             {title: 'Delete', value: SiteMessagesActions.DELETE, condition: this._data.createdAt},
-            {title: 'Cancel', link: '/admin/website-settings/site-messages', condition: true}
+            {title: 'Back', link: '/admin/website-settings/site-messages', condition: true}
         ];
 
         this.tabs = tabs.filter(item => item.condition).map(item => new TitleTab(item));

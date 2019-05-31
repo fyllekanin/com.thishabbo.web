@@ -19,13 +19,13 @@ export class CreateNoticeComponent {
     private _notice: Notice = new Notice();
     private _previewNotice: Notice;
 
-    @ViewChild('file', { static: true }) fileInput;
+    @ViewChild('file', {static: true}) fileInput;
     tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Cancel', value: NoticeBoardActions.CANCEL}),
-        new TitleTab({ title: 'Save', value: NoticeBoardActions.SAVE })
+        new TitleTab({title: 'Save', value: NoticeBoardActions.SAVE}),
+        new TitleTab({title: 'Back', value: NoticeBoardActions.BACK})
     ];
 
-    constructor(
+    constructor (
         private _httpClient: HttpClient,
         private _notificationService: NotificationService,
         private _router: Router,
@@ -44,18 +44,18 @@ export class CreateNoticeComponent {
         });
     }
 
-    onTabClick(value: number): void {
+    onTabClick (value: number): void {
         switch (value) {
             case NoticeBoardActions.SAVE:
                 this.save();
                 break;
-            case NoticeBoardActions.CANCEL:
+            case NoticeBoardActions.BACK:
                 this.cancel();
                 break;
         }
     }
 
-    save(): void {
+    save (): void {
         const form = new FormData();
         const file = this.fileInput.nativeElement.files ? this.fileInput.nativeElement.files[0] : null;
         form.append('backgroundImage', file);
@@ -70,17 +70,17 @@ export class CreateNoticeComponent {
         }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    cancel(): void {
-        this._router.navigateByUrl('/admin/content/notice-board');
+    cancel (): void {
+        this._router.navigateByUrl('/admin/website-settings/notice-board');
     }
 
-    onChange(): void {
+    onChange (): void {
         const text = (this._notice.text || '').replace(/\r?\n/g, '<br />');
         this._previewNotice = new Notice(this._notice);
         this._previewNotice.text = text;
     }
 
-    onImage($event): void {
+    onImage ($event): void {
         const reader = new FileReader();
         reader.onload = () => {
             const newNotice = new Notice(this._notice);
@@ -91,15 +91,15 @@ export class CreateNoticeComponent {
         reader.readAsDataURL($event.target.files[0]);
     }
 
-    get notice(): Notice {
+    get notice (): Notice {
         return this._notice;
     }
 
-    get previewNotice(): Notice {
+    get previewNotice (): Notice {
         return this._previewNotice;
     }
 
-    get title(): string {
+    get title (): string {
         return `Creating notice: ${this._notice.title}`;
     }
 }

@@ -8,7 +8,7 @@ export class PrefixCategory {
     @arrayOf(PrefixCategory)
     children: Array<PrefixCategory> = [];
 
-    constructor(source: Partial<PrefixCategory>) {
+    constructor (source: Partial<PrefixCategory>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -27,7 +27,7 @@ export class Prefix {
     @primitive()
     createdAt: number;
 
-    constructor(source?: Partial<Prefix>) {
+    constructor (source?: Partial<Prefix>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -37,5 +37,5 @@ export enum PrefixActions {
     DELETE_PREFIX,
     SAVE,
     DELETE,
-    CANCEL
+    BACK
 }

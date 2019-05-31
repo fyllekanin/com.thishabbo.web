@@ -18,7 +18,7 @@ import { HttpClient } from '@angular/common/http';
 export class BBcodeComponent extends Page implements OnDestroy {
     private _bbcode: BBcodeModel = new BBcodeModel();
 
-    @ViewChild('image', { static: false }) imageInput;
+    @ViewChild('image', {static: false}) imageInput;
     tabs: Array<TitleTab> = [];
 
     constructor (
@@ -47,7 +47,7 @@ export class BBcodeComponent extends Page implements OnDestroy {
 
     onTabClick (value: number): void {
         switch (value) {
-            case BBcodeActions.CANCEL:
+            case BBcodeActions.BACK:
                 this.cancel();
                 break;
             case BBcodeActions.DELETE:
@@ -131,7 +131,7 @@ export class BBcodeComponent extends Page implements OnDestroy {
         const tabs = [
             {title: 'Save', value: BBcodeActions.SAVE, condition: true},
             {title: 'Delete', value: BBcodeActions.DELETE, condition: this._bbcode.createdAt},
-            {title: 'Cancel', value: BBcodeActions.CANCEL, condition: true}
+            {title: 'Back', value: BBcodeActions.BACK, condition: true}
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));

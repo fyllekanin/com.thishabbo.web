@@ -37,7 +37,7 @@ export class PrefixComponent extends Page implements OnDestroy {
 
     onTabClick (value: number): void {
         switch (value) {
-            case PrefixActions.CANCEL:
+            case PrefixActions.BACK:
                 this._router.navigateByUrl('/admin/forum/prefixes');
                 break;
             case PrefixActions.SAVE:
@@ -133,7 +133,7 @@ export class PrefixComponent extends Page implements OnDestroy {
         const tabs = [
             {title: 'Save', value: PrefixActions.SAVE, condition: true},
             {title: 'Delete', value: PrefixActions.DELETE, condition: this._prefix.createdAt},
-            {title: 'Cancel', value: PrefixActions.CANCEL, condition: true}
+            {title: 'Back', value: PrefixActions.BACK, condition: true}
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));

@@ -14,7 +14,7 @@ export class Badge {
     @primitive()
     updatedAt: number;
 
-    constructor(source?: Partial<Badge>) {
+    constructor (source?: Partial<Badge>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -22,5 +22,5 @@ export class Badge {
 export enum BadgeActions {
     SAVE,
     DELETE,
-    CANCEL
+    BACK
 }

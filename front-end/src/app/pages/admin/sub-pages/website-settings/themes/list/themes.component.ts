@@ -38,7 +38,8 @@ export class ThemesComponent extends Page implements OnDestroy {
 
     tabs: Array<TitleTab> = [
         new TitleTab({title: 'Create New', link: '/admin/website-settings/themes/new'}),
-        new TitleTab({title: 'Clear Default', value: ThemeActions.CLEAR_DEFAULT})
+        new TitleTab({title: 'Clear Default', value: ThemeActions.CLEAR_DEFAULT}),
+        new TitleTab({title: 'Back', link: '/admin/website-settings'})
     ];
     tableConfig: TableConfig;
 
@@ -70,7 +71,7 @@ export class ThemesComponent extends Page implements OnDestroy {
         if (value !== ThemeActions.CLEAR_DEFAULT) {
             return;
         }
-        this._httpService.put('/admin/content/themes/default/clear')
+        this._httpService.put('admin/content/themes/default/clear')
             .subscribe(() => {
                 this._data.forEach(item => {
                     item.isDefault = false;
@@ -78,9 +79,9 @@ export class ThemesComponent extends Page implements OnDestroy {
                 this.createOrUpdateTable();
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
-                    message: 'No theme is default'
+                    message: 'Cleared default theme'
                 }));
-            });
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     onAction (action: Action): void {

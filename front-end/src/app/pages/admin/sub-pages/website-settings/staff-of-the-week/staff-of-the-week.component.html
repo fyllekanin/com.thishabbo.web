@@ -1,10 +1,10 @@
-<app-title [title]="'Updating Staff of the Week'" [tabs]="tabs" (onTabClick)="onSave()"></app-title>
+<app-title [title]="'Updating Staff of the Week'" [tabs]="tabs" (onTabClick)="onTabClick($event)"></app-title>
 <app-content>
     <label>Start Date (e.g. 8th)</label>
-    <input name="info-startDay" type="text" [(ngModel)]="model.startDay" />
+    <input name="info-startDay" type="text" [(ngModel)]="model.startDay"/>
 
     <label>End Date (e.g. 8th)</label>
-    <input name="info-endDay" type="text" [(ngModel)]="model.endDay" />
+    <input name="info-endDay" type="text" [(ngModel)]="model.endDay"/>
 
     <label>Month (e.g. January)</label>
     <select name="info-month" [(ngModel)]="model.month">
@@ -14,55 +14,55 @@
     </select>
 
     <label>Global Management</label>
-    <input name="info-glob-management" type="text" [(ngModel)]="model.globalManagement" />
+    <input name="info-glob-management" type="text" [(ngModel)]="model.globalManagement"/>
 
-    <br /><br />
+    <br/><br/>
 
     <label>EU Management</label>
-    <input name="info-eu-management" type="text" [(ngModel)]="model.europeManagement" />
+    <input name="info-eu-management" type="text" [(ngModel)]="model.europeManagement"/>
 
     <label>EU Radio</label>
-    <input name="info-eu-radio" type="text" [(ngModel)]="model.europeRadio" />
+    <input name="info-eu-radio" type="text" [(ngModel)]="model.europeRadio"/>
 
     <label>EU Events</label>
-    <input name="info-eu-events" type="text" [(ngModel)]="model.europeEvents" />
+    <input name="info-eu-events" type="text" [(ngModel)]="model.europeEvents"/>
 
-    <br /><br />
+    <br/><br/>
 
     <label>OC Management</label>
-    <input name="info-oc-management" type="text" [(ngModel)]="model.oceaniaManagement" />
+    <input name="info-oc-management" type="text" [(ngModel)]="model.oceaniaManagement"/>
 
     <label>OC Radio</label>
-    <input name="info-oc-radio" type="text" [(ngModel)]="model.oceaniaRadio" />
+    <input name="info-oc-radio" type="text" [(ngModel)]="model.oceaniaRadio"/>
 
     <label>OC Events</label>
-    <input name="info-oc-events" type="text" [(ngModel)]="model.oceaniaEvents" />
+    <input name="info-oc-events" type="text" [(ngModel)]="model.oceaniaEvents"/>
 
-    <br /><br />
+    <br/><br/>
 
     <label>NA Management</label>
-    <input name="info-na-management" type="text" [(ngModel)]="model.northAmericanManagement" />
+    <input name="info-na-management" type="text" [(ngModel)]="model.northAmericanManagement"/>
 
     <label>NA Radio</label>
-    <input name="info-na-radio" type="text" [(ngModel)]="model.northAmericanRadio" />
+    <input name="info-na-radio" type="text" [(ngModel)]="model.northAmericanRadio"/>
 
     <label>NA Events</label>
-    <input name="info-na-events" type="text" [(ngModel)]="model.northAmericanEvents" />
+    <input name="info-na-events" type="text" [(ngModel)]="model.northAmericanEvents"/>
 
-    <br /><br />
+    <br/><br/>
 
     <label>Moderation</label>
-    <input name="info-moderation" type="text" [(ngModel)]="model.moderation" />
+    <input name="info-moderation" type="text" [(ngModel)]="model.moderation"/>
 
     <label>Media</label>
-    <input name="info-media" type="text" [(ngModel)]="model.media" />
+    <input name="info-media" type="text" [(ngModel)]="model.media"/>
 
     <label>Quests</label>
-    <input name="info-quests" type="text" [(ngModel)]="model.quests" />
+    <input name="info-quests" type="text" [(ngModel)]="model.quests"/>
 
     <label>Graphics</label>
-    <input name="info-graphics" type="text" [(ngModel)]="model.graphics" />
+    <input name="info-graphics" type="text" [(ngModel)]="model.graphics"/>
 
     <label>Audio Producers</label>
-    <input name="info-audio-producer" type="text" [(ngModel)]="model.audioProducer" />
+    <input name="info-audio-producer" type="text" [(ngModel)]="model.audioProducer"/>
 </app-content>

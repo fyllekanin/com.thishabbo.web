@@ -20,7 +20,7 @@ export class BBcodeModel {
     @primitive()
     isSystem: boolean;
 
-    constructor(source?: Partial<BBcodeModel>) {
+    constructor (source?: Partial<BBcodeModel>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -28,7 +28,7 @@ export class BBcodeModel {
 export enum BBcodeActions {
     EDIT_BBCODE,
     DELETE_BBCODE,
-    CANCEL,
+    BACK,
     DELETE,
     SAVE
 }
