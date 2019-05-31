@@ -54,9 +54,9 @@
     width: 640px;
     position: absolute;
     display: inline-block;
-    -webkit-animation:flare 20s linear infinite;
-    -moz-animation:flare 20s linear infinite;
-    animation:flare 20s linear infinite;
+    -webkit-animation: flare 20s linear infinite;
+    -moz-animation: flare 20s linear infinite;
+    animation: flare 20s linear infinite;
     margin: -100px 0 0 -325px;
 }
 
@@ -82,11 +82,11 @@
     background-image: -webkit-linear-gradient(#fff, #e2e2e2);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(-1px 2px rgba(0,0,0,0.3));
+    filter: drop-shadow(-1px 2px rgba(0, 0, 0, 0.3));
 }
 
 .logo h3:hover, .logo h2:hover {
-    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+    animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -154,4 +154,10 @@ input, optgroup, select, textarea {
 
 .header-margin {
     margin-top: 75px;
+}
+
+.radio {
+    margin-left: -2px;
+    width: 299px;
+    margin-right: 0;
 }

@@ -5,16 +5,19 @@
         <div class="album-art" [style.background]="'url(' + albumArt + ')' | safeStyle"></div>
         <div class="radio-info">
             <div class="inner-box-radio">
-                <div class="dj-position"><i class="fas fa-user"></i> <b> {{nickname}}</b>
-                    <div class="listeners"><i class="fas fa-users"></i> {{listeners}}</div>
-                    <div class="likes"><i class="fas fa-heart"></i> {{likes}}</div>
-                </div>
-                <div class="dj-position song"><i class="fas fa-headphones"></i>
-                    <div class="marquee marquee-chat">{{song}}</div>
+                <div class="dj-position current">
+                    <i class="fas fa-user"></i> <b> {{nickname}}</b>
                 </div>
                 <div class="dj-position next-dj"><i class="fas fa-arrow-right"></i> <strong> {{nextDj}}</strong></div>
-                <div class="dj-position"><i class="fas fa-comment"></i>
-                    <div class="marquee marquee-chat-radio">{{djSays}}</div>
+                <div class="dj-position says"><i class="fas fa-comment"></i>
+                    {{djSays}}
+                </div>
+                <div class="dj-position stats">
+                    <div class="likes float-right"><i class="fas fa-heart"></i> {{likes}}</div>
+                    <div class="listeners float-right"><i class="fas fa-users"></i> {{listeners}}</div>
+                </div>
+                <div class="dj-position song"><i class="fas fa-headphones"></i>
+                    {{song}}
                 </div>
             </div>
             <div>
@@ -43,7 +46,7 @@
                     {{nextEvent}}
                 </div>
                 <div class="djInfo current-event"><i class="fas fa-comment"></i>
-                    <div class="marquee marquee-chat-radio">{{eventsSay}}</div>
+                    {{eventsSay}}
                 </div>
             </div>
         </div>
