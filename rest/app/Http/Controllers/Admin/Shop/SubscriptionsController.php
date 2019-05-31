@@ -7,11 +7,11 @@ use App\EloquentModels\Shop\UserSubscription;
 use App\Helpers\ConfigHelper;
 use App\Helpers\DataHelper;
 use App\Http\Controllers\Controller;
+use App\Jobs\SubscriptionUpdated;
 use App\Logger;
 use App\Models\Logger\Action;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
-use App\Jobs\SubscriptionUpdated;
 
 class SubscriptionsController extends Controller {
 
@@ -101,7 +101,7 @@ class SubscriptionsController extends Controller {
         $subscription->save();
 
         UserSubscription::where('subscriptionId', $subscriptionId)->delete();
-        SubscriptionUpdated::dispatch($subscription);
+        SubscriptionUpdated::dispatch($subscriptionId);
 
         Logger::admin($user->userId, $request->ip(), Action::DELETED_SUBSCRIPTION, [], $subscription->subscriptionId);
         return response()->json();

@@ -2,14 +2,14 @@
 
 namespace App\Jobs;
 
-use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use App\EloquentModels\Shop\Subscription;
-use App\Helpers\UserHelper;
+use App\EloquentModels\User\UserData;
 use App\Helpers\ConfigHelper;
+use App\Helpers\UserHelper;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class UserUpdated implements ShouldQueue {
     private $userId;
@@ -19,7 +19,7 @@ class UserUpdated implements ShouldQueue {
     /**
      * SubscriptionUpdated constructor
      *
-     * @param $subscription
+     * @param $userId
      */
     public function __construct($userId) {
         $this->userId = $userId;
@@ -28,10 +28,10 @@ class UserUpdated implements ShouldQueue {
     /**
      * Executes the job
      */
-    public function handle () {
+    public function handle() {
         $userData = UserData::where('userId', $this->userId)->first();
-        if($userData && $userData->nameColour) {
-            if(!UserHelper::hasSubscriptionFeature($this->userId, ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColour)) {
+        if ($userData && $userData->nameColour) {
+            if (!UserHelper::hasSubscriptionFeature($this->userId, ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColour)) {
                 $userData->update([
                     'nameColour' => null
                 ]);
