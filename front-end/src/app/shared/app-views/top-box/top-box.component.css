@@ -8,7 +8,7 @@
     color: #3682b9;
 }
 
-.quick-links a:nth-child(2)::after , .quick-links a:nth-child(1)::after {
+.quick-links a:nth-child(2)::after, .quick-links a:nth-child(1)::after {
     content: ' | ';
 }
 
@@ -128,7 +128,7 @@
 
 .radio-controls app-radio-controls {
     float: right;
-    margin: -3px 0 0 0;
+    margin: 0 0 0 -6px;
 }
 
 .fixed-menu {
@@ -141,9 +141,11 @@
     .pc {
         display: none;
     }
+
     .mobile {
         display: block;
     }
+
     .fixed-menu {
         margin-top: 15px;
     }

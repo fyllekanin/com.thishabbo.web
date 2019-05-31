@@ -1,7 +1,7 @@
 .slider {
     border-radius: 2px;
-    width: 75%;
-    margin-right: -1px;
+    width: 74.5%;
+    margin-right: 1px;
     float: left;
     margin-top: 11px;
     display: block;
@@ -20,6 +20,7 @@
         border-radius: 2px;
         height: 30px;
         margin-top: -1px;
+        cursor: pointer;
     }
 
     input[type='range']:disabled {
