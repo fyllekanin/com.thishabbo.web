@@ -23,7 +23,7 @@ export class BetModel {
     @primitive()
     isSuspended: boolean;
 
-    constructor(source: Partial<BetModel>) {
+    constructor (source: Partial<BetModel>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -34,7 +34,7 @@ export class BetPage {
     @arrayOf(BetCategoryModel)
     categories: Array<BetCategoryModel> = [];
 
-    constructor(source: {
+    constructor (source: {
         bet: BetModel,
         categories: Array<BetCategoryModel>
     }) {
@@ -50,7 +50,7 @@ export class BetsListPage {
     @primitive()
     total: number;
 
-    constructor(source: Partial<BetsListPage>) {
+    constructor (source: Partial<BetsListPage>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -61,7 +61,7 @@ export enum BetActions {
     SET_RESULT,
     SAVE,
     DELETE,
-    CANCEL,
+    BACK,
     SUSPEND_BET,
     UNSUSPEND_BET
 }

@@ -49,7 +49,7 @@ export class CategoryComponent extends Page implements OnDestroy {
             case BetCategoryActions.SAVE:
                 this.onSave();
                 break;
-            case BetCategoryActions.CANCEL:
+            case BetCategoryActions.BACK:
                 this._router.navigateByUrl('/admin/betting/categories/page/1');
                 break;
             case BetCategoryActions.DELETE:
@@ -115,7 +115,7 @@ export class CategoryComponent extends Page implements OnDestroy {
         const tabs = [
             {title: 'Save', value: BetCategoryActions.SAVE, condition: true},
             {title: 'Delete', value: BetCategoryActions.DELETE, condition: this._data.createdAt},
-            {title: 'Cancel', value: BetCategoryActions.CANCEL, condition: true}
+            {title: 'Back', value: BetCategoryActions.BACK, condition: true}
         ];
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));
     }

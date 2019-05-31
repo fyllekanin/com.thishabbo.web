@@ -37,12 +37,12 @@ describe('SiteCP #1', () => {
         BbcodePage.setReplace('<new>$1</new>');
 
         NavigationUtil.clickTab('Save');
-        NavigationUtil.clickTab('Cancel');
+        NavigationUtil.clickTab('Back');
 
         BbcodePage.edit(5);
         BbcodePage.setName(updatedName);
         NavigationUtil.clickTab('Save');
-        NavigationUtil.clickTab('Cancel');
+        NavigationUtil.clickTab('Back');
 
         BbcodePage.edit(5);
         NavigationUtil.clickTab('Delete');
@@ -79,7 +79,7 @@ describe('SiteCP #1', () => {
         BettingPage.setCategoryDisplayOrder(1);
 
         NavigationUtil.clickTab('Save');
-        NavigationUtil.clickTab('Cancel');
+        NavigationUtil.clickTab('Back');
         expect(CommonUtil.getTableRows().count()).toEqual(3);
 
         CommonUtil.enterTableFilter('Filter on category name', categoryName);
@@ -88,7 +88,7 @@ describe('SiteCP #1', () => {
         InputUtil.clickRowAction(0, 'Edit');
         BettingPage.setCategoryName(newCategoryName);
         NavigationUtil.clickTab('Save');
-        NavigationUtil.clickTab('Cancel');
+        NavigationUtil.clickTab('Back');
 
         CommonUtil.enterTableFilter('Filter on category name', newCategoryName);
         expect(CommonUtil.getTableRows().count()).toEqual(1);
@@ -112,7 +112,7 @@ describe('SiteCP #1', () => {
         BettingPage.setDenominator(1);
 
         NavigationUtil.clickTab('Save');
-        NavigationUtil.clickTab('Cancel');
+        NavigationUtil.clickTab('Back');
         expect(CommonUtil.getTableRows().count()).toEqual(4);
 
         CommonUtil.enterTableFilter('Filter on bet title', betName);
@@ -120,7 +120,7 @@ describe('SiteCP #1', () => {
 
         BettingPage.setBetName(newBetName);
         NavigationUtil.clickTab('Save');
-        NavigationUtil.clickTab('Cancel');
+        NavigationUtil.clickTab('Back');
 
         CommonUtil.enterTableFilter('Filter on bet title', newBetName);
         expect(CommonUtil.getTableRows().count()).toEqual(1);

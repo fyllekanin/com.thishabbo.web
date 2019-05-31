@@ -49,7 +49,7 @@ export class SubscriptionComponent extends Page implements OnDestroy {
             case SubscriptionAction.DELETE:
                 this.onDelete();
                 break;
-            case SubscriptionAction.CANCEL:
+            case SubscriptionAction.BACK:
                 this._router.navigateByUrl('/admin/shop/subscriptions/page/1');
                 break;
         }
@@ -91,7 +91,7 @@ export class SubscriptionComponent extends Page implements OnDestroy {
         const tabs = [
             {title: 'Save', value: SubscriptionAction.SAVE, condition: true},
             {title: 'Delete', value: SubscriptionAction.DELETE, condition: this._data.createdAt},
-            {title: 'Cancel', value: SubscriptionAction.CANCEL, condition: true}
+            {title: 'Back', value: SubscriptionAction.BACK, condition: true}
         ];
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));
     }

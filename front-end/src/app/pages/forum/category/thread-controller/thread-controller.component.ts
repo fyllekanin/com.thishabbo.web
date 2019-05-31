@@ -27,8 +27,8 @@ import { ThreadAnswer, ThreadPoll } from '../../thread/thread-poll/thread-poll.m
 export class ThreadControllerComponent extends Page implements OnDestroy {
     private _threadSkeleton: ThreadSkeleton = new ThreadSkeleton();
 
-    @ViewChild('editor', { static: true }) editor: EditorComponent;
-    @ViewChild('file', { static: false }) fileInput;
+    @ViewChild('editor', {static: true}) editor: EditorComponent;
+    @ViewChild('file', {static: false}) fileInput;
 
     editorButtons: Array<EditorAction> = [];
 
@@ -56,7 +56,7 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
 
     onButtonClick (button: EditorAction): void {
         switch (button.value) {
-            case ThreadControllerActions.CANCEL:
+            case ThreadControllerActions.BACK:
                 if (this.isNew) {
                     this._router.navigateByUrl(`/forum/category/${this._threadSkeleton.categoryId}/page/1`);
                 } else {
@@ -163,7 +163,7 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
         this.editorButtons = [
             new EditorAction({title: 'Save', value: ThreadControllerActions.SAVE}),
             new EditorAction({title: 'Toggle Poll', value: ThreadControllerActions.TOGGLE_POLL}),
-            new EditorAction({title: 'Cancel', value: ThreadControllerActions.CANCEL, buttonColor: Button.BLUE})
+            new EditorAction({title: 'Back', value: ThreadControllerActions.BACK, buttonColor: Button.BLUE})
         ];
 
         if (this._threadSkeleton.poll) {

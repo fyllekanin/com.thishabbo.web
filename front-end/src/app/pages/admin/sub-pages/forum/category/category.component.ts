@@ -50,7 +50,7 @@ export class CategoryComponent extends Page implements OnDestroy {
             case CategoryActions.DELETE:
                 this.delete();
                 break;
-            case CategoryActions.CANCEL:
+            case CategoryActions.BACK:
                 this.cancel();
                 break;
         }
@@ -166,7 +166,7 @@ export class CategoryComponent extends Page implements OnDestroy {
         const tabs = [
             {title: 'Save', value: CategoryActions.SAVE, condition: true},
             {title: 'Delete', value: CategoryActions.DELETE, condition: this._categoryPage.category.createdAt},
-            {title: 'Cancel', value: CategoryActions.CANCEL, condition: true}
+            {title: 'Back', value: CategoryActions.BACK, condition: true}
         ];
 
         this.categories = this.flat(this._categoryPage.forumTree, '');

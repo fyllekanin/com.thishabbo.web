@@ -1,10 +1,10 @@
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { HttpService } from 'core/services/http/http.service';
-import { WelcomeBotModel, WelcomeBotUser, WelcomeBotCategory } from './welcome-bot.model';
+import { WelcomeBotCategory, WelcomeBotModel, WelcomeBotUser } from './welcome-bot.model';
 import { ActivatedRoute } from '@angular/router';
 import { Page } from 'shared/page/page.model';
-import { Component, ElementRef, ViewChild, OnDestroy } from '@angular/core';
+import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { EditorComponent } from 'shared/components/editor/editor.component';
@@ -18,12 +18,13 @@ import { SITECP_BREADCRUMB_ITEM, WEBSITE_SETTINGS_BREADCRUMB_ITEM } from '../../
 export class WelcomeBotComponent extends Page implements OnDestroy {
     private _welcomeBot: WelcomeBotModel = new WelcomeBotModel();
 
-    @ViewChild('editor', { static: true }) editor: EditorComponent;
+    @ViewChild('editor', {static: true}) editor: EditorComponent;
     tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Save' })
+        new TitleTab({title: 'Save'}),
+        new TitleTab({title: 'Back', link: '/admin/website-settings'})
     ];
 
-    constructor(
+    constructor (
         private _notificationService: NotificationService,
         private _httpService: HttpService,
         activatedRoute: ActivatedRoute,
@@ -41,11 +42,11 @@ export class WelcomeBotComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onSave(): void {
+    onSave (): void {
         this._welcomeBot.content = this.editor.getEditorValue();
         if (this.haveErrors()) {
             this.notifyErrors();
@@ -58,62 +59,62 @@ export class WelcomeBotComponent extends Page implements OnDestroy {
                     title: 'Success',
                     message: 'Welcome Bot settings updated!'
                 }));
-            });
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    get user(): WelcomeBotUser {
+    get user (): WelcomeBotUser {
         return this._welcomeBot.user;
     }
 
-    get categories(): Array<WelcomeBotCategory> {
+    get categories (): Array<WelcomeBotCategory> {
         return this._welcomeBot.categories;
     }
 
-    get category(): WelcomeBotCategory {
+    get category (): WelcomeBotCategory {
         return this._welcomeBot.category;
     }
 
-    get content(): string {
+    get content (): string {
         return this._welcomeBot.content;
     }
 
-    private findUserWithName(): WelcomeBotUser {
+    private findUserWithName (): WelcomeBotUser {
         return this._welcomeBot.users.find(user => {
-            const selectednickname = this._welcomeBot.user && this._welcomeBot.user.nickname ?
+            const selectedNickname = this._welcomeBot.user && this._welcomeBot.user.nickname ?
                 this._welcomeBot.user.nickname.toLowerCase() : '';
-            return user.nickname.toLowerCase() === selectednickname;
+            return user.nickname.toLowerCase() === selectedNickname;
         });
     }
 
-    private onData(data: { data: WelcomeBotModel }): void {
+    private onData (data: { data: WelcomeBotModel }): void {
         this._welcomeBot = data.data;
     }
 
-    private haveErrors(): boolean {
+    private haveErrors (): boolean {
         return this.userIsNotCorrect() || this._welcomeBot.content.length === 0 || this.categoryIsNotCorrect();
     }
 
-    private userIsNotCorrect(): boolean {
+    private userIsNotCorrect (): boolean {
         return !Boolean(this.findUserWithName());
     }
 
-    private categoryIsNotCorrect(): boolean {
+    private categoryIsNotCorrect (): boolean {
         return this._welcomeBot.categories.findIndex(category => {
             return Number(category.categoryId) === Number(this._welcomeBot.category.categoryId);
         }) === -1;
     }
 
-    private notifyErrors(): void {
-        const notification = new NotificationMessage({ title: 'Error', message: '' });
+    private notifyErrors (): void {
+        let message;
         if (this.userIsNotCorrect()) {
-            notification.message = 'User do not exist';
+            message = 'User do not exist';
         }
         if (this.categoryIsNotCorrect()) {
-            notification.message = 'Category do not exist';
+            message = 'Category do not exist';
         }
         if (this._welcomeBot.content.length === 0) {
-            notification.message = 'Content can not be empty';
+            message = 'Content can not be empty';
         }
-        this._notificationService.sendNotification(notification);
+        this._notificationService.sendErrorNotification(message);
     }
 }

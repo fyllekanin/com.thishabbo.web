@@ -19,10 +19,11 @@ export class MemberOfTheMonthComponent extends Page implements OnDestroy {
     private _data = new MemberOfTheMonthModel();
 
     tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Save' })
+        new TitleTab({title: 'Save'}),
+        new TitleTab({title: 'Back', link: '/admin/website-settings'})
     ];
 
-    constructor(
+    constructor (
         private _notificationService: NotificationService,
         private _httpService: HttpService,
         activatedRoute: ActivatedRoute,
@@ -40,20 +41,20 @@ export class MemberOfTheMonthComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    get model(): MemberOfTheMonthModel {
+    get model (): MemberOfTheMonthModel {
         return this._data;
     }
 
-    get months(): Array<string> {
+    get months (): Array<string> {
         return TimeHelper.FULL_MONTHS;
     }
 
-    onSave(): void {
-        this._httpService.put('admin/content/member-of-the-month', { information: this._data })
+    onSave (): void {
+        this._httpService.put('admin/content/member-of-the-month', {information: this._data})
             .subscribe(this.onSuccessUpdate.bind(this, this),
                 this._notificationService.failureNotification.bind(this._notificationService));
     }
@@ -65,7 +66,7 @@ export class MemberOfTheMonthComponent extends Page implements OnDestroy {
         }));
     }
 
-    private onData(data: { data: MemberOfTheMonthModel }): void {
+    private onData (data: { data: MemberOfTheMonthModel }): void {
         this._data = data.data;
     }
 }

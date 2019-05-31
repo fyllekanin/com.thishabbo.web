@@ -1,5 +1,5 @@
 export enum SubscriptionAction {
     SAVE,
-    CANCEL,
+    BACK,
     DELETE
 }

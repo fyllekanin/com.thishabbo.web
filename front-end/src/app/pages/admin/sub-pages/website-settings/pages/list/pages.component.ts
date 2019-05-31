@@ -31,7 +31,8 @@ export class PagesComponent extends Page implements OnDestroy {
     private _data: Array<PageModel> = [];
 
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Create New', link: '/admin/website-settings/pages/new'})
+        new TitleTab({title: 'Create New', link: '/admin/website-settings/pages/new'}),
+        new TitleTab({title: 'Back', link: '/admin/website-settings'})
     ];
     tableConfig: TableConfig;
 

@@ -38,7 +38,12 @@ export class StaffOfTheWeekModel {
     @primitive()
     audioProducer: string;
 
-    constructor(source?) {
+    constructor (source?) {
         ClassHelper.assign(this, source);
     }
+}
+
+export enum StaffOfTheWeekActions {
+    SAVE,
+    BACK
 }

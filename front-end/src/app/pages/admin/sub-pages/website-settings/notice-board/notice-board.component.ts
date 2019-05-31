@@ -18,10 +18,16 @@ import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 export class NoticeBoardComponent {
     private _notices: Array<Notice> = [];
 
-    tabs: Array<TitleTab> = [new TitleTab({
-        title: 'Create',
-        link: '/admin/website-settings/notice-board/create'
-    })];
+    tabs: Array<TitleTab> = [
+        new TitleTab({
+            title: 'Create',
+            link: '/admin/website-settings/notice-board/create'
+        }),
+        new TitleTab({
+            title: 'Back',
+            link: '/admin/website-settings'
+        })
+    ];
 
     constructor (
         private _httpService: HttpService,

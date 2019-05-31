@@ -20,7 +20,7 @@ export class BanOnSightItem {
 export enum BanOnSightActions {
     EDIT_BOS_ENTRY,
     DELETE_BOS_ENTRY,
-    CANCEL,
+    BACK,
     DELETE,
     SAVE
 }
