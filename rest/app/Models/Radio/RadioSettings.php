@@ -6,7 +6,7 @@ use ReflectionClass;
 
 class RadioServerTypes {
     const SHOUT_CAST_V1 = 'shoutCastV1';
-    const SHOUT_CAST_v2 = 'shoutCastV2';
+    const SHOUT_CAST_V2 = 'shoutCastV2';
 
     public static function isValidType($type) {
         try {

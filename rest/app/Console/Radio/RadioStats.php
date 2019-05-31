@@ -66,7 +66,7 @@ class RadioStats {
 
     private function getStatsData(RadioSettings $radio) {
         switch ($radio->serverType) {
-            case RadioServerTypes::SHOUT_CAST_v2:
+            case RadioServerTypes::SHOUT_CAST_V2:
                 return $this->getShoutCastV2Stats($radio);
             case RadioServerTypes::SHOUT_CAST_V1:
             default:
