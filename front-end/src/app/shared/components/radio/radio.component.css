@@ -66,7 +66,7 @@
 
 .next-dj {
     display: inline-block;
-    width: 54.8%;
+    width: 44%;
     margin: 0 0 0 1px;
 }
 
@@ -124,11 +124,6 @@
     margin: 2px 0 0 -0.5px;
 }
 
-.song {
-    width: 44.7%;
-    display: inline-block;
-}
-
 .marquee-chat {
     margin: 0 0 0 5px;
     width: 76px;
@@ -167,4 +162,31 @@
 .red-button {
     background-image: url(/assets/images/bargradient.png) !important;
     background-color: #c37070;
+}
+
+.song {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: -5px;
+}
+
+.current {
+    width: 55%;
+    display: inline-block;
+}
+
+.says {
+    width: 65%;
+    display: inline-block;
+    float: left;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.stats {
+    width: 35%;
+    display: inline-block;
 }
