@@ -20,7 +20,7 @@
                         <app-title [title]="'More...'"></app-title>
                         <app-content>
                             <div class="grid-container">
-                                <div class="grid-x grid-margin-y">
+                                <div class="grid-x">
                                     <div class="cell small-12 medium-6 thread" *ngFor="let thread of threads">
                                         <a [routerLink]="['/forum', 'thread', thread.threadId, 'page', 1]">
                                             <span *ngIf="thread.prefix" [style]="thread.prefix.style | safeStyle">

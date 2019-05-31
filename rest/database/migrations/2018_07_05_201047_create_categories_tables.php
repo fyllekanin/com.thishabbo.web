@@ -1,23 +1,21 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreateCategoriesTables extends Migration
-{
+class CreateCategoriesTables extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('categories', function (Blueprint $table) {
             $table->bigIncrements('categoryId');
             $table->bigInteger('parentId')->default(-1);
             $table->string('title');
-            $table->string('description')->default('');
+            $table->text('description');
             $table->string('link')->default('');
             $table->integer('options')->default(0);
             $table->integer('displayOrder')->default(0);
@@ -45,8 +43,7 @@ class CreateCategoriesTables extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('categories');
     }
 }
