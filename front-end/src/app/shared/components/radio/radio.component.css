@@ -177,10 +177,10 @@
 }
 
 .says {
-    width: 65%;
+    width: 64%;
+    height: 28px;
     display: inline-block;
     float: left;
-
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -189,4 +189,5 @@
 .stats {
     width: 35%;
     display: inline-block;
+    margin-left: 1px;
 }
