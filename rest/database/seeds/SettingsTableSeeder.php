@@ -12,12 +12,12 @@ class SettingsTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('settings')->delete();
-        
+
         \DB::table('settings')->insert(array (
-            0 => 
+            0 =>
             array (
                 'settingId' => 1,
                 'key' => 'welcome_bot_userId',
@@ -25,7 +25,7 @@ class SettingsTableSeeder extends Seeder
                 'createdAt' => 1537887624,
                 'updatedAt' => 1537887624,
             ),
-            1 => 
+            1 =>
             array (
                 'settingId' => 2,
                 'key' => 'welcome_bot_message',
@@ -34,7 +34,7 @@ Hope you will have a fun time here and join our team! ',
                 'createdAt' => 1537887624,
                 'updatedAt' => 1537887624,
             ),
-            2 => 
+            2 =>
             array (
                 'settingId' => 3,
                 'key' => 'welcome_bot_categoryId',
@@ -42,15 +42,15 @@ Hope you will have a fun time here and join our team! ',
                 'createdAt' => 1537887624,
                 'updatedAt' => 1537887624,
             ),
-            3 => 
+            3 =>
             array (
                 'settingId' => 4,
                 'key' => 'radio',
-                'value' => '{"ip":"http://sc.thishabbo.com","port":"8080","password":"c6354K3AzhTUDhC","adminPassword":"THAdminbC9asoLk","nickname":"","likes":0,"userId":0,"listeners":0,"song":"","albumArt":"","djSays":""}',
+                'value' => '{"ip":"sc.thishabbo.com","port":"8080","password":"c6354K3AzhTUDhC","adminPassword":"THAdminbC9asoLk","nickname":"","likes":0,"userId":0,"listeners":0,"song":"","albumArt":"","djSays":""}',
                 'createdAt' => 1548703886,
                 'updatedAt' => 1548703886,
             ),
-            4 => 
+            4 =>
             array (
                 'settingId' => 5,
                 'key' => 'do_not_hire',
@@ -58,7 +58,7 @@ Hope you will have a fun time here and join our team! ',
                 'createdAt' => 1537888069,
                 'updatedAt' => 1537888854,
             ),
-            5 => 
+            5 =>
             array (
                 'settingId' => 6,
                 'key' => 'ban_on_sight',
@@ -66,7 +66,7 @@ Hope you will have a fun time here and join our team! ',
                 'createdAt' => 1537888069,
                 'updatedAt' => 1537888854,
             ),
-            6 => 
+            6 =>
             array (
                 'settingId' => 7,
                 'key' => 'navigation',
@@ -74,7 +74,7 @@ Hope you will have a fun time here and join our team! ',
                 'createdAt' => 1549751879,
                 'updatedAt' => 1554543103,
             ),
-            7 => 
+            7 =>
             array (
                 'settingId' => 8,
                 'key' => 'staff_of_the_week',
@@ -82,7 +82,7 @@ Hope you will have a fun time here and join our team! ',
                 'createdAt' => 1550517547,
                 'updatedAt' => 1550518041,
             ),
-            8 => 
+            8 =>
             array (
                 'settingId' => 9,
                 'key' => 'home_page_threads',
@@ -91,7 +91,7 @@ Hope you will have a fun time here and join our team! ',
                 'updatedAt' => 1558193739,
             ),
         ));
-        
-        
+
+
     }
 }

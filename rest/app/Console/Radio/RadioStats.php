@@ -96,7 +96,7 @@ class RadioStats {
     }
 
     private function getShoutCastV2Stats(RadioSettings $radio) {
-        $url = $radio->ip . ':' . $radio->port . '/stats?sid=1&json=1';
+        $url = 'http://' . $radio->ip . ':' . $radio->port . '/stats?sid=1&json=1';
 
         return json_decode($this->doCurl($url, $radio->adminPassword));
     }
