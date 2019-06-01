@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\UserUpdated;
 use Illuminate\Console\Command;
 use App\Console\Radio\RadioStats;
 use Illuminate\Console\Scheduling\Schedule;
@@ -54,6 +55,13 @@ class ClearSubscriptions {
     public function __invoke()
     {
         $time = time();
-        Subscription::active()->where('expiresAt', '<', $time)->delete();
+        $userSubSql = UserSubscription::where('expiresAt', '<', $time);
+
+        $userIds = $userSubSql->pluck('userId');
+        $userSubSql->delete();
+
+        foreach($userIds as $userId) {
+            UserUpdated::dispatch($userId);
+        }
     }
 }

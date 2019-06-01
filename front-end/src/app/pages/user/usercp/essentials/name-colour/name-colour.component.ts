@@ -1,5 +1,5 @@
 import { TitleTab } from 'shared/app-views/title/title.model';
-import { Component, OnDestroy, ElementRef } from '@angular/core';
+import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
@@ -10,7 +10,7 @@ import { NameColourService } from '../services/name-colour.service';
 import { ActivatedRoute } from '@angular/router';
 import { UserHelper } from 'shared/helpers/user.helper';
 import { AuthService } from 'core/services/auth/auth.service';
-import { InfoBoxModel, INFO_BOX_TYPE } from 'shared/app-views/info-box/info-box.model';
+import { INFO_BOX_TYPE, InfoBoxModel } from 'shared/app-views/info-box/info-box.model';
 
 @Component({
     selector: 'app-usercp-name-colour',
@@ -20,7 +20,7 @@ export class NameColourComponent extends Page implements OnDestroy {
     private _data: NameColour = new NameColour();
 
     tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Save' })
+        new TitleTab({title: 'Save'})
     ];
 
     infoModel: InfoBoxModel = {
@@ -29,7 +29,7 @@ export class NameColourComponent extends Page implements OnDestroy {
         content: `You do not have the permissions to update your name colour. Click here to purchase a subscription to do this!`
     };
 
-    constructor(
+    constructor (
         private _service: NameColourService,
         private _notificationService: NotificationService,
         private _authService: AuthService,
@@ -47,30 +47,25 @@ export class NameColourComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onSave(): void {
-        if (this.validate()) {
+    onSave (): void {
+        if (this.isColoursValid()) {
             this._service.save(this._data.colours).subscribe(() => {
-                    this._notificationService.sendInfoNotification('Name Colour Updated');
-                }, this._notificationService.failureNotification.bind(this._notificationService));
+                this._notificationService.sendInfoNotification('Name Colour Updated');
+            }, this._notificationService.failureNotification.bind(this._notificationService));
         } else {
             this._notificationService.sendErrorNotification('Hex codes invalid');
         }
-    }
-
-    private validate () {
-        const regex = /^#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?$/;
-        return this._data.colours.every(colour => regex.test(colour));
     }
 
     get name (): string {
         return this._authService.authUser.nickname;
     }
 
-    get nameStyle(): string {
+    get nameStyle (): string {
         return UserHelper.getNameColour(this._data.colours);
     }
 
@@ -83,10 +78,16 @@ export class NameColourComponent extends Page implements OnDestroy {
     }
 
     set colours (colours: string) {
-        this._data.colours = colours.split(',');
+        this._data.colours = colours.split(',')
+            .map(item => item.trim());
     }
 
-    private onData(data: { data: NameColour }): void {
+    private onData (data: { data: NameColour }): void {
         this._data = data.data;
+    }
+
+    private isColoursValid (): boolean {
+        const regex = /^#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?$/;
+        return this._data.colours.every(colour => regex.test(colour));
     }
 }

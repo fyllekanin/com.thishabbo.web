@@ -11,6 +11,14 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Class NotifyThreadSubscribers
+ *
+ * Purpose of the job is to notify all the users which are subscribed to the specified thread.
+ * This job will send out notifications to all users which are subscribed to the thread.
+ *
+ * @package App\Jobs
+ */
 class NotifyThreadSubscribers implements ShouldQueue {
     private $threadId;
     private $userId;
@@ -25,7 +33,7 @@ class NotifyThreadSubscribers implements ShouldQueue {
      * @param $userId
      * @param $postId
      */
-    public function __construct ($threadId, $userId, $postId) {
+    public function __construct($threadId, $userId, $postId) {
         $this->threadId = $threadId;
         $this->userId = $userId;
         $this->postId = $postId;
@@ -34,7 +42,7 @@ class NotifyThreadSubscribers implements ShouldQueue {
     /**
      * Executes the job
      */
-    public function handle () {
+    public function handle() {
         $subscribeType = Type::getType(Type::THREAD_SUBSCRIPTION);
 
         $alreadyNotified = DB::table('notifications')->where('type', $subscribeType)->where('contentId', $this->postId)->pluck('userId');

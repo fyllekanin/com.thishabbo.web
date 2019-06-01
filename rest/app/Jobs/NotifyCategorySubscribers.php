@@ -11,6 +11,14 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Class NotifyCategorySubscribers
+ *
+ * Purpose of the job is to notify all users which are subscribed to a category
+ * whenever a new thread is created in the category.
+ *
+ * @package App\Jobs
+ */
 class NotifyCategorySubscribers implements ShouldQueue {
     private $categoryId;
     private $userId;
@@ -25,7 +33,7 @@ class NotifyCategorySubscribers implements ShouldQueue {
      * @param $userId
      * @param $threadId
      */
-    public function __construct ($categoryId, $userId, $threadId) {
+    public function __construct($categoryId, $userId, $threadId) {
         $this->categoryId = $categoryId;
         $this->userId = $userId;
         $this->threadId = $threadId;
@@ -34,7 +42,7 @@ class NotifyCategorySubscribers implements ShouldQueue {
     /**
      * Executes the job
      */
-    public function handle () {
+    public function handle() {
         $subscribeType = Type::getType(Type::CATEGORY_SUBSCRIPTION);
 
         $alreadyNotified = DB::table('notifications')->where('type', $subscribeType)->where('contentId', $this->threadId)->pluck('userId');

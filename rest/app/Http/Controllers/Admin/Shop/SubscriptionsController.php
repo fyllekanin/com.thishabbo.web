@@ -7,6 +7,7 @@ use App\EloquentModels\Shop\UserSubscription;
 use App\Helpers\ConfigHelper;
 use App\Helpers\DataHelper;
 use App\Http\Controllers\Controller;
+use App\Jobs\SubscriptionUpdated;
 use App\Logger;
 use App\Models\Logger\Action;
 use App\Utils\Condition;
@@ -78,6 +79,8 @@ class SubscriptionsController extends Controller {
         Condition::precondition(!$subscription, 404, 'No subscription with that ID');
         $this->validateSubscription($data);
 
+        SubscriptionUpdated::dispatch($subscriptionId);
+
         $subscription->title = $data->title;
         $subscription->avatarWidth = $data->avatarWidth;
         $subscription->avatarHeight = $data->avatarHeight;
@@ -96,6 +99,9 @@ class SubscriptionsController extends Controller {
 
         $subscription->isDeleted = true;
         $subscription->save();
+
+        UserSubscription::where('subscriptionId', $subscriptionId)->delete();
+        SubscriptionUpdated::dispatch($subscriptionId);
 
         Logger::admin($user->userId, $request->ip(), Action::DELETED_SUBSCRIPTION, [], $subscription->subscriptionId);
         return response()->json();

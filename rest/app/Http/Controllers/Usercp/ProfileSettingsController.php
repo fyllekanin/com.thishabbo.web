@@ -260,12 +260,10 @@ class ProfileSettingsController extends Controller {
     public function getNameColours(Request $request) {
         $user = $request->get('auth');
 
-        $subscription = UserSubscription::where('userId', $user->userId)->first();
-        $canUpdateColour = $subscription && ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor & $subscription->subscription->options;
         $userdata = UserData::where('userId', $user->userId)->first();
         return response()->json([
             'colours' => Value::objectJsonProperty($userdata, 'nameColour', []),
-            'canUpdateColour' => $canUpdateColour
+            'canUpdateColour' => UserHelper::hasSubscriptionFeature($user->userId, ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor)
         ]);
     }
 
@@ -279,15 +277,11 @@ class ProfileSettingsController extends Controller {
     public function updateNameColours(Request $request) {
         $user = $request->get('auth');
 
-        $subscription = UserSubscription::where('userId', $user->userId)->first();
-        $canUpdateColour = $subscription && ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor & $subscription->subscription->options;
+        Condition::precondition(!UserHelper::hasSubscriptionFeature($user->userId,
+            ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor), 400, 'You do not have the permissions to edit name colour!');
 
-        Condition::precondition(!$canUpdateColour, 400, 'You do not have the permissions to edit name colour!');
         $colours = $request->input('colours');
-
-        $valid = true;
-
-        Condition::precondition(!$valid, 400, 'Invalid Hex Codes');
+        Condition::precondition(!Value::validateHexColours($colours), 400, 'Invalid Hex Codes');
 
         $userData = UserHelper::getUserDataOrCreate($user->userId);
         $userData->nameColour = json_encode($colours);

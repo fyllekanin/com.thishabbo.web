@@ -3,7 +3,8 @@
 namespace App\Helpers;
 
 use App\EloquentModels\Badge;
-use App\EloquentModels\Group\Group;
+use App\EloquentModels\Shop\Subscription;
+use App\EloquentModels\Shop\UserSubscription;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserData;
 use App\EloquentModels\User\UserGroup;
@@ -11,7 +12,6 @@ use App\EloquentModels\User\UserItem;
 use App\Utils\BBcodeUtil;
 use App\Utils\Value;
 use Illuminate\Support\Facades\Cache;
-use App\Utils\Iterables;
 
 class UserHelper {
 
@@ -198,6 +198,14 @@ class UserHelper {
             'height' => self::getMaxAvatarHeight($user)
         ];
     }
+
+    public static function hasSubscriptionFeature($userId, $feature) {
+        $userSubscriptionIds = UserSubscription::where('userId', $userId)->pluck('subscriptionId');
+        return Subscription::whereIn('subscriptionId', $userSubscriptionIds)
+                ->whereRaw('(options & ' . $feature . ')')
+                ->count() > 0;
+    }
+
 
     private static function getMaxAvatarWidth($user) {
         $size = 200;
