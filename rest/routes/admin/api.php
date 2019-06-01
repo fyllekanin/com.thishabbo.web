@@ -16,6 +16,7 @@ Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions-
 Route::prefix('statistics')->group(function () {
     Route::get('/users/{year}/{month}', 'Admin\Statistics\UserStatisticsController@getUsersLoggedIn');
     Route::get('/posts/{year}/{month}', 'Admin\Statistics\ForumStatisticsController@getPosts');
+    Route::get('/threads/{year}/{month}', 'Admin\Statistics\ForumStatisticsController@getThreads');
 });
 
 Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canSeeLogs)], function () {
