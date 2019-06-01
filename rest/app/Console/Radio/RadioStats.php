@@ -84,7 +84,7 @@ class RadioStats {
 
         $data = $this->doCurl($url, $radio->adminPassword);
         try {
-            $xml = simplexml_load_string($data);
+            $xml = simplexml_load_string(utf8_encode($data));
             if ($xml != null && $xml != false) {
                 $radioStats->servergenre = (string)$xml->SERVERGENRE;
                 $radioStats->currentlisteners = (string)$xml->REPORTEDLISTENERS;
@@ -110,6 +110,7 @@ class RadioStats {
         curl_setopt($curl, CURLOPT_USERPWD, 'admin:' . $adminPassword);
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 2);
         curl_setopt($curl, CURLOPT_TIMEOUT, 5);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type: text/html; charset=utf-8']);
 
         $data = curl_exec($curl);
         curl_close($curl);
