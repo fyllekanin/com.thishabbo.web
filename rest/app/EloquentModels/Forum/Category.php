@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\App;
 /**
  * @property mixed title
  * @property mixed categoryId
+ *
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class Category extends DeletableModel {
     /** @var ForumService */
