@@ -4,6 +4,8 @@ import { UsersStatisticsComponent } from './users-statistics/users-statistics.co
 import { UsersStatisticsResolver } from './services/users-statistics.resolver';
 import { PostsStatisticsComponent } from './posts-statistics/posts-statistics.component';
 import { PostsStatisticsResolver } from './services/posts-statistics.resolver';
+import { ThreadsStatisticsComponent } from './threads-statistics/threads-statistics.component';
+import { ThreadsStatisticsResolver } from './services/threads-statistics.resolver';
 
 export const statisticsRoutes: Routes = [
     {
@@ -30,6 +32,13 @@ export const statisticsRoutes: Routes = [
                 component: PostsStatisticsComponent,
                 resolve: {
                     data: PostsStatisticsResolver
+                }
+            },
+            {
+                path: 'threads/:year/:month',
+                component: ThreadsStatisticsComponent,
+                resolve: {
+                    data: ThreadsStatisticsResolver
                 }
             }
         ]

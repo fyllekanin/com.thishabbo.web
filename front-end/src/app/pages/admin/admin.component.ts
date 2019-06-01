@@ -202,6 +202,10 @@ export class AdminComponent extends Page implements OnDestroy, OnInit {
                     new SideMenuItem({
                         title: 'Posts',
                         link: `/admin/statistics/posts/${new Date().getFullYear()}/${new Date().getMonth() + 1}`
+                    }),
+                    new SideMenuItem({
+                        title: 'Threads',
+                        link: `/admin/statistics/threads/${new Date().getFullYear()}/${new Date().getMonth() + 1}`
                     })
                 ]
             })

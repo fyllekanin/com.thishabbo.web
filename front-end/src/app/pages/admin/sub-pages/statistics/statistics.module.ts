@@ -11,6 +11,8 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { PostsStatisticsComponent } from './posts-statistics/posts-statistics.component';
 import { PostsStatisticsResolver } from './services/posts-statistics.resolver';
+import { ThreadsStatisticsComponent } from './threads-statistics/threads-statistics.component';
+import { ThreadsStatisticsResolver } from './services/threads-statistics.resolver';
 
 @NgModule({
     imports: [
@@ -24,11 +26,13 @@ import { PostsStatisticsResolver } from './services/posts-statistics.resolver';
     ],
     declarations: [
         UsersStatisticsComponent,
-        PostsStatisticsComponent
+        PostsStatisticsComponent,
+        ThreadsStatisticsComponent
     ],
     providers: [
         UsersStatisticsResolver,
-        PostsStatisticsResolver
+        PostsStatisticsResolver,
+        ThreadsStatisticsResolver
     ],
     exports: [
         RouterModule
