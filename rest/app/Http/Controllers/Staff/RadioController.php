@@ -248,7 +248,8 @@ class RadioController extends Controller {
     public function getTimetable() {
         return response()->json([
             'timetable' => Timetable::radio()->isActive()->get(),
-            'events' => []
+            'events' => [],
+            'timezones' => ConfigHelper::getTimetable()
         ]);
     }
 

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Staff;
 
-use App\EloquentModels\Log\LogUser;
 use App\EloquentModels\Log\LogStaff;
+use App\EloquentModels\Log\LogUser;
 use App\EloquentModels\Staff\Event;
 use App\EloquentModels\Staff\Timetable;
 use App\EloquentModels\User\User;
@@ -52,7 +52,7 @@ class EventsController extends Controller {
         return response()->json($says);
     }
 
-     /**
+    /**
      * Post request for liking Host, validation for Current Host and last time since like
      *
      * @param Request $request
@@ -355,7 +355,8 @@ class EventsController extends Controller {
     public function getTimetable() {
         return response()->json([
             'timetable' => Timetable::events()->isActive()->get(),
-            'events' => Event::all()
+            'events' => Event::all(),
+            'timezones' => ConfigHelper::getTimetable()
         ]);
     }
 

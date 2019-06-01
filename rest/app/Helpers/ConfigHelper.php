@@ -67,4 +67,8 @@ class ConfigHelper {
     public static function getRegex() {
         return (object)Config::get(self::$SETTINGS . '.REGEX');
     }
+
+    public static function getTimetable() {
+        return Config::get(self::$SETTINGS . '.TIMETABLE');
+    }
 }
