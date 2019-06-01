@@ -80,12 +80,20 @@ export class DoNotHireComponent extends Page implements OnDestroy {
         if (this._editing) {
             this._httpService.put(`staff/management/do-not-hire/${this._editing}`,
                 {information: information})
-                .subscribe(this.onSuccessUpdate.bind(this, this._data),
-                    this._notificationService.failureNotification.bind(this._notificationService));
+                .subscribe(() => {
+                        this.onSuccessUpdate();
+                    },
+                    error => {
+                        this._notificationService.failureNotification(error);
+                    });
         } else {
             this._httpService.post('staff/management/do-not-hire', {information: information})
-                .subscribe(this.onSuccessCreate.bind(this, this._data),
-                    this._notificationService.failureNotification.bind(this._notificationService));
+                .subscribe(() => {
+                        this.onSuccessCreate();
+                    },
+                    error => {
+                        this._notificationService.failureNotification(error);
+                    });
         }
     }
 

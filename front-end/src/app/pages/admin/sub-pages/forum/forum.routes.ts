@@ -1,7 +1,7 @@
 import { PrefixComponent } from './prefixes/prefix/prefix.component';
 import { PermissionsResolver } from './services/permissions.resolver';
 import { PermissionsComponent } from './permissions/permissions.component';
-import { CategoryService } from './services/category.service';
+import { CategoryResolver } from './services/category.resolver';
 import { CategoryComponent } from './category/category.component';
 import { CategoriesListResolver } from './services/categories-list.resolver';
 import { CategoriesListComponent } from './list/categories-list.component';
@@ -31,7 +31,7 @@ export const forumRoutes: Routes = [
                 path: 'categories/:categoryId',
                 component: CategoryComponent,
                 resolve: {
-                    data: CategoryService
+                    data: CategoryResolver
                 }
             },
             {

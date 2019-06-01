@@ -158,15 +158,18 @@ export class BetListComponent extends Page implements OnDestroy {
     private doDelete (bet: BetModel): void {
         this._httpService.delete(`admin/betting/bet/${bet.betId}`)
             .subscribe(() => {
-                    this._notificationService.sendNotification(new NotificationMessage({
-                        title: 'Success',
-                        message: `${bet.name} is deleted!`
-                    }));
-                    this._data.bets = this._data.bets
-                        .filter(item => item.betId !== bet.betId);
-                    this.createOrUpdateTable();
-                }, this._notificationService.failureNotification.bind(this._notificationService),
-                this._dialogService.closeDialog.bind(this._dialogService));
+                this._notificationService.sendNotification(new NotificationMessage({
+                    title: 'Success',
+                    message: `${bet.name} is deleted!`
+                }));
+                this._data.bets = this._data.bets
+                    .filter(item => item.betId !== bet.betId);
+                this.createOrUpdateTable();
+            }, error => {
+                this._notificationService.failureNotification(error);
+            }, () => {
+                this._dialogService.closeDialog();
+            });
     }
 
     private onData (data: { data: BetsListPage }): void {

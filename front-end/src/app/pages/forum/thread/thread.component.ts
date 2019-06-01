@@ -118,8 +118,11 @@ export class ThreadComponent extends Page implements OnDestroy {
 
     onUpdatePost (postModel: PostModel): void {
         this._httpService.put(`forum/thread/post/${postModel.postId}`, {post: postModel})
-            .subscribe(this.onSuccessUpdate.bind(this),
-                this._notificationService.failureNotification.bind(this._notificationService));
+            .subscribe(res => {
+                this.onSuccessUpdate(res);
+            }, error => {
+                this._notificationService.failureNotification(error);
+            });
     }
 
     onQuotePost (content: string): void {

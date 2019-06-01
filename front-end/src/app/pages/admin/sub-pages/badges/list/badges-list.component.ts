@@ -101,7 +101,9 @@ export class BadgesListComponent extends Page implements OnDestroy {
                 }));
                 this._badgesListPage.badges = this._badgesListPage.badges.filter(badge => badge.badgeId !== String(badgeId));
                 this.createOrUpdateTable();
-            }, this._notificationService.failureNotification.bind(this._notificationService), () => {
+            }, error => {
+                this._notificationService.failureNotification(error);
+            }, () => {
                 this._dialogService.closeDialog();
             });
     }

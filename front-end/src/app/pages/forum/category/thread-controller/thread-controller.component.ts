@@ -157,7 +157,7 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
     private onSkeleton (data: { data: ThreadSkeleton }): void {
         this._threadSkeleton = data.data;
         this.setPrefix();
-        this.setBreadcrum();
+        this.setBreadcrumb();
 
         this.tabs = [
             new TitleTab({title: 'Save', value: ThreadControllerActions.SAVE}),
@@ -177,8 +177,8 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
         }
     }
 
-    private setBreadcrum (): void {
-        const threadCrum = this.isNew ? [] : [new BreadcrumbItem({
+    private setBreadcrumb (): void {
+        const threadCrumb = this.isNew ? [] : [new BreadcrumbItem({
             title: this._threadSkeleton.title,
             url: `/forum/thread/${this._threadSkeleton.threadId}/page/1`
         })];
@@ -189,7 +189,7 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
                 .map(parent => new BreadcrumbItem({
                     title: parent.title,
                     url: `/forum/category/${parent.categoryId}/page/1`
-                })).concat(threadCrum)
+                })).concat(threadCrumb)
         });
     }
 
@@ -209,16 +209,22 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
         form.append('thread', JSON.stringify(this._threadSkeleton));
         if (!this.isNew) {
             this._httpClient.post(`rest/api/forum/thread/update/${this._threadSkeleton.threadId}`, form)
-                .subscribe(this.onSuccessUpdate.bind(this),
-                    this._notificationService.failureNotification.bind(this._notificationService));
+                .subscribe(res => {
+                    this.onSuccessUpdate(res);
+                }, error => {
+                    this._notificationService.failureNotification(error);
+                });
         } else {
             this._httpClient.post('rest/api/forum/thread', form)
-                .subscribe(this.onSuccessCreate.bind(this),
-                    this._notificationService.failureNotification.bind(this._notificationService));
+                .subscribe((res: { threadId: number }) => {
+                    this.onSuccessCreate(res);
+                }, error => {
+                    this._notificationService.failureNotification(error);
+                });
         }
     }
 
-    private onSuccessUpdate (res: ThreadSkeleton): void {
+    private onSuccessUpdate (res): void {
         this._threadSkeleton = new ThreadSkeleton(res);
         AutoSaveHelper.remove(AutoSave.THREAD, this._threadSkeleton.categoryId);
         this._notificationService.sendNotification(new NotificationMessage({

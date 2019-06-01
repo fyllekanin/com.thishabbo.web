@@ -96,14 +96,17 @@ export class NoticeBoardComponent {
 
     private onDelete (notice: Notice): void {
         this._httpService.delete(`admin/content/notices/${notice.noticeId}`)
-            .subscribe(this.onSuccessDelete.bind(this, notice),
-                this._notificationService.failureNotification.bind(this._notificationService), () => {
-                    this._dialogService.closeDialog();
-                });
+            .subscribe(() => {
+                this.onSuccessDelete(notice);
+            }, error => {
+                this._notificationService.failureNotification(error);
+            }, () => {
+                this._dialogService.closeDialog();
+            });
     }
 
     private onSuccessDelete (notice: Notice): void {
-        this._notices = this._notices.filter(noti => noti.noticeId !== notice.noticeId);
+        this._notices = this._notices.filter(item => item.noticeId !== notice.noticeId);
         this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success!',
             message: 'Notice got deleted!'

@@ -117,7 +117,9 @@ export class BadgeComponent extends Page implements OnDestroy {
                     message: 'Badge deleted!'
                 }));
                 this._router.navigateByUrl('/admin/badges/page/1');
-            }, this._notificationService.failureNotification.bind(this._notificationService), () => {
+            }, error => {
+                this._notificationService.failureNotification(error);
+            }, () => {
                 this._dialogService.closeDialog();
             });
     }

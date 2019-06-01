@@ -137,8 +137,8 @@ export class TimetableComponent extends Page implements OnDestroy {
         const currentDay = this.getCurrentDay();
 
         const offsetInHours = hour + (new Date().getTimezoneOffset() / 60);
-        const convertedHour = this.getHour(offsetInHours);
-        const convertedDay = this.getDay(offsetInHours, currentDay);
+        const convertedHour = TimeHelper.getConvertedHour(offsetInHours);
+        const convertedDay = TimeHelper.getConvertedDay(offsetInHours, currentDay);
 
         this._httpService.post(`staff/${this._type}/timetable`, {
             booking: {
@@ -149,8 +149,11 @@ export class TimetableComponent extends Page implements OnDestroy {
                 link: res.link
             }
         })
-            .subscribe(this.onSuccessBooking.bind(this, currentDay, hour),
-                this._notificationService.failureNotification.bind(this._notificationService));
+            .subscribe(res => {
+                this.onSuccessBooking(currentDay, hour, res);
+            }, error => {
+                this._notificationService.failureNotification(error);
+            });
     }
 
     private onSuccessBooking (day, hour, item): void {
@@ -216,27 +219,9 @@ export class TimetableComponent extends Page implements OnDestroy {
         this._data = data.data;
         this._data.timetable.forEach(booking => {
             const convertedHour = booking.hour + TimeHelper.getTimeOffsetInHours();
-            booking.day = this.getDay(convertedHour, booking.day);
-            booking.hour = this.getHour(convertedHour);
+            booking.day = TimeHelper.getConvertedDay(convertedHour, booking.day);
+            booking.hour = TimeHelper.getConvertedHour(convertedHour);
         });
-    }
-
-    private getDay (convertedHour: number, day: number): number {
-        if (convertedHour > 23) {
-            return day === 7 ? 1 : day + 1;
-        } else if (convertedHour < 0) {
-            return day === 1 ? 7 : day - 1;
-        }
-        return day;
-    }
-
-    private getHour (convertedHour: number): number {
-        if (convertedHour > 23) {
-            return convertedHour - 24;
-        } else if (convertedHour < 0) {
-            return convertedHour + 24;
-        }
-        return convertedHour;
     }
 
     private getCurrentDay (): number {

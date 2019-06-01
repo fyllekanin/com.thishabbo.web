@@ -128,7 +128,9 @@ export class PermShowsListComponent extends Page implements OnDestroy {
                 }));
                 this._permShowsListPage.permShows = this._permShowsListPage.permShows.filter(item => permShowId !== item.timetableId);
                 this.createOrUpdateTable();
-            }, this._notificationService.failureNotification.bind(this._notificationService), () => {
+            }, error => {
+                this._notificationService.failureNotification(error);
+            }, () => {
                 this._dialogService.closeDialog();
             });
     }

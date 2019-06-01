@@ -16,7 +16,7 @@ import { PermissionsComponent } from './permissions/permissions.component';
 import { PrefixListComponent } from './prefixes/prefix-list/prefix-list.component';
 import { PrefixComponent } from './prefixes/prefix/prefix.component';
 import { CategoriesListResolver } from './services/categories-list.resolver';
-import { CategoryService } from './services/category.service';
+import { CategoryResolver } from './services/category.resolver';
 import { PermissionsResolver } from './services/permissions.resolver';
 import { PrefixListResolver } from './services/prefix-list.resolver';
 import { PrefixService } from './services/prefix.resolver';
@@ -45,7 +45,7 @@ import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
     ],
     providers: [
         CategoriesListResolver,
-        CategoryService,
+        CategoryResolver,
         PermissionsResolver,
         PrefixListResolver,
         PrefixService

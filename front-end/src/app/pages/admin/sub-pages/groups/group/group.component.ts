@@ -63,12 +63,18 @@ export class GroupComponent extends Page implements OnDestroy {
     save (): void {
         if (this._group.createdAt) {
             this._httpService.put(`admin/groups/${this._group.groupId}`, {group: this._group})
-                .subscribe(this.onSuccessUpdate.bind(this),
-                    this._notificationService.failureNotification.bind(this._notificationService));
+                .subscribe(res => {
+                    this.onSuccessUpdate(res);
+                }, error => {
+                    this._notificationService.failureNotification(error);
+                });
         } else {
             this._httpService.post('admin/groups', {group: this._group})
-                .subscribe(this.onSuccessCreate.bind(this),
-                    this._notificationService.failureNotification.bind(this._notificationService));
+                .subscribe(res => {
+                    this.onSuccessCreate(res);
+                }, error => {
+                    this._notificationService.failureNotification(error);
+                });
         }
     }
 

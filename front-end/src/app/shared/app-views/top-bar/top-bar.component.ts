@@ -34,8 +34,8 @@ export class TopBarComponent {
         private _notificationService: NotificationService,
         breadcrumbService: BreadcrumbService
     ) {
-        breadcrumbService.onBreadcrumb.subscribe(breadcrum => {
-            this._breadcrumb = breadcrum;
+        breadcrumbService.onBreadcrumb.subscribe(breadcrumb => {
+            this._breadcrumb = breadcrumb;
         });
         this._continuesInformationService.onNotifications.subscribe(this.onNotifications.bind(this));
     }
