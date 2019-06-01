@@ -9,8 +9,10 @@ export class ManageConnectionModel {
     password: string;
     @primitive()
     adminPassword: string;
+    @primitive()
+    serverType: string;
 
-    constructor(source?: Partial<ManageConnectionModel>) {
+    constructor (source?: Partial<ManageConnectionModel>) {
         ClassHelper.assign(this, source);
     }
 }

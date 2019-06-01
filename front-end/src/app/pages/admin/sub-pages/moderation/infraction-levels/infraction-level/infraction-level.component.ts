@@ -45,7 +45,7 @@ export class InfractionLevelComponent extends Page implements OnDestroy {
             case InfractionLevelActions.DELETE:
                 this.onDelete();
                 break;
-            case InfractionLevelActions.CANCEL:
+            case InfractionLevelActions.BACK:
                 this._router.navigateByUrl('/admin/moderation/infraction-levels/page/1');
                 break;
         }
@@ -122,7 +122,7 @@ export class InfractionLevelComponent extends Page implements OnDestroy {
         const tabs = [
             {title: 'Save', value: InfractionLevelActions.SAVE, condition: true},
             {title: 'Delete', value: InfractionLevelActions.DELETE, condition: this._page.createdAt},
-            {title: 'Cancel', value: InfractionLevelActions.CANCEL, condition: true}
+            {title: 'Back', value: InfractionLevelActions.BACK, condition: true}
         ];
 
         this.setSelectableItems();

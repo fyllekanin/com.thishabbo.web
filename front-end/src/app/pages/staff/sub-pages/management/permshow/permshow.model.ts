@@ -61,7 +61,7 @@ export class PermShowsListPage {
 export enum PermShowActions {
     EDIT_PERM_SHOW,
     DELETE_PERM_SHOW,
-    CANCEL,
+    BACK,
     DELETE,
     SAVE
 }

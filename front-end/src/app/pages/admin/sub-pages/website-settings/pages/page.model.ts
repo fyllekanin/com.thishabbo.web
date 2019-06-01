@@ -27,5 +27,5 @@ export enum PageActions {
     EDIT,
     DELETE,
     SAVE,
-    CANCEL
+    BACK
 }

@@ -8,9 +8,9 @@ export class GroupList {
     @primitive()
     color: string;
     @arrayOf(SlimUser)
-    users: SlimUser;
+    users: Array<SlimUser> = [];
 
-    constructor(source: Partial<GroupList>) {
+    constructor (source: Partial<GroupList>) {
         ClassHelper.assign(this, source);
         this.color = TitleTopBorder[this.color];
     }

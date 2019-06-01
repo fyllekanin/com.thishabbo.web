@@ -18,7 +18,7 @@ import { Badge, BadgeActions } from '../badges.model';
 export class BadgeComponent extends Page implements OnDestroy {
     private _badge: Badge = new Badge();
 
-    @ViewChild('file', { static: true }) fileInput;
+    @ViewChild('file', {static: true}) fileInput;
     tabs: Array<TitleTab> = [];
 
     constructor (
@@ -49,7 +49,7 @@ export class BadgeComponent extends Page implements OnDestroy {
             case BadgeActions.DELETE:
                 this.delete();
                 break;
-            case BadgeActions.CANCEL:
+            case BadgeActions.BACK:
                 this.cancel();
                 break;
         }
@@ -126,7 +126,7 @@ export class BadgeComponent extends Page implements OnDestroy {
         this._badge = data.data;
 
         const tabs = [
-            {title: 'Cancel', value: BadgeActions.CANCEL, condition: true},
+            {title: 'Back', value: BadgeActions.BACK, condition: true},
             {title: 'Delete', value: BadgeActions.DELETE, condition: this._badge.createdAt},
             {title: 'Save', value: BadgeActions.SAVE, condition: true}
         ];

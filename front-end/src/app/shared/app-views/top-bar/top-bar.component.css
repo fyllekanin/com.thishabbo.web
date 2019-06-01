@@ -126,6 +126,7 @@ input {
     .login-pc {
         display: none;
     }
+
     .login-phone {
         display: block;
     }
@@ -138,12 +139,12 @@ input {
 }
 
 .top-login {
-    height: 31px;
-    width: 105px;
+    width: 96px;
+    height: 29px;
 }
 
 .top-login-button {
-    height: 25px !important;
+    height: 28px !important;
     padding-top: 6.5px !important;
     margin-top: 2px !important;
 }

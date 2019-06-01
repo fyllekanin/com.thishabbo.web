@@ -81,5 +81,5 @@ export class CategoryPage {
 export enum CategoryActions {
     SAVE,
     DELETE,
-    CANCEL
+    BACK
 }

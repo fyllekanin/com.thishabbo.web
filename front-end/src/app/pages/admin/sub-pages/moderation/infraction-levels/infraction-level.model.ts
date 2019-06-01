@@ -20,7 +20,7 @@ export class InfractionLevel {
     @arrayOf(CategoryLeaf)
     categories: Array<CategoryLeaf> = [];
 
-    constructor(source?: Partial<InfractionLevel>) {
+    constructor (source?: Partial<InfractionLevel>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -28,5 +28,5 @@ export class InfractionLevel {
 export enum InfractionLevelActions {
     SAVE,
     DELETE,
-    CANCEL
+    BACK
 }

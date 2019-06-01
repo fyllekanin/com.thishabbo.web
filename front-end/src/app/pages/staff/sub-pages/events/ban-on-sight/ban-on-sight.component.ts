@@ -44,7 +44,7 @@ export class BanOnSightComponent extends Page implements OnDestroy {
             case BanOnSightActions.SAVE:
                 this.save();
                 break;
-            case BanOnSightActions.CANCEL:
+            case BanOnSightActions.BACK:
                 this.cancel();
                 break;
             case BanOnSightActions.DELETE:
@@ -129,7 +129,7 @@ export class BanOnSightComponent extends Page implements OnDestroy {
         const tabs = [
             {title: 'Save', value: BanOnSightActions.SAVE, condition: true},
             {title: 'Delete', value: BanOnSightActions.DELETE, condition: this._data.createdAt},
-            {title: 'Cancel', value: BanOnSightActions.CANCEL, condition: true}
+            {title: 'Back', value: BanOnSightActions.BACK, condition: true}
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));

@@ -15,6 +15,7 @@ use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
+use App\Models\Radio\RadioServerTypes;
 use App\Models\Radio\RadioSettings;
 use App\Utils\BBcodeUtil;
 use App\Utils\Condition;
@@ -336,12 +337,15 @@ class RadioController extends Controller {
         foreach ($information as $key => $value) {
             Condition::precondition(!isset($value) || empty($value), 400, $key . ' is missing');
         }
+        Condition::precondition(!RadioServerTypes::isValidType($information->serverType), 400,
+            'Server type is not valid');
 
         $newInformation = new RadioSettings(SettingsHelper::getSettingValue($settingKeys->radio));
         $newInformation->ip = $information->ip;
         $newInformation->port = $information->port;
         $newInformation->password = $information->password;
         $newInformation->adminPassword = $information->adminPassword;
+        $newInformation->serverType = $information->serverType;
 
         SettingsHelper::createOrUpdateSetting($settingKeys->radio, json_encode($newInformation));
 

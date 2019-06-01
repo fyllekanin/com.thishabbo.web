@@ -1,4 +1,4 @@
-<app-title [title]="'Home Page Threads'"></app-title>
+<app-title [title]="'Home Page Threads'" [tabs]="tabs" (onTabClick)="onSave()"></app-title>
 <app-content>
     <div class="grid-container">
         <div class="grid-x grid-margin-y">
@@ -17,4 +17,4 @@
     </div>
 </app-content>
 
-<app-table [config]="tableConfig" [tabs]="tabs" (onTabClick)="onSave()" (onAction)="onRemove($event)"></app-table>
+<app-table [config]="tableConfig" (onAction)="onRemove($event)"></app-table>

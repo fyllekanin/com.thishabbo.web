@@ -1,10 +1,15 @@
-import { primitive, ClassHelper } from 'shared/helpers/class.helper';
+import { ClassHelper, primitive } from 'shared/helpers/class.helper';
 
 export class MaintenanceModel {
     @primitive()
     content: string;
 
-    constructor(source?: Partial<MaintenanceModel>) {
+    constructor (source?: Partial<MaintenanceModel>) {
         ClassHelper.assign(this, source);
     }
+}
+
+export enum MaintenanceActions {
+    SAVE,
+    BACK
 }

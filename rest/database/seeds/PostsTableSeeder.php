@@ -12,6 +12,8 @@ class PostsTableSeeder extends Seeder
      */
     public function run()
     {
+        
+
         \DB::table('posts')->delete();
         
         \DB::table('posts')->insert(array (
@@ -485,66 +487,58 @@ Praesent lacinia malesuada nisi mus erat magna nullam mus. Cras dui non. Eleifen
                 'postId' => 31,
                 'threadId' => 26,
                 'userId' => 1,
-                'content' => '[color=#7d7d7d][size=2][font=Verdana, sans-serif]Etiam. Nulla sollicitudin consequat arcu dignissim eleifend risus amet consequat laoreet primis id a varius libero amet. Penatibus hendrerit nulla cubilia.[/font][/size][/color]
+                'content' => 'Etiam. Nulla sollicitudin consequat arcu dignissim eleifend risus amet consequat laoreet primis id a varius libero amet. Penatibus hendrerit nulla cubilia
+Adipiscing fermentum cras primis. Auctor lacinia Aenean velit pulvinar rhoncus, habitant lorem faucibus. Duis et. Turpis turpis dignissim massa lectus. Hac vehicula proin lacus per. Lacinia tempor torquent vestibulum luctus nunc aenean natoque risus cras ut fringilla sed torquent.
 
-[color=#7d7d7d][size=2][font=Verdana, sans-serif]Adipiscing fermentum cras primis. Auctor lacinia Aenean velit pulvinar rhoncus, habitant lorem faucibus. Duis et. Turpis turpis dignissim massa lectus. Hac vehicula proin lacus per. Lacinia tempor torquent vestibulum luctus nunc aenean natoque risus cras ut fringilla sed torquent.[/font][/size][/color]
-
-[color=#7d7d7d][size=2][font=Verdana, sans-serif]Praesent lacinia malesuada nisi mus erat magna nullam mus. Cras dui non. Eleifend diam luctus condimentum vitae sociosqu vestibulum ultricies tortor torquent cras quis porttitor maecenas lorem ut fringilla leo molestie. Praesent hymenaeos aliquet scelerisque sociosqu tortor commodo ac aliquet.[/font][/size][/color]',
+Praesent lacinia malesuada nisi mus erat magna nullam mus. Cras dui non. Eleifend diam luctus condimentum vitae sociosqu vestibulum ultricies tortor torquent cras quis porttitor maecenas lorem ut fringilla leo molestie. Praesent hymenaeos aliquet scelerisque sociosqu tortor commodo ac aliquet.',
                 'isDeleted' => 0,
                 'isApproved' => 1,
                 'createdAt' => 1552148621,
-                'updatedAt' => 1552148621,
+                'updatedAt' => 1559339323,
             ),
             31 => 
             array (
                 'postId' => 32,
                 'threadId' => 27,
                 'userId' => 1,
-                'content' => '[color=#7d7d7d][size=2][font=Verdana, sans-serif]Etiam. Nulla sollicitudin consequat arcu dignissim eleifend risus amet consequat laoreet primis id a varius libero amet. Penatibus hendrerit nulla cubilia.[/font][/size][/color]
+                'content' => 'Etiam. Nulla sollicitudin consequat arcu dignissim eleifend risus amet consequat laoreet primis id a varius libero amet. Penatibus hendrerit nulla cubilia
+Adipiscing fermentum cras primis. Auctor lacinia Aenean velit pulvinar rhoncus, habitant lorem faucibus. Duis et. Turpis turpis dignissim massa lectus. Hac vehicula proin lacus per. Lacinia tempor torquent vestibulum luctus nunc aenean natoque risus cras ut fringilla sed torquent.
 
-[color=#7d7d7d][size=2][font=Verdana, sans-serif]Adipiscing fermentum cras primis. Auctor lacinia Aenean velit pulvinar rhoncus, habitant lorem faucibus. Duis et. Turpis turpis dignissim massa lectus. Hac vehicula proin lacus per. Lacinia tempor torquent vestibulum luctus nunc aenean natoque risus cras ut fringilla sed torquent.[/font][/size][/color]
-
-[color=#7d7d7d][size=2][font=Verdana, sans-serif]Praesent lacinia malesuada nisi mus erat magna nullam mus. Cras dui non. Eleifend diam luctus condimentum vitae sociosqu vestibulum ultricies tortor torquent cras quis porttitor maecenas lorem ut fringilla leo molestie. Praesent hymenaeos aliquet scelerisque sociosqu tortor commodo ac aliquet.[/font][/size][/color]
-
-
-',
+Praesent lacinia malesuada nisi mus erat magna nullam mus. Cras dui non. Eleifend diam luctus condimentum vitae sociosqu vestibulum ultricies tortor torquent cras quis porttitor maecenas lorem ut fringilla leo molestie. Praesent hymenaeos aliquet scelerisque sociosqu tortor commodo ac aliquet.',
                 'isDeleted' => 0,
                 'isApproved' => 1,
                 'createdAt' => 1552148637,
-                'updatedAt' => 1552148637,
+                'updatedAt' => 1559339315,
             ),
             32 => 
             array (
                 'postId' => 33,
                 'threadId' => 28,
                 'userId' => 1,
-                'content' => '[color=#7d7d7d][size=2][font=Verdana, sans-serif]Etiam. Nulla sollicitudin consequat arcu dignissim eleifend risus amet consequat laoreet primis id a varius libero amet. Penatibus hendrerit nulla cubilia.[/font][/size][/color]
+                'content' => 'Etiam. Nulla sollicitudin consequat arcu dignissim eleifend risus amet consequat laoreet primis id a varius libero amet. Penatibus hendrerit nulla cubilia
+Adipiscing fermentum cras primis. Auctor lacinia Aenean velit pulvinar rhoncus, habitant lorem faucibus. Duis et. Turpis turpis dignissim massa lectus. Hac vehicula proin lacus per. Lacinia tempor torquent vestibulum luctus nunc aenean natoque risus cras ut fringilla sed torquent.
 
-[color=#7d7d7d][size=2][font=Verdana, sans-serif]Adipiscing fermentum cras primis. Auctor lacinia Aenean velit pulvinar rhoncus, habitant lorem faucibus. Duis et. Turpis turpis dignissim massa lectus. Hac vehicula proin lacus per. Lacinia tempor torquent vestibulum luctus nunc aenean natoque risus cras ut fringilla sed torquent.[/font][/size][/color]
-
-[color=#7d7d7d][size=2][font=Verdana, sans-serif]Praesent lacinia malesuada nisi mus erat magna nullam mus. Cras dui non. Eleifend diam luctus condimentum vitae sociosqu vestibulum ultricies tortor torquent cras quis porttitor maecenas lorem ut fringilla leo molestie. Praesent hymenaeos aliquet scelerisque sociosqu tortor commodo ac aliquet.[/font][/size][/color]',
+Praesent lacinia malesuada nisi mus erat magna nullam mus. Cras dui non. Eleifend diam luctus condimentum vitae sociosqu vestibulum ultricies tortor torquent cras quis porttitor maecenas lorem ut fringilla leo molestie. Praesent hymenaeos aliquet scelerisque sociosqu tortor commodo ac aliquet.',
                 'isDeleted' => 0,
                 'isApproved' => 1,
                 'createdAt' => 1552148663,
-                'updatedAt' => 1552148663,
+                'updatedAt' => 1559339306,
             ),
             33 => 
             array (
                 'postId' => 34,
                 'threadId' => 29,
                 'userId' => 1,
-                'content' => '[color=#7d7d7d][size=2][font=Verdana, sans-serif]Etiam. Nulla sollicitudin consequat arcu dignissim eleifend risus amet consequat laoreet primis id a varius libero amet. Penatibus hendrerit nulla cubilia.[/font][/size][/color]
+                'content' => 'Etiam. Nulla sollicitudin consequat arcu dignissim eleifend risus amet consequat laoreet primis id a varius libero amet. Penatibus hendrerit nulla cubilia.[/color]
 
-[color=#7d7d7d][size=2][font=Verdana, sans-serif]Adipiscing fermentum cras primis. Auctor lacinia Aenean velit pulvinar rhoncus, habitant lorem faucibus. Duis et. Turpis turpis dignissim massa lectus. Hac vehicula proin lacus per. Lacinia tempor torquent vestibulum luctus nunc aenean natoque risus cras ut fringilla sed torquent.[/font][/size][/color]
+[color=#7d7d7d]Adipiscing fermentum cras primis. Auctor lacinia Aenean velit pulvinar rhoncus, habitant lorem faucibus. Duis et. Turpis turpis dignissim massa lectus. Hac vehicula proin lacus per. Lacinia tempor torquent vestibulum luctus nunc aenean natoque risus cras ut fringilla sed torquent.[/color]
 
-[color=#7d7d7d][size=2][font=Verdana, sans-serif]Praesent lacinia malesuada nisi mus erat magna nullam mus. Cras dui non. Eleifend diam luctus condimentum vitae sociosqu vestibulum ultricies tortor torquent cras quis porttitor maecenas lorem ut fringilla leo molestie. Praesent hymenaeos aliquet scelerisque sociosqu tortor commodo ac aliquet.[/font][/size][/color]
-
-
+[color=#7d7d7d]Praesent lacinia malesuada nisi mus erat magna nullam mus. Cras dui non. Eleifend diam luctus condimentum vitae sociosqu vestibulum ultricies tortor torquent cras quis porttitor maecenas lorem ut fringilla leo molestie. Praesent hymenaeos aliquet scelerisque sociosqu tortor commodo ac aliquet
 ',
                 'isDeleted' => 0,
                 'isApproved' => 1,
                 'createdAt' => 1552148693,
-                'updatedAt' => 1552148693,
+                'updatedAt' => 1559339278,
             ),
             34 => 
             array (

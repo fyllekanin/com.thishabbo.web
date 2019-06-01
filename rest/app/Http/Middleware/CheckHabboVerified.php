@@ -16,6 +16,7 @@ class CheckHabboVerified {
      */
     public function handle($request, Closure $next) {
         $user = $request->get('auth');
+        Condition::precondition(!$user || $user->userId == 0, 401, 'You are not logged in');
         Condition::precondition(!$user->habbo, 400, 'You need to verify habbo');
         return $next($request);
     }

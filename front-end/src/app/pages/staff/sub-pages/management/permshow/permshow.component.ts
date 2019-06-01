@@ -52,7 +52,7 @@ export class PermShowComponent extends Page implements OnDestroy {
             case PermShowActions.SAVE:
                 this.save();
                 break;
-            case PermShowActions.CANCEL:
+            case PermShowActions.BACK:
                 this.cancel();
                 break;
             case PermShowActions.DELETE:
@@ -155,7 +155,7 @@ export class PermShowComponent extends Page implements OnDestroy {
         const tabs = [
             {title: 'Save', value: PermShowActions.SAVE, condition: true},
             {title: 'Delete', value: PermShowActions.DELETE, condition: this._permShow.createdAt},
-            {title: 'Cancel', value: PermShowActions.CANCEL, condition: true}
+            {title: 'Back', value: PermShowActions.BACK, condition: true}
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));

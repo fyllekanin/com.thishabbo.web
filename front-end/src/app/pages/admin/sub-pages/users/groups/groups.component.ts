@@ -17,11 +17,11 @@ export class GroupsComponent extends Page implements OnDestroy {
     private _groupsModel: GroupsModel = new GroupsModel();
 
     tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Save' }),
-        new TitleTab({ title: 'Cancel', link: '/admin/users/page/1' })
+        new TitleTab({title: 'Save'}),
+        new TitleTab({title: 'Back', link: '/admin/users/page/1'})
     ];
 
-    constructor(
+    constructor (
         private _service: GroupsService,
         breadcrumbService: BreadcrumbService,
         elementRef: ElementRef,
@@ -38,21 +38,21 @@ export class GroupsComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onSave(): void {
+    onSave (): void {
         const groupIds = this._groupsModel.groups.map(group => group.groupId);
         const displayGroupId = this._groupsModel.displayGroupId || 0;
         this._service.updateUsersGroups(groupIds, displayGroupId, this._groupsModel.userId);
     }
 
-    getHalfOfPossibleGroups(first: boolean): Array<Group> {
+    getHalfOfPossibleGroups (first: boolean): Array<Group> {
         return this._groupsModel.possibleGroups.filter((_group, index) => Boolean(index % 2) === first);
     }
 
-    toggleGroup(group: Group): void {
+    toggleGroup (group: Group): void {
         if (this.haveUserGroup(group)) {
             this._groupsModel.groups = this._groupsModel.groups.filter(grp => grp.groupId !== group.groupId);
         } else {
@@ -60,27 +60,27 @@ export class GroupsComponent extends Page implements OnDestroy {
         }
     }
 
-    haveUserGroup(group: Group): boolean {
+    haveUserGroup (group: Group): boolean {
         return this._groupsModel.groups.findIndex(grp => grp.groupId === group.groupId) > -1;
     }
 
-    get nickname(): string {
+    get nickname (): string {
         return this._groupsModel.nickname;
     }
 
-    get displayGroup(): number {
+    get displayGroup (): number {
         return this._groupsModel.displayGroupId;
     }
 
-    set displayGroup(group: number) {
+    set displayGroup (group: number) {
         this._groupsModel.displayGroupId = group;
     }
 
-    get availableGroups(): Array<Group> {
+    get availableGroups (): Array<Group> {
         return this._groupsModel.groups;
     }
 
-    private onData(data: { data: GroupsModel }): void {
+    private onData (data: { data: GroupsModel }): void {
         this._groupsModel = data.data;
         this._groupsModel.possibleGroups = this._groupsModel.possibleGroups.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'name'));
     }

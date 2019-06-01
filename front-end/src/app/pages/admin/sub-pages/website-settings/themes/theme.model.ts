@@ -14,7 +14,7 @@ export class Theme {
     @primitive()
     updatedAt: number;
 
-    constructor(source?: Partial<Theme>) {
+    constructor (source?: Partial<Theme>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -23,7 +23,7 @@ export enum ThemeActions {
     EDIT,
     SAVE,
     DELETE,
-    CANCEL,
+    BACK,
     DEFAULT,
     CLEAR_DEFAULT
 }

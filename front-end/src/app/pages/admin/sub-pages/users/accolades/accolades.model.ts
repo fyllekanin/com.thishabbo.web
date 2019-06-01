@@ -76,5 +76,5 @@ export enum AccoladeActions {
     EDIT,
     DELETE,
     CREATE,
-    CANCEL
+    BACK
 }

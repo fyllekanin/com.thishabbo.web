@@ -26,7 +26,7 @@ export class BanComponent extends Page implements OnDestroy {
 
     tabs: Array<TitleTab> = [
         new TitleTab({title: 'Ban'}),
-        new TitleTab({title: 'Cancel', link: '/admin/users/page/1'})
+        new TitleTab({title: 'Back', link: '/admin/users/page/1'})
     ];
     banTabs: Array<TitleTab> = [
         new TitleTab({title: 'Lift Ban'})

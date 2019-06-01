@@ -10,7 +10,7 @@ export class DoNotHireItem {
     @primitive()
     createdAt: number;
 
-    constructor(source?: Partial<DoNotHireItem>) {
+    constructor (source?: Partial<DoNotHireItem>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -19,7 +19,7 @@ export class DoNotHireModel {
     @arrayOf(DoNotHireItem)
     items: Array<DoNotHireItem> = [];
 
-    constructor(source?: Partial<DoNotHireModel>) {
+    constructor (source?: Partial<DoNotHireModel>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -27,7 +27,7 @@ export class DoNotHireModel {
 export enum DoNotHireActions {
     EDIT_DNH_ENTRY,
     DELETE_DNH_ENTRY,
-    CANCEL,
+    BACK,
     DELETE,
     SAVE
 }

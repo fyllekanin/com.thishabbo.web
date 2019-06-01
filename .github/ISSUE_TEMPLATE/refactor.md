@@ -2,7 +2,7 @@
 name: Refactor
 about: Task about refactoring code
 title: ''
-labels: ''
+labels: refactor
 assignees: ''
 
 ---

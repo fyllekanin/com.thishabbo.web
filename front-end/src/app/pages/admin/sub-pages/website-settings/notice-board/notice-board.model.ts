@@ -1,5 +1,4 @@
-
 export enum NoticeBoardActions {
-    CANCEL,
+    BACK,
     SAVE
 }

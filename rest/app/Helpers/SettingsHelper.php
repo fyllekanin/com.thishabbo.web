@@ -7,16 +7,16 @@ use App\Models\Radio\RadioSettings;
 
 class SettingsHelper {
 
-    public static function getSettingValue ($key) {
+    public static function getSettingValue($key) {
         $setting = self::getSetting($key);
         return $setting ? $setting->value : null;
     }
 
-    public static function getSetting ($key) {
+    public static function getSetting($key) {
         return Setting::where('key', $key)->getQuery()->first();
     }
 
-    public static function createOrUpdateSetting ($key, $value) {
+    public static function createOrUpdateSetting($key, $value) {
         if (!isset($value)) {
             return;
         }
@@ -34,7 +34,7 @@ class SettingsHelper {
         }
     }
 
-    public static function getRadioConnectionInformation ($withAdminPassword = false) {
+    public static function getRadioConnectionInformation($withAdminPassword = false) {
         $settingKeys = ConfigHelper::getKeyConfig();
         $radio = new RadioSettings(SettingsHelper::getSettingValue($settingKeys->radio));
 
@@ -42,7 +42,8 @@ class SettingsHelper {
             'ip' => $radio->ip,
             'port' => $radio->port,
             'password' => $radio->password,
-            'adminPassword' => $withAdminPassword ?$radio->adminPassword : null
+            'adminPassword' => $withAdminPassword ? $radio->adminPassword : null,
+            'serverType' => $radio->serverType
         ];
     }
 }

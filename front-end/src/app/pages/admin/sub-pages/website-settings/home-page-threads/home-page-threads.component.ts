@@ -29,7 +29,8 @@ export class HomePageThreadsComponent extends Page implements OnDestroy {
     items: Array<SelectItem> = [];
     value: SelectItem = null;
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Save'})
+        new TitleTab({title: 'Save'}),
+        new TitleTab({title: 'Back', link: '/admin/website-settings'})
     ];
 
     constructor (

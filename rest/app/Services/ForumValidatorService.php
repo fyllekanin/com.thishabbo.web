@@ -54,18 +54,13 @@ class ForumValidatorService {
             ]);
         }
 
-        if ($category->template == $categoryTemplates->QUEST) {
-            Condition::precondition(empty($threadSkeleton->badge), 400, 'Badge can not be empty');
-            Condition::precondition(!isset($threadSkeleton->tags) || count($threadSkeleton->tags) == 0, 400, 'You need at least one tag set');
-            Condition::precondition(!ctype_alnum($threadSkeleton->badge), 400, 'Badge can only be name, numbers & letters!');
-        }
-
+        $this->validateQuest($threadSkeleton, $category, $categoryTemplates);
         $postedInRecently = Thread::where('userId', $user->userId)
             ->where('createdAt', '>', (time() - 15))
             ->count('threadId');
 
         $titleContentMissing = empty($threadSkeleton->title) || empty($threadSkeleton->content);
-        Condition::precondition($postedInRecently > 0, 400, 'You are creating threads to quick!');
+        Condition::precondition($postedInRecently > 0 && !isset($threadSkeleton->threadId), 400, 'You are creating threads to quick!');
         Condition::precondition($titleContentMissing, 400, 'Title and/or content is not set!');
         Condition::precondition(empty($threadSkeleton->categoryId), 400, 'Category ID is not set!');
 
@@ -73,5 +68,13 @@ class ForumValidatorService {
             $threadSkeleton->categoryId, 'No permissions to access this category');
         PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canCreateThreads,
             $threadSkeleton->categoryId, 'No permissions to create threads in this category');
+    }
+
+    private function validateQuest($threadSkeleton, $category, $categoryTemplates) {
+        if ($category->template == $categoryTemplates->QUEST) {
+            Condition::precondition(empty($threadSkeleton->badge), 400, 'Badge can not be empty');
+            Condition::precondition(!isset($threadSkeleton->tags) || count($threadSkeleton->tags) == 0, 400, 'You need at least one tag set');
+            Condition::precondition(!ctype_alnum($threadSkeleton->badge), 400, 'Badge can only be name, numbers & letters!');
+        }
     }
 }

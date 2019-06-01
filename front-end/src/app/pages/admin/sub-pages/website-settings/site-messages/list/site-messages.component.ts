@@ -34,7 +34,8 @@ export class SiteMessagesComponent extends Page implements OnDestroy {
 
     tableConfig: TableConfig;
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Create New', link: '/admin/website-settings/site-messages/new'})
+        new TitleTab({title: 'Create New', link: '/admin/website-settings/site-messages/new'}),
+        new TitleTab({title: 'Back', link: '/admin/website-settings'})
     ];
 
     constructor (

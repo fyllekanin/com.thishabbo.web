@@ -1,5 +1,4 @@
-import { ClassHelper, arrayOf, objectOf } from 'shared/helpers/class.helper';
-import { primitive } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
 import { User } from 'core/services/auth/auth.model';
 
 export class PostModel {
@@ -26,7 +25,7 @@ export class PostModel {
     @primitive()
     isSelected = false;
 
-    constructor(source?: Partial<PostModel>) {
+    constructor (source?: Partial<PostModel>) {
         ClassHelper.assign(this, source);
         this.parsedContent = (this.parsedContent || '')
             .replace(new RegExp(/((^|[^\]>"=])https?:\/\/(www\.)?[a-zA-Z0-9]+\.[a-zA-Z]+[^\s\]<\[]+)/g),
@@ -36,5 +35,5 @@ export class PostModel {
 
 export enum PostActions {
     SAVE,
-    CANCEL
+    BACK
 }

@@ -427,7 +427,8 @@ class ThreadCrudController extends Controller {
                 TemplateData::create([
                     'threadId' => $threadId,
                     'badge' => $threadSkeleton->badge,
-                    'tags' => implode(',', $threadSkeleton->tags)
+                    'tags' => implode(',', $threadSkeleton->tags),
+                    'roomLink' => Value::objectProperty($threadSkeleton, 'roomLink', '')
                 ]);
             }
         }

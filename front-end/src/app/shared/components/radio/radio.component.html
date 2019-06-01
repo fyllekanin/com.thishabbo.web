@@ -5,21 +5,26 @@
         <div class="album-art" [style.background]="'url(' + albumArt + ')' | safeStyle"></div>
         <div class="radio-info">
             <div class="inner-box-radio">
-                <div class="dj-position"><i class="fas fa-user"></i> <b> {{nickname}}</b>
-                    <div class="likes"><i class="fas fa-heart"></i> {{likes}}</div>
-                </div>
-                <div class="dj-position song"><i class="fas fa-headphones"></i>
-                    <marquee class="marquee-chat" scrolldelay="150">{{song}}</marquee>
+                <div class="dj-position current">
+                    <i class="fas fa-user"></i> <b> {{nickname}}</b>
                 </div>
                 <div class="dj-position next-dj"><i class="fas fa-arrow-right"></i> <strong> {{nextDj}}</strong></div>
-                <div class="dj-position"><i class="fas fa-comment"></i>
-                    <marquee class="marquee-chat-radio" scrolldelay="150">{{djSays}}</marquee>
+                <div class="dj-position says"><i class="fas fa-comment"></i>
+                    {{djSays}}
+                </div>
+                <div class="dj-position stats">
+                    <div class="likes float-right"><i class="fas fa-heart"></i> {{likes}}</div>
+                    <div class="listeners float-right"><i class="fas fa-users"></i> {{listeners}}</div>
+                </div>
+                <div class="dj-position song"><i class="fas fa-headphones"></i>
+                    {{song}}
                 </div>
             </div>
             <div>
                 <button class="radio-button blue-button" (click)="openRequest()"><i
                         class="fas fa-comment icon-position"></i></button>
-                <button [disabled]="radioOffline" class="radio-button red-button" (click)="likeDj()"><i class="fas fa-heart icon-position"></i></button>
+                <button [disabled]="radioOffline" class="radio-button red-button" (click)="likeDj()"><i
+                        class="fas fa-heart icon-position"></i></button>
             </div>
         </div>
     </div>
@@ -27,8 +32,10 @@
     <div class="events-box">
         <div class="event-info">
             <div class="event-buttons">
-                <button [disabled]="!eventsLink" class="events-box-button green-button" (click)="visitEvent()"><i class="fas fa-arrow-up icon-position-events"></i></button>
-                <button [disabled]="noEvent" class="events-box-button red-button" (click)="likeHost()"><i class="fas fa-heart icon-position-events"></i></button>
+                <button [disabled]="!eventsLink" class="events-box-button green-button" (click)="visitEvent()"><i
+                        class="fas fa-arrow-up icon-position-events"></i></button>
+                <button [disabled]="noEvent" class="events-box-button red-button" (click)="likeHost()"><i
+                        class="fas fa-heart icon-position-events"></i></button>
             </div>
             <div class="inner-box">
                 <div class="event-name"><i class="fas fa-user"></i> <strong> {{currentHost}}</strong><br/>
@@ -39,7 +46,7 @@
                     {{nextEvent}}
                 </div>
                 <div class="djInfo current-event"><i class="fas fa-comment"></i>
-                    <marquee class="marquee-chat-radio" scrolldelay="150">{{eventsSay}}</marquee>
+                    {{eventsSay}}
                 </div>
             </div>
         </div>

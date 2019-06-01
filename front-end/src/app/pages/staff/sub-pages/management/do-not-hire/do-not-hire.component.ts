@@ -45,7 +45,7 @@ export class DoNotHireComponent extends Page implements OnDestroy {
             case DoNotHireActions.SAVE:
                 this.save();
                 break;
-            case DoNotHireActions.CANCEL:
+            case DoNotHireActions.BACK:
                 this.cancel();
                 break;
             case DoNotHireActions.DELETE:
@@ -138,7 +138,7 @@ export class DoNotHireComponent extends Page implements OnDestroy {
         const tabs = [
             {title: 'Save', value: DoNotHireActions.SAVE, condition: true},
             {title: 'Delete', value: DoNotHireActions.DELETE, condition: this._data.createdAt},
-            {title: 'Cancel', value: DoNotHireActions.CANCEL, condition: true}
+            {title: 'Back', value: DoNotHireActions.BACK, condition: true}
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));

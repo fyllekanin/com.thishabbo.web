@@ -40,7 +40,7 @@ export class ThreadSkeleton {
 
 export enum ThreadControllerActions {
     SAVE,
-    CANCEL,
+    BACK,
     AUTO_SAVE,
     TOGGLE_POLL
 }

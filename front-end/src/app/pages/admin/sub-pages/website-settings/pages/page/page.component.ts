@@ -23,7 +23,7 @@ import { NotificationMessage } from 'shared/app-views/global-notification/global
 export class PageComponent extends Page implements OnDestroy {
     private _data: PageModel = new PageModel();
 
-    @ViewChild('editor', { static: true }) editor: EditorComponent;
+    @ViewChild('editor', {static: true}) editor: EditorComponent;
 
     tabs: Array<TitleTab> = [];
 
@@ -54,7 +54,7 @@ export class PageComponent extends Page implements OnDestroy {
 
     onTabClick (action: number): void {
         switch (action) {
-            case PageActions.CANCEL:
+            case PageActions.BACK:
                 this._router.navigateByUrl(PAGES_BREADCRUMB_ITEM.url);
                 break;
             case PageActions.DELETE:
@@ -123,7 +123,7 @@ export class PageComponent extends Page implements OnDestroy {
         const tabs = [
             {title: 'Save', value: PageActions.SAVE, condition: true},
             {title: 'Delete', value: PageActions.DELETE, condition: this._data.createdAt && !this._data.isSystem},
-            {title: 'Cancel', value: PageActions.CANCEL, condition: true}
+            {title: 'Back', value: PageActions.BACK, condition: true}
         ];
         this.tabs = tabs.filter(item => item.condition).map(item => new TitleTab(item));
     }
