@@ -105,7 +105,9 @@ export class DoNotHireComponent extends Page implements OnDestroy {
                     message: 'Entry deleted!'
                 }));
                 this._router.navigateByUrl('/staff/management/do-not-hire');
-            }, this._notificationService.failureNotification.bind(this._notificationService), () => {
+            }, error => {
+                this._notificationService.failureNotification(error);
+            }, () => {
                 this._dialogService.closeDialog();
             });
     }

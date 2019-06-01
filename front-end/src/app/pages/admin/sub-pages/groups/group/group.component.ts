@@ -136,7 +136,9 @@ export class GroupComponent extends Page implements OnDestroy {
                     message: 'Group deleted!'
                 }));
                 this._router.navigateByUrl('/admin/groups/page/1');
-            }, this._notificationService.failureNotification.bind(this._notificationService), () => {
+            }, error => {
+                this._notificationService.failureNotification(error);
+            }, () => {
                 this._dialogService.closeDialog();
             });
     }

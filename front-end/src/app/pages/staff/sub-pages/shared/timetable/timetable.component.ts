@@ -149,8 +149,8 @@ export class TimetableComponent extends Page implements OnDestroy {
                 link: res.link
             }
         })
-            .subscribe(res => {
-                this.onSuccessBooking(currentDay, hour, res);
+            .subscribe(response => {
+                this.onSuccessBooking(currentDay, hour, response);
             }, error => {
                 this._notificationService.failureNotification(error);
             });

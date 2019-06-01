@@ -116,7 +116,8 @@ export class BanComponent extends Page implements OnDestroy {
             return;
         }
 
-        this._service.liftBan(this._data.user.userId, banId, reason).subscribe(res => {
+        this._service.liftBan(this._data.user.userId, banId, reason)
+            .subscribe(res => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: `${this._data.user.nickname}s ban is now liften`
@@ -124,8 +125,11 @@ export class BanComponent extends Page implements OnDestroy {
 
                 this._data.bans = this._data.bans.filter(item => item.banId !== banId);
                 this._data.bans.push(new Ban(res));
-            }, this._notificationService.failureNotification.bind(this._notificationService),
-            this._dialogService.closeDialog.bind(this._dialogService));
+            }, error => {
+                this._notificationService.failureNotification(error);
+            }, () => {
+                this._dialogService.closeDialog();
+            });
     }
 
     private doBan (reason: IReason): void {
@@ -146,7 +150,8 @@ export class BanComponent extends Page implements OnDestroy {
             return;
         }
 
-        this._service.banUser(this._data.user.userId, reason).subscribe(res => {
+        this._service.banUser(this._data.user.userId, reason)
+            .subscribe(res => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: `${this._data.user.nickname} is now banned`
@@ -154,7 +159,10 @@ export class BanComponent extends Page implements OnDestroy {
 
                 const ban = new Ban(res);
                 this._data.bans.push(ban);
-            }, this._notificationService.failureNotification.bind(this._notificationService),
-            this._dialogService.closeDialog.bind(this._dialogService));
+            }, error => {
+                this._notificationService.failureNotification(error);
+            }, () => {
+                this._dialogService.closeDialog();
+            });
     }
 }
