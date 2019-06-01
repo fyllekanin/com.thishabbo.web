@@ -1,4 +1,4 @@
-<app-title [title]="pageTitle"></app-title>
+<app-title [title]="pageTitle" [tabs]="tabs" (onTabClick)="onTabClick($event)"></app-title>
 <app-content>
     <div class="grid-container full">
         <div class="grid-x grid-margin-x">
@@ -115,8 +115,6 @@
 
 
 <app-editor #editor
-            [buttons]="editorButtons"
             [content]="thread.content"
-            (onTabClick)="onButtonClick($event)"
             (onKeyUp)="onKeyUp($event)">
 </app-editor>
