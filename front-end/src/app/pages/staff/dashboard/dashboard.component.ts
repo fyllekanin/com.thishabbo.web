@@ -21,11 +21,11 @@ export class DashboardComponent extends Page implements OnDestroy {
     private _personalStats: Array<StatsBoxModel> = [];
 
     tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Personal', isActive: false, value: 1 }),
-        new TitleTab({ title: 'General', isActive: true, value: 0 })
+        new TitleTab({title: 'Personal', isActive: false, value: 1}),
+        new TitleTab({title: 'General', isActive: true, value: 0})
     ];
 
-    constructor(
+    constructor (
         breadcrumbService: BreadcrumbService,
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute
@@ -39,29 +39,29 @@ export class DashboardComponent extends Page implements OnDestroy {
         this._activeStats = this._generalStats;
     }
 
-    onTabClick(isPersonal: number): void {
+    onTabClick (isPersonal: number): void {
         this._activeStats = Boolean(isPersonal) ? this._personalStats : this._generalStats;
         this.tabs.forEach(tab => {
             tab.isActive = tab.value === isPersonal;
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    get stats(): Array<StatsBoxModel> {
+    get stats (): Array<StatsBoxModel> {
         return this._activeStats;
     }
 
-    private onData(data: { data: DashboardPage }): void {
+    private onData (data: { data: DashboardPage }): void {
         this._data = data.data;
 
         this.buildGeneralStats();
         this.buildPersonalStats();
     }
 
-    private buildPersonalStats(): void {
+    private buildPersonalStats (): void {
         const events = this.getText(this._data.personal.events);
         const radio = this.getText(this._data.personal.radio);
 
@@ -81,19 +81,19 @@ export class DashboardComponent extends Page implements OnDestroy {
         ];
     }
 
-    private getText(slot: DashboardSlot): string {
+    private getText (slot: DashboardSlot): string {
         if (!slot) {
             return null;
         }
 
         const convertedHour = slot.hour + TimeHelper.getTimeOffsetInHours();
-        const day = this.getDay(convertedHour, slot.day);
-        const hour = TimeHelper.getHours().find(item => item.number === this.getHour(convertedHour));
+        const day = TimeHelper.getConvertedDay(convertedHour, slot.day);
+        const hour = TimeHelper.getHours().find(item => item.number === TimeHelper.getConvertedHour(convertedHour));
 
         return `${TimeHelper.getDay(day).label} - ${hour.label}`;
     }
 
-    private buildGeneralStats(): void {
+    private buildGeneralStats (): void {
         this._generalStats = [
             new StatsBoxModel({
                 borderColor: TitleTopBorder.GREEN,
@@ -120,23 +120,5 @@ export class DashboardComponent extends Page implements OnDestroy {
                 breadText: 'THC Requests This Week'
             })
         ];
-    }
-
-    private getDay(convertedHour: number, day: number): number {
-        if (convertedHour > 23) {
-            return day === 7 ? 1 : day + 1;
-        } else if (convertedHour < 0) {
-            return day === 1 ? 7 : day - 1;
-        }
-        return day;
-    }
-
-    private getHour(convertedHour: number): number {
-        if (convertedHour > 23) {
-            return convertedHour - 24;
-        } else if (convertedHour < 0) {
-            return convertedHour + 24;
-        }
-        return convertedHour;
     }
 }

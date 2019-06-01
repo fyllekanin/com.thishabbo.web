@@ -95,7 +95,9 @@ export class BanOnSightListComponent extends Page implements OnDestroy, OnInit {
                 }));
                 this._data = this._data.filter(item => entryId !== item.id);
                 this.createOrUpdateTable();
-            }, this._notificationService.failureNotification.bind(this._notificationService), () => {
+            }, error => {
+                this._notificationService.failureNotification(error);
+            }, () => {
                 this._dialogService.closeDialog();
             });
     }

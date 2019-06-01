@@ -55,8 +55,11 @@ export class MemberOfTheMonthComponent extends Page implements OnDestroy {
 
     onSave (): void {
         this._httpService.put('admin/content/member-of-the-month', {information: this._data})
-            .subscribe(this.onSuccessUpdate.bind(this, this),
-                this._notificationService.failureNotification.bind(this._notificationService));
+            .subscribe(() => {
+                this.onSuccessUpdate();
+            }, error => {
+                this._notificationService.failureNotification(error);
+            });
     }
 
     private onSuccessUpdate (): void {

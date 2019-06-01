@@ -35,9 +35,11 @@ export class AuthService {
 
     login (loginName: string, password: string, onFailure?: () => void): Subscription {
         return this._httpService.post('auth/login', {loginName: loginName, password: password})
-            .subscribe(this.doLogin.bind(this), res => {
+            .subscribe(res => {
+                this.doLogin(res);
+            }, error => {
                 this._user = null;
-                this._notificationService.failureNotification(res);
+                this._notificationService.failureNotification(error);
                 if (onFailure) {
                     onFailure();
                 }

@@ -47,13 +47,13 @@ export class BansComponent extends Page implements OnDestroy {
         private _notificationService: NotificationService,
         private _componentFactory: ComponentFactoryResolver,
         private _service: BansPageService,
-        breadcrumService: BreadcrumbService,
+        breadcrumbService: BreadcrumbService,
         activatedRoute: ActivatedRoute,
         elementRef: ElementRef
     ) {
         super(elementRef);
         this.addSubscription(activatedRoute.data, this.onPage.bind(this));
-        breadcrumService.breadcrumb = new Breadcrumb({
+        breadcrumbService.breadcrumb = new Breadcrumb({
             current: 'Banned Users',
             items: [SITECP_BREADCRUMB_ITEM]
         });

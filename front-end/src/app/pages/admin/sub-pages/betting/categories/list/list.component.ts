@@ -92,15 +92,18 @@ export class ListComponent extends Page implements OnDestroy {
     private doDelete (model: BetCategoryModel): void {
         this._httpService.delete(`admin/betting/category/${model.betCategoryId}`)
             .subscribe(() => {
-                    this._notificationService.sendNotification(new NotificationMessage({
-                        title: 'Success',
-                        message: `${model.name} is deleted`
-                    }));
-                    this._data.betCategories = this._data.betCategories
-                        .filter(category => category.betCategoryId !== model.betCategoryId);
-                    this.createOrUpdateTable();
-                }, this._notificationService.failureNotification.bind(this._notificationService),
-                this._dialogService.closeDialog.bind(this._dialogService));
+                this._notificationService.sendNotification(new NotificationMessage({
+                    title: 'Success',
+                    message: `${model.name} is deleted`
+                }));
+                this._data.betCategories = this._data.betCategories
+                    .filter(category => category.betCategoryId !== model.betCategoryId);
+                this.createOrUpdateTable();
+            }, error => {
+                this._notificationService.failureNotification(error);
+            }, () => {
+                this._dialogService.closeDialog();
+            });
     }
 
     private onData (data: { data: CategoriesListPage }): void {

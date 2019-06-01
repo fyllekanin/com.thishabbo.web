@@ -11,10 +11,9 @@ import { Router } from '@angular/router';
     templateUrl: 'forgot-password.component.html'
 })
 export class ForgotPasswordComponent extends Page implements OnDestroy {
-
     habbo: string;
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService,
         private _router: Router,
@@ -27,11 +26,11 @@ export class ForgotPasswordComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onClick(): void {
+    onClick (): void {
         this._httpService.get(`auth/forgot-password/code/${this.habbo}`)
             .subscribe((item: { userId: number, code: string }) => {
                 this._router.navigateByUrl(`/auth/change-password/${item.userId}/${item.code}`);

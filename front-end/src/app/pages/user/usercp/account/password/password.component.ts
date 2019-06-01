@@ -18,7 +18,7 @@ export class PasswordComponent extends Page implements OnDestroy {
     password: string;
     repassword: string;
     tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Save' })
+        new TitleTab({title: 'Save'})
     ];
 
     constructor (
@@ -45,12 +45,11 @@ export class PasswordComponent extends Page implements OnDestroy {
             password: this.password,
             repassword: this.repassword,
             currentPassword: this.currentPassword
-        })
-            .subscribe(() => {
-                this._notificationService.sendNotification(new NotificationMessage({
-                    title: 'Success',
-                    message: 'You password is now updated'
-                }));
-            }, this._notificationService.failureNotification.bind(this._notificationService));
+        }).subscribe(() => {
+            this._notificationService.sendNotification(new NotificationMessage({
+                title: 'Success',
+                message: 'You password is now updated'
+            }));
+        }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 }

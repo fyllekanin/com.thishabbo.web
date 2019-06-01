@@ -144,29 +144,35 @@ export class BetListComponent extends Page implements OnDestroy {
 
         this._httpService.put(`admin/betting/bet/${model.betId}/result`, {result: Boolean(model.result)})
             .subscribe(res => {
-                    this._notificationService.sendNotification(new NotificationMessage({
-                        title: 'Success',
-                        message: 'Bet finished!'
-                    }));
-                    const index = this._data.bets.findIndex(item => item.betId === Number(model.betId));
-                    this._data.bets[index] = new BetModel(res);
-                    this.createOrUpdateTable();
-                }, this._notificationService.failureNotification.bind(this._notificationService),
-                this._dialogService.closeDialog.bind(this._dialogService));
+                this._notificationService.sendNotification(new NotificationMessage({
+                    title: 'Success',
+                    message: 'Bet finished!'
+                }));
+                const index = this._data.bets.findIndex(item => item.betId === Number(model.betId));
+                this._data.bets[index] = new BetModel(res);
+                this.createOrUpdateTable();
+            }, error => {
+                this._notificationService.failureNotification(error);
+            }, () => {
+                this._dialogService.closeDialog();
+            });
     }
 
     private doDelete (bet: BetModel): void {
         this._httpService.delete(`admin/betting/bet/${bet.betId}`)
             .subscribe(() => {
-                    this._notificationService.sendNotification(new NotificationMessage({
-                        title: 'Success',
-                        message: `${bet.name} is deleted!`
-                    }));
-                    this._data.bets = this._data.bets
-                        .filter(item => item.betId !== bet.betId);
-                    this.createOrUpdateTable();
-                }, this._notificationService.failureNotification.bind(this._notificationService),
-                this._dialogService.closeDialog.bind(this._dialogService));
+                this._notificationService.sendNotification(new NotificationMessage({
+                    title: 'Success',
+                    message: `${bet.name} is deleted!`
+                }));
+                this._data.bets = this._data.bets
+                    .filter(item => item.betId !== bet.betId);
+                this.createOrUpdateTable();
+            }, error => {
+                this._notificationService.failureNotification(error);
+            }, () => {
+                this._dialogService.closeDialog();
+            });
     }
 
     private onData (data: { data: BetsListPage }): void {

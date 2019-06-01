@@ -16,14 +16,14 @@ export class ThreadPostersComponent extends InnerDialogComponent {
     tableConfig: TableConfig;
     pagination: PaginationModel;
 
-    constructor(
+    constructor (
         private _httpService: HttpService
     ) {
         super();
     }
 
     getData () {
-        // Left empty intentioally
+        // Left empty intentionally
     }
 
     setData (threadId: number) {
@@ -31,12 +31,12 @@ export class ThreadPostersComponent extends InnerDialogComponent {
         this.onGetData(1);
     }
 
-    onGetData(page: number): void {
+    onGetData (page: number): void {
         this._httpService.get(`forum/thread/${this._threadId}/posters/page/${page}`)
             .subscribe(this.onData.bind(this));
     }
 
-    private onData(data): void {
+    private onData (data): void {
         this._data = new ThreadPostersModel(data);
 
         this.createOrUpdateTable();
@@ -46,7 +46,7 @@ export class ThreadPostersComponent extends InnerDialogComponent {
         });
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -59,19 +59,19 @@ export class ThreadPostersComponent extends InnerDialogComponent {
         });
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         return this._data.items.map(item => new TableRow({
             cells: [
-                new TableCell({ title: item.user.nickname }),
-                new TableCell({ title: String(item.posts) })
+                new TableCell({title: item.user.nickname}),
+                new TableCell({title: String(item.posts)})
             ]
         }));
     }
 
-    private getTableHeaders(): Array<TableHeader> {
+    private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'User' }),
-            new TableHeader({ title: 'Posts' })
+            new TableHeader({title: 'User'}),
+            new TableHeader({title: 'Posts'})
         ];
     }
 }

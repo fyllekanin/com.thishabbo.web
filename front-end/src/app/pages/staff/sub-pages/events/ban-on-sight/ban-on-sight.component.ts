@@ -73,12 +73,20 @@ export class BanOnSightComponent extends Page implements OnDestroy {
         if (this._data.createdAt) {
             this._httpService.put(`staff/events/ban-on-sight/${this._data.id}`,
                 {information: this._data})
-                .subscribe(this.onSuccessUpdate.bind(this, this._data),
-                    this._notificationService.failureNotification.bind(this._notificationService));
+                .subscribe(() => {
+                        this.onSuccessUpdate();
+                    },
+                    error => {
+                        this._notificationService.failureNotification(error);
+                    });
         } else {
             this._httpService.post('staff/events/ban-on-sight', {information: this._data})
-                .subscribe(this.onSuccessCreate.bind(this, this._data),
-                    this._notificationService.failureNotification.bind(this._notificationService));
+                .subscribe(() => {
+                        this.onSuccessCreate();
+                    },
+                    error => {
+                        this._notificationService.failureNotification(error);
+                    });
         }
     }
 
@@ -90,7 +98,9 @@ export class BanOnSightComponent extends Page implements OnDestroy {
                     message: 'Entry deleted!'
                 }));
                 this._router.navigateByUrl('/staff/events/ban-on-sight');
-            }, this._notificationService.failureNotification.bind(this._notificationService), () => {
+            }, error => {
+                this._notificationService.failureNotification(error);
+            }, () => {
                 this._dialogService.closeDialog();
             });
     }
