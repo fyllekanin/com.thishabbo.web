@@ -7,11 +7,13 @@ class NotificationView {
     public $type;
     public $createdAt;
     public $item;
+    public $isRead;
 
-    public function __construct ($notification, $user) {
+    public function __construct($notification, $user) {
         $this->notificationId = $notification->notificationId;
         $this->createdAt = $notification->createdAt;
         $this->type = $notification->type;
+        $this->isRead = (boolean)$notification->readAt;
         $this->item = NotificationFactory::ofType($notification, $user);
     }
 }
