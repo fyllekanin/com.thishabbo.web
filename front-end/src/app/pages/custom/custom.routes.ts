@@ -5,6 +5,8 @@ import { CustomPageResolver } from './services/custom-page.resolver';
 import { LeaderBoardComponent } from './leader-board/leader-board.component';
 import { BadgeArticlesComponent } from './badge-articles/badge-articles.component';
 import { BadgeArticlesResolver } from './services/badge-articles.resolver';
+import { ContactComponent } from './contact/contact.component';
+import { JobComponent } from './job/job.component';
 
 export const customRoutes: Routes = [
     {
@@ -18,6 +20,14 @@ export const customRoutes: Routes = [
             {
                 path: 'leader-board',
                 component: LeaderBoardComponent
+            },
+            {
+                path: 'contact',
+                component: ContactComponent
+            },
+            {
+                path: 'job',
+                component: JobComponent
             },
             {
                 path: 'badge-articles/page/:page',

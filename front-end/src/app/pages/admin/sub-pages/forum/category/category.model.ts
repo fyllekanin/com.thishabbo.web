@@ -24,6 +24,10 @@ export class CategoryOptions {
     threadsCanHavePolls: boolean;
     @primitive()
     reportPostsGoHere: boolean;
+    @primitive()
+    jobApplicationsGoHere: boolean;
+    @primitive()
+    contactPostsGoHere: boolean;
 
     constructor (source?: Partial<CategoryOptions>) {
         ClassHelper.assign(this, source);

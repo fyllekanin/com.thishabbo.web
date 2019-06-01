@@ -12,6 +12,8 @@ class ThreadsTableSeeder extends Seeder
      */
     public function run()
     {
+        
+
         \DB::table('threads')->delete();
         
         \DB::table('threads')->insert(array (
@@ -554,6 +556,42 @@ class ThreadsTableSeeder extends Seeder
                 'prefixId' => 0,
                 'createdAt' => 1553981453,
                 'updatedAt' => 1553981453,
+            ),
+            30 => 
+            array (
+                'threadId' => 31,
+                'categoryId' => 12,
+                'title' => 'Application: Not sure / not listed',
+                'isOpen' => 1,
+                'isDeleted' => 0,
+                'posts' => 1,
+                'views' => 0,
+                'isApproved' => 1,
+                'userId' => 1,
+                'firstPostId' => 40,
+                'lastPostId' => 40,
+                'isSticky' => 0,
+                'prefixId' => 0,
+                'createdAt' => 1559420543,
+                'updatedAt' => 1559420543,
+            ),
+            31 => 
+            array (
+                'threadId' => 32,
+                'categoryId' => 13,
+                'title' => 'Contact: Spelling error / typo',
+                'isOpen' => 1,
+                'isDeleted' => 0,
+                'posts' => 1,
+                'views' => 0,
+                'isApproved' => 1,
+                'userId' => 1,
+                'firstPostId' => 41,
+                'lastPostId' => 41,
+                'isSticky' => 0,
+                'prefixId' => 0,
+                'createdAt' => 1559421133,
+                'updatedAt' => 1559421133,
             ),
         ));
         

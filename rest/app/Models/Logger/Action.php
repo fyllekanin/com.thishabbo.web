@@ -1483,10 +1483,24 @@ class Action {
         'data' => [],
         'log' => 'log_admin'
     ];
-  
+
     const UPDATED_NAME_COLOURS = [
         'id' => 174,
         'description' => 'User updated name colours',
+        'data' => [],
+        'log' => 'log_user'
+    ];
+
+    const CREATED_APPLICATION = [
+        'id' => 175,
+        'description' => 'User created job application',
+        'data' => [],
+        'log' => 'log_user'
+    ];
+
+    const CREATED_CONTACT = [
+        'id' => 175,
+        'description' => 'User contacted',
         'data' => [],
         'log' => 'log_user'
     ];

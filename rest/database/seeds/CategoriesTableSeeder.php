@@ -12,6 +12,8 @@ class CategoriesTableSeeder extends Seeder
      */
     public function run()
     {
+        
+
         \DB::table('categories')->delete();
         
         \DB::table('categories')->insert(array (
@@ -143,13 +145,13 @@ class CategoriesTableSeeder extends Seeder
                 'link' => '',
                 'options' => 0,
                 'displayOrder' => 2,
-                'lastPostId' => 20,
+                'lastPostId' => 41,
                 'isDeleted' => 0,
                 'template' => 'DEFAULT',
                 'isHidden' => 0,
                 'isOpen' => 1,
                 'createdAt' => 1547220711,
-                'updatedAt' => 1547223762,
+                'updatedAt' => 1559421133,
             ),
             8 => 
             array (
@@ -201,6 +203,40 @@ class CategoriesTableSeeder extends Seeder
                 'isOpen' => 1,
                 'createdAt' => 1547222161,
                 'updatedAt' => 1547222172,
+            ),
+            11 => 
+            array (
+                'categoryId' => 12,
+                'parentId' => 8,
+                'title' => 'Job Applications',
+                'description' => 'Job applications land in here',
+                'link' => '',
+                'options' => 32,
+                'displayOrder' => 2,
+                'lastPostId' => 40,
+                'isDeleted' => 0,
+                'template' => 'DEFAULT',
+                'isHidden' => 0,
+                'isOpen' => 1,
+                'createdAt' => 1559420462,
+                'updatedAt' => 1559420543,
+            ),
+            12 => 
+            array (
+                'categoryId' => 13,
+                'parentId' => 8,
+                'title' => 'Contact',
+                'description' => 'All contact forms go in here',
+                'link' => '',
+                'options' => 64,
+                'displayOrder' => 3,
+                'lastPostId' => 41,
+                'isDeleted' => 0,
+                'template' => 'DEFAULT',
+                'isHidden' => 0,
+                'isOpen' => 1,
+                'createdAt' => 1559421088,
+                'updatedAt' => 1559421133,
             ),
         ));
         

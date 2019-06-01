@@ -48,6 +48,14 @@ class Category extends DeletableModel {
         return $query->whereRaw('(options & ' . ConfigHelper::getForumOptionsConfig()->reportPostsGoHere . ')');
     }
 
+    public function scopeIsJobCategory(Builder $query) {
+        return $query->whereRaw('(options & ' . ConfigHelper::getForumOptionsConfig()->jobApplicationsGoHere . ')');
+    }
+
+    public function scopeIsContactCategory(Builder $query) {
+        return $query->whereRaw('(options & ' . ConfigHelper::getForumOptionsConfig()->contactPostsGoHere . ')');
+    }
+
     public function scopeNonHidden(Builder $query) {
         return $query->where('isHidden', '<', 1);
     }
