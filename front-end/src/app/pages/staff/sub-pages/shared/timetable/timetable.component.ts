@@ -92,6 +92,10 @@ export class TimetableComponent extends Page implements OnDestroy {
         return hour === date.getHours();
     }
 
+    get timezones (): Array<string> {
+        return this._data.timezones;
+    }
+
     private getEventName (timetable: TimetableModel): string {
         if (!timetable.isPerm) {
             return this.isEvents() ? `(${timetable.event ? timetable.event.name : 'unknown'})` : '';

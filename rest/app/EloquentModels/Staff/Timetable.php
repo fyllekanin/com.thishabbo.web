@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 /**
  * @property mixed timetableId
+ * @property mixed hour
  */
 class Timetable extends DeletableModel {
 

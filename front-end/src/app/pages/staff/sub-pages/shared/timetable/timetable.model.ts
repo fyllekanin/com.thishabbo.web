@@ -36,6 +36,8 @@ export class TimetablePage {
     timetable: Array<TimetableModel> = [];
     @arrayOf(EventType)
     events: Array<EventType> = [];
+    @arrayOf(String)
+    timezones: Array<string> = [];
 
     constructor (source?: Partial<TimetablePage>) {
         ClassHelper.assign(this, source);
