@@ -27,6 +27,8 @@ export class NotificationModel<T> {
     createdAt: string;
     @primitive()
     type: number;
+    @primitive()
+    isRead: boolean;
 
     constructor (source: Partial<NotificationModel<any>>) {
         ClassHelper.assign(this, source);
