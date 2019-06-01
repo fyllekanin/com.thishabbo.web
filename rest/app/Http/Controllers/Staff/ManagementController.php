@@ -184,7 +184,7 @@ class ManagementController extends Controller {
     private function getListenersFromServer() {
         $radio = new RadioSettings(SettingsHelper::getSettingValue($this->settingKeys->radio));
         $userAgent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.92 Safari/537.36';
-        $url = $radio->ip . ':' . $radio->port . '/admin.cgi?sid=1&mode=viewjson&page=3';
+        $url = 'http://' . $radio->ip . ':' . $radio->port . '/admin.cgi?sid=1&mode=viewjson&page=3';
 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);

@@ -75,7 +75,7 @@ class RadioStats {
     }
 
     private function getShoutCastV1Stats(RadioSettings $radio) {
-        $url = $radio->ip . ':' . $radio->port . '/admin.cgi?mode=viewxml';
+        $url = 'http://' . $radio->ip . ':' . $radio->port . '/admin.cgi?mode=viewxml';
         $radioStats = (object)[
             'servergenre' => '',
             'currentlisteners' => 0,
