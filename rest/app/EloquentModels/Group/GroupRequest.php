@@ -8,6 +8,7 @@ class GroupRequest extends UnixTimeModel {
     protected $table = 'group_requests';
     protected $primaryKey = 'groupRequestId';
     protected $fillable = ['userId', 'groupId'];
+    protected $hidden = ['user', 'group'];
     protected $appends = ['name', 'nickname'];
 
     public function group() {
@@ -22,7 +23,7 @@ class GroupRequest extends UnixTimeModel {
         return $this->group->name;
     }
 
-    public function getnicknameAttribute() {
+    public function getNicknameAttribute() {
         return $this->user->nickname;
     }
 }
