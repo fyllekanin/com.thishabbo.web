@@ -1499,7 +1499,7 @@ class Action {
     ];
 
     const CREATED_CONTACT = [
-        'id' => 175,
+        'id' => 176,
         'description' => 'User contacted',
         'data' => [],
         'log' => 'log_user'
