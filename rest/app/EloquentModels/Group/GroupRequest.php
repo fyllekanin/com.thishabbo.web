@@ -11,11 +11,11 @@ class GroupRequest extends UnixTimeModel {
     protected $appends = ['name', 'nickname'];
 
     public function group() {
-        return $this->hasOne('App\EloquentModels\Group\Group', 'groupId');
+        return $this->hasOne('App\EloquentModels\Group\Group', 'groupId', 'groupId');
     }
 
     public function user() {
-        return $this->belongsTo('App\EloquentModels\User\User', 'userId');
+        return $this->belongsTo('App\EloquentModels\User\User', 'userId', 'userId');
     }
 
     public function getNameAttribute() {
