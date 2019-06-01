@@ -15,6 +15,17 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Class NotifyMentionsInPost
+ *
+ * Purpose of this job is to send notifications to all users or groups which were mentioned
+ * in the provided post/thread.
+ *
+ * If a user is getting a notification from a mention they should not receive a notification from
+ * the group as well.
+ *
+ * @package App\Jobs
+ */
 class NotifyMentionsInPost implements ShouldQueue {
     private $quoteRegex = '/\[quotepost=(.*?)\](.*?)\[\/quotepost\]/si';
     private $mentionRegex = '/\[mention]@(.*?)\[\/mention\]/si';

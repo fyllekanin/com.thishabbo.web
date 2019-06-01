@@ -7,10 +7,20 @@ use App\Helpers\ConfigHelper;
 use App\Helpers\UserHelper;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * Class UserUpdated
+ *
+ * This jobs purpose is to be ran whenever a user is updated regarding usergroups or subscriptions.
+ * Mainly this is regarding whenever a subscription is removed from a user or when their usergroups gets
+ * updated. And this to look at their perks to see if any were removed.
+ *
+ *
+ * @package App\Jobs
+ */
 class UserUpdated implements ShouldQueue {
     private $userId;
 

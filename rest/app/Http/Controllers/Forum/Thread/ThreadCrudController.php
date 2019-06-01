@@ -18,6 +18,7 @@ use App\Helpers\DataHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
+use App\Jobs\NotifyCategorySubscribers;
 use App\Jobs\NotifyMentionsInPost;
 use App\Jobs\NotifyThreadSubscribers;
 use App\Logger;
@@ -365,6 +366,7 @@ class ThreadCrudController extends Controller {
         $this->logThreadCreation($thread, $request, $user);
         $this->createThreadPoll($thread, $threadSkeleton);
         $this->forumService->updateLastPostIdOnCategory($thread->categoryId);
+        NotifyCategorySubscribers::dispatch($thread->categoryId, $thread->userId, $thread->threadId);
         return response()->json(['threadId' => $thread->threadId], 201);
     }
 

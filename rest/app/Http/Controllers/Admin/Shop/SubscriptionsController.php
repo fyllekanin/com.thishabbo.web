@@ -79,6 +79,8 @@ class SubscriptionsController extends Controller {
         Condition::precondition(!$subscription, 404, 'No subscription with that ID');
         $this->validateSubscription($data);
 
+        SubscriptionUpdated::dispatch($subscriptionId);
+
         $subscription->title = $data->title;
         $subscription->avatarWidth = $data->avatarWidth;
         $subscription->avatarHeight = $data->avatarHeight;
@@ -86,8 +88,6 @@ class SubscriptionsController extends Controller {
         $subscription->pounds = $data->pounds;
         $subscription->options = $this->convertBooleansToOptions($data);
         $subscription->save();
-
-        SubscriptionUpdated::dispatch($subscriptionId);
 
         Logger::admin($user->userId, $request->ip(), Action::UPDATED_SUBSCRIPTION, [], $subscription->subscriptionId);
         return response()->json();
