@@ -9,14 +9,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ThreadControllerActions, ThreadSkeleton } from './thread-controller.model';
 import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Page } from 'shared/page/page.model';
-import { EditorAction } from 'shared/components/editor/editor.model';
 import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { Breadcrumb, BreadcrumbItem } from 'core/services/breadcrum/breadcrum.model';
-import { Button } from 'shared/directives/button/button.model';
 import { ArrayHelper } from 'shared/helpers/array.helper';
 import { AutoSaveHelper } from 'shared/helpers/auto-save.helper';
 import { AutoSave } from '../../forum.model';
 import { ThreadAnswer, ThreadPoll } from '../../thread/thread-poll/thread-poll.model';
+import { TitleTab } from 'shared/app-views/title/title.model';
 
 @Component({
     selector: 'app-forum-thread-controller',
@@ -30,7 +29,7 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
     @ViewChild('editor', {static: true}) editor: EditorComponent;
     @ViewChild('file', {static: false}) fileInput;
 
-    editorButtons: Array<EditorAction> = [];
+    tabs: Array<TitleTab> = [];
 
     constructor (
         private _dialogService: DialogService,
@@ -54,8 +53,8 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
             .filter(answer => answer.id !== answerId);
     }
 
-    onButtonClick (button: EditorAction): void {
-        switch (button.value) {
+    onTabClick (action: number): void {
+        switch (action) {
             case ThreadControllerActions.BACK:
                 if (this.isNew) {
                     this._router.navigateByUrl(`/forum/category/${this._threadSkeleton.categoryId}/page/1`);
@@ -152,7 +151,7 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
         this.thread.title = autoSave.title;
         this.editor.content = autoSave.content;
         AutoSaveHelper.remove(AutoSave.THREAD, this._threadSkeleton.categoryId);
-        this.editorButtons = this.editorButtons.filter(button => button.value !== ThreadControllerActions.AUTO_SAVE);
+        this.tabs = this.tabs.filter(button => button.value !== ThreadControllerActions.AUTO_SAVE);
     }
 
     private onSkeleton (data: { data: ThreadSkeleton }): void {
@@ -160,18 +159,18 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
         this.setPrefix();
         this.setBreadcrum();
 
-        this.editorButtons = [
-            new EditorAction({title: 'Save', value: ThreadControllerActions.SAVE}),
-            new EditorAction({title: 'Toggle Poll', value: ThreadControllerActions.TOGGLE_POLL}),
-            new EditorAction({title: 'Back', value: ThreadControllerActions.BACK, buttonColor: Button.BLUE})
+        this.tabs = [
+            new TitleTab({title: 'Save', value: ThreadControllerActions.SAVE}),
+            new TitleTab({title: 'Toggle Poll', value: ThreadControllerActions.TOGGLE_POLL}),
+            new TitleTab({title: 'Back', value: ThreadControllerActions.BACK})
         ];
 
         if (this._threadSkeleton.poll) {
-            this.editorButtons = this.editorButtons.filter(button => button.value !== ThreadControllerActions.TOGGLE_POLL);
+            this.tabs = this.tabs.filter(button => button.value !== ThreadControllerActions.TOGGLE_POLL);
         }
 
         if (AutoSaveHelper.exists(AutoSave.THREAD, this._threadSkeleton.categoryId)) {
-            this.editorButtons.push(new EditorAction({
+            this.tabs.push(new TitleTab({
                 title: 'Open Auto-Save',
                 value: ThreadControllerActions.AUTO_SAVE
             }));

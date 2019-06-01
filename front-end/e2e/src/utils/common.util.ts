@@ -61,4 +61,17 @@ export class CommonUtil {
     static scrollToBottom (): void {
         browser.executeScript('window.scrollTo(0,document.body.scrollHeight);');
     }
+
+    static scrollIntoView (ele: ElementFinder): void {
+        browser.executeScript((ele) => {
+            ele.scrollIntoView();
+        }, ele.getWebElement());
+    }
+
+    static clickCheckbox (name: string): void {
+        const ele = element(by.cssContainingText('.checkbox-container', name));
+        browser.wait(ExpectedConditions.presenceOf(ele), 10000, `Expected checkbox with name "${name}" to be present`);
+
+        this.click(ele);
+    }
 }

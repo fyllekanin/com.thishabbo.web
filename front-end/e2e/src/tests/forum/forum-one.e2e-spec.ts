@@ -7,7 +7,7 @@ import { ForumPage } from '../../pages/forum.page';
 import { ThreadPage } from '../../pages/thread.page';
 import { browser } from 'protractor';
 
-describe('Fourm #1', () => {
+describe('Forum #1', () => {
     const USERNAME = 'tovven';
     const PASSWORD = 'test1234';
 
