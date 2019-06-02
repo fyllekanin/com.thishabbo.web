@@ -7,6 +7,7 @@ import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { STAFFCP_BREADCRUM_ITEM, STAFFCP_RADIO_BREADCRUM_ITEM } from '../../../staff.constants';
 import { AuthService } from 'core/services/auth/auth.service';
 import { StringHelper } from 'shared/helpers/string.helper';
+import { stringify } from '@angular/compiler/src/util';
 
 @Component({
     selector: 'app-staff-radio-connection',
@@ -41,7 +42,7 @@ export class ConnectionComponent extends Page implements OnDestroy {
     }
 
     get ip(): string {
-        return this._connectionModel.ip;
+        return StringHelper.removeURL(this._connectionModel.ip);
     }
 
     get password(): string {
