@@ -89,9 +89,9 @@ class UserHelper {
             ];
         });
 
-        if ($userdata->nameColour) {
+        if (isset($userdata->nameColour)) {
             $user->nameColour = $userdata->nameColour;
-        } else if ($userObj->displayGroup) {
+        } else if (isset($userObj->displayGroup)) {
             $user->nameColour = $userObj->displayGroup->nameColour;
         }
 
