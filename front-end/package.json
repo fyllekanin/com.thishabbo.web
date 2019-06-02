@@ -1,6 +1,6 @@
 {
   "name": "fansite",
-  "version": "0.5.5",
+  "version": "0.5.6",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --live-reload --proxy-config proxy.conf.json",
