@@ -190,7 +190,8 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
 
         this._breadcrumbService.breadcrumb = new Breadcrumb({
             current: this._threadSkeleton.threadId > 0 ? 'Editing' : 'New',
-            items: [FORUM_BREADCRUM_ITEM].concat(this._threadSkeleton.parents.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'displayOrder'))
+            items: [FORUM_BREADCRUM_ITEM].concat(this._threadSkeleton.parents
+                .sort(ArrayHelper.sortByPropertyDesc.bind(this, 'displayOrder'))
                 .map(parent => new BreadcrumbItem({
                     title: parent.title,
                     url: `/forum/category/${parent.categoryId}/page/1`
