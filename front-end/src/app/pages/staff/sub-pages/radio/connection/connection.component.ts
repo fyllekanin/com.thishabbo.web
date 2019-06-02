@@ -6,6 +6,7 @@ import { ConnectionModel } from './connection.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { STAFFCP_BREADCRUM_ITEM, STAFFCP_RADIO_BREADCRUM_ITEM } from '../../../staff.constants';
 import { AuthService } from 'core/services/auth/auth.service';
+import { StringHelper } from 'shared/helpers/string.helper';
 
 @Component({
     selector: 'app-staff-radio-connection',
@@ -48,11 +49,7 @@ export class ConnectionComponent extends Page implements OnDestroy {
     }
 
     get serverType(): string {
-        if (this._connectionModel.serverType === 'shoutCastV1') {
-            return 'Shoutcast V1';
-        } else if (this._connectionModel.serverType === 'shoutCastV2') {
-            return 'Shoutcast V2';
-        }
+        return StringHelper.prettifyString(this._connectionModel.serverType);
     }
 
     get nickname(): string {
