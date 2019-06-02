@@ -125,7 +125,7 @@ export class FilterConfig {
     }
 }
 
-export const FilterTypeConfig = new FilterConfig({
+export const FILTER_TYPE_CONFIG = new FilterConfig({
     title: 'Type',
     key: 'type',
     type: FilterConfigType.SELECT,
