@@ -24,13 +24,13 @@ class ActivityService {
 
         $activities = [];
         $limit = 5;
+        $lastItemId = null;
 
         while (count($activities) < $limit) {
-            $lastItem = end($activities);
             $item = null;
             $sql = null;
-            if ($lastItem) {
-                $sql = LogUser::whereIn('action', $supportedTypes)->orderBy('createdAt', 'DESC')->where('logId', '<', $lastItem->logId);
+            if ($lastItemId) {
+                $sql = LogUser::whereIn('action', $supportedTypes)->orderBy('createdAt', 'DESC')->where('logId', '<', $lastItemId);
             } else {
                 $sql = LogUser::whereIn('action', $supportedTypes)->orderBy('createdAt', 'DESC');
             }
@@ -47,9 +47,8 @@ class ActivityService {
             $item->data = isset($item->data) && !empty($item->data) ? (object)json_decode($item->data) : new \stdClass();
             if ($this->isItemValid($item, $categoryIds)) {
                 $activities[] = $this->convertItem($userId, $item);
-            } else {
-                dd($item);
             }
+            $lastItemId = $item->logId;
         }
 
         return $activities;
