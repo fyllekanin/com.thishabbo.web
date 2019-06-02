@@ -320,7 +320,6 @@ class ThreadCrudController extends Controller {
 
         if (!$skipValidation) {
             $this->validatorService->validateCreateUpdateThread($user, $threadSkeleton, $category, $request);
-            $this->validatorService->validatePoll($threadSkeleton);
         }
 
         $post = new Post([
@@ -447,7 +446,6 @@ class ThreadCrudController extends Controller {
         if (!isset($threadSkeleton->poll)) {
             return;
         }
-        $this->validatorService->validatePoll($threadSkeleton);
         $threadPoll = new ThreadPoll([
             'threadId' => $thread->threadId,
             'question' => $threadSkeleton->poll->question,
@@ -466,8 +464,6 @@ class ThreadCrudController extends Controller {
     private function createThreadConditions($category, $havePrefix) {
         Condition::precondition(!$category, 404, 'Category do not exist');
         Condition::precondition($category->isOpen == 0, 400, 'Category is closed');
-        Condition::precondition(!($category->options & ConfigHelper::getForumOptionsConfig()->threadsCanHavePolls),
-            400, 'Threads in this category can not have polls');
 
         $isPrefixMandatory = $category->options & ConfigHelper::getForumOptionsConfig()->prefixMandatory;
         Condition::precondition($isPrefixMandatory && !$havePrefix, 400, 'Prefix is mandatory');

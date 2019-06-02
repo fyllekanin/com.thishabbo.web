@@ -47,6 +47,8 @@ class ActivityService {
             $item->data = isset($item->data) && !empty($item->data) ? (object)json_decode($item->data) : new \stdClass();
             if ($this->isItemValid($item, $categoryIds)) {
                 $activities[] = $this->convertItem($userId, $item);
+            } else {
+                dd($item);
             }
         }
 
