@@ -16,6 +16,7 @@ import { AutoSaveHelper } from 'shared/helpers/auto-save.helper';
 import { AutoSave } from '../../forum.model';
 import { ThreadAnswer, ThreadPoll } from '../../thread/thread-poll/thread-poll.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
+import { FORUM_BREADCRUM_ITEM } from '../../forum.constants';
 
 @Component({
     selector: 'app-forum-thread-controller',
@@ -142,6 +143,10 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
         return this._threadSkeleton.badge ? `https://habboo-a.akamaihd.net/c_images/album1584/${this._threadSkeleton.badge}.gif` : '';
     }
 
+    get canHavePoll (): boolean {
+        return this._threadSkeleton.canHavePoll;
+    }
+
     get badeHaveError (): boolean {
         return Boolean(this._threadSkeleton.badge && this._threadSkeleton.badge.match(new RegExp(/[^A-Za-z0-9]+/)));
     }
@@ -165,7 +170,7 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
             new TitleTab({title: 'Back', value: ThreadControllerActions.BACK})
         ];
 
-        if (this._threadSkeleton.poll) {
+        if (this._threadSkeleton.poll || !this._threadSkeleton.canHavePoll) {
             this.tabs = this.tabs.filter(button => button.value !== ThreadControllerActions.TOGGLE_POLL);
         }
 
@@ -185,11 +190,12 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
 
         this._breadcrumbService.breadcrumb = new Breadcrumb({
             current: this._threadSkeleton.threadId > 0 ? 'Editing' : 'New',
-            items: this._threadSkeleton.parents.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'displayOrder'))
+            items: [FORUM_BREADCRUM_ITEM].concat(this._threadSkeleton.parents
+                .sort(ArrayHelper.sortByPropertyDesc.bind(this, 'displayOrder'))
                 .map(parent => new BreadcrumbItem({
                     title: parent.title,
                     url: `/forum/category/${parent.categoryId}/page/1`
-                })).concat(threadCrumb)
+                })).concat(threadCrumb))
         });
     }
 
