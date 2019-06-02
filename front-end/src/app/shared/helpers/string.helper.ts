@@ -10,6 +10,6 @@ export class StringHelper {
     }
 
     static removeURL(str: string): string {
-        return str.replace(new RegExp('http(s)?:\/\/?(www\.)?/', 'g'), '');
+        return str.replace(new RegExp(/(http(s)?:\/\/)?(www\.)?/, 'g'), '');
     }
 }
