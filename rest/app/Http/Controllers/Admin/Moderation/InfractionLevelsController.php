@@ -28,7 +28,7 @@ class InfractionLevelsController extends Controller {
      */
     public function getInfractionLevels(Request $request, $page) {
         $filter = $request->input('filter');
-        $infractionLevelsSql = InfractionLevel::where('title', 'LIKE', '%' . $filter . '%');
+        $infractionLevelsSql = InfractionLevel::where('title', 'LIKE', Value::getFilterValue($request, $filter));
 
         return response()->json([
             'page' => $page,

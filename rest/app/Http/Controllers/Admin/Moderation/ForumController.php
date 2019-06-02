@@ -11,6 +11,7 @@ use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Services\ForumService;
+use App\Utils\Value;
 use Illuminate\Http\Request;
 
 class ForumController extends Controller {
@@ -34,7 +35,7 @@ class ForumController extends Controller {
      */
     public function getAutoBans(Request $request, $page) {
         $filter = $request->input('filter');
-        $autoBansSql = AutoBan::where('title', 'LIKE', '%' . $filter . '%')
+        $autoBansSql = AutoBan::where('title', 'LIKE', Value::getFilterValue($request, $filter))
             ->orderBy('title', 'ASC')
             ->skip($this->getOffset($page))
             ->take($this->perPage);

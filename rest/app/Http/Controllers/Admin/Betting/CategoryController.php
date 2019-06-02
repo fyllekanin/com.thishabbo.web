@@ -38,7 +38,7 @@ class CategoryController extends Controller {
     public function getBetCategories(Request $request, $page) {
         $filter = $request->input('filter');
 
-        $getBetCategorySql = BetCategory::where('name', 'LIKE', '%' . $filter . '%')
+        $getBetCategorySql = BetCategory::where('name', 'LIKE', Value::getFilterValue($request, $filter))
             ->orderBy('displayOrder', 'ASC');
         $total = DataHelper::getPage($getBetCategorySql->count('betCategoryId'));
 

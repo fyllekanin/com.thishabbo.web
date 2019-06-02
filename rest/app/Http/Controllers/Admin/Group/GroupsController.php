@@ -249,7 +249,7 @@ class GroupsController extends Controller {
         $immunity = User::getImmunity($user->userId);
 
         $getGroupSql = Group::where('immunity', '<', $immunity)
-            ->where('name', 'LIKE', '%' . $filter . '%')
+            ->where('name', 'LIKE', Value::getFilterValue($request, $filter))
             ->orderBy('name', 'ASC');
 
         $total = DataHelper::getPage($getGroupSql->count('groupId'));

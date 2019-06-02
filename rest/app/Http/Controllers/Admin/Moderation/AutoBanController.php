@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
 use App\Utils\Condition;
+use App\Utils\Value;
 use Illuminate\Http\Request;
 
 class AutoBanController extends Controller {
@@ -20,7 +21,7 @@ class AutoBanController extends Controller {
      */
     public function getAutoBans(Request $request, $page) {
         $filter = $request->input('filter');
-        $autoBansSql = AutoBan::where('title', 'LIKE', '%' . $filter . '%')
+        $autoBansSql = AutoBan::where('title', 'LIKE', Value::getFilterValue($request, $filter))
             ->orderBy('title', 'ASC')
             ->skip($this->getOffset($page))
             ->take($this->perPage);

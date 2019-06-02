@@ -18,7 +18,7 @@ describe('PaginationComponent', () => {
                 PaginationComponent
             ],
             providers: [],
-            schemas: [ NO_ERRORS_SCHEMA ]
+            schemas: [NO_ERRORS_SCHEMA]
         });
 
         router = TestBed.get(Router);
@@ -34,7 +34,7 @@ describe('PaginationComponent', () => {
 
     it('getUrl should replace ":page" in the url with the value', () => {
         // Given
-        const value: PaginationItem = { value: 5 };
+        const value: PaginationItem = {value: 5};
 
         // When
         const result = component.getUrl(value);
@@ -48,7 +48,7 @@ describe('PaginationComponent', () => {
         component.goToPrevious();
 
         // Then
-        expect(router.navigateByUrl).toHaveBeenCalledWith('test/1');
+        expect(router.navigateByUrl).toHaveBeenCalledWith(router.createUrlTree(['test/1']));
     });
 
     it('goToNext should take current page + 1 and navigate', () => {
@@ -56,13 +56,13 @@ describe('PaginationComponent', () => {
         component.goToNext();
 
         // Then
-        expect(router.navigateByUrl).toHaveBeenCalledWith('test/3');
+        expect(router.navigateByUrl).toHaveBeenCalledWith(router.createUrlTree(['test/3']));
     });
 
     describe('fillBackwardItems', () => {
         it('should return empty array if there is a gap backwards', () => {
             // Given
-            component.paginationModel = new PaginationModel({ page: 5, total: 1, url: 'test' });
+            component.paginationModel = new PaginationModel({page: 5, total: 1, url: 'test'});
 
             // When
             const result = component.fillBackwardItems;
@@ -72,16 +72,16 @@ describe('PaginationComponent', () => {
         });
         it('should return array of items less then current page if no gap', () => {
             // Given
-            component.paginationModel = new PaginationModel({ page: 4, total: 1, url: 'test' });
+            component.paginationModel = new PaginationModel({page: 4, total: 1, url: 'test'});
 
             // When
             const result = component.fillBackwardItems;
 
             // Then
             expect(result).toEqual([
-                { value: 1, title: '1' },
-                { value: 2, title: '2' },
-                { value: 3, title: '3' }
+                {value: 1, title: '1'},
+                {value: 2, title: '2'},
+                {value: 3, title: '3'}
             ]);
         });
     });
@@ -89,7 +89,7 @@ describe('PaginationComponent', () => {
     describe('fillForwardItems', () => {
         it('should return empty array if there is a gap forward', () => {
             // Given
-            component.paginationModel = new PaginationModel({ page: 5, total: 10, url: 'test' });
+            component.paginationModel = new PaginationModel({page: 5, total: 10, url: 'test'});
 
             // When
             const result = component.fillForwardItems;
@@ -99,15 +99,15 @@ describe('PaginationComponent', () => {
         });
         it('should return array of items less then current page if no gap', () => {
             // Given
-            component.paginationModel = new PaginationModel({ page: 4, total: 6, url: 'test' });
+            component.paginationModel = new PaginationModel({page: 4, total: 6, url: 'test'});
 
             // When
             const result = component.fillForwardItems;
 
             // Then
             expect(result).toEqual([
-                { value: 5, title: '5' },
-                { value: 6, title: '6' }
+                {value: 5, title: '5'},
+                {value: 6, title: '6'}
             ]);
         });
     });
@@ -115,7 +115,7 @@ describe('PaginationComponent', () => {
     describe('thereIsPrevious', () => {
         it('should return true if page is larger then 1', () => {
             // Given
-            component.paginationModel = new PaginationModel({ page: 2, total: 1, url: 'test' });
+            component.paginationModel = new PaginationModel({page: 2, total: 1, url: 'test'});
 
             // When
             const result = component.thereIsPrevious;
@@ -125,7 +125,7 @@ describe('PaginationComponent', () => {
         });
         it('should return false if page is 1', () => {
             // Given
-            component.paginationModel = new PaginationModel({ page: 1, total: 1, url: 'test' });
+            component.paginationModel = new PaginationModel({page: 1, total: 1, url: 'test'});
 
             // When
             const result = component.thereIsPrevious;
@@ -138,7 +138,7 @@ describe('PaginationComponent', () => {
     describe('thereIsNext', () => {
         it('should return true if page is less then total', () => {
             // Given
-            component.paginationModel = new PaginationModel({ page: 2, total: 3, url: 'test' });
+            component.paginationModel = new PaginationModel({page: 2, total: 3, url: 'test'});
 
             // When
             const result = component.thereIsNext;
@@ -148,7 +148,7 @@ describe('PaginationComponent', () => {
         });
         it('should return false if page is same as total', () => {
             // Given
-            component.paginationModel = new PaginationModel({ page: 1, total: 1, url: 'test' });
+            component.paginationModel = new PaginationModel({page: 1, total: 1, url: 'test'});
 
             // When
             const result = component.thereIsNext;
@@ -161,7 +161,7 @@ describe('PaginationComponent', () => {
     describe('currentPage', () => {
         it('should return current page as string', () => {
             // Given
-            component.paginationModel = new PaginationModel({ page: 2, total: 1, url: 'test' });
+            component.paginationModel = new PaginationModel({page: 2, total: 1, url: 'test'});
 
             // When
             const result = component.currentPage;

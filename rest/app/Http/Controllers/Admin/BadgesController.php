@@ -12,6 +12,7 @@ use App\Logger;
 use App\Models\Logger\Action;
 use App\Models\Notification\Type;
 use App\Utils\Condition;
+use App\Utils\Value;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -190,7 +191,7 @@ class BadgesController extends Controller {
     public function getBadges(Request $request, $page) {
         $filter = $request->input('filter');
 
-        $getBadgeSql = Badge::where('name', 'LIKE', '%' . $filter . '%')
+        $getBadgeSql = Badge::where('name', 'LIKE', Value::getFilterValue($request, $filter))
             ->orderBy('name', 'ASC');
 
         $total = DataHelper::getPage($getBadgeSql->count('badgeId'));

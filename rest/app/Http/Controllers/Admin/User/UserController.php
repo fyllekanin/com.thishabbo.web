@@ -16,6 +16,7 @@ use App\Models\Logger\Action;
 use App\Services\AuthService;
 use App\Utils\Condition;
 use App\Utils\Iterables;
+use App\Utils\Value;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -99,11 +100,11 @@ class UserController extends Controller {
             ->orderBy('nickname', 'ASC');
 
         if ($nickname) {
-            $getUserSql->where('nickname', 'LIKE', '%' . $nickname . '%');
+            $getUserSql->where('nickname', 'LIKE', Value::getFilterValue($request, $nickname));
         }
 
         if ($habbo) {
-            $getUserSql->where('habbo', 'LIKE', '%' . $habbo . '%');
+            $getUserSql->where('habbo', 'LIKE', Value::getFilterValue($request, $habbo));
         }
 
         $total = DataHelper::getPage($getUserSql->count('userId'));

@@ -4,6 +4,7 @@ import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 import {
     Action,
+    FILTER_TYPE_CONFIG,
     FilterConfig,
     TableAction,
     TableCell,
@@ -198,7 +199,8 @@ export class UsersListComponent extends Page implements OnDestroy {
                     title: 'Habbo',
                     placeholder: 'Search for Habbo...',
                     key: 'habbo'
-                })
+                }),
+                FILTER_TYPE_CONFIG
             ]
         });
     }
