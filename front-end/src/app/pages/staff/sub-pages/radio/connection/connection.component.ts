@@ -47,6 +47,14 @@ export class ConnectionComponent extends Page implements OnDestroy {
         return this._connectionModel.password;
     }
 
+    get serverType(): string {
+        if (this._connectionModel.serverType === 'shoutCastV1') {
+            return 'Shoutcast V1';
+        } else if (this._connectionModel.serverType === 'shoutCastV2') {
+            return 'Shoutcast V2';
+        }
+    }
+
     get nickname(): string {
         return this._authService.authUser.nickname;
     }
