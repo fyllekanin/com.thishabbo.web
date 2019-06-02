@@ -12,6 +12,7 @@ use App\Logger;
 use App\Models\Logger\Action;
 use App\Services\CreditsService;
 use App\Utils\Condition;
+use App\Utils\Value;
 use Illuminate\Http\Request;
 
 class UserThcController extends Controller {
@@ -81,7 +82,7 @@ class UserThcController extends Controller {
         $voucherCodeSql = VoucherCode::orderBy('createdAt', 'ASC');
 
         if ($filter) {
-            $voucherCodeSql->where('note', 'LIKE', '%' . $filter . '%');
+            $voucherCodeSql->where('note', 'LIKE', Value::getFilterValue($request, $filter));
         }
 
         $total = $voucherCodeSql->count('voucherCodeId');

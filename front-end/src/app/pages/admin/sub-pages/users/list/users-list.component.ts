@@ -5,6 +5,7 @@ import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 import {
     Action,
     FilterConfig,
+    FilterTypeConfig,
     TableAction,
     TableCell,
     TableConfig,
@@ -198,7 +199,8 @@ export class UsersListComponent extends Page implements OnDestroy {
                     title: 'Habbo',
                     placeholder: 'Search for Habbo...',
                     key: 'habbo'
-                })
+                }),
+                FilterTypeConfig
             ]
         });
     }

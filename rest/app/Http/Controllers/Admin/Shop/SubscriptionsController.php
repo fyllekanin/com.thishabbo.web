@@ -11,6 +11,7 @@ use App\Jobs\SubscriptionUpdated;
 use App\Logger;
 use App\Models\Logger\Action;
 use App\Utils\Condition;
+use App\Utils\Value;
 use Illuminate\Http\Request;
 
 class SubscriptionsController extends Controller {
@@ -20,7 +21,7 @@ class SubscriptionsController extends Controller {
         $items = Subscription::orderBy('title', 'ASC');
 
         if ($title) {
-            $items->where('title', 'LIKE', '%' . $title . '%');
+            $items->where('title', 'LIKE', Value::getFilterValue($request, $title));
         }
 
         return response()->json([

@@ -13,7 +13,7 @@ export class Action {
     @primitive()
     value: number;
 
-    constructor(source: Partial<Action>) {
+    constructor (source: Partial<Action>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -24,7 +24,7 @@ export class TableHeader {
     @primitive()
     width: string;
 
-    constructor(source: Partial<TableHeader>) {
+    constructor (source: Partial<TableHeader>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -43,7 +43,7 @@ export class TableCell {
     @primitive()
     innerHTML = false;
 
-    constructor(source: Partial<TableCell>) {
+    constructor (source: Partial<TableCell>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -58,7 +58,7 @@ export class TableAction {
     @primitive()
     isDisabled?: boolean;
 
-    constructor(source: Partial<TableAction>) {
+    constructor (source: Partial<TableAction>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -83,7 +83,7 @@ export class TableRow {
     @primitive()
     isOpen: boolean;
 
-    constructor(source: Partial<TableRow>) {
+    constructor (source: Partial<TableRow>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -99,7 +99,7 @@ export class FilterConfigItem {
     @primitive()
     value: string;
 
-    constructor(source: Partial<FilterConfigItem>) {
+    constructor (source: Partial<FilterConfigItem>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -116,14 +116,24 @@ export class FilterConfig {
     type: FilterConfigType = FilterConfigType.TEXT;
     items: Array<FilterConfigItem> = [];
 
-    constructor(source: Partial<FilterConfig>) {
+    constructor (source: Partial<FilterConfig>) {
         ClassHelper.assign(this, source);
     }
 
-    isSelect(): boolean {
+    isSelect (): boolean {
         return this.type === FilterConfigType.SELECT;
     }
 }
+
+export const FilterTypeConfig = new FilterConfig({
+    title: 'Type',
+    key: 'type',
+    type: FilterConfigType.SELECT,
+    items: [
+        new FilterConfigItem({label: 'Partial', value: 'partial'}),
+        new FilterConfigItem({label: 'Exact', value: 'exact'})
+    ]
+});
 
 export class TableConfig {
     @primitive()
@@ -141,7 +151,7 @@ export class TableConfig {
     @primitive()
     isSlim: boolean;
 
-    constructor(source: Partial<TableConfig>) {
+    constructor (source: Partial<TableConfig>) {
         ClassHelper.assign(this, source);
     }
 }

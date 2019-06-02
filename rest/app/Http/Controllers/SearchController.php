@@ -11,6 +11,7 @@ use App\Logger;
 use App\Models\Logger\Action;
 use App\Services\ForumService;
 use App\Utils\Condition;
+use App\Utils\Value;
 use Illuminate\Http\Request;
 
 class SearchController extends Controller {
@@ -69,7 +70,7 @@ class SearchController extends Controller {
     }
 
     private function getUsersResult($request, $page) {
-        $usersSql = User::where('nickname', 'LIKE', '%' . $request->input('text') . '%');
+        $usersSql = User::where('nickname', 'LIKE', Value::getFilterValue($request, $request->input('text')));
         $this->applyFilters($request, $usersSql);
 
         return (object)[
@@ -88,7 +89,7 @@ class SearchController extends Controller {
 
     private function getPostsResult($request, $page, $user) {
         $threadIds = $this->forumService->getAccessibleThreads($user->userId);
-        $postsSql = Post::where('content', 'LIKE', '%' . $request->input('text') . '%')->whereIn('threadId', $threadIds);
+        $postsSql = Post::where('content', 'LIKE', Value::getFilterValue($request, $request->input('text')))->whereIn('threadId', $threadIds);
         $this->applyFilters($request, $postsSql);
 
         return (object)[
@@ -109,7 +110,7 @@ class SearchController extends Controller {
 
     private function getThreadsResult($request, $page, $user) {
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
-        $threadsSql = Thread::where('title', 'LIKE', '%' . $request->input('text') . '%')->whereIn('categoryId', $categoryIds);
+        $threadsSql = Thread::where('title', 'LIKE', Value::getFilterValue($request, $request->input('text')))->whereIn('categoryId', $categoryIds);
         $this->applyFilters($request, $threadsSql);
 
         return (object)[

@@ -257,7 +257,7 @@ class EventsController extends Controller {
     public function getEventTypes(Request $request, $page) {
         $filter = $request->input('filter');
 
-        $eventsSql = Event::where('name', 'LIKE', '%' . $filter . '%')
+        $eventsSql = Event::where('name', 'LIKE', Value::getFilterValue($request, $filter))
             ->orderBy('name', 'ASC');
 
         $total = DataHelper::getPage($eventsSql->count('eventId'));

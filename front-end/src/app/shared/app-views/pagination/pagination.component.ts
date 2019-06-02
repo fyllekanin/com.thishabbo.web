@@ -29,7 +29,7 @@ export class PaginationComponent {
     goToPrevious (): void {
         if (this._paginationModel.url) {
             const url = this.getUrl({value: this._paginationModel.page - 1});
-            this._router.navigateByUrl(url);
+            this._router.navigateByUrl(this._router.createUrlTree([url], {queryParams: this.queryParameters}));
         } else {
             this.onPageSwitch.emit(this._paginationModel.page - 1);
         }
@@ -38,7 +38,7 @@ export class PaginationComponent {
     goToNext (): void {
         if (this._paginationModel.url) {
             const url = this.getUrl({value: this._paginationModel.page + 1});
-            this._router.navigateByUrl(url);
+            this._router.navigateByUrl(this._router.createUrlTree([url], {queryParams: this.queryParameters}));
         } else {
             this.onPageSwitch.emit(this._paginationModel.page + 1);
         }

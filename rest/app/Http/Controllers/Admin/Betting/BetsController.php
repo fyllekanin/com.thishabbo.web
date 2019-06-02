@@ -11,6 +11,7 @@ use App\Logger;
 use App\Models\Logger\Action;
 use App\Services\CreditsService;
 use App\Utils\Condition;
+use App\Utils\Value;
 use Illuminate\Http\Request;
 
 class BetsController extends Controller {
@@ -106,7 +107,7 @@ class BetsController extends Controller {
     public function getBets(Request $request, $page) {
         $filter = $request->input('filter');
 
-        $getBadgeSql = Bet::where('name', 'LIKE', '%' . $filter . '%')
+        $getBadgeSql = Bet::where('name', 'LIKE', Value::getFilterValue($request, $filter))
             ->orderBy('leftSide', 'ASC')->orderBy('rightSide', 'DESC');
 
         $total = DataHelper::getPage($getBadgeSql->count('betId'));
