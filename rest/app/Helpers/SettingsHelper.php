@@ -37,9 +37,14 @@ class SettingsHelper {
     public static function getRadioConnectionInformation($withAdminPassword = false) {
         $settingKeys = ConfigHelper::getKeyConfig();
         $radio = new RadioSettings(SettingsHelper::getSettingValue($settingKeys->radio));
+        if ($withAdminPassword === false) {
+            $radioip = str_replace(array('http://','https://'), '', $radio->ip);
+        } else {
+            $radioip = $radio->ip;
+        }
 
         return [
-            'ip' => $radio->ip,
+            'ip' => $radioip,
             'port' => $radio->port,
             'password' => $radio->password,
             'adminPassword' => $withAdminPassword ? $radio->adminPassword : null,
