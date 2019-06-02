@@ -32,6 +32,8 @@ export class ThreadSkeleton {
     roomLink: string;
     @objectOf(ThreadPoll)
     poll: ThreadPoll;
+    @primitive()
+    canHavePoll: boolean;
 
     constructor (source?: Partial<ThreadSkeleton>) {
         ClassHelper.assign(this, source);

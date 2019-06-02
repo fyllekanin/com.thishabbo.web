@@ -197,7 +197,9 @@ class ThreadCrudController extends Controller {
     public function getThreadController(Request $request
         , $categoryId, $threadId) {
         $user = $request->get('auth');
+        $category = Category::find($categoryId);
 
+        Condition::precondition(!$category, 404, 'No category with that ID');
         PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead,
             $categoryId, 'No permissions to access this category');
         PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canCreateThreads,
@@ -231,6 +233,7 @@ class ThreadCrudController extends Controller {
         $thread->prefixes = Prefix::availableForCategory($thread->categoryId)->get(['prefixId', 'text']);
         $thread->forumPermissions = $this->forumService->getForumPermissionsForUserInCategory($user->userId, $categoryId);
         $thread->poll = $this->getThreadPoll($thread->threadId, $user->userId);
+        $thread->canHavePoll = $category->options & ConfigHelper::getForumOptionsConfig()->threadsCanHavePolls;
 
         return response()->json($thread);
     }
@@ -463,6 +466,8 @@ class ThreadCrudController extends Controller {
     private function createThreadConditions($category, $havePrefix) {
         Condition::precondition(!$category, 404, 'Category do not exist');
         Condition::precondition($category->isOpen == 0, 400, 'Category is closed');
+        Condition::precondition(!($category->options & ConfigHelper::getForumOptionsConfig()->threadsCanHavePolls),
+            400, 'Threads in this category can not have polls');
 
         $isPrefixMandatory = $category->options & ConfigHelper::getForumOptionsConfig()->prefixMandatory;
         Condition::precondition($isPrefixMandatory && !$havePrefix, 400, 'Prefix is mandatory');
