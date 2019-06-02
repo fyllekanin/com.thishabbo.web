@@ -37,7 +37,8 @@ export function getEditorSettings (emojis: Array<BBcodeModel>, isSlim: boolean) 
                     '<img src="{URL}" align="right">': '[imgr]{URL}[/imgr]',
                     '<img src="{URL}" align="left">': '[imgl]{URL}[/imgl]',
                     '<details><summary>Spoiler</summary>{SELTEXT}</details>': '[spoiler]{SELTEXT}[/spoiler]',
-                    '<div class="atitle">{SELTEXT}</div>': '[atitle]{SELTEXT}[/atitle]'
+                    '<div class="atitle">{SELTEXT}</div>': '[atitle]{SELTEXT}[/atitle]',
+                    '<div class="quote">{SELTEXT}</div>': '[quote]{SELTEXT}[/quote]'
                 }
             }
         },
