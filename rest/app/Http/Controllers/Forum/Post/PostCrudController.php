@@ -24,6 +24,7 @@ use App\Utils\BBcodeUtil;
 use App\Utils\Condition;
 use App\Views\PostReportView;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class PostCrudController extends Controller {
     private $forumService;
@@ -106,7 +107,6 @@ class PostCrudController extends Controller {
      * @param Request $request
      *
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function createReportPost(Request $request) {
         $user = $request->get('auth');
@@ -123,7 +123,10 @@ class PostCrudController extends Controller {
 
         foreach ($reportCategories as $category) {
             $threadSkeleton->categoryId = $category->categoryId;
-            $threadController->doThread($user, null, $threadSkeleton, null, true);
+            try {
+                $threadController->doThread($user, null, $threadSkeleton, null, true);
+            } catch (ValidationException $e) {
+            }
         }
 
         Logger::user($user->userId, $request->ip(), Action::REPORTED_A_POST);

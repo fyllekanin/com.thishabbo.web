@@ -573,6 +573,96 @@ Praesent lacinia malesuada nisi mus erat magna nullam mus. Cras dui non. Eleifen
                 'createdAt' => 1553981590,
                 'updatedAt' => 1553981590,
             ),
+            37 => 
+            array (
+                'postId' => 38,
+                'threadId' => -1,
+                'userId' => 1,
+                'content' => '[b]Habbo[/b]
+beart94
+
+[b]Discord[/b]
+erico#0163
+
+[b]Job/Interested in[/b]
+Not sure / not listed
+
+[b]Country[/b]
+sweden
+
+[b]About me[/b]
+[qoute]I\'m swedish & a coder[/quote]',
+                'isDeleted' => 0,
+                'isApproved' => 1,
+                'createdAt' => 1559420482,
+                'updatedAt' => 1559420482,
+            ),
+            38 => 
+            array (
+                'postId' => 39,
+                'threadId' => -1,
+                'userId' => 1,
+                'content' => '[b]Habbo[/b]
+beart94
+
+[b]Discord[/b]
+erico#0163
+
+[b]Job/Interested in[/b]
+Not sure / not listed
+
+[b]Country[/b]
+sweden
+
+[b]About me[/b]
+[qoute]I\'m swedish & a coder[/quote]',
+                'isDeleted' => 0,
+                'isApproved' => 1,
+                'createdAt' => 1559420492,
+                'updatedAt' => 1559420492,
+            ),
+            39 => 
+            array (
+                'postId' => 40,
+                'threadId' => 31,
+                'userId' => 1,
+                'content' => '[b]Habbo[/b]
+beart94
+
+[b]Discord[/b]
+erico#0163
+
+[b]Job/Interested in[/b]
+Not sure / not listed
+
+[b]Country[/b]
+sweden
+
+[b]About me[/b]
+[quote]I\'m swedish & a coder[/quote]',
+                'isDeleted' => 0,
+                'isApproved' => 1,
+                'createdAt' => 1559420543,
+                'updatedAt' => 1559420588,
+            ),
+            40 => 
+            array (
+                'postId' => 41,
+                'threadId' => 32,
+                'userId' => 1,
+                'content' => '[b]Habbo[/b]
+bear94
+
+[b]Reason[/b]
+Spelling error / typo
+
+[b]Text[/b]
+[quote]Who is the idiot that can\'t spell?[/quote]',
+                'isDeleted' => 0,
+                'isApproved' => 1,
+                'createdAt' => 1559421133,
+                'updatedAt' => 1559421133,
+            ),
         ));
         
         

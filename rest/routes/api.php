@@ -63,16 +63,19 @@ Route::group(['middleware' => ['maintenance']], function () {
         Route::delete('/profile/visitor-message/{visitorMessageId}/like', 'ProfileController@deleteVisitorMessageLike');
         Route::post('/profile/visitor-message/{visitorMessageId}/report', 'ProfileController@createReportVisitorMessage');
 
-        Route::put('puller/notifications/read/all/notifications', 'Puller\NotificationController@readAllNotifications');
-        Route::put('puller/notifications/read/all/messages', 'Puller\NotificationController@readAllMessages');
-        Route::put('puller/notifications/read/{notificationId}', 'Puller\NotificationController@readNotification');
+        Route::put('/puller/notifications/read/all/notifications', 'Puller\NotificationController@readAllNotifications');
+        Route::put('/puller/notifications/read/all/messages', 'Puller\NotificationController@readAllMessages');
+        Route::put('/puller/notifications/read/{notificationId}', 'Puller\NotificationController@readNotification');
+
+        Route::post('form/job', 'FormController@createApplication');
+        Route::post('form/contact', 'FormController@createContact');
 
         Route::prefix('betting')->group(function () {
-            Route::get('dashboard', 'BettingController@getDashboardPage');
-            Route::get('stats', 'BettingController@getBettingStats');
-            Route::post('bet/{betId}', 'BettingController@createPlaceBet');
-            Route::post('roulette', 'BettingController@createRoulette');
-            Route::get('roulette', 'BettingController@getRoulette');
+            Route::get('/dashboard', 'BettingController@getDashboardPage');
+            Route::get('/stats', 'BettingController@getBettingStats');
+            Route::post('/bet/{betId}', 'BettingController@createPlaceBet');
+            Route::post('/roulette', 'BettingController@createRoulette');
+            Route::get('/roulette', 'BettingController@getRoulette');
 
             Route::prefix('bets')->group(function () {
                 Route::get('active', 'BettingController@getMyActiveBets');
