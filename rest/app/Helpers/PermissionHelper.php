@@ -5,7 +5,6 @@ namespace App\Helpers;
 use App\EloquentModels\Forum\Category;
 use App\EloquentModels\Forum\ForumPermission;
 use App\EloquentModels\Group\Group;
-use Exception;
 use Illuminate\Support\Facades\Cache;
 
 class PermissionHelper {
@@ -114,7 +113,7 @@ class PermissionHelper {
         }
 
         if (!in_array($type, $availableTypes)) {
-            throw new Exception('Not a viable type');
+            return false;
         }
 
         return Group::whereIn('groupId', $user->groupIds)

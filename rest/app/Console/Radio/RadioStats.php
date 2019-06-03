@@ -2,38 +2,29 @@
 
 namespace App\Console\Radio;
 
-use App\EloquentModels\RadioStatsLog;
 use App\EloquentModels\Staff\Timetable;
 use App\EloquentModels\User\User;
 use App\Helpers\ConfigHelper;
+use App\Helpers\DataHelper;
 use App\Helpers\SettingsHelper;
 use App\Models\Radio\RadioServerTypes;
 use App\Models\Radio\RadioSettings;
 use App\Utils\Value;
 
 class RadioStats {
-    private $userAgent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.92 Safari/537.36';
     private $settingKeys;
-    private $isRadioDown = false;
 
     public function __construct() {
         $this->settingKeys = ConfigHelper::getKeyConfig();
     }
 
     public function init() {
-        if ($this->isRadioDown) {
-            return;
-        }
 
         $radio = new RadioSettings(SettingsHelper::getSettingValue($this->settingKeys->radio));
         $statsData = $this->getStatsData($radio);
 
         if (!$statsData) {
-            // We did not get any data from the radio!
-            $this->isRadioDown = true;
             return;
-        } else {
-            $this->isRadioDown = false;
         }
 
         $user = $this->getCurrentDjUser((string)$statsData->servergenre);
@@ -67,54 +58,27 @@ class RadioStats {
     private function getStatsData(RadioSettings $radio) {
         switch ($radio->serverType) {
             case RadioServerTypes::SHOUT_CAST_V2:
-                return $this->getShoutCastV2Stats($radio);
+                return DataHelper::getShoutCastV2Stats();
             case RadioServerTypes::SHOUT_CAST_V1:
             default:
-                return $this->getShoutCastV1Stats($radio);
+                return $this->getShoutCastV1Stats();
         }
     }
 
-    private function getShoutCastV1Stats(RadioSettings $radio) {
-        $url = $radio->ip . ':' . $radio->port . '/admin.cgi?mode=viewxml';
+    private function getShoutCastV1Stats() {
         $radioStats = (object)[
             'servergenre' => '',
             'currentlisteners' => 0,
             'songtitle' => ''
         ];
 
-        $data = $this->doCurl($url, $radio->adminPassword);
-        try {
-            $xml = simplexml_load_string(utf8_encode($data));
-            if ($xml != null && $xml != false) {
-                $radioStats->servergenre = (string)$xml->SERVERGENRE;
-                $radioStats->currentlisteners = (string)$xml->REPORTEDLISTENERS;
-                $radioStats->songtitle = (string)$xml->SONGTITLE;
-            }
-        } catch (\Exception $e) {
+        $data = DataHelper::getShoutCastV1Stats();
+        if ($data != null && $data != false) {
+            $radioStats->servergenre = (string)$data->SERVERGENRE;
+            $radioStats->currentlisteners = (string)$data->REPORTEDLISTENERS;
+            $radioStats->songtitle = (string)$data->SONGTITLE;
         }
         return $radioStats;
-    }
-
-    private function getShoutCastV2Stats(RadioSettings $radio) {
-        $url = $radio->ip . ':' . $radio->port . '/stats?sid=1&json=1';
-
-        return json_decode($this->doCurl($url, $radio->adminPassword));
-    }
-
-    private function doCurl($url, $adminPassword) {
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_USERAGENT, $this->userAgent);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($curl, CURLOPT_USERPWD, 'admin:' . $adminPassword);
-        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 2);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 5);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type: text/html; charset=utf-8']);
-
-        $data = curl_exec($curl);
-        curl_close($curl);
-        return $data;
     }
 
     private function getCurrentDjUser($nickname) {
