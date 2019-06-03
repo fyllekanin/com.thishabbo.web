@@ -90,7 +90,7 @@ class PrefixController extends Controller {
         $prefix->save();
 
         Logger::admin($user->userId, $request->ip(), Action::CREATED_PREFIX, ['prefix' => $prefix->text]);
-        return $this->getPrefix($prefix->prefixId);
+        return $this->getPrefix($request, $prefix->prefixId);
     }
 
     /**
@@ -125,7 +125,7 @@ class PrefixController extends Controller {
         $existing->save();
 
         Logger::admin($user->userId, $request->ip(), Action::UPDATED_PREFIX, ['prefix' => $prefix->text]);
-        return $this->getPrefix($prefixId);
+        return $this->getPrefix($request, $prefixId);
     }
 
     /**
