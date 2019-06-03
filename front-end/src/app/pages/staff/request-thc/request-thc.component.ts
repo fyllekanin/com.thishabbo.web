@@ -19,11 +19,11 @@ export class RequestThcComponent extends Page implements OnDestroy {
     private _rows: Array<RequestThcModel> = [];
 
     tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Send Request', value: RequestThcActions.SEND_REQUEST }),
-        new TitleTab({ title: 'Add Row', value: RequestThcActions.ADD_ROW })
+        new TitleTab({title: 'Send Request', value: RequestThcActions.SEND_REQUEST}),
+        new TitleTab({title: 'Add Row', value: RequestThcActions.ADD_ROW})
     ];
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService,
         breadcrumbService: BreadcrumbService,
@@ -37,11 +37,11 @@ export class RequestThcComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onTabClick(value: number): void {
+    onTabClick (value: number): void {
         switch (value) {
             case RequestThcActions.ADD_ROW:
                 this._rows.push(new RequestThcModel());
@@ -52,24 +52,25 @@ export class RequestThcComponent extends Page implements OnDestroy {
         }
     }
 
-    remove(itemId: string): void {
+    remove (itemId: string): void {
         this._rows = this._rows.filter(row => row.id !== itemId);
     }
 
-    get rows(): Array<RequestThcModel> {
+    get rows (): Array<RequestThcModel> {
         return this._rows;
     }
 
-    private sendRequest(): void {
+    private sendRequest (): void {
         if (this.rowsAreInvalid()) {
             this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
                 message: 'One or more rows are invalid',
                 type: NotificationType.ERROR
             }));
+            return;
         }
 
-        this._httpService.post('staff/request-thc', { requests: this._rows })
+        this._httpService.post('staff/request-thc', {requests: this._rows})
             .subscribe(() => {
                 this._rows = [new RequestThcModel()];
                 this._notificationService.sendNotification(new NotificationMessage({
@@ -79,7 +80,7 @@ export class RequestThcComponent extends Page implements OnDestroy {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private rowsAreInvalid(): boolean {
+    private rowsAreInvalid (): boolean {
         return this._rows.some(row => {
             return (!row.habbo && !row.nickname) || isNaN(row.amount) || !row.reason;
         });

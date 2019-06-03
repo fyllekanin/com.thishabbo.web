@@ -171,18 +171,19 @@ class EventsController extends Controller {
         Condition::precondition(!isset($information->name), 400, 'Name missing');
         Condition::precondition(!isset($information->reason), 400, 'Reason missing');
 
-        $entries[] = [
+        $entry = [
             'id' => count($entries) + 1,
             'name' => $information->name,
             'reason' => $information->reason,
             'addedBy' => $user->userId,
             'createdAt' => time()
         ];
+        $entries[] = $entry;
 
         SettingsHelper::createOrUpdateSetting($settingKeys->banOnSight, json_encode($entries));
         Logger::staff($user->userId, $request->ip(), Action::CREATED_BAN_ON_SIGHT, ['name' => $information->name]);
 
-        return response()->json();
+        return response()->json($entry);
     }
 
     /**

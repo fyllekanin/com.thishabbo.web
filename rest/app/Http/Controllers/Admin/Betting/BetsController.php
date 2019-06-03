@@ -106,9 +106,24 @@ class BetsController extends Controller {
      */
     public function getBets(Request $request, $page) {
         $filter = $request->input('filter');
+        $status = $request->input('status');
 
         $getBadgeSql = Bet::where('name', 'LIKE', Value::getFilterValue($request, $filter))
             ->orderBy('leftSide', 'ASC')->orderBy('rightSide', 'DESC');
+
+        if ($status) {
+            switch ($status) {
+                case 'suspended':
+                    $getBadgeSql->where('isSuspended', true);
+                    break;
+                case 'finished':
+                    $getBadgeSql->where('isFinished', true);
+                    break;
+                case 'ongoing':
+                    $getBadgeSql->where('isSuspended', false)->where('isFinished', false);
+                    break;
+            }
+        }
 
         $total = DataHelper::getPage($getBadgeSql->count('betId'));
         $bets = $getBadgeSql->take($this->perPage)->skip($this->getOffset($page))->get();

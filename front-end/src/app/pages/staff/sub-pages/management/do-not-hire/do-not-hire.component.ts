@@ -117,8 +117,8 @@ export class DoNotHireComponent extends Page implements OnDestroy {
             title: 'Success',
             message: 'User added to Do Not Hire!'
         }));
-        this._router.navigateByUrl('/staff/management/do-not-hire');
-
+        this._data.createdAt = new Date().getTime() / 1000;
+        this._editing = this._data.nickname;
     }
 
     private onSuccessUpdate (): void {
@@ -126,7 +126,6 @@ export class DoNotHireComponent extends Page implements OnDestroy {
             title: 'Success',
             message: 'Do Not Hire updated!'
         }));
-
     }
 
     get model (): DoNotHireItem {

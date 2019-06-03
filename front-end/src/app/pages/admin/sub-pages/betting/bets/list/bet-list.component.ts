@@ -1,6 +1,6 @@
 import { Component, ComponentFactoryResolver, ElementRef, OnDestroy } from '@angular/core';
 import { Page } from 'shared/page/page.model';
-import { BetActions, BetModel, BetsListPage } from '../bets.model';
+import { BetActions, BetModel, BetsListPage, BetStatuses } from '../bets.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
@@ -9,6 +9,8 @@ import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 import {
     Action,
     FilterConfig,
+    FilterConfigItem,
+    FilterConfigType,
     TableAction,
     TableCell,
     TableConfig,
@@ -196,11 +198,23 @@ export class BetListComponent extends Page implements OnDestroy {
             title: 'Bets',
             headers: this.getTableHeaders(),
             rows: this.getTableRows(),
-            filterConfigs: [new FilterConfig({
-                title: 'Search',
-                placeholder: 'Filter on bet title',
-                key: 'filter'
-            })]
+            filterConfigs: [
+                new FilterConfig({
+                    title: 'Filter',
+                    placeholder: 'Filter on bet title',
+                    key: 'filter'
+                }),
+                new FilterConfig({
+                    title: 'Status',
+                    key: 'status',
+                    type: FilterConfigType.SELECT,
+                    items: [
+                        new FilterConfigItem({label: 'Suspended', value: BetStatuses.SUSPENDED}),
+                        new FilterConfigItem({label: 'Finished', value: BetStatuses.FINISHED}),
+                        new FilterConfigItem({label: 'Ongoing', value: BetStatuses.ONGOING})
+                    ]
+                })
+            ]
         });
     }
 
@@ -209,8 +223,8 @@ export class BetListComponent extends Page implements OnDestroy {
             const actions = [
                 {title: 'Edit', value: BetActions.EDIT_BET, condition: true},
                 {title: 'Set Result', value: BetActions.SET_RESULT, condition: !bet.isFinished},
-                {title: 'Suspend', value: BetActions.SUSPEND_BET, condition: !bet.isSuspended},
-                {title: 'Unsuspend', value: BetActions.UNSUSPEND_BET, condition: bet.isSuspended},
+                {title: 'Suspend', value: BetActions.SUSPEND_BET, condition: !bet.isSuspended && !bet.isFinished},
+                {title: 'Unsuspend', value: BetActions.UNSUSPEND_BET, condition: bet.isSuspended && !bet.isFinished},
                 {title: 'Delete', value: BetActions.DELETE_BET, condition: true}
             ];
             return new TableRow({
