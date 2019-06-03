@@ -39,34 +39,6 @@ class ForumStatisticsController extends Controller {
     /**
      * @param $year
      * @param $month
-     * @param $days
-     *
-     * @return array
-     * @throws \Exception
-     */
-    private function getPostsStatistics($year, $month, $days) {
-        $statistics = [];
-
-        for ($i = 1; $i < $days; $i++) {
-            $start = new \DateTime($year . '-' . $month . '-' . $i);
-            $start->setTime(0, 0, 0);
-            $end = new \DateTime($year . '-' . $month . '-' . $i);
-            $end->setTime(23, 59, 59);
-
-            $statistics[] = [
-                'day' => $i,
-                'month' => $month,
-                'posts' => Post::where('createdAt', '>=', $start->getTimestamp())
-                    ->where('createdAt', '<=', $end->getTimestamp())
-                    ->count('postId')
-            ];
-        }
-        return $statistics;
-    }
-
-    /**
-     * @param $year
-     * @param $month
      *
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
@@ -90,6 +62,34 @@ class ForumStatisticsController extends Controller {
             'year' => $year,
             'month' => $month
         ]);
+    }
+
+    /**
+     * @param $year
+     * @param $month
+     * @param $days
+     *
+     * @return array
+     * @throws \Exception
+     */
+    private function getPostsStatistics($year, $month, $days) {
+        $statistics = [];
+
+        for ($i = 1; $i < $days; $i++) {
+            $start = new \DateTime($year . '-' . $month . '-' . $i);
+            $start->setTime(0, 0, 0);
+            $end = new \DateTime($year . '-' . $month . '-' . $i);
+            $end->setTime(23, 59, 59);
+
+            $statistics[] = [
+                'day' => $i,
+                'month' => $month,
+                'posts' => Post::where('createdAt', '>=', $start->getTimestamp())
+                    ->where('createdAt', '<=', $end->getTimestamp())
+                    ->count('postId')
+            ];
+        }
+        return $statistics;
     }
 
     /**

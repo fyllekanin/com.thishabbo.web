@@ -5,7 +5,8 @@ import { TitleModule } from 'shared/app-views/title/title.module';
 import { TableComponent } from 'shared/components/table/table.component';
 import { NgModule } from '@angular/core';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
-import {ButtonModule} from 'shared/directives/button/button.module';
+import { ButtonModule } from 'shared/directives/button/button.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
     imports: [
@@ -14,7 +15,8 @@ import {ButtonModule} from 'shared/directives/button/button.module';
         CommonModule,
         FormsModule,
         SafeHtmlModule,
-        ButtonModule
+        ButtonModule,
+        RouterModule
     ],
     declarations: [
         TableComponent
@@ -25,4 +27,5 @@ import {ButtonModule} from 'shared/directives/button/button.module';
     ]
 })
 
-export class TableModule {}
+export class TableModule {
+}

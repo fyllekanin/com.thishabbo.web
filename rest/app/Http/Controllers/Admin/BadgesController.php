@@ -30,13 +30,14 @@ class BadgesController extends Controller {
         $users = UserItem::badge()->where('itemId', $badgeId)->get()->map(function ($userItem) {
             return [
                 'nickname' => $userItem->user->nickname,
-                'userId' => $userItem->userId
+                'userId' => $userItem->userId,
+                'createdAt' => $userItem->createdAt->timestamp
             ];
         });
 
         return response()->json([
             'users' => $users,
-            'availableUsers' => User::getQuery()->get(['nickname', 'userId']),
+            'availableUsers' => User::get(['nickname', 'userId']),
             'badge' => $badge
         ]);
     }
