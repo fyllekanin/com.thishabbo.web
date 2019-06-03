@@ -19,7 +19,7 @@ class IpSearchController extends Controller {
             $items = array_merge($items, DB::table($table)
                 ->join('users', 'users.userId', '=', $table . '.userId')
                 ->where('users.nickname', 'LIKE', Value::getFilterValue($request, $nickname))
-                ->where('ip', 'LIKE', Value::getFilterValue($request, $ipAddress))
+                ->orWhere('ip', 'LIKE', Value::getFilterValue($request, $ipAddress))
                 ->select($table . '.userId', $table . '.ip', $table . '.createdAt', 'users.nickname', 'users.userId')
                 ->get()
                 ->toArray());
