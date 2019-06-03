@@ -9,9 +9,12 @@ use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserData;
 use App\EloquentModels\User\UserGroup;
 use App\EloquentModels\User\UserItem;
+use App\EloquentModels\User\Avatar;
 use App\Utils\BBcodeUtil;
 use App\Utils\Value;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\File;
+use Intervention\Image\Facades\Image;
 
 class UserHelper {
 
@@ -206,6 +209,44 @@ class UserHelper {
                 ->count() > 0;
     }
 
+    public static function getCurrentAvatar($userId) {
+        $avatar = Avatar::where('userId', $userId)->orderBy('updatedAt', 'DESC')->first();
+        return (object) [
+            'userId' => $avatar->userId ? $avatar->userId : 0,
+            'avatarId' => $avatar->avatarId ? $avatar->avatarId : 0,
+            'width' => $avatar->width ? $avatar->width : 0,
+            'height' => $avatar->height ? $avatar->height : 0
+        ];
+    }
+
+    public static function clearAvatarIfInelligible($userId) {
+        $currentAvatar = self::getCurrentAvatar($userId);
+        $maxAvSize = self::getMaxAvatarSize($userId);
+        if($currentAvatar->width > $maxAvSize->width || $currentAvatar->height > $maxAvSize->height) {
+            self::backupAvatarIfExists($currentAvatar);
+        }
+
+        $image = Image::make(base_path('public/rest/resources/images/old-avatars/' . $currentAvatar->avatarId . '.gif'))
+            ->resize($maxAvSize->width, $maxAvSize->height)
+            ->save(base_path('public/rest/resources/images/users/' . $userId . '.gif'));
+
+        $newAvatar = new Avatar([
+            'userId' => $userId,
+            'width' => $image->width(),
+            'height' => $image->height()
+        ]);
+        $newAvatar->save();
+    }
+
+    public static function backupAvatarIfExists($currentAvatar) {
+        if ($currentAvatar->avatarId == 0
+            || !File::exists(base_path('public/rest/resources/images/users/' . $currentAvatar->userId . '.gif'))) {
+            return;
+        }
+
+        File::move(base_path('public/rest/resources/images/users/' . $currentAvatar->userId . '.gif'),
+            base_path('public/rest/resources/images/old-avatars/') . $currentAvatar->avatarId . '.gif');
+    }
 
     private static function getMaxAvatarWidth($user) {
         $size = 200;

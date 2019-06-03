@@ -8,6 +8,7 @@ use App\Console\Radio\RadioStats;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Facades\Artisan;
+use App\Helpers\ConfigHelper;
 
 class Kernel extends ConsoleKernel {
     /**
@@ -61,7 +62,7 @@ class ClearSubscriptions {
         $userSubSql->delete();
 
         foreach($userIds as $userId) {
-            UserUpdated::dispatch($userId);
+            UserUpdated::dispatch($userId, ConfigHelper::getUserUpdateTypes()->CLEAR_SUBSCRIPTION);
         }
     }
 }

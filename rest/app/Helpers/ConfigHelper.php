@@ -67,4 +67,8 @@ class ConfigHelper {
     public static function getRegex() {
         return (object)Config::get(self::$SETTINGS . '.REGEX');
     }
+
+    public static function getUserUpdateTypes() {
+        return (object)Config::get(self::$SETTINGS . '.USER_UPDATE_TYPES');
+    }
 }

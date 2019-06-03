@@ -12,6 +12,8 @@ use App\Models\Logger\Action;
 use App\Utils\Condition;
 use App\Utils\Iterables;
 use Illuminate\Http\Request;
+use App\Jobs\UserUpdated;
+use App\Helpers\ConfigHelper;
 
 class UserGroupsController extends Controller {
 
@@ -64,6 +66,8 @@ class UserGroupsController extends Controller {
 
         $current->displayGroupId = $displayGroupId;
         $current->save();
+
+        UserUpdated::dispatch($userId, ConfigHelper::getUserUpdateTypes()->CLEAR_GROUP);
 
         Logger::admin($user->userId, $request->ip(), Action::UPDATED_USERS_GROUPS, [
             'name' => $current->nickname,

@@ -15,6 +15,7 @@ use App\Models\Logger\Action;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
+use App\Jobs\GroupUpdated;
 
 class GroupsController extends Controller {
 
@@ -109,6 +110,7 @@ class GroupsController extends Controller {
         User::where('displayGroupId', $groupId)->update(['displayGroupId' => 0]);
 
         Logger::admin($user->userId, $request->ip(), Action::DELETED_GROUP, ['group' => $group->name]);
+        GroupUpdated::dispatch($groupId);
         return response()->json();
     }
 
@@ -197,6 +199,8 @@ class GroupsController extends Controller {
             'avatarHeight' => Value::objectProperty($newGroup, 'avatarHeight', 0),
             'avatarWidth' => Value::objectProperty($newGroup, 'avatarWidth', 0)
         ]);
+
+        GroupUpdated::dispatch($groupId);
 
         Logger::admin($user->userId, $request->ip(), Action::UPDATED_GROUP, ['group' => $group->name]);
         return $this->getGroup($request, $groupId);

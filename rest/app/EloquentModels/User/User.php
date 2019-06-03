@@ -49,6 +49,11 @@ class User extends Authenticatable {
         return $this->hasMany('App\EloquentModels\Forum\Post', 'userId');
     }
 
+
+    public function avatar() {
+        return $this->hasMany('App\EloquentModels\User\Avatar', 'userId', 'userId');
+    }
+
     public function displayGroup() {
         return $this->belongsTo('App\EloquentModels\Group\Group', 'displayGroupId', 'groupId');
     }
@@ -104,4 +109,5 @@ class User extends Authenticatable {
             return $userSubscription->subscription;
         });
     }
+
 }
