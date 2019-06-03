@@ -17,12 +17,20 @@ export class ThreadPollComponent {
     private _authService: AuthService;
 
     answerId: string;
-    tabs: Array<TitleTab> = [];
+    tabs: Array<TitleTab> = [
+        new TitleTab({ title: 'Vote' })
+    ];
 
     constructor(
         private _httpService: HttpService,
         private _notificationService: NotificationService
     ) {}
+
+    ngOnInit (): void {
+        this.tabs = !this._authService.isLoggedIn() ? [] : [
+            new TitleTab({title: 'Vote'})
+        ];
+    }
 
     vote(): void {
         this._httpService.post(`forum/thread/${this._threadId}/vote`, { answerId: this.answerId })
@@ -70,13 +78,5 @@ export class ThreadPollComponent {
                 votes: answer.answers
             };
         });
-    }
-
-    private onData (): void {
-        if (this._authService.isLoggedIn) {
-            const tabs = [
-                { title: 'Vote' }
-            ];
-        }
     }
 }
