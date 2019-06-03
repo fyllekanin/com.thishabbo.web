@@ -21,14 +21,14 @@ export class TableComponent implements DoCheck {
     private _config: TableConfig;
     private _columnSize: ColumnSize = {column: '', actions: ''};
 
-    constructor (private _router: Router) {
-    }
-
     @Output() onAction: EventEmitter<Action> = new EventEmitter();
     @Output() onFilter: EventEmitter<QueryParameters> = new EventEmitter();
     @Output() onTabClick: EventEmitter<string | number> = new EventEmitter();
     @Input() tabs: Array<TitleTab> = [];
     @Input() isContracted: boolean;
+
+    constructor (private _router: Router) {
+    }
 
     tabClick (val: string | number): void {
         this.onTabClick.emit(val);
