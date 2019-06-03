@@ -106,14 +106,25 @@ class StaffController extends Controller {
     }
 
     private function getNextEventsSlot($user) {
-        $slot = Timetable::isActive()
+        $slots = Timetable::isActive()
             ->where('day', '>=', date('N'))
-            ->where('hour', '>', date('G'))
+            ->where('userId', $user->userId)
             ->orderBy('day', 'ASC')
             ->orderBy('hour', 'ASC')
-            ->where('userId', $user->userId)
             ->events()
-            ->first();
+            ->get();
+
+        $slot = null;
+        foreach ($slots as $upcomingSlot) {
+            if ($upcomingSlot->day == date('N') && $upcomingSlot->hour > date('G')) {
+                $slot = $upcomingSlot;
+                break;
+            }
+            if ($upcomingSlot->day > date('N')) {
+                $slot = $upcomingSlot;
+                break;
+            }
+        }
 
         if (!$slot) {
             return null;
@@ -126,14 +137,25 @@ class StaffController extends Controller {
     }
 
     private function getNextRadioSlot($user) {
-        $slot = Timetable::isActive()
+        $slots = Timetable::isActive()
             ->where('day', '>=', date('N'))
-            ->where('hour', '>', date('G'))
+            ->where('userId', $user->userId)
             ->orderBy('day', 'ASC')
             ->orderBy('hour', 'ASC')
-            ->where('userId', $user->userId)
             ->radio()
-            ->first();
+            ->get();
+
+        $slot = null;
+        foreach ($slots as $upcomingSlot) {
+            if ($upcomingSlot->day == date('N') && $upcomingSlot->hour > date('G')) {
+                $slot = $upcomingSlot;
+                break;
+            }
+            if ($upcomingSlot->day > date('N')) {
+                $slot = $upcomingSlot;
+                break;
+            }
+        }
 
         if (!$slot) {
             return null;

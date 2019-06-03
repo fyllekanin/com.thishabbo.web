@@ -19,8 +19,9 @@
                     <div *ngIf="filterConfig.isSelect()">
                         <label *ngIf="filterConfig.title">{{filterConfig.title}}</label>
                         <select [(ngModel)]="filterConfig.value" (change)="onFilterChange()">
-                            <option [value]="undefined">All</option>
-                            <option *ngFor="let item of filterConfig.items" [value]="item.value">{{item.label}}</option>
+                            <option [ngValue]="undefined">All</option>
+                            <option *ngFor="let item of filterConfig.items"
+                                    [ngValue]="item.value">{{item.label}}</option>
                         </select>
                     </div>
                 </div>

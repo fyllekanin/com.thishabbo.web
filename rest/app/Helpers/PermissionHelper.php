@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Cache;
 
 class PermissionHelper {
 
-    private static $superAdmins = [1];
+    private static $superAdmins = [43325];
 
     public static function isSuperAdmin($userId) {
         return in_array($userId, self::$superAdmins);

@@ -81,7 +81,8 @@ export class BanOnSightComponent extends Page implements OnDestroy {
                     });
         } else {
             this._httpService.post('staff/events/ban-on-sight', {information: this._data})
-                .subscribe(() => {
+                .subscribe(res => {
+                        this._data = new BanOnSightItem(res);
                         this.onSuccessCreate();
                     },
                     error => {
@@ -110,8 +111,6 @@ export class BanOnSightComponent extends Page implements OnDestroy {
             title: 'Success',
             message: 'User added to Ban On Sight!'
         }));
-        this._router.navigateByUrl('/staff/events/ban-on-sight');
-
     }
 
     private onSuccessUpdate (): void {
