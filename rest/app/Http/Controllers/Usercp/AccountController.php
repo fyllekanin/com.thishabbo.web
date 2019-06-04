@@ -454,7 +454,7 @@ class AccountController extends Controller {
         $configOptions = ConfigHelper::getIgnoredNotificationsConfig();
 
         foreach ($ignoredNotifications as $key => $value) {
-            if (isset($ignoredNotifications[$key]) && $ignoredNotifications[$key]) {
+            if (isset($ignoredNotifications[$key]) && $value) {
                 $options += $configOptions->$key;
             }
         }
