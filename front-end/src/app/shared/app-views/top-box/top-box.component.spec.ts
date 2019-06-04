@@ -4,6 +4,7 @@ import { AuthService } from 'core/services/auth/auth.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 
 describe('TopBoxComponent', () => {
 
@@ -39,7 +40,15 @@ describe('TopBoxComponent', () => {
                 TopBoxComponent
             ],
             providers: [
-                {provide: AuthService, useValue: new MockAuthService()}
+                {provide: AuthService, useValue: new MockAuthService()},
+                {
+                    provide: ContinuesInformationService, useValue: {
+                        onDeviceSettingsUpdated: {
+                            subscribe: () => {
+                            }
+                        }
+                    }
+                }
             ],
             schemas: [
                 NO_ERRORS_SCHEMA
