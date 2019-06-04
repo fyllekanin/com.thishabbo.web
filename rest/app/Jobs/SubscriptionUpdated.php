@@ -7,6 +7,7 @@ use App\EloquentModels\Shop\UserSubscription;
 use App\EloquentModels\User\UserData;
 use App\Helpers\ConfigHelper;
 use App\Helpers\UserHelper;
+use App\Helpers\AvatarHelper;
 use App\Utils\Iterables;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -49,11 +50,20 @@ class SubscriptionUpdated implements ShouldQueue {
         if (!$subscription || ($subscription->options & ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor)) {
             return;
         }
-        $userIds = Iterables::filter(UserSubscription::where('subscriptionId', $this->subscriptionId)->pluck('userId')->toArray(), function ($userId) {
+
+        $userIds = UserSubscription::where('subscriptionId', $this->subscriptionId)->pluck('userId')->toArray();
+
+        foreach($userIds as $userId) {
+            AvatarHelper::clearAvatarIfInelligible($userId);
+        }
+
+        $userIds = Iterables::filter($userIds, function ($userId) {
             return !UserHelper::hasSubscriptionFeature($userId, ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor);
         });
         UserData::whereIn('userId', $userIds)->update([
             'nameColour' => null
         ]);
+
+
     }
 }

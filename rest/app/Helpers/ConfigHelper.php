@@ -68,6 +68,10 @@ class ConfigHelper {
         return (object)Config::get(self::$SETTINGS . '.REGEX');
     }
 
+    public static function getUserUpdateTypes() {
+        return (object)Config::get(self::$SETTINGS . '.USER_UPDATE_TYPES');
+    }
+  
     public static function getTimetable() {
         return Config::get(self::$SETTINGS . '.TIMETABLE');
     }

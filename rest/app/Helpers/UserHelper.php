@@ -40,11 +40,6 @@ class UserHelper {
         $slimUser->nameColour = $slimUser->customColour ? $slimUser->customColour : $slimUser->groupColour;
         $slimUser->nameColour = Value::objectJsonProperty($slimUser, 'nameColour', []);
 
-        if (!$slimUser) {
-            Cache::add('slim-user-' . $userId, null, 5);
-            return null;
-        }
-
         Cache::add('slim-user-' . $userId, $slimUser, 5);
 
         return $slimUser;
@@ -189,49 +184,13 @@ class UserHelper {
             User::getImmunity($user->userId) > User::getImmunity($currentId);
     }
 
-    public static function getMaxAvatarSize($userId) {
-        $user = User::find($userId);
-        if (!$user) {
-            return (object)['width' => 200, 'height' => 200];
-        }
-        return (object)[
-            'width' => self::getMaxAvatarWidth($user),
-            'height' => self::getMaxAvatarHeight($user)
-        ];
-    }
+
 
     public static function hasSubscriptionFeature($userId, $feature) {
         $userSubscriptionIds = UserSubscription::where('userId', $userId)->pluck('subscriptionId');
         return Subscription::whereIn('subscriptionId', $userSubscriptionIds)
                 ->whereRaw('(options & ' . $feature . ')')
                 ->count() > 0;
-    }
-
-
-    private static function getMaxAvatarWidth($user) {
-        $size = 200;
-
-        foreach ($user->groups as $group) {
-            $size = $group->avatarWidth > $size ? $group->avatarWidth : $size;
-        }
-
-        foreach ($user->subscriptions as $subscription) {
-            $size = $subscription->avatarWidth > $size ? $subscription->avatarWidth : $size;
-        }
-        return $size;
-    }
-
-    private static function getMaxAvatarHeight($user) {
-        $size = 200;
-
-        foreach ($user->groups as $group) {
-            $size = $group->avatarHeight > $size ? $group->avatarHeight : $size;
-        }
-
-        foreach ($user->subscriptions as $subscription) {
-            $size = $subscription->avatarHeight > $size ? $subscription->avatarHeight : $size;
-        }
-        return $size;
     }
 
     private static function getUserBars($userId) {

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Usercp;
 
-use App\EloquentModels\Shop\UserSubscription;
+use App\Helpers\AvatarHelper;
 use App\EloquentModels\User\Avatar;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserData;
@@ -128,12 +128,12 @@ class ProfileSettingsController extends Controller {
      */
     public function getAvatarSize(Request $request) {
         $user = $request->get('auth');
-        $avatarSize = UserHelper::getMaxAvatarSize($user->userId);
+        $avatarSize = AvatarHelper::getMaxAvatarSize($user->userId);
 
         return response()->json([
             'width' => $avatarSize->width,
             'height' => $avatarSize->height,
-            'oldAvatarIds' => Avatar::where('userId', $user->userId)->take(5)->orderBy('avatarId', 'DESC')->pluck('avatarId')
+            'oldAvatarIds' => Avatar::where('userId', $user->userId)->take(5)->orderBy('updatedAt', 'DESC')->skip(1)->pluck('avatarId')
         ]);
     }
 
@@ -169,17 +169,25 @@ class ProfileSettingsController extends Controller {
     public function updateAvatar(Request $request) {
         $user = $request->get('auth');
         $avatar = $request->file('avatar');
-        $avatarSize = UserHelper::getMaxAvatarSize($user->userId);
+        $avatarSize = AvatarHelper::getMaxAvatarSize($user->userId);
 
         $request->validate([
             'avatar' => 'required|mimes:jpg,jpeg,bmp,png,gif|dimensions:max_width=' . $avatarSize->width . ',max_height=' . $avatarSize->height,
         ]);
 
-        $this->backupOldAvatarIfExist($user);
+        AvatarHelper::backupAvatarIfExists(AvatarHelper::getCurrentAvatar($user->userId));
 
         $fileName = $user->userId . '.gif';
         $destination = base_path('/public/rest/resources/images/users');
         $avatar->move($destination, $fileName);
+
+        $dimensions = getimagesize($destination . '/' . $fileName);
+        $avatar = new Avatar([
+            'userId' => $user->userId,
+            'width' => $dimensions[0],
+            'height' => $dimensions[1]
+        ]);
+        $avatar->save();
 
         $userdata = UserHelper::getUserDataOrCreate($user->userId);
         $userdata->avatarUpdatedAt = time();
@@ -192,7 +200,7 @@ class ProfileSettingsController extends Controller {
     public function switchToAvatar(Request $request, $avatarId) {
         $user = $request->get('auth');
         $avatar = Avatar::find($avatarId);
-        $avatarSize = UserHelper::getMaxAvatarSize($user->userId);
+        $avatarSize = AvatarHelper::getMaxAvatarSize($user->userId);
 
         Condition::precondition(!$avatar, 404, 'No avatar saved with that ID');
         Condition::precondition($avatar->userId != $user->userId, 400,
@@ -203,9 +211,13 @@ class ProfileSettingsController extends Controller {
         Condition::precondition($size[0] > $avatarSize->width || $size[1] > $avatarSize->height, 400,
             'The avatar size is bigger then the size you can have');
 
-        $this->backupOldAvatarIfExist($user);
+        AvatarHelper::backupAvatarIfExists(AvatarHelper::getCurrentAvatar($user->userId));
+
         File::copy(base_path('public/rest/resources/images/old-avatars/') . $avatar->avatarId . '.gif',
             base_path('public/rest/resources/images/users/' . $user->userId . '.gif'));
+
+        $avatar->updatedAt = time();
+        $avatar->save();
 
         Logger::user($user->userId, $request->ip(), Action::UPDATED_AVATAR);
         return $this->getAvatarSize($request);
@@ -291,19 +303,5 @@ class ProfileSettingsController extends Controller {
         return response()->json([
             'colours' => $colours
         ]);
-    }
-
-    private function backupOldAvatarIfExist($user) {
-        if (!File::exists(base_path('public/rest/resources/images/users/' . $user->userId . '.gif'))) {
-            return;
-        }
-
-        $avatar = new Avatar([
-            'userId' => $user->userId
-        ]);
-        $avatar->save();
-
-        File::move(base_path('public/rest/resources/images/users/' . $user->userId . '.gif'),
-            base_path('public/rest/resources/images/old-avatars/') . $avatar->avatarId . '.gif');
     }
 }

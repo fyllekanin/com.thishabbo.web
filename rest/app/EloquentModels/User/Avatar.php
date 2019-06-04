@@ -11,7 +11,7 @@ use App\EloquentModels\Models\UnixTimeModel;
 class Avatar extends UnixTimeModel {
     protected $table = 'avatars';
     protected $primaryKey = 'avatarId';
-    protected $fillable = ['userId'];
+    protected $fillable = ['userId', 'width', 'height'];
 
     public function user() {
         return $this->belongsTo('App\EloquentModels\User\User', 'userId', 'userId');

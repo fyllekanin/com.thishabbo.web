@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'USER_UPDATE_TYPES' => [
+        'CLEAR_SUBSCRIPTION' => 1,
+        'CLEAR_GROUP' => 2
+    ],
     'KEYS' => [
         'botUserId' => 'welcome_bot_userId',
         'welcomeBotMessage' => 'welcome_bot_message',
