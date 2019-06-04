@@ -1,26 +1,14 @@
-<app-title [title]="title"></app-title>
+<app-title [title]="title" [tabs]="tabs" (onTabClick)="addUser()"></app-title>
 <app-content>
     <div class="grid-container fluid">
         <div class="grid-x">
             <div class="cell small-12">
                 <em>New users to get the badge, write their name and click add</em>
             </div>
-            <div class="cell small-10">
+            <div class="cell small-12">
                 <input [(ngModel)]="nickname" type="text" placeholder="New User"/>
-            </div>
-            <div class="cell small-2">
-                <button appButton [color]="addButton" (onClick)="addUser()">Add User</button>
             </div>
         </div>
     </div>
 </app-content>
-<div class="grid-container full">
-    <div class="grid-x margin-x grid-margin-y">
-        <div class="cell small-4" *ngFor="let user of users">
-            <app-title [title]="user.nickname" [tabs]="userTabs" (onTabClick)="removeUser(user)"></app-title>
-            <app-content>
-                {{user.nickname}} have the badge!
-            </app-content>
-        </div>
-    </div>
-</div>
+<app-table [config]="tableConfig" (onAction)="onRemove($event)"></app-table>

@@ -102,7 +102,9 @@ export class GroupsListComponent extends Page implements OnDestroy {
                 }));
                 this._groupsListPage.groups = this._groupsListPage.groups.filter(group => group.groupId !== Number(groupId));
                 this.createOrUpdateTable();
-            }, this._notificationService.failureNotification.bind(this._notificationService), () => {
+            }, error => {
+                this._notificationService.failureNotification(error);
+            }, () => {
                 this._dialogService.closeDialog();
             });
     }

@@ -83,12 +83,20 @@ export class PermShowComponent extends Page implements OnDestroy {
         if (this._permShow.createdAt) {
             this._httpService.put(`staff/management/permanent-shows/${this._permShow.timetableId}`,
                 {booking: booking})
-                .subscribe(this.onSuccessUpdate.bind(this, this._permShow),
-                    this._notificationService.failureNotification.bind(this._notificationService));
+                .subscribe(() => {
+                        this.onSuccessUpdate();
+                    },
+                    error => {
+                        this._notificationService.failureNotification(error);
+                    });
         } else {
             this._httpService.post('staff/management/permanent-shows', {booking: booking})
-                .subscribe(this.onSuccessCreate.bind(this, this._permShow),
-                    this._notificationService.failureNotification.bind(this._notificationService));
+                .subscribe(() => {
+                        this.onSuccessCreate();
+                    },
+                    error => {
+                        this._notificationService.failureNotification(error);
+                    });
         }
     }
 
@@ -122,7 +130,9 @@ export class PermShowComponent extends Page implements OnDestroy {
                     message: 'Perm show deleted!'
                 }));
                 this._router.navigateByUrl('/staff/management/permanent-shows/page/1');
-            }, this._notificationService.failureNotification.bind(this._notificationService), () => {
+            }, error => {
+                this._notificationService.failureNotification(error);
+            }, () => {
                 this._dialogService.closeDialog();
             });
     }

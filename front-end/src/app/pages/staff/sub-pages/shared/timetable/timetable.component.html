@@ -2,99 +2,123 @@
 <app-content>
     <div class="grid-container full">
         <div class="grid-x margin-x">
-            <div class="cell small-4 hour" (click)="clickHour(0)" [ngClass]="isCurrentSlot(0) ? 'current-slot' : ''">
+            <div class="cell small-4 hour" (click)="clickHour(0)"
+                 [ngClass]="isCurrentSlot(0) ? 'current-slot ' + timezones[0] : timezones[0]">
                 <span *ngIf="!isBooked(0)">12AM - Book</span>
                 <span *ngIf="isBooked(0)">12AM - <span [innerHTML]="getNickname(0) | safeHtml"></span> </span>
             </div>
-            <div class="cell small-4 hour" (click)="clickHour(8)" [ngClass]="isCurrentSlot(8) ? 'current-slot' : ''">
+            <div class="cell small-4 hour" (click)="clickHour(8)"
+                 [ngClass]="isCurrentSlot(8) ? 'current-slot ' + timezones[8] : timezones[8]">
                 <span *ngIf="!isBooked(8)">8AM - Book</span>
                 <span *ngIf="isBooked(8)">8AM - <span [innerHTML]="getNickname(8) | safeHtml"></span> </span>
             </div>
-            <div class="cell small-4 hour" (click)="clickHour(16)" [ngClass]="isCurrentSlot(16) ? 'current-slot' : ''">
+            <div class="cell small-4 hour" (click)="clickHour(16)"
+                 [ngClass]="isCurrentSlot(16) ? 'current-slot ' + timezones[16] : timezones[16]">
                 <span *ngIf="!isBooked(16)">4PM - Book</span>
                 <span *ngIf="isBooked(16)">4PM - <span [innerHTML]="getNickname(16) | safeHtml"></span> </span>
             </div>
-            <div class="cell small-4 hour" (click)="clickHour(1)" [ngClass]="isCurrentSlot(1) ? 'current-slot' : ''">
+            <div class="cell small-4 hour" (click)="clickHour(1)"
+                 [ngClass]="isCurrentSlot(1) ? 'current-slot ' + timezones[1] : timezones[1]">
                 <span *ngIf="!isBooked(1)">1AM - Book</span>
                 <span *ngIf="isBooked(1)">1AM - <span [innerHTML]="getNickname(1) | safeHtml"></span> </span>
             </div>
-            <div class="cell small-4 hour" (click)="clickHour(9)" [ngClass]="isCurrentSlot(9) ? 'current-slot' : ''">
+            <div class="cell small-4 hour" (click)="clickHour(9)"
+                 [ngClass]="isCurrentSlot(9) ? 'current-slot ' + timezones[9] : timezones[9]">
                 <span *ngIf="!isBooked(9)">9AM - Book</span>
                 <span *ngIf="isBooked(9)">9AM - <span [innerHTML]="getNickname(9) | safeHtml"></span> </span>
             </div>
-            <div class="cell small-4 hour" (click)="clickHour(17)" [ngClass]="isCurrentSlot(17) ? 'current-slot' : ''">
+            <div class="cell small-4 hour" (click)="clickHour(17)"
+                 [ngClass]="isCurrentSlot(17) ? 'current-slot ' + timezones[17] : timezones[17]">
                 <span *ngIf="!isBooked(17)">5PM - Book</span>
                 <span *ngIf="isBooked(17)">5PM - <span [innerHTML]="getNickname(17) | safeHtml"></span> </span>
             </div>
-            <div class="cell small-4 hour" (click)="clickHour(2)" [ngClass]="isCurrentSlot(2) ? 'current-slot' : ''">
+            <div class="cell small-4 hour" (click)="clickHour(2)"
+                 [ngClass]="isCurrentSlot(2) ? 'current-slot ' + timezones[2] : timezones[2]">
                 <span *ngIf="!isBooked(2)">2AM - Book</span>
                 <span *ngIf="isBooked(2)">2AM - <span [innerHTML]="getNickname(2) | safeHtml"></span> </span>
             </div>
-            <div class="cell small-4 hour" (click)="clickHour(10)" [ngClass]="isCurrentSlot(10) ? 'current-slot' : ''">
+            <div class="cell small-4 hour" (click)="clickHour(10)"
+                 [ngClass]="isCurrentSlot(10) ? 'current-slot ' + timezones[10] : timezones[10]">
                 <span *ngIf="!isBooked(10)">10AM - Book</span>
                 <span *ngIf="isBooked(10)">10AM - <span [innerHTML]="getNickname(10) | safeHtml"></span> </span>
             </div>
-            <div class="cell small-4 hour" (click)="clickHour(18)" [ngClass]="isCurrentSlot(18) ? 'current-slot' : ''">
+            <div class="cell small-4 hour" (click)="clickHour(18)"
+                 [ngClass]="isCurrentSlot(18) ? 'current-slot ' + timezones[18] : timezones[18]">
                 <span *ngIf="!isBooked(18)">6PM - Book</span>
                 <span *ngIf="isBooked(18)">6PM - <span [innerHTML]="getNickname(18) | safeHtml"></span> </span>
             </div>
-            <div class="cell small-4 hour" (click)="clickHour(3)" [ngClass]="isCurrentSlot(3) ? 'current-slot' : ''">
+            <div class="cell small-4 hour" (click)="clickHour(3)"
+                 [ngClass]="isCurrentSlot(3) ? 'current-slot ' + timezones[3] : timezones[3]">
                 <span *ngIf="!isBooked(3)">3AM - Book</span>
                 <span *ngIf="isBooked(3)">3AM - <span [innerHTML]="getNickname(3) | safeHtml"></span> </span>
             </div>
-            <div class="cell small-4 hour" (click)="clickHour(11)" [ngClass]="isCurrentSlot(11) ? 'current-slot' : ''">
+            <div class="cell small-4 hour" (click)="clickHour(11)"
+                 [ngClass]="isCurrentSlot(11) ? 'current-slot ' + timezones[11] : timezones[11]">
                 <span *ngIf="!isBooked(11)">11AM - Book</span>
                 <span *ngIf="isBooked(11)">11AM - <span [innerHTML]="getNickname(11) | safeHtml"></span> </span>
             </div>
-            <div class="cell small-4 hour" (click)="clickHour(19)" [ngClass]="isCurrentSlot(19) ? 'current-slot' : ''">
+            <div class="cell small-4 hour" (click)="clickHour(19)"
+                 [ngClass]="isCurrentSlot(19) ? 'current-slot ' + timezones[19] : timezones[19]">
                 <span *ngIf="!isBooked(19)">7PM - Book</span>
                 <span *ngIf="isBooked(19)">7PM - <span [innerHTML]="getNickname(19) | safeHtml"></span> </span>
             </div>
-            <div class="cell small-4 hour" (click)="clickHour(4)" [ngClass]="isCurrentSlot(4) ? 'current-slot' : ''">
+            <div class="cell small-4 hour" (click)="clickHour(4)"
+                 [ngClass]="isCurrentSlot(4) ? 'current-slot ' + timezones[4] : timezones[4]">
                 <span *ngIf="!isBooked(4)">4AM - Book</span>
                 <span *ngIf="isBooked(4)">4AM - <span [innerHTML]="getNickname(4) | safeHtml"></span> </span>
             </div>
-            <div class="cell small-4 hour" (click)="clickHour(12)" [ngClass]="isCurrentSlot(12) ? 'current-slot' : ''">
+            <div class="cell small-4 hour" (click)="clickHour(12)"
+                 [ngClass]="isCurrentSlot(12) ? 'current-slot ' + timezones[12] : timezones[12]">
                 <span *ngIf="!isBooked(12)">12PM - Book</span>
                 <span *ngIf="isBooked(12)">12PM - <span [innerHTML]="getNickname(12) | safeHtml"></span> </span>
             </div>
-            <div class="cell small-4 hour" (click)="clickHour(20)" [ngClass]="isCurrentSlot(20) ? 'current-slot' : ''">
+            <div class="cell small-4 hour" (click)="clickHour(20)"
+                 [ngClass]="isCurrentSlot(20) ? 'current-slot ' + timezones[20] : timezones[20]">
                 <span *ngIf="!isBooked(20)">8PM - Book</span>
                 <span *ngIf="isBooked(20)">8PM - <span [innerHTML]="getNickname(20) | safeHtml"></span> </span>
             </div>
-            <div class="cell small-4 hour" (click)="clickHour(5)" [ngClass]="isCurrentSlot(5) ? 'current-slot' : ''">
+            <div class="cell small-4 hour" (click)="clickHour(5)"
+                 [ngClass]="isCurrentSlot(5) ? 'current-slot ' + timezones[5] : timezones[5]">
                 <span *ngIf="!isBooked(5)">5AM - Book</span>
                 <span *ngIf="isBooked(5)">5AM - <span [innerHTML]="getNickname(5) | safeHtml"></span> </span>
             </div>
-            <div class="cell small-4 hour" (click)="clickHour(13)" [ngClass]="isCurrentSlot(13) ? 'current-slot' : ''">
+            <div class="cell small-4 hour" (click)="clickHour(13)"
+                 [ngClass]="isCurrentSlot(13) ? 'current-slot ' + timezones[13] : timezones[13]">
                 <span *ngIf="!isBooked(13)">1PM - Book</span>
                 <span *ngIf="isBooked(13)">1PM - <span [innerHTML]="getNickname(13) | safeHtml"></span> </span>
             </div>
-            <div class="cell small-4 hour" (click)="clickHour(21)" [ngClass]="isCurrentSlot(21) ? 'current-slot' : ''">
+            <div class="cell small-4 hour" (click)="clickHour(21)"
+                 [ngClass]="isCurrentSlot(21) ? 'current-slot ' + timezones[21] : timezones[21]">
                 <span *ngIf="!isBooked(21)">9PM - Book</span>
                 <span *ngIf="isBooked(21)">9PM - <span [innerHTML]="getNickname(21) | safeHtml"></span> </span>
             </div>
-            <div class="cell small-4 hour" (click)="clickHour(6)" [ngClass]="isCurrentSlot(6) ? 'current-slot' : ''">
+            <div class="cell small-4 hour" (click)="clickHour(6)"
+                 [ngClass]="isCurrentSlot(6) ? 'current-slot ' + timezones[6] : timezones[6]">
                 <span *ngIf="!isBooked(6)">6AM - Book</span>
                 <span *ngIf="isBooked(6)">6AM - <span [innerHTML]="getNickname(6) | safeHtml"></span> </span>
             </div>
-            <div class="cell small-4 hour" (click)="clickHour(14)" [ngClass]="isCurrentSlot(14) ? 'current-slot' : ''">
+            <div class="cell small-4 hour" (click)="clickHour(14)"
+                 [ngClass]="isCurrentSlot(14) ? 'current-slot ' + timezones[14] : timezones[14]">
                 <span *ngIf="!isBooked(14)">2PM - Book</span>
                 <span *ngIf="isBooked(14)">2PM - <span [innerHTML]="getNickname(14) | safeHtml"></span> </span>
             </div>
-            <div class="cell small-4 hour" (click)="clickHour(22)" [ngClass]="isCurrentSlot(22) ? 'current-slot' : ''">
+            <div class="cell small-4 hour" (click)="clickHour(22)"
+                 [ngClass]="isCurrentSlot(22) ? 'current-slot ' + timezones[22] : timezones[22]">
                 <span *ngIf="!isBooked(22)">10PM - Book</span>
                 <span *ngIf="isBooked(22)">10PM - <span [innerHTML]="getNickname(22) | safeHtml"></span> </span>
             </div>
-            <div class="cell small-4 hour" (click)="clickHour(7)" [ngClass]="isCurrentSlot(7) ? 'current-slot' : ''">
+            <div class="cell small-4 hour" (click)="clickHour(7)"
+                 [ngClass]="isCurrentSlot(7) ? 'current-slot ' + timezones[7] : timezones[7]">
                 <span *ngIf="!isBooked(7)">7AM - Book</span>
                 <span *ngIf="isBooked(7)">7AM - <span [innerHTML]="getNickname(7) | safeHtml"></span> </span>
             </div>
-            <div class="cell small-4 hour" (click)="clickHour(15)" [ngClass]="isCurrentSlot(15) ? 'current-slot' : ''">
+            <div class="cell small-4 hour" (click)="clickHour(15)"
+                 [ngClass]="isCurrentSlot(15) ? 'current-slot ' + timezones[15] : timezones[15]">
                 <span *ngIf="!isBooked(15)">3PM - Book</span>
                 <span *ngIf="isBooked(15)">3PM - <span [innerHTML]="getNickname(15) | safeHtml"></span> </span>
             </div>
-            <div class="cell small-4 hour" (click)="clickHour(23)" [ngClass]="isCurrentSlot(23) ? 'current-slot' : ''">
+            <div class="cell small-4 hour" (click)="clickHour(23)"
+                 [ngClass]="isCurrentSlot(23) ? 'current-slot ' + timezones[23] : timezones[23]">
                 <span *ngIf="!isBooked(23)">11PM - Book</span>
                 <span *ngIf="isBooked(23)">11PM - <span [innerHTML]="getNickname(23) | safeHtml"></span> </span>
             </div>

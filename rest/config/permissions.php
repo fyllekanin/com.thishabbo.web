@@ -52,7 +52,9 @@ return [
         'postsDontCount' => 2,
         'prefixMandatory' => 4,
         'threadsCanHavePolls' => 8,
-        'reportPostsGoHere' => 16
+        'reportPostsGoHere' => 16,
+        'jobApplicationsGoHere' => 32,
+        'contactPostsGoHere' => 64
     ],
     'GROUP_OPTIONS' => [
         'contentNeedApproval' => 1,

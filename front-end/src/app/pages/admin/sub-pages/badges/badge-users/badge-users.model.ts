@@ -1,4 +1,4 @@
-import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, objectOf, primitive, time } from 'shared/helpers/class.helper';
 import { Badge } from '../badges.model';
 
 export class BadgeUser {
@@ -6,8 +6,10 @@ export class BadgeUser {
     nickname: string;
     @primitive()
     userId: number;
+    @time()
+    createdAt: string;
 
-    constructor(source: Partial<BadgeUser>) {
+    constructor (source: Partial<BadgeUser>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -20,7 +22,7 @@ export class BadgeUsersModel {
     @objectOf(Badge)
     badge: Badge;
 
-    constructor(source: Partial<BadgeUsersModel>) {
+    constructor (source: Partial<BadgeUsersModel>) {
         ClassHelper.assign(this, source);
     }
 }

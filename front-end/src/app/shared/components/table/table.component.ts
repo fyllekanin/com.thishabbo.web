@@ -9,6 +9,7 @@ import {
 } from 'shared/components/table/table.model';
 import { Component, DoCheck, EventEmitter, Input, Output } from '@angular/core';
 import { QueryParameters } from 'core/services/http/http.model';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-table',
@@ -25,6 +26,9 @@ export class TableComponent implements DoCheck {
     @Output() onTabClick: EventEmitter<string | number> = new EventEmitter();
     @Input() tabs: Array<TitleTab> = [];
     @Input() isContracted: boolean;
+
+    constructor (private _router: Router) {
+    }
 
     tabClick (val: string | number): void {
         this.onTabClick.emit(val);
@@ -50,6 +54,7 @@ export class TableComponent implements DoCheck {
             prev[curr.key] = curr.value;
             return prev;
         }, {});
+        this.updateStateOfUrl();
         this.onFilter.emit(params);
     }
 
@@ -140,5 +145,17 @@ export class TableComponent implements DoCheck {
                     actions: this.haveActions ? 'small-2' : ''
                 };
         }
+    }
+
+    private updateStateOfUrl (): void {
+        const newPath = location.pathname.replace(new RegExp(/\/page\/[0-9]+/g), '/page/1');
+        const setParams = this.filterConfigs.filter(item => item.value).reduce((prev, curr) => {
+            prev[curr.key] = curr.value;
+            return prev;
+        }, {});
+        this._router.navigateByUrl(this._router.createUrlTree([newPath], {
+            queryParams: setParams,
+            skipLocationChange: true
+        }));
     }
 }

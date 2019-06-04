@@ -95,8 +95,11 @@ export class ManageConnectionComponent extends Page implements OnDestroy {
 
     private save (): void {
         this._httpService.put('staff/radio/manage-connection', {information: this._manageConnectionModel})
-            .subscribe(this.onSuccessUpdate.bind(this, this),
-                this._notificationService.failureNotification.bind(this._notificationService));
+            .subscribe(() => {
+                this.onSuccessUpdate();
+            }, error => {
+                this._notificationService.failureNotification(error);
+            });
     }
 
     private onSuccessUpdate (): void {

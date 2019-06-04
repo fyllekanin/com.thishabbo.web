@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\App;
 /**
  * @property mixed title
  * @property mixed categoryId
+ *
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class Category extends DeletableModel {
     /** @var ForumService */
@@ -46,6 +48,14 @@ class Category extends DeletableModel {
 
     public function scopeIsReportCategory(Builder $query) {
         return $query->whereRaw('(options & ' . ConfigHelper::getForumOptionsConfig()->reportPostsGoHere . ')');
+    }
+
+    public function scopeIsJobCategory(Builder $query) {
+        return $query->whereRaw('(options & ' . ConfigHelper::getForumOptionsConfig()->jobApplicationsGoHere . ')');
+    }
+
+    public function scopeIsContactCategory(Builder $query) {
+        return $query->whereRaw('(options & ' . ConfigHelper::getForumOptionsConfig()->contactPostsGoHere . ')');
     }
 
     public function scopeNonHidden(Builder $query) {

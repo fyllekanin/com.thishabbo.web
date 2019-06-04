@@ -10,7 +10,7 @@ export interface Hour {
 }
 
 export class TimeHelper {
-    static readonly ABBR_MONTHS = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ];
+    static readonly ABBR_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     static readonly FULL_MONTHS = [
         'January',
         'February',
@@ -26,20 +26,20 @@ export class TimeHelper {
         'December'
     ];
     static readonly DAYS: Array<Day> = [
-        { label: 'Monday', abbr: 'Mon', number: 1 },
-        { label: 'Tuesday', abbr: 'Tue', number: 2 },
-        { label: 'Wednesday', abbr: 'Wed', number: 3 },
-        { label: 'Thursday', abbr: 'Thu', number: 4 },
-        { label: 'Friday', abbr: 'Fri', number: 5 },
-        { label: 'Saturday', abbr: 'Sat', number: 6 },
-        { label: 'Sunday', abbr: 'Sun', number: 7 }
+        {label: 'Monday', abbr: 'Mon', number: 1},
+        {label: 'Tuesday', abbr: 'Tue', number: 2},
+        {label: 'Wednesday', abbr: 'Wed', number: 3},
+        {label: 'Thursday', abbr: 'Thu', number: 4},
+        {label: 'Friday', abbr: 'Fri', number: 5},
+        {label: 'Saturday', abbr: 'Sat', number: 6},
+        {label: 'Sunday', abbr: 'Sun', number: 7}
     ];
 
     static getDay (number: number): Day {
         return this.DAYS.find(day => day.number === number);
     }
 
-    static getStartOfWeek(): number {
+    static getStartOfWeek (): number {
         const date = new Date();
         const day = date.getDay();
         const diff = date.getDate() - day + (day === 0 ? -6 : 1);
@@ -49,7 +49,7 @@ export class TimeHelper {
         return (mondayDate.getTime() / 1000) + (this.getTimeOffsetInHours() * 60 * 60);
     }
 
-    static getDayWithSuffix(day: number): string {
+    static getDayWithSuffix (day: number): string {
         const j = day % 10,
             k = day % 100;
         if (j === 1 && k !== 11) {
@@ -64,7 +64,7 @@ export class TimeHelper {
         return day + 'th';
     }
 
-    static getConvertedDay(convertedHour: number, day: number): number {
+    static getConvertedDay (convertedHour: number, day: number): number {
         if (convertedHour > 23) {
             return day === 7 ? 1 : day + 1;
         } else if (convertedHour < 0) {
@@ -73,7 +73,7 @@ export class TimeHelper {
         return day;
     }
 
-    static getConvertedHour(convertedHour: number): number {
+    static getConvertedHour (convertedHour: number): number {
         if (convertedHour > 23) {
             return convertedHour - 24;
         } else if (convertedHour < 0) {
@@ -82,20 +82,20 @@ export class TimeHelper {
         return convertedHour;
     }
 
-    static getTimeOffset(): number {
+    static getTimeOffset (): number {
         const offset = new Date().getTimezoneOffset();
         return offset > 0 ? -offset : Math.abs(offset);
     }
 
-    static getTimeOffsetInHours(): number {
+    static getTimeOffsetInHours (): number {
         return this.getTimeOffset() / 60;
     }
 
-    static getHours(): Array<Hour> {
+    static getHours (): Array<Hour> {
         const hours: Array<Hour> = [];
         for (let i = 0; i < 24; i++) {
             hours.push({
-                label: i === 0 ? '12:00 AM' : (i > 11 ? `${i}:00 PM` : `${i}:00 AM`),
+                label: i === 0 ? '12:00 AM' : (i > 11 ? `${(i > 12 ? i - 12 : i)}:00 PM` : `${i}:00 AM`),
                 number: i
             });
         }
@@ -108,12 +108,12 @@ export class TimeHelper {
      *
      * @param time
      */
-    static getLongDate(time: number): string {
+    static getLongDate (time: number): string {
         const date = new Date(time * 1000);
 
         const day = date.getDate();
         const year = date.getFullYear();
-        return `${TimeHelper.getDayWithSuffix(day)} ${this.FULL_MONTHS[ date.getMonth() ]} ${year}`;
+        return `${TimeHelper.getDayWithSuffix(day)} ${this.FULL_MONTHS[date.getMonth()]} ${year}`;
     }
 
     /**
@@ -122,7 +122,7 @@ export class TimeHelper {
      *
      * @param time
      */
-    static getLongDateWithTime(time: number): string {
+    static getLongDateWithTime (time: number): string {
         const date = new Date(time * 1000);
 
         const timeOfDay = this.getTimeIncludingTimeOfDay(date);
@@ -134,7 +134,7 @@ export class TimeHelper {
      * @param date
      * @return {string}
      */
-    static getTimeIncludingTimeOfDay(date: Date): string {
+    static getTimeIncludingTimeOfDay (date: Date): string {
         const minutes = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
         let hour: number;
         if (date.getHours() < 12) {

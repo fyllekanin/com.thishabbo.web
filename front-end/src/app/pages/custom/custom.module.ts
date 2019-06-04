@@ -16,6 +16,9 @@ import { BadgeArticlesComponent } from './badge-articles/badge-articles.componen
 import { BadgeArticlesResolver } from './services/badge-articles.resolver';
 import { SlimArticleModule } from 'shared/components/slim-article/slim-article.module';
 import { PaginationModule } from 'shared/app-views/pagination/pagination.module';
+import { ContactComponent } from './contact/contact.component';
+import { JobComponent } from './job/job.component';
+import { InfoBoxModule } from 'shared/app-views/info-box/info-box.module';
 
 @NgModule({
     imports: [
@@ -29,12 +32,15 @@ import { PaginationModule } from 'shared/app-views/pagination/pagination.module'
         SafeStyleModule,
         SafeHtmlModule,
         SlimArticleModule,
-        PaginationModule
+        PaginationModule,
+        InfoBoxModule
     ],
     declarations: [
         CustomPageComponent,
         LeaderBoardComponent,
-        BadgeArticlesComponent
+        BadgeArticlesComponent,
+        ContactComponent,
+        JobComponent
     ],
     providers: [
         CustomPageResolver,

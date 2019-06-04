@@ -13,6 +13,7 @@ use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
+use App\Models\Radio\RadioServerTypes;
 use App\Models\Radio\RadioSettings;
 use App\Utils\Condition;
 use App\Utils\Iterables;
@@ -181,26 +182,6 @@ class ManagementController extends Controller {
         return response()->json();
     }
 
-    private function getListenersFromServer() {
-        $radio = new RadioSettings(SettingsHelper::getSettingValue($this->settingKeys->radio));
-        $userAgent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.92 Safari/537.36';
-        $url = $radio->ip . ':' . $radio->port . '/admin.cgi?sid=1&mode=viewjson&page=3';
-
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_USERAGENT, $userAgent);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($curl, CURLOPT_USERPWD, 'admin:' . $radio->adminPassword);
-        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 30);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 45);
-
-        $data = curl_exec($curl);
-        curl_close($curl);
-        $listeners = json_decode($data);
-        return $listeners ? $listeners : [];
-    }
-
     /**
      * Post request for creating a perm show
      *
@@ -364,5 +345,52 @@ class ManagementController extends Controller {
     public function getPermShow($timetableId) {
         $permShow = $timetableId == 'new' ? new \stdClass() : Timetable::find($timetableId)->permShow;
         return response()->json($permShow);
+    }
+
+    private function getListenersFromServer() {
+        $radio = new RadioSettings(SettingsHelper::getSettingValue($this->settingKeys->radio));
+
+        switch ($radio->serverType) {
+            case RadioServerTypes::SHOUT_CAST_V2:
+                return $this->getShoutCastV2Listeners($radio);
+            case RadioServerTypes::SHOUT_CAST_V1:
+            default:
+                return $this->getShoutCastV1Listeners();
+        }
+    }
+
+    private function getShoutCastV2Listeners($radio) {
+        $userAgent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.92 Safari/537.36';
+        $url = $radio->ip . ':' . $radio->port . '/admin.cgi?sid=1&mode=viewjson&page=3';
+
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_USERAGENT, $userAgent);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        curl_setopt($curl, CURLOPT_USERPWD, 'admin:' . $radio->adminPassword);
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 30);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 45);
+
+        $data = curl_exec($curl);
+        curl_close($curl);
+        $listeners = json_decode($data);
+        return $listeners ? $listeners : [];
+    }
+
+    private function getShoutCastV1Listeners() {
+        $data = DataHelper::getShoutCastV1Stats();
+        if ($data == null || $data == false) {
+            return [];
+        }
+
+        $listeners = [];
+        foreach ((object)$data->LISTENERS->LISTENER as $listener) {
+            $listeners[] = (object)[
+                'hostname' => (string)$listener->HOSTNAME,
+                'connecttime' => (string)$listener->CONNECTTIME
+            ];
+        }
+        return $listeners;
     }
 }

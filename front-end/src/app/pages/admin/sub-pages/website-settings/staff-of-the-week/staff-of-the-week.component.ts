@@ -58,8 +58,11 @@ export class StaffOfTheWeekComponent extends Page implements OnDestroy {
         switch (action) {
             case StaffOfTheWeekActions.SAVE:
                 this._httpService.put('admin/content/staff-of-the-week', {information: this._data})
-                    .subscribe(this.onSuccessUpdate.bind(this, this),
-                        this._notificationService.failureNotification.bind(this._notificationService));
+                    .subscribe(() => {
+                        this.onSuccessUpdate();
+                    }, error => {
+                        this._notificationService.failureNotification(error);
+                    });
                 break;
             case StaffOfTheWeekActions.BACK:
                 this._router.navigateByUrl('/admin/website-settings');

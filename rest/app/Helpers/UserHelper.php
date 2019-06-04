@@ -21,7 +21,7 @@ class UserHelper {
      * @return mixed|null
      */
     public static function getSlimUser($userId) {
-        if (!$userId && $userId != 0) {
+        if (!$userId && !is_int($userId)) {
             return null;
         }
 
@@ -35,6 +35,7 @@ class UserHelper {
             ->select('users.userId', 'users.nickname', 'users.createdAt',
                 'users.displayGroupId', 'userdata.avatarUpdatedAt',
                 'userdata.nameColour AS customColour', 'groups.nameColour AS groupColour')->first();
+        
 
         $slimUser->nameColour = $slimUser->customColour ? $slimUser->customColour : $slimUser->groupColour;
         $slimUser->nameColour = Value::objectJsonProperty($slimUser, 'nameColour', []);
@@ -84,9 +85,9 @@ class UserHelper {
             ];
         });
 
-        if ($userdata->nameColour) {
+        if (isset($userdata->nameColour)) {
             $user->nameColour = $userdata->nameColour;
-        } else if ($userObj->displayGroup) {
+        } else if (isset($userObj->displayGroup)) {
             $user->nameColour = $userObj->displayGroup->nameColour;
         }
 

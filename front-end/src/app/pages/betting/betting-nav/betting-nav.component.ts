@@ -7,7 +7,6 @@ import { Component } from '@angular/core';
     styleUrls: ['betting-nav.component.css']
 })
 export class BettingNavComponent {
-
     topBorderRed = TitleTopBorder.RED;
     topBorderBlue = TitleTopBorder.BLUE;
 }

@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Action, FilterConfig, TableAction, TableConfig, TableRow } from 'shared/components/table/table.model';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('TableComponent', () => {
 
@@ -15,7 +16,8 @@ describe('TableComponent', () => {
             imports: [
                 CommonModule,
                 FormsModule,
-                SafeHtmlModule
+                SafeHtmlModule,
+                RouterTestingModule
             ],
             declarations: [
                 TableComponent
@@ -40,8 +42,8 @@ describe('TableComponent', () => {
     it('onChange should emit the rowId and value from item', () => {
         // Given
         spyOn(component.onAction, 'emit');
-        const row = new TableRow({ id: 'test' });
-        const item = { target: { value: 1 } };
+        const row = new TableRow({id: 'test'});
+        const item = {target: {value: 1}};
 
 
         // When
@@ -57,8 +59,8 @@ describe('TableComponent', () => {
     it('onFilterChange should build QueryParameters and emit them', () => {
         // Given
         spyOnProperty(component, 'filterConfigs', 'get').and.returnValue([
-            new FilterConfig({ key: 'test', value: 'apa' }),
-            new FilterConfig({ key: 'lipsum', value: 'rawr' })
+            new FilterConfig({key: 'test', value: 'apa'}),
+            new FilterConfig({key: 'lipsum', value: 'rawr'})
         ]);
         spyOn(component.onFilter, 'emit');
 
@@ -89,8 +91,8 @@ describe('TableComponent', () => {
             // Given
             component.config = new TableConfig({
                 rows: [
-                    new TableRow({ actions: [] }),
-                    new TableRow({ actions: [new TableAction({})] })
+                    new TableRow({actions: []}),
+                    new TableRow({actions: [new TableAction({})]})
                 ]
             });
 

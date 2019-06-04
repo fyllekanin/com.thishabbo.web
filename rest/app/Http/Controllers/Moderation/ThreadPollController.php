@@ -14,6 +14,7 @@ use App\Logger;
 use App\Models\Logger\Action;
 use App\Services\ForumService;
 use App\Utils\Condition;
+use App\Utils\Value;
 use Illuminate\Http\Request;
 
 class ThreadPollController extends Controller {
@@ -75,7 +76,7 @@ class ThreadPollController extends Controller {
 
         $getPollsSql = ThreadPoll::join('threads', 'threads.threadId', '=', 'thread_polls.threadId')
             ->whereIn('threads.threadId', $threadIds)
-            ->where('threads.title', 'LIKE', '%' . $filter . '%')
+            ->where('threads.title', 'LIKE', Value::getFilterValue($request, $filter))
             ->orderBy('threads.title', 'ASC')
             ->select('threads.title', 'threads.threadId', 'thread_polls.*');
 

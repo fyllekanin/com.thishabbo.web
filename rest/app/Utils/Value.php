@@ -22,4 +22,13 @@ class Value {
             return preg_match($regex, $colour);
         });
     }
+
+    public static function getFilterValue($request, $value) {
+        return self::isExactFilter($request) ? $value : '%' . $value . '%';
+    }
+
+    private static function isExactFilter($request) {
+        $type = $request->input('type');
+        return $type == 'exact';
+    }
 }

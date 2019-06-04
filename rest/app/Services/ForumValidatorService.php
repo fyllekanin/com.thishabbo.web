@@ -14,8 +14,9 @@ class ForumValidatorService {
 
     /**
      * @param $threadSkeleton
+     * @param $category
      */
-    public function validatePoll($threadSkeleton) {
+    public function validatePoll($threadSkeleton, $category) {
         if (!isset($threadSkeleton->poll)) {
             return;
         }
@@ -23,6 +24,8 @@ class ForumValidatorService {
             'Question can not be empty');
         Condition::precondition(!is_array($threadSkeleton->poll->answers), 400, 'There need to be at least 2 answers');
         Condition::precondition(count($threadSkeleton->poll->answers) < 2, 400, 'There need to be at least 2 answers');
+        Condition::precondition(!($category->options & ConfigHelper::getForumOptionsConfig()->threadsCanHavePolls),
+            400, 'Threads in this category can not have polls');
 
         foreach ($threadSkeleton->poll->answers as $answer) {
             Condition::precondition(!isset($answer->label) || empty($answer->label), 400, 'A answer can not be empty');
@@ -45,7 +48,7 @@ class ForumValidatorService {
         $categoryTemplates = ConfigHelper::getCategoryTemplatesConfig();
 
         if (isset($threadSkeleton->poll)) {
-            $this->validatePoll($threadSkeleton);
+            $this->validatePoll($threadSkeleton, $category);
         }
 
         if ($category->template !== $categoryTemplates->DEFAULT && $request->hasFile('thumbnail')) {

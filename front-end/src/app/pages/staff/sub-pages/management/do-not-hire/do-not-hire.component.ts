@@ -80,12 +80,20 @@ export class DoNotHireComponent extends Page implements OnDestroy {
         if (this._editing) {
             this._httpService.put(`staff/management/do-not-hire/${this._editing}`,
                 {information: information})
-                .subscribe(this.onSuccessUpdate.bind(this, this._data),
-                    this._notificationService.failureNotification.bind(this._notificationService));
+                .subscribe(() => {
+                        this.onSuccessUpdate();
+                    },
+                    error => {
+                        this._notificationService.failureNotification(error);
+                    });
         } else {
             this._httpService.post('staff/management/do-not-hire', {information: information})
-                .subscribe(this.onSuccessCreate.bind(this, this._data),
-                    this._notificationService.failureNotification.bind(this._notificationService));
+                .subscribe(() => {
+                        this.onSuccessCreate();
+                    },
+                    error => {
+                        this._notificationService.failureNotification(error);
+                    });
         }
     }
 
@@ -97,7 +105,9 @@ export class DoNotHireComponent extends Page implements OnDestroy {
                     message: 'Entry deleted!'
                 }));
                 this._router.navigateByUrl('/staff/management/do-not-hire');
-            }, this._notificationService.failureNotification.bind(this._notificationService), () => {
+            }, error => {
+                this._notificationService.failureNotification(error);
+            }, () => {
                 this._dialogService.closeDialog();
             });
     }
@@ -107,8 +117,8 @@ export class DoNotHireComponent extends Page implements OnDestroy {
             title: 'Success',
             message: 'User added to Do Not Hire!'
         }));
-        this._router.navigateByUrl('/staff/management/do-not-hire');
-
+        this._data.createdAt = new Date().getTime() / 1000;
+        this._editing = this._data.nickname;
     }
 
     private onSuccessUpdate (): void {
@@ -116,7 +126,6 @@ export class DoNotHireComponent extends Page implements OnDestroy {
             title: 'Success',
             message: 'Do Not Hire updated!'
         }));
-
     }
 
     get model (): DoNotHireItem {

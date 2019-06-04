@@ -81,8 +81,8 @@
     </div>
 </app-content>
 
-<app-title [title]="'Thread Poll'"></app-title>
-<app-content>
+<app-title *ngIf="canHavePoll" [title]="'Thread Poll'"></app-title>
+<app-content *ngIf="canHavePoll">
     <div *ngIf="thread.poll">
         <em>You can later not edit the poll after creation, make sure it's correct before saving</em>
         <div class="grid-container full poll-answer">

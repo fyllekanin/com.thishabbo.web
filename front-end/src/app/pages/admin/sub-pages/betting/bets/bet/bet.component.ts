@@ -71,13 +71,16 @@ export class BetComponent extends Page implements OnDestroy {
     private doDelete (): void {
         this._httpService.delete(`admin/betting/bet/${this._data.bet.betId}`)
             .subscribe(() => {
-                    this._notificationService.sendNotification(new NotificationMessage({
-                        title: 'Success',
-                        message: `${this._data.bet.name} is deleted!`
-                    }));
-                    this._router.navigateByUrl('/admin/betting/bets/page/1');
-                }, this._notificationService.failureNotification.bind(this._notificationService),
-                this._dialogService.closeDialog.bind(this._dialogService));
+                this._notificationService.sendNotification(new NotificationMessage({
+                    title: 'Success',
+                    message: `${this._data.bet.name} is deleted!`
+                }));
+                this._router.navigateByUrl('/admin/betting/bets/page/1');
+            }, error => {
+                this._notificationService.failureNotification(error);
+            }, () => {
+                this._dialogService.closeDialog();
+            });
     }
 
     private onSave (): void {

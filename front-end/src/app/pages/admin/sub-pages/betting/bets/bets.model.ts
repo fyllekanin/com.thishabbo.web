@@ -65,3 +65,9 @@ export enum BetActions {
     SUSPEND_BET,
     UNSUSPEND_BET
 }
+
+export enum BetStatuses {
+    SUSPENDED = 'suspended',
+    FINISHED = 'finished',
+    ONGOING = 'ongoing'
+}

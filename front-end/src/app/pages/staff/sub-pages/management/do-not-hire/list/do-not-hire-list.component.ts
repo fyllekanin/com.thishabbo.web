@@ -89,7 +89,9 @@ export class DoNotHireListComponent extends Page implements OnDestroy {
                 }));
                 this._data.items = this._data.items.filter(item => nickname !== item.nickname);
                 this.createOrUpdateTable();
-            }, this._notificationService.failureNotification.bind(this._notificationService), () => {
+            }, error => {
+                this._notificationService.failureNotification(error);
+            }, () => {
                 this._dialogService.closeDialog();
             });
     }

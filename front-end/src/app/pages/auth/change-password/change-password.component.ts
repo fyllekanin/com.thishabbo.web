@@ -12,13 +12,13 @@ import { NotificationMessage } from 'shared/app-views/global-notification/global
     templateUrl: 'change-password.component.html'
 })
 export class ChangePasswordComponent extends Page implements OnDestroy {
-    private _code: string;
-    private _userId: number;
+    private readonly _code: string;
+    private readonly _userId: number;
 
     password: string;
     repassword: string;
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService,
         private _router: Router,
@@ -38,7 +38,7 @@ export class ChangePasswordComponent extends Page implements OnDestroy {
         super.destroy();
     }
 
-    onClick(): void {
+    onClick (): void {
         this._httpService.put(`auth/forgot-password`, {
             userId: this._userId,
             password: this.password,
@@ -53,11 +53,11 @@ export class ChangePasswordComponent extends Page implements OnDestroy {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    get code(): string {
+    get code (): string {
         return this._code;
     }
 
-    get userId(): number {
+    get userId (): number {
         return this._userId;
     }
 }

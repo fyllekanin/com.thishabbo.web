@@ -4,17 +4,17 @@ import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 
 @Component({
-    selector: 'app-home-leader-board',
+    selector: 'app-custom-leader-board',
     templateUrl: 'leader-board.component.html'
 })
 export class LeaderBoardComponent extends Page implements OnDestroy {
 
-    constructor(
+    constructor (
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService
     ) {
         super(elementRef);
-        breadcrumbService.breadcrumb = new Breadcrumb({ current: 'Leader board' });
+        breadcrumbService.breadcrumb = new Breadcrumb({current: 'Leader board'});
     }
 
     ngOnDestroy () {

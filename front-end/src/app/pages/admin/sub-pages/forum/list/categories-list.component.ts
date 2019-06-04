@@ -152,7 +152,9 @@ export class CategoriesListComponent extends Page implements OnDestroy {
                     this._categories = this._categories.filter(category => category.categoryId !== categoryId);
                 }
                 this.onPage({data: this._categories});
-            }, this._notificationService.failureNotification.bind(this._notificationService), () => {
+            }, error => {
+                this._notificationService.failureNotification(error);
+            }, () => {
                 this._dialogService.closeDialog();
             });
     }

@@ -12,3 +12,19 @@
 .current-slot {
     font-weight: bold;
 }
+
+.NA, .OC, .EU {
+    font-weight: bold;;
+}
+
+.OC {
+    color: rgb(238, 162, 154);
+}
+
+.NA {
+    color: rgb(171, 145, 189);
+}
+
+.EU {
+    color: rgb(126, 168, 218);
+}

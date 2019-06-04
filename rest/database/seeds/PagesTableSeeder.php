@@ -144,6 +144,30 @@ If you\'re still having problems - tweet us [b]@[url=https://twitter.com/thishab
                     'createdAt' => 1551197660,
                     'updatedAt' => 1551197660,
                 ),
+            4 =>
+                array(
+                    'pageId' => 5,
+                    'path' => 'contact',
+                    'title' => 'Contact Form',
+                    'content' => '',
+                    'isDeleted' => 0,
+                    'isSystem' => 1,
+                    'canEdit' => 0,
+                    'createdAt' => 1551197660,
+                    'updatedAt' => 1551197660,
+                ),
+            4 =>
+                array(
+                    'pageId' => 5,
+                    'path' => 'job',
+                    'title' => 'Job Form',
+                    'content' => '',
+                    'isDeleted' => 0,
+                    'isSystem' => 1,
+                    'canEdit' => 0,
+                    'createdAt' => 1551197660,
+                    'updatedAt' => 1551197660,
+                ),
         ));
 
 

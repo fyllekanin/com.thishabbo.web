@@ -6,11 +6,18 @@ import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { BadgeUser, BadgeUsersModel } from './badge-users.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
-import { SITECP_BREADCRUMB_ITEM, BADGE_LIST_BREADCRUMB_ITEM } from '../../../admin.constants';
+import { BADGE_LIST_BREADCRUMB_ITEM, SITECP_BREADCRUMB_ITEM } from '../../../admin.constants';
 import { TitleTab } from 'shared/app-views/title/title.model';
-import { Button } from 'shared/directives/button/button.model';
 import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { ArrayHelper } from 'shared/helpers/array.helper';
+import {
+    Action,
+    TableAction,
+    TableCell,
+    TableConfig,
+    TableHeader,
+    TableRow
+} from 'shared/components/table/table.model';
 
 @Component({
     selector: 'app-admin-badges-users',
@@ -19,13 +26,13 @@ import { ArrayHelper } from 'shared/helpers/array.helper';
 export class BadgeUsersComponent extends Page implements OnDestroy {
     private _data: BadgeUsersModel;
 
+    tableConfig: TableConfig;
     nickname: string;
-    addButton = Button.GREEN;
-    userTabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Remove' })
+    tabs: Array<TitleTab> = [
+        new TitleTab({title: 'Add'})
     ];
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService,
         elementRef: ElementRef,
@@ -43,31 +50,28 @@ export class BadgeUsersComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    save(): void {
+    save (): void {
         const userIds = this._data.users.map(user => user.userId);
-        this._httpService.put(`admin/badges/${this._data.badge.badgeId}/users`, { userIds: userIds })
+        this._httpService.put(`admin/badges/${this._data.badge.badgeId}/users`, {userIds: userIds})
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Users with this badge are now updated!'
                 }));
+                this.createOrUpdateTable();
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    removeUser(user: BadgeUser): void {
-        this._data.users = this._data.users.filter(item => item.userId !== user.userId);
-        this._notificationService.sendNotification(new NotificationMessage({
-            title: 'Removed',
-            message: 'User is removed'
-        }));
+    onRemove (action: Action): void {
+        this._data.users = this._data.users.filter(item => item.userId !== Number(action.rowId));
         this.save();
     }
 
-    addUser(): void {
+    addUser (): void {
         const user = this._data.availableUsers
             .find(item => item.nickname.toLowerCase() === this.nickname.toLowerCase());
         if (!user) {
@@ -79,24 +83,53 @@ export class BadgeUsersComponent extends Page implements OnDestroy {
             return;
         }
 
-        this._notificationService.sendNotification(new NotificationMessage({
-            title: 'Added',
-            message: 'User is added'
-        }));
         this.nickname = '';
         this._data.users.push(user);
         this.save();
     }
 
-    get users(): Array<BadgeUser> {
+    get users (): Array<BadgeUser> {
         return this._data.users.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'nickname'));
     }
 
-    get title(): string {
+    get title (): string {
         return `Manage users for badge: ${this._data.badge.name}`;
     }
 
-    private onData(data: { data: BadgeUsersModel }): void {
+    private onData (data: { data: BadgeUsersModel }): void {
         this._data = data.data;
+        this.createOrUpdateTable();
+    }
+
+    private createOrUpdateTable (): void {
+        if (this.tableConfig) {
+            this.tableConfig.rows = this.getTableRows();
+            return;
+        }
+        this.tableConfig = new TableConfig({
+            title: 'Users with badge',
+            headers: this.getTableHeaders(),
+            rows: this.getTableRows()
+        });
+    }
+
+    private getTableRows (): Array<TableRow> {
+        return this._data.users.map(user => new TableRow({
+            id: user.userId.toString(),
+            cells: [
+                new TableCell({title: user.nickname}),
+                new TableCell({title: user.createdAt})
+            ],
+            actions: [
+                new TableAction({title: 'Remove'})
+            ]
+        }));
+    }
+
+    private getTableHeaders (): Array<TableHeader> {
+        return [
+            new TableHeader({title: 'Nickname'}),
+            new TableHeader({title: 'Timestamp'})
+        ];
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Staff;
 
-use App\EloquentModels\Log\LogUser;
 use App\EloquentModels\Log\LogStaff;
+use App\EloquentModels\Log\LogUser;
 use App\EloquentModels\Staff\Event;
 use App\EloquentModels\Staff\Timetable;
 use App\EloquentModels\User\User;
@@ -52,7 +52,7 @@ class EventsController extends Controller {
         return response()->json($says);
     }
 
-     /**
+    /**
      * Post request for liking Host, validation for Current Host and last time since like
      *
      * @param Request $request
@@ -171,18 +171,19 @@ class EventsController extends Controller {
         Condition::precondition(!isset($information->name), 400, 'Name missing');
         Condition::precondition(!isset($information->reason), 400, 'Reason missing');
 
-        $entries[] = [
+        $entry = [
             'id' => count($entries) + 1,
             'name' => $information->name,
             'reason' => $information->reason,
             'addedBy' => $user->userId,
             'createdAt' => time()
         ];
+        $entries[] = $entry;
 
         SettingsHelper::createOrUpdateSetting($settingKeys->banOnSight, json_encode($entries));
         Logger::staff($user->userId, $request->ip(), Action::CREATED_BAN_ON_SIGHT, ['name' => $information->name]);
 
-        return response()->json();
+        return response()->json($entry);
     }
 
     /**
@@ -257,7 +258,7 @@ class EventsController extends Controller {
     public function getEventTypes(Request $request, $page) {
         $filter = $request->input('filter');
 
-        $eventsSql = Event::where('name', 'LIKE', '%' . $filter . '%')
+        $eventsSql = Event::where('name', 'LIKE', Value::getFilterValue($request, $filter))
             ->orderBy('name', 'ASC');
 
         $total = DataHelper::getPage($eventsSql->count('eventId'));
@@ -355,7 +356,8 @@ class EventsController extends Controller {
     public function getTimetable() {
         return response()->json([
             'timetable' => Timetable::events()->isActive()->get(),
-            'events' => Event::all()
+            'events' => Event::all(),
+            'timezones' => ConfigHelper::getTimetable()
         ]);
     }
 

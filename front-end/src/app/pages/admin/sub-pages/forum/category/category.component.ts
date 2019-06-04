@@ -63,12 +63,18 @@ export class CategoryComponent extends Page implements OnDestroy {
     private save (): void {
         if (this._categoryPage.category.createdAt) {
             this._httpService.put(`admin/categories/${this._categoryPage.category.categoryId}`, {category: this._categoryPage.category})
-                .subscribe(this.onSuccessUpdate.bind(this),
-                    this._notificationService.failureNotification.bind(this._notificationService));
+                .subscribe(res => {
+                    this.onSuccessUpdate(res);
+                }, error => {
+                    this._notificationService.failureNotification(error);
+                });
         } else {
             this._httpService.post('admin/categories', {category: this._categoryPage.category})
-                .subscribe(this.onSuccessCreate.bind(this),
-                    this._notificationService.failureNotification.bind(this._notificationService));
+                .subscribe(res => {
+                    this.onSuccessCreate(res);
+                }, error => {
+                    this._notificationService.failureNotification(error);
+                });
         }
     }
 
@@ -136,7 +142,9 @@ export class CategoryComponent extends Page implements OnDestroy {
                     message: 'Category Deleted!'
                 }));
                 this._router.navigateByUrl('/admin/forum/categories/page/1');
-            }, this._notificationService.failureNotification.bind(this._notificationService), () => {
+            }, error => {
+                this._notificationService.failureNotification(error);
+            }, () => {
                 this._dialogService.closeDialog();
             });
     }

@@ -19,9 +19,10 @@ export class UsersListService implements Resolve<UsersListPage> {
 
     resolve (route: ActivatedRouteSnapshot): Observable<UsersListPage> {
         const pageNr = route.params['page'];
-        const filterQuery = route.queryParams['filter'];
+        const nickname = route.queryParams['nickname'];
+        const habbo = route.queryParams['habbo'];
 
-        return this._httpService.get(`admin/users/list/page/${pageNr}`, {filter: filterQuery})
+        return this._httpService.get(`admin/users/list/page/${pageNr}`, {nickname: nickname, habbo: habbo})
             .pipe(map(res => new UsersListPage(res)));
     }
 
