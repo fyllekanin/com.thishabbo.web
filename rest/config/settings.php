@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'USER_UPDATE_TYPES' => [
+        'CLEAR_SUBSCRIPTION' => 1,
+        'CLEAR_GROUP' => 2
+    ],
     'KEYS' => [
         'botUserId' => 'welcome_bot_userId',
         'welcomeBotMessage' => 'welcome_bot_message',
@@ -60,9 +64,5 @@ return [
             'icon' => 'fa fa-trophy',
             'color' => '#FFC0CB'
         ]
-    ],
-    'USER_UPDATE_TYPES' => [
-        'CLEAR_SUBSCRIPTION' => 1,
-        'CLEAR_GROUP' => 2
     ]
 ];
