@@ -61,8 +61,9 @@ class ClearSubscriptions {
         $userIds = $userSubSql->pluck('userId');
         $userSubSql->delete();
 
+        $clearSubType = ConfigHelper::getUserUpdateTypes()->CLEAR_SUBSCRIPTION;
         foreach($userIds as $userId) {
-            UserUpdated::dispatch($userId, ConfigHelper::getUserUpdateTypes()->CLEAR_SUBSCRIPTION);
+            UserUpdated::dispatch($userId, $clearSubType);
         }
     }
 }
