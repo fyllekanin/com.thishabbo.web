@@ -7,6 +7,7 @@ use App\EloquentModels\Shop\UserSubscription;
 use App\EloquentModels\User\UserData;
 use App\Helpers\ConfigHelper;
 use App\Helpers\UserHelper;
+use App\Helpers\AvatarHelper;
 use App\Utils\Iterables;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -53,7 +54,7 @@ class SubscriptionUpdated implements ShouldQueue {
         $userIds = UserSubscription::where('subscriptionId', $this->subscriptionId)->pluck('userId')->toArray();
 
         foreach($userIds as $userId) {
-            UserHelper::clearAvatarIfInelligible($userId);
+            AvatarHelper::clearAvatarIfInelligible($userId);
         }
 
         $userIds = Iterables::filter($userIds, function ($userId) {

@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use App\Helpers\UserHelper;
+use App\Helpers\AvatarHelper;
 use App\EloquentModels\User\UserGroup;
 
 /**
@@ -43,7 +43,7 @@ class GroupUpdated implements ShouldQueue {
     public function handle() {
         $userIds = UserGroup::where('groupId', $this->groupId)->pluck('userId');
         foreach ($userIds as $userId) {
-            UserHelper::clearAvatarIfInelligible($userId);
+            AvatarHelper::clearAvatarIfInelligible($userId);
         }
     }
 }

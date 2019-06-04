@@ -2,9 +2,11 @@
 
 namespace App\Jobs;
 
+
 use App\EloquentModels\User\UserData;
 use App\Helpers\ConfigHelper;
 use App\Helpers\UserHelper;
+use App\Helpers\AvatarHelper;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -54,6 +56,6 @@ class UserUpdated implements ShouldQueue {
             }
         }
 
-        UserHelper::clearAvatarIfInelligible($this->userId);
+        AvatarHelper::clearAvatarIfInelligible($this->userId);
     }
 }
