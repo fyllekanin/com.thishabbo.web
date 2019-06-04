@@ -84,6 +84,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         this.updateFixedMenu();
         this.updateThreadTools();
         this._notificationService.sendInfoNotification('Device settings saved!');
+        this._continuesInformation.deviceSettingsUpdated();
     }
 
     onRemove (tab: TabModel): void {

@@ -43,7 +43,7 @@ class GroupUpdated implements ShouldQueue {
     public function handle() {
         $userIds = UserGroup::where('groupId', $this->groupId)->pluck('userId');
         foreach ($userIds as $userId) {
-            AvatarHelper::clearAvatarIfInelligible($userId);
+            AvatarHelper::clearAvatarIfInvalid($userId);
         }
     }
 }

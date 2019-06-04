@@ -25,10 +25,13 @@ export class HeaderComponent {
         private _authService: AuthService,
         continuesInformationService: ContinuesInformationService
     ) {
+        this.isMenuFixed = Boolean(localStorage.getItem(LOCAL_STORAGE.FIXED_MENU));
         continuesInformationService.onContinuesInformation.subscribe(continuesInformation => {
             this._info = continuesInformation;
         });
-        this.isMenuFixed = Boolean(localStorage.getItem(LOCAL_STORAGE.FIXED_MENU));
+        continuesInformationService.onDeviceSettingsUpdated.subscribe(() => {
+            this.isMenuFixed = Boolean(localStorage.getItem(LOCAL_STORAGE.FIXED_MENU));
+        });
     }
 
     onKeyUp (event): void {

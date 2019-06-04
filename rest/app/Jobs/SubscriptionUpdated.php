@@ -5,9 +5,9 @@ namespace App\Jobs;
 use App\EloquentModels\Shop\Subscription;
 use App\EloquentModels\Shop\UserSubscription;
 use App\EloquentModels\User\UserData;
+use App\Helpers\AvatarHelper;
 use App\Helpers\ConfigHelper;
 use App\Helpers\UserHelper;
-use App\Helpers\AvatarHelper;
 use App\Utils\Iterables;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -53,8 +53,8 @@ class SubscriptionUpdated implements ShouldQueue {
 
         $userIds = UserSubscription::where('subscriptionId', $this->subscriptionId)->pluck('userId')->toArray();
 
-        foreach($userIds as $userId) {
-            AvatarHelper::clearAvatarIfInelligible($userId);
+        foreach ($userIds as $userId) {
+            AvatarHelper::clearAvatarIfInvalid($userId);
         }
 
         $userIds = Iterables::filter($userIds, function ($userId) {

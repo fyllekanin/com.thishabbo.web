@@ -3,9 +3,10 @@
 namespace App\Helpers;
 
 use App\EloquentModels\User\Avatar;
+use App\EloquentModels\User\User;
+use App\Utils\Value;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
-use App\Utils\Value;
 
 class AvatarHelper {
 
@@ -22,7 +23,7 @@ class AvatarHelper {
 
     public static function getCurrentAvatar($userId) {
         $avatar = Avatar::where('userId', $userId)->orderBy('updatedAt', 'DESC')->first();
-        return (object) [
+        return (object)[
             'userId' => Value::objectProperty($avatar, 'userId', 0),
             'avatarId' => Value::objectProperty($avatar, 'avatarId', 0),
             'width' => Value::objectProperty($avatar, 'width', 0),
@@ -30,11 +31,11 @@ class AvatarHelper {
         ];
     }
 
-    public static function clearAvatarIfInelligible($userId) {
+    public static function clearAvatarIfInvalid($userId) {
         $currentAvatar = self::getCurrentAvatar($userId);
         $maxAvSize = self::getMaxAvatarSize($userId);
-        if($currentAvatar->width <= $maxAvSize->width && $currentAvatar->height <= $maxAvSize->height) {
-            return; // Do nothing
+        if ($currentAvatar->width <= $maxAvSize->width && $currentAvatar->height <= $maxAvSize->height) {
+            return;
         }
 
         self::backupAvatarIfExists($currentAvatar);

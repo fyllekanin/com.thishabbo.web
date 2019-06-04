@@ -451,10 +451,11 @@ class AccountController extends Controller {
      */
     private function convertIgnoredNotificationTypes($ignoredNotifications) {
         $options = 0;
+        $configOptions = ConfigHelper::getIgnoredNotificationsConfig();
 
         foreach ($ignoredNotifications as $key => $value) {
             if (isset($ignoredNotifications[$key]) && $ignoredNotifications[$key]) {
-                $options += $value;
+                $options += $configOptions->$key;
             }
         }
         return $options;
