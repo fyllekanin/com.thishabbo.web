@@ -68,7 +68,6 @@ class StreamController extends Controller {
         $current = Timetable::events()->with(['user', 'event'])->where('day', $day)->where('hour', $hour)->first();
         $next = Timetable::events()->with(['user', 'event'])->where('day', $this->getNextDay($day, $hour))->where('hour', $this->getNextHour($hour))->first();
 
-        $settingKeys = ConfigHelper::getKeyConfig();
         return [
             'nickname' => $current ? $current->user->nickname : null,
             'event' => $current ? $current->event->name : null,
