@@ -65,14 +65,6 @@ export class RadioComponent {
         return this._eventStats && this._eventStats.nextHost ? this._eventStats.nextHost : 'Not Booked';
     }
 
-    get nextEvent (): string {
-        return this._eventStats && this._eventStats.nextEvent ? this._eventStats.nextEvent : '';
-    }
-
-    get eventsSay (): string {
-        return this._eventStats && this._eventStats.says ? this._eventStats.says : '';
-    }
-
     get nickname (): string {
         return this._stats && this._stats.nickname ? this._stats.nickname : this.loading;
     }

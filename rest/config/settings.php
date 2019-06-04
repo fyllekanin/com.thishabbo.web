@@ -17,7 +17,6 @@ return [
         'memberOfTheMonth' => 'member_of_the_month',
         'banOnSight' => 'ban_on_sight',
         'doNotHire' => 'no_not_hire',
-        'eventsSay' => 'events_say',
         'homePageThreads' => 'home_page_threads'
     ],
     'IGNORED_NOTIFICATIONS' => [

@@ -23,8 +23,6 @@
     padding: 5px;
     margin-bottom: 1px;
     font-size: 11px;
-    width: 49.8%;
-    display: inline-block;
 }
 
 .event-position {
@@ -114,7 +112,7 @@
     font-size: 13px;
     height: 41.1px;
     width: 31px;
-    margin: 0 0 2px -1px;
+    margin: 0 0 2px 0px;
     text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.25);
     border-radius: 3px;
     box-shadow: rgba(0, 0, 0, 0.15) 0 0 0 1px inset, rgba(255, 255, 255, 0.18) 0 0 0 2px inset, rgba(0, 0, 0, 0.06) 0 1px 0;
@@ -190,4 +188,13 @@
     width: 35%;
     display: inline-block;
     margin-left: 1px;
+}
+
+.events-box-button, .radio-button {
+    cursor: pointer;
+    outline: none;
+}
+
+.events-box-button:disabled, .radio-button:disabled {
+    cursor: not-allowed;
 }
