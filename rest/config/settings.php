@@ -21,10 +21,6 @@ return [
         'MENTION_NOTIFICATIONS' => 2,
         'AUTO_SUBSCRIBE_THREAD' => 4
     ],
-    'USER_UPDATE_TYPES' => [
-        'CLEAR_SUBSCRIPTION' => 1,
-        'CLEAR_GROUP' => 2
-    ],
     'REGEX' => [
         'HABBO_ROOM' => '/(http(s)?:\/\/)?(www.)?habbo\.com\/hotel\?room=([0-9]+|(http(s)?:\/\/)?(www.)?habbo\.com\/hotel\?room=[0-9]+)?/si'
     ],
@@ -64,5 +60,9 @@ return [
             'icon' => 'fa fa-trophy',
             'color' => '#FFC0CB'
         ]
+    ],
+    'USER_UPDATE_TYPES' => [
+        'CLEAR_SUBSCRIPTION' => 1,
+        'CLEAR_GROUP' => 2
     ]
 ];
