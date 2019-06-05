@@ -157,7 +157,7 @@ input, optgroup, select, textarea {
 }
 
 .radio {
-    margin-left: -2px;
-    width: 299px;
+    margin-left: 0;
+    width: 298px;
     margin-right: 0;
 }

@@ -86,12 +86,12 @@ export class PageComponent extends Page implements OnDestroy {
                 });
         } else {
             this._httpService.post(`admin/content/pages`, {data: this._data})
-                .subscribe(() => {
+                .subscribe(res => {
                     this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: 'This page has been saved!'
                     }));
-                    this._data.createdAt = new Date().getTime() / 1000;
+                    this._data = new PageModel(res);
                     this.updateTabs();
                 });
         }

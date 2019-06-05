@@ -4,6 +4,7 @@ import { Page } from 'shared/page/page.model';
 import { UserService } from 'core/services/user/user.service';
 import { fadeAnimation } from 'shared/animations/fade.animation';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
+import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 
 @Component({
     selector: 'app-root',
@@ -37,12 +38,16 @@ export class AppComponent extends Page implements OnDestroy {
     constructor (
         private _router: Router,
         private _elementRef: ElementRef,
-        private _userService: UserService
+        private _userService: UserService,
+        continuesInformationService: ContinuesInformationService
     ) {
         super(_elementRef);
         this.addCustomListeners();
         this.addActivityListener();
         this.isFixed = Boolean(localStorage.getItem(LOCAL_STORAGE.FIXED_MENU));
+        continuesInformationService.onDeviceSettingsUpdated.subscribe(() => {
+            this.isFixed = Boolean(localStorage.getItem(LOCAL_STORAGE.FIXED_MENU));
+        });
         this._router.events.subscribe(ev => {
             if (ev instanceof NavigationStart) {
                 this.loadingProgress = 10;

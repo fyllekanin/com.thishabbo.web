@@ -43,16 +43,6 @@ class EventsController extends Controller {
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getEventsSay() {
-        $settingKeys = ConfigHelper::getKeyConfig();
-        $says = SettingsHelper::getSettingValue($settingKeys->eventsSay);
-
-        return response()->json($says);
-    }
-
-    /**
      * Post request for liking Host, validation for Current Host and last time since like
      *
      * @param Request $request
@@ -84,21 +74,6 @@ class EventsController extends Controller {
         $eventUser->save();
 
         Logger::user($user->userId, $request->ip(), Action::LIKED_HOST, [], $current->user->userId);
-        return response()->json();
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function updateEventsSay(Request $request) {
-        $user = $request->get('auth');
-        $say = $request->input('say');
-        $settingKeys = ConfigHelper::getKeyConfig();
-
-        SettingsHelper::createOrUpdateSetting($settingKeys->eventsSay, $say);
-        Logger::staff($user->userId, $request->ip(), Action::UPDATED_EVENTS_SAY);
         return response()->json();
     }
 

@@ -133,8 +133,6 @@ export class StaffPermissions {
     canManageBanOnSight: boolean;
     @primitive()
     canSeeListeners: boolean;
-    @primitive()
-    canSetEventsText: boolean;
 
     constructor (source?: Partial<StaffPermissions>) {
         ClassHelper.assign(this, source);

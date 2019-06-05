@@ -1,24 +1,28 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
-class PagesTableSeeder extends Seeder {
+class PagesTableSeeder extends Seeder
+{
 
     /**
      * Auto generated seed file
      *
      * @return void
      */
-    public function run() {
-        DB::table('pages')->delete();
-        DB::table('pages')->insert(array(
-            0 =>
-                array(
-                    'pageId' => 1,
-                    'path' => 'rules',
-                    'title' => 'Site Rules',
-                    'content' => 'All rules apply to all ThisHabbo related services. If you have an issue regarding a giveaway or some form of event on Habbo, then please report this to the Habbo Moderators and not ourselves. Staff are not excluded from these rules below.
+    public function run()
+    {
+        
+
+        \DB::table('pages')->delete();
+        
+        \DB::table('pages')->insert(array (
+            0 => 
+            array (
+                'pageId' => 1,
+                'path' => 'rules',
+                'title' => 'Site Rules',
+                'content' => 'All rules apply to all ThisHabbo related services. If you have an issue regarding a giveaway or some form of event on Habbo, then please report this to the Habbo Moderators and not ourselves. Staff are not excluded from these rules below.
 
 [center][b][size=6][u]Global Rules[/u][/size][/b][/center]
 [b]1. Intimidating or Abusive Behaviour:[/b]
@@ -92,18 +96,18 @@ Firstly, ThisHabbo takes absolutely no responsibility of things which happen on 
 [center][/center]
 
 [admin]Last modified: 04-29-2018[/admin]',
-                    'isDeleted' => 0,
-                    'isSystem' => 0,
-                    'canEdit' => 1,
-                    'createdAt' => 1551197660,
-                    'updatedAt' => 1551197660,
-                ),
-            1 =>
-                array(
-                    'pageId' => 2,
-                    'path' => 'access',
-                    'title' => 'Access Denied',
-                    'content' => 'You\'ve been denied access to this page! This could mean several things:
+                'isDeleted' => 0,
+                'isSystem' => 0,
+                'canEdit' => 1,
+                'createdAt' => 1551197660,
+                'updatedAt' => 1551197660,
+            ),
+            1 => 
+            array (
+                'pageId' => 2,
+                'path' => 'access',
+                'title' => 'Access Denied',
+                'content' => 'You\'ve been denied access to this page! This could mean several things:
 
 [ol]
 [li]Your user account may not have sufficient privileges to access this page. Are you trying to do or access something you shouldn\'t?[/li]
@@ -114,62 +118,134 @@ Firstly, ThisHabbo takes absolutely no responsibility of things which happen on 
 [/ol]
 
 If you\'re still having problems - tweet us [b]@[url=https://twitter.com/thishabbo]ThisHabbo[/url][/b]!',
-                    'isDeleted' => 0,
-                    'isSystem' => 1,
-                    'canEdit' => 1,
-                    'createdAt' => 1551197660,
-                    'updatedAt' => 1551197660,
-                ),
-            2 =>
-                array(
-                    'pageId' => 3,
-                    'path' => 'leader-board',
-                    'title' => 'Leader Board',
-                    'content' => '',
-                    'isDeleted' => 0,
-                    'isSystem' => 1,
-                    'canEdit' => 0,
-                    'createdAt' => 1551197660,
-                    'updatedAt' => 1551197660,
-                ),
-            3 =>
-                array(
-                    'pageId' => 4,
-                    'path' => 'badge-articles/page/1',
-                    'title' => 'Badge Articles',
-                    'content' => '',
-                    'isDeleted' => 0,
-                    'isSystem' => 1,
-                    'canEdit' => 0,
-                    'createdAt' => 1551197660,
-                    'updatedAt' => 1551197660,
-                ),
-            4 =>
-                array(
-                    'pageId' => 5,
-                    'path' => 'contact',
-                    'title' => 'Contact Form',
-                    'content' => '',
-                    'isDeleted' => 0,
-                    'isSystem' => 1,
-                    'canEdit' => 0,
-                    'createdAt' => 1551197660,
-                    'updatedAt' => 1551197660,
-                ),
-            4 =>
-                array(
-                    'pageId' => 5,
-                    'path' => 'job',
-                    'title' => 'Job Form',
-                    'content' => '',
-                    'isDeleted' => 0,
-                    'isSystem' => 1,
-                    'canEdit' => 0,
-                    'createdAt' => 1551197660,
-                    'updatedAt' => 1551197660,
-                ),
+                'isDeleted' => 0,
+                'isSystem' => 1,
+                'canEdit' => 1,
+                'createdAt' => 1551197660,
+                'updatedAt' => 1551197660,
+            ),
+            2 => 
+            array (
+                'pageId' => 3,
+                'path' => 'leader-board',
+                'title' => 'Leader Board',
+                'content' => '',
+                'isDeleted' => 0,
+                'isSystem' => 1,
+                'canEdit' => 0,
+                'createdAt' => 1551197660,
+                'updatedAt' => 1551197660,
+            ),
+            3 => 
+            array (
+                'pageId' => 4,
+                'path' => 'badge-articles/page/1',
+                'title' => 'Badge Articles',
+                'content' => '',
+                'isDeleted' => 0,
+                'isSystem' => 1,
+                'canEdit' => 0,
+                'createdAt' => 1551197660,
+                'updatedAt' => 1551197660,
+            ),
+            4 => 
+            array (
+                'pageId' => 5,
+                'path' => 'job',
+                'title' => 'Job Form',
+                'content' => '',
+                'isDeleted' => 0,
+                'isSystem' => 1,
+                'canEdit' => 0,
+                'createdAt' => 1551197660,
+                'updatedAt' => 1551197660,
+            ),
+            5 => 
+            array (
+                'pageId' => 6,
+                'path' => 'about',
+                'title' => 'History',
+                'content' => '[atitle]The Start[/atitle]
+ThisHabbo is a Habbo fansite, currently owned by [b]irDez[/b]. Originally in 2010 the site was owned by [b]Brettles[/b], with [b]irDez [/b]and [b]Farmering [/b]as radio managers. Back then, it was a shake for fansites as Dez and Farmer were probably the best Radio Managers at the time. However, he bottled out before launch and handed the site over to Dez and Farmer.
+
+On [b]April 30th 2010[/b] ThisHabbo launched their forum, waiting almost a month to launch the site on[b] May 22nd 2010![/b] The site was given praise from all angles, everybody seemed to love the layout, and the community kept getting bigger every day! ThisHabbo was going very well and the fanbase was amazing, with a fantastic amount of support from every direction. With this new community continuing to grow and change, something new was needed.
+
+Only two months after Version 1 was launched, the pigs decided to change it up and launch a brand new layout, Version 2! The forum skin went live in early[b] July 2010[/b], with the main site launching on the[b] 18th July 2010[/b]. This was said to be a massive improvement from their first layout, but it wasn\'t enough to keep them going. On the [b]15th August 2010[/b] Farmer resigned from his position as site owner leaving Dez to run the site on his own. The pressure put onto him was immense, and just under two weeks after, on the 2[b]8th August 2010[/b], Dez decided he couldn\'t handle it any more and closed down the site.
+
+
+[atitle]The Return[/atitle][center][i]\'one last time, we promise!\'[/i][/center]
+Soon after closing the site, Dez and Farmer realised how much they missed it and how much the fans missed it, so they had an idea. On the [b]2nd November 2010[/b], they re-launched ThisHabbo with the saying "One last time, we promise". This was met by much criticism from fellow fansite HFFM as they saw more and more of their staff make the switch. ThisHabbo had launched with a older V2 layout for now.
+
+Habbos from all around the globe joined them to start up what was to become one of the biggest fansites in history, although they didn\'t know this yet. A few weeks after launch, [b]Farmering [/b]left the website for again, leaving [b]irDez [/b]to run the website by himself again. 
+
+However, all was not lost since Dez had anticipated Farmer\'s depature, already having DanM2008 on standby as the new site technician, taking over some of Farmer\'s old roles. [b]Version 3 was promised in November 2010[/b], but in the end was delayed right up until [b]March 2011[/b], due to there not being a good design found.  
+So on Saturday[b] 26th March 2011[/b] Version 3 was launched, 5 months after they had originally said. 
+[b]Legend says, ThisHabbo generally releases layouts in March.
+[/b]
+
+
+[atitle]Version 3[/atitle][center][i][/i][/center]Version 3 received good reviews from the community and Dez proceeded to update the layout [b]throughout 2011 and 2012,[/b] with many changes through the site\'s management team, all making the site stronger. In June 2012, DanM2008 decided to step down as site manager, which meant that there was space for a new site manager to help Dez with running the website. BraveHeart71 was the general manager at the time and had already been dealing with the website coding and so he stepped up to help push the site forward.
+
+From April 2012 to November 2012 ThisHabbo\'s main site was on Version 3.9, the last time version 3 was worked on. [b]The layout had been around for 19 months, a new layout was very overdue[/b], so the search began for a new layout.
+
+[b]ThisHabbo V3 remains to be the most successful layout in history.[/b]
+
+
+[atitle]Version 4[/atitle][center][i][/i][/center]In true ThisHabbo style Version 4 came months later than promised, but eventually on the [b]10th November 2012[/b] Dez pressed the button which launched the best layout ThisHabbo had ever seen. The site loaded faster, the design was cleaner and best of all there were so many more features making things user-friendly! All we need now is some feedback, then the website will continue to be updated.
+
+After many months, and the site being on [b]Version 4 for nearly four years[/b] (yes stupid!) search began for a new layout, and nothing was working.
+
+
+[atitle]Version 4.2[/atitle][center][i][/i][/center]Even with the success of Version 4, The Administration team weren\'t happy and wanted to create a more user friendly content packed site for our users to enjoy. On the [b]13th May 2013[/b] Dez launched the new and improved Version 4.2 packed with new content and unique ideas. This site design was much cleaner than the previous and everything was user-friendly and more easy to navigate.
+
+We also seen the introduction of our new department - Habbo events. With this layout came a brand new unreleased habbo furni section dedicated to providing you with hotel updates before they appeared on Habbo! However, it didn\'t take long for ThisHabbo to bottle the department - the community wasn\'t happy with it and the department faded away. ThisHabbo then reverted back to an older style layout. At this point, people were bored of V4 and wanted something new. Statistics were down - people weren\'t posting and even better, MSN had closed making it even harder for ThisHabbo to survive.
+
+[b]Dez was inactive, Fergie was inactive and Dan was busy - ThisHabbo was left for dusk.[/b]
+
+
+[atitle]Version 5[/atitle][center][i][/i][/center][i][center]V1 sucked - V2 wasn\'t bad - V3 was brilliant - V4 was disappointing - V5 was fantastic.[/center][/i]
+[b]Version 4 had been out for four years and people were sick of it[/b]. ThisHabbo had been left behind alongside HFFM and Habbox as newer sites opted not to use vBulletin and code their own systems to manage their content better and more dynamically. This led to the older fansites not being used as much. Fansites were more focused on guides and badges - something ThisHabbo, HFFM and Habbox didn\'t provide.
+
+Dez had returned from his 2 year of inactivity, scaring the current community (who had no idea who this Dez bloke was) that things would go back to it\'s depths - the staff stealing, the drama - however, he came back with one plan: Version 5. This would be a shock to the older fansites - because if ThisHabbo moved to something better, then they\'d be forced to do something similar.
+
+Dez began designing V4.6. However, he was stuck on a query and some guy called [url=https://www.thishabbo.com/profile/Bear94]Optra[/url] (Bear94) helped him with it. Instantly, Dez offered him a place on the Admin team and they began to talk. Eric had been at fansites before - but had never really taken on an Administrator role - ThisHabbo was the perfect site to show his work off.
+
+...And on that day V4.6 was rebranded to V5.[b] September 3rd 2015[/b] development began on Version 5. Dez wanted TH, THF and the staff panel all as one in V2, V3 and V4 but back then, we didn\'t have the ability to make that change - until Eric stressed \'easy\'. Dez then decided that V5 will only be \'our best layout\' if our longest standing members had an influence on it. At that point, ThisHabbos most loyal members were given V5 exclusive access. They tested and tested - to try and make the release as smooth as possible.
+
+They set a date of launching it on ThisHabbos 5th birthday - but the work was just too much. It was pushed back to the first weekend of January. Guess what? It was too much work!
+
+This led to months of Dez designing [i](and getting on Erics nerves)[/i] - and Eric coding. [b]Version 5 was finally launched early March [/b][i](when stated it would come early January, but nothing ever goes to plan here... does it?)[/i] and this one site contained 4 things:
+- Badges
+- Guides
+- Staff Panel
+- Forum
+
+The goal for V5 was to make it better than older layouts and increase posting statistics. ThisHabbo decided to move all it\'s staff from Skype and keep everything exclusive to V5. V5 also launched with the return of V2, V3 and V4 skins to ensure everybody liked at least one skin.
+
+ThisHabbos Version 5 hopes to be the stepping stone in fansites. It\'s slick, fast and pretty damn neat.
+
+ThisHabbo has seen an increase in activity and posts since V5 was first announced, with a lot of older members wanting to get involved with such a interesting layout launch.
+
+[b]The newest tagline for ThisHabbo\'s Version 5 (with thanks to [b]Dan[/b]). "Version 5 doesn\'t belong to ThisHabbo, it belongs to you, because its customisable to you" and where V5 takes us from here, only time will tell![/b]
+
+
+[atitle]Version 6[/atitle][center][i][/i][/center][i][center][/center][/i]Version 5 was the version that reshaped us as a website, and if it weren\'t for V5, a lot of functionality we wanted would have been possible. While V5 successfully tore us away from the traditional main-site/forum setup, it didn\'t go as far as we wanted. Therefore, we took Version 5 a step further and released Version 6 on[b] July 7 2017.[/b]
+
+While we weren\'t directly using vBulletin on V5, we still relied on its database design. Version 6 was a completely blank page, this allowed us to build a system that fits our needs, and our needs only and increase the speed and reliability of the site.
+
+[b]Optra[/b] (Bear94) was initially the mastermind behind V6. He built the foundations of the project. However, he later became busy with life, so the baton was handed on to [b]Stevey[/b] and [b]Andy[/b]. With [b]Dez[/b]\'s guidance, the boys built on the strong foundations and added the many features and functionality that you see on the site today; including mystery boxes, customisable profiles, daily quests, notices and much more.
+
+As V6 was a complete rewrite for us, it has been built with longevity in mind. We don\'t anticipate such a big change in the future. Instead, we intend to continually improve and evolve Version 6. We will be releasing new features and design changes all the time. Version 6 will never feel old.
+
+Version 6 also saw us tweak our staff structure, bringing in \'Community Administrators\', primarily responsible for the entire community and \'Site Administrators\', with their main responsibility being to ensure that the community gets exactly what they need from the site.',
+                'isDeleted' => 0,
+                'isSystem' => 0,
+                'canEdit' => 1,
+                'createdAt' => 1559664362,
+                'updatedAt' => 1559664918,
+            ),
         ));
-
-
+        
+        
     }
 }

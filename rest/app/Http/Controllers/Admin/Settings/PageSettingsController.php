@@ -113,7 +113,7 @@ class PageSettingsController extends Controller {
         Logger::admin($user->userId, $request->ip(), Action::CREATED_PAGE, [
             'title' => $data->title
         ]);
-        return response()->json();
+        return $this->getPage($page->pageId);
     }
 
     /**

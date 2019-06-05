@@ -56,6 +56,6 @@ class UserUpdated implements ShouldQueue {
             }
         }
 
-        AvatarHelper::clearAvatarIfInelligible($this->userId);
+        AvatarHelper::clearAvatarIfInvalid($this->userId);
     }
 }

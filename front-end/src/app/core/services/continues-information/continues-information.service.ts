@@ -11,6 +11,7 @@ import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 @Injectable()
 export class ContinuesInformationService implements Resolve<void> {
     private _onContinuesInformationSubject: Subject<ContinuesInformationModel> = new Subject();
+    private _onDeviceSettingsUpdated: Subject<void> = new Subject();
 
     private _lastNotificationCheck = 0;
     private _notificationsSubject: Subject<Array<NotificationModel<any>>> = new Subject();
@@ -62,6 +63,10 @@ export class ContinuesInformationService implements Resolve<void> {
         this._onTabsUpdatedSubject.next();
     }
 
+    deviceSettingsUpdated (): void {
+        this._onDeviceSettingsUpdated.next();
+    }
+
     get onTabsUpdated (): Observable<void> {
         return this._onTabsUpdatedSubject.asObservable();
     }
@@ -72,6 +77,10 @@ export class ContinuesInformationService implements Resolve<void> {
 
     get onContinuesInformation (): Observable<ContinuesInformationModel> {
         return this._onContinuesInformationSubject.asObservable();
+    }
+
+    get onDeviceSettingsUpdated (): Observable<void> {
+        return this._onDeviceSettingsUpdated.asObservable();
     }
 
     private onUserActivityChange (isUserActive): void {

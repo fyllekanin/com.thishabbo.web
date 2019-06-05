@@ -94,11 +94,6 @@ export class StaffComponent extends Page implements OnDestroy, OnInit {
                         title: 'BOS List',
                         link: '/staff/events/ban-on-sight',
                         isApplicable: this._authService.staffPermissions.canEvent
-                    }),
-                    new SideMenuItem({
-                        title: 'Events Says',
-                        link: '/staff/events/say',
-                        isApplicable: this._authService.staffPermissions.canSetEventsText
                     })
                 ]
             }),

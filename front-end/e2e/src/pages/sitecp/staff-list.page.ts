@@ -4,7 +4,7 @@ import { InputUtil } from '../../utils/input.util';
 
 export class StaffListPage {
 
-    static addGroup(group: string): void {
+    static addGroup (group: string): void {
         InputUtil.searchInSelect(element(by.css('app-form-select')), group).then(() => {
             CommonUtil.click(element(by.cssContainingText('app-form-select .values div', group)));
             CommonUtil.click(element(by.cssContainingText('select[name="color"] option', 'Red')));
@@ -16,9 +16,9 @@ export class StaffListPage {
         });
     }
 
-    static removeGroup(group: string): void {
+    static removeGroup (group: string): void {
         const row = element(by.cssContainingText('app-table .row span', group));
-        const button = row.element(by.xpath('../../../..')).element(by.cssContainingText('button', 'Remove'));
-        CommonUtil.click(button);
+        const option = row.element(by.xpath('../../../..')).element(by.cssContainingText('option', 'Remove'));
+        CommonUtil.click(option);
     }
 }
