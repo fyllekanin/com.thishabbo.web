@@ -66,8 +66,8 @@
     ]
   },
   "suggest": {
-    "ext-json": "Needed for habbo searching and radio stats fetching",
-    "ext-curl": "Needed for habbo searching and radio stats fetching",
+    "ext-json": "Needed for habbo searching and radio stats fetching.",
+    "ext-curl": "Needed for habbo searching and radio stats fetching.",
     "ext-simplexml": "Needed for fetching radio stats"
   },
   "config": {
