@@ -18,9 +18,3 @@ define('CONST_DB_PASSWORD', '');
 define('CONST_CACHE_DRIVER', 'array');
 define('CONST_QUEUE_CONNECTION', 'database');
 define('CONST_QUEUE_TABLE', 'jobs');
-
-define('CONST_API_DEBUGGER_ENABLED', false);
-
-define('GITHUB_REPORTER_TOKEN', '525a9a4b023a5ff2a15c7c5c226d90a4c8d3f4e6');
-define('GITHUB_REPORTER_OWNER', 'fyllekanin');
-define('GITHUB_REPORTER_REPOSITORY', 'com.thishabbo.web');
