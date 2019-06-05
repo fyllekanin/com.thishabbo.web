@@ -28,7 +28,6 @@ class AuthController extends Controller {
     private $botService;
     private $authService;
     private $habboService;
-    test;
 
     /**
      * AuthController constructor.
