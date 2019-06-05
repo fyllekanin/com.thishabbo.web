@@ -335,8 +335,8 @@ class AuthController extends Controller {
         Condition::precondition($habbo->motto != 'thishabbo-register', 400, 'Your motto needs to be "thishabbo-register"');
         Condition::precondition(User::withHabbo($data->habbo)->count('userId') > 0, 400, 'The Habbo Name is already taken. Contact Support!');
 
-        $oneMonthAgo = time() - 2419200;
-        Condition::precondition(strtotime($habbo->memberSince) > $oneMonthAgo, 400, 'Your Habbo needs to be at least one month old! Contact Support!');
+        $threeDaysAgo = time() - 259200;
+        Condition::precondition(strtotime($habbo->memberSince) > $threeDaysAgo, 400, 'Your Habbo needs to be at least three days old! Contact Support!');
     }
 
     /**
