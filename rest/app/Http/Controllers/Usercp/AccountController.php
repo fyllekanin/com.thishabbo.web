@@ -34,7 +34,7 @@ class AccountController extends Controller {
     private $habboService;
     private $creditsService;
 
-    private $monthAgo;
+    private $threeDaysAgo;
 
     /**
      * AccountController constructor.
@@ -48,7 +48,7 @@ class AccountController extends Controller {
         $this->authService = $authService;
         $this->habboService = $habboService;
         $this->creditsService = $creditsService;
-        $this->monthAgo = time() - 2419200;
+        $this->threeDaysAgo = time() - 259200;
     }
 
     /**
@@ -172,7 +172,7 @@ class AccountController extends Controller {
 
         $habbo = $this->habboService->getHabboByName($name);
         Condition::precondition(!$habbo, 404, 'No habbo with that name');
-        Condition::precondition(strtotime($habbo->memberSince) > $this->monthAgo, 400, 'Your habbo is to young!');
+        Condition::precondition(strtotime($habbo->memberSince) > $this->threeDaysAgo, 400, 'Your habbo is to young!');
         Condition::precondition($habbo->motto != $requiredMotto, 400,
             'Incorrect motto, you current motto is "' . $habbo->motto . '" but it needs to be "' . $requiredMotto . '"');
 
