@@ -35,7 +35,7 @@ class AuthController extends Controller {
      * @param BotService $botService
      * @param AuthService $authService
      * @param HabboService $habboService
-     */
+     *//
     public function __construct(BotService $botService, AuthService $authService, HabboService $habboService) {
         parent::__construct();
         $this->botService = $botService;
