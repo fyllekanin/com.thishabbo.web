@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property mixed threadId
  * @property mixed content
  * @property mixed thread
+ * @property mixed user
  */
 class Post extends DeletableModel {
     protected $fillable = ['threadId', 'userId', 'content', 'isApproved'];

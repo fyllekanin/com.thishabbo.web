@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\EloquentModels\Forum\Category;
+use App\EloquentModels\Staff\Timetable;
 use App\EloquentModels\User\Accolade;
 use App\EloquentModels\User\Follower;
 use App\EloquentModels\User\User;
@@ -13,6 +14,7 @@ use App\Helpers\ConfigHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Forum\Thread\ThreadCrudController;
+use App\Http\Impl\ProfileControllerImpl;
 use App\Logger;
 use App\Models\Logger\Action;
 use App\Services\ActivityService;
@@ -23,9 +25,14 @@ use App\Utils\Condition;
 use App\Utils\Iterables;
 use App\Views\VisitorMessageReportView;
 use Illuminate\Http\Request;
-use App\EloquentModels\Staff\Timetable;
 
 class ProfileController extends Controller {
+    private $myImpl;
+
+    public function __construct(ProfileControllerImpl $impl) {
+        parent::__construct();
+        $this->myImpl = $impl;
+    }
 
     /**
      * @param Request $request
@@ -35,23 +42,14 @@ class ProfileController extends Controller {
     public function createFollow(Request $request) {
         $user = $request->get('auth');
         $userId = $request->input('userId');
-
         Condition::precondition($user->userId == $userId, 400, 'You can not follow yourself');
 
-        $target = User::find($userId);
-        Condition::precondition(!$target, 404, 'No user with that ID');
+        $target = $this->myImpl->getUser($request);
+        $this->myImpl->throwIfFollowing($user, $target);
 
-        $isFollowing = Follower::where('userId', $user->userId)->where('targetId', $userId)->count('followerId') > 0;
-        Condition::precondition($isFollowing, 400, 'You are already following this user');
-
-        $follow = new Follower([
-            'userId' => $user->userId,
-            'targetId' => $target->userId,
-            'isApproved' => !($target->profile && $target->profile->isPrivate)
-        ]);
-        $follow->save();
-
+        $follow = $this->myImpl->getNewFollow($user, $target);
         NotificationFactory::followedUser($follow->targetId, $follow->userId);
+
         Logger::user($user->userId, $request->ip(), Action::FOLLOWED, [], $target->userId);
         return response()->json($this->getFollowers($target->userId, $user));
     }
@@ -61,17 +59,16 @@ class ProfileController extends Controller {
      * @param $userId
      *
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function deleteFollow(Request $request, $userId) {
         $user = $request->get('auth');
 
-        $follow = Follower::where('userId', $user->userId)->where('targetId', $userId)->first();
-        Condition::precondition(!$follow, 404, 'You are not following this user');
-
-        $targetId = $follow->targetId;
+        $follow = $this->myImpl->getFollow($user, $userId);
         $follow->delete();
-        Logger::user($user->userId, $request->ip(), Action::UNFOLLOWED, [], $targetId);
-        return response()->json($this->getFollowers($targetId, $user));
+
+        Logger::user($user->userId, $request->ip(), Action::UNFOLLOWED, [], $userId);
+        return response()->json($this->getFollowers($userId, $user));
     }
 
     /**
@@ -88,10 +85,7 @@ class ProfileController extends Controller {
 
         $profile = User::find($data->hostId);
         $parent = isset($data->parentId) ? VisitorMessage::find($data->parentId) : null;
-        Condition::precondition($this->isPrivate($user, $profile), 400, 'You are not an approved follower, you can not post here!');
-        Condition::precondition(isset($data->parentId) && !$parent, 404, 'The parent visitor message do not exist');
-        Condition::precondition($parent && $parent->hostId != $data->hostId, 400, 'Parent message and host do not match');
-        Condition::precondition(!isset($data->content) || empty($data->content), 400, 'Message can not be empty');
+        $this->myImpl->canPostVisitorMessage($user, $profile, $parent, $data);
 
         $visitorMessage = new VisitorMessage([
             'hostId' => $data->hostId,
@@ -279,7 +273,7 @@ class ProfileController extends Controller {
 
     /**
      * @param $userId - ID of user that own the profile
-     * @param $user - ID of user that is logged in / requesting
+     * @param $user - auth user
      *
      * @return array
      */
