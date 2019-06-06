@@ -79,4 +79,8 @@ class ConfigHelper {
     public static function getTimetable() {
         return Config::get(self::$SETTINGS . '.TIMETABLE');
     }
+
+    public static function getGithubSettings() {
+        return (object)Config::get(self::$SETTINGS . '.GITHUB');
+    }
 }

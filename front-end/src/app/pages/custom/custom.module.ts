@@ -19,6 +19,7 @@ import { PaginationModule } from 'shared/app-views/pagination/pagination.module'
 import { ContactComponent } from './contact/contact.component';
 import { JobComponent } from './job/job.component';
 import { InfoBoxModule } from 'shared/app-views/info-box/info-box.module';
+import { ReportBugComponent } from './report-bug/report-bug.component';
 
 @NgModule({
     imports: [
@@ -40,7 +41,8 @@ import { InfoBoxModule } from 'shared/app-views/info-box/info-box.module';
         LeaderBoardComponent,
         BadgeArticlesComponent,
         ContactComponent,
-        JobComponent
+        JobComponent,
+        ReportBugComponent
     ],
     providers: [
         CustomPageResolver,
