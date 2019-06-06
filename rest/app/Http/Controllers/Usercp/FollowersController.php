@@ -83,7 +83,7 @@ class FollowersController extends Controller {
         return response()->json([
             'total' => $total,
             'page' => $page,
-            'followers' => $followersSql->take($this->perPage)->skip($this->getOffset($page))->get()->map(function ($item) {
+            'followers' => $followersSql->take($this->perPage)->skip(DataHelper::getOffset($page))->get()->map(function ($item) {
                 return [
                     'followerId' => $item->followerId,
                     'user' => UserHelper::getSlimUser($item->userId),

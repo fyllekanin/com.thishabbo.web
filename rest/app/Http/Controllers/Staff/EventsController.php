@@ -200,7 +200,7 @@ class EventsController extends Controller {
         $total = DataHelper::getPage($logSql->count('logId'));
         $items = $logSql->orderBy('logId', 'DESC')
             ->take($this->perPage)
-            ->skip($this->getOffset($page))
+            ->skip(DataHelper::getOffset($page))
             ->get()->map(function ($log) {
                 $booking = Timetable::where('timetableId', json_decode($log->data)->timetableId)
                     ->withoutGlobalScope('nonHardDeleted')->first();
@@ -237,7 +237,7 @@ class EventsController extends Controller {
             ->orderBy('name', 'ASC');
 
         $total = DataHelper::getPage($eventsSql->count('eventId'));
-        $events = $eventsSql->take($this->perPage)->skip($this->getOffset($page))->get();
+        $events = $eventsSql->take($this->perPage)->skip(DataHelper::getOffset($page))->get();
 
         return response()->json([
             'events' => $events,

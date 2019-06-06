@@ -88,7 +88,7 @@ class LogsController extends Controller {
         }
 
         $total = DataHelper::getPage($log->count('logId'));
-        $items = $log->take($this->perPage)->skip($this->getOffset($page))->get()->map(function ($item) {
+        $items = $log->take($this->perPage)->skip(DataHelper::getOffset($page))->get()->map(function ($item) {
             $data = null;
             try {
                 $data = json_decode($item->data);

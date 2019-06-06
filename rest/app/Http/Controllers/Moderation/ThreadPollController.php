@@ -81,7 +81,7 @@ class ThreadPollController extends Controller {
             ->select('threads.title', 'threads.threadId', 'thread_polls.*');
 
         $total = DataHelper::getPage($getPollsSql->count('thread_polls.threadPollId'));
-        $polls = $getPollsSql->take($this->perPage)->skip($this->getOffset($page))->get()->map(function ($poll) {
+        $polls = $getPollsSql->take($this->perPage)->skip(DataHelper::getOffset($page))->get()->map(function ($poll) {
             return [
                 'threadPollId' => $poll->threadPollId,
                 'thread' => $poll->thread->title,

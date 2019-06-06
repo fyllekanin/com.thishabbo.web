@@ -126,7 +126,7 @@ class BetsController extends Controller {
         }
 
         $total = DataHelper::getPage($getBadgeSql->count('betId'));
-        $bets = $getBadgeSql->take($this->perPage)->skip($this->getOffset($page))->get();
+        $bets = $getBadgeSql->take($this->perPage)->skip(DataHelper::getOffset($page))->get();
 
         return response()->json([
             'bets' => $bets,

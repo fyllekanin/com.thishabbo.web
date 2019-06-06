@@ -65,8 +65,8 @@ class AccountController extends Controller {
             ->where('userId', $user->userId)
             ->orderBy('createdAt', 'DESC');
 
-        $page = DataHelper::getPage($notificationsSql->count('notificationId'));
-        $notifications = $notificationsSql->take($this->perPage)->skip($this->getOffset($page))->get()->toArray();
+        $total = DataHelper::getPage($notificationsSql->count('notificationId'));
+        $notifications = $notificationsSql->take($this->perPage)->skip(DataHelper::getOffset($page))->get()->toArray();
 
         $items = array_map(function ($notification) use ($user) {
             return new NotificationView($notification, $user);
@@ -75,7 +75,7 @@ class AccountController extends Controller {
         }));
 
         return response()->json([
-            'total' => $page,
+            'total' => $total,
             'page' => $page,
             'items' => $items
         ]);

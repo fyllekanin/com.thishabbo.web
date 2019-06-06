@@ -67,7 +67,7 @@ class ThreadCrudController extends Controller {
             'total' => $total,
             'page' => $page,
             'items' => $query->take($this->perPage)
-                ->skip($this->getOffset($page))
+                ->skip(DataHelper::getOffset($page))
                 ->get()
                 ->map(function ($item) {
                     return [
@@ -101,7 +101,7 @@ class ThreadCrudController extends Controller {
         return response()->json([
             'page' => $page,
             'total' => $total,
-            'items' => $threadSql->take($this->perPage)->skip($this->getOffset($page))->get()->map(function ($thread) {
+            'items' => $threadSql->take($this->perPage)->skip(DataHelper::getOffset($page))->get()->map(function ($thread) {
                 return [
                     'categoryId' => $thread->categoryId,
                     'style' => isset($thread->prefix) ? $thread->prefix->style : '',
@@ -272,7 +272,7 @@ class ThreadCrudController extends Controller {
 
         $thread->load(['threadPosts' => function ($query) use ($permissions, $page) {
             $query->isApproved($permissions->canApprovePosts)
-                ->skip($this->getOffset($page))
+                ->skip(DataHelper::getOffset($page))
                 ->take($this->perPage);
         }]);
 

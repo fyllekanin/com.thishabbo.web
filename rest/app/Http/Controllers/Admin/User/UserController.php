@@ -111,7 +111,7 @@ class UserController extends Controller {
         $users = array_map(function ($user) {
             $user['credits'] = UserHelper::getUserDataOrCreate($user['userId'])->credits;
             return $user;
-        }, Iterables::filter($getUserSql->take($this->perPage)->skip($this->getOffset($page))->get()->toArray(), function ($item) use ($user) {
+        }, Iterables::filter($getUserSql->take($this->perPage)->skip(DataHelper::getOffset($page))->get()->toArray(), function ($item) use ($user) {
             return UserHelper::canManageUser($user, $item['userId']);
         }));
 

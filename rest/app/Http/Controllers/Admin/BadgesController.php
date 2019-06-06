@@ -197,7 +197,7 @@ class BadgesController extends Controller {
 
         $total = DataHelper::getPage($getBadgeSql->count('badgeId'));
         $badges = $getBadgeSql->take($this->perPage)
-            ->skip($this->getOffset($page))
+            ->skip(DataHelper::getOffset($page))
             ->get();
 
         return response()->json([

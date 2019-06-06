@@ -40,7 +40,7 @@ class RadioController extends Controller {
         $total = DataHelper::getPage($logSql->count('logId'));
         $items = $logSql->orderBy('logId', 'DESC')
             ->take($this->perPage)
-            ->skip($this->getOffset($page))
+            ->skip(DataHelper::getOffset($page))
             ->get()->map(function ($log) {
 
                 $booking = Timetable::where('timetableId', json_decode($log->data)->timetableId)

@@ -21,6 +21,13 @@ class DataHelper {
         return $page > 0 ? $page : 1;
     }
 
+    public static function getOffset($page, $perPage = 0) {
+        if ($perPage == 0) {
+            $perPage = Controller::$perPageStatic;
+        }
+        return $page >= 2 ? ($perPage * $page) - $perPage : 0;
+    }
+
     public static function getShoutCastV1Stats() {
         $radio = new RadioSettings(SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->radio));
 
