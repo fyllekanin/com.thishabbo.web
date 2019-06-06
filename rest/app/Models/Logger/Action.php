@@ -1513,7 +1513,7 @@ class Action {
     ];
 
     const DELETED_THREAD_SUBSCRIPTION = [
-        'id' => 177,
+        'id' => 178,
         'description' => 'User subscribed to thread',
         'data' => [],
         'log' => 'log_user'
