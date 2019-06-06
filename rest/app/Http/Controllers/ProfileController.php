@@ -29,9 +29,9 @@ use Illuminate\Http\Request;
 class ProfileController extends Controller {
     private $myImpl;
 
-    public function __construct(ProfileControllerImpl $profileControllerImpl) {
+    public function __construct(ProfileControllerImpl $impl) {
         parent::__construct();
-        $this->myImpl = $profileControllerImpl;
+        $this->myImpl = $impl;
     }
 
     /**
@@ -85,8 +85,7 @@ class ProfileController extends Controller {
 
         $profile = User::find($data->hostId);
         $parent = isset($data->parentId) ? VisitorMessage::find($data->parentId) : null;
-        $this->myImpl->canPostVisitorMessage($user, $profile, $parent);
-        Condition::precondition(!isset($data->content) || empty($data->content), 400, 'Message can not be empty');
+        $this->myImpl->canPostVisitorMessage($user, $profile, $parent, $data);
 
         $visitorMessage = new VisitorMessage([
             'hostId' => $data->hostId,

@@ -35,9 +35,10 @@ class ProfileControllerImpl {
         return $follow;
     }
 
-    public function canPostVisitorMessage($user, $profile, $parentMessage) {
+    public function canPostVisitorMessage($user, $profile, $parentMessage, $data) {
         Condition::precondition($this->isPrivate($user, $profile), 400, 'You are not an approved follower, you can not post here!');
         Condition::precondition(isset($data->parentId) && !$parentMessage, 404, 'The parent visitor message do not exist');
         Condition::precondition($parentMessage && $parentMessage->hostId != $profile->userId, 400, 'Parent message and host do not match');
+        Condition::precondition(!isset($data->content) || empty($data->content), 400, 'Message can not be empty');
     }
 }
