@@ -46,7 +46,7 @@ export class ReportBugComponent extends Page implements OnDestroy {
         super.destroy();
     }
 
-    onReport (): void {;
+    onReport (): void {
         this._httpService.post('form/bug', { data: this.data })
             .subscribe(() => {
                 this._notificationService.sendInfoNotification('Bug reported!');
