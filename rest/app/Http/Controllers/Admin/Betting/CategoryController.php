@@ -43,7 +43,7 @@ class CategoryController extends Controller {
         $total = DataHelper::getPage($getBetCategorySql->count('betCategoryId'));
 
         return response()->json([
-            'betCategories' => $getBetCategorySql->take($this->perPage)->skip($this->getOffset($page))->get(),
+            'betCategories' => $getBetCategorySql->take($this->perPage)->skip(DataHelper::getOffset($page))->get(),
             'page' => $page,
             'total' => $total
         ]);

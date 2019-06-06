@@ -11,6 +11,7 @@ use App\EloquentModels\User\VisitorMessage;
 use App\EloquentModels\User\VisitorMessageLike;
 use App\Factories\Notification\NotificationFactory;
 use App\Helpers\ConfigHelper;
+use App\Helpers\DataHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Forum\Thread\ThreadCrudController;
@@ -304,7 +305,7 @@ class ProfileController extends Controller {
         return [
             'total' => $total,
             'page' => $page,
-            'items' => $visitorMessagesSql->take($this->perPage)->skip($this->getOffset($page))->orderBy('visitorMessageId', 'DESC')->get()->map(function ($item) use ($request) {
+            'items' => $visitorMessagesSql->take($this->perPage)->skip(DataHelper::getOffset($page))->orderBy('visitorMessageId', 'DESC')->get()->map(function ($item) use ($request) {
                 return $this->mapVisitorMessage($request, $item);
             })
         ];

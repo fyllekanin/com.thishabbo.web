@@ -57,7 +57,7 @@ class SearchControllerImpl {
 
         return (object)[
             'total' => DataHelper::getPage($usersSql->count('userId')),
-            'items' => $usersSql->take(Controller::$perPageStatic)->offset($this->getOffset($page))->get()->map(function ($item) {
+            'items' => $usersSql->take(Controller::$perPageStatic)->offset(DataHelper::getOffset($page))->get()->map(function ($item) {
                 return [
                     'id' => $item->userId,
                     'page' => 1,
@@ -76,7 +76,7 @@ class SearchControllerImpl {
 
         return (object)[
             'total' => DataHelper::getPage($postsSql->count('postId')),
-            'items' => $postsSql->take(Controller::$perPageStatic)->offset($this->getOffset($page))->get()->map(function ($item) {
+            'items' => $postsSql->take(Controller::$perPageStatic)->offset(DataHelper::getOffset($page))->get()->map(function ($item) {
                 return [
                     'id' => $item->postId,
                     'parentId' => $item->threadId,
@@ -97,7 +97,7 @@ class SearchControllerImpl {
 
         return (object)[
             'total' => DataHelper::getPage($threadsSql->count('threadId')),
-            'items' => $threadsSql->take(Controller::$perPageStatic)->offset($this->getOffset($page))->get()->map(function ($item) {
+            'items' => $threadsSql->take(Controller::$perPageStatic)->offset(DataHelper::getOffset($page))->get()->map(function ($item) {
                 return [
                     'id' => $item->threadId,
                     'page' => 1,

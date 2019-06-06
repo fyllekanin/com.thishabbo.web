@@ -187,7 +187,7 @@ class BettingController extends Controller {
 
         $betsSql = UserBet::where('userId', $user->userId)
             ->take($this->perPage)
-            ->skip($this->getOffset($page))
+            ->skip(DataHelper::getOffset($page))
             ->join('bets', 'bets.betId', '=', 'user_bets.betId')
             ->where('bets.isFinished', 1)
             ->select('user_bets.*', 'bets.name', 'bets.isFinished', 'bets.result');

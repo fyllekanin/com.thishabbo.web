@@ -323,7 +323,7 @@ class ManagementController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function getPermShows($page) {
-        $permShows = Timetable::isPerm()->take($this->perPage)->skip($this->getOffset($page))->get();
+        $permShows = Timetable::isPerm()->take($this->perPage)->skip(DataHelper::getOffset($page))->get();
         $total = DataHelper::getPage(Timetable::isPerm()->count('timetableId'));
 
         return response()->json([

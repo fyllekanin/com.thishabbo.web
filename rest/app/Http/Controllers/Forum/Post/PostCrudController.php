@@ -58,7 +58,7 @@ class PostCrudController extends Controller {
         $ignoredThreadIds = IgnoredThread::where('userId', $user->userId)->pluck('threadId');
 
         $latestPosts = $this->forumService->getLatestPosts($categoryIds, $ignoredThreadIds,
-            $ignoredCategoryIds, $perPage, $this->getOffset($page, $perPage));
+            $ignoredCategoryIds, $perPage, DataHelper::getOffset($page, $perPage));
         $total = DataHelper::getPage($latestPosts->total, $perPage);
 
         return response()->json([

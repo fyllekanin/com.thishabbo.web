@@ -10,12 +10,12 @@ use App\Helpers\ConfigHelper;
 use App\Helpers\DataHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
+use App\Jobs\GroupUpdated;
 use App\Logger;
 use App\Models\Logger\Action;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
-use App\Jobs\GroupUpdated;
 
 class GroupsController extends Controller {
 
@@ -257,7 +257,7 @@ class GroupsController extends Controller {
             ->orderBy('name', 'ASC');
 
         $total = DataHelper::getPage($getGroupSql->count('groupId'));
-        $groups = $getGroupSql->take($this->perPage)->skip($this->getOffset($page))->get();
+        $groups = $getGroupSql->take($this->perPage)->skip(DataHelper::getOffset($page))->get();
 
         foreach ($groups as $group) {
             $group->adminPermissions = $this->buildAdminPermissions($group);

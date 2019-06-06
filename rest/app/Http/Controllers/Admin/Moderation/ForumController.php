@@ -37,7 +37,7 @@ class ForumController extends Controller {
         $filter = $request->input('filter');
         $autoBansSql = AutoBan::where('title', 'LIKE', Value::getFilterValue($request, $filter))
             ->orderBy('title', 'ASC')
-            ->skip($this->getOffset($page))
+            ->skip(DataHelper::getOffset($page))
             ->take($this->perPage);
 
         $total = DataHelper::getPage($autoBansSql->count('autoBanId'));

@@ -59,7 +59,7 @@ class InfractionController extends Controller {
             ->orderBy('createdAt', 'DESC');
 
         $total = DataHelper::getPage($infractionsSql->count('infractionId'));
-        $items = $infractionsSql->take($this->perPage)->skip($this->getOffset($page))
+        $items = $infractionsSql->take($this->perPage)->skip(DataHelper::getOffset($page))
             ->get()->map(function ($infraction) {
                 return [
                     'infractionId' => $infraction->infractionId,

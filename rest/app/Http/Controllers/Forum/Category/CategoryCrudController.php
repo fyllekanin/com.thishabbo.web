@@ -121,7 +121,7 @@ class CategoryCrudController extends Controller {
         }
 
         $total = DataHelper::getPage($threadSql->count('threadId'));
-        $threads = $threadSql->skip($this->getOffset($page))
+        $threads = $threadSql->skip(DataHelper::getOffset($page))
             ->take($this->perPage)
             ->with(['prefix', 'latestPost'])
             ->withNickname()

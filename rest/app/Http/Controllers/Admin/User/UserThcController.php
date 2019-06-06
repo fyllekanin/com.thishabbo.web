@@ -90,7 +90,7 @@ class UserThcController extends Controller {
         return response()->json([
             'total' => DataHelper::getPage($total),
             'page' => $page,
-            'items' => $voucherCodeSql->orderBy('createdAt', 'ASC')->take($this->perPage)->skip($this->getOffset($page))
+            'items' => $voucherCodeSql->orderBy('createdAt', 'ASC')->take($this->perPage)->skip(DataHelper::getOffset($page))
                 ->get()->map(function ($item) {
                     $claimLog = LogUser::where('action', Action::CLAIMED_VOUCHER_CODE['id'])
                         ->where('contentId', $item->voucherCodeId)

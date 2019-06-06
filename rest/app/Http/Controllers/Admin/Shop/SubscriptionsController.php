@@ -27,7 +27,7 @@ class SubscriptionsController extends Controller {
         return response()->json([
             'page' => $page,
             'total' => DataHelper::getPage($items->count()),
-            'items' => $items->take($this->perPage)->skip($this->getOffset($page))->get()->map(function ($subscription) {
+            'items' => $items->take($this->perPage)->skip(DataHelper::getOffset($page))->get()->map(function ($subscription) {
                 return [
                     'subscriptionId' => $subscription->subscriptionId,
                     'title' => $subscription->title,

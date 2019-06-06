@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Moderation;
 
 use App\EloquentModels\Forum\Category;
 use App\EloquentModels\Infraction\InfractionLevel;
+use App\Helpers\DataHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
@@ -34,7 +35,7 @@ class InfractionLevelsController extends Controller {
             'page' => $page,
             'total' => $infractionLevelsSql->count('infractionLevelId'),
             'items' => $infractionLevelsSql->take($this->perPage)
-                ->skip($this->getOffset($page))
+                ->skip(DataHelper::getOffset($page))
                 ->get()
         ]);
     }

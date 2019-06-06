@@ -107,7 +107,7 @@ class BansController extends Controller {
         $filter = $request->input('nickname');
         $bansSql = Ban::active()->withImmunityLessThan(User::getImmunity($user->userId))->withNicknameLike($filter);
         $total = DataHelper::getPage($bansSql->count('banId'));
-        $bans = $bansSql->take($this->perPage)->skip($this->getOffset($page))->get()->map(function ($ban) {
+        $bans = $bansSql->take($this->perPage)->skip(DataHelper::getOffset($page))->get()->map(function ($ban) {
             return $this->mapBan($ban);
         });
 

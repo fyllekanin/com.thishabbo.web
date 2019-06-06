@@ -20,20 +20,4 @@ class Controller extends BaseController {
     public function __construct() {
         $this->nowMinus15 = time() - 15;
     }
-
-    /**
-     * Get the offset for fetching items when using pagination
-     *
-     * @param $page
-     *
-     * @param int $perPage
-     *
-     * @return float|int
-     */
-    public function getOffset($page, $perPage = 0) {
-        if ($perPage == 0) {
-            $perPage = $this->perPage;
-        }
-        return $page >= 2 ? ($perPage * $page) - $perPage : 0;
-    }
 }
