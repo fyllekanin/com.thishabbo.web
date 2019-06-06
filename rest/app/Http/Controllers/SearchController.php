@@ -10,9 +10,9 @@ use Illuminate\Http\Request;
 class SearchController extends Controller {
     private $myImpl = null;
 
-    public function __construct(SearchControllerImpl $searchControllerImpl) {
+    public function __construct(SearchControllerImpl $impl) {
         parent::__construct();
-        $this->myImpl = $searchControllerImpl;
+        $this->myImpl = $impl;
     }
 
     /**
