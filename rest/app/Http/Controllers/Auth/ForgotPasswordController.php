@@ -19,11 +19,12 @@ class ForgotPasswordController extends Controller {
     /**
      * AuthController constructor.
      *
+     * @param Request $request
      * @param AuthService $authService
      * @param HabboService $habboService
      */
-    public function __construct (AuthService $authService, HabboService $habboService) {
-        parent::__construct();
+    public function __construct(Request $request, AuthService $authService, HabboService $habboService) {
+        parent::__construct($request);
         $this->authService = $authService;
         $this->habboService = $habboService;
     }
@@ -89,7 +90,7 @@ class ForgotPasswordController extends Controller {
      *
      * @return string
      */
-    private function generateCode () {
+    private function generateCode() {
         $code = openssl_random_pseudo_bytes(4);
         $code = bin2hex($code);
         return implode('', str_split($code, 4));

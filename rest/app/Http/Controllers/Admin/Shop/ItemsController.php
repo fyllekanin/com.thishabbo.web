@@ -3,8 +3,13 @@
 namespace App\Http\Controllers\Admin\Shop;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class ItemsController extends Controller {
+
+    public function __construct(Request $request) {
+        parent::__construct($request);
+    }
 
     public function getItems() {
         return response()->json([

@@ -22,6 +22,10 @@ class PermissionController extends Controller {
         'forumPermissions' => 0
     ];
 
+    public function __construct(Request $request) {
+        parent::__construct($request);
+    }
+
     /**
      * Put request to update forum permission for user group in given category
      *
@@ -31,8 +35,7 @@ class PermissionController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateGroupForumPermissions(Request $request, $categoryId) {
-        $user = $request->get('auth');
-        $immunity = User::getImmunity($user->userId);
+        $immunity = User::getImmunity($this->user->userId);
         $groups = $request->input('groups');
         $cascade = $request->input('cascade');
         $permissions = $this->nameToNumberForumPermissions($request->input('permissions'));
@@ -44,7 +47,7 @@ class PermissionController extends Controller {
 
             Condition::precondition(!$groupToBeUpdated, 404, 'The group do not exist');
             Condition::precondition($groupToBeUpdated->immunity >= $immunity, 400, 'The group have higher immunity then you');
-            PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId,
+            PermissionHelper::haveForumPermissionWithException($this->user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId,
                 'You do not have access to this category');
 
             $permission = ForumPermission::where('categoryId', $categoryId)->where('groupId', $groupToBeUpdated->groupId);
@@ -65,7 +68,7 @@ class PermissionController extends Controller {
                 $this->updateCategoryAndChildrenForumPermissions($categoryId, $groupToBeUpdated->groupId, $permissions);
             }
 
-            Logger::admin($user->userId, $request->ip(), Action::UPDATED_FORUM_PERMISSIONS, ['wasCascade' => $cascade]);
+            Logger::admin($this->user->userId, $request->ip(), Action::UPDATED_FORUM_PERMISSIONS, ['wasCascade' => $cascade]);
         }
         return response()->json();
     }
@@ -73,15 +76,13 @@ class PermissionController extends Controller {
     /**
      * Get request to get current forum permissions for group in given category
      *
-     * @param Request $request
      * @param         $categoryId
      * @param         $groupId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getGroupForumPermissions(Request $request, $categoryId, $groupId) {
-        $user = $request->get('auth');
-        $immunity = User::getImmunity($user->userId);
+    public function getGroupForumPermissions($categoryId, $groupId) {
+        $immunity = User::getImmunity($this->user->userId);
         $category = Category::select('categoryId', 'title')->where('categoryId', $categoryId)->first();
 
         $group = $groupId == 0 ? (object)$this->defaultGroup :
@@ -89,7 +90,7 @@ class PermissionController extends Controller {
         $permissions = ForumPermission::where('categoryId', $categoryId)->where('groupId', $groupId)->first();
 
         Condition::precondition(!$group, 404, 'Group does not exist');
-        Condition::precondition($groupId == 0 && !PermissionHelper::haveAdminPermission($user->userId, ConfigHelper::getAdminConfig()->canManageForumPermissions),
+        Condition::precondition($groupId == 0 && !PermissionHelper::haveAdminPermission($this->user->userId, ConfigHelper::getAdminConfig()->canManageForumPermissions),
             400, 'You do not have permission to edit default forum permissions');
 
         Condition::precondition(!$category, 404, 'Either the category or group do not exist');

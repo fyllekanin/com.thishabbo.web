@@ -1504,4 +1504,18 @@ class Action {
         'data' => [],
         'log' => 'log_user'
     ];
+
+    const CREATED_THREAD_SUBSCRIPTION = [
+        'id' => 177,
+        'description' => 'User subscribed to thread',
+        'data' => [],
+        'log' => 'log_user'
+    ];
+
+    const DELETED_THREAD_SUBSCRIPTION = [
+        'id' => 177,
+        'description' => 'User subscribed to thread',
+        'data' => [],
+        'log' => 'log_user'
+    ];
 }

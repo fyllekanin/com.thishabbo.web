@@ -16,9 +16,11 @@ class SnakeController extends Controller {
     /**
      * SnakeController constructor.
      * Fetch the available game types and store in instance variable
+     *
+     * @param Request $request
      */
-    public function __construct() {
-        parent::__construct();
+    public function __construct(Request $request) {
+        parent::__construct($request);
         $this->gameTypes = ConfigHelper::getGameTypesConfig();
     }
 
@@ -47,15 +49,13 @@ class SnakeController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function getSnakeGame(Request $request) {
-        $user = $request->get('auth');
-
         $game = new Game([
-            'userId' => $user->userId,
+            'userId' => $this->user->userId,
             'gameType' => $this->gameTypes->snake
         ]);
         $game->save();
 
-        Logger::user($user->userId, $request->ip(), Action::STARTED_SNAKE_GAME);
+        Logger::user($this->user->userId, $request->ip(), Action::STARTED_SNAKE_GAME);
         return response()->json(['gameId' => $game->gameId]);
     }
 
@@ -67,19 +67,18 @@ class SnakeController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createSnakeScore(Request $request) {
-        $user = $request->get('auth');
         $result = (object)$request->input('result');
         $game = Game::find($result->gameId);
 
         Condition::precondition(!$game, 404, 'Game do not exist');
         Condition::precondition($game->gameType != $this->gameTypes->snake, 404, 'Game do not exist');
-        Condition::precondition($game->userId != $user->userId, 400, 'Not your game');
+        Condition::precondition($game->userId != $this->user->userId, 400, 'Not your game');
 
         $game->score = $result->score;
         $game->isFinished = true;
         $game->save();
 
-        Logger::user($user->userId, $request->ip(), Action::FINISHED_SNAKE_GAME, ['score' => $game->score]);
+        Logger::user($this->user->userId, $request->ip(), Action::FINISHED_SNAKE_GAME, ['score' => $game->score]);
         return response()->json([
             'score' => $game->score,
             'highscore' => $this->getSnakeHighscoreTable()

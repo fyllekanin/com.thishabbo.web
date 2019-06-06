@@ -4,9 +4,9 @@ namespace App\Jobs;
 
 
 use App\EloquentModels\User\UserData;
+use App\Helpers\AvatarHelper;
 use App\Helpers\ConfigHelper;
 use App\Helpers\UserHelper;
-use App\Helpers\AvatarHelper;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -34,7 +34,6 @@ class UserUpdated implements ShouldQueue {
      *
      * @param $userId
      * @param $updateType
-     * @param $id
      */
     public function __construct($userId, $updateType) {
         $this->userId = $userId;

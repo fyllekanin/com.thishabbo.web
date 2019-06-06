@@ -25,11 +25,12 @@ class CategoryActionController extends Controller {
      * CategoryController constructor.
      * Fetch the available category templates and store them in an instance variable
      *
+     * @param Request $request
      * @param QueryParamService $queryParamService
      * @param ForumService $forumService
      */
-    public function __construct(QueryParamService $queryParamService, ForumService $forumService) {
-        parent::__construct();
+    public function __construct(Request $request, QueryParamService $queryParamService, ForumService $forumService) {
+        parent::__construct($request);
         $this->categoryTemplates = ConfigHelper::getCategoryTemplatesConfig();
         $this->queryParamService = $queryParamService;
         $this->forumService = $forumService;
@@ -42,21 +43,20 @@ class CategoryActionController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createIgnore(Request $request, $categoryId) {
-        $user = $request->get('auth');
-        $isAlreadyIgnoring = IgnoredCategory::where('userId', $user->userId)->where('categoryId', $categoryId)->count('categoryId') > 0;
+        $isAlreadyIgnoring = IgnoredCategory::where('userId', $this->user->userId)->where('categoryId', $categoryId)->count('categoryId') > 0;
         Condition::precondition($isAlreadyIgnoring, 400, 'You are already ignoring this category');
 
         $categoryIds = $this->forumService->getCategoryIdsDownStream($categoryId);
 
         foreach ($categoryIds as $categoryId) {
             $ignore = new IgnoredCategory([
-                'userId' => $user->userId,
+                'userId' => $this->user->userId,
                 'categoryId' => $categoryId
             ]);
             $ignore->save();
         }
 
-        Logger::user($user->userId, $request->ip(), Action::IGNORED_CATEGORY, ['categoryId' => $categoryId]);
+        Logger::user($this->user->userId, $request->ip(), Action::IGNORED_CATEGORY, ['categoryId' => $categoryId]);
         return response()->json();
     }
 
@@ -67,13 +67,12 @@ class CategoryActionController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteIgnore(Request $request, $categoryId) {
-        $user = $request->get('auth');
-        $item = IgnoredCategory::where('userId', $user->userId)->where('categoryId', $categoryId);
+        $item = IgnoredCategory::where('userId', $this->user->userId)->where('categoryId', $categoryId);
         Condition::precondition($item->count('categoryId') == 0, 404, 'You are not currently ignoring this category');
 
         $item->delete();
 
-        Logger::user($user->userId, $request->ip(), Action::UNIGNORED_CATEGORY, ['categoryId' => $categoryId]);
+        Logger::user($this->user->userId, $request->ip(), Action::UNIGNORED_CATEGORY, ['categoryId' => $categoryId]);
         return response()->json();
     }
 
@@ -84,22 +83,21 @@ class CategoryActionController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createSubscription(Request $request, $categoryId) {
-        $user = $request->get('auth');
         $category = Category::find($categoryId);
 
         Condition::precondition(!$category, 404, 'There is not category with that ID');
-        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canRead, $category->categoryId),
+        Condition::precondition(!PermissionHelper::haveForumPermission($this->user->userId, ConfigHelper::getForumPermissions()->canRead, $category->categoryId),
             400, 'You do not have access to this category');
-        Condition::precondition(CategorySubscription::where('userId', $user->userId)->where('categoryId', $category->categoryId)->count('categoryId') > 0,
+        Condition::precondition(CategorySubscription::where('userId', $this->user->userId)->where('categoryId', $category->categoryId)->count('categoryId') > 0,
             400, 'You are already subscribed to this category');
 
         $subscription = new CategorySubscription([
-            'userId' => $user->userId,
+            'userId' => $this->user->userId,
             'categoryId' => $category->categoryId
         ]);
         $subscription->save();
 
-        Logger::user($user->userId, $request->ip(), Action::SUBSCRIBE_CATEGORY, ['categoryId' => $category->categoryId]);
+        Logger::user($this->user->userId, $request->ip(), Action::SUBSCRIBE_CATEGORY, ['categoryId' => $category->categoryId]);
         return response()->json();
     }
 
@@ -110,16 +108,15 @@ class CategoryActionController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteSubscription(Request $request, $categoryId) {
-        $user = $request->get('auth');
         $category = Category::find($categoryId);
 
         Condition::precondition(!$category, 404, 'There is not category with that ID');
-        Condition::precondition(CategorySubscription::where('userId', $user->userId)->where('categoryId', $category->categoryId)->count('categoryId') == 0,
+        Condition::precondition(CategorySubscription::where('userId', $this->user->userId)->where('categoryId', $category->categoryId)->count('categoryId') == 0,
             400, 'You are not subscribed to this category');
 
-        CategorySubscription::where('userId', $user->userId)->where('categoryId', $category->categoryId)->delete();
+        CategorySubscription::where('userId', $this->user->userId)->where('categoryId', $category->categoryId)->delete();
 
-        Logger::user($user->userId, $request->ip(), Action::UNSUBSCRIBE_CATEGORY, ['categoryId' => $category->categoryId]);
+        Logger::user($this->user->userId, $request->ip(), Action::UNSUBSCRIBE_CATEGORY, ['categoryId' => $category->categoryId]);
         return response()->json();
     }
 }

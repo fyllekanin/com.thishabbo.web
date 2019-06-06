@@ -26,20 +26,18 @@ class PageController extends Controller {
     /**
      * PageController constructor.
      * Store the possible category templates in instance variable
+     *
+     * @param Request $request
      */
-    public function __construct() {
-        parent::__construct();
+    public function __construct(Request $request) {
+        parent::__construct($request);
         $this->categoryTemplates = ConfigHelper::getCategoryTemplatesConfig();
     }
 
     /**
-     * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function loadInitial(Request $request) {
-        $user = $request->get('auth');
-
+    public function loadInitial() {
         $navigation = null;
         try {
             $navigation = json_decode(SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->navigation));
@@ -47,7 +45,7 @@ class PageController extends Controller {
             $navigation = [];
         }
 
-        $theme = Theme::where('themeId', Value::objectProperty($user, 'theme', 0))->orWhere('isDefault', true)->first();
+        $theme = Theme::where('themeId', Value::objectProperty($this->user, 'theme', 0))->orWhere('isDefault', true)->first();
 
         return response()->json([
             'navigation' => is_array($navigation) ? $navigation : [],
@@ -126,18 +124,14 @@ class PageController extends Controller {
     /**
      * Get the home page resource
      *
-     * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getHomePage(Request $request) {
-        $user = $request->get('auth');
-
+    public function getHomePage() {
         return response()->json([
-            'articles' => $this->getArticles($user, 4, $this->categoryTemplates->QUEST),
-            'mediaArticles' => $this->getArticles($user, 5, $this->categoryTemplates->MEDIA),
+            'articles' => $this->getArticles($this->user, 4, $this->categoryTemplates->QUEST),
+            'mediaArticles' => $this->getArticles($this->user, 5, $this->categoryTemplates->MEDIA),
             'notices' => $this->getNotices(),
-            'threads' => $this->getLatestThreads($user)
+            'threads' => $this->getLatestThreads($this->user)
         ]);
     }
 
@@ -154,20 +148,17 @@ class PageController extends Controller {
     }
 
     /**
-     * @param Request $request
      * @param $page
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getBadgeGuides(Request $request, $page) {
-        $user = $request->get('auth');
+    public function getBadgeGuides($page) {
         $perPage = 12;
-
         $categories = Category::where('template', $this->categoryTemplates->QUEST)
             ->pluck('categoryId')->toArray();
 
-        $categoryIds = Iterables::filter($categories, function ($categoryId) use ($user) {
-            return PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId);
+        $categoryIds = Iterables::filter($categories, function ($categoryId) {
+            return PermissionHelper::haveForumPermission($this->user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId);
         });
 
         $threadsSql = Thread::isApproved()->orderBy('threadId', 'DESC')->whereIn('categoryId', $categoryIds);

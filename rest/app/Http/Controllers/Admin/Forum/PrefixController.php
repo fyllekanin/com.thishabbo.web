@@ -19,24 +19,23 @@ class PrefixController extends Controller {
     /**
      * PrefixController constructor.
      *
+     * @param Request $request
      * @param ForumService $forumService
      */
-    public function __construct(ForumService $forumService) {
-        parent::__construct();
+    public function __construct(Request $request, ForumService $forumService) {
+        parent::__construct($request);
         $this->forumService = $forumService;
     }
 
     /**
      * Get request to get all the available prefixes
      *
-     * @param Request $request
      * @param         $prefixId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPrefix(Request $request, $prefixId) {
-        $user = $request->get('auth');
-        $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
+    public function getPrefix($prefixId) {
+        $categoryIds = $this->forumService->getAccessibleCategories($this->user->userId);
         $prefix = null;
 
         if ($prefixId == 'new') {
@@ -68,12 +67,11 @@ class PrefixController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createPrefix(Request $request) {
-        $user = $request->get('auth');
         $prefix = (object)$request->input('prefix');
         $categoryIds = isset($prefix->categoryIds) ? $prefix->categoryIds : [];
 
         foreach ($categoryIds as $categoryId) {
-            PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId,
+            PermissionHelper::haveForumPermissionWithException($this->user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId,
                 'You do not have access to one of the forum');
         }
 
@@ -89,8 +87,8 @@ class PrefixController extends Controller {
         ]);
         $prefix->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::CREATED_PREFIX, ['prefix' => $prefix->text]);
-        return $this->getPrefix($request, $prefix->prefixId);
+        Logger::admin($this->user->userId, $request->ip(), Action::CREATED_PREFIX, ['prefix' => $prefix->text]);
+        return $this->getPrefix($prefix->prefixId);
     }
 
     /**
@@ -102,7 +100,6 @@ class PrefixController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updatePrefix(Request $request, $prefixId) {
-        $user = $request->get('auth');
         $prefix = (object)$request->input('prefix');
         $categoryIds = isset($prefix->categoryIds) ? $prefix->categoryIds : [];
         $existing = Prefix::find($prefixId);
@@ -110,7 +107,7 @@ class PrefixController extends Controller {
         Condition::precondition(!$existing, 404, 'Prefix do not exist');
 
         foreach ($categoryIds as $categoryId) {
-            PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId,
+            PermissionHelper::haveForumPermissionWithException($this->user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId,
                 'You do not have access to one of the forum');
         }
 
@@ -124,8 +121,8 @@ class PrefixController extends Controller {
         $existing->categoryIds = implode(',', $categoryIds);
         $existing->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_PREFIX, ['prefix' => $prefix->text]);
-        return $this->getPrefix($request, $prefixId);
+        Logger::admin($this->user->userId, $request->ip(), Action::UPDATED_PREFIX, ['prefix' => $prefix->text]);
+        return $this->getPrefix($prefixId);
     }
 
     /**
@@ -137,15 +134,13 @@ class PrefixController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deletePrefix(Request $request, $prefixId) {
-        $user = $request->get('auth');
-
         $prefix = Prefix::find($prefixId);
         Condition::precondition(!$prefix, 404, 'The prefix do not exist');
 
         $prefix->isDeleted = true;
         $prefix->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::DELETED_PREFIX, ['prefix' => $prefix->text]);
+        Logger::admin($this->user->userId, $request->ip(), Action::DELETED_PREFIX, ['prefix' => $prefix->text]);
         return response()->json();
     }
 

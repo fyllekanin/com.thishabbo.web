@@ -17,9 +17,11 @@ class FastTyperController extends Controller {
     /**
      * FastTyperController constructor.
      * Fetch available game types and store in instance variable
+     *
+     * @param Request $request
      */
-    public function __construct() {
-        parent::__construct();
+    public function __construct(Request $request) {
+        parent::__construct($request);
         $this->gameTypes = ConfigHelper::getGameTypesConfig();
     }
 
@@ -49,16 +51,14 @@ class FastTyperController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function getFastTyperParagraph(Request $request) {
-        $user = $request->get('auth');
-
         $paragraph = Paragraph::inRandomOrder()->first();
         $game = new Game([
-            'userId' => $user->userId,
+            'userId' => $this->user->userId,
             'gameType' => $this->gameTypes->fastTyper
         ]);
         $game->save();
 
-        Logger::user($user->userId, $request->ip(), Action::STARTED_FASTEST_TYPE_GAME);
+        Logger::user($this->user->userId, $request->ip(), Action::STARTED_FASTEST_TYPE_GAME);
         return response()->json([
             'paragraph' => $paragraph->text,
             'gameId' => $game->gameId,
@@ -74,7 +74,6 @@ class FastTyperController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createFastTyperScore(Request $request) {
-        $user = $request->get('auth');
         $result = (object)$request->input('result');
 
         $paragraph = Paragraph::find($result->paragraphId);
@@ -83,7 +82,7 @@ class FastTyperController extends Controller {
         Condition::precondition(!$paragraph, 404, 'Paragraph do not exist');
         Condition::precondition(!$game, 404, 'Game do not exist');
         Condition::precondition($game->gameType != $this->gameTypes->fastTyper, 404, 'Game do not exist');
-        Condition::precondition($game->userId != $user->userId, 400, 'Not your game');
+        Condition::precondition($game->userId != $this->user->userId, 400, 'Not your game');
 
         $olderThenFiveMinutes = $game->createdAt->timestamp + (60 * 5) < time();
         Condition::precondition($olderThenFiveMinutes, 400, 'The game is to old, restart');
@@ -92,7 +91,7 @@ class FastTyperController extends Controller {
         $game->isFinished = true;
         $game->save();
 
-        Logger::user($user->userId, $request->ip(), Action::FINISHED_FASTEST_TYPE_GAME, ['score' => $game->score]);
+        Logger::user($this->user->userId, $request->ip(), Action::FINISHED_FASTEST_TYPE_GAME, ['score' => $game->score]);
         return response()->json([
             'score' => $game->score,
             'highscore' => $this->getFastTyperHighscoreTable()

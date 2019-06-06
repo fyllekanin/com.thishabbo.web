@@ -20,10 +20,11 @@ class ForumController extends Controller {
     /**
      * ForumController constructor.
      *
+     * @param Request $request
      * @param ForumService $forumService
      */
-    public function __construct(ForumService $forumService) {
-        parent::__construct();
+    public function __construct(Request $request, ForumService $forumService) {
+        parent::__construct($request);
         $this->forumService = $forumService;
     }
 
@@ -61,13 +62,10 @@ class ForumController extends Controller {
     /**
      * Get request to fetch all posts awaiting moderation
      *
-     * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getModeratePosts(Request $request) {
-        $user = $request->get('auth');
-        $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
+    public function getModeratePosts() {
+        $categoryIds = $this->forumService->getAccessibleCategories($this->user->userId);
 
         $posts = Post::withoutGlobalScope('nonHardDeleted')
             ->join('threads', 'threads.threadId', '=', 'posts.threadId')
@@ -83,8 +81,8 @@ class ForumController extends Controller {
                 continue;
             }
             $post->user = UserHelper::getUser($post->userId);
-            $post->canApprove = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canApproveThreads, $post->categoryId);
-            $post->canDelete = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canDeletePosts, $post->categoryId);
+            $post->canApprove = PermissionHelper::haveForumPermission($this->user->userId, ConfigHelper::getForumPermissions()->canApproveThreads, $post->categoryId);
+            $post->canDelete = PermissionHelper::haveForumPermission($this->user->userId, ConfigHelper::getForumPermissions()->canDeletePosts, $post->categoryId);
         }
 
         return response()->json($posts);
@@ -93,16 +91,13 @@ class ForumController extends Controller {
     /**
      * Get request to fetch all threads awaiting moderation
      *
-     * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getModerateThreads(Request $request) {
-        $user = $request->get('auth');
-        $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
+    public function getModerateThreads() {
+        $categoryIds = $this->forumService->getAccessibleCategories($this->user->userId);
 
         foreach ($categoryIds as $key => $value) {
-            if (!PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canApproveThreads, $value)) {
+            if (!PermissionHelper::haveForumPermission($this->user->userId, ConfigHelper::getForumPermissions()->canApproveThreads, $value)) {
                 unset($categoryIds[$key]);
             }
         }
@@ -116,8 +111,8 @@ class ForumController extends Controller {
 
         foreach ($threads as $thread) {
             $thread->user = UserHelper::getUser($thread->userId);
-            $thread->canApprove = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canApproveThreads, $thread->categoryId);
-            $thread->canDelete = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canDeletePosts, $thread->categoryId);
+            $thread->canApprove = PermissionHelper::haveForumPermission($this->user->userId, ConfigHelper::getForumPermissions()->canApproveThreads, $thread->categoryId);
+            $thread->canDelete = PermissionHelper::haveForumPermission($this->user->userId, ConfigHelper::getForumPermissions()->canDeletePosts, $thread->categoryId);
         }
 
         return response()->json($threads);

@@ -23,10 +23,11 @@ class GeneralSettingsController extends Controller {
      * GeneralSettingsController constructor.
      * Fetch the setting keys and store them in an instance variable
      *
+     * @param Request $request
      * @param ForumService $forumService
      */
-    public function __construct(ForumService $forumService) {
-        parent::__construct();
+    public function __construct(Request $request, ForumService $forumService) {
+        parent::__construct($request);
         $this->forumService = $forumService;
         $this->settingKeys = ConfigHelper::getKeyConfig();
         $this->welcomeBotKeys = [
@@ -61,7 +62,6 @@ class GeneralSettingsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createSiteMessage(Request $request) {
-        $user = $request->get('auth');
         $data = (object)$request->input('data');
 
         Condition::precondition(!isset($data->title) || empty($data->title), 400,
@@ -79,8 +79,8 @@ class GeneralSettingsController extends Controller {
         ]);
         $siteMessage->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::CREATED_SITE_MESSAGE, [
-            'siteMessageId' => []
+        Logger::admin($this->user->userId, $request->ip(), Action::CREATED_SITE_MESSAGE, [
+            'siteMessageId' => $siteMessage->siteMessageId
         ]);
         return response()->json();
     }
@@ -92,7 +92,6 @@ class GeneralSettingsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateSiteMessage(Request $request, $siteMessageId) {
-        $user = $request->get('auth');
         $siteMessage = SiteMessage::find($siteMessageId);
         $data = (object)$request->input('data');
 
@@ -110,8 +109,8 @@ class GeneralSettingsController extends Controller {
         $siteMessage->type = $data->type;
         $siteMessage->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_SITE_MESSAGE, [
-            'siteMessageId' => []
+        Logger::admin($this->user->userId, $request->ip(), Action::UPDATED_SITE_MESSAGE, [
+            'siteMessageId' => $siteMessage->siteMessageId
         ]);
         return response()->json();
     }
@@ -123,14 +122,14 @@ class GeneralSettingsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteSiteMessage(Request $request, $siteMessageId) {
-        $user = $request->get('auth');
         $siteMessage = SiteMessage::find($siteMessageId);
+        Condition::precondition(!$siteMessage, 404, 'No site message with that ID');
 
         $siteMessage->isDeleted = true;
         $siteMessage->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::DELETED_SITE_MESSAGE, [
-            'siteMessageId' => []
+        Logger::admin($this->user->userId, $request->ip(), Action::DELETED_SITE_MESSAGE, [
+            'siteMessageId' => $siteMessage->siteMessageId
         ]);
         return response()->json();
     }
@@ -154,12 +153,11 @@ class GeneralSettingsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateNavigation(Request $request) {
-        $user = $request->get('auth');
         $navigation = json_encode($request->input('navigation'));
         $oldNavigation = json_decode(SettingsHelper::getSettingValue($this->settingKeys->navigation));
 
         SettingsHelper::createOrUpdateSetting($this->settingKeys->navigation, $navigation);
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_NAVIGATION, [
+        Logger::admin($this->user->userId, $request->ip(), Action::UPDATED_NAVIGATION, [
             'oldNavigation' => $oldNavigation,
             'newNavigation' => $navigation
         ]);
@@ -185,14 +183,13 @@ class GeneralSettingsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateMaintenance(Request $request) {
-        $user = $request->get('auth');
         $maintenance = (object)$request->input('maintenance');
 
         SettingsHelper::createOrUpdateSetting($this->settingKeys->maintenanceContent, $maintenance->content);
         $isMaintenanceOn = strlen(Value::objectProperty($maintenance, 'content', '')) > 0;
         SettingsHelper::createOrUpdateSetting($this->settingKeys->isMaintenance, $isMaintenanceOn);
 
-        Logger::admin($user->userId, $request->ip(), $isMaintenanceOn ? Action::TURNED_ON_MAINTENANCE : Action::TURNED_OFF_MAINTENANCE);
+        Logger::admin($this->user->userId, $request->ip(), $isMaintenanceOn ? Action::TURNED_ON_MAINTENANCE : Action::TURNED_OFF_MAINTENANCE);
         return response()->json();
     }
 }

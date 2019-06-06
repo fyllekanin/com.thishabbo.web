@@ -17,8 +17,8 @@ use Illuminate\Http\Request;
 class CategoriesController extends Controller {
     private $forumService;
 
-    public function __construct(ForumService $forumService) {
-        parent::__construct();
+    public function __construct(Request $request, ForumService $forumService) {
+        parent::__construct($request);
         $this->forumService = $forumService;
     }
 
@@ -30,17 +30,16 @@ class CategoriesController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateCategoryOrders(Request $request) {
-        $user = $request->get('auth');
         $orders = $request->input('updates');
 
         foreach ($orders as $order) {
-            if (PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canRead, $order['categoryId'])) {
+            if (PermissionHelper::haveForumPermission($this->user->userId, ConfigHelper::getForumPermissions()->canRead, $order['categoryId'])) {
                 Category::where('categoryId', $order['categoryId'])->update(['displayOrder' => $order['order']]);
             }
         }
 
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_CATEGORIES_ORDER);
-        return $this->getCategories($request);
+        Logger::admin($this->user->userId, $request->ip(), Action::UPDATED_CATEGORIES_ORDER);
+        return $this->getCategories();
     }
 
     /**
@@ -56,9 +55,7 @@ class CategoriesController extends Controller {
         $newCategory->template = Value::objectProperty($newCategory, 'template', ConfigHelper::getCategoryTemplatesConfig()->DEFAULT);
 
         $parent = Category::find($newCategory->parentId);
-        $user = $request->get('auth');
-
-        $cantAddChildren = $newCategory->parentId > 0 && !PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canRead, $parent->categoryId);
+        $cantAddChildren = $newCategory->parentId > 0 && !PermissionHelper::haveForumPermission($this->user->userId, ConfigHelper::getForumPermissions()->canRead, $parent->categoryId);
         Condition::precondition($newCategory->parentId > 0 && !$parent, 400, 'Invalid parent');
         Condition::precondition($cantAddChildren, 400, 'You dont have permission to add children to this parent');
         Condition::precondition(empty($newCategory->title), 400, 'Title cant be empty');
@@ -81,9 +78,9 @@ class CategoriesController extends Controller {
         $category->save();
 
         $this->createForumPermissions($category);
-        Logger::admin($user->userId, $request->ip(), Action::CREATED_CATEGORY, ['category' => $category->title]);
+        Logger::admin($this->user->userId, $request->ip(), Action::CREATED_CATEGORY, ['category' => $category->title]);
 
-        return $this->getCategory($request, $category->categoryId);
+        return $this->getCategory($category->categoryId);
     }
 
     /**
@@ -95,10 +92,9 @@ class CategoriesController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteCategory(Request $request, $categoryId) {
-        $user = $request->get('auth');
         $category = Category::find($categoryId);
 
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId,
+        PermissionHelper::haveForumPermissionWithException($this->user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId,
             'You do not have access to this category');
         Condition::precondition(!$category, 404, 'The category do not exist');
 
@@ -106,7 +102,7 @@ class CategoriesController extends Controller {
         Category::where('parentId', $categoryId)->update(['parentId' => -1]);
 
         $this->forumService->updateLastPostIdOnCategory($category->parentId);
-        Logger::admin($user->userId, $request->ip(), Action::DELETED_CATEGORY, ['category' => $category->title]);
+        Logger::admin($this->user->userId, $request->ip(), Action::DELETED_CATEGORY, ['category' => $category->title]);
         return response()->json();
     }
 
@@ -119,15 +115,14 @@ class CategoriesController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateCategory(Request $request, $categoryId) {
-        $newCategory = (object)$request->category;
+        $newCategory = (object)$request->input('category');
         $category = Category::find($categoryId);
         $parent = Category::find($newCategory->parentId);
-        $user = $request->get('auth');
 
-        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId), 400, 'You do not have access to this category');
+        Condition::precondition(!PermissionHelper::haveForumPermission($this->user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId), 400, 'You do not have access to this category');
         Condition::precondition($newCategory->parentId > 0 && !$parent, 400, 'Invalid parent');
 
-        $cantAddChildren = $newCategory->parentId > 0 && !PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canRead, $parent->categoryId);
+        $cantAddChildren = $newCategory->parentId > 0 && !PermissionHelper::haveForumPermission($this->user->userId, ConfigHelper::getForumPermissions()->canRead, $parent->categoryId);
         Condition::precondition($cantAddChildren, 400, 'You dont have permission to add children to this parent');
         Condition::precondition(!$category, 404, 'Category do not exist');
         Condition::precondition(empty($newCategory->title), 400, 'Title cant be empty');
@@ -155,21 +150,19 @@ class CategoriesController extends Controller {
             $this->forumService->updateLastPostIdOnCategory($oldCategoryId);
         }
 
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_CATEGORY, ['category' => $newCategory->title]);
-        return $this->getCategory($request, $categoryId);
+        Logger::admin($this->user->userId, $request->ip(), Action::UPDATED_CATEGORY, ['category' => $newCategory->title]);
+        return $this->getCategory($categoryId);
     }
 
     /**
      * Get request to get given category
      *
-     * @param Request $request
      * @param         $categoryId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getCategory(Request $request, $categoryId) {
+    public function getCategory($categoryId) {
         $category = Category::find($categoryId);
-        $user = $request->get('auth');
         $category = $categoryId == 'new' ? new \stdClass() : $category;
 
         Condition::precondition(!$category, 404, 'Category does not exist');
@@ -177,21 +170,17 @@ class CategoriesController extends Controller {
 
         return response()->json([
             'category' => $category,
-            'forumTree' => $this->forumService->getCategoryTree($user, [$categoryId], -1)
+            'forumTree' => $this->forumService->getCategoryTree($this->user, [$categoryId], -1)
         ]);
     }
 
     /**
      * Get request to get all available categories
      *
-     * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getCategories(Request $request) {
-        $user = $request->get('auth');
-
-        $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
+    public function getCategories() {
+        $categoryIds = $this->forumService->getAccessibleCategories($this->user->userId);
 
         $categories = Category::select('categoryId', 'title', 'displayOrder', 'isHidden')
             ->where('parentId', '<', 0)

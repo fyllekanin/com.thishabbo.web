@@ -11,7 +11,7 @@ class BotService {
     private $forumService;
     private $validatorService;
 
-    public function __construct (ForumService $forumService, ForumValidatorService $validatorService) {
+    public function __construct(ForumService $forumService, ForumValidatorService $validatorService) {
         $this->forumService = $forumService;
         $this->validatorService = $validatorService;
     }
@@ -19,11 +19,12 @@ class BotService {
     /**
      * Posts the welcome thread for the provided user
      *
+     * @param $request
      * @param $user
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function triggerWelcomeBot ($user) {
+    public function triggerWelcomeBot($request, $user) {
         $settingKeys = ConfigHelper::getKeyConfig();
         $welcomeBotKeys = [
             $settingKeys->botUserId,
@@ -61,7 +62,7 @@ class BotService {
         $threadSkeleton->content = str_replace(':nickname:', '[mention]@' . $user->nickname . '[/mention]', $welcomeBotSettings->content);
         $threadSkeleton->title = 'Welcome ' . $user->nickname . '!';
 
-        $threadController = new ThreadCrudController($this->forumService, $this->validatorService);
-        $threadController->doThread($botUser, null, $threadSkeleton, null);
+        $threadController = new ThreadCrudController($request, $this->forumService, $this->validatorService);
+        $threadController->doThread($botUser, null, $threadSkeleton, $request);
     }
 }

@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
 class Controller extends BaseController {
     use DispatchesJobs;
 
+    public $user;
     public $perPage = 10;
     public static $perPageStatic = 10;
     public $nowMinus15;
@@ -16,8 +18,11 @@ class Controller extends BaseController {
      * Controller constructor.
      * Setup commonly used instance variables used in majority of controllers
      * extending this one.
+     *
+     * @param Request $request
      */
-    public function __construct() {
+    public function __construct(Request $request) {
+        $this->user = $request->get('auth');
         $this->nowMinus15 = time() - 15;
     }
 

@@ -23,10 +23,11 @@ class PostController extends Controller {
     /**
      * PostController constructor.
      *
+     * @param Request $request
      * @param ForumService $forumService
      */
-    public function __construct(ForumService $forumService) {
-        parent::__construct();
+    public function __construct(Request $request, ForumService $forumService) {
+        parent::__construct($request);
         $this->forumService = $forumService;
     }
 
@@ -37,7 +38,6 @@ class PostController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function mergePosts(Request $request, $threadId) {
-        $user = $request->get('auth');
         $thread = Thread::find($threadId);
         $postIds = $request->input('postIds');
 
@@ -60,7 +60,7 @@ class PostController extends Controller {
         $posts = Post::whereIn('postId', $postIds)->get();
 
         foreach ($postIds as $postId) {
-            $this->deletePost($postId, $user, $request->ip());
+            $this->deletePost($postId, $this->user, $request->ip());
         }
 
         $content = $firstPost->content;
@@ -76,7 +76,7 @@ class PostController extends Controller {
         $firstPost->content = $content;
         $firstPost->save();
 
-        Logger::mod($user->userId, $request->ip(), Action::MERGE_POSTS, ['postIds' => $request->input('postIds')]);
+        Logger::mod($this->user->userId, $request->ip(), Action::MERGE_POSTS, ['postIds' => $request->input('postIds')]);
         return response()->json($firstPost);
     }
 
@@ -89,11 +89,10 @@ class PostController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deletePosts(Request $request) {
-        $user = $request->get('auth');
         $postIds = $request->input('postIds');
 
         foreach ($postIds as $postId) {
-            $this->deletePost($postId, $user, $request->ip());
+            $this->deletePost($postId, $this->user, $request->ip());
         }
 
         return response()->json();
@@ -107,13 +106,12 @@ class PostController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function approvePosts(Request $request) {
-        $user = $request->get('auth');
         $postIds = $request->input('postIds');
 
         foreach ($postIds as $postId) {
             $post = Post::with('thread')->where('postId', $postId)->first();
             Condition::precondition(!$post, 404, 'One of the posts do not exist');
-            PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canApprovePosts, $post->thread->categoryId,
+            PermissionHelper::haveForumPermissionWithException($this->user->userId, ConfigHelper::getForumPermissions()->canApprovePosts, $post->thread->categoryId,
                 'You cant approve posts in this category');
             Condition::precondition(!$post->thread, 404, 'Posts thread does not exist');
 
@@ -132,7 +130,7 @@ class PostController extends Controller {
             }
 
             $this->forumService->updateLastPostIdOnCategory($post->thread->categoryId);
-            Logger::mod($user->userId, $request->ip(), Action::APPROVED_POST, ['thread' => $post->thread->title]);
+            Logger::mod($this->user->userId, $request->ip(), Action::APPROVED_POST, ['thread' => $post->thread->title]);
         }
 
         return response()->json();
@@ -146,13 +144,12 @@ class PostController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function unApprovePosts(Request $request) {
-        $user = $request->get('auth');
         $postIds = $request->input('postIds');
 
         foreach ($postIds as $postId) {
             $post = Post::find($postId);
             Condition::precondition(!$post, 404, 'One of the posts do not exist');
-            PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canApprovePosts, $post->thread->categoryId,
+            PermissionHelper::haveForumPermissionWithException($this->user->userId, ConfigHelper::getForumPermissions()->canApprovePosts, $post->thread->categoryId,
                 'You cant approve posts in this category');
             Condition::precondition(!$post->thread, 404, 'Posts thread does not exist');
 
@@ -171,7 +168,7 @@ class PostController extends Controller {
             }
 
             $this->forumService->updateLastPostIdOnCategory($post->thread->categoryId);
-            Logger::mod($user->userId, $request->ip(), Action::UNAPPROVED_POST, ['thread' => $post->thread->title]);
+            Logger::mod($this->user->userId, $request->ip(), Action::UNAPPROVED_POST, ['thread' => $post->thread->title]);
         }
 
         return response()->json();
@@ -183,7 +180,6 @@ class PostController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function changeOwner(Request $request) {
-        $user = $request->get('auth');
         $postIds = $request->input('postIds');
 
         $forumPermissions = ConfigHelper::getForumPermissions();
@@ -201,7 +197,7 @@ class PostController extends Controller {
         Condition::precondition(count($posts) < 1, 400, 'No posts selected!');
 
         $threadId = $posts->get(0)->threadId;
-        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, $forumPermissions->canChangeOwner, $posts->get(0)->thread->categoryId),
+        Condition::precondition(!PermissionHelper::haveForumPermission($this->user->userId, $forumPermissions->canChangeOwner, $posts->get(0)->thread->categoryId),
             400, 'You do not have permission to change post owner');
 
         $sameThreadId = Iterables::every($posts, function ($post) use ($threadId) {
@@ -236,7 +232,7 @@ class PostController extends Controller {
         $newOwner->posts += count($posts);
         $newOwner->save();
 
-        Logger::modMultiple($user->userId, $request->ip(), Action::CHANGE_POST_OWNER, $logData);
+        Logger::modMultiple($this->user->userId, $request->ip(), Action::CHANGE_POST_OWNER, $logData);
         return response()->json(UserHelper::getUser($newOwner->userId));
     }
 

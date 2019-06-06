@@ -12,6 +12,10 @@ use MatthiasMullie\Minify\CSS;
 
 class ThemeController extends Controller {
 
+    public function __construct(Request $request) {
+        parent::__construct($request);
+    }
+
     public function getThemes() {
         return response()->json(Theme::orderBy('title', 'ASC')->get()->map(function ($item) {
             return [
@@ -43,7 +47,6 @@ class ThemeController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createTheme(Request $request) {
-        $user = $request->get('auth');
         $newTheme = (object)$request->input('theme');
         $this->validateTheme($newTheme);
 
@@ -57,7 +60,7 @@ class ThemeController extends Controller {
         ]);
         $theme->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::CREATED_THEME, ['theme' => $theme->title]);
+        Logger::admin($this->user->userId, $request->ip(), Action::CREATED_THEME, ['theme' => $theme->title]);
         return response()->json();
     }
 
@@ -68,7 +71,6 @@ class ThemeController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateTheme(Request $request, $themeId) {
-        $user = $request->get('auth');
         $newTheme = (object)$request->input('theme');
         $this->validateTheme($newTheme);
 
@@ -82,7 +84,7 @@ class ThemeController extends Controller {
         $theme->css = $newTheme->css;
         $theme->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_THEME, ['theme' => $theme->title]);
+        Logger::admin($this->user->userId, $request->ip(), Action::UPDATED_THEME, ['theme' => $theme->title]);
         return response()->json();
     }
 
@@ -93,14 +95,13 @@ class ThemeController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteTheme(Request $request, $themeId) {
-        $user = $request->get('auth');
         $theme = Theme::find($themeId);
         Condition::precondition(!$theme, 404, 'No theme with that ID');
 
         $theme->isDeleted = true;
         $theme->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::DELETED_THEME, ['theme' => $theme->title]);
+        Logger::admin($this->user->userId, $request->ip(), Action::DELETED_THEME, ['theme' => $theme->title]);
         return response()->json();
     }
 
@@ -111,7 +112,6 @@ class ThemeController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function makeThemeDefault(Request $request, $themeId) {
-        $user = $request->get('auth');
         $theme = Theme::find($themeId);
         Condition::precondition(!$theme, 404, 'No theme with that ID');
 
@@ -119,7 +119,7 @@ class ThemeController extends Controller {
         $theme->isDefault = true;
         $theme->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::MADE_THEME_DEFAULT, ['theme' => $theme->title]);
+        Logger::admin($this->user->userId, $request->ip(), Action::MADE_THEME_DEFAULT, ['theme' => $theme->title]);
         return response()->json();
     }
 
@@ -129,11 +129,9 @@ class ThemeController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function clearDefault(Request $request) {
-        $user = $request->get('auth');
-
         Theme::where('isDefault', true)->update(['isDefault' => 0]);
 
-        Logger::admin($user->userId, $request->ip(), Action::CLEARED_THEME_DEFAULT);
+        Logger::admin($this->user->userId, $request->ip(), Action::CLEARED_THEME_DEFAULT);
         return response()->json();
     }
 

@@ -26,10 +26,11 @@ class UserController extends Controller {
     /**
      * UserController constructor.
      *
+     * @param Request $request
      * @param AuthService $authService
      */
-    public function __construct(AuthService $authService) {
-        parent::__construct();
+    public function __construct(Request $request, AuthService $authService) {
+        parent::__construct($request);
         $this->authService = $authService;
     }
 
@@ -43,9 +44,8 @@ class UserController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function mergeUsers(Request $request, $srcNickname, $destNickname) {
-        $user = $request->get('auth');
-
-        Condition::precondition(!PermissionHelper::haveAdminPermission($user->userId, ConfigHelper::getAdminConfig()->canMergeUsers), 400, 'You do not have permission!');
+        Condition::precondition(!PermissionHelper::haveAdminPermission($this->user->userId, ConfigHelper::getAdminConfig()->canMergeUsers),
+            400, 'You do not have permission!');
 
         $srcUser = User::withNickname($srcNickname)->first();
         $destUser = User::withNickname($destNickname)->first();
@@ -75,7 +75,7 @@ class UserController extends Controller {
         $destUser->save();
         $srcUser->delete();
 
-        Logger::admin($user->userId, $request->ip(), Action::MERGED_USERS, [
+        Logger::admin($this->user->userId, $request->ip(), Action::MERGED_USERS, [
             'sourceUser' => $sourceUser->toJson(),
             'destinationUser' => $destinationUser->toJson()
         ]);
@@ -94,7 +94,6 @@ class UserController extends Controller {
     public function getUsers(Request $request, $page) {
         $nickname = $request->input('nickname');
         $habbo = $request->input('habbo');
-        $user = $request->get('auth');
 
         $getUserSql = User::select('nickname', 'userId', 'updatedAt', 'habbo')
             ->orderBy('nickname', 'ASC');
@@ -111,8 +110,8 @@ class UserController extends Controller {
         $users = array_map(function ($user) {
             $user['credits'] = UserHelper::getUserDataOrCreate($user['userId'])->credits;
             return $user;
-        }, Iterables::filter($getUserSql->take($this->perPage)->skip($this->getOffset($page))->get()->toArray(), function ($item) use ($user) {
-            return UserHelper::canManageUser($user, $item['userId']);
+        }, Iterables::filter($getUserSql->take($this->perPage)->skip($this->getOffset($page))->get()->toArray(), function ($item) {
+            return UserHelper::canManageUser($this->user, $item['userId']);
         }));
 
         return response()->json([
@@ -125,16 +124,14 @@ class UserController extends Controller {
     /**
      * Get request to fetch the given user
      *
-     * @param Request $request
      * @param         $userId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getUserBasic(Request $request, $userId) {
-        $user = $request->get('auth');
+    public function getUserBasic($userId) {
         $current = UserHelper::getUserFromId($userId);
 
-        Condition::precondition(!UserHelper::canManageUser($user, $userId),
+        Condition::precondition(!UserHelper::canManageUser($this->user, $userId),
             400, 'You can not edit this user');
 
         return response()->json([
@@ -155,16 +152,15 @@ class UserController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateUserBasic(Request $request, $userId) {
-        $user = $request->get('auth');
         $current = User::find($userId);
         $newUser = (object)$request->input('user');
 
-        Condition::precondition(!UserHelper::canManageUser($user, $userId),
+        Condition::precondition(!UserHelper::canManageUser($this->user, $userId),
             400, 'You do not have high enough immunity');
 
         $this->basicUserConditionCollection($current, $newUser);
         $shouldCheckPassword = isset($newUser->password) && strlen($newUser->password) > 0 &&
-            PermissionHelper::haveAdminPermission($user->userId, ConfigHelper::getAdminConfig()->canEditUserAdvanced);
+            PermissionHelper::haveAdminPermission($this->user->userId, ConfigHelper::getAdminConfig()->canEditUserAdvanced);
         Condition::precondition($shouldCheckPassword && !$this->authService->isPasswordValid($newUser->password),
             400, 'Password not valid');
         Condition::precondition($shouldCheckPassword && !$this->authService->isRePasswordValid($newUser->repassword, $newUser->password),
@@ -175,13 +171,13 @@ class UserController extends Controller {
             $current->password = Hash::make($newUser->password);
         }
 
-        if (PermissionHelper::haveAdminPermission($user->userId, ConfigHelper::getAdminConfig()->canEditUserBasic)) {
+        if (PermissionHelper::haveAdminPermission($this->user->userId, ConfigHelper::getAdminConfig()->canEditUserBasic)) {
             $current->nickname = $newUser->nickname;
             $current->habbo = $newUser->habbo;
         }
         $current->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_USERS_BASIC_SETTINGS,
+        Logger::admin($this->user->userId, $request->ip(), Action::UPDATED_USERS_BASIC_SETTINGS,
             $current->userId, ['name' => $current->nickname, 'userId' => $current->userId]);
         return response()->json();
     }

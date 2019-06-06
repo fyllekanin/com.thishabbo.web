@@ -21,10 +21,11 @@ class SearchController extends Controller {
     /**
      * SearchController constructor.
      *
+     * @param Request $request
      * @param ForumService $forumService
      */
-    public function __construct(ForumService $forumService) {
-        parent::__construct();
+    public function __construct(Request $request, ForumService $forumService) {
+        parent::__construct($request);
         $this->forumService = $forumService;
     }
 
@@ -36,14 +37,13 @@ class SearchController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function getSearch(Request $request, $type, $page) {
-        $user = $request->get('auth');
         $result = null;
         switch ($type) {
             case $this->TYPES[0]:
-                $result = $this->getThreadsResult($request, $page, $user);
+                $result = $this->getThreadsResult($request, $page, $this->user);
                 break;
             case $this->TYPES[1]:
-                $result = $this->getPostsResult($request, $page, $user);
+                $result = $this->getPostsResult($request, $page, $this->user);
                 break;
             case $this->TYPES[2]:
                 $result = $this->getUsersResult($request, $page);
@@ -53,7 +53,7 @@ class SearchController extends Controller {
                 break;
         }
 
-        Logger::user($user->userId, $request->ip(), Action::SEARCHED, ['text' => $request->input('text')]);
+        Logger::user($this->user->userId, $request->ip(), Action::SEARCHED, ['text' => $request->input('text')]);
         return response()->json([
             'total' => $result->total,
             'page' => $page,

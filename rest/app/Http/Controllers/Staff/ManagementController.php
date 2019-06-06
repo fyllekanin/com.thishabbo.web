@@ -23,8 +23,8 @@ use Illuminate\Http\Request;
 class ManagementController extends Controller {
     private $settingKeys;
 
-    public function __construct() {
-        parent::__construct();
+    public function __construct(Request $request) {
+        parent::__construct($request);
         $this->settingKeys = ConfigHelper::getKeyConfig();
     }
 
@@ -96,8 +96,6 @@ class ManagementController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateDoNotHire(Request $request, $nickname) {
-        $user = $request->get('auth');
-
         $information = (object)$request->input('information');
         $oldEntries = json_decode(SettingsHelper::getSettingValue($this->settingKeys->doNotHire));
         $newEntries = [];
@@ -114,7 +112,7 @@ class ManagementController extends Controller {
                 $entry = [
                     'nickname' => $information->nickname,
                     'reason' => $information->reason,
-                    'addedBy' => $user->userId,
+                    'addedBy' => $this->user->userId,
                     'createdAt' => time()
                 ];
             }
@@ -124,7 +122,7 @@ class ManagementController extends Controller {
 
         SettingsHelper::createOrUpdateSetting($this->settingKeys->doNotHire, json_encode($newEntries));
 
-        Logger::staff($user->userId, $request->ip(), Action::UPDATED_DO_NOT_HIRE, ['nickname' => $information->nickname]);
+        Logger::staff($this->user->userId, $request->ip(), Action::UPDATED_DO_NOT_HIRE, ['nickname' => $information->nickname]);
 
         return response()->json();
     }
@@ -137,8 +135,6 @@ class ManagementController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createDoNotHire(Request $request) {
-        $user = $request->get('auth');
-
         $information = (object)$request->input('information');
         $entries = json_decode(SettingsHelper::getSettingValue($this->settingKeys->doNotHire));
 
@@ -148,13 +144,13 @@ class ManagementController extends Controller {
         $entries[] = [
             'nickname' => $information->nickname,
             'reason' => $information->reason,
-            'addedBy' => $user->userId,
+            'addedBy' => $this->user->userId,
             'createdAt' => time()
         ];
 
         SettingsHelper::createOrUpdateSetting($this->settingKeys->doNotHire, json_encode($entries));
 
-        Logger::staff($user->userId, $request->ip(), Action::CREATED_DO_NOT_HIRE, ['nickname' => $information->nickname]);
+        Logger::staff($this->user->userId, $request->ip(), Action::CREATED_DO_NOT_HIRE, ['nickname' => $information->nickname]);
 
         return response()->json();
     }
@@ -168,7 +164,6 @@ class ManagementController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteDoNotHire(Request $request, $nickname) {
-        $user = $request->get('auth');
         $oldEntries = json_decode(SettingsHelper::getSettingValue($this->settingKeys->doNotHire));
 
         $entries = Iterables::filter($oldEntries, function ($entry) use ($nickname) {
@@ -177,8 +172,7 @@ class ManagementController extends Controller {
 
         SettingsHelper::createOrUpdateSetting($this->settingKeys->doNotHire, json_encode($entries));
 
-        Logger::staff($user->userId, $request->ip(), Action::DELETED_DO_NOT_HIRE, ['nickname' => $nickname]);
-
+        Logger::staff($this->user->userId, $request->ip(), Action::DELETED_DO_NOT_HIRE, ['nickname' => $nickname]);
         return response()->json();
     }
 
@@ -190,7 +184,6 @@ class ManagementController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createPermShow(Request $request) {
-        $user = $request->get('auth');
         $booking = (object)$request->input('booking');
 
         Condition::precondition(!isset($booking), 400, 'Stupid developer');
@@ -232,7 +225,7 @@ class ManagementController extends Controller {
         ]);
         $timetableData->save();
 
-        Logger::staff($user->userId, $request->ip(), Action::BOOKED_PERM_SLOT, [
+        Logger::staff($this->user->userId, $request->ip(), Action::BOOKED_PERM_SLOT, [
             'timetableId' => $timetable->timetableId
         ]);
         return response()->json();
@@ -245,8 +238,6 @@ class ManagementController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updatePermShow(Request $request, $timetableId) {
-        $user = $request->get('auth');
-
         $booking = (object)$request->input('booking');
 
         Condition::precondition(!isset($booking), 400, 'Stupid developer');
@@ -286,7 +277,7 @@ class ManagementController extends Controller {
         $slot->timetableData->description = $booking->description;
         $slot->timetableData->save();
 
-        Logger::staff($user->userId, $request->ip(), Action::EDITED_PERM_SLOT, [
+        Logger::staff($this->user->userId, $request->ip(), Action::EDITED_PERM_SLOT, [
             'show' => $booking->name
         ]);
 
@@ -302,14 +293,13 @@ class ManagementController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deletePermShow(Request $request, $timetableId) {
-        $user = $request->get('auth');
         $booking = Timetable::find($timetableId);
         Condition::precondition(!$booking, 404, 'Booking does not exist');
 
         $booking->isDeleted = true;
         $booking->save();
 
-        Logger::staff($user->userId, $request->ip(), Action::DELETED_PERM_SLOT, [
+        Logger::staff($this->user->userId, $request->ip(), Action::DELETED_PERM_SLOT, [
             'timetableId' => $booking->timetableId
         ]);
         return response()->json();

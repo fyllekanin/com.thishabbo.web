@@ -16,6 +16,10 @@ use Illuminate\Http\Request;
 
 class SubscriptionsController extends Controller {
 
+    public function __construct(Request $request) {
+        parent::__construct($request);
+    }
+
     public function getSubscriptions(Request $request, $page) {
         $title = $request->input('filter');
         $items = Subscription::orderBy('title', 'ASC');
@@ -54,7 +58,6 @@ class SubscriptionsController extends Controller {
     }
 
     public function createSubscription(Request $request) {
-        $user = $request->get('auth');
         $data = (object)$request->input('data');
         $this->validateSubscription($data);
 
@@ -68,12 +71,11 @@ class SubscriptionsController extends Controller {
         ]);
         $subscription->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::CREATED_SUBSCRIPTION, [], $subscription->subscriptionId);
+        Logger::admin($this->user->userId, $request->ip(), Action::CREATED_SUBSCRIPTION, [], $subscription->subscriptionId);
         return response()->json();
     }
 
     public function updateSubscription(Request $request, $subscriptionId) {
-        $user = $request->get('auth');
         $data = (object)$request->input('data');
         $subscription = Subscription::find($subscriptionId);
 
@@ -90,12 +92,11 @@ class SubscriptionsController extends Controller {
         $subscription->options = $this->convertBooleansToOptions($data);
         $subscription->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_SUBSCRIPTION, [], $subscription->subscriptionId);
+        Logger::admin($this->user->userId, $request->ip(), Action::UPDATED_SUBSCRIPTION, [], $subscription->subscriptionId);
         return response()->json();
     }
 
     public function deleteSubscription(Request $request, $subscriptionId) {
-        $user = $request->get('auth');
         $subscription = Subscription::find($subscriptionId);
 
         $subscription->isDeleted = true;
@@ -104,7 +105,7 @@ class SubscriptionsController extends Controller {
         UserSubscription::where('subscriptionId', $subscriptionId)->delete();
         SubscriptionUpdated::dispatch($subscriptionId);
 
-        Logger::admin($user->userId, $request->ip(), Action::DELETED_SUBSCRIPTION, [], $subscription->subscriptionId);
+        Logger::admin($this->user->userId, $request->ip(), Action::DELETED_SUBSCRIPTION, [], $subscription->subscriptionId);
         return response()->json();
     }
 

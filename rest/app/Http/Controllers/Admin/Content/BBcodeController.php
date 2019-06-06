@@ -12,6 +12,10 @@ use Illuminate\Http\Request;
 
 class BBcodeController extends Controller {
 
+    public function __construct(Request $request) {
+        parent::__construct($request);
+    }
+
     /**
      * Post request to create a new bbcode
      *
@@ -20,7 +24,6 @@ class BBcodeController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createBBcode(Request $request) {
-        $user = $request->get('auth');
         $file = $request->file('image');
         $bbcode = (object)json_decode($request->input('bbcode'));
         $this->bbcodeChecker($bbcode, $request, true);
@@ -41,7 +44,7 @@ class BBcodeController extends Controller {
             $file->move($destination, $fileName);
         }
 
-        Logger::admin($user->userId, $request->ip(), Action::CREATED_BBCODE,
+        Logger::admin($this->user->userId, $request->ip(), Action::CREATED_BBCODE,
             ['bbcode' => $newBbcode->name], $newBbcode->bbcodeId);
         return $this->getBBcode($newBbcode->bbcodeId);
     }
@@ -55,7 +58,6 @@ class BBcodeController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateBBcode(Request $request, $bbcodeId) {
-        $user = $request->get('auth');
         $bbcode = (object)json_decode($request->input('bbcode'));
         $file = $request->file('image');
 
@@ -78,7 +80,7 @@ class BBcodeController extends Controller {
             $file->move($destination, $fileName);
         }
 
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_BBCODE, ['bbcode' => $existing->name], $existing->bbcodeId);
+        Logger::admin($this->user->userId, $request->ip(), Action::UPDATED_BBCODE, ['bbcode' => $existing->name], $existing->bbcodeId);
         return $this->getBBcode($bbcodeId);
     }
 
@@ -105,14 +107,13 @@ class BBcodeController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteBBcode(Request $request, $bbcodeId) {
-        $user = $request->get('auth');
         $bbcode = BBcode::find($bbcodeId);
 
         Condition::precondition(!$bbcode, 404, 'BBcode do not exist');
         Condition::precondition($bbcode->isSystem, 400, 'Can not delete system defined bbcode');
 
         $bbcode->delete();
-        Logger::admin($user->userId, $request->ip(), Action::DELETED_BBCODE, ['bbcode' => $bbcode->name], $bbcode->bbcodeId);
+        Logger::admin($this->user->userId, $request->ip(), Action::DELETED_BBCODE, ['bbcode' => $bbcode->name], $bbcode->bbcodeId);
         return response()->json();
     }
 

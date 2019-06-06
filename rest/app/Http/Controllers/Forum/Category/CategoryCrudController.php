@@ -29,24 +29,22 @@ class CategoryCrudController extends Controller {
      * CategoryController constructor.
      * Fetch the available category templates and store them in an instance variable
      *
+     * @param Request $request
      * @param QueryParamService $queryParamService
      * @param ForumService $forumService
      */
-    public function __construct(QueryParamService $queryParamService, ForumService $forumService) {
-        parent::__construct();
+    public function __construct(Request $request, QueryParamService $queryParamService, ForumService $forumService) {
+        parent::__construct($request);
         $this->categoryTemplates = ConfigHelper::getCategoryTemplatesConfig();
         $this->queryParamService = $queryParamService;
         $this->forumService = $forumService;
     }
 
     /**
-     * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getCategoryList(Request $request) {
-        $user = $request->get('auth');
-        $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
+    public function getCategoryList() {
+        $categoryIds = $this->forumService->getAccessibleCategories($this->user->userId);
 
         return response()->json($this->getCategoryChildren(-1, $categoryIds));
     }
@@ -54,30 +52,24 @@ class CategoryCrudController extends Controller {
     /**
      * Get request to get the forum home resource page
      *
-     * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getForumCategories(Request $request) {
-        $user = $request->get('auth');
-        $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
+    public function getForumCategories() {
+        $categoryIds = $this->forumService->getAccessibleCategories($this->user->userId);
 
-        return response()->json($this->getCategoriesAndFirstLevel($user->userId, $categoryIds));
+        return response()->json($this->getCategoriesAndFirstLevel($this->user->userId, $categoryIds));
     }
 
     /**
-     *
-     * @param Request $request
      * @param         $clientTodayMidnight
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getForumStats(Request $request, $clientTodayMidnight) {
-        $user = $request->get('auth');
-        $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
+    public function getForumStats($clientTodayMidnight) {
+        $categoryIds = $this->forumService->getAccessibleCategories($this->user->userId);
 
         return response()->json([
-            'latestPosts' => $this->getLatestPosts($user, $categoryIds),
+            'latestPosts' => $this->getLatestPosts($this->user, $categoryIds),
             'topPosters' => $this->getTopPosters(),
             'topPostersToday' => $this->getTopPostersToday($clientTodayMidnight)
         ]);
@@ -93,16 +85,15 @@ class CategoryCrudController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function getCategoryPage(Request $request, $categoryId, $page = 1) {
-        $user = $request->get('auth');
         $sortedByQuery = $request->input('sortedBy');
         $sortOrderQuery = $request->input('sortOrder');
         $fromTheQuery = $request->input('fromThe');
 
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId,
+        PermissionHelper::haveForumPermissionWithException($this->user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId,
             'No permissions to access this category');
 
         $category = Category::where('categoryId', $categoryId)->first();
-        $forumPermissions = $this->getCategoryPermissions($categoryId, $user->userId);
+        $forumPermissions = $this->getCategoryPermissions($categoryId, $this->user->userId);
 
         $sortedBy = $this->queryParamService->getSortedBy($sortedByQuery);
         $fromThe = $this->queryParamService->getFromThe($fromTheQuery);
@@ -117,7 +108,7 @@ class CategoryCrudController extends Controller {
         }
 
         if (!$forumPermissions->canViewOthersThreads) {
-            $threadSql->belongsToUser($user->userId);
+            $threadSql->belongsToUser($this->user->userId);
         }
 
         $total = DataHelper::getPage($threadSql->count('threadId'));
@@ -132,9 +123,9 @@ class CategoryCrudController extends Controller {
             'title' => $category->title,
             'isOpen' => $category->isOpen,
             'parents' => $this->forumService->getCategoryParents($category),
-            'categories' => $this->getSlimChildCategories($categoryId, $user->userId),
-            'stickyThreads' => $page <= 1 ? $this->getStickyThreadsForCategory($categoryId, $forumPermissions, $user->userId) : [],
-            'threads' => $this->buildThreadsForCategory($threads, $user->userId),
+            'categories' => $this->getSlimChildCategories($categoryId, $this->user->userId),
+            'stickyThreads' => $page <= 1 ? $this->getStickyThreadsForCategory($categoryId, $forumPermissions, $this->user->userId) : [],
+            'threads' => $this->buildThreadsForCategory($threads, $this->user->userId),
             'total' => $total,
             'forumPermissions' => $forumPermissions,
             'page' => $page,
@@ -143,8 +134,8 @@ class CategoryCrudController extends Controller {
                 'sortOrder' => $sortOrderQuery,
                 'fromThe' => $fromTheQuery
             ],
-            'isSubscribed' => CategorySubscription::where('userId', $user->userId)->where('categoryId', $categoryId)->count('categoryId') > 0,
-            'isIgnored' => IgnoredCategory::where('userId', $user->userId)->where('categoryId', $categoryId)->count('categoryId') > 0
+            'isSubscribed' => CategorySubscription::where('userId', $this->user->userId)->where('categoryId', $categoryId)->count('categoryId') > 0,
+            'isIgnored' => IgnoredCategory::where('userId', $this->user->userId)->where('categoryId', $categoryId)->count('categoryId') > 0
         ]);
     }
 

@@ -13,18 +13,15 @@ use Illuminate\Support\Facades\DB;
 class NotificationController extends Controller {
     private $notificationService;
 
-    public function __construct(NotificationService $notificationService) {
-        parent::__construct();
+    public function __construct(Request $request, NotificationService $notificationService) {
+        parent::__construct($request);
         $this->notificationService = $notificationService;
     }
 
     /**
-     * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function readAllNotifications(Request $request) {
-        $user = $request->get('auth');
+    public function readAllNotifications() {
         $types = [
             Type::getType(Type::FOLLOWED),
             Type::getType(Type::BADGE),
@@ -38,26 +35,23 @@ class NotificationController extends Controller {
 
         DB::table('notifications')
             ->where('readAt', '<', 1)
-            ->where('userId', $user->userId)
+            ->where('userId', $this->user->userId)
             ->whereIN('type', $types)
             ->update(['readAt' => time()]);
         return response()->json();
     }
 
     /**
-     * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function readAllMessages(Request $request) {
-        $user = $request->get('auth');
+    public function readAllMessages() {
         $types = [
             Type::getType(Type::VISITOR_MESSAGE)
         ];
 
         DB::table('notifications')
             ->where('readAt', '<', 1)
-            ->where('userId', $user->userId)
+            ->where('userId', $this->user->userId)
             ->whereIN('type', $types)
             ->update(['readAt' => time()]);
         return response()->json();
@@ -67,17 +61,14 @@ class NotificationController extends Controller {
      * Performs a read action on the specific notification
      * and mark it as read.
      *
-     * @param Request $request
      * @param         $notificationId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function readNotification(Request $request, $notificationId) {
-        $user = $request->get('auth');
-
+    public function readNotification($notificationId) {
         DB::table('notifications')
             ->where('notificationId', $notificationId)
-            ->where('userId', $user->userId)
+            ->where('userId', $this->user->userId)
             ->update(['readAt' => time()]);
 
         return response()->json();
@@ -86,23 +77,20 @@ class NotificationController extends Controller {
     /**
      * Get request for fetching unread notification
      *
-     * @param Request $request
      * @param         $createdAfter
      *
      * @return array NotificationView
      */
-    public function getUnreadNotifications(Request $request, $createdAfter) {
-        $user = $request->get('auth');
-
+    public function getUnreadNotifications($createdAfter) {
         $notifications = DB::table('notifications')
             ->where('createdAt', '>=', $createdAfter)
             ->where('readAt', '<', 1)
-            ->where('userId', $user->userId)
+            ->where('userId', $this->user->userId)
             ->get()->toArray();
 
-        return array_map(function ($notification) use ($user) {
-            return new NotificationView($notification, $user);
-        }, Iterables::filter($notifications, function ($notification) use ($user) {
+        return array_map(function ($notification) {
+            return new NotificationView($notification, $this->user);
+        }, Iterables::filter($notifications, function ($notification) {
             return $this->notificationService->isNotificationValid($notification->contentId, $notification->type);
         }));
     }

@@ -21,10 +21,11 @@ class UserThcController extends Controller {
     /**
      * UserThcController constructor.
      *
+     * @param Request $request
      * @param CreditsService $creditsService
      */
-    public function __construct(CreditsService $creditsService) {
-        parent::__construct();
+    public function __construct(Request $request, CreditsService $creditsService) {
+        parent::__construct($request);
         $this->creditsService = $creditsService;
     }
 
@@ -51,7 +52,6 @@ class UserThcController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateThcRequests(Request $request) {
-        $user = $request->get('auth');
         $requests = $request->input('requests');
 
         foreach ($requests as $thcRequest) {
@@ -67,7 +67,7 @@ class UserThcController extends Controller {
             $requestThc->save();
         }
 
-        Logger::admin($user->userId, $request->ip(), Action::MANAGED_THC_REQUESTS);
+        Logger::admin($this->user->userId, $request->ip(), Action::MANAGED_THC_REQUESTS);
         return response()->json();
     }
 
@@ -113,7 +113,6 @@ class UserThcController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteVoucherCode(Request $request, $voucherCodeId) {
-        $user = $request->get('auth');
         $voucherCode = VoucherCode::find($voucherCodeId);
 
         Condition::precondition(!$voucherCodeId, 404, 'No voucher code with that ID');
@@ -121,7 +120,7 @@ class UserThcController extends Controller {
         $voucherCode->isDeleted = true;
         $voucherCode->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::DELETED_VOUCHER_CODE,
+        Logger::admin($this->user->userId, $request->ip(), Action::DELETED_VOUCHER_CODE,
             [], $voucherCode->voucherCodeId);
         return response()->json();
     }
@@ -132,8 +131,6 @@ class UserThcController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createVoucherCode(Request $request) {
-        $user = $request->get('auth');
-
         $note = $request->input('note');
         $value = $request->input('value');
         Condition::precondition(!isset($note) || empty($note), 400, 'Note can not be empty!');
@@ -148,7 +145,7 @@ class UserThcController extends Controller {
         ]);
         $voucherCode->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::CREATED_VOUCHER_CODE,
+        Logger::admin($this->user->userId, $request->ip(), Action::CREATED_VOUCHER_CODE,
             [], $voucherCode->voucherCodeId);
         return response()->json([
             'voucherCodeId' => $voucherCode->voucherCodeId,

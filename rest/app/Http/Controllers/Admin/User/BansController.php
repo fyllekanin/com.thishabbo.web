@@ -15,18 +15,20 @@ use Illuminate\Http\Request;
 
 class BansController extends Controller {
 
+    public function __construct(Request $request) {
+        parent::__construct($request);
+    }
+
     /**
-     * @param Request $request
      * @param         $userId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getUserBans(Request $request, $userId) {
-        $user = $request->get('auth');
+    public function getUserBans($userId) {
         $current = UserHelper::getSlimUser($userId);
 
         Condition::precondition(!$current, 404, 'User do not exist');
-        Condition::precondition(!UserHelper::canManageUser($user, $userId),
+        Condition::precondition(!UserHelper::canManageUser($this->user, $userId),
             400, 'You can not see this user');
 
         return response()->json([
@@ -44,19 +46,18 @@ class BansController extends Controller {
      * @return array
      */
     public function createUserBan(Request $request, $userId) {
-        $user = $request->get('auth');
         $current = UserHelper::getUser($userId);
         $banData = (object)$request->input('reason');
 
         Condition::precondition(!$current, 404, 'User do not exist');
-        Condition::precondition(!UserHelper::canManageUser($user, $userId),
+        Condition::precondition(!UserHelper::canManageUser($this->user, $userId),
             400, 'You can not see this user');
         Condition::precondition(!is_numeric($banData->length) || $banData->length < 0, 400, 'Invalid length');
         Condition::precondition(!isset($banData->reason) || empty($banData->reason), 400, 'Invalid reason');
 
         $ban = new Ban([
             'bannedId' => $userId,
-            'userId' => $user->userId,
+            'userId' => $this->user->userId,
             'reason' => $banData->reason,
             'expiresAt' => $banData->length == 0 ? 0 : time() + $banData->length
         ]);
@@ -64,7 +65,7 @@ class BansController extends Controller {
 
         Token::where('userId', $userId)->delete();
 
-        Logger::admin($user->userId, $request->ip(), Action::BANNED_USER, ['name' => $current->nickname]);
+        Logger::admin($this->user->userId, $request->ip(), Action::BANNED_USER, ['name' => $current->nickname]);
         return response()->json($this->mapBan($ban));
     }
 
@@ -76,23 +77,22 @@ class BansController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function liftUserBan(Request $request, $userId, $banId) {
-        $user = $request->get('auth');
         $current = UserHelper::getUser($userId);
         $ban = Ban::find($banId);
         $liftData = (object)$request->input('reason');
 
         Condition::precondition(!$ban, 404, 'The ban do not exist');
         Condition::precondition(!$current, 404, 'User do not exist');
-        Condition::precondition(!UserHelper::canManageUser($user, $userId),
+        Condition::precondition(!UserHelper::canManageUser($this->user, $userId),
             400, 'You can not see this user');
         Condition::precondition(!isset($liftData->reason) || empty($liftData->reason), 400, 'Invalid reason');
 
-        $ban->lifterId = $user->userId;
+        $ban->lifterId = $this->user->userId;
         $ban->isLifted = true;
         $ban->liftReason = $liftData->reason;
         $ban->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::UNBANNED_USER, ['name' => $current->nickname]);
+        Logger::admin($this->user->userId, $request->ip(), Action::UNBANNED_USER, ['name' => $current->nickname]);
         return response()->json($this->mapBan($ban));
     }
 
@@ -103,9 +103,8 @@ class BansController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function getBannedUsers(Request $request, $page) {
-        $user = $request->get('auth');
         $filter = $request->input('nickname');
-        $bansSql = Ban::active()->withImmunityLessThan(User::getImmunity($user->userId))->withNicknameLike($filter);
+        $bansSql = Ban::active()->withImmunityLessThan(User::getImmunity($this->user->userId))->withNicknameLike($filter);
         $total = DataHelper::getPage($bansSql->count('banId'));
         $bans = $bansSql->take($this->perPage)->skip($this->getOffset($page))->get()->map(function ($ban) {
             return $this->mapBan($ban);

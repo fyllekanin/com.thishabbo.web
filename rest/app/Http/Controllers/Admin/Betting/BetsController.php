@@ -20,10 +20,11 @@ class BetsController extends Controller {
     /**
      * BetsController constructor.
      *
+     * @param Request $request
      * @param CreditsService $creditsService
      */
-    public function __construct(CreditsService $creditsService) {
-        parent::__construct();
+    public function __construct(Request $request, CreditsService $creditsService) {
+        parent::__construct($request);
         $this->creditsService = $creditsService;
     }
 
@@ -34,7 +35,6 @@ class BetsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function suspendBet(Request $request, $betId) {
-        $user = $request->get('auth');
         $bet = Bet::find($betId);
         Condition::precondition(!$bet, 404, 'The specific bet do not exist');
         Condition::precondition($bet->isSuspended, 400, 'The bet is already suspended');
@@ -42,7 +42,7 @@ class BetsController extends Controller {
         $bet->isSuspended = true;
         $bet->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::SUSPENDED_BET, [
+        Logger::admin($this->user->userId, $request->ip(), Action::SUSPENDED_BET, [
             'bet' => $bet->name
         ]);
         return response()->json();
@@ -55,7 +55,6 @@ class BetsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function unsuspendBet(Request $request, $betId) {
-        $user = $request->get('auth');
         $bet = Bet::find($betId);
         Condition::precondition(!$bet, 404, 'The specific bet do not exist');
         Condition::precondition(!$bet->isSuspended, 400, 'The bet is not suspended');
@@ -63,7 +62,7 @@ class BetsController extends Controller {
         $bet->isSuspended = false;
         $bet->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::UNSUSPENDED_BET, [
+        Logger::admin($this->user->userId, $request->ip(), Action::UNSUSPENDED_BET, [
             'bet' => $bet->name
         ]);
         return response()->json();
@@ -76,7 +75,6 @@ class BetsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function setResult(Request $request, $betId) {
-        $user = $request->get('auth');
         $result = $request->input('result');
         $bet = Bet::find($betId);
 
@@ -91,7 +89,7 @@ class BetsController extends Controller {
             $this->giveUserPrizes($bet->betId);
         }
 
-        Logger::admin($user->userId, $request->ip(), Action::SET_BET_RESULT, [
+        Logger::admin($this->user->userId, $request->ip(), Action::SET_BET_RESULT, [
             'bet' => $bet->name,
             'result' => $result
         ]);
@@ -155,7 +153,6 @@ class BetsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createBet(Request $request) {
-        $user = $request->get('auth');
         $bet = (object)$request->input('bet');
 
         $this->betConditionCollection($bet);
@@ -168,7 +165,7 @@ class BetsController extends Controller {
         ]);
         $newBet->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::CREATED_BET, ['bet' => $bet->name]);
+        Logger::admin($this->user->userId, $request->ip(), Action::CREATED_BET, ['bet' => $bet->name]);
         return $this->getBet($newBet->betId);
     }
 
@@ -179,7 +176,6 @@ class BetsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateBet(Request $request, $betId) {
-        $user = $request->get('auth');
         $newBet = (object)$request->input('bet');
 
         $bet = Bet::find($betId);
@@ -193,7 +189,7 @@ class BetsController extends Controller {
         $bet->betCategoryId = $newBet->betCategoryId;
         $bet->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_BET, ['bet' => $bet->name]);;
+        Logger::admin($this->user->userId, $request->ip(), Action::UPDATED_BET, ['bet' => $bet->name]);;
         return $this->getBet($newBet->betId);
     }
 
@@ -204,8 +200,6 @@ class BetsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteBet(Request $request, $betId) {
-        $user = $request->get('auth');
-
         $bet = Bet::find($betId);
         Condition::precondition(!$bet, 404, 'The bet does not exist!');
 
@@ -214,7 +208,7 @@ class BetsController extends Controller {
 
         $this->deleteUserBets($betId);
 
-        Logger::admin($user->userId, $request->ip(), Action::DELETED_BET, ['bet' => $bet->name]);
+        Logger::admin($this->user->userId, $request->ip(), Action::DELETED_BET, ['bet' => $bet->name]);
         return response()->json();
     }
 

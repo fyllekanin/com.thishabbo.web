@@ -15,17 +15,16 @@ use Illuminate\Http\Request;
 class GroupPermissionsController extends Controller {
     private $forumPermissions;
 
-    public function __construct() {
-        parent::__construct();
+    public function __construct(Request $request) {
+        parent::__construct($request);
         $this->forumPermissions = ConfigHelper::getForumPermissions();
     }
 
-    public function getGroupForumPermissions(Request $request, $groupId) {
-        $user = $request->get('auth');
+    public function getGroupForumPermissions($groupId) {
         $group = Group::find($groupId);
 
         Condition::precondition(!$group, 404, 'There is no group with that ID');
-        Condition::precondition($group->immunity >= User::getImmunity($user->userId), 400, 'You can not see this group');
+        Condition::precondition($group->immunity >= User::getImmunity($this->user->userId), 400, 'You can not see this group');
 
         $categoryIds = ForumPermission::where('groupId', $groupId)
             ->whereRaw('(permissions & ' . $this->forumPermissions->canRead . ')')

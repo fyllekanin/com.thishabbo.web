@@ -2,13 +2,13 @@
 
 namespace App\Jobs;
 
+use App\EloquentModels\User\UserGroup;
+use App\Helpers\AvatarHelper;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use App\Helpers\AvatarHelper;
-use App\EloquentModels\User\UserGroup;
 
 /**
  * Class SubscriptionUpdated
@@ -31,7 +31,7 @@ class GroupUpdated implements ShouldQueue {
     /**
      * SubscriptionUpdated constructor
      *
-     * @param $subscriptionId
+     * @param $groupId
      */
     public function __construct($groupId) {
         $this->groupId = $groupId;

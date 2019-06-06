@@ -18,23 +18,20 @@ class BettingController extends Controller {
     /**
      * BettingController constructor.
      *
+     * @param Request $request
      * @param CreditsService $creditsService
      */
-    public function __construct(CreditsService $creditsService) {
-        parent::__construct();
+    public function __construct(Request $request, CreditsService $creditsService) {
+        parent::__construct($request);
         $this->creditsService = $creditsService;
     }
 
     /**
-     * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getRoulette(Request $request) {
-        $user = $request->get('auth');
-
+    public function getRoulette() {
         return response()->json([
-            'stats' => $this->getStats($user)
+            'stats' => $this->getStats($this->user)
         ]);
     }
 
@@ -44,13 +41,12 @@ class BettingController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createRoulette(Request $request) {
-        $user = $request->get('auth');
         $color = $request->input('color');
         $amount = $request->input('amount');
 
         Condition::precondition(!is_numeric($amount), 400, 'Needs to be a number!');
         Condition::precondition($amount <= 0, 400, 'Needs to be a positive number!');
-        Condition::precondition(!$this->creditsService->haveEnoughCredits($user->userId, $amount), 400, 'Not enough credits!');
+        Condition::precondition(!$this->creditsService->haveEnoughCredits($this->user->userId, $amount), 400, 'Not enough credits!');
 
         $numbers = [];
         for ($i = 0; $i < 500; $i++) {
@@ -74,11 +70,11 @@ class BettingController extends Controller {
         $profit = $color == 'green' ? $amount * 5 : $amount * 2;
 
         if ($isWin) {
-            $this->creditsService->giveCredits($user->userId, $profit);
-            Logger::user($user->userId, $request->ip(), Action::WON_ROULETTE, ['profit' => $profit]);
+            $this->creditsService->giveCredits($this->user->userId, $profit);
+            Logger::user($this->user->userId, $request->ip(), Action::WON_ROULETTE, ['profit' => $profit]);
         } else {
-            $this->creditsService->takeCredits($user->userId, $amount);
-            Logger::user($user->userId, $request->ip(), Action::LOST_ROULETTE, ['amount' => $amount]);
+            $this->creditsService->takeCredits($this->user->userId, $amount);
+            Logger::user($this->user->userId, $request->ip(), Action::LOST_ROULETTE, ['amount' => $amount]);
         }
 
         return response()->json([
@@ -97,26 +93,25 @@ class BettingController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createPlaceBet(Request $request, $betId) {
-        $user = $request->get('auth');
         $amount = $request->input('amount');
         $bet = Bet::find($betId);
 
         Condition::precondition(!$bet, 404, 'The bet does not exist!');
         Condition::precondition(!is_numeric($amount), 400, 'Amount needs to be a number!');
-        Condition::precondition(!$this->creditsService->haveEnoughCredits($user->userId, $amount), 400, 'You do not have enough credits!');
+        Condition::precondition(!$this->creditsService->haveEnoughCredits($this->user->userId, $amount), 400, 'You do not have enough credits!');
         Condition::precondition($bet->isSuspended, 400, 'The bet is currently suspended!');
 
         $userBet = new UserBet([
-            'userId' => $user->userId,
+            'userId' => $this->user->userId,
             'betId' => $bet->betId,
             'leftSide' => $bet->leftSide,
             'rightSide' => $bet->rightSide,
             'amount' => $amount
         ]);
         $userBet->save();
-        $this->creditsService->takeCredits($user->userId, $amount);
+        $this->creditsService->takeCredits($this->user->userId, $amount);
 
-        Logger::user($user->userId, $request->ip(), Action::PLACED_BET, [
+        Logger::user($this->user->userId, $request->ip(), Action::PLACED_BET, [
             'bet' => $bet->name,
             'amount' => $amount
         ]);
@@ -124,40 +119,28 @@ class BettingController extends Controller {
     }
 
     /**
-     * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getBettingStats(Request $request) {
-        $user = $request->get('auth');
-
-        return response()->json($this->getStats($user));
+    public function getBettingStats() {
+        return response()->json($this->getStats($this->user));
     }
 
     /**
-     * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getDashboardPage(Request $request) {
-        $user = $request->get('auth');
-
+    public function getDashboardPage() {
         return response()->json([
-            'stats' => $this->getStats($user),
+            'stats' => $this->getStats($this->user),
             'trendingBets' => $this->getTrendingBets(),
             'activeBets' => $this->getActiveBets()
         ]);
     }
 
     /**
-     * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getMyActiveBets(Request $request) {
-        $user = $request->get('auth');
-
-        $bets = UserBet::where('userId', $user->userId)
+    public function getMyActiveBets() {
+        $bets = UserBet::where('userId', $this->user->userId)
             ->join('bets', 'bets.betId', '=', 'user_bets.betId')
             ->where('bets.isFinished', 0)
             ->select('user_bets.*', 'bets.name', 'bets.isFinished')
@@ -171,21 +154,18 @@ class BettingController extends Controller {
             });
 
         return response()->json([
-            'stats' => $this->getStats($user),
+            'stats' => $this->getStats($this->user),
             'bets' => $bets
         ]);
     }
 
     /**
-     * @param Request $request
      * @param         $page
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getHistoryPage(Request $request, $page) {
-        $user = $request->get('auth');
-
-        $betsSql = UserBet::where('userId', $user->userId)
+    public function getHistoryPage($page) {
+        $betsSql = UserBet::where('userId', $this->user->userId)
             ->take($this->perPage)
             ->skip($this->getOffset($page))
             ->join('bets', 'bets.betId', '=', 'user_bets.betId')
@@ -203,7 +183,7 @@ class BettingController extends Controller {
         });
 
         return response()->json([
-            'stats' => $this->getStats($user),
+            'stats' => $this->getStats($this->user),
             'history' => $bets,
             'page' => $page,
             'total' => $total

@@ -22,28 +22,26 @@ class PageSettingsController extends Controller {
      * GeneralSettingsController constructor.
      * Fetch the setting keys and store them in an instance variable
      *
+     * @param Request $request
      * @param ForumService $forumService
      */
-    public function __construct(ForumService $forumService) {
-        parent::__construct();
+    public function __construct(Request $request, ForumService $forumService) {
+        parent::__construct($request);
         $this->forumService = $forumService;
         $this->settingKeys = ConfigHelper::getKeyConfig();
     }
 
-    public function getHomePageThreads(Request $request) {
-        $user = $request->get('auth');
-
+    public function getHomePageThreads() {
         $categoryIds = json_decode(SettingsHelper::getSettingValue($this->settingKeys->homePageThreads));
         return response()->json([
             'categoryIds' => is_array($categoryIds) ? $categoryIds : [],
-            'categories' => Category::whereIn('categoryId', $this->forumService->getAccessibleCategories($user->userId))
+            'categories' => Category::whereIn('categoryId', $this->forumService->getAccessibleCategories($this->user->userId))
                 ->orderBy('title', 'ASC')
                 ->get(['categoryId', 'title'])
         ]);
     }
 
     public function updateHomePageThreads(Request $request) {
-        $user = $request->get('auth');
         $data = $request->input('data');
         $permissions = ConfigHelper::getForumPermissions();
 
@@ -52,12 +50,12 @@ class PageSettingsController extends Controller {
         }
 
         foreach ($data as $item) {
-            Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, $permissions->canRead, $item), 400,
+            Condition::precondition(!PermissionHelper::haveForumPermission($this->user->userId, $permissions->canRead, $item), 400,
                 'You do not have access to one or more of the categories');
         }
 
         SettingsHelper::createOrUpdateSetting($this->settingKeys->homePageThreads, json_encode($data));
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_HOME_PAGE_THREADS);
+        Logger::admin($this->user->userId, $request->ip(), Action::UPDATED_HOME_PAGE_THREADS);
         return response()->json();
     }
 
@@ -94,7 +92,6 @@ class PageSettingsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createPage(Request $request) {
-        $user = $request->get('auth');
         $data = (object)$request->input('data');
 
         Condition::precondition(!isset($data->path) || empty($data->path), 400, 'Path can not be empty');
@@ -110,7 +107,7 @@ class PageSettingsController extends Controller {
         ]);
         $page->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::CREATED_PAGE, [
+        Logger::admin($this->user->userId, $request->ip(), Action::CREATED_PAGE, [
             'title' => $data->title
         ]);
         return $this->getPage($page->pageId);
@@ -124,7 +121,6 @@ class PageSettingsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updatePage(Request $request, $pageId) {
-        $user = $request->get('auth');
         $page = Page::find($pageId);
         $data = (object)$request->input('data');
 
@@ -143,7 +139,7 @@ class PageSettingsController extends Controller {
         $page->content = $data->content;
         $page->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_PAGE, [
+        Logger::admin($this->user->userId, $request->ip(), Action::UPDATED_PAGE, [
             'title' => $data->title
         ]);
         return response()->json();
@@ -157,7 +153,6 @@ class PageSettingsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deletePage(Request $request, $pageId) {
-        $user = $request->get('auth');
         $page = Page::find($pageId);
 
         Condition::precondition(!$page, 404, 'No page with that ID exists');
@@ -166,7 +161,7 @@ class PageSettingsController extends Controller {
         $page->isDeleted = true;
         $page->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::DELETED_PAGE, [
+        Logger::admin($this->user->userId, $request->ip(), Action::DELETED_PAGE, [
             'title' => $page->title
         ]);
         return response()->json();
@@ -191,13 +186,11 @@ class PageSettingsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateNavigation(Request $request) {
-        $user = $request->get('auth');
-
         $navigation = json_encode($request->input('navigation'));
         $oldNavigation = json_decode(SettingsHelper::getSettingValue($this->settingKeys->navigation));
 
         SettingsHelper::createOrUpdateSetting($this->settingKeys->navigation, $navigation);
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_NAVIGATION, [
+        Logger::admin($this->user->userId, $request->ip(), Action::UPDATED_NAVIGATION, [
             'oldNavigation' => $oldNavigation,
             'newNavigation' => $navigation
         ]);

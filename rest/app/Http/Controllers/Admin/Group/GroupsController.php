@@ -10,12 +10,12 @@ use App\Helpers\ConfigHelper;
 use App\Helpers\DataHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
+use App\Jobs\GroupUpdated;
 use App\Logger;
 use App\Models\Logger\Action;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
-use App\Jobs\GroupUpdated;
 
 class GroupsController extends Controller {
 
@@ -27,7 +27,6 @@ class GroupsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function approveGroupApplication(Request $request) {
-        $user = $request->get('auth');
         $groupRequestId = $request->input('groupRequestId');
 
         $groupRequest = GroupRequest::find($groupRequestId);
@@ -44,7 +43,7 @@ class GroupsController extends Controller {
 
         $groupRequest->delete();
 
-        Logger::admin($user->userId, $request->ip(), Action::APPROVED_GROUP_APPLICATION, [
+        Logger::admin($this->user->userId, $request->ip(), Action::APPROVED_GROUP_APPLICATION, [
             'group' => $group->name,
             'name' => $affectedUser->nickname
         ]);
@@ -60,8 +59,6 @@ class GroupsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function denyGroupApplication(Request $request, $groupRequestId) {
-        $user = $request->get('auth');
-
         $groupRequest = GroupRequest::find($groupRequestId);
         Condition::precondition(!$groupRequest, 404, 'The group request do not exist');
         $affectedUser = UserHelper::getUserFromId($groupRequest->userId);
@@ -73,7 +70,7 @@ class GroupsController extends Controller {
 
         $groupRequest->delete();
 
-        Logger::admin($user->userId, $request->ip(), Action::DENIED_GROUP_APPLICATION, [
+        Logger::admin($this->user->userId, $request->ip(), Action::DENIED_GROUP_APPLICATION, [
             'group' => $group->name,
             'name' => $affectedUser->nickname
         ]);
@@ -98,8 +95,7 @@ class GroupsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteGroup(Request $request, $groupId) {
-        $user = $request->get('auth');
-        $immunity = User::getImmunity($user->userId);
+        $immunity = User::getImmunity($this->user->userId);
 
         $group = Group::find($groupId);
         Condition::precondition($group->immunity >= $immunity, 400, 'This group have higher immunity then u!');
@@ -109,7 +105,7 @@ class GroupsController extends Controller {
         UserGroup::where('groupId', $groupId)->delete();
         User::where('displayGroupId', $groupId)->update(['displayGroupId' => 0]);
 
-        Logger::admin($user->userId, $request->ip(), Action::DELETED_GROUP, ['group' => $group->name]);
+        Logger::admin($this->user->userId, $request->ip(), Action::DELETED_GROUP, ['group' => $group->name]);
         GroupUpdated::dispatch($groupId);
         return response()->json();
     }
@@ -122,9 +118,8 @@ class GroupsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createGroup(Request $request) {
-        $user = $request->get('auth');
         $group = (object)$request->input('group');
-        $immunity = User::getImmunity($user->userId);
+        $immunity = User::getImmunity($this->user->userId);
 
         Condition::precondition(empty($group->name), 400, 'A group needs to have a name!');
         Condition::precondition($group->immunity >= $immunity || $group->immunity < 0, 400, 'Immunity can only be 0 to');
@@ -153,8 +148,8 @@ class GroupsController extends Controller {
         ]);
         $group->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::CREATED_GROUP, ['group' => $group->name]);
-        return $this->getGroup($request, $group->groupId);
+        Logger::admin($this->user->userId, $request->ip(), Action::CREATED_GROUP, ['group' => $group->name]);
+        return $this->getGroup($group->groupId);
     }
 
     /**
@@ -166,9 +161,8 @@ class GroupsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateGroup(Request $request, $groupId) {
-        $user = $request->get('auth');
         $newGroup = (object)$request->input('group');
-        $immunity = User::getImmunity($user->userId);
+        $immunity = User::getImmunity($this->user->userId);
 
         $group = Group::find($groupId);
 
@@ -202,22 +196,20 @@ class GroupsController extends Controller {
 
         GroupUpdated::dispatch($groupId);
 
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_GROUP, ['group' => $group->name]);
-        return $this->getGroup($request, $groupId);
+        Logger::admin($this->user->userId, $request->ip(), Action::UPDATED_GROUP, ['group' => $group->name]);
+        return $this->getGroup($groupId);
     }
 
     /**
      * Get request to fetch resource of given group
      *
-     * @param Request $request
      * @param         $groupId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getGroup(Request $request, $groupId) {
-        $user = $request->get('auth');
+    public function getGroup($groupId) {
         $group = Group::find($groupId);
-        $immunity = User::getImmunity($user->userId);
+        $immunity = User::getImmunity($this->user->userId);
 
         if (!$group) {
             $group = new \stdClass();
@@ -249,8 +241,7 @@ class GroupsController extends Controller {
      */
     public function getGroups(Request $request, $page) {
         $filter = $request->input('filter');
-        $user = $request->get('auth');
-        $immunity = User::getImmunity($user->userId);
+        $immunity = User::getImmunity($this->user->userId);
 
         $getGroupSql = Group::where('immunity', '<', $immunity)
             ->where('name', 'LIKE', Value::getFilterValue($request, $filter))

@@ -21,11 +21,12 @@ class PostActionController extends Controller {
     /**
      * PostController constructor.
      *
+     * @param Request $request
      * @param ForumService $forumService
      * @param ForumValidatorService $validatorService
      */
-    public function __construct(ForumService $forumService, ForumValidatorService $validatorService) {
-        parent::__construct();
+    public function __construct(Request $request, ForumService $forumService, ForumValidatorService $validatorService) {
+        parent::__construct($request);
         $this->forumService = $forumService;
         $this->validatorService = $validatorService;
     }
@@ -39,18 +40,17 @@ class PostActionController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function likePost(Request $request, $postId) {
-        $user = $request->get('auth');
         $post = Post::find($postId);
         Condition::precondition(!$post, 404, 'Post do not exist');
         Condition::precondition(!$post->thread, 404, 'Thread do not exist');
 
         $haveLiked = PostLike::where('postId', $postId)
-                ->where('userId', $user->userId)
+                ->where('userId', $this->user->userId)
                 ->count('postLikeId') > 0;
 
-        Condition::precondition($post->userId == $user->userId, 400, 'You can not like your own post');
+        Condition::precondition($post->userId == $this->user->userId, 400, 'You can not like your own post');
         Condition::precondition($haveLiked, 400, 'You already liked this post');
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead, $post->thread->categoryId,
+        PermissionHelper::haveForumPermissionWithException($this->user->userId, ConfigHelper::getForumPermissions()->canRead, $post->thread->categoryId,
             'You do not have access to like this post');
 
         $postUser = $post->user()->first();
@@ -59,10 +59,10 @@ class PostActionController extends Controller {
 
         PostLike::create([
             'postId' => $postId,
-            'userId' => $user->userId
+            'userId' => $this->user->userId
         ]);
 
-        Logger::user($user->userId, $request->ip(), Action::LIKED_POST, [
+        Logger::user($this->user->userId, $request->ip(), Action::LIKED_POST, [
             'thread' => $post->thread->title,
             'threadId' => $post->threadId,
             'categoryId' => $post->thread->categoryId
@@ -79,19 +79,17 @@ class PostActionController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function unlikePost(Request $request, $postId) {
-        $user = $request->get('auth');
-
         $post = Post::with('thread:threadId,categoryId')->where('postId', $postId)->first(['threadId', 'userId']);
         Condition::precondition(!$post, 404, 'Post do not exist');
         Condition::precondition(!$post->thread, 404, 'Thread do not exist');
 
         $haveLiked = PostLike::where('postId', $postId)
-                ->where('userId', $user->userId)
+                ->where('userId', $this->user->userId)
                 ->count('postLikeId') > 0;
 
         Condition::precondition(!$haveLiked, '400', 'Can not unlike a post you havent liked');
-        Condition::precondition($post->userId == $user->userId, 400, 'You can not unlike your own post');
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead, $post->thread->categoryId,
+        Condition::precondition($post->userId == $this->user->userId, 400, 'You can not unlike your own post');
+        PermissionHelper::haveForumPermissionWithException($this->user->userId, ConfigHelper::getForumPermissions()->canRead, $post->thread->categoryId,
             'You do not have access to unlike this post');
 
         $postUser = $post->user()->first();
@@ -99,10 +97,10 @@ class PostActionController extends Controller {
         $postUser->save();
 
         PostLike::where('postId', $postId)
-            ->where('userId', $user->userId)
+            ->where('userId', $this->user->userId)
             ->delete();
 
-        Logger::user($user->userId, $request->ip(), Action::UNLIKED_POST);
+        Logger::user($this->user->userId, $request->ip(), Action::UNLIKED_POST);
         return response()->json();
     }
 }

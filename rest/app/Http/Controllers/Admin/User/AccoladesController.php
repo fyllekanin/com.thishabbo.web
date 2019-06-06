@@ -15,9 +15,12 @@ use Illuminate\Http\Request;
 
 class AccoladesController extends Controller {
 
-    public function getAccoladePage(Request $request, $userId) {
-        $user = $request->get('auth');
-        Condition::precondition(!UserHelper::canManageUser($user, $userId), 400, 'You are not able to edit this user');
+    public function __construct(Request $request) {
+        parent::__construct($request);
+    }
+
+    public function getAccoladePage($userId) {
+        Condition::precondition(!UserHelper::canManageUser($this->user, $userId), 400, 'You are not able to edit this user');
 
         return response()->json([
             'user' => UserHelper::getSlimUser($userId),
@@ -30,9 +33,8 @@ class AccoladesController extends Controller {
 
     public function createAccolade(Request $request, $userId) {
         $data = (object)$request->input('data');
-        $user = $request->get('auth');
 
-        Condition::precondition(!UserHelper::canManageUser($user, $userId), 400, 'You are not able to edit this user');
+        Condition::precondition(!UserHelper::canManageUser($this->user, $userId), 400, 'You are not able to edit this user');
         Condition::precondition(User::where('userId', $userId)->count() == 0, 404, 'User with that ID do not exist');
         $this->validateAccolade($data);
 
@@ -45,17 +47,16 @@ class AccoladesController extends Controller {
         ]);
         $accolade->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::CREATED_ACCOLADE, ['userId' => $userId], $accolade->accoladeId);
+        Logger::admin($this->user->userId, $request->ip(), Action::CREATED_ACCOLADE, ['userId' => $userId], $accolade->accoladeId);
         return response()->json($accolade);
     }
 
     public function updateAccolade(Request $request, $userId, $accoladeId) {
         $data = (object)$request->input('data');
-        $user = $request->get('auth');
         $accolade = Accolade::find($accoladeId);
 
         Condition::precondition(!$accolade, 404, 'No accolade with that ID');
-        Condition::precondition(!UserHelper::canManageUser($user, $accolade->user->userId), 400, 'You are not able to edit this user');
+        Condition::precondition(!UserHelper::canManageUser($this->user, $accolade->user->userId), 400, 'You are not able to edit this user');
         $this->validateAccolade($data);
 
         $accolade->role = $data->role;
@@ -64,20 +65,19 @@ class AccoladesController extends Controller {
         $accolade->type = $data->type;
         $accolade->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_ACCOLADE, ['userId' => $userId], $accolade->accoladeId);
+        Logger::admin($this->user->userId, $request->ip(), Action::UPDATED_ACCOLADE, ['userId' => $userId], $accolade->accoladeId);
         return response()->json($accolade);
     }
 
     public function deleteAccolade(Request $request, $userId, $accoladeId) {
-        $user = $request->get('auth');
         $accolade = Accolade::find($accoladeId);
         Condition::precondition(!$accolade, 404, 'No accolade with that ID');
-        Condition::precondition(!UserHelper::canManageUser($user, $accolade->user->userId), 400, 'You are not able to edit this user');
+        Condition::precondition(!UserHelper::canManageUser($this->user, $accolade->user->userId), 400, 'You are not able to edit this user');
 
         $accolade->isDeleted = true;
         $accolade->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::DELETED_ACCOLADE, ['userId' => $userId], $accolade->accoladeId);
+        Logger::admin($this->user->userId, $request->ip(), Action::DELETED_ACCOLADE, ['userId' => $userId], $accolade->accoladeId);
         return response()->json();
     }
 

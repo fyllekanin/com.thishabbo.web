@@ -5,17 +5,21 @@ namespace App\Http\Controllers\Admin\User;
 use App\EloquentModels\Group\Group;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserGroup;
+use App\Helpers\ConfigHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
+use App\Jobs\UserUpdated;
 use App\Logger;
 use App\Models\Logger\Action;
 use App\Utils\Condition;
 use App\Utils\Iterables;
 use Illuminate\Http\Request;
-use App\Jobs\UserUpdated;
-use App\Helpers\ConfigHelper;
 
 class UserGroupsController extends Controller {
+
+    public function __construct(Request $request) {
+        parent::__construct($request);
+    }
 
     /**
      * Update the groups a user have
@@ -26,12 +30,11 @@ class UserGroupsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateUserGroups(Request $request, $userId) {
-        $user = $request->get('auth');
         $current = UserHelper::getUserFromId($userId);
         Condition::precondition(!$current, 404, 'User do not exist');
 
-        $myImmunity = User::getImmunity($user->userId);
-        Condition::precondition(!UserHelper::canManageUser($user, $userId), 400, 'Not high enough immunity');
+        $myImmunity = User::getImmunity($this->user->userId);
+        Condition::precondition(!UserHelper::canManageUser($this->user, $userId), 400, 'Not high enough immunity');
 
         $groupIds = $request->input('groupIds');
         $displayGroupId = $request->input('displayGroupId');
@@ -69,7 +72,7 @@ class UserGroupsController extends Controller {
 
         UserUpdated::dispatch($userId, ConfigHelper::getUserUpdateTypes()->CLEAR_GROUP);
 
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_USERS_GROUPS, [
+        Logger::admin($this->user->userId, $request->ip(), Action::UPDATED_USERS_GROUPS, [
             'name' => $current->nickname,
             'before' => $before->toArray(),
             'after' => $current->groups->map(function ($group) {
@@ -82,18 +85,16 @@ class UserGroupsController extends Controller {
     /**
      * Get the page model controller user groups of a user
      *
-     * @param Request $request
      * @param         $userId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getUserGroups(Request $request, $userId) {
-        $user = $request->get('auth');
+    public function getUserGroups($userId) {
         $current = UserHelper::getUserFromId($userId);
         Condition::precondition(!$current, 404, 'User do not exist');
 
-        $myImmunity = User::getImmunity($user->userId);
-        Condition::precondition(!UserHelper::canManageUser($user, $userId), 400, 'Not high enough immunity');
+        $myImmunity = User::getImmunity($this->user->userId);
+        Condition::precondition(!UserHelper::canManageUser($this->user, $userId), 400, 'Not high enough immunity');
 
         $possibleGroups = Group::where('immunity', '<', $myImmunity)->select('name', 'groupId')->get()->toArray();
 

@@ -18,6 +18,10 @@ use Illuminate\Support\Facades\DB;
 
 class BadgesController extends Controller {
 
+    public function __construct(Request $request) {
+        parent::__construct($request);
+    }
+
     /**
      * @param $badgeId
      *
@@ -49,7 +53,6 @@ class BadgesController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateUsersWithBadge(Request $request, $badgeId) {
-        $user = $request->get('auth');
         $badge = Badge::find($badgeId);
         $userIds = $request->input('userIds');
 
@@ -59,7 +62,7 @@ class BadgesController extends Controller {
         UserItem::badge()->where('itemId', $badgeId)->whereNotIn('userId', $userIds)->delete();
         $this->addBadgeToUsers($userIds, $badgeId);
 
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_USERS_WITH_BADGE, ['badge' => $badge->name]);
+        Logger::admin($this->user->userId, $request->ip(), Action::UPDATED_USERS_WITH_BADGE, ['badge' => $badge->name]);
         return response()->json();
     }
 
@@ -72,7 +75,6 @@ class BadgesController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteBadge(Request $request, $badgeId) {
-        $user = $request->get('auth');
         $badge = Badge::find($badgeId);
 
         Condition::precondition(!$badge, 404, 'Badge does not exist');
@@ -81,8 +83,7 @@ class BadgesController extends Controller {
         $badge->isDeleted = 1;
         $badge->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::DELETED_BADGE, ['badge' => $badge->name]);
-
+        Logger::admin($this->user->userId, $request->ip(), Action::DELETED_BADGE, ['badge' => $badge->name]);
         return response()->json();
     }
 
@@ -94,7 +95,6 @@ class BadgesController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createBadge(Request $request) {
-        $user = $request->get('auth');
         $badge = (object)json_decode($request->input('badge'));
         $badgeImage = $request->file('badgeImage');
 
@@ -119,8 +119,7 @@ class BadgesController extends Controller {
         $destination = base_path('/public/rest/resources/images/badges');
         $badgeImage->move($destination, $fileName);
 
-        Logger::admin($user->userId, $request->ip(), Action::CREATED_BADGE, ['badge' => $badge->name]);
-
+        Logger::admin($this->user->userId, $request->ip(), Action::CREATED_BADGE, ['badge' => $badge->name]);
         return $this->getBadge($badge->badgeId);
     }
 
@@ -131,7 +130,6 @@ class BadgesController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateBadge(Request $request, $badgeId) {
-        $user = $request->get('auth');
         $newBadge = (object)json_decode($request->input('badge'));
         $badgeImage = $request->file('badgeImage');
 
@@ -162,8 +160,7 @@ class BadgesController extends Controller {
             $badgeImage->move($destination, $fileName);
         }
 
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_BADGE, ['badge' => $badge->name]);
-
+        Logger::admin($this->user->userId, $request->ip(), Action::UPDATED_BADGE, ['badge' => $badge->name]);
         return $this->getBadge($badgeId);
     }
 

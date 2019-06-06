@@ -19,9 +19,11 @@ class StaffSpotlightController extends Controller {
     /**
      * StaffSpotlightController constructor.
      * Fetch the setting keys and store them in an instance variable
+     *
+     * @param Request $request
      */
-    public function __construct() {
-        parent::__construct();
+    public function __construct(Request $request) {
+        parent::__construct($request);
         $this->settingKeys = ConfigHelper::getKeyConfig();
         $this->botKeys = [
             $this->settingKeys->botUserId,
@@ -53,7 +55,6 @@ class StaffSpotlightController extends Controller {
      */
 
     public function updateMemberOfTheMonth(Request $request) {
-        $user = $request->get('auth');
         $information = (object)$request->input('information');
 
         foreach ($information as $key => $value) {
@@ -69,8 +70,7 @@ class StaffSpotlightController extends Controller {
 
         SettingsHelper::createOrUpdateSetting($this->settingKeys->memberOfTheMonth, json_encode($newInformation));
 
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_MEMBER_OF_THE_MONTH);
-
+        Logger::admin($this->user->userId, $request->ip(), Action::UPDATED_MEMBER_OF_THE_MONTH);
         return response()->json();
     }
 
@@ -81,7 +81,6 @@ class StaffSpotlightController extends Controller {
      */
     public function getStaffOfTheWeek() {
         $sotw = json_decode(SettingsHelper::getSettingValue($this->settingKeys->staffOfTheWeek));
-
         $returnedSOTW = [];
 
         foreach ($sotw as $key => $value) {
@@ -100,7 +99,6 @@ class StaffSpotlightController extends Controller {
      */
 
     public function updateStaffOfTheWeek(Request $request) {
-        $user = $request->get('auth');
         $information = (object)$request->input('information');
 
         foreach ($information as $key => $value) {
@@ -135,8 +133,7 @@ class StaffSpotlightController extends Controller {
 
         SettingsHelper::createOrUpdateSetting($this->settingKeys->staffOfTheWeek, json_encode($newInformation));
 
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_STAFF_OF_THE_WEEK);
-
+        Logger::admin($this->user->userId, $request->ip(), Action::UPDATED_STAFF_OF_THE_WEEK);
         return response()->json();
     }
 }

@@ -26,10 +26,11 @@ class WelcomeBotController extends Controller {
      * WelcomeBotController constructor.
      * Fetch the setting keys and store them in an instance variable
      *
+     * @param Request $request
      * @param ForumService $forumService
      */
-    public function __construct(ForumService $forumService) {
-        parent::__construct();
+    public function __construct(Request $request, ForumService $forumService) {
+        parent::__construct($request);
         $this->forumService = $forumService;
         $this->settingKeys = ConfigHelper::getKeyConfig();
         $this->welcomeBotKeys = [
@@ -47,8 +48,6 @@ class WelcomeBotController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateWelcomeBotSettings(Request $request) {
-        $user = $request->get('auth');
-
         foreach ($this->welcomeBotKeys as $key) {
             switch ($key) {
                 case $this->settingKeys->botUserId:
@@ -67,25 +66,22 @@ class WelcomeBotController extends Controller {
             }
         }
 
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_WELCOME_BOT);
+        Logger::admin($this->user->userId, $request->ip(), Action::UPDATED_WELCOME_BOT);
         return response()->json();
     }
 
     /**
      * Get request to get the current settings of the welcome bot
      *
-     * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getWelcomeBotSettings(Request $request) {
-        $user = $request->get('auth');
-
-        $availableCategories = $this->forumService->getAccessibleCategories($user->userId);
+    public function getWelcomeBotSettings() {
+        $availableCategories = $this->forumService->getAccessibleCategories($this->user->userId);
         $categories = Category::whereIn('categoryId', $availableCategories)
             ->select('categoryId', 'title')
             ->where('parentId', '!=', '-1')
             ->get(['categoryId', 'title']);
+        
         $categories->each(function ($category) {
             $category->setAppends([]);
         });

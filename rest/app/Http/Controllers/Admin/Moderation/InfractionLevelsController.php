@@ -15,8 +15,8 @@ use Illuminate\Http\Request;
 class InfractionLevelsController extends Controller {
     private $forumService;
 
-    public function __construct(ForumService $forumService) {
-        parent::__construct();
+    public function __construct(Request $request, ForumService $forumService) {
+        parent::__construct($request);
         $this->forumService = $forumService;
     }
 
@@ -40,13 +40,11 @@ class InfractionLevelsController extends Controller {
     }
 
     /**
-     * @param Request $request
      * @param         $infractionLevelId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getInfractionLevel(Request $request, $infractionLevelId) {
-        $user = $request->get('auth');
+    public function getInfractionLevel($infractionLevelId) {
         $infractionLevel = InfractionLevel::find($infractionLevelId);
         $isNew = $infractionLevelId == 'new';
 
@@ -62,7 +60,7 @@ class InfractionLevelsController extends Controller {
             'createdAt' => $isNew ? null : $infractionLevel->createdAt->timestamp,
             'categoryId' => $isNew ? null : $infractionLevel->categoryId,
             'penalty' => $isNew ? 0 : $infractionLevel->penalty,
-            'categories' => $this->forumService->getCategoryTree($user)
+            'categories' => $this->forumService->getCategoryTree($this->user)
         ]);
     }
 
@@ -73,7 +71,6 @@ class InfractionLevelsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateInfractionLevel(Request $request, $infractionLevelId) {
-        $user = $request->get('auth');
         $newInfractionLevel = (object)$request->input('infractionLevel');
         $infractionLevel = InfractionLevel::find($infractionLevelId);
         Condition::precondition(!$infractionLevel, 404, 'No infraction level with that ID exists');
@@ -87,7 +84,7 @@ class InfractionLevelsController extends Controller {
         $infractionLevel->penalty = Value::objectProperty($newInfractionLevel, 'penalty', 0);
         $infractionLevel->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_INFRACTION_LEVEL, [
+        Logger::admin($this->user->userId, $request->ip(), Action::UPDATED_INFRACTION_LEVEL, [
             'infractionLevelId' => $infractionLevel->infractionLevelId
         ]);
         return $this->getInfractionLevel($infractionLevel->infractionLevelId);
@@ -100,15 +97,13 @@ class InfractionLevelsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteInfractionLevel(Request $request, $infractionLevelId) {
-        $user = $request->get('auth');
-
         $infractionLevel = InfractionLevel::find($infractionLevelId);
         Condition::precondition(!$infractionLevel, 404, 'No infraction level with this ID exists');
 
         $infractionLevel->isDeleted = true;
         $infractionLevel->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::DELETED_INFRACTION_LEVEL, [
+        Logger::admin($this->user->userId, $request->ip(), Action::DELETED_INFRACTION_LEVEL, [
             'infractionLevelId' => $infractionLevel->infractionLevelId
         ]);
         return response()->json();
@@ -120,7 +115,6 @@ class InfractionLevelsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createInfractionLevel(Request $request) {
-        $user = $request->get('auth');
         $newInfractionLevel = (object)$request->input('infractionLevel');
         $this->validateInfractionLevel($newInfractionLevel);
 
@@ -133,7 +127,7 @@ class InfractionLevelsController extends Controller {
         ]);
         $infractionLevel->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::CREATED_INFRACTION_LEVEL, [
+        Logger::admin($this->user->userId, $request->ip(), Action::CREATED_INFRACTION_LEVEL, [
             'infractionLevelId' => $infractionLevel->infractionLevelId
         ]);
         return $this->getInfractionLevel($infractionLevel->infractionLevelId);

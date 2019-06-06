@@ -13,6 +13,10 @@ use Illuminate\Http\Request;
 
 class AutoBanController extends Controller {
 
+    public function __construct(Request $request) {
+        parent::__construct($request);
+    }
+
     /**
      * @param Request $request
      * @param         $page
@@ -69,7 +73,6 @@ class AutoBanController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createAutoBan(Request $request) {
-        $user = $request->get('auth');
         $autoBan = (object)$request->input('autoBan');
         $this->validateAutoBanInput($autoBan);
 
@@ -81,7 +84,7 @@ class AutoBanController extends Controller {
         ]);
         $newAutoBan->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::CREATED_AUTO_BAN, [
+        Logger::admin($this->user->userId, $request->ip(), Action::CREATED_AUTO_BAN, [
             'title' => $autoBan->title
         ]);
         return $this->getAutoBan($newAutoBan->autoBanId);
@@ -94,7 +97,6 @@ class AutoBanController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateAutoBan(Request $request, $autoBanId) {
-        $user = $request->get('auth');
         $newAutoBan = (object)$request->input('autoBan');
         $autoBan = AutoBan::find($autoBanId);
         Condition::precondition(!$autoBan, 404, 'No autoban with this ID exist');
@@ -106,7 +108,7 @@ class AutoBanController extends Controller {
         $autoBan->reason = $newAutoBan->reason;
         $autoBan->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_AUTO_BAN, [
+        Logger::admin($this->user->userId, $request->ip(), Action::UPDATED_AUTO_BAN, [
             'title' => $autoBan->title
         ]);
         return $this->getAutoBan($autoBan->autoBanId);
@@ -119,14 +121,13 @@ class AutoBanController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteAutoBan(Request $request, $autoBanId) {
-        $user = $request->get('auth');
         $autoBan = AutoBan::find($autoBanId);
 
         Condition::precondition(!$autoBan, 404, 'No autoban with this ID exist');
         $autoBan->isDeleted = true;
         $autoBan->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::DELETED_AUTO_BAN, [
+        Logger::admin($this->user->userId, $request->ip(), Action::DELETED_AUTO_BAN, [
             'title' => $autoBan->title
         ]);
         return response()->json();

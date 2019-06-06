@@ -23,26 +23,25 @@ class ThreadPollController extends Controller {
     /**
      * ThreadPollController constructor.
      *
+     * @param Request $request
      * @param ForumService $forumService
      */
-    public function __construct(ForumService $forumService) {
-        parent::__construct();
+    public function __construct(Request $request, ForumService $forumService) {
+        parent::__construct($request);
         $this->forumService = $forumService;
     }
 
     /**
-     * @param Request $request
      * @param         $threadId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPoll(Request $request, $threadId) {
-        $user = $request->get('auth');
+    public function getPoll($threadId) {
         $thread = Thread::find($threadId);
         $permission = ConfigHelper::getForumPermissions()->canManagePolls;
 
         Condition::precondition(!$thread, 404, 'No thread with that ID');
-        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, $thread->categoryId, $permission),
+        Condition::precondition(!PermissionHelper::haveForumPermission($this->user->userId, $thread->categoryId, $permission),
             400, 'You do not have permission to view this poll');
 
         return response()->json([
@@ -70,8 +69,7 @@ class ThreadPollController extends Controller {
      */
     public function getPolls(Request $request, $page) {
         $filter = $request->input('filter');
-        $user = $request->get('auth');
-        $categoryIds = $this->forumService->getAccessibleCategories($user->userId, ConfigHelper::getForumPermissions()->canManagePolls);
+        $categoryIds = $this->forumService->getAccessibleCategories($this->user->userId, ConfigHelper::getForumPermissions()->canManagePolls);
         $threadIds = Thread::whereIn('categoryId', $categoryIds)->pluck('threadId');
 
         $getPollsSql = ThreadPoll::join('threads', 'threads.threadId', '=', 'thread_polls.threadId')
@@ -106,12 +104,11 @@ class ThreadPollController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deletePoll(Request $request, $threadId) {
-        $user = $request->get('auth');
         $thread = Thread::find($threadId);
         $threadPoll = ThreadPoll::where('threadId', $thread->threadId)->first();
 
         Condition::precondition(!$threadPoll, 404, 'No thread poll exist with that ID');
-        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId,
+        Condition::precondition(!PermissionHelper::haveForumPermission($this->user->userId,
             ConfigHelper::getForumPermissions()->canManagePolls, $thread->categoryId),
             400, 'You do not have permission to delete this poll');
 
@@ -120,7 +117,7 @@ class ThreadPollController extends Controller {
 
         ThreadPollAnswer::where('threadPollId', $threadPoll->threadPollId)->update(['isDeleted' => true]);
 
-        Logger::mod($user->userId, $request->ip(), Action::DELETED_POLL, ['poll' => $threadPoll->question]);
+        Logger::mod($this->user->userId, $request->ip(), Action::DELETED_POLL, ['poll' => $threadPoll->question]);
         return response()->json();
     }
 }

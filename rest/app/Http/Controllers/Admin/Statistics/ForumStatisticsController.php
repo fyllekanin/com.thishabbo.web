@@ -6,8 +6,14 @@ use App\EloquentModels\Forum\Post;
 use App\EloquentModels\Forum\Thread;
 use App\Http\Controllers\Controller;
 use App\Utils\Condition;
+use Illuminate\Http\Request;
 
 class ForumStatisticsController extends Controller {
+
+    public function __construct(Request $request) {
+        parent::__construct($request);
+    }
+
     /**
      * @param $year
      * @param $month

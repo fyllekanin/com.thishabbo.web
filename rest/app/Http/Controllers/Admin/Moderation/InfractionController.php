@@ -33,12 +33,13 @@ class InfractionController extends Controller {
     /**
      * InfractionController constructor.
      *
+     * @param Request $request
      * @param ForumService $forumService
      * @param ForumValidatorService $validatorService
      * @param CreditsService $creditsService
      */
-    public function __construct(ForumService $forumService, ForumValidatorService $validatorService, CreditsService $creditsService) {
-        parent::__construct();
+    public function __construct(Request $request, ForumService $forumService, ForumValidatorService $validatorService, CreditsService $creditsService) {
+        parent::__construct($request);
         $this->forumService = $forumService;
         $this->validatorService = $validatorService;
         $this->creditsService = $creditsService;
@@ -86,7 +87,6 @@ class InfractionController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteInfraction(Request $request, $infractionId) {
-        $user = $request->get('auth');
         $infraction = Infraction::find($infractionId);
 
         Condition::precondition(!$infraction, 404, 'No infraction with that ID exists');
@@ -94,8 +94,8 @@ class InfractionController extends Controller {
         $infraction->isDeleted = true;
         $infraction->save();
 
-        NotificationFactory::newInfractionDeleted($infraction->infractedId, $user->userId, $infraction->infractionId);
-        Logger::mod($user->userId, $request->ip(), Action::DELETED_INFRACTION, ['infractionId' => $infraction->infractionId]);
+        NotificationFactory::newInfractionDeleted($infraction->infractedId, $this->user->userId, $infraction->infractionId);
+        Logger::mod($this->user->userId, $request->ip(), Action::DELETED_INFRACTION, ['infractionId' => $infraction->infractionId]);
         return response()->json();
     }
 
@@ -106,7 +106,6 @@ class InfractionController extends Controller {
      * @throws \Illuminate\Validation\ValidationException
      */
     public function createInfraction(Request $request) {
-        $user = $request->get('auth');
         $data = (object)$request->input('infraction');
         $this->validateInfraction($data);
 
@@ -116,21 +115,21 @@ class InfractionController extends Controller {
             'infractionLevelId' => $data->infractionLevelId,
             'infractedId' => $data->userId,
             'reason' => $data->reason,
-            'userId' => $user->userId,
+            'userId' => $this->user->userId,
             'expiresAt' => time() + ($infractionLevel->lifeTime < 0 ? $this->oneYear : $infractionLevel->lifeTime)
         ]);
         $infraction->save();
 
         if (isset($infractionLevel->categoryId) && $infractionLevel->categoryId > 0 && $this->botAccountExists()) {
-            $this->createInfractionThread($infractionLevel, $infraction);
+            $this->createInfractionThread($request, $infractionLevel, $infraction);
         } else {
-            NotificationFactory::newInfractionGiven($data->userId, $user->userId, $infraction->infractionId);
+            NotificationFactory::newInfractionGiven($data->userId, $this->user->userId, $infraction->infractionId);
         }
 
-        $this->checkAutomaticBan($user, $data->userId);
+        $this->checkAutomaticBan($this->user, $data->userId);
         $this->creditsService->takeCredits($data->userId, $infractionLevel->penalty);
 
-        Logger::mod($user->userId, $request->ip(), Action::CREATED_INFRACTION, [
+        Logger::mod($this->user->userId, $request->ip(), Action::CREATED_INFRACTION, [
             'userId' => $data->userId,
             'reason' => $data->reason
         ]);
@@ -160,13 +159,14 @@ class InfractionController extends Controller {
     }
 
     /**
+     * @param $request
      * @param $infractionLevel
      * @param $infraction
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    private function createInfractionThread($infractionLevel, $infraction) {
-        $threadController = new ThreadCrudController($this->forumService, $this->validatorService);
+    private function createInfractionThread($request, $infractionLevel, $infraction) {
+        $threadController = new ThreadCrudController($request, $this->forumService, $this->validatorService);
         $threadSkeleton = new \stdClass();
         $infracted = UserHelper::getUserFromId($infraction->infractedId);
         $points = Infraction::isActive()
@@ -192,7 +192,7 @@ Below you can find information regarding the infraction you were just given.
 
         $botId = SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->botUserId);
         $bot = UserHelper::getUserFromId($botId);
-        $threadController->doThread($bot, null, $threadSkeleton, null, true);
+        $threadController->doThread($bot, null, $threadSkeleton, $request, true);
     }
 
     private function botAccountExists() {

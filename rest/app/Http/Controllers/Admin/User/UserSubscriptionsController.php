@@ -14,12 +14,14 @@ use Illuminate\Http\Request;
 
 class UserSubscriptionsController extends Controller {
 
-    public function getUserSubscriptions(Request $request, $userId) {
-        $user = $request->get('auth');
+    public function __construct(Request $request) {
+        parent::__construct($request);
+    }
 
+    public function getUserSubscriptions(Request $request, $userId) {
         Condition::precondition(User::where('userId', $userId)->count() == 0, 404,
             'No user with that ID');
-        Condition::precondition(!UserHelper::canManageUser($user, $userId), 400,
+        Condition::precondition(!UserHelper::canManageUser($this->user, $userId), 400,
             'You are not able to edit this user');
 
         return response()->json([
@@ -38,12 +40,11 @@ class UserSubscriptionsController extends Controller {
     }
 
     public function createUserSubscription(Request $request, $userId) {
-        $user = $request->get('auth');
         $data = (object)$request->input('data');
 
         Condition::precondition(User::where('userId', $userId)->count() == 0, 404,
             'No user with that ID');
-        Condition::precondition(!UserHelper::canManageUser($user, $userId), 400,
+        Condition::precondition(!UserHelper::canManageUser($this->user, $userId), 400,
             'You are not able to edit this user');
         $this->validateSubscription($data);
 
@@ -57,7 +58,7 @@ class UserSubscriptionsController extends Controller {
         ]);
         $userSubscription->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::CREATED_USER_SUBSCRIPTION);
+        Logger::admin($this->user->userId, $request->ip(), Action::CREATED_USER_SUBSCRIPTION);
         return response()->json([
             'userSubscriptionId' => $userSubscription->userSubscriptionId,
             'title' => $userSubscription->subscription->title,
@@ -68,13 +69,12 @@ class UserSubscriptionsController extends Controller {
     }
 
     public function updateUserSubscription(Request $request, $userSubscriptionId) {
-        $user = $request->get('auth');
         $data = (object)$request->input('data');
         $userSubscription = UserSubscription::find($userSubscriptionId);
 
         Condition::precondition(!$userSubscription, 404,
             'No user subscription with that ID');
-        Condition::precondition(!UserHelper::canManageUser($user, $userSubscription->userId), 400,
+        Condition::precondition(!UserHelper::canManageUser($this->user, $userSubscription->userId), 400,
             'You are not able to edit this user');
         $data->subscriptionId = $userSubscription->subscriptionId;
         $this->validateSubscription($data);
@@ -82,21 +82,20 @@ class UserSubscriptionsController extends Controller {
         $userSubscription->expiresAt = $data->expiresAt;
         $userSubscription->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_USER_SUBSCRIPTION);
+        Logger::admin($this->user->userId, $request->ip(), Action::UPDATED_USER_SUBSCRIPTION);
         return response()->json();
     }
 
     public function deleteUserSubscription(Request $request, $userSubscriptionId) {
-        $user = $request->get('auth');
         $userSubscription = UserSubscription::find($userSubscriptionId);
 
         Condition::precondition(!$userSubscription, 404, 'No user subscription with that ID');
-        Condition::precondition(!UserHelper::canManageUser($user, $userSubscription->userId), 400,
+        Condition::precondition(!UserHelper::canManageUser($this->user, $userSubscription->userId), 400,
             'You are not able to edit this user');
 
         $userSubscription->delete();
 
-        Logger::admin($user->userId, $request->ip(), Action::DELETED_USER_SUBSCRIPTION);
+        Logger::admin($this->user->userId, $request->ip(), Action::DELETED_USER_SUBSCRIPTION);
         return response()->json();
     }
 

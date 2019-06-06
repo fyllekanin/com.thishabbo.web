@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\DB;
 
 class IpSearchController extends Controller {
 
+    public function __construct(Request $request) {
+        parent::__construct($request);
+    }
+
     public function getIpSearch(Request $request) {
         $nickname = $request->input('nickname');
         $ipAddress = $request->input('ipAddress');

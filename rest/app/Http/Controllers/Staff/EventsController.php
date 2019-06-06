@@ -22,6 +22,10 @@ use Illuminate\Http\Request;
 
 class EventsController extends Controller {
 
+    public function __construct(Request $request) {
+        parent::__construct($request);
+    }
+
     /**
      * Get Ban on Sight List
      *
@@ -50,7 +54,6 @@ class EventsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createHostLike(Request $request) {
-        $user = $request->get('auth');
         $nowMinus30Min = time() - 1800;
 
         $hour = date('G');
@@ -61,10 +64,10 @@ class EventsController extends Controller {
         $eventUser = User::find($current->userId);
 
         Condition::precondition(!$current->user, 404, 'Cannot find host!');
-        Condition::precondition($user->userId == 0, 400, 'You need to be logged in to like a host!');
-        Condition::precondition($user->userId == $current->user->userId, 400, 'You can not like yourself');
+        Condition::precondition($this->user->userId == 0, 400, 'You need to be logged in to like a host!');
+        Condition::precondition($this->user->userId == $current->user->userId, 400, 'You can not like yourself');
 
-        $haveLikedWithInLimit = LogUser::where('userId', $user->userId)
+        $haveLikedWithInLimit = LogUser::where('userId', $this->user->userId)
                 ->where('action', Action::getAction(Action::LIKED_HOST))
                 ->where('createdAt', '>', $nowMinus30Min)
                 ->count('logId') > 0;
@@ -73,7 +76,7 @@ class EventsController extends Controller {
         $eventUser->likes++;
         $eventUser->save();
 
-        Logger::user($user->userId, $request->ip(), Action::LIKED_HOST, [], $current->user->userId);
+        Logger::user($this->user->userId, $request->ip(), Action::LIKED_HOST, [], $current->user->userId);
         return response()->json();
     }
 
@@ -105,7 +108,6 @@ class EventsController extends Controller {
      */
     public function updateBanOnSight(Request $request, $entryId) {
         $settingKeys = ConfigHelper::getKeyConfig();
-        $user = $request->get('auth');
         $information = (object)$request->input('information');
         $oldEntries = json_decode(SettingsHelper::getSettingValue($settingKeys->banOnSight));
 
@@ -116,7 +118,7 @@ class EventsController extends Controller {
             'id' => $entryId,
             'name' => $information->name,
             'reason' => $information->reason,
-            'addedBy' => $user->userId,
+            'addedBy' => $this->user->userId,
             'createdAt' => time()
         ];
         $entries = Iterables::filter($oldEntries, function ($oldEntry) use ($entryId) {
@@ -125,8 +127,7 @@ class EventsController extends Controller {
         $entries[] = $newEntry;
 
         SettingsHelper::createOrUpdateSetting($settingKeys->banOnSight, json_encode($entries));
-        Logger::staff($user->userId, $request->ip(), Action::UPDATED_BAN_ON_SIGHT, ['name' => $information->name]);
-
+        Logger::staff($this->user->userId, $request->ip(), Action::UPDATED_BAN_ON_SIGHT, ['name' => $information->name]);
         return response()->json();
     }
 
@@ -139,7 +140,6 @@ class EventsController extends Controller {
      */
     public function createBanOnSight(Request $request) {
         $settingKeys = ConfigHelper::getKeyConfig();
-        $user = $request->get('auth');
         $information = (object)$request->input('information');
         $entries = json_decode(SettingsHelper::getSettingValue($settingKeys->banOnSight));
 
@@ -150,14 +150,13 @@ class EventsController extends Controller {
             'id' => count($entries) + 1,
             'name' => $information->name,
             'reason' => $information->reason,
-            'addedBy' => $user->userId,
+            'addedBy' => $this->user->userId,
             'createdAt' => time()
         ];
         $entries[] = $entry;
 
         SettingsHelper::createOrUpdateSetting($settingKeys->banOnSight, json_encode($entries));
-        Logger::staff($user->userId, $request->ip(), Action::CREATED_BAN_ON_SIGHT, ['name' => $information->name]);
-
+        Logger::staff($this->user->userId, $request->ip(), Action::CREATED_BAN_ON_SIGHT, ['name' => $information->name]);
         return response()->json($entry);
     }
 
@@ -171,7 +170,6 @@ class EventsController extends Controller {
      */
     public function deleteBanOnSight(Request $request, $entryId) {
         $settingKeys = ConfigHelper::getKeyConfig();
-        $user = $request->get('auth');
         $oldEntries = json_decode(SettingsHelper::getSettingValue($settingKeys->banOnSight));
         $oldEntry = Iterables::find($oldEntries, function ($entry) use ($entryId) {
             return $entry->id == $entryId;
@@ -181,8 +179,7 @@ class EventsController extends Controller {
         });
 
         SettingsHelper::createOrUpdateSetting($settingKeys->banOnSight, json_encode($entry));
-        Logger::staff($user->userId, $request->ip(), Action::DELETED_BAN_ON_SIGHT, ['name' => $oldEntry->name]);
-
+        Logger::staff($this->user->userId, $request->ip(), Action::DELETED_BAN_ON_SIGHT, ['name' => $oldEntry->name]);
         return response()->json();
     }
 
@@ -232,7 +229,6 @@ class EventsController extends Controller {
      */
     public function getEventTypes(Request $request, $page) {
         $filter = $request->input('filter');
-
         $eventsSql = Event::where('name', 'LIKE', Value::getFilterValue($request, $filter))
             ->orderBy('name', 'ASC');
 
@@ -254,7 +250,6 @@ class EventsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createEventType(Request $request) {
-        $user = $request->get('auth');
         $newEvent = (object)$request->input('event');
 
         Condition::precondition(!$newEvent, 400, 'Empty body!');
@@ -268,7 +263,7 @@ class EventsController extends Controller {
         ]);
         $event->save();
 
-        Logger::staff($user->userId, $request->ip(), Action::CREATED_EVENT_TYPE, [
+        Logger::staff($this->user->userId, $request->ip(), Action::CREATED_EVENT_TYPE, [
             'event' => $event->name
         ]);
         return response()->json($event);
@@ -283,7 +278,6 @@ class EventsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateEventType(Request $request, $eventId) {
-        $user = $request->get('auth');
         $newEvent = (object)$request->input('event');
         $event = Event::find($eventId);
 
@@ -294,7 +288,7 @@ class EventsController extends Controller {
         $event->name = $newEvent->name;
         $event->save();
 
-        Logger::staff($user->userId, $request->ip(), Action::UPDATED_EVENT_TYPE, [
+        Logger::staff($this->user->userId, $request->ip(), Action::UPDATED_EVENT_TYPE, [
             'event' => $event->name
         ]);
         return response()->json();
@@ -309,7 +303,6 @@ class EventsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteEventType(Request $request, $eventId) {
-        $user = $request->get('auth');
         $event = Event::find($eventId);
 
         Condition::precondition(!$event, 404, 'Event type do not exist');
@@ -317,7 +310,7 @@ class EventsController extends Controller {
         $event->isDeleted = true;
         $event->save();
 
-        Logger::staff($user->userId, $request->ip(), Action::DELETED_EVENT_TYPE, [
+        Logger::staff($this->user->userId, $request->ip(), Action::DELETED_EVENT_TYPE, [
             'event' => $event->name
         ]);
         return response()->json();
@@ -345,12 +338,10 @@ class EventsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteBooking(Request $request, $timetableId) {
-        $user = $request->get('auth');
-
         $booking = Timetable::find($timetableId);
         Condition::precondition(!$booking, 404, 'Booking does not exist');
-        $canBookForOthers = PermissionHelper::haveStaffPermission($user->userId, ConfigHelper::getStaffConfig()->canBookRadioForOthers);
-        Condition::precondition($booking->userId != $user->userId && !$canBookForOthers, 400, 'You can not unbook others slots');
+        $canBookForOthers = PermissionHelper::haveStaffPermission($this->user->userId, ConfigHelper::getStaffConfig()->canBookRadioForOthers);
+        Condition::precondition($booking->userId != $this->user->userId && !$canBookForOthers, 400, 'You can not unbook others slots');
 
         if ($booking->isPerm) {
             $booking->isActive = false;
@@ -359,7 +350,7 @@ class EventsController extends Controller {
         }
         $booking->save();
 
-        Logger::staff($user->userId, $request->ip(), Action::UNBOOKED_EVENT_SLOT, ['timetableId' => $booking->timetableId]);
+        Logger::staff($this->user->userId, $request->ip(), Action::UNBOOKED_EVENT_SLOT, ['timetableId' => $booking->timetableId]);
         return response()->json();
     }
 
@@ -371,7 +362,6 @@ class EventsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createBooking(Request $request) {
-        $user = $request->get('auth');
         $booking = (object)$request->input('booking');
 
         Condition::precondition(!isset($booking), 400, 'Stupid developer');
@@ -382,14 +372,14 @@ class EventsController extends Controller {
         $event = Event::find($booking->eventId);
         Condition::precondition(!$event, 404, 'Selected event do not exist');
 
-        $canBookForOthers = PermissionHelper::haveStaffPermission($user->userId, ConfigHelper::getStaffConfig()->canBookEventForOthers);
+        $canBookForOthers = PermissionHelper::haveStaffPermission($this->user->userId, ConfigHelper::getStaffConfig()->canBookEventForOthers);
         $bookingForUser = User::withNickname(Value::objectProperty($booking, 'nickname', ''))->first();
         Condition::precondition(isset($booking->nickname) && !$bookingForUser, 404, 'No user by the name ' . Value::objectProperty($booking, 'nickname', ''));
-        Condition::precondition($bookingForUser && $bookingForUser->userId != $user->userId && !$canBookForOthers, 400, 'You can not book for someone else');
+        Condition::precondition($bookingForUser && $bookingForUser->userId != $this->user->userId && !$canBookForOthers, 400, 'You can not book for someone else');
 
         $existing = Timetable::events()->where('day', $booking->day)->where('hour', $booking->hour)->isActive()->count('timetableId') > 0;
         Condition::precondition($existing, 400, 'Booking already exists on this slot');
-        $userId = $bookingForUser ? $bookingForUser->userId : $user->userId;
+        $userId = $bookingForUser ? $bookingForUser->userId : $this->user->userId;
 
         $link = '';
         if (isset($booking->link) && !empty($booking->link)) {
@@ -408,7 +398,7 @@ class EventsController extends Controller {
         ]);
         $timetable->save();
 
-        Logger::staff($user->userId, $request->ip(), Action::BOOKED_EVENT_SLOT, [
+        Logger::staff($this->user->userId, $request->ip(), Action::BOOKED_EVENT_SLOT, [
             'timetableId' => $timetable->timetableId
         ]);;
         return response()->json([

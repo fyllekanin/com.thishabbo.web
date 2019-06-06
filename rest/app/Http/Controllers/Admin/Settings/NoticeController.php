@@ -12,6 +12,10 @@ use Illuminate\Http\Request;
 
 class NoticeController extends Controller {
 
+    public function __construct(Request $request) {
+        parent::__construct($request);
+    }
+
     /**
      * Put request to update order of notices
      *
@@ -20,7 +24,6 @@ class NoticeController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateNoticeOrder(Request $request) {
-        $user = $request->get('auth');
         $notices = $request->input('notices');
 
         foreach ($notices as $notice) {
@@ -29,7 +32,7 @@ class NoticeController extends Controller {
             $n->save();
         }
 
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_NOTICES_ORDER);
+        Logger::admin($this->user->userId, $request->ip(), Action::UPDATED_NOTICES_ORDER);
         return response()->json();
     }
 
@@ -57,13 +60,13 @@ class NoticeController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteNotice(Request $request, $noticeId) {
-        $user = $request->get('auth');
-
         $notice = Notice::find($noticeId);
+        Condition::precondition(!$notice, 404, 'No notice with that ID');
+
         $notice->isDeleted = 1;
         $notice->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::DELETED_NOTICE, ['notice' => $notice->title]);
+        Logger::admin($this->user->userId, $request->ip(), Action::DELETED_NOTICE, ['notice' => $notice->title]);
         return response()->json();
     }
 
@@ -75,7 +78,6 @@ class NoticeController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createNotice(Request $request) {
-        $user = $request->get('auth');
         $notice = json_decode($request->input('notice'));
         $backgroundImage = $request->file('backgroundImage');
 
@@ -96,7 +98,7 @@ class NoticeController extends Controller {
             'text' => $notice->text,
             'backgroundColor' => $notice->backgroundColor,
             'order' => Value::objectProperty($highestOrderNotice, 'order', 1),
-            'userId' => $user->userId
+            'userId' => $this->user->userId
         ]);
         $notice->save();
 
@@ -104,7 +106,7 @@ class NoticeController extends Controller {
         $destination = base_path('/public/rest/resources/images/notices');
         $backgroundImage->move($destination, $fileName);
 
-        Logger::admin($user->userId, $request->ip(), Action::CREATED_NOTICE, ['notice' => $notice->title]);
+        Logger::admin($this->user->userId, $request->ip(), Action::CREATED_NOTICE, ['notice' => $notice->title]);
         return response()->json();
     }
 }

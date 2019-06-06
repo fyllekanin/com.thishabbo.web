@@ -15,15 +15,16 @@ use Illuminate\Http\Request;
 
 class StaffController extends Controller {
 
+    public function __construct(Request $request) {
+        parent::__construct($request);
+    }
+
     /**
-     * @param Request $request
      * @param $startOfWeek
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getDashboardStats(Request $request, $startOfWeek) {
-        $user = $request->get('auth');
-
+    public function getDashboardStats($startOfWeek) {
         return response()->json([
             'general' => [
                 'events' => Timetable::isActive()->events()->count('timetableId'),
@@ -32,8 +33,8 @@ class StaffController extends Controller {
                 'thc' => RequestThc::where('createdAt', '>', $startOfWeek)->count('requestThcId')
             ],
             'personal' => [
-                'events' => $this->getNextEventsSlot($user),
-                'radio' => $this->getNextRadioSlot($user)
+                'events' => $this->getNextEventsSlot($this->user),
+                'radio' => $this->getNextRadioSlot($this->user)
             ]
         ]);
     }
@@ -44,7 +45,6 @@ class StaffController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createRequestThc(Request $request) {
-        $user = $request->get('auth');
         $requests = $request->input('requests');
         $this->validateRequests($requests);
 
@@ -54,13 +54,13 @@ class StaffController extends Controller {
             $account = $this->findAccount($nickname, $habbo);
 
             $newRequest = new RequestThc([
-                'requesterId' => $user->userId,
+                'requesterId' => $this->user->userId,
                 'receiverId' => $account->userId,
                 'amount' => ceil($thcRequest['amount']),
                 'reason' => $thcRequest['reason']
             ]);
             $newRequest->save();
-            Logger::staff($user->userId, $request->ip(), Action::REQUESTED_THC_FOR_USER, ['name' => $account->nickname]);
+            Logger::staff($this->user->userId, $request->ip(), Action::REQUESTED_THC_FOR_USER, ['name' => $account->nickname]);
         }
 
         return response()->json();

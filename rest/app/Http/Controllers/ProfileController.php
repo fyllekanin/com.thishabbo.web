@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\EloquentModels\Forum\Category;
+use App\EloquentModels\Staff\Timetable;
 use App\EloquentModels\User\Accolade;
 use App\EloquentModels\User\Follower;
 use App\EloquentModels\User\User;
@@ -23,9 +24,12 @@ use App\Utils\Condition;
 use App\Utils\Iterables;
 use App\Views\VisitorMessageReportView;
 use Illuminate\Http\Request;
-use App\EloquentModels\Staff\Timetable;
 
 class ProfileController extends Controller {
+
+    public function __construct(Request $request) {
+        parent::__construct($request);
+    }
 
     /**
      * @param Request $request
@@ -33,27 +37,26 @@ class ProfileController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createFollow(Request $request) {
-        $user = $request->get('auth');
         $userId = $request->input('userId');
 
-        Condition::precondition($user->userId == $userId, 400, 'You can not follow yourself');
+        Condition::precondition($this->user->userId == $userId, 400, 'You can not follow yourself');
 
         $target = User::find($userId);
         Condition::precondition(!$target, 404, 'No user with that ID');
 
-        $isFollowing = Follower::where('userId', $user->userId)->where('targetId', $userId)->count('followerId') > 0;
+        $isFollowing = Follower::where('userId', $this->user->userId)->where('targetId', $userId)->count('followerId') > 0;
         Condition::precondition($isFollowing, 400, 'You are already following this user');
 
         $follow = new Follower([
-            'userId' => $user->userId,
+            'userId' => $this->user->userId,
             'targetId' => $target->userId,
             'isApproved' => !($target->profile && $target->profile->isPrivate)
         ]);
         $follow->save();
 
         NotificationFactory::followedUser($follow->targetId, $follow->userId);
-        Logger::user($user->userId, $request->ip(), Action::FOLLOWED, [], $target->userId);
-        return response()->json($this->getFollowers($target->userId, $user));
+        Logger::user($this->user->userId, $request->ip(), Action::FOLLOWED, [], $target->userId);
+        return response()->json($this->getFollowers($target->userId, $this->user));
     }
 
     /**
@@ -63,15 +66,13 @@ class ProfileController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteFollow(Request $request, $userId) {
-        $user = $request->get('auth');
-
-        $follow = Follower::where('userId', $user->userId)->where('targetId', $userId)->first();
+        $follow = Follower::where('userId', $this->user->userId)->where('targetId', $userId)->first();
         Condition::precondition(!$follow, 404, 'You are not following this user');
 
         $targetId = $follow->targetId;
         $follow->delete();
-        Logger::user($user->userId, $request->ip(), Action::UNFOLLOWED, [], $targetId);
-        return response()->json($this->getFollowers($targetId, $user));
+        Logger::user($this->user->userId, $request->ip(), Action::UNFOLLOWED, [], $targetId);
+        return response()->json($this->getFollowers($targetId, $this->user));
     }
 
     /**
@@ -80,29 +81,28 @@ class ProfileController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createVisitorMessage(Request $request) {
-        $user = $request->get('auth');
         $data = (object)$request->input('data');
 
-        Condition::precondition(VisitorMessage::where('userId', $user->userId)->where('createdAt', '>', $this->nowMinus15)->count('visitorMessageId') > 0,
+        Condition::precondition(VisitorMessage::where('userId', $this->user->userId)->where('createdAt', '>', $this->nowMinus15)->count('visitorMessageId') > 0,
             400, 'You are commenting to quick!');
 
         $profile = User::find($data->hostId);
         $parent = isset($data->parentId) ? VisitorMessage::find($data->parentId) : null;
-        Condition::precondition($this->isPrivate($user, $profile), 400, 'You are not an approved follower, you can not post here!');
+        Condition::precondition($this->isPrivate($this->user, $profile), 400, 'You are not an approved follower, you can not post here!');
         Condition::precondition(isset($data->parentId) && !$parent, 404, 'The parent visitor message do not exist');
         Condition::precondition($parent && $parent->hostId != $data->hostId, 400, 'Parent message and host do not match');
         Condition::precondition(!isset($data->content) || empty($data->content), 400, 'Message can not be empty');
 
         $visitorMessage = new VisitorMessage([
             'hostId' => $data->hostId,
-            'userId' => $user->userId,
+            'userId' => $this->user->userId,
             'content' => $data->content,
             'parentId' => $parent ? $parent->visitorMessageId : 0
         ]);
         $visitorMessage->save();
 
         NotificationFactory::newVisitorMessage($visitorMessage);
-        Logger::user($user->userId, $request->ip(), Action::CREATED_VISITOR_MESSAGE, [], $visitorMessage->visitorMessageId);
+        Logger::user($this->user->userId, $request->ip(), Action::CREATED_VISITOR_MESSAGE, [], $visitorMessage->visitorMessageId);
         return response()->json($this->mapVisitorMessage($request, $visitorMessage));
     }
 
@@ -117,23 +117,21 @@ class ProfileController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function getProfile(Request $request, ActivityService $activityService, ForumService $forumService, $nickname, $page) {
-        $user = $request->get('auth');
-
         $profile = User::withNickname($nickname)->first();
         Condition::precondition(!$profile, 404, 'No user with that nickname');
 
-        if ($this->isPrivate($user, $profile)) {
+        if ($this->isPrivate($this->user, $profile)) {
             return response()->json([
                 'user' => UserHelper::getSlimUser($profile->userId),
-                'followers' => $this->getFollowers($profile->userId, $user)
+                'followers' => $this->getFollowers($profile->userId, $this->user)
             ]);
         }
 
         return response()->json([
             'user' => UserHelper::getSlimUser($profile->userId),
-            'followers' => $this->getFollowers($profile->userId, $user),
+            'followers' => $this->getFollowers($profile->userId, $this->user),
             'youtube' => $profile->profile ? $profile->profile->youtube : null,
-            'activities' => $activityService->getLatestActivities($forumService->getAccessibleCategories($user->userId), $profile->userId),
+            'activities' => $activityService->getLatestActivities($forumService->getAccessibleCategories($this->user->userId), $profile->userId),
             'stats' => [
                 'userId' => $profile->userId,
                 'posts' => $profile->posts,
@@ -160,14 +158,13 @@ class ProfileController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createVisitorMessageLike(Request $request, $visitorMessageId) {
-        $user = $request->get('auth');
         $visitorMessage = VisitorMessage::find($visitorMessageId);
         Condition::precondition(!$visitorMessage, 404, 'No visitor message with that ID');
-        Condition::precondition($this->isPrivate($user, $visitorMessage->host), 400, 'You can not like this message');
+        Condition::precondition($this->isPrivate($this->user, $visitorMessage->host), 400, 'You can not like this message');
 
-        $visitorMessageLike = VisitorMessageLike::where('userId', $user->userId)->where('visitorMessageId', $visitorMessageId)->first();
+        $visitorMessageLike = VisitorMessageLike::where('userId', $this->user->userId)->where('visitorMessageId', $visitorMessageId)->first();
         Condition::precondition($visitorMessageLike, 400, 'You have already liked this message!');
-        Condition::precondition($visitorMessage->userId == $user->userId, 400, 'You can not like your own message');
+        Condition::precondition($visitorMessage->userId == $this->user->userId, 400, 'You can not like your own message');
 
         $visitorMessage->likes++;
         $visitorMessage->save();
@@ -176,11 +173,11 @@ class ProfileController extends Controller {
 
         $like = new VisitorMessageLike([
             'visitorMessageId' => $visitorMessageId,
-            'userId' => $user->userId
+            'userId' => $this->user->userId
         ]);
         $like->save();
 
-        Logger::user($user->userId, $request->ip(), Action::CREATED_VISITOR_MESSAGE_LIKE, [], $visitorMessageId);
+        Logger::user($this->user->userId, $request->ip(), Action::CREATED_VISITOR_MESSAGE_LIKE, [], $visitorMessageId);
         return response()->json();
     }
 
@@ -191,12 +188,11 @@ class ProfileController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteVisitorMessageLike(Request $request, $visitorMessageId) {
-        $user = $request->get('auth');
         $visitorMessage = VisitorMessage::find($visitorMessageId);
         Condition::precondition(!$visitorMessage, 404, 'No visitor message with that ID');
-        Condition::precondition($this->isPrivate($user, $visitorMessage->host), 400, 'You can not un-like this message');
+        Condition::precondition($this->isPrivate($this->user, $visitorMessage->host), 400, 'You can not un-like this message');
 
-        $visitorMessageLike = VisitorMessageLike::where('userId', $user->userId)->where('visitorMessageId', $visitorMessageId)->first();
+        $visitorMessageLike = VisitorMessageLike::where('userId', $this->user->userId)->where('visitorMessageId', $visitorMessageId)->first();
         Condition::precondition(!$visitorMessageLike, 404, 'You have not liked this message');
 
         $visitorMessage->likes--;
@@ -206,7 +202,7 @@ class ProfileController extends Controller {
 
         $visitorMessageLike->delete();
 
-        Logger::user($user->userId, $request->ip(), Action::DELETED_VISITOR_MESSAGE_LIKE, [], $visitorMessage->visitorMessageId);
+        Logger::user($this->user->userId, $request->ip(), Action::DELETED_VISITOR_MESSAGE_LIKE, [], $visitorMessage->visitorMessageId);
         return response()->json();
     }
 
@@ -221,23 +217,22 @@ class ProfileController extends Controller {
      */
     public function createReportVisitorMessage(Request $request, ForumService $forumService,
                                                ForumValidatorService $validatorService, $visitorMessageId) {
-        $user = $request->get('auth');
         $visitorMessage = VisitorMessage::find($visitorMessageId);
         $message = $request->input('message');
 
         Condition::precondition(!$visitorMessage, 404, 'No visitor message with that ID');
         Condition::precondition(!isset($message) || empty($message), 400, 'Message can not be empty');
 
-        $threadSkeleton = VisitorMessageReportView::of($user, $visitorMessage, $message);
+        $threadSkeleton = VisitorMessageReportView::of($this->user, $visitorMessage, $message);
         $reportCategories = Category::isReportCategory()->get();
-        $threadController = new ThreadCrudController($forumService, $validatorService);
+        $threadController = new ThreadCrudController($request, $forumService, $validatorService);
 
         foreach ($reportCategories as $category) {
             $threadSkeleton->categoryId = $category->categoryId;
-            $threadController->doThread($user, null, $threadSkeleton, null, true);
+            $threadController->doThread($this->user, null, $threadSkeleton, $request, true);
         }
 
-        Logger::user($user->userId, $request->ip(), Action::REPORTED_VISITOR_MESSAGE, [], $visitorMessage->visitorMessageId);
+        Logger::user($this->user->userId, $request->ip(), Action::REPORTED_VISITOR_MESSAGE, [], $visitorMessage->visitorMessageId);
         return response()->json();
     }
 
@@ -329,7 +324,7 @@ class ProfileController extends Controller {
             'content' => $visitorMessage->isComment() ? $visitorMessage->content : BBcodeUtil::bbcodeParser($visitorMessage->content),
             'replies' => $visitorMessage->isComment() ? 0 : $visitorMessage->replies->count('visitorMessageId'),
             'likes' => $visitorMessage->likes || 0,
-            'isLiking' => VisitorMessageLike::where('userId', $request->get('auth')->userId)->where('visitorMessageId', $visitorMessage->visitorMessageId)->count('visitorMessageLikeId') > 0,
+            'isLiking' => VisitorMessageLike::where('userId', $this->user->userId)->where('visitorMessageId', $visitorMessage->visitorMessageId)->count('visitorMessageLikeId') > 0,
             'comments' => $visitorMessage->isComment() ? [] : VisitorMessage::where('parentId', $visitorMessage->visitorMessageId)->orderBy('visitorMessageId', 'ASC')
                 ->get()
                 ->map(function ($item) use ($request) {

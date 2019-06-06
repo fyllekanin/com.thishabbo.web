@@ -14,6 +14,10 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller {
 
+    public function __construct(Request $request) {
+        parent::__construct($request);
+    }
+
     /**
      * Get the specific betting category
      *
@@ -57,7 +61,6 @@ class CategoryController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createBetCategory(Request $request) {
-        $user = $request->get('auth');
         $betCategory = (object)$request->input('betCategory');
 
         $this->betCategoryConditionCollection($betCategory);
@@ -68,7 +71,7 @@ class CategoryController extends Controller {
         ]);
         $newBetCategory->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::CREATED_BETTING_CATEGORY, ['category' => $newBetCategory->name]);
+        Logger::admin($this->user->userId, $request->ip(), Action::CREATED_BETTING_CATEGORY, ['category' => $newBetCategory->name]);
         return $this->getBetCategory($newBetCategory->betCategoryId);
     }
 
@@ -81,7 +84,6 @@ class CategoryController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateBetCategory(Request $request, $betCategoryId) {
-        $user = $request->get('auth');
         $newBetCategory = (object)$request->input('betCategory');
 
         $betCategory = BetCategory::find($betCategoryId);
@@ -93,12 +95,12 @@ class CategoryController extends Controller {
         $betCategory->displayOrder = $newBetCategory->displayOrder;
         $betCategory->save();
 
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_BETTING_CATEGORY, ['category' => $betCategory->name]);
+        Logger::admin($this->user->userId, $request->ip(), Action::UPDATED_BETTING_CATEGORY, ['category' => $betCategory->name]);
         return $this->getBetCategory($betCategory->betCategoryId);
     }
 
     /**
-     * Delete request for specific beting category
+     * Delete request for specific betting category
      *
      * @param Request $request
      * @param         $betCategoryId
@@ -106,7 +108,6 @@ class CategoryController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteBetCategory(Request $request, $betCategoryId) {
-        $user = $request->get('auth');
         $betCategory = BetCategory::find($betCategoryId);
         Condition::precondition(!$betCategory, 404, 'Bet category do not exist');
 
@@ -117,7 +118,7 @@ class CategoryController extends Controller {
             'betCategoryId' => 0
         ]);
 
-        Logger::admin($user->userId, $request->ip(), Action::DELETED_BETTING_CATEGORY, ['category' => $betCategory->name]);
+        Logger::admin($this->user->userId, $request->ip(), Action::DELETED_BETTING_CATEGORY, ['category' => $betCategory->name]);
         return response()->json();
     }
 

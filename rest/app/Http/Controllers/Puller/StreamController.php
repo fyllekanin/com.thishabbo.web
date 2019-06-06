@@ -26,12 +26,13 @@ class StreamController extends Controller {
      * RadioController constructor.
      * Set the needed settings keys in instance variable for easier access
      *
+     * @param Request $request
      * @param NotificationService $notificationService
      * @param ForumService $forumService
      * @param ActivityService $activityService
      */
-    public function __construct(NotificationService $notificationService, ForumService $forumService, ActivityService $activityService) {
-        parent::__construct();
+    public function __construct(Request $request, NotificationService $notificationService, ForumService $forumService, ActivityService $activityService) {
+        parent::__construct($request);
         $this->settingKeys = ConfigHelper::getKeyConfig();
         $this->notificationService = $notificationService;
         $this->forumService = $forumService;
@@ -39,23 +40,17 @@ class StreamController extends Controller {
     }
 
     /**
-     * Radio stats response stream, stream the radio stats every 5sec from the database.
-     * The stats are updated every 5sec in a cron job.
-     *
-     * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPull(Request $request) {
-        $user = $request->get('auth');
+    public function getPull() {
         $activeUsers = $this->getActiveUsers();
         $siteMessages = $this->getSiteMessages();
-        $activities = $this->activityService->getLatestActivities($this->forumService->getAccessibleCategories($user->userId));
+        $activities = $this->activityService->getLatestActivities($this->forumService->getAccessibleCategories($this->user->userId));
 
         return response()->json([
             'radio' => $this->getRadioStats(),
             'events' => $this->getEventsStats(),
-            'unreadNotifications' => $this->getAmountOfUnreadNotifications($user->userId),
+            'unreadNotifications' => $this->getAmountOfUnreadNotifications($this->user->userId),
             'siteMessages' => $siteMessages,
             'activeUsers' => $activeUsers,
             'activities' => $activities

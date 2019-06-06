@@ -33,29 +33,28 @@ class PostCrudController extends Controller {
     /**
      * PostController constructor.
      *
+     * @param Request $request
      * @param ForumService $forumService
      * @param ForumValidatorService $validatorService
      */
-    public function __construct(ForumService $forumService, ForumValidatorService $validatorService) {
-        parent::__construct();
+    public function __construct(Request $request, ForumService $forumService, ForumValidatorService $validatorService) {
+        parent::__construct($request);
         $this->forumService = $forumService;
         $this->validatorService = $validatorService;
     }
 
     /**
-     * @param Request $request
      * @param         $page
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getLatestPosts(Request $request, $page) {
-        $user = $request->get('auth');
+    public function getLatestPosts($page) {
         $perPage = 20;
 
-        $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
-        $ignoredCategoryIds = array_merge(IgnoredCategory::where('userId', $user->userId)->pluck('categoryId')->toArray(),
-            $this->forumService->getCategoriesUserCantSeeOthersThreadsIn($user->userId));
-        $ignoredThreadIds = IgnoredThread::where('userId', $user->userId)->pluck('threadId');
+        $categoryIds = $this->forumService->getAccessibleCategories($this->user->userId);
+        $ignoredCategoryIds = array_merge(IgnoredCategory::where('userId', $this->user->userId)->pluck('categoryId')->toArray(),
+            $this->forumService->getCategoriesUserCantSeeOthersThreadsIn($this->user->userId));
+        $ignoredThreadIds = IgnoredThread::where('userId', $this->user->userId)->pluck('threadId');
 
         $latestPosts = $this->forumService->getLatestPosts($categoryIds, $ignoredThreadIds,
             $ignoredCategoryIds, $perPage, $this->getOffset($page, $perPage));
@@ -69,18 +68,16 @@ class PostCrudController extends Controller {
     }
 
     /**
-     * @param Request $request
      * @param         $postId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getEditHistory(Request $request, $postId) {
-        $user = $request->get('auth');
+    public function getEditHistory($postId) {
         $forumPermissions = ConfigHelper::getForumPermissions();
         $post = Post::find($postId);
 
         Condition::precondition(!$post, 404, 'No post with that ID exists!');
-        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, $forumPermissions->canEditOthersPosts,
+        Condition::precondition(!PermissionHelper::haveForumPermission($this->user->userId, $forumPermissions->canEditOthersPosts,
             $post->thread->categoryId && $post->userId != $post->userId), 400, 'You do not have permission to see this!');
 
         $updatedThreadAction = Action::getAction(Action::UPDATED_THREAD);
@@ -109,7 +106,6 @@ class PostCrudController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createReportPost(Request $request) {
-        $user = $request->get('auth');
         $postId = $request->input('postId');
         $message = $request->input('message');
 
@@ -117,19 +113,19 @@ class PostCrudController extends Controller {
         Condition::precondition(!$post, 404, 'Post does not exist!');
         Condition::precondition(!isset($message) || empty($message), 400, 'Message can not be empty!');
 
-        $threadSkeleton = PostReportView::of($user, $post, $message);
+        $threadSkeleton = PostReportView::of($this->user, $post, $message);
         $reportCategories = Category::isReportCategory()->get();
-        $threadController = new ThreadCrudController($this->forumService, $this->validatorService);
+        $threadController = new ThreadCrudController($request, $this->forumService, $this->validatorService);
 
         foreach ($reportCategories as $category) {
             $threadSkeleton->categoryId = $category->categoryId;
             try {
-                $threadController->doThread($user, null, $threadSkeleton, null, true);
+                $threadController->doThread($this->user, null, $threadSkeleton, $request, true);
             } catch (ValidationException $e) {
             }
         }
 
-        Logger::user($user->userId, $request->ip(), Action::REPORTED_A_POST);
+        Logger::user($this->user->userId, $request->ip(), Action::REPORTED_A_POST);
         return response()->json();
     }
 
@@ -142,7 +138,6 @@ class PostCrudController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function updatePost(Request $request, $postId) {
-        $user = $request->get('auth');
         $postModel = (object)$request->input('post');
 
         $post = Post::where('postId', $postId)->first();
@@ -155,16 +150,16 @@ class PostCrudController extends Controller {
         Condition::precondition(!$thread, 404, 'Thread can\'t be found!');
         Condition::precondition(empty($postModel->content), 400, 'Content can\'t be empty!');
 
-        $canUpdatePost = $post->userId == $user->userId ||
-            PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canEditOthersPosts, $thread->categoryId);
+        $canUpdatePost = $post->userId == $this->user->userId ||
+            PermissionHelper::haveForumPermission($this->user->userId, ConfigHelper::getForumPermissions()->canEditOthersPosts, $thread->categoryId);
         Condition::precondition(!$canUpdatePost, 550, 'You don\'t have permission to update this post!');
 
         $oldContent = $post->content;
         $post->content = $postModel->content;
         $post->save();
 
-        NotifyMentionsInPost::dispatch($postModel->content, $postId, $user->userId);
-        Logger::user($user->userId, $request->ip(), Action::UPDATED_POST, [
+        NotifyMentionsInPost::dispatch($postModel->content, $postId, $this->user->userId);
+        Logger::user($this->user->userId, $request->ip(), Action::UPDATED_POST, [
             'thread' => $thread->title,
             'postId' => $postId,
             'oldContent' => $oldContent,
@@ -182,13 +177,12 @@ class PostCrudController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function createPost(Request $request, $threadId) {
-        $user = $request->get('auth');
         $content = $request->input('content');
         $toggleThread = $request->input('toggleThread');
-        $contentNeedApproval = PermissionHelper::haveGroupOption($user->userId, ConfigHelper::getGroupOptionsConfig()->contentNeedApproval);
+        $contentNeedApproval = PermissionHelper::haveGroupOption($this->user->userId, ConfigHelper::getGroupOptionsConfig()->contentNeedApproval);
 
         $postedInRecently = Post::where('threadId', $threadId)
-            ->where('userId', $user->userId)
+            ->where('userId', $this->user->userId)
             ->where('createdAt', '>', $this->nowMinus15)
             ->count('postId');
 
@@ -196,36 +190,36 @@ class PostCrudController extends Controller {
 
         $thread = Thread::with('category')->where('threadId', $threadId)->first();
 
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead, $thread->categoryId,
+        PermissionHelper::haveForumPermissionWithException($this->user->userId, ConfigHelper::getForumPermissions()->canRead, $thread->categoryId,
             'No permissions to access this category!');
 
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead, $thread->categoryId,
+        PermissionHelper::haveForumPermissionWithException($this->user->userId, ConfigHelper::getForumPermissions()->canRead, $thread->categoryId,
             'No permissions to post!', 550);
 
-        $canPost = ($thread->isOpen || PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canCloseOpenThread, $thread->categoryId))
+        $canPost = ($thread->isOpen || PermissionHelper::haveForumPermission($this->user->userId, ConfigHelper::getForumPermissions()->canCloseOpenThread, $thread->categoryId))
             && $thread->categoryIsOpen;
         Condition::precondition(!$canPost, 550, 'Thread or category is closed, no permission to post!');
         Condition::precondition(empty($content), 550, 'Content can\'t be empty!');
 
-        if ($toggleThread && PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canCloseOpenThread, $thread->categoryId)) {
+        if ($toggleThread && PermissionHelper::haveForumPermission($this->user->userId, ConfigHelper::getForumPermissions()->canCloseOpenThread, $thread->categoryId)) {
             $thread->isOpen = !$thread->isOpen;
         }
 
         if (!PermissionHelper::haveForumOption($thread->categoryId, ConfigHelper::getForumOptionsConfig()->postsDontCount) && !$contentNeedApproval) {
-            $user->posts++;
-            $user->save();
+            $this->user->posts++;
+            $this->user->save();
         }
 
         $post = new Post([
             'threadId' => $threadId,
-            'userId' => $user->userId,
+            'userId' => $this->user->userId,
             'content' => $content,
             'isApproved' => !$contentNeedApproval
         ]);
         $post->save();
         $post->append('user');
 
-        NotifyMentionsInPost::dispatch($content, $post->postId, $user->userId);
+        NotifyMentionsInPost::dispatch($content, $post->postId, $this->user->userId);
         NotifyThreadSubscribers::dispatch($threadId, $post->userId, $post->postId);
 
         if ($contentNeedApproval) {
@@ -236,10 +230,10 @@ class PostCrudController extends Controller {
         $thread->posts++;
         $thread->save();
 
-        $this->forumService->updateReadThread($thread->threadId, $user->userId);
+        $this->forumService->updateReadThread($thread->threadId, $this->user->userId);
         $this->forumService->updateLastPostIdOnCategory($thread->categoryId);
 
-        Logger::user($user->userId, $request->ip(), Action::CREATED_POST, [
+        Logger::user($this->user->userId, $request->ip(), Action::CREATED_POST, [
             'thread' => $thread->title,
             'threadId' => $thread->threadId,
             'categoryId' => $thread->categoryId

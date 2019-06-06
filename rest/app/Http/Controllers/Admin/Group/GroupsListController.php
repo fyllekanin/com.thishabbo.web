@@ -11,6 +11,10 @@ use Illuminate\Http\Request;
 
 class GroupsListController extends Controller {
 
+    public function __construct(Request $request) {
+        parent::__construct($request);
+    }
+
     /**
      * Get request to fetch resource of all groups prioritized in the group list
      *
@@ -32,7 +36,6 @@ class GroupsListController extends Controller {
      * @throws \Exception
      */
     public function updateGroupsList(Request $request) {
-        $user = $request->get('auth');
         GroupList::truncate();
         $groups = $request->input('groups');
 
@@ -45,7 +48,7 @@ class GroupsListController extends Controller {
             $groupList->save();
         }
 
-        Logger::admin($user->userId, $request->ip(), Action::UPDATED_GROUP_LIST);
+        Logger::admin($this->user->userId, $request->ip(), Action::UPDATED_GROUP_LIST);
         return response()->json();
     }
 }

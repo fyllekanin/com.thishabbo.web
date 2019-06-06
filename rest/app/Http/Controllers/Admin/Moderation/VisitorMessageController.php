@@ -11,6 +11,10 @@ use Illuminate\Http\Request;
 
 class VisitorMessageController extends Controller {
 
+    public function __construct(Request $request) {
+        parent::__construct($request);
+    }
+
     /**
      * @param Request $request
      * @param $visitorMessageId
@@ -18,7 +22,6 @@ class VisitorMessageController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteVisitorMessage(Request $request, $visitorMessageId) {
-        $user = $request->get('auth');
         $visitorMessage = VisitorMessage::find($visitorMessageId);
         Condition::precondition(!$visitorMessage, 404, 'There is not visitor message with this ID');
 
@@ -29,7 +32,7 @@ class VisitorMessageController extends Controller {
             VisitorMessage::withParent($visitorMessage->visitorMessageId)->update(['isDeleted' => true]);
         }
 
-        Logger::mod($user->userId, $request->ip(), Action::DELETED_VISITOR_MESSAGE, [], $visitorMessage->visitorMessageId);
+        Logger::mod($this->user->userId, $request->ip(), Action::DELETED_VISITOR_MESSAGE, [], $visitorMessage->visitorMessageId);
         return response()->json();
     }
 }

@@ -19,6 +19,10 @@ use Mockery\Exception;
 
 class LogsController extends Controller {
 
+    public function __construct(Request $request) {
+        parent::__construct($request);
+    }
+
     /**
      * @return \Illuminate\Http\JsonResponse
      */

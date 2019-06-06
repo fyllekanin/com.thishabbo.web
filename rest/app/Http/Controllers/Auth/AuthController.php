@@ -32,12 +32,13 @@ class AuthController extends Controller {
     /**
      * AuthController constructor.
      *
+     * @param Request $request
      * @param BotService $botService
      * @param AuthService $authService
      * @param HabboService $habboService
      */
-    public function __construct(BotService $botService, AuthService $authService, HabboService $habboService) {
-        parent::__construct();
+    public function __construct(Request $request, BotService $botService, AuthService $authService, HabboService $habboService) {
+        parent::__construct($request);
         $this->botService = $botService;
         $this->authService = $authService;
         $this->habboService = $habboService;
@@ -54,15 +55,11 @@ class AuthController extends Controller {
     }
 
     /**
-     * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function acceptGdpr(Request $request) {
-        $user = $request->get('auth');
-
-        $user->gdpr = 1;
-        $user->save();
+    public function acceptGdpr() {
+        $this->user->gdpr = 1;
+        $this->user->save();
 
         return response()->json();
     }
@@ -106,7 +103,7 @@ class AuthController extends Controller {
         $userData = UserHelper::getUserDataOrCreate($user->userId);
         $userData->save();
 
-        $this->botService->triggerWelcomeBot($user);
+        $this->botService->triggerWelcomeBot($request, $user);
         Logger::user($user->userId, $request->ip(), Action::REGISTERED, ['name' => $user->nickname]);
         return response()->json();
     }
@@ -161,22 +158,20 @@ class AuthController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function getUser(Request $request) {
-        $user = $request->get('auth');
-
-        $token = Token::where('userId', $user->userId)->where('ip', $request->ip())->first();
+        $token = Token::where('userId', $this->user->userId)->where('ip', $request->ip())->first();
         return response()->json([
-            'adminPermissions' => self::buildAdminPermissions($user),
-            'staffPermissions' => self::buildStaffPermissions($user),
+            'adminPermissions' => self::buildAdminPermissions($this->user),
+            'staffPermissions' => self::buildStaffPermissions($this->user),
             'oauth' => [
                 'accessToken' => $token->accessToken,
                 'expiresIn' => $this->accessTokenLifetime,
                 'refreshToken' => $token->refreshToken
             ],
-            'userId' => $user->userId,
-            'nickname' => $user->nickname,
-            'gdpr' => $user->gdpr,
-            'homePage' => UserHelper::getUserDataOrCreate($user->userId)->homePage,
-            'credits' => UserHelper::getUserDataOrCreate($user->userId)->credits
+            'userId' => $this->user->userId,
+            'nickname' => $this->user->nickname,
+            'gdpr' => $this->user->gdpr,
+            'homePage' => UserHelper::getUserDataOrCreate($this->user->userId)->homePage,
+            'credits' => UserHelper::getUserDataOrCreate($this->user->userId)->credits
         ]);
     }
 
