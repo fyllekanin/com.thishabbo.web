@@ -18,7 +18,7 @@ class UserSubscriptionsController extends Controller {
         parent::__construct($request);
     }
 
-    public function getUserSubscriptions(Request $request, $userId) {
+    public function getUserSubscriptions($userId) {
         Condition::precondition(User::where('userId', $userId)->count() == 0, 404,
             'No user with that ID');
         Condition::precondition(!UserHelper::canManageUser($this->user, $userId), 400,
