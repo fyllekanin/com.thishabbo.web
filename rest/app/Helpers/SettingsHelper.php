@@ -17,7 +17,7 @@ class SettingsHelper {
     }
 
     public static function createOrUpdateSetting($key, $value) {
-        if (!isset($value)) {
+        if (!isset($value) && $value != '') {
             return;
         }
 

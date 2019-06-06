@@ -33,7 +33,7 @@ import { TimeHelper } from 'shared/helpers/time.helper';
 export class ProfileComponent extends Page implements OnDestroy {
     private _data: ProfileModel;
 
-    @ViewChild('editor', { static: false }) editor: EditorComponent;
+    @ViewChild('editor', {static: false}) editor: EditorComponent;
     sendButton: Array<EditorAction> = [
         new EditorAction({title: 'Send Message', saveCallback: this.onPost.bind(this)})
     ];
@@ -92,7 +92,7 @@ export class ProfileComponent extends Page implements OnDestroy {
 
     timestampToDate (timestamp: number): string {
         const date = new Date(timestamp * 1000);
-        return `${TimeHelper.getDay(date.getDay()).label} @ ${date.getHours()}:00`;
+        return `${TimeHelper.getDay(date.getDay() + 1).label} @ ${date.getHours()}:00`;
     }
 
 
