@@ -3,21 +3,21 @@
         <div class="cell small-12 medium-9">
             <app-title [title]="'Report A Bug'" [tabs]="tabs" (onTabClick)="onReport()"></app-title>
             <app-content>
-                <div class="grid-container content-margin" *ngIf="isLoggedIn">
+                <div class="grid-container" *ngIf="isLoggedIn">
                     <div class="grid-x grid-margin-x">
                         <div class="cell small-12">
                             <label>Issue description</label>
-                            <textarea [(ngModel)]="data.description"></textarea>
+                            <textarea [(ngModel)]="data.description" placeholder="Eg: The radio won't play"></textarea>
                             <label>How do you make the bug happen?</label>
-                            <textarea [(ngModel)]="data.steps"></textarea>
+                            <textarea [(ngModel)]="data.steps" placeholder="Eg: 1. Go to homepage&#10;2. Press play on radio"></textarea>
                             <label>What would you expect to happen?</label>
-                            <input type="text" [(ngModel)]="data.expected" />
+                            <input type="text" [(ngModel)]="data.expected" placeholder="Eg: Should hear the current DJ" />
                             <label>What actually happens?</label>
-                            <input type="text" [(ngModel)]="data.actual" />
+                            <input type="text" [(ngModel)]="data.actual" placeholder="Eg: No sound" />
                             <label>Any additional details?</label>
-                            <textarea [(ngModel)]="data.additional"></textarea>
+                            <textarea [(ngModel)]="data.additional" placeholder="Eg: The current DJ is Dez, maybe he's being DDoS'd"></textarea>
                             <label>Link to a screenshot</label>
-                            <input type="text" [(ngModel)]="data.screenshot" />
+                            <input type="text" [(ngModel)]="data.screenshot" placeholder="Eg: https://www.imgur.com" />
                         </div>
                     </div>
                 </div>

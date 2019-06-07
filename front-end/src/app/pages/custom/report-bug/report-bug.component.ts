@@ -37,13 +37,8 @@ export class ReportBugComponent extends Page implements OnDestroy {
         });
     }
 
-
     get isLoggedIn (): boolean {
         return this._authService.isLoggedIn();
-    }
-
-    ngOnDestroy () {
-        super.destroy();
     }
 
     onReport (): void {
