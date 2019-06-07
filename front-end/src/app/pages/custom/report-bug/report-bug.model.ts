@@ -4,7 +4,7 @@ export class ReportBugModel {
     @primitiveOf(String)
     description = '';
     @primitiveOf(String)
-    steps = '1. \n2. \n3. ';
+    steps = '';
     @primitiveOf(String)
     expected = '';
     @primitiveOf(String)

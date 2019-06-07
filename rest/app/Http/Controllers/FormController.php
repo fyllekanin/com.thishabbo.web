@@ -85,9 +85,11 @@ class FormController extends Controller {
 
         $postFields = json_encode(BugReportView::of($user, $data));
 
-        $owner = ConfigHelper::getGithubSettings()->owner;
-        $repo = ConfigHelper::getGithubSettings()->repository;
-        $token = ConfigHelper::getGithubSettings()->token;
+        $githubSettings = ConfigHelper::getGithubSettings();
+
+        $owner = $githubSettings->owner;
+        $repo = $githubSettings->repository;
+        $token = $githubSettings->token;
 
         $auth = 'Authorization: Bearer ' . $token;
 
