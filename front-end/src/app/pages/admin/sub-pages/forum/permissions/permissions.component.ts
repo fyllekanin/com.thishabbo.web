@@ -6,10 +6,11 @@ import { NotificationService } from 'core/services/notification/notification.ser
 import { HttpService } from 'core/services/http/http.service';
 import { AuthService } from 'core/services/auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PermissionGroup, PermissionsPage } from './permissions.model';
+import { PermissionActions, PermissionGroup, PermissionsPage } from './permissions.model';
 import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
+import { TitleTab } from 'shared/app-views/title/title.model';
 
 @Component({
     selector: 'app-admin-forum-category-permissions',
@@ -18,6 +19,12 @@ import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 export class PermissionsComponent extends Page implements OnDestroy {
     private _permissionsPage: PermissionsPage = new PermissionsPage();
     private _selectableGroups: Array<PermissionGroup> = [];
+
+    tabs: Array<TitleTab> = [
+        new TitleTab({title: 'Save', value: PermissionActions.SAVE}),
+        new TitleTab({title: 'Save & Cascade', value: PermissionActions.SAVE_CASCADE}),
+        new TitleTab({title: 'Back', value: PermissionActions.BACK})
+    ];
 
     constructor (
         private _notificationService: NotificationService,
@@ -43,12 +50,22 @@ export class PermissionsComponent extends Page implements OnDestroy {
         super.destroy();
     }
 
-    onGroupChange (groupId: number): void {
-        this._router.navigateByUrl(`/admin/forum/categories/${this._permissionsPage.category.categoryId}/permissions/${groupId}`);
+    onTabClick (action: number): void {
+        switch (action) {
+            case PermissionActions.BACK:
+                this._router.navigateByUrl('/admin/forum/categories/page/1');
+                break;
+            case PermissionActions.SAVE:
+                this.save(false);
+                break;
+            case PermissionActions.SAVE_CASCADE:
+                this.save(true);
+                break;
+        }
     }
 
-    cancel (): void {
-        this._router.navigateByUrl('/admin/forum/categories/page/1');
+    onGroupChange (groupId: number): void {
+        this._router.navigateByUrl(`/admin/forum/categories/${this._permissionsPage.category.categoryId}/permissions/${groupId}`);
     }
 
     save (cascade: boolean): void {

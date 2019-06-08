@@ -6,7 +6,7 @@ import { InfractionView } from 'app/shared/components/notification-views/infract
 @Component({
     selector: 'app-top-bar-infraction-view',
     templateUrl: 'infraction-view.component.html',
-    styleUrls: ['../notification.views.css', 'infraction-view.component.css']
+    styleUrls: ['../notification.views.css']
 })
 export class InfractionViewComponent implements NotificationView {
     private _notification: NotificationModel<InfractionView>;

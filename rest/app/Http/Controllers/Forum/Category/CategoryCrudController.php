@@ -16,6 +16,7 @@ use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Services\ForumService;
 use App\Services\QueryParamService;
+use App\Utils\Condition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -102,6 +103,7 @@ class CategoryCrudController extends Controller {
             'No permissions to access this category');
 
         $category = Category::where('categoryId', $categoryId)->first();
+        Condition::precondition(!$category, 404, 'No category with that ID');
         $forumPermissions = $this->getCategoryPermissions($categoryId, $user->userId);
 
         $sortedBy = $this->queryParamService->getSortedBy($sortedByQuery);

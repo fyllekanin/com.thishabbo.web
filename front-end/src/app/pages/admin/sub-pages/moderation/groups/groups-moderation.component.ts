@@ -21,7 +21,7 @@ export class GroupsModerationComponent extends Page implements OnDestroy {
 
     tableConfig: TableConfig;
 
-    constructor(
+    constructor (
         private _dialogService: DialogService,
         private _notificationService: NotificationService,
         private _httpService: HttpService,
@@ -39,11 +39,11 @@ export class GroupsModerationComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onAction(action: Action): void {
+    onAction (action: Action): void {
         const groupRequest = this._groups.find(group => group.groupRequestId === Number(action.rowId));
         switch (action.value) {
             case GroupModerationActions.APPROVE_REQUEST:
@@ -52,7 +52,10 @@ export class GroupsModerationComponent extends Page implements OnDestroy {
                     content: `You sure you wanna approve ${groupRequest.nickname} to join ${groupRequest.name}?`,
                     buttons: [
                         new DialogCloseButton('Close'),
-                        new DialogButton({ title: 'Yes', callback: this.onApprove.bind(this, action.rowId) })
+                        new DialogButton({
+                            title: 'Yes',
+                            callback: this.onApprove.bind(this, groupRequest.groupRequestId)
+                        })
                     ]
                 });
                 break;
@@ -62,17 +65,17 @@ export class GroupsModerationComponent extends Page implements OnDestroy {
                     content: `You sure you wanna deny ${groupRequest.nickname} to join ${groupRequest.name}?`,
                     buttons: [
                         new DialogCloseButton('Close'),
-                        new DialogButton({ title: 'Yes', callback: this.onDeny.bind(this, action.rowId) })
+                        new DialogButton({title: 'Yes', callback: this.onDeny.bind(this, groupRequest.groupRequestId)})
                     ]
                 });
                 break;
         }
     }
 
-    private onApprove(groupRequestId: number): void {
-        this._httpService.post('admin/moderation/groups/approve', { groupRequestId: groupRequestId })
+    private onApprove (groupRequestId: number): void {
+        this._httpService.post('admin/moderation/groups/approve', {groupRequestId: groupRequestId})
             .subscribe(() => {
-                this._groups = this._groups.filter(group => group.groupRequestId === groupRequestId);
+                this._groups = this._groups.filter(group => group.groupRequestId !== groupRequestId);
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Group request approved'
@@ -82,10 +85,10 @@ export class GroupsModerationComponent extends Page implements OnDestroy {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private onDeny(groupRequestId: number): void {
+    private onDeny (groupRequestId: number): void {
         this._httpService.delete(`admin/moderation/groups/deny/${groupRequestId}`)
             .subscribe(() => {
-                this._groups = this._groups.filter(group => group.groupRequestId === groupRequestId);
+                this._groups = this._groups.filter(group => group.groupRequestId !== groupRequestId);
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Group request denied'
@@ -95,12 +98,12 @@ export class GroupsModerationComponent extends Page implements OnDestroy {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private onData(data: { data: Array<GroupModerate> }): void {
+    private onData (data: { data: Array<GroupModerate> }): void {
         this._groups = data.data;
         this.createOrUpdateTable();
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -112,29 +115,29 @@ export class GroupsModerationComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         const actions = [
-            { title: 'Approve', value: GroupModerationActions.APPROVE_REQUEST },
-            { title: 'Deny', value: GroupModerationActions.DENY_REQUEST }
+            {title: 'Approve', value: GroupModerationActions.APPROVE_REQUEST},
+            {title: 'Deny', value: GroupModerationActions.DENY_REQUEST}
         ];
         return this._groups.map(group => {
             return new TableRow({
                 id: String(group.groupRequestId),
                 cells: [
-                    new TableCell({ title: group.nickname }),
-                    new TableCell({ title: group.name }),
-                    new TableCell({ title: this.timeAgo(group.createdAt) })
+                    new TableCell({title: group.nickname}),
+                    new TableCell({title: group.name}),
+                    new TableCell({title: this.timeAgo(group.createdAt)})
                 ],
                 actions: actions
             });
         });
     }
 
-    private static getTableHeaders(): Array<TableHeader> {
+    private static getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'User' }),
-            new TableHeader({ title: 'Usergroup' }),
-            new TableHeader({ title: 'Time ago' })
+            new TableHeader({title: 'User'}),
+            new TableHeader({title: 'Usergroup'}),
+            new TableHeader({title: 'Time ago'})
         ];
     }
 }

@@ -154,3 +154,8 @@ input {
     width: auto;
     padding: 0 0.2rem !important;
 }
+
+.not-clickable {
+    cursor: default;
+    pointer-events: none;
+}

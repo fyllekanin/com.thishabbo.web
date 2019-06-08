@@ -1,6 +1,5 @@
 import { ForumPermissions } from '../../../../forum/forum.model';
-import { ClassHelper, objectOf, arrayOf } from 'shared/helpers/class.helper';
-import { primitive } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
 
 export class PermissionCategory {
     @primitive()
@@ -8,7 +7,7 @@ export class PermissionCategory {
     @primitive()
     title: string;
 
-    constructor(source: Partial<PermissionCategory>) {
+    constructor (source: Partial<PermissionCategory>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -23,7 +22,7 @@ export class PermissionGroup {
     @primitive()
     isChecked: boolean;
 
-    constructor(source: Partial<PermissionGroup>) {
+    constructor (source: Partial<PermissionGroup>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -36,7 +35,13 @@ export class PermissionsPage {
     @arrayOf(PermissionGroup)
     groups: Array<PermissionGroup> = [];
 
-    constructor(source?: Partial<PermissionsPage>) {
+    constructor (source?: Partial<PermissionsPage>) {
         ClassHelper.assign(this, source);
     }
+}
+
+export enum PermissionActions {
+    SAVE,
+    SAVE_CASCADE,
+    BACK
 }
