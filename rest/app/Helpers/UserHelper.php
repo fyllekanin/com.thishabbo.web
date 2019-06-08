@@ -35,7 +35,7 @@ class UserHelper {
             ->select('users.userId', 'users.nickname', 'users.createdAt',
                 'users.displayGroupId', 'userdata.avatarUpdatedAt',
                 'userdata.nameColour AS customColour', 'groups.nameColour AS groupColour')->first();
-        
+
 
         $slimUser->nameColour = $slimUser->customColour ? $slimUser->customColour : $slimUser->groupColour;
         $slimUser->nameColour = Value::objectJsonProperty($slimUser, 'nameColour', []);
@@ -185,7 +185,6 @@ class UserHelper {
     }
 
 
-
     public static function hasSubscriptionFeature($userId, $feature) {
         $userSubscriptionIds = UserSubscription::where('userId', $userId)->pluck('subscriptionId');
         return Subscription::whereIn('subscriptionId', $userSubscriptionIds)
@@ -204,6 +203,7 @@ class UserHelper {
 
     private static function setUserDataFields($user, $userdata, $postBit) {
         $user->signature = $userdata ? BBcodeUtil::bbcodeParser($userdata->signature) : '';
+        $user->avatarUpdatedAt = $userdata ? $userdata->avatarUpdatedAt : null;
         $user->social = $userdata && !$postBit->hideSocials ? (object)[
             'discord' => $userdata->discord,
             'twitter' => $userdata->twitter
