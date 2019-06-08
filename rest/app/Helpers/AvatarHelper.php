@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\EloquentModels\User\Avatar;
 use App\EloquentModels\User\User;
+use App\EloquentModels\User\UserData;
 use App\Utils\Value;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
@@ -50,6 +51,7 @@ class AvatarHelper {
             'height' => $image->height()
         ]);
         $newAvatar->save();
+        UserData::where('userId', $userId)->update(['avatarUpdatedAt' => time()]);
     }
 
     public static function backupAvatarIfExists($currentAvatar) {

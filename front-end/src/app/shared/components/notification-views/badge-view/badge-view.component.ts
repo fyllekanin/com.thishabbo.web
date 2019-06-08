@@ -6,7 +6,7 @@ import { BadgeView } from 'app/shared/components/notification-views/badge-view/b
 @Component({
     selector: 'app-top-bar-badge-view',
     templateUrl: 'badge-view.component.html',
-    styleUrls: ['../notification.views.css', 'badge-view.component.css']
+    styleUrls: ['../notification.views.css']
 })
 export class BadgeViewComponent implements NotificationView {
     private _notification: NotificationModel<BadgeView>;

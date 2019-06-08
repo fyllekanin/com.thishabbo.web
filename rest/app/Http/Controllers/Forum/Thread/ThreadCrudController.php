@@ -86,6 +86,7 @@ class ThreadCrudController extends Controller {
      */
     public function getLatestThreads(Request $request, $page) {
         $user = $request->get('auth');
+        $perPage = 20;
 
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
         $ignoredCategoryIds = array_merge(IgnoredCategory::where('userId', $user->userId)->pluck('categoryId')->toArray(),
@@ -101,7 +102,7 @@ class ThreadCrudController extends Controller {
         return response()->json([
             'page' => $page,
             'total' => $total,
-            'items' => $threadSql->take($this->perPage)->skip(DataHelper::getOffset($page))->get()->map(function ($thread) {
+            'items' => $threadSql->take($perPage)->skip(DataHelper::getOffset($page, $perPage))->get()->map(function ($thread) {
                 return [
                     'categoryId' => $thread->categoryId,
                     'style' => isset($thread->prefix) ? $thread->prefix->style : '',

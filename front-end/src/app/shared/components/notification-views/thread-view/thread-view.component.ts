@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 @Component({
     selector: 'app-top-bar-thread-view',
     templateUrl: 'thread-view.component.html',
-    styleUrls: ['../notification.views.css', 'thread-view.component.css']
+    styleUrls: ['../notification.views.css']
 })
 export class ThreadViewComponent implements NotificationView {
     private _notification: NotificationModel<ThreadView>;

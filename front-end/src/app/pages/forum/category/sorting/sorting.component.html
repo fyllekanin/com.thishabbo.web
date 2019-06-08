@@ -1,27 +1,24 @@
-<app-title [title]="'Display Options'"></app-title>
+<app-title [title]="'Display Options'" [tabs]="tabs" (onTabClick)="sortThreads()"></app-title>
 <app-content>
     <div class="grid-container">
         <div class="grid-x margin-x">
-            <div class="cell small-6 medium-3">
+            <div class="cell small-4">
                 <label>Sorted By</label>
                 <select [(ngModel)]="options.sortedBy">
                     <option *ngFor="let item of sortedByOptions" [value]="item">{{prettifyString(item)}}</option>
                 </select>
             </div>
-            <div class="cell small-6 medium-3">
+            <div class="cell small-4">
                 <label>Sort Order</label>
                 <select [(ngModel)]="options.sortOrder">
                     <option *ngFor="let item of sortOrderOptions" [value]="item">{{prettifyString(item)}}</option>
                 </select>
             </div>
-            <div class="cell small-6 medium-3">
+            <div class="cell small-4">
                 <label>From The</label>
                 <select [(ngModel)]="options.fromThe">
                     <option *ngFor="let item of fromTheOptions" [value]="item.value">{{item.label}}</option>
                 </select>
-            </div>
-            <div class="cell small-6 medium-3 display-controller-button">
-                <button appButton (click)="sortThreads()">Show Threads</button>
             </div>
         </div>
     </div>

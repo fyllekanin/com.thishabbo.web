@@ -8,7 +8,7 @@ import { SlimUser } from 'core/services/auth/auth.model';
 @Component({
     selector: 'app-top-bar-category-view',
     templateUrl: 'category-view.component.html',
-    styleUrls: ['../notification.views.css', 'category-view.component.css']
+    styleUrls: ['../notification.views.css']
 })
 export class CategoryViewComponent implements NotificationView {
     private _notification: NotificationModel<CategoryView>;

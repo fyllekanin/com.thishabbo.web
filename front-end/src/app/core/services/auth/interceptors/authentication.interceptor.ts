@@ -37,19 +37,24 @@ export class AuthenticationInterceptor implements HttpInterceptor {
                 if (error instanceof HttpErrorResponse) {
                     switch ((<HttpErrorResponse>error).status) {
                         case 401:
-                            this._notificationService.sendNotification(new NotificationMessage({
-                                title: 'Oh no!',
-                                message: 'You have been logged out!'
-                            }));
                             return this.logoutUser();
                         case 419:
                             return this.handle419Error(req, next);
                         case 403:
                             this._notificationService.sendNotification(new NotificationMessage({
                                 title: 'Oops!',
-                                message: error.error.message
+                                message: error.error.message,
+                                type: NotificationType.WARNING
                             }));
                             this._router.navigateByUrl('/page/access');
+                            return observableThrowError(error);
+                        case 404:
+                            this._notificationService.sendNotification(new NotificationMessage({
+                                title: 'Oops!',
+                                message: error.error.message,
+                                type: NotificationType.WARNING
+                            }));
+                            this._router.navigateByUrl('/page/missing');
                             return observableThrowError(error);
                         case 500:
                             return observableThrowError(error);

@@ -1,4 +1,4 @@
-<app-title [title]="title"></app-title>
+<app-title [title]="title" [tabs]="tabs" (onTabClick)="onTabClick($event)"></app-title>
 <app-content>
     <div class="grid-container full">
         <div class="grid-x grid-margin-x">
@@ -25,12 +25,6 @@
                         <span class="checkmark"></span>
                     </label>
                 </div>
-            </div>
-
-            <div class="cell small-12">
-                <button appButton (onClick)="save(false)">Save Permissions</button>
-                <button appButton (onClick)="save(true)">Save Permissions & Cascade to Child Categories</button>
-                <button appButton (onClick)="cancel()">Cancel</button>
             </div>
         </div>
     </div>
@@ -86,57 +80,77 @@
                 </div>
             </div>
             <div class="cell small-6">
-                <label>Moderation Permissions</label>
-                <label class="checkbox-container">
-                    Can Edit Others Posts & Threads?
-                    <input type="checkbox" [(ngModel)]="permissions.canEditOthersPosts">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Can Delete Posts & Threads? <em>(permanently)</em>
-                    <input type="checkbox" [(ngModel)]="permissions.canDeletePosts">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Can Sticky Threads?
-                    <input type="checkbox" [(ngModel)]="permissions.canStickyThread">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Can Manage Polls? <em>(View & Delete Votes)</em>
-                    <input type="checkbox" [(ngModel)]="permissions.canManagePolls">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Can Close / Open Threads?
-                    <input type="checkbox" [(ngModel)]="permissions.canCloseOpenThread">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Can Approve / Unapprove Threads?
-                    <input type="checkbox" [(ngModel)]="permissions.canApproveThreads">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Can Approve / Unapprove Posts?
-                    <input type="checkbox" [(ngModel)]="permissions.canApprovePosts">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Can Change Owner of Threads and Posts?
-                    <input type="checkbox" [(ngModel)]="permissions.canChangeOwner">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Can Merge Posts in a Thread?
-                    <input type="checkbox" [(ngModel)]="permissions.canMergePosts">
-                    <span class="checkmark"></span>
-                </label>
-                <label class="checkbox-container">
-                    Can Move Threads?
-                    <input type="checkbox" [(ngModel)]="permissions.canMoveThreads">
-                    <span class="checkmark"></span>
-                </label>
+                <div>
+                    <label>Moderation Permissions</label>
+                    <label class="checkbox-container">
+                        Can Edit Others Posts & Threads?
+                        <input type="checkbox" [(ngModel)]="permissions.canEditOthersPosts">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can Delete Posts & Threads? <em>(permanently)</em>
+                        <input type="checkbox" [(ngModel)]="permissions.canDeletePosts">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can Sticky Threads?
+                        <input type="checkbox" [(ngModel)]="permissions.canStickyThread">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can Manage Polls? <em>(View & Delete Votes)</em>
+                        <input type="checkbox" [(ngModel)]="permissions.canManagePolls">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can Close / Open Threads?
+                        <input type="checkbox" [(ngModel)]="permissions.canCloseOpenThread">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can Approve / Unapprove Threads?
+                        <input type="checkbox" [(ngModel)]="permissions.canApproveThreads">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can Approve / Unapprove Posts?
+                        <input type="checkbox" [(ngModel)]="permissions.canApprovePosts">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can Change Owner of Threads and Posts?
+                        <input type="checkbox" [(ngModel)]="permissions.canChangeOwner">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can Merge Posts in a Thread?
+                        <input type="checkbox" [(ngModel)]="permissions.canMergePosts">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can Move Threads?
+                        <input type="checkbox" [(ngModel)]="permissions.canMoveThreads">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
             </div>
         </div>
     </div>

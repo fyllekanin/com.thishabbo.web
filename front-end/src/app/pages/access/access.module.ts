@@ -6,6 +6,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { MaintenanceResolver } from './maintenance/maintenance.resolver';
+import { MissingComponent } from './missing/missing.component';
 
 @NgModule({
     imports: [
@@ -15,7 +16,8 @@ import { MaintenanceResolver } from './maintenance/maintenance.resolver';
         PageModule
     ],
     declarations: [
-        MaintenanceComponent
+        MaintenanceComponent,
+        MissingComponent
     ],
     providers: [
         MaintenanceResolver
@@ -25,4 +27,5 @@ import { MaintenanceResolver } from './maintenance/maintenance.resolver';
     ]
 })
 
-export class AccessModule {}
+export class AccessModule {
+}

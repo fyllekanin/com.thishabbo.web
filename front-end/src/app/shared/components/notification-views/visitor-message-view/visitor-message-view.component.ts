@@ -9,7 +9,7 @@ import { AuthService } from 'core/services/auth/auth.service';
 @Component({
     selector: 'app-top-bar-visitor-message-view',
     templateUrl: 'visitor-message-view.component.html',
-    styleUrls: ['../notification.views.css', 'visitor-message-view.component.css']
+    styleUrls: ['../notification.views.css']
 })
 export class VisitorMessageViewComponent implements NotificationView {
     private _notification: NotificationModel<VisitorMessageView>;

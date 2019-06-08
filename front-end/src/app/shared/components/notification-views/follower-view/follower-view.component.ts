@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 @Component({
     selector: 'app-top-bar-follower-view',
     templateUrl: 'follower-view.component.html',
-    styleUrls: ['../notification.views.css', 'follower-view.component.css']
+    styleUrls: ['../notification.views.css']
 })
 export class FollowerViewComponent implements NotificationView {
     private _notification: NotificationModel<FollowerView>;
