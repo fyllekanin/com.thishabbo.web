@@ -182,7 +182,7 @@ class UserController extends Controller {
         $current->save();
 
         Logger::admin($user->userId, $request->ip(), Action::UPDATED_USERS_BASIC_SETTINGS,
-            $current->userId, ['name' => $current->nickname, 'userId' => $current->userId]);
+            ['name' => $current->nickname, 'userId' => $current->userId], $current->userId);
         return response()->json();
     }
 
