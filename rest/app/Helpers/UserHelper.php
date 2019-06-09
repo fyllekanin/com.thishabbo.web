@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Cache;
 
 class UserHelper {
 
+    public static function isUserLoggedIn($user) {
+        return $user && $user->userId > 0;
+    }
+
     /**
      * @param $userId
      *
