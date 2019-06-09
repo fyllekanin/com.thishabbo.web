@@ -94,7 +94,7 @@ class RadioStats {
         $url = 'https://itunes.apple.com/search?term=' . urlencode($song) . '&entity=album&limit=1';
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.92 Safari/537.36');
+        curl_setopt($curl, CURLOPT_USERAGENT, CONST_APP_USER_AGENT);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
         $data = curl_exec($curl);
@@ -104,12 +104,9 @@ class RadioStats {
         }
 
         $formatted = json_decode($data);
-        if ($formatted->resultCount == 0) {
-            if (strpos($song, '-' !== false)) {
-                $artist = explode('-', $song);
-                return count($artist) > 0 ? $this->getAlbumArt($artist[0]) : '';
-            }
-            return '';
+        if ($formatted->resultCount == 0 && strpos($song, '-' !== false)) {
+            $artist = explode('-', $song);
+            return count($artist) > 0 ? $this->getAlbumArt($artist[0]) : '';
         }
 
         return isset($formatted) && is_array($formatted->results) && count($formatted->results) > 0 ?
