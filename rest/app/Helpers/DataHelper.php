@@ -33,13 +33,7 @@ class DataHelper {
 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $radio->ip . ':' . $radio->port . '/admin.cgi?mode=viewxml');
-        curl_setopt($curl, CURLOPT_USERAGENT, CONST_APP_USER_AGENT);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($curl, CURLOPT_USERPWD, 'admin:' . $radio->adminPassword);
-        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 2);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 5);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type: text/html; charset=utf-8']);
+        self::setCurlOptionsForRadio($curl, $radio->adminPassword);
 
         $data = curl_exec($curl);
         curl_close($curl);
@@ -52,17 +46,21 @@ class DataHelper {
 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $radio->ip . ':' . $radio->port . '/stats?sid=1&json=1');
-        curl_setopt($curl, CURLOPT_USERAGENT, CONST_APP_USER_AGENT);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($curl, CURLOPT_USERPWD, 'admin:' . $radio->adminPassword);
-        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 2);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 5);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type: text/html; charset=utf-8']);
+        self::setCurlOptionsForRadio($curl, $radio->adminPassword);
 
         $data = curl_exec($curl);
         curl_close($curl);
 
         return json_decode($data);
+    }
+
+    private static function setCurlOptionsForRadio($curl, $adminPassword) {
+        curl_setopt($curl, CURLOPT_USERAGENT, CONST_APP_USER_AGENT);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        curl_setopt($curl, CURLOPT_USERPWD, 'admin:' . $adminPassword);
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 2);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 5);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type: text/html; charset=utf-8']);
     }
 }
