@@ -6,6 +6,8 @@ import { SITECP_BREADCRUMB_ITEM } from '../admin.constants';
 import { TableConfig, TableHeader } from 'shared/components/table/table.model';
 import { StatsBoxModel } from 'shared/app-views/stats-boxes/stats-boxes.model';
 import { TitleTopBorder } from 'shared/app-views/title/title.model';
+import { ActivatedRoute } from '@angular/router';
+import { DashboardModel } from './dashboard.model';
 
 @Component({
     selector: 'app-admin-dashboard',
@@ -13,57 +15,70 @@ import { TitleTopBorder } from 'shared/app-views/title/title.model';
 })
 
 export class DashboardComponent extends Page implements OnInit, OnDestroy {
-    tableConfig: TableConfig;
-    stats: Array<StatsBoxModel> = [
-        new StatsBoxModel({
-            borderColor: TitleTopBorder.GREEN,
-            icon: 'fas fa-coins',
-            title: 'Template 1',
-            breadText: 'Template 1'
-        }),
-        new StatsBoxModel({
-            borderColor: TitleTopBorder.RED,
-            icon: 'fas fa-gem',
-            title: 'Template 2',
-            breadText: 'Template 2'
-        }),
-        new StatsBoxModel({
-            borderColor: TitleTopBorder.BLUE,
-            icon: 'fas fa-thumbs-up',
-            title: 'Template 3',
-            breadText: 'Template 3'
-        }),
-        new StatsBoxModel({
-            borderColor: TitleTopBorder.PINK,
-            icon: 'fas fa-thumbs-down',
-            title: 'Template 4',
-            breadText: 'Template 4'
-        })
-    ];
+    private _data: DashboardModel;
 
-    constructor(
+    tableConfig: TableConfig;
+    stats: Array<StatsBoxModel> = [];
+
+    constructor (
         breadcrumbService: BreadcrumbService,
-        elementRef: ElementRef
+        elementRef: ElementRef,
+        activatedRoute: ActivatedRoute
     ) {
         super(elementRef);
+        this.addSubscription(activatedRoute.data, this.onData.bind(this));
         breadcrumbService.breadcrumb = new Breadcrumb({
             current: 'Dashboard',
             items: [SITECP_BREADCRUMB_ITEM]
         });
     }
 
-    ngOnInit(): void {
+    ngOnInit (): void {
         this.tableConfig = new TableConfig({
             title: 'Dashboard',
             headers: [
-                new TableHeader({ title: 'Header #1' }),
-                new TableHeader({ title: 'Header #2' }),
-                new TableHeader({ title: 'Header #3' })
+                new TableHeader({title: 'Header #1'}),
+                new TableHeader({title: 'Header #2'}),
+                new TableHeader({title: 'Header #3'})
             ]
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
+    }
+
+    private onData (data: { data: DashboardModel }): void {
+        this._data = data.data;
+        this.stats = this.getStats();
+    }
+
+    private getStats (): Array<StatsBoxModel> {
+        return [
+            new StatsBoxModel({
+                borderColor: TitleTopBorder.GREEN,
+                icon: 'far fa-comment',
+                title: this._data.stats.posts.toString(),
+                breadText: 'Posts Today'
+            }),
+            new StatsBoxModel({
+                borderColor: TitleTopBorder.RED,
+                icon: 'far fa-comments',
+                title: this._data.stats.threads.toString(),
+                breadText: 'Threads Today'
+            }),
+            new StatsBoxModel({
+                borderColor: TitleTopBorder.BLUE,
+                icon: 'fas fa-coins',
+                title: this._data.stats.credits.toString(),
+                breadText: 'Credits In Economy'
+            }),
+            new StatsBoxModel({
+                borderColor: TitleTopBorder.PINK,
+                icon: 'far fa-address-book',
+                title: this._data.stats.subscriptions.toString(),
+                breadText: 'Active Subscriptions'
+            })
+        ];
     }
 }
