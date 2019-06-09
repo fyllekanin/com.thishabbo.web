@@ -5,12 +5,13 @@
             <div class="description">{{description}}</div>
             <div *ngIf="children.length > 0" class="children">
                 <span *ngFor="let child of children; let index = index;">
-                    {{index > 0 ? ', ' : '' }}<a [routerLink]="['/forum', 'category', child.categoryId, 'page', 1]">{{child.title}}</a>
+                    {{index > 0 ? ', ' : '' }}<a
+                        [routerLink]="['/forum', 'category', child.categoryId, 'page', 1]">{{child.title}}</a>
                 </span>
             </div>
         </div>
         <div *ngIf="lastPost">
-            <img class="mobile-hidden" appUserProfile [info]="lastPostInfo"/>
+            <img class="mobile-hidden" appUserProfile [info]="lastPostInfo" alt="avatar"/>
         </div>
         <div *ngIf="lastPost" class="cell small-3 small-width">
             <a class="thread-name" [routerLink]="['/forum', 'thread', lastPost.threadId, 'page', 1]">

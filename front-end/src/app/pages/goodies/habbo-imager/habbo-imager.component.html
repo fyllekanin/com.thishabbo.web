@@ -5,7 +5,7 @@
             <app-content>
                 <div class="">
                     <div class="cell small-8 center-habbo">
-                        <img [src]="url" />
+                        <img [src]="url" alt="habbo"/>
                     </div>
                     <div class="cell small-4">
                         <div>
@@ -49,7 +49,8 @@
                             <div class="cell small-2">
                                 <label class="checkbox-container">
                                     Lying Down
-                                    <input type="checkbox" [(ngModel)]="actions.lying_down.value" (change)="urlBuilder()">
+                                    <input type="checkbox" [(ngModel)]="actions.lying_down.value"
+                                           (change)="urlBuilder()">
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
@@ -89,12 +90,12 @@
             <app-content>
                 <div><strong>Body Directions</strong></div>
                 <div class="body-direction" *ngFor="let direction of bodyDirections">
-                    <img [src]="direction.src" (click)="updateBodyDirection(direction.value)" />
+                    <img [src]="direction.src" (click)="updateBodyDirection(direction.value)" alt="body direction"/>
                 </div>
 
                 <div><strong>Head Directions</strong></div>
                 <div class="body-direction" *ngFor="let direction of headDirections">
-                    <img [src]="direction.src" (click)="updateHeadDirection(direction.value)" />
+                    <img [src]="direction.src" (click)="updateHeadDirection(direction.value)" alt="head direction"/>
                 </div>
             </app-content>
         </div>
@@ -103,15 +104,15 @@
             <app-content>
                 <div>
                     <label>Direct link:</label>
-                    <input [ngModel]="directLink" />
+                    <input [ngModel]="directLink"/>
                 </div>
                 <div>
                     <label>BBcode:</label>
-                    <input [ngModel]="bbcode" />
+                    <input [ngModel]="bbcode"/>
                 </div>
                 <div>
                     <label>HTML:</label>
-                    <input [ngModel]="html" />
+                    <input [ngModel]="html"/>
                 </div>
             </app-content>
         </div>
