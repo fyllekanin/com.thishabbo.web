@@ -3,6 +3,7 @@
 namespace App\EloquentModels\Shop;
 
 use App\EloquentModels\Models\DeletableModel;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * @property mixed subscriptionId

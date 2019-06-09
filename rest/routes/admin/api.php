@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 $permissions = ConfigHelper::getAdminConfig();
 
 Route::get('/ping', 'PageController@getPing');
+Route::get('/dashboard/{clientTodayMidnight}', 'Admin\AdminDashboardController@getDashboard');
 
 Route::group(['middleware' => PermissionHelper::getAdminMiddleware($permissions->canReadServerLogs)], function () {
     Route::get('server-logs', 'Admin\LogsController@getServerLogs');

@@ -5,7 +5,7 @@
                 <div *ngIf="stat.icon"><em [ngClass]="stat.icon"></em></div>
                 <div *ngIf="stat.externalIcon" [style]="stat.externalIconStyle | safeStyle"
                      (click)="goToExternalIcon(stat)" [ngClass]="stat.externalIconLink ? 'clickable' : ''">
-                    <img [src]="stat.externalIcon" alt="icon"/>
+                    <img [src]="stat.externalIcon" />
                 </div>
                 <div class="title">{{stat.title}}</div>
                 <div *ngIf="stat.breadText">{{stat.breadText}}</div>

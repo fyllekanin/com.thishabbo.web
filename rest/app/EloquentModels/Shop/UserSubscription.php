@@ -19,4 +19,8 @@ class UserSubscription extends UnixTimeModel {
     public function subscription() {
         return $this->belongsTo('App\EloquentModels\Shop\Subscription', 'subscriptionId', 'subscriptionId');
     }
+
+    public function scopeIsActive(Builder $query) {
+        return $query->where('expiresAt', '>', time());
+    }
 }

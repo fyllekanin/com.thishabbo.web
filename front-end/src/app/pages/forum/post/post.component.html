@@ -6,7 +6,7 @@
             </div>
             <div class="avatar">
                 <img *ngIf="useAvatarImage" class="mobile-hidden" appLazyLoad [image]="userAvatarUrl"
-                     (error)="onAvatarError()" alt="avatar"/>
+                     (error)="onAvatarError()" />
             </div>
             <div class="default" *ngIf="!useAvatarImage">
                 <em class="fa fa-user"></em>
@@ -50,7 +50,7 @@
             </div>
 
             <span *ngFor="let badge of user.badges" attr.tooltip="{{badge.description}}" class="post-badge">
-                <img [src]="'/rest/resources/images/badges/' + badge.badgeId + '.gif?' + badge.updatedAt" alt="badge"/>
+                <img [src]="'/rest/resources/images/badges/' + badge.badgeId + '.gif?' + badge.updatedAt" />
             </span>
         </div>
         <div class="post-content-container">

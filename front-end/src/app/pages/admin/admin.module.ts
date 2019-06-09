@@ -14,6 +14,7 @@ import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.modul
 import { ServerLogsComponent } from './server-logs/server-logs.component';
 import { ServerLogsService } from './server-logs/server-logs.service';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
+import { DashboardService } from './dashboard/dashboard.service';
 
 @NgModule({
     imports: [
@@ -34,7 +35,8 @@ import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
         ServerLogsComponent
     ],
     providers: [
-        ServerLogsService
+        ServerLogsService,
+        DashboardService
     ],
     exports: [
         RouterModule

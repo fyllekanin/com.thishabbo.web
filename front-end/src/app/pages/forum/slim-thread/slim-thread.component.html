@@ -14,7 +14,7 @@
             <div class="nickname">by <a [routerLink]="['/user/profile/', thread.nickname]">{{thread.nickname}}</a>
             </div>
         </div>
-        <img class="mobile-hidden" appUserProfile [info]="lastPostInfo" alt="avatar"/>
+        <img class="mobile-hidden" appUserProfile [info]="lastPostInfo"/>
         <div class="cell small-4 medium-2">
             <div class="latest-post" (click)="goToLastPost()">Latest Post</div>
             <div class="nickname">
