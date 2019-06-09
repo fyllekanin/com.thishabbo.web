@@ -2,7 +2,7 @@
 <div class="menu" [ngClass]="menuClasses">
     <span class="close" (click)="closeMenu()"><em class="fas fa-times"></em> Close</span>
     <div class="user" *ngIf="isLoggedIn">
-        <img class="avatar" [style.backgroundImage]="'url(' + avatar + ')'" alt="avatar"/>
+        <img class="avatar" [style.backgroundImage]="'url(' + avatar + ')'" />
         <span class="mobile-nickname">{{username}}</span>
         <div class="quick-links">
             <a *ngIf="isAdmin" [routerLink]="['/admin/dashboard']" (click)="closeMenu()">SiteCP</a>

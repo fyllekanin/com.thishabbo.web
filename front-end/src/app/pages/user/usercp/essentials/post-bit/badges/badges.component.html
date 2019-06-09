@@ -3,7 +3,7 @@
         <div *ngFor="let badge of badges" class="cell small-4 medium-2"
              [ngClass]="getIsActive(badge) ? 'selected' : ''">
             <div class="container" (click)="onToggle(badge)">
-                <img [src]="'/rest/resources/images/badges/' + badge.badgeId + '.gif?' + badge.updatedAt" alt="badge"/>
+                <img [src]="'/rest/resources/images/badges/' + badge.badgeId + '.gif?' + badge.updatedAt" />
                 <div class="overlay"></div>
             </div>
         </div>

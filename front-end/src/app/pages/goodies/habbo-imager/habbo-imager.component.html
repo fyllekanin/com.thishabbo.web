@@ -5,7 +5,7 @@
             <app-content>
                 <div class="">
                     <div class="cell small-8 center-habbo">
-                        <img [src]="url" alt="habbo"/>
+                        <img [src]="url"/>
                     </div>
                     <div class="cell small-4">
                         <div>
@@ -90,12 +90,12 @@
             <app-content>
                 <div><strong>Body Directions</strong></div>
                 <div class="body-direction" *ngFor="let direction of bodyDirections">
-                    <img [src]="direction.src" (click)="updateBodyDirection(direction.value)" alt="body direction"/>
+                    <img [src]="direction.src" (click)="updateBodyDirection(direction.value)"/>
                 </div>
 
                 <div><strong>Head Directions</strong></div>
                 <div class="body-direction" *ngFor="let direction of headDirections">
-                    <img [src]="direction.src" (click)="updateHeadDirection(direction.value)" alt="head direction"/>
+                    <img [src]="direction.src" (click)="updateHeadDirection(direction.value)"/>
                 </div>
             </app-content>
         </div>

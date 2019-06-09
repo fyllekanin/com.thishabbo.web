@@ -35,7 +35,7 @@
                 </div>
                 <div *ngFor="let latestPost of latestPosts;" class="latest-post-row">
                     <span class="image">
-                        <img appUserProfile [isSmall]="true" [info]="latestPost.user" alt="avatar"/>
+                        <img appUserProfile [isSmall]="true" [info]="latestPost.user" />
                     </span>
                     <span class="data">
                         <a class="title"

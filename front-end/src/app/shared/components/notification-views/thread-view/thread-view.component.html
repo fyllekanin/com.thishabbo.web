@@ -1,4 +1,4 @@
-<img *ngIf="!isAvatarFailing" class="picture" [src]="imagePath" (error)="isAvatarFailing = true;" alt="avatar"/>
+<img *ngIf="!isAvatarFailing" class="picture" [src]="imagePath" (error)="isAvatarFailing = true;" />
 <div class="picture fallback" *ngIf="isAvatarFailing">
     <em class="fa fa-user"></em>
 </div>
