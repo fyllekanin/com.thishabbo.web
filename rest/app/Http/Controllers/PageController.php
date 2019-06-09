@@ -8,27 +8,29 @@ use App\EloquentModels\Forum\Thread;
 use App\EloquentModels\Group\GroupList;
 use App\EloquentModels\Notice;
 use App\EloquentModels\Page;
-use App\EloquentModels\Theme;
 use App\EloquentModels\User\User;
 use App\Helpers\ConfigHelper;
 use App\Helpers\DataHelper;
-use App\Helpers\PermissionHelper;
+use App\Helpers\ForumHelper;
 use App\Helpers\SettingsHelper;
 use App\Helpers\UserHelper;
+use App\Http\Impl\PageControllerImpl;
 use App\Utils\BBcodeUtil;
-use App\Utils\Iterables;
-use App\Utils\Value;
 use Illuminate\Http\Request;
 
 class PageController extends Controller {
+    private $myImpl;
     private $categoryTemplates = null;
 
     /**
      * PageController constructor.
      * Store the possible category templates in instance variable
+     *
+     * @param PageControllerImpl $impl
      */
-    public function __construct() {
+    public function __construct(PageControllerImpl $impl) {
         parent::__construct();
+        $this->myImpl = $impl;
         $this->categoryTemplates = ConfigHelper::getCategoryTemplatesConfig();
     }
 
@@ -40,14 +42,8 @@ class PageController extends Controller {
     public function loadInitial(Request $request) {
         $user = $request->get('auth');
 
-        $navigation = null;
-        try {
-            $navigation = json_decode(SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->navigation));
-        } catch (\Exception $e) {
-            $navigation = [];
-        }
-
-        $theme = Theme::where('themeId', Value::objectProperty($user, 'theme', 0))->orWhere('isDefault', true)->first();
+        $navigation = $this->myImpl->getNavigation();
+        $theme = $this->myImpl->getTheme($user);
 
         return response()->json([
             'navigation' => is_array($navigation) ? $navigation : [],
@@ -163,12 +159,8 @@ class PageController extends Controller {
         $user = $request->get('auth');
         $perPage = 12;
 
-        $categories = Category::where('template', $this->categoryTemplates->QUEST)
-            ->pluck('categoryId')->toArray();
-
-        $categoryIds = Iterables::filter($categories, function ($categoryId) use ($user) {
-            return PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId);
-        });
+        $questCategoryIds = ForumHelper::getQuestCategoryIds();
+        $categoryIds = $this->myImpl->getFilteredCategoryIds($questCategoryIds, $user);
 
         $threadsSql = Thread::isApproved()->orderBy('threadId', 'DESC')->whereIn('categoryId', $categoryIds);
         $total = DataHelper::getPage($threadsSql->count('threadId'), $perPage);
@@ -185,16 +177,13 @@ class PageController extends Controller {
     }
 
     private function getLatestThreads($user) {
-        $categoryIds = json_decode(SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->homePageThreads));
-        if (!is_array($categoryIds)) {
+        $homePageCategoryIds = json_decode(SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->homePageThreads));
+        if (!is_array($homePageCategoryIds)) {
             return [];
         }
 
-        $categoryIds = Iterables::filter($categoryIds, function ($categoryId) use ($user) {
-            return PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId);
-        });
-
-        return Thread::whereIn('categoryId', $categoryIds)->take(10)->orderBy('threadId', 'DESC')->with(['prefix'])->get()->map(function ($thread) {
+        $categoryIds = $this->myImpl->getFilteredCategoryIds($homePageCategoryIds, $user);
+        return Thread::whereIn('categoryId', $categoryIds)->take(Controller::$perPageStatic)->orderBy('threadId', 'DESC')->with(['prefix'])->get()->map(function ($thread) {
             return [
                 'threadId' => $thread->threadId,
                 'title' => $thread->title,
@@ -231,13 +220,10 @@ class PageController extends Controller {
      * @return array
      */
     private function getArticles($user, $amount, $type) {
-        $categories = Category::where('template', $type)
+        $templateCategoryIds = Category::where('template', $type)
             ->pluck('categoryId')->toArray();
 
-        $categoryIds = Iterables::filter($categories, function ($categoryId) use ($user) {
-            return PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId);
-        });
-
+        $categoryIds = $this->myImpl->getFilteredCategoryIds($templateCategoryIds, $user);
         return Thread::isApproved()->orderBy('threadId', 'DESC')->whereIn('categoryId', $categoryIds)->take($amount)->get()->map(function ($item) {
             return $this->mapArticle($item);
         });

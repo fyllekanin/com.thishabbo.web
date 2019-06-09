@@ -13,6 +13,7 @@ WBBLANG['en'] = CURLANG = {
     img: "Insert image",
     sup: "Superscript",
     sub: "Subscript",
+    atitle: "Title",
     justifyleft: "Align left",
     justifycenter: "Align center",
     justifyright: "Align right",
@@ -116,7 +117,7 @@ wbbdebug = false;
             smileConversion: true,
 
             //END img upload config
-            buttons: "bold,italic,underline,strike,sup,sub,|,img,video,link,|,bullist,numlist,|,fontcolor,fontsize,fontfamily,|,justifyleft,justifycenter,justifyright,|,quote,code,table,removeFormat",
+            buttons: "bold,italic,underline,strike,sup,sub,|,img,video,link,|,bullist,numlist,|,fontcolor,fontsize,fontfamily,|,justifyleft,justifycenter,justifyright,|,atitle,,quote,code,table,removeFormat",
             allButtons: {
                 bold: {
                     title: CURLANG.bold,
@@ -126,6 +127,14 @@ wbbdebug = false;
                     transform: {
                         '<b>{SELTEXT}</b>': "[b]{SELTEXT}[/b]",
                         '<strong>{SELTEXT}</strong>': "[b]{SELTEXT}[/b]"
+                    }
+                },
+                atitle: {
+                    title: CURLANG.atitle,
+                    buttonHTML: '<span class="fonticon ve-tlb-bold1 btn-inner">Title</span>',
+                    hotkey: 'ctrl+t',
+                    transform: {
+                        '<div class="atitle">{SELTEXT}</div>': "[atitle]{SELTEXT}[/atitle]"
                     }
                 },
                 italic: {
@@ -330,7 +339,7 @@ wbbdebug = false;
                     buttonHTML: '<span class="fonticon ve-tlb-textleft1">\uE015</span>',
                     groupkey: 'align',
                     transform: {
-                        '<p style="text-align:left">{SELTEXT}</p>': '[left]{SELTEXT}[/left]'
+                        '<div style="text-align:left">{SELTEXT}</div>': '[left]{SELTEXT}[/left]'
                     }
                 },
                 justifyright: {
@@ -338,7 +347,7 @@ wbbdebug = false;
                     buttonHTML: '<span class="fonticon ve-tlb-textright1">\uE016</span>',
                     groupkey: 'align',
                     transform: {
-                        '<p style="text-align:right">{SELTEXT}</p>': '[right]{SELTEXT}[/right]'
+                        '<div style="text-align:right">{SELTEXT}</div>': '[right]{SELTEXT}[/right]'
                     }
                 },
                 justifycenter: {
@@ -346,7 +355,7 @@ wbbdebug = false;
                     buttonHTML: '<span class="fonticon ve-tlb-textcenter1">\uE014</span>',
                     groupkey: 'align',
                     transform: {
-                        '<p style="text-align:center">{SELTEXT}</p>': '[center]{SELTEXT}[/center]'
+                        '<div style="text-align:center">{SELTEXT}</div>': '[center]{SELTEXT}[/center]'
                     }
                 },
                 video: {
@@ -1417,7 +1426,7 @@ wbbdebug = false;
                         }
                     } else {
                         try { //Firefox fix, exception while get queryState for UnorderedList
-                            if ((opt.excmd == "bold" || opt.excmd == "italic" || opt.excmd == "underline" || opt.excmd == "strikeThrough") && $(this.getSelectNode()).is("img")) { //Fix, when img selected
+                            if ((opt.excmd == "bold" || opt.excmd == "atitle" || opt.excmd == "italic" || opt.excmd == "underline" || opt.excmd == "strikeThrough") && $(this.getSelectNode()).is("img")) { //Fix, when img selected
                                 return false;
                             } else if (opt.excmd == "underline" && $(this.getSelectNode()).closest("a").size() > 0) { //fix, when link select
                                 return false;
