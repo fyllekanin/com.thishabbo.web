@@ -10,7 +10,7 @@
                 <label>
                     Penalty:
                     <span tooltip="Amount of credits to be taken from user when given this infraction" class="checkbox-info">
-                        <i class="fas fa-question-circle"></i>
+                        <em class="fas fa-question-circle"></em>
                     </span>
                 </label>
                 <input name="penalty" [(ngModel)]="model.penalty" type="number" placeholder="">
@@ -19,7 +19,7 @@
                 <label>
                     Category:
                     <span tooltip="If selected, a thread will be made when infraction given IF welcome bot is set" class="checkbox-info">
-                        <i class="fas fa-question-circle"></i>
+                        <em class="fas fa-question-circle"></em>
                     </span>
                 </label>
                 <app-form-select [(value)]="selectedCategory" [items]="selectableCategories"></app-form-select>
@@ -39,7 +39,7 @@
                     <span class="checkmark"></span>
                 </label>
                 <span tooltip="If checked, the infractions life time is 1 year" class="checkbox-info">
-                    <i class="fas fa-question-circle"></i>
+                    <em class="fas fa-question-circle"></em>
                 </span>
             </div>
         </div>
