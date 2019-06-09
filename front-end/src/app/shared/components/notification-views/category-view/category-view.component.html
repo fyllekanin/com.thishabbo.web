@@ -1,11 +1,11 @@
-<img *ngIf="!isAvatarFailing" class="picture" [src]="imagePath" (error)="isAvatarFailing = true;"/>
+<img *ngIf="!isAvatarFailing" class="picture" [src]="imagePath" (error)="isAvatarFailing = true;" alt="avatar"/>
 <div class="picture fallback" *ngIf="isAvatarFailing">
     <em class="fa fa-user"></em>
 </div>
 <div class="description">
-    {{user.nickname}} just posted a thread in: <br />
+    {{user.nickname}} just posted a thread in: <br/>
     <strong>{{categoryTitle}}!</strong>
     <div class="time">
-        <i class="fas fa-clock"></i> about {{getTime()}}
+        <em class="fas fa-clock"></em> about {{getTime()}}
     </div>
 </div>

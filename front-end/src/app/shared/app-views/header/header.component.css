@@ -60,7 +60,7 @@
     margin: -100px 0 0 -325px;
 }
 
-.logo h3 {
+.logo h2 {
     color: white;
     font-family: CheetahKick, serif;
     font-size: 42px;
@@ -70,7 +70,7 @@
     font-weight: normal;
 }
 
-.logo h2 {
+.logo h1 {
     color: white;
     font-family: FranklinGothic, serif;
     font-size: 57px;
@@ -78,14 +78,14 @@
     font-weight: normal;
 }
 
-.logo h3, .logo h2 {
+.logo h2, .logo h1 {
     background-image: -webkit-linear-gradient(#fff, #e2e2e2);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     filter: drop-shadow(-1px 2px rgba(0, 0, 0, 0.3));
 }
 
-.logo h3:hover, .logo h2:hover {
+.logo h2:hover, .logo h1:hover {
     animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
     -webkit-touch-callout: none;
     -webkit-user-select: none;

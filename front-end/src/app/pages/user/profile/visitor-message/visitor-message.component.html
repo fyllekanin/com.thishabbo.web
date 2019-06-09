@@ -2,12 +2,12 @@
 <app-content [ngClass]="'vmId-' + visitorMessage.visitorMessageId">
     <div class="position-relative">
         <div class="time-wrapper">
-            <i class="fas fa-clock"></i> {{getTime(visitorMessage.createdAt)}}
+            <em class="fas fa-clock"></em> {{getTime(visitorMessage.createdAt)}}
         </div>
     </div>
     <div class="toggle-replies" (click)="isRepliesOpen = !isRepliesOpen; toggleReplies();">
         <div class="avatar">
-            <img appUserProfile [info]="visitorMessage.user"/>
+            <img appUserProfile [info]="visitorMessage.user" alt="avatar"/>
         </div>
         <div class="content">
             <div class="user">
@@ -18,30 +18,30 @@
         <div class="footer">
             <div class="controls">
                 <span *ngIf="canDeleteVisitorMessage" (click)="delete($event, visitorMessage)" tooltip="Delete"><i
-                        class="fas fa-trash"></i></span>
+                        class="fas fa-trash"></em></span>
                 <span *ngIf="canReport(visitorMessage)" (click)="report($event, visitorMessage)" tooltip="Report"><i
-                        class="fas fa-exclamation-triangle"></i></span>
+                        class="fas fa-exclamation-triangle"></em></span>
                 <span *ngIf="canInfract(visitorMessage)" (click)="infract($event, visitorMessage)"
                       tooltip="Warn / Infract"><i
-                        class="fa fa-bell"></i></span>
+                        class="fa fa-bell"></em></span>
             </div>
             <div class="user-controls">
                 <span tooltip="Likes" [ngClass]="visitorMessage.isLiking ? 'likes' : ''"
                       (click)="onToggleLike($event, visitorMessage)">
-                    <i class="far fa-heart"></i>
+                    <em class="far fa-heart"></em>
                 </span> {{visitorMessage.likes | number: '1.'}}
                 -
-                <span tooltip="Comments"><i class="far fa-comment"></i></span> {{replyCount | number: '1.'}}
+                <span tooltip="Comments"><em class="far fa-comment"></em></span> {{replyCount | number: '1.'}}
             </div>
         </div>
     </div>
     <div #replies class="replies hidden">
         <div class="position-relative" *ngFor="let comment of comments">
             <div class="time-wrapper">
-                <i class="fas fa-clock"></i> {{getTime(comment.createdAt)}}
+                <em class="fas fa-clock"></em> {{getTime(comment.createdAt)}}
             </div>
             <div class="avatar">
-                <img appUserProfile [info]="comment.user"/>
+                <img appUserProfile [info]="comment.user" alt="avatar"/>
             </div>
             <div class="content">
                 <div class="user">
@@ -52,16 +52,16 @@
             <div class="footer">
                 <div class="controls">
                     <span *ngIf="canDeleteVisitorMessage" (click)="delete($event, comment)" tooltip="Delete"><i
-                            class="fas fa-trash"></i></span>
+                            class="fas fa-trash"></em></span>
                     <span *ngIf="canReport(comment)" (click)="report($event, comment)" tooltip="Report"><i
-                            class="fas fa-exclamation-triangle"></i></span>
-                    <span *ngIf="canInfract(comment)" (click)="infract($event, comment)" tooltip="Warn / Infract"><i
-                            class="fa fa-bell"></i></span>
+                            class="fas fa-exclamation-triangle"></em></span>
+                    <span *ngIf="canInfract(comment)" (click)="infract($event, comment)" tooltip="Warn / Infract"><em
+                            class="fa fa-bell"></em></span>
                 </div>
                 <div class="user-controls">
                     <span tooltip="Likes" [ngClass]="comment.isLiking ? 'likes' : ''"
                           (click)="onToggleLike($event, comment)">
-                        <i class="far fa-heart"></i>
+                        <em class="far fa-heart"></em>
                     </span> {{comment.likes | number: '1.'}}
                 </div>
             </div>

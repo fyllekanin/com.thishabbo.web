@@ -34,10 +34,10 @@
                 </div>
             </div>
             <div class="cell small-6">
-                <strong>Badges Shown</strong><br />
+                <strong>Badges Shown</strong><br/>
                 <em>You can have maximum of 3 selected badges</em>
-                <br />
-                <br />
+                <br/>
+                <br/>
                 <div *ngIf="badges.length === 0">
                     ¯\_(ツ)_/¯ you have no badges selected right now, click the tab to add a badge
                 </div>
@@ -45,7 +45,8 @@
                     <div class="grid-container">
                         <div class="grid-x grid-margin-x">
                             <div class="cell small-4 medium-2" *ngFor="let badge of badges">
-                                <img [src]="'/rest/resources/images/badges/' + badge.badgeId + '.gif?' + badge.updatedAt" />
+                                <img [src]="'/rest/resources/images/badges/' + badge.badgeId + '.gif?' + badge.updatedAt"
+                                     alt="badge"/>
                             </div>
                         </div>
                     </div>

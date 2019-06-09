@@ -1,17 +1,17 @@
-<img *ngIf="!isAvatarFailing" class="picture" [src]="imagePath" (error)="isAvatarFailing = true;"/>
+<img *ngIf="!isAvatarFailing" class="picture" [src]="imagePath" (error)="isAvatarFailing = true;" alt="avatar"/>
 <div class="picture fallback" *ngIf="isAvatarFailing">
     <em class="fa fa-user"></em>
 </div>
 <div class="description">
     <div *ngIf="isApproved">
-        New Follower! <br />
+        New Follower! <br/>
         {{user.nickname}} just followed you!
     </div>
     <div *ngIf="!isApproved">
-        New Follower Request! <br />
-        {{user.nickname}} wanna follow you! Visit UserCP to approve/deny
+        New Follower Request! <br/>
+        {{user.nickname}} wants to follow you! Visit UserCP to approve/deny
     </div>
     <div class="time">
-        <i class="fas fa-clock"></i> about {{getTime()}}
+        <em class="fas fa-clock"></em> about {{getTime()}}
     </div>
 </div>

@@ -6,25 +6,25 @@
         <div class="radio-info">
             <div class="inner-box-radio">
                 <div class="dj-position current">
-                    <i class="fas fa-user"></i> <b> {{nickname}}</b>
+                    <em class="fas fa-user"></em> <strong> {{nickname}}</strong>
                 </div>
-                <div class="dj-position next-dj"><i class="fas fa-arrow-right"></i> <strong> {{nextDj}}</strong></div>
-                <div class="dj-position says"><i class="fas fa-comment"></i>
+                <div class="dj-position next-dj"><em class="fas fa-arrow-right"></em> <strong> {{nextDj}}</strong></div>
+                <div class="dj-position says"><em class="fas fa-comment"></em>
                     {{djSays}}
                 </div>
                 <div class="dj-position stats">
-                    <div class="likes float-right"><i class="fas fa-heart"></i> {{likes}}</div>
-                    <div class="listeners float-right"><i class="fas fa-users"></i> {{listeners}}</div>
+                    <div class="likes float-right"><em class="fas fa-heart"></em> {{likes}}</div>
+                    <div class="listeners float-right"><em class="fas fa-users"></em> {{listeners}}</div>
                 </div>
-                <div class="dj-position song"><i class="fas fa-headphones"></i>
+                <div class="dj-position song"><em class="fas fa-headphones"></em>
                     {{song}}
                 </div>
             </div>
             <div>
                 <button class="radio-button blue-button" (click)="openRequest()"><i
-                        class="fas fa-comment icon-position"></i></button>
+                        class="fas fa-comment icon-position"></em></button>
                 <button [disabled]="radioOffline" class="radio-button red-button" (click)="likeDj()"><i
-                        class="fas fa-heart icon-position"></i></button>
+                        class="fas fa-heart icon-position"></em></button>
             </div>
         </div>
     </div>
@@ -33,16 +33,16 @@
         <div class="event-info">
             <div class="event-buttons">
                 <button [disabled]="!eventsLink" class="events-box-button green-button" (click)="visitEvent()"><i
-                        class="fas fa-arrow-up icon-position-events"></i></button>
+                        class="fas fa-arrow-up icon-position-events"></em></button>
                 <button [disabled]="noEvent" class="events-box-button red-button" (click)="likeHost()"><i
-                        class="fas fa-heart icon-position-events"></i></button>
+                        class="fas fa-heart icon-position-events"></em></button>
             </div>
             <div class="inner-box">
-                <div class="event-name"><i class="fas fa-user"></i> <strong> {{currentHost}}</strong><br/>
-                    <i class="fas fa-users"></i> {{currentEvent}}
+                <div class="event-name"><em class="fas fa-user"></em> <strong> {{currentHost}}</strong><br/>
+                    <em class="fas fa-users"></em> {{currentEvent}}
                 </div>
-                <div class="event-name"><i class="fas fa-arrow-right"></i> <strong> {{nextHost}}</strong><br/>
-                    <i class="fas fa-arrow-right"></i> {{nextHost}}
+                <div class="event-name"><em class="fas fa-arrow-right"></em> <strong> {{nextHost}}</strong><br/>
+                    <em class="fas fa-arrow-right"></em> {{nextHost}}
                 </div>
             </div>
         </div>
