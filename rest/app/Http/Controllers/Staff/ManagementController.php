@@ -360,12 +360,11 @@ class ManagementController extends Controller {
     }
 
     private function getShoutCastV2Listeners($radio) {
-        $userAgent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.92 Safari/537.36';
         $url = $radio->ip . ':' . $radio->port . '/admin.cgi?sid=1&mode=viewjson&page=3';
 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_USERAGENT, $userAgent);
+        curl_setopt($curl, CURLOPT_USERAGENT, CONST_APP_USER_AGENT);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         curl_setopt($curl, CURLOPT_USERPWD, 'admin:' . $radio->adminPassword);

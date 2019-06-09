@@ -195,7 +195,7 @@ export class ThreadComponent extends Page implements OnDestroy {
     }
 
     get posts (): Array<PostModel> {
-        return this._threadPage.threadPosts.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'postId'));
+        return this._threadPage.threadPosts;
     }
 
     get subTitle (): string {
@@ -270,6 +270,9 @@ export class ThreadComponent extends Page implements OnDestroy {
 
     private onData (data: { data: ThreadPage }): void {
         this._threadPage = data.data;
+        this._threadPage.parents.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'displayOrder'));
+        this._threadPage.threadPosts.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'postId'));
+
         this.pagination = new PaginationModel({
             total: this._threadPage.total,
             page: this._threadPage.page,
@@ -324,11 +327,10 @@ export class ThreadComponent extends Page implements OnDestroy {
 
         this._breadcrumbService.breadcrumb = new Breadcrumb({
             current: `${prefix} ${title}`,
-            items: [FORUM_BREADCRUM_ITEM].concat(this._threadPage.parents.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'displayOrder'))
-                .map(parent => new BreadcrumbItem({
-                    title: parent.title,
-                    url: `/forum/category/${parent.categoryId}/page/1`
-                })))
+            items: [FORUM_BREADCRUM_ITEM].concat(this._threadPage.parents.map(parent => new BreadcrumbItem({
+                title: parent.title,
+                url: `/forum/category/${parent.categoryId}/page/1`
+            })))
         });
     }
 
