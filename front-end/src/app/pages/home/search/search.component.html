@@ -5,7 +5,7 @@
             <div class="grid-container">
                 <div class="grid-x" *ngFor="let item of items">
                     <div class="cell small-12 search-item">
-                        <img appUserProfile [info]="item.user"/>
+                        <img appUserProfile [info]="item.user" alt="user"/>
                         <div class="data">
                             <div *ngIf="parameters.type === 'threads'">
                                 <a [routerLink]="['/forum/thread/' + item.id + '/page/1']"

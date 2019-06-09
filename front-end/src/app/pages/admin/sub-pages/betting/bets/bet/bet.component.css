@@ -3,7 +3,7 @@
     position: relative;
 }
 
-.divide i {
+.divide em {
     position: absolute;
     top: 65%;
     transform: translateY(-50%);

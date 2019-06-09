@@ -68,7 +68,7 @@
                     <app-title [title]="'Accolades'"></app-title>
                     <app-content>
                         <div *ngFor="let accolade of accolades">
-                            <span [style.color]="accolade.color"><i [ngClass]="accolade.icon"></i> {{accolade.role}}
+                            <span [style.color]="accolade.color"><em [ngClass]="accolade.icon"></em> {{accolade.role}}
                                 »</span>
                             {{accolade.getStartLabel()}} - {{accolade.getEndLabel()}}
                         </div>
@@ -77,31 +77,36 @@
 
                 <app-title [title]="'All Time Stats'"></app-title>
                 <app-content>
-                    <div class="gray-content-wrapper"><i class="fas fa-trophy gold-trophy"></i><b> Best Season:</b> 3rd
+                    <div class="gray-content-wrapper"><em class="fas fa-trophy gold-trophy"></em><strong> Best
+                        Season:</strong> 3rd
                         (Season
                         11)
                     </div>
-                    <div class="gray-content-wrapper"><i class="fas fa-trophy gold-trophy"></i><b> Participated in:</b>
+                    <div class="gray-content-wrapper"><em class="fas fa-trophy gold-trophy"></em><strong> Participated
+                        in:</strong>
                         8 Seasons
                     </div>
-                    <div class="gray-content-wrapper"><i class="fas fa-trophy gold-trophy"></i><b> Most Events:</b> 20
+                    <div class="gray-content-wrapper"><em class="fas fa-trophy gold-trophy"></em><strong> Most
+                        Events:</strong> 20
                         (Season
                         11)
                     </div>
-                    <div class="gray-content-wrapper"><i class="fas fa-trophy gold-trophy"></i><b> Most Radio Slots:</b>
+                    <div class="gray-content-wrapper"><em class="fas fa-trophy gold-trophy"></em><strong> Most Radio
+                        Slots:</strong>
                         20
                         (Season 8)
                     </div>
-                    <div class="gray-content-wrapper"><i class="fas fa-trophy gold-trophy"></i><b> Most Radio Slots:</b>
+                    <div class="gray-content-wrapper"><em class="fas fa-trophy gold-trophy"></em><strong> Most Radio
+                        Slots:</strong>
                         20
                         (Season 8)
                     </div>
-                    <div class="gray-content-wrapper"><i class="fas fa-trophy gold-trophy"></i><b> Most Posts in
-                        Season:</b> 9
+                    <div class="gray-content-wrapper"><em class="fas fa-trophy gold-trophy"></em><strong> Most Posts in
+                        Season:</strong> 9
                         (203)
                     </div>
-                    <div class="gray-content-wrapper"><i class="fas fa-trophy gold-trophy"></i><b> Most Threads in
-                        Season:</b> 3
+                    <div class="gray-content-wrapper"><em class="fas fa-trophy gold-trophy"></em><strong> Most Threads
+                        in Season:</strong> 3
                         (23)
                     </div>
                 </app-content>
@@ -138,9 +143,9 @@
                            (onTabClick)="onFollowerTabClick($event)"></app-title>
                 <app-content>
                     <div class="followers" *ngFor="let follower of followers.followers">
-                        <img appUserProfile [isSmall]="true" [info]="follower">
+                        <img appUserProfile [isSmall]="true" [info]="follower" alt="user">
                         <div class="follower">
-                            <b>Follower</b><br/>
+                            <strong>Follower</strong><br/>
                             <app-user-link [user]="follower"></app-user-link>
                         </div>
                     </div>
@@ -156,15 +161,15 @@
                     <app-title [title]="'Relations'"></app-title>
                     <app-content>
                         <div class="gray-content-wrapper" *ngIf="relations.love">
-                            <img src="/assets/images/heart.png"/>
+                            <img src="/assets/images/heart.png" alt="love"/>
                             <app-user-link [user]="relations.love"></app-user-link>
                         </div>
                         <div class="gray-content-wrapper" *ngIf="relations.like">
-                            <img src="/assets/images/smile.png"/>
+                            <img src="/assets/images/smile.png" alt="like"/>
                             <app-user-link [user]="relations.like"></app-user-link>
                         </div>
                         <div class="gray-content-wrapper" *ngIf="relations.hate">
-                            <img src="/assets/images/skull.png"/>
+                            <img src="/assets/images/skull.png" alt="hate"/>
                             <app-user-link [user]="relations.hate"></app-user-link>
                         </div>
                     </app-content>
@@ -173,7 +178,7 @@
                 <div *ngIf="youtube">
                     <app-title [title]="'YouTube'"></app-title>
                     <app-content>
-                        <iframe width="274" height="400" [src]="youtube" frameborder="0"
+                        <iframe title="youtube" width="274" height="400" [src]="youtube" frameborder="0"
                                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                                 allowfullscreen></iframe>
                     </app-content>

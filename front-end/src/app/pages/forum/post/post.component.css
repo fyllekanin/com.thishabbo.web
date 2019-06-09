@@ -51,12 +51,12 @@ img {
     float: right;
 }
 
-.post-tools i {
+.post-tools em {
     font-size: 0.8rem;
     margin: 0 0.5rem;
 }
 
-.user-tools i {
+.user-tools em {
     font-size: 0.8rem;
     margin: 0 0.5rem;
 }

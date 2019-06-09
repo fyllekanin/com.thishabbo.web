@@ -14,7 +14,7 @@
             <div class="nickname">by <a [routerLink]="['/user/profile/', thread.nickname]">{{thread.nickname}}</a>
             </div>
         </div>
-        <img class="mobile-hidden" appUserProfile [info]="lastPostInfo" />
+        <img class="mobile-hidden" appUserProfile [info]="lastPostInfo" alt="avatar"/>
         <div class="cell small-4 medium-2">
             <div class="latest-post" (click)="goToLastPost()">Latest Post</div>
             <div class="nickname">
@@ -23,8 +23,8 @@
             <div class="time-ago">{{timeAgo(thread.lastPost.createdAt)}}</div>
         </div>
         <div class="small-1" *ngIf="canSelectThreads">
-            <label class="checkbox-container" >
-                <input type="checkbox" (change)="onCheck()" />
+            <label class="checkbox-container">
+                <input type="checkbox" (change)="onCheck()"/>
                 <span class="checkmark"></span>
             </label>
         </div>

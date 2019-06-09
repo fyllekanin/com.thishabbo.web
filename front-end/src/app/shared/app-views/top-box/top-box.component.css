@@ -118,7 +118,7 @@
     width: 100%;
 }
 
-.mobile i {
+.mobile em {
     float: left;
     color: #d4d4d4;
     font-size: 2rem;
@@ -195,7 +195,7 @@
     color: #3682b9;
 }
 
-.menu-item i {
+.menu-item em {
     margin-right: 4px;
     font-size: 1.3rem;
     margin-top: 3px;

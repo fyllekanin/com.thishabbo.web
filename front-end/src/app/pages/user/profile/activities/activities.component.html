@@ -2,34 +2,34 @@
 <app-content>
     <div class="activity" *ngFor="let activity of activities" [ngSwitch]="activity.type">
         <div *ngSwitchCase="40">
-            <i class="far fa-comment-alt"></i> {{activity.createdAt}} » Posted in
+            <em class="far fa-comment-alt"></em> {{activity.createdAt}} » Posted in
             <strong><a
                     [routerLink]="['/forum/thread/' + activity.thread.threadId + '/page/' + activity.thread.page]">{{activity.thread.title}}</a></strong>
         </div>
         <div *ngSwitchCase="88">
-            <i class="far fa-comment-alt"></i> {{activity.createdAt}} » Created thread
+            <em class="far fa-comment-alt"></em> {{activity.createdAt}} » Created thread
             <strong><a
                     [routerLink]="['/forum/thread/' + activity.thread.threadId + '/page/' + activity.thread.page]">{{activity.thread.title}}</a></strong>
         </div>
         <div *ngSwitchCase="41">
-            <i class="far fa-comment-alt"></i> {{activity.createdAt}} » Liked a post in
+            <em class="far fa-comment-alt"></em> {{activity.createdAt}} » Liked a post in
             <strong><a
                     [routerLink]="['/forum/thread/' + activity.thread.threadId + '/page/' + activity.thread.page]">{{activity.thread.title}}</a></strong>
         </div>
         <div *ngSwitchCase="18">
-            <i class="far fa-comment-alt"></i> {{activity.createdAt}} » Liked the DJ!
+            <em class="far fa-comment-alt"></em> {{activity.createdAt}} » Liked the DJ!
         </div>
         <div *ngSwitchCase="45">
-            <i class="far fa-comment-alt"></i> {{activity.createdAt}} » Started a game of fastest typer!
+            <em class="far fa-comment-alt"></em> {{activity.createdAt}} » Started a game of fastest typer!
         </div>
         <div *ngSwitchCase="43">
-            <i class="far fa-comment-alt"></i> {{activity.createdAt}} » Started a game of snake!
+            <em class="far fa-comment-alt"></em> {{activity.createdAt}} » Started a game of snake!
         </div>
         <div *ngSwitchCase="1">
-            <i class="far fa-comment-alt"></i> {{activity.createdAt}} » Won a game of roulette!
+            <em class="far fa-comment-alt"></em> {{activity.createdAt}} » Won a game of roulette!
         </div>
         <div *ngSwitchCase="2">
-            <i class="far fa-comment-alt"></i> {{activity.createdAt}} » Lost a game of roulette...
+            <em class="far fa-comment-alt"></em> {{activity.createdAt}} » Lost a game of roulette...
         </div>
     </div>
 </app-content>

@@ -6,7 +6,7 @@
     </app-title>
     <app-content [isContracted]="isMenuItemContracted(block.title)">
         <a *ngFor="let item of block.items" [routerLink]="[item.link]">
-            <i class="fa fa-columns"></i>
+            <em class="fa fa-columns"></em>
             <span>{{item.title}}</span>
         </a>
     </app-content>

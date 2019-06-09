@@ -1,36 +1,37 @@
 <app-title
-    [tabs]="tabs"
-    [title]="'Request THC'"
-    (onTabClick)="onTabClick($event)">
+        [tabs]="tabs"
+        [title]="'Request THC'"
+        (onTabClick)="onTabClick($event)">
 </app-title>
 <app-content>
-    Here you can request THC for a specific user who won a forum, events or radio competition. <br />
-    You can find the user either by habbo name or their forum nickname. If you fill in both the nickname will be prioritized.
-    <br />
-    <br />
+    Here you can request THC for a specific user who won a forum, events or radio competition. <br/>
+    You can find the user either by habbo name or their forum nickname. If you fill in both the nickname will be
+    prioritized.
+    <br/>
+    <br/>
     You can add multiple at one time, click "Add row" above to add another line to fill in.
-    <br />
-    <br />
+    <br/>
+    <br/>
     <div class="grid-container">
         <div class="grid-x grid-margin-x grid-margin-y" *ngFor="let item of rows">
             <div class="cell small-2">
                 <label>Nickname</label>
-                <input type="text" [(ngModel)]="item.nickname" />
+                <input type="text" [(ngModel)]="item.nickname"/>
             </div>
             <div class="cell small-2">
                 <label>Habbo</label>
-                <input type="text" [(ngModel)]="item.habbo" />
+                <input type="text" [(ngModel)]="item.habbo"/>
             </div>
             <div class="cell small-2">
                 <label>Amount</label>
-                <input type="number" [(ngModel)]="item.amount" />
+                <input type="number" [(ngModel)]="item.amount"/>
             </div>
             <div class="cell small-5">
                 <label>Reason</label>
-                <input type="text" [(ngModel)]="item.reason" />
+                <input type="text" [(ngModel)]="item.reason"/>
             </div>
             <div class="cell small-1">
-                <i class="fas fa-trash" (click)="remove(item.id)"></i>
+                <em class="fas fa-trash" (click)="remove(item.id)"></em>
             </div>
         </div>
     </div>

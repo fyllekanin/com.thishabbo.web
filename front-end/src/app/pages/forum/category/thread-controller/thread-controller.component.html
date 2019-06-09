@@ -75,7 +75,7 @@
             </div>
             <div class="cell small-4" *ngIf="isQuestTemplate">
                 Preview: <br/>
-                <img *ngIf="badge" appLazyLoad [image]="badgeUrl"/>
+                <img *ngIf="badge" appLazyLoad [image]="badgeUrl" alt="badge"/>
             </div>
         </div>
     </div>
@@ -103,7 +103,7 @@
                                [disabled]="thread.createdAt && !thread.poll.isNew" name="thread-poll-answer">
                     </div>
                     <div class="cell small-1 remove-answer" *ngIf="!thread.createdAt && thread.poll.isNew">
-                        <i class="fas fa-trash" (click)="removeAnswer(answer.id)"></i>
+                        <em class="fas fa-trash" (click)="removeAnswer(answer.id)"></em>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 <div>
-    <strong><i class="fas fa-exclamation-triangle"></i> {{title}}</strong>
+    <strong><em class="fas fa-exclamation-triangle"></em> {{title}}</strong>
 </div>
 <div [innerHTML]="content"></div>
 
-<i class="fas fa-times-circle closable" *ngIf="isClosable" (click)="click()"></i>
+<em class="fas fa-times-circle closable" *ngIf="isClosable" (click)="click()"></em>
