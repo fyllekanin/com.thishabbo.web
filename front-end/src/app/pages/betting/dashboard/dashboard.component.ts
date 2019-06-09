@@ -145,6 +145,7 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
     private onData (data: { data: DashboardModel }): void {
         this._data = data.data || new DashboardModel();
         this._data.activeBets.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'displayOrder'));
+        this._data.trendingBets.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'backersCount'));
 
         this.updateStats();
         this.buildTrendingTable();
@@ -162,28 +163,28 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
         this.trendingTable = new TableConfig({
             title: 'Top 5 Trending Bets',
             headers: this.getTableHeaders(),
-            rows: this._data.trendingBets.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'backersCount'))
-                .map(bet => {
-                    return new TableRow({
-                        id: String(bet.betId),
-                        cells: [
-                            new TableCell({title: bet.name}),
-                            new TableCell({title: `${bet.leftSide}/${bet.rightSide}`}),
-                            new TableCell({title: String(bet.backersCount)})
-                        ],
-                        actions: bet.isSuspended ? this._betSuspended : this._placeBet
-                    });
-                })
+            rows: this._data.trendingBets.map(bet => {
+                return new TableRow({
+                    id: String(bet.betId),
+                    cells: [
+                        new TableCell({title: bet.name}),
+                        new TableCell({title: `${bet.leftSide}/${bet.rightSide}`}),
+                        new TableCell({title: String(bet.backersCount)})
+                    ],
+                    actions: bet.isSuspended ? this._betSuspended : this._placeBet
+                });
+            })
         });
     }
 
     private buildSectionTables (): void {
         this._sectionTables = this._data.activeBets.map(category => {
+            category.activeBets.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'backersCount'));
             return new TableConfig({
                 id: category.betCategoryId,
                 title: category.name,
                 headers: this.getTableHeaders(),
-                rows: category.activeBets.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'backersCount')).map(bet => {
+                rows: category.activeBets.map(bet => {
                     return new TableRow({
                         id: String(bet.betId),
                         cells: [
