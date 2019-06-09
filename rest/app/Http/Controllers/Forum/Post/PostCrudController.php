@@ -81,7 +81,7 @@ class PostCrudController extends Controller {
 
         Condition::precondition(!$post, 404, 'No post with that ID exists!');
         Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, $forumPermissions->canEditOthersPosts,
-            $post->thread->categoryId && $post->userId != $post->userId), 400, 'You do not have permission to see this!');
+            $post->thread->categoryId), 400, 'You do not have permission to see this!');
 
         $updatedThreadAction = Action::getAction(Action::UPDATED_THREAD);
         $updatedPostAction = Action::getAction(Action::UPDATED_POST);
@@ -126,6 +126,7 @@ class PostCrudController extends Controller {
             try {
                 $threadController->doThread($user, null, $threadSkeleton, null, true);
             } catch (ValidationException $e) {
+                // Intentionally empty
             }
         }
 

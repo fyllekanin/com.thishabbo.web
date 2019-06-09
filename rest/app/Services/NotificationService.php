@@ -23,16 +23,13 @@ class NotificationService {
                         ->join('threads', 'threads.threadId', '=', 'posts.threadId')
                         ->where('threads.isDeleted', false)
                         ->count('postId') > 0;
-                break;
             case Type::getType(Type::THREAD_SUBSCRIPTION):
                 return Thread::where('threadId', $contentId)
                         ->isApproved()
                         ->count('threadId') > 0;
-                break;
             case Type::getType(Type::CATEGORY_SUBSCRIPTION):
                 return Category::where('categoryId', $contentId)
                         ->count('categoryId') > 0;
-                break;
         }
 
         return true;

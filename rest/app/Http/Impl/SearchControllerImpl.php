@@ -38,13 +38,10 @@ class SearchControllerImpl {
         switch ($type) {
             case $this->TYPES[0]:
                 return $this->getThreadsResult($request, $page, $user);
-                break;
             case $this->TYPES[1]:
                 return $this->getPostsResult($request, $page, $user);
-                break;
             case $this->TYPES[2]:
                 return $this->getUsersResult($request, $page);
-                break;
             default:
                 Condition::precondition(true, 404, $type . ' is not a supported type!');
                 break;

@@ -195,7 +195,7 @@ export class ThreadComponent extends Page implements OnDestroy {
     }
 
     get posts (): Array<PostModel> {
-        return this._threadPage.threadPosts.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'postId'));
+        return this._threadPage.threadPosts;
     }
 
     get subTitle (): string {
@@ -270,6 +270,7 @@ export class ThreadComponent extends Page implements OnDestroy {
 
     private onData (data: { data: ThreadPage }): void {
         this._threadPage = data.data;
+        this._threadPage.threadPosts.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'postId'));
         this.pagination = new PaginationModel({
             total: this._threadPage.total,
             page: this._threadPage.page,

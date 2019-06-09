@@ -219,13 +219,13 @@ export class CategoryComponent extends Page implements OnDestroy {
     }
 
     private setBreadcrumb (): void {
+        this._categoryPage.parents.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'displayOrder'));
         this._breadcrumbService.breadcrumb = new Breadcrumb({
             current: this._categoryPage.title,
-            items: [FORUM_BREADCRUM_ITEM].concat(this._categoryPage.parents.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'displayOrder'))
-                .map(parent => new BreadcrumbItem({
-                    title: parent.title,
-                    url: `/forum/category/${parent.categoryId}/page/1`
-                })))
+            items: [FORUM_BREADCRUM_ITEM].concat(this._categoryPage.parents.map(parent => new BreadcrumbItem({
+                title: parent.title,
+                url: `/forum/category/${parent.categoryId}/page/1`
+            })))
         });
     }
 

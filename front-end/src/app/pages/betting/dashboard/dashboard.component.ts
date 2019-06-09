@@ -32,20 +32,20 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
     private _contractedSections: Array<number> = [];
     private _sectionTables: Array<TableConfig> = [];
     private _placeBet: Array<TableAction> = [
-        new TableAction({ title: 'Place Bet', value: BetDashboardListActions.PLACE_BET })
+        new TableAction({title: 'Place Bet', value: BetDashboardListActions.PLACE_BET})
     ];
     private _betSuspended: Array<TableAction> = [
-        new TableAction({ title: 'Suspended', isDisabled: true })
+        new TableAction({title: 'Suspended', isDisabled: true})
     ];
 
     trendingTable: TableConfig;
     toggleTab: Array<TitleTab> = [
-        new TitleTab({ title: 'Toggle' })
+        new TitleTab({title: 'Toggle'})
     ];
 
     stats: Array<StatsBoxModel> = [];
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService,
         private _dashboardService: DashboardService,
@@ -63,19 +63,19 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
         });
     }
 
-    ngOnInit(): void {
+    ngOnInit (): void {
         this._contractedSections = this.getContractedSections();
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    getTableConfig(category: BetCategory): TableConfig {
+    getTableConfig (category: BetCategory): TableConfig {
         return this._sectionTables.find(section => section.id === category.betCategoryId);
     }
 
-    onToggle(betCategoryId: number): void {
+    onToggle (betCategoryId: number): void {
         if (this.isContracted(betCategoryId)) {
             this._contractedSections = this._contractedSections.filter(section => section !== betCategoryId);
         } else {
@@ -84,11 +84,11 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
         this.updateContractedSections();
     }
 
-    isContracted(betCategoryId: number): boolean {
+    isContracted (betCategoryId: number): boolean {
         return this._contractedSections.indexOf(betCategoryId) > -1;
     }
 
-    onAction(action: Action, betCategoryId?: number): void {
+    onAction (action: Action, betCategoryId?: number): void {
         let bet;
         if (betCategoryId) {
             bet = this._data.activeBets.find(category => category.betCategoryId === betCategoryId)
@@ -104,16 +104,16 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
         }
     }
 
-    get categories(): Array<BetCategory> {
-        return this._data.activeBets.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'displayOrder'));
+    get categories (): Array<BetCategory> {
+        return this._data.activeBets;
     }
 
-    private onPlaceBetFinished(bet: Bet, credits: number): void {
+    private onPlaceBetFinished (bet: Bet, credits: number): void {
         if (!credits) {
             return;
         }
 
-        this._httpService.post(`betting/bet/${bet.betId}`, { amount: credits })
+        this._httpService.post(`betting/bet/${bet.betId}`, {amount: credits})
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
@@ -127,7 +127,7 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private updateBackers(bet: Bet): void {
+    private updateBackers (bet: Bet): void {
         const trending = this._data.trendingBets.find(item => item.betId === bet.betId);
         if (trending) {
             trending.backersCount += 1;
@@ -142,22 +142,23 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
         }
     }
 
-    private onData(data: { data: DashboardModel }): void {
+    private onData (data: { data: DashboardModel }): void {
         this._data = data.data || new DashboardModel();
+        this._data.activeBets.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'displayOrder'));
 
         this.updateStats();
         this.buildTrendingTable();
         this.buildSectionTables();
     }
 
-    private updateStats(): void {
+    private updateStats (): void {
         if (!this._data.stats) {
             return;
         }
         this.stats = getBettingStats(this._data.stats);
     }
 
-    private buildTrendingTable(): void {
+    private buildTrendingTable (): void {
         this.trendingTable = new TableConfig({
             title: 'Top 5 Trending Bets',
             headers: this.getTableHeaders(),
@@ -166,9 +167,9 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
                     return new TableRow({
                         id: String(bet.betId),
                         cells: [
-                            new TableCell({ title: bet.name }),
-                            new TableCell({ title: `${bet.leftSide}/${bet.rightSide}` }),
-                            new TableCell({ title: String(bet.backersCount) })
+                            new TableCell({title: bet.name}),
+                            new TableCell({title: `${bet.leftSide}/${bet.rightSide}`}),
+                            new TableCell({title: String(bet.backersCount)})
                         ],
                         actions: bet.isSuspended ? this._betSuspended : this._placeBet
                     });
@@ -176,7 +177,7 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
         });
     }
 
-    private buildSectionTables(): void {
+    private buildSectionTables (): void {
         this._sectionTables = this._data.activeBets.map(category => {
             return new TableConfig({
                 id: category.betCategoryId,
@@ -186,9 +187,9 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
                     return new TableRow({
                         id: String(bet.betId),
                         cells: [
-                            new TableCell({ title: bet.name }),
-                            new TableCell({ title: `${bet.leftSide}/${bet.rightSide}` }),
-                            new TableCell({ title: String(bet.backersCount) })
+                            new TableCell({title: bet.name}),
+                            new TableCell({title: `${bet.leftSide}/${bet.rightSide}`}),
+                            new TableCell({title: String(bet.backersCount)})
                         ],
                         actions: bet.isSuspended ? this._betSuspended : this._placeBet
                     });
@@ -197,19 +198,19 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
         });
     }
 
-    private getTableHeaders(): Array<TableHeader> {
+    private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'Bet', width: '70%' }),
-            new TableHeader({ title: 'Odds', width: '15%' }),
-            new TableHeader({ title: 'Backers', width: '15%' })
+            new TableHeader({title: 'Bet', width: '70%'}),
+            new TableHeader({title: 'Odds', width: '15%'}),
+            new TableHeader({title: 'Backers', width: '15%'})
         ];
     }
 
-    private updateContractedSections(): void {
+    private updateContractedSections (): void {
         localStorage.setItem(LOCAL_STORAGE.CONTRACTED_SECTIONS, JSON.stringify(this._contractedSections));
     }
 
-    private getContractedSections(): Array<number> {
+    private getContractedSections (): Array<number> {
         const stored = localStorage.getItem(LOCAL_STORAGE.CONTRACTED_SECTIONS);
         return stored ? JSON.parse(stored) : [];
     }

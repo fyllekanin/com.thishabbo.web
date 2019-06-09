@@ -188,14 +188,13 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
             url: `/forum/thread/${this._threadSkeleton.threadId}/page/1`
         })];
 
+        this._threadSkeleton.parents.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'displayOrder'));
         this._breadcrumbService.breadcrumb = new Breadcrumb({
             current: this._threadSkeleton.threadId > 0 ? 'Editing' : 'New',
-            items: [FORUM_BREADCRUM_ITEM].concat(this._threadSkeleton.parents
-                .sort(ArrayHelper.sortByPropertyDesc.bind(this, 'displayOrder'))
-                .map(parent => new BreadcrumbItem({
-                    title: parent.title,
-                    url: `/forum/category/${parent.categoryId}/page/1`
-                })).concat(threadCrumb))
+            items: [FORUM_BREADCRUM_ITEM].concat(this._threadSkeleton.parents.map(parent => new BreadcrumbItem({
+                title: parent.title,
+                url: `/forum/category/${parent.categoryId}/page/1`
+            })).concat(threadCrumb))
         });
     }
 
