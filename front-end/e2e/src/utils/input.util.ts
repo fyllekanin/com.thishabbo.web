@@ -3,6 +3,11 @@ import { CommonUtil } from './common.util';
 
 export class InputUtil {
 
+    static clearAndFillInput (ele: ElementFinder, value: string | number): void {
+        this.clearInput(ele);
+        this.fillInput(ele, value);
+    }
+
     static fillInput (ele: ElementFinder, value: string | number): void {
         browser.wait(ExpectedConditions.presenceOf(ele), 10000, 'Expected element to be present');
         ele.sendKeys(value);
