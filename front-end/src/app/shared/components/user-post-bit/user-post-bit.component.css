@@ -1,0 +1,57 @@
+:host {
+    background: #fbfbfb;
+    border-radius: 2px;
+    border-top: none !important;
+    box-shadow: inset 0 1px 2px rgba(197, 197, 197, 0.19);
+    float: left;
+    padding: 8px;
+    position: relative;
+    text-align: center;
+    width: 100%;
+}
+
+.nickname {
+    text-align: center;
+    font-size: 0.9rem;
+    width: 100%;
+}
+
+.avatar {
+    position: relative;
+    text-align: center;
+    width: 100%;
+}
+
+.avatar img {
+    border-radius: 2px;
+    box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.04);
+    margin: 3px 0 0;
+}
+
+.default {
+    text-align: center;
+    font-size: 5rem;
+    min-height: 9rem;
+}
+
+.userbars {
+    margin: 0.5rem 0;
+}
+
+.post-bit {
+    color: #7d7d7d;
+    width: 100%;
+    padding: 3px 4px 0 4px;
+    text-shadow: #FFF 1px 1px 0;
+    text-align: left;
+}
+
+.nickname-top-inside {
+    position: absolute;
+    top: 0;
+}
+
+.nickname-bottom-inside {
+    position: absolute;
+    bottom: 0;
+}

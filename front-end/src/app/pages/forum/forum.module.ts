@@ -41,6 +41,7 @@ import { ThreadPostersComponent } from './thread/thread-posters/thread-posters.c
 import { TableModule } from 'shared/components/table/table.module';
 import { UserLinkModule } from 'shared/components/user/user-link.module';
 import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.module';
+import { UserPostBitModule } from 'shared/components/user-post-bit/user-post-bit.module';
 
 @NgModule({
     imports: [
@@ -61,7 +62,8 @@ import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.modul
         InfractionModule,
         TableModule,
         UserLinkModule,
-        StatsBoxesModule
+        StatsBoxesModule,
+        UserPostBitModule
     ],
     declarations: [
         ForumHomeComponent,

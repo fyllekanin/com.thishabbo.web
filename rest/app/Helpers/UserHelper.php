@@ -206,8 +206,9 @@ class UserHelper {
     }
 
     private static function setUserDataFields($user, $userdata, $postBit) {
-        $user->signature = $userdata ? BBcodeUtil::bbcodeParser($userdata->signature) : '';
-        $user->avatarUpdatedAt = $userdata ? $userdata->avatarUpdatedAt : null;
+        $user->signature = BBcodeUtil::bbcodeParser($userdata->signature);
+        $user->avatarUpdatedAt = $userdata->avatarUpdatedAt;
+        $user->namePosition = $userdata->namePosition;
         $user->social = $userdata && !$postBit->hideSocials ? (object)[
             'discord' => $userdata->discord,
             'twitter' => $userdata->twitter

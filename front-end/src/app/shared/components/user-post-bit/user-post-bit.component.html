@@ -1,0 +1,60 @@
+<div class="nickname" *ngIf="isTopOutside">
+    <app-user-link [user]="user"></app-user-link>
+</div>
+<div class="avatar">
+    <div class="nickname nickname-top-inside" *ngIf="isTopInside">
+        <app-user-link [user]="user"></app-user-link>
+    </div>
+    <img *ngIf="useAvatarImage" class="mobile-hidden" appLazyLoad [image]="userAvatarUrl"
+         (error)="onAvatarError()"/>
+    <div class="nickname nickname-bottom-inside" *ngIf="isBottomInside">
+        <app-user-link [user]="user"></app-user-link>
+    </div>
+</div>
+<div class="nickname" *ngIf="isBottomOutside">
+    <app-user-link [user]="user"></app-user-link>
+</div>
+<div class="default" *ngIf="!useAvatarImage">
+    <em class="fa fa-user"></em>
+</div>
+<div class="userbars">
+    <div *ngFor="let userBar of user.userBars" [style]="userBar.styling | safeStyle">
+        {{userBar.name}}
+    </div>
+</div>
+<div class="post-bit" *ngIf="user.createdAt">
+    <div class="gray-content-wrapper">
+        <strong>Joined:</strong>
+        <div class="float-right">
+            {{longDay(user.createdAt)}}
+        </div>
+    </div>
+</div>
+<div class="post-bit" *ngIf="user.posts">
+    <div class="gray-content-wrapper">
+        <strong>Posts:</strong>
+        <div class="float-right">
+            {{user.posts | number: '1.'}}
+        </div>
+    </div>
+</div>
+<div class="post-bit" *ngIf="user.likes">
+    <div class="gray-content-wrapper">
+        <strong>Likes:</strong>
+        <div class="float-right">
+            {{user.likes | number: '1.'}}
+        </div>
+    </div>
+</div>
+<div class="post-bit" *ngFor="let item of socials">
+    <div class="gray-content-wrapper">
+        <strong>{{item.label}}:</strong>
+        <div class="float-right">
+            {{item.value}}
+        </div>
+    </div>
+</div>
+
+<span *ngFor="let badge of user.badges" attr.tooltip="{{badge.description}}" class="post-badge">
+    <img [src]="'/rest/resources/images/badges/' + badge.badgeId + '.gif?' + badge.updatedAt"/>
+</span>

@@ -20,7 +20,6 @@ import { PostService } from '../services/post.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { ReportComponent } from './report/report.component';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
-import { StringHelper } from 'shared/helpers/string.helper';
 import { InfractionService } from 'shared/components/infraction/infraction.service';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 
@@ -40,8 +39,6 @@ export class PostComponent extends Page implements OnDestroy {
     @Input() canPost: boolean;
     @Output() onUpdatePost: EventEmitter<PostModel> = new EventEmitter();
     @Output() onQuotePost: EventEmitter<string> = new EventEmitter();
-
-    useAvatarImage = true;
 
     editorButtons: Array<EditorAction> = [
         new EditorAction({title: 'Save', value: PostActions.SAVE, saveCallback: this.onSave.bind(this)}),
@@ -113,10 +110,6 @@ ${this._postModel.content}[/quotepost]\n\r`);
         }
     }
 
-    onAvatarError (): void {
-        this.useAvatarImage = false;
-    }
-
     @Input()
     set postModel (postModel: PostModel) {
         this._postModel = postModel || new PostModel();
@@ -125,16 +118,6 @@ ${this._postModel.content}[/quotepost]\n\r`);
     @Input()
     set forumPermissions (forumPermissions: ForumPermissions) {
         this._forumPermission = forumPermissions || new ForumPermissions();
-    }
-
-    get socials (): Array<{ label: string, value: string }> {
-        return !this.user.social ?
-            [] : Object.keys(this.user.social).map(key => {
-                return {
-                    label: StringHelper.firstCharUpperCase(key),
-                    value: this.user.social[key]
-                };
-            }).filter(item => item.value);
     }
 
     get canInfractUser (): boolean {
@@ -173,10 +156,6 @@ ${this._postModel.content}[/quotepost]\n\r`);
 
     get canInteractWithPost (): boolean {
         return (this._authService.isLoggedIn() && this._authService.authUser.userId !== this.user.userId);
-    }
-
-    get userAvatarUrl (): string {
-        return `/rest/resources/images/users/${this.user.userId}.gif?${this.user.avatarUpdatedAt}`;
     }
 
     get user (): User {

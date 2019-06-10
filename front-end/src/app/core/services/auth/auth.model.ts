@@ -82,6 +82,8 @@ export class User extends SlimUser {
     social: UserSocial;
     @arrayOf(UserBadge)
     badges: Array<UserBadge> = [];
+    @primitive()
+    namePosition: number;
 
     constructor (source?: Partial<User>) {
         super(source);

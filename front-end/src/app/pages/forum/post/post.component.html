@@ -1,57 +1,7 @@
 <div class="grid-container full position-relative">
     <div class="grid-x">
         <div class="post-avatar">
-            <div class="post-nickname">
-                <app-user-link [user]="user"></app-user-link>
-            </div>
-            <div class="avatar">
-                <img *ngIf="useAvatarImage" class="mobile-hidden" appLazyLoad [image]="userAvatarUrl"
-                     (error)="onAvatarError()" />
-            </div>
-            <div class="default" *ngIf="!useAvatarImage">
-                <em class="fa fa-user"></em>
-            </div>
-            <div class="post-userbars">
-                <div *ngFor="let userBar of user.userBars" [style]="userBar.styling | safeStyle">
-                    {{userBar.name}}
-                </div>
-            </div>
-            <div class="post-bit" *ngIf="user.createdAt">
-                <div class="post-bit-row">
-                    <strong>Joined:</strong>
-                    <div class="float-right">
-                        {{longDay(user.createdAt)}}
-                    </div>
-                </div>
-            </div>
-            <div class="post-bit" *ngIf="user.posts">
-                <div class="post-bit-row">
-                    <strong>Posts:</strong>
-                    <div class="float-right">
-                        {{user.posts | number: '1.'}}
-                    </div>
-                </div>
-            </div>
-            <div class="post-bit" *ngIf="user.likes">
-                <div class="post-bit-row">
-                    <strong>Likes:</strong>
-                    <div class="float-right">
-                        {{user.likes | number: '1.'}}
-                    </div>
-                </div>
-            </div>
-            <div class="post-bit" *ngFor="let item of socials">
-                <div class="post-bit-row">
-                    <strong>{{item.label}}:</strong>
-                    <div class="float-right">
-                        {{item.value}}
-                    </div>
-                </div>
-            </div>
-
-            <span *ngFor="let badge of user.badges" attr.tooltip="{{badge.description}}" class="post-badge">
-                <img [src]="'/rest/resources/images/badges/' + badge.badgeId + '.gif?' + badge.updatedAt" />
-            </span>
+            <app-user-post-bit [user]="user"></app-user-post-bit>
         </div>
         <div class="post-content-container">
             <div *ngIf="isInEditMode" class="post-content">
