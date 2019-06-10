@@ -1,17 +1,6 @@
-.post-nickname {
-    text-align: center;
-    font-size: 0.9rem;
-}
-
 .post-content {
     width: 100%;
     padding: 0 10px 0 10px;
-}
-
-.avatar img {
-    border-radius: 2px;
-    box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.04);
-    margin: 3px 0 0;
 }
 
 .signature {
@@ -24,15 +13,6 @@
 
 .inner-content {
     min-height: 0;
-}
-
-.user {
-    background-color: rgba(241, 241, 241, 0.32);
-    padding: 4px;
-}
-
-img {
-    border-radius: 3px;
 }
 
 .tools {
@@ -61,12 +41,6 @@ img {
     margin: 0 0.5rem;
 }
 
-.default {
-    text-align: center;
-    font-size: 5rem;
-    min-height: 9rem;
-}
-
 .post-likers {
     background: #fbfbfb;
     border-radius: 2px;
@@ -78,41 +52,7 @@ img {
     text-align: center;
 }
 
-.post-bit {
-    color: #7d7d7d;
-    width: 100%;
-    padding: 3px 4px 0 4px;
-    text-shadow: #FFF 1px 1px 0;
-    text-align: left;
-}
-
-.post-bit-row {
-    background: rgba(165, 161, 161, 0.04);
-    box-shadow: inset 0 1px 4px rgba(0, 0, 0, .02);
-    color: #8c8a8a;
-    padding: 7px;
-    text-shadow: #fff 1px 1px 0;
-}
-
-.avatar {
-    position: relative;
-    text-align: center;
-    width: 100%;
-}
-
-.post-userbars {
-    margin: 0.5rem 0;
-}
-
 .post-avatar {
-    background: #fbfbfb;
-    border-radius: 2px;
-    border-top: none !important;
-    box-shadow: inset 0 1px 2px rgba(197, 197, 197, 0.19);
-    float: left;
-    padding: 8px;
-    position: relative;
-    text-align: center;
     width: 19%;
 }
 

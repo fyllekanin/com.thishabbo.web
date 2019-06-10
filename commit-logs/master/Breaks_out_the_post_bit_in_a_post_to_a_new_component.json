@@ -1,0 +1,1 @@
+{"topic":"Breaks out the post bit in a post to a new component","type":"Feature","body":"Breaks how the post bit component with avatar etc to it's own component, also adds the effect of name position in the new component. This finilizes the feature with name position"}
