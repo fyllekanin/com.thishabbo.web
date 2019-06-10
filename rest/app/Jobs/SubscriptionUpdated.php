@@ -47,23 +47,42 @@ class SubscriptionUpdated implements ShouldQueue {
      */
     public function handle() {
         $subscription = Subscription::find($this->subscriptionId);
-        if (!$subscription || ($subscription->options & ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor)) {
+        if (!$subscription) {
             return;
         }
 
-        $userIds = UserSubscription::where('subscriptionId', $this->subscriptionId)->pluck('userId')->toArray();
+        $subscriptionMemberIds = UserSubscription::where('subscriptionId', $this->subscriptionId)->pluck('userId')->toArray();
+        $this->handleNameColor($subscription, $subscriptionMemberIds);
+        $this->handleNamePosition($subscription, $subscriptionMemberIds);
 
-        foreach ($userIds as $userId) {
+        foreach ($subscriptionMemberIds as $userId) {
             AvatarHelper::clearAvatarIfInvalid($userId);
         }
+    }
 
-        $userIds = Iterables::filter($userIds, function ($userId) {
+    private function handleNameColor($subscription, $subscriptionMemberIds) {
+        if ($subscription->options & ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor) {
+            return;
+        }
+
+        $userIds = Iterables::filter($subscriptionMemberIds, function ($userId) {
             return !UserHelper::hasSubscriptionFeature($userId, ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor);
         });
         UserData::whereIn('userId', $userIds)->update([
             'nameColour' => null
         ]);
+    }
 
+    private function handleNamePosition($subscription, $subscriptionMemberIds) {
+        if ($subscription->options & ConfigHelper::getSubscriptionOptions()->canMoveNamePosition) {
+            return;
+        }
 
+        $userIds = Iterables::filter($subscriptionMemberIds, function ($userId) {
+            return !UserHelper::hasSubscriptionFeature($userId, ConfigHelper::getSubscriptionOptions()->canMoveNamePosition);
+        });
+        UserData::whereIn('userId', $userIds)->update([
+            'namePosition' => 0
+        ]);
     }
 }

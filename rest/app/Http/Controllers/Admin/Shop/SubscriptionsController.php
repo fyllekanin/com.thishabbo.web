@@ -135,7 +135,7 @@ class SubscriptionsController extends Controller {
     private function convertOptionsToBooleans($subscription) {
         $options = [];
         foreach (ConfigHelper::getSubscriptionOptions() as $key => $option) {
-            $options[$key] = (boolean)$subscription->options & $option;
+            $options[$key] = (boolean)($subscription->options & $option);
         }
         return $options;
     }

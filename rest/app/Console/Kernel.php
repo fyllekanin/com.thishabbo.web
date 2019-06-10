@@ -2,13 +2,13 @@
 
 namespace App\Console;
 
+use App\Console\Radio\RadioStats;
+use App\EloquentModels\Shop\UserSubscription;
+use App\Helpers\ConfigHelper;
 use App\Jobs\UserUpdated;
 use Illuminate\Console\Command;
-use App\Console\Radio\RadioStats;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use Illuminate\Support\Facades\Artisan;
-use App\Helpers\ConfigHelper;
 
 class Kernel extends ConsoleKernel {
     /**
@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel {
      *
      * @return void
      */
-    protected function schedule (Schedule $schedule) {
+    protected function schedule(Schedule $schedule) {
         $schedule->call(new ClearSubscriptions)->twiceDaily();
     }
 
@@ -36,7 +36,7 @@ class Kernel extends ConsoleKernel {
      *
      * @return void
      */
-    protected function commands () {
+    protected function commands() {
         $this->load(__DIR__ . '/Commands');
     }
 }
@@ -44,8 +44,7 @@ class Kernel extends ConsoleKernel {
 class RadioWorker extends Command {
     protected $signature = 'queue:radio';
 
-    public function handle()
-    {
+    public function handle() {
         $radioStats = new RadioStats();
         $radioStats->init();
     }
@@ -53,8 +52,7 @@ class RadioWorker extends Command {
 
 class ClearSubscriptions {
 
-    public function __invoke()
-    {
+    public function __invoke() {
         $time = time();
         $userSubSql = UserSubscription::where('expiresAt', '<', $time);
 
@@ -62,7 +60,7 @@ class ClearSubscriptions {
         $userSubSql->delete();
 
         $clearSubType = ConfigHelper::getUserUpdateTypes()->CLEAR_SUBSCRIPTION;
-        foreach($userIds as $userId) {
+        foreach ($userIds as $userId) {
             UserUpdated::dispatch($userId, $clearSubType);
         }
     }

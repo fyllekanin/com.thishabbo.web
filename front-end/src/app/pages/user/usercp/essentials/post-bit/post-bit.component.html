@@ -3,7 +3,7 @@
     <div class="grid-container">
         <div class="grid-x grid-margin-x">
             <div class="cell small-6">
-                <strong>Information Shown</strong>
+                <label>Information Shown</label>
                 <div>
                     <label class="checkbox-container">
                         Hide Join Date
@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div class="cell small-6">
-                <strong>Badges Shown</strong><br/>
+                <label>Badges Shown</label>
                 <em>You can have maximum of 3 selected badges</em>
                 <br/>
                 <br/>
@@ -46,10 +46,21 @@
                         <div class="grid-x grid-margin-x">
                             <div class="cell small-4 medium-2" *ngFor="let badge of badges">
                                 <img [src]="'/rest/resources/images/badges/' + badge.badgeId + '.gif?' + badge.updatedAt"
-                                     />
+                                />
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="cell small-6" *ngIf="namePosition.isAvailable">
+                <label>Name Position</label>
+                <div *ngFor="let position of namePositions">
+                    <label class="checkbox-container">
+                        {{position.label}}
+                        <input type="checkbox" [checked]="namePosition.position === position.value"
+                               (change)="namePosition.position = position.value">
+                        <span class="checkmark"></span>
+                    </label>
                 </div>
             </div>
         </div>

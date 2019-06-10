@@ -60,6 +60,10 @@ class ConfigHelper {
         return (object)Config::get(self::$SHOP . '.SUBSCRIPTION_OPTIONS');
     }
 
+    public static function getNamePositionOptions() {
+        return (object)Config::get(self::$SHOP . '.NAME_POSITIONS');
+    }
+
     public static function getAccoladeTypes() {
         return Config::get(self::$SETTINGS . '.ACCOLADE_TYPES');
     }
@@ -71,7 +75,7 @@ class ConfigHelper {
     public static function getUserUpdateTypes() {
         return (object)Config::get(self::$SETTINGS . '.USER_UPDATE_TYPES');
     }
-  
+
     public static function getTimetable() {
         return Config::get(self::$SETTINGS . '.TIMETABLE');
     }

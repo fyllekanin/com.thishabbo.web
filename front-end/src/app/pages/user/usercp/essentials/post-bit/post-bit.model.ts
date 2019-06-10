@@ -1,5 +1,16 @@
 import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
 
+export class NamePositionModel {
+    @primitive()
+    isAvailable: boolean;
+    @primitive()
+    position: number;
+
+    constructor (source: Partial<NamePositionModel>) {
+        ClassHelper.assign(this, source);
+    }
+}
+
 export class PostBitInformation {
     @primitive()
     hideJoinDate: boolean;
@@ -10,7 +21,7 @@ export class PostBitInformation {
     @primitive()
     hideSocials: boolean;
 
-    constructor(source?: Partial<PostBitInformation>) {
+    constructor (source?: Partial<PostBitInformation>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -25,7 +36,7 @@ export class SlimBadge {
     @primitive()
     updatedAt: number;
 
-    constructor(source: Partial<SlimBadge>) {
+    constructor (source: Partial<SlimBadge>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -35,8 +46,10 @@ export class PostBitModel {
     information: PostBitInformation;
     @arrayOf(SlimBadge)
     badges: Array<SlimBadge> = [];
+    @objectOf(NamePositionModel)
+    namePosition: NamePositionModel;
 
-    constructor(source: Partial<PostBitModel>) {
+    constructor (source: Partial<PostBitModel>) {
         ClassHelper.assign(this, source);
     }
 }
