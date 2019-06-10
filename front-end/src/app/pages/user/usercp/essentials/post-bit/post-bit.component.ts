@@ -10,7 +10,7 @@ import { PostBitService } from '../services/post-bit.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { BadgesComponent } from './badges/badges.component';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
-import { NamePosition } from 'shared/constants/name-positions.constants';
+import { NAME_POSITIONS } from 'shared/constants/name-positions.constants';
 import { StringHelper } from 'shared/helpers/string.helper';
 
 @Component({
@@ -36,9 +36,9 @@ export class PostBitComponent extends Page implements OnDestroy {
     ) {
         super(elementRef);
         this.addSubscription(activatedRoute.data, this.onData.bind(this));
-        this.namePositions = Object.keys(NamePosition).map(key => ({
+        this.namePositions = Object.keys(NAME_POSITIONS).map(key => ({
             label: StringHelper.prettifyString(key),
-            value: NamePosition[key]
+            value: NAME_POSITIONS[key]
         }));
         breadcrumbService.breadcrumb = new Breadcrumb({
             current: 'PostBit',
