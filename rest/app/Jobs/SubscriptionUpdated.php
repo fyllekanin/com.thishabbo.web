@@ -47,23 +47,42 @@ class SubscriptionUpdated implements ShouldQueue {
      */
     public function handle() {
         $subscription = Subscription::find($this->subscriptionId);
-        if (!$subscription || ($subscription->options & ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor)) {
+        if (!$subscription) {
             return;
         }
 
         $userIds = UserSubscription::where('subscriptionId', $this->subscriptionId)->pluck('userId')->toArray();
+        $this->handleNameColor($subscription, $userIds);
+        $this->handleNamePosition($subscription, $userIds);
 
         foreach ($userIds as $userId) {
             AvatarHelper::clearAvatarIfInvalid($userId);
         }
+    }
 
-        $userIds = Iterables::filter($userIds, function ($userId) {
+    private function handleNameColor($subscription, $userIds) {
+        if ($subscription->options & ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor) {
+            return;
+        }
+
+        $ids = Iterables::filter($userIds, function ($userId) {
             return !UserHelper::hasSubscriptionFeature($userId, ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor);
         });
-        UserData::whereIn('userId', $userIds)->update([
+        UserData::whereIn('userId', $ids)->update([
             'nameColour' => null
         ]);
+    }
 
+    private function handleNamePosition($subscription, $userIds) {
+        if ($subscription->options & ConfigHelper::getSubscriptionOptions()->canMoveNamePosition) {
+            return;
+        }
 
+        $ids = Iterables::filter($userIds, function ($userId) {
+            return !UserHelper::hasSubscriptionFeature($userId, ConfigHelper::getSubscriptionOptions()->canMoveNamePosition);
+        });
+        UserData::whereIn('userId', $ids)->update([
+            'namePosition' => 0
+        ]);
     }
 }

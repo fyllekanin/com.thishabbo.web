@@ -13,6 +13,13 @@ return [
         'legendary' => 10
     ],
     'SUBSCRIPTION_OPTIONS' => [
-        'canHaveCustomNameColor' => 1
+        'canHaveCustomNameColor' => 1,
+        'canMoveNamePosition' => 2
+    ],
+    'NAME_POSITIONS' => [
+        'topOutside' => 0,
+        'bottomOutside' => 1,
+        'topInside' => 2,
+        'bottomInside' => 3
     ]
 ];

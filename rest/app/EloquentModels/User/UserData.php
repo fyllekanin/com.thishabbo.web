@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property mixed createdAt
  * @property mixed updatedAt
  * @property false|string nameColour
+ * @property mixed namePosition
  */
 class UserData extends UnixTimeModel {
     protected $table = 'userdata';
@@ -33,7 +34,8 @@ class UserData extends UnixTimeModel {
         'discord',
         'twitter',
         'badges',
-        'nameColour'
+        'nameColour',
+        'namePosition'
     ];
 
     public function user() {

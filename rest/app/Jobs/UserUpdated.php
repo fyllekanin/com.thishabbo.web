@@ -4,9 +4,9 @@ namespace App\Jobs;
 
 
 use App\EloquentModels\User\UserData;
+use App\Helpers\AvatarHelper;
 use App\Helpers\ConfigHelper;
 use App\Helpers\UserHelper;
-use App\Helpers\AvatarHelper;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -34,7 +34,6 @@ class UserUpdated implements ShouldQueue {
      *
      * @param $userId
      * @param $updateType
-     * @param $id
      */
     public function __construct($userId, $updateType) {
         $this->userId = $userId;
@@ -45,17 +44,32 @@ class UserUpdated implements ShouldQueue {
      * Executes the job
      */
     public function handle() {
-        if ($this->updateType == ConfigHelper::getUserUpdateTypes()->CLEAR_SUBSCRIPTION) {
-            $userData = UserData::where('userId', $this->userId)->first();
-            if ($userData && $userData->nameColour) {
-                if (!UserHelper::hasSubscriptionFeature($this->userId, ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColour)) {
-                    $userData->update([
-                        'nameColour' => null
-                    ]);
-                }
-            }
+        switch ($this->updateType) {
+            case ConfigHelper::getUserUpdateTypes()->CLEAR_SUBSCRIPTION:
+                $this->handleClearedSubscription();
+                breaK;
         }
 
         AvatarHelper::clearAvatarIfInvalid($this->userId);
+    }
+
+    private function handleClearedSubscription() {
+        $userData = UserData::where('userId', $this->userId)->first();
+        if (!$userData) {
+            return;
+        }
+        $nameColor = $userData->nameColor;
+        $namePosition = $userData->namePosition;
+        if ($userData->nameColour && !UserHelper::hasSubscriptionFeature($this->userId, ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColour)) {
+            $nameColor = null;
+        }
+
+        if ($userData->namePosition && !UserHelper::hasSubscriptionFeature($this->userId, ConfigHelper::getSubscriptionOptions()->canMoveNamePosition)) {
+            $namePosition = 0;
+        }
+        $userData->update([
+            'nameColour' => $nameColor,
+            'namePosition' => $namePosition
+        ]);
     }
 }

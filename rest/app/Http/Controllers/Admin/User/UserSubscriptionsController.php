@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin\User;
 use App\EloquentModels\Shop\Subscription;
 use App\EloquentModels\Shop\UserSubscription;
 use App\EloquentModels\User\User;
+use App\Helpers\ConfigHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
+use App\Jobs\UserUpdated;
 use App\Logger;
 use App\Models\Logger\Action;
 use App\Utils\Condition;
@@ -94,9 +96,12 @@ class UserSubscriptionsController extends Controller {
         Condition::precondition(!UserHelper::canManageUser($user, $userSubscription->userId), 400,
             'You are not able to edit this user');
 
+        $userId = $userSubscription->userId;
+        UserUpdated::dispatch($userId, ConfigHelper::getUserUpdateTypes()->CLEAR_SUBSCRIPTION);
+
         $userSubscription->delete();
 
-        Logger::admin($user->userId, $request->ip(), Action::DELETED_USER_SUBSCRIPTION);
+        Logger::admin($user->userId, $request->ip(), Action::DELETED_USER_SUBSCRIPTION, [], $userId);
         return response()->json();
     }
 

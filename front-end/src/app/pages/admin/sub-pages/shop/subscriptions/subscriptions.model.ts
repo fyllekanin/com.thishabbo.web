@@ -3,6 +3,8 @@ import { ClassHelper, objectOf, primitive, primitiveOf, time } from 'shared/help
 export class SubscriptionOptions {
     @primitive()
     canHaveCustomNameColor: boolean;
+    @primitive()
+    canMoveNamePosition: boolean;
 
     constructor (source?: Partial<SubscriptionOptions>) {
         ClassHelper.assign(this, source);

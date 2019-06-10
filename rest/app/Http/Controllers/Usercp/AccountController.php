@@ -334,7 +334,11 @@ class AccountController extends Controller {
 
         return response()->json([
             'information' => $this->buildPostBitOptions($user),
-            'badges' => Badge::whereIn('badgeId', $selectedBadgeIds)->orderBy('updatedAt', 'ASC')->get(['badgeId', 'name', 'updatedAt'])
+            'badges' => Badge::whereIn('badgeId', $selectedBadgeIds)->orderBy('updatedAt', 'ASC')->get(['badgeId', 'name', 'updatedAt']),
+            'namePosition' => [
+                'isAvailable' => UserHelper::hasSubscriptionFeature($user->userId, ConfigHelper::getSubscriptionOptions()->canMoveNamePosition),
+                'position' => UserHelper::getUserDataOrCreate($user->userId)->namePosition
+            ]
         ]);
     }
 
@@ -363,14 +367,23 @@ class AccountController extends Controller {
     public function updatePostBit(Request $request) {
         $user = $request->get('auth');
         $data = (object)$request->input('data');
+        $namePosition = (object)$data->namePosition;
         $badgeIds = array_map(function ($badge) {
             return $badge['badgeId'];
         }, $data->badges);
 
         Condition::precondition(count($badgeIds) > 3, 400, 'You can not have more then 3 badges selected!');
 
+        Condition::precondition($namePosition->isAvailable && !UserHelper::hasSubscriptionFeature($user->userId, ConfigHelper::getSubscriptionOptions()->canMoveNamePosition),
+            400, 'You can not have another name position');
+        $position = Iterables::find((array)ConfigHelper::getNamePositionOptions(), function ($position) use ($namePosition) {
+            return $position == $namePosition->position;
+        });
+        Condition::precondition($namePosition->isAvailable && !$position, 400, 'Not a valid position');
+
         $userData = UserHelper::getUserDataOrCreate($user->userId);
         $userData->postBit = $this->convertPostBitOptions($data->information);
+        $userData->namePosition = $namePosition->position;
         $userData->save();
 
         UserItem::badge()->where('userId', $user->userId)->update(['isActive' => false]);
