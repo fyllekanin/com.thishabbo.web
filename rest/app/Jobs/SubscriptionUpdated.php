@@ -51,37 +51,37 @@ class SubscriptionUpdated implements ShouldQueue {
             return;
         }
 
-        $subscriptionMemberIds = UserSubscription::where('subscriptionId', $this->subscriptionId)->pluck('userId')->toArray();
-        $this->handleNameColor($subscription, $subscriptionMemberIds);
-        $this->handleNamePosition($subscription, $subscriptionMemberIds);
+        $userIds = UserSubscription::where('subscriptionId', $this->subscriptionId)->pluck('userId')->toArray();
+        $this->handleNameColor($subscription, $userIds);
+        $this->handleNamePosition($subscription, $userIds);
 
-        foreach ($subscriptionMemberIds as $userId) {
+        foreach ($userIds as $userId) {
             AvatarHelper::clearAvatarIfInvalid($userId);
         }
     }
 
-    private function handleNameColor($subscription, $subscriptionMemberIds) {
+    private function handleNameColor($subscription, $userIds) {
         if ($subscription->options & ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor) {
             return;
         }
 
-        $userIds = Iterables::filter($subscriptionMemberIds, function ($userId) {
+        $ids = Iterables::filter($userIds, function ($userId) {
             return !UserHelper::hasSubscriptionFeature($userId, ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor);
         });
-        UserData::whereIn('userId', $userIds)->update([
+        UserData::whereIn('userId', $ids)->update([
             'nameColour' => null
         ]);
     }
 
-    private function handleNamePosition($subscription, $subscriptionMemberIds) {
+    private function handleNamePosition($subscription, $userIds) {
         if ($subscription->options & ConfigHelper::getSubscriptionOptions()->canMoveNamePosition) {
             return;
         }
 
-        $userIds = Iterables::filter($subscriptionMemberIds, function ($userId) {
+        $ids = Iterables::filter($userIds, function ($userId) {
             return !UserHelper::hasSubscriptionFeature($userId, ConfigHelper::getSubscriptionOptions()->canMoveNamePosition);
         });
-        UserData::whereIn('userId', $userIds)->update([
+        UserData::whereIn('userId', $ids)->update([
             'namePosition' => 0
         ]);
     }
