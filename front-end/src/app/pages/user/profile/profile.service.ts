@@ -33,7 +33,7 @@ export class ProfileService implements Resolve<ProfileModel> {
                 title: 'Are you sure?',
                 content: 'Are you sure you wanna delete this visitor message / comment?',
                 callback: () => {
-                    this._httpService.delete(`admin/moderation/visitor-message/${visitorMessage.visitorMessageId}`)
+                    this._httpService.delete(`sitecp/moderation/visitor-message/${visitorMessage.visitorMessageId}`)
                         .subscribe(() => {
                             this._notificationService.sendInfoNotification('Visitor message/comment deleted!');
                             res();

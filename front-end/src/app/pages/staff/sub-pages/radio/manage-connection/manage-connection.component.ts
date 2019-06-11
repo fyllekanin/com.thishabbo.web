@@ -65,8 +65,8 @@ export class ManageConnectionComponent extends Page implements OnDestroy {
         return this._manageConnectionModel.password;
     }
 
-    get adminPassword (): string {
-        return this._manageConnectionModel.adminPassword;
+    get sitecpPassword (): string {
+        return this._manageConnectionModel.sitecpPassword;
     }
 
     set port (port: number) {
@@ -81,8 +81,8 @@ export class ManageConnectionComponent extends Page implements OnDestroy {
         this._manageConnectionModel.password = password;
     }
 
-    set adminPassword (adminPassword: string) {
-        this._manageConnectionModel.adminPassword = adminPassword;
+    set sitecpPassword (sitecpPassword: string) {
+        this._manageConnectionModel.sitecpPassword = sitecpPassword;
     }
 
     onTabClick (value: number): void {

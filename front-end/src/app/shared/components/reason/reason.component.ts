@@ -3,7 +3,7 @@ import { InnerDialogComponent } from 'shared/app-views/dialog/dialog.model';
 import { IReason } from './reason.model';
 
 @Component({
-    selector: 'app-admin-user-ban-reason',
+    selector: 'app-sitecp-user-ban-reason',
     templateUrl: 'reason.component.html'
 })
 export class ReasonComponent extends InnerDialogComponent {

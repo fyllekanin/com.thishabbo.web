@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property mixed badges
  * @property mixed createdAt
  * @property mixed updatedAt
- * @property false|string nameColour
+ * @property false|string nameColor
  * @property mixed namePosition
  */
 class UserData extends UnixTimeModel {
@@ -34,7 +34,7 @@ class UserData extends UnixTimeModel {
         'discord',
         'twitter',
         'badges',
-        'nameColour',
+        'nameColor',
         'namePosition'
     ];
 

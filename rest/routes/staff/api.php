@@ -33,7 +33,7 @@ Route::prefix('radio')->group(function () use ($permissions) {
     });
 
     Route::group(['middleware' => PermissionHelper::getStaffMiddleware($permissions->canEditRadioInfo)], function () {
-        Route::get('/manage-connection', 'Staff\RadioController@getAdminConnectionInformation');
+        Route::get('/manage-connection', 'Staff\RadioController@getSitecpConnectionInformation');
         Route::put('/manage-connection', 'Staff\RadioController@updateConnectionInfo');
     });
 

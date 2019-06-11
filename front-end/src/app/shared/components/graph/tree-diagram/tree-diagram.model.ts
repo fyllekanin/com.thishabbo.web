@@ -51,7 +51,7 @@ export const exampleData: TreeDiagram = {
             name: 'ThisHabbo Staff Hub',
             children: [
                 {
-                    name: 'Administrator Lounge',
+                    name: 'Sitecpistrator Lounge',
                     children: [
                         {
                             name: 'Ownership',
@@ -72,7 +72,7 @@ export const exampleData: TreeDiagram = {
                             ]
                         },
                         {
-                            name: 'Community Admins',
+                            name: 'Community Sitecps',
                             children: [
                                 {
                                     name: 'Permissions',

@@ -9,14 +9,14 @@ use Illuminate\Support\Facades\Cache;
 
 class PermissionHelper {
 
-    private static $superAdmins = [1];
+    private static $superSitecps = [1];
 
-    public static function isSuperAdmin($userId) {
-        return in_array($userId, self::$superAdmins);
+    public static function isSuperSitecp($userId) {
+        return in_array($userId, self::$superSitecps);
     }
 
-    public static function getSuperAdmins() {
-        return self::$superAdmins;
+    public static function getSuperSitecps() {
+        return self::$superSitecps;
     }
 
     public static function haveGroupOption($userId, $option) {
@@ -41,7 +41,7 @@ class PermissionHelper {
         if (Cache::has($cacheString)) {
             return Cache::get($cacheString);
         }
-        if (self::isSuperAdmin($userId)) {
+        if (self::isSuperSitecp($userId)) {
             return true;
         }
 
@@ -69,8 +69,8 @@ class PermissionHelper {
         }
     }
 
-    public static function haveAdminPermission($userId, $permission) {
-        return self::checkPermission('adminPermissions', $userId, $permission);
+    public static function haveSitecpPermission($userId, $permission) {
+        return self::checkPermission('sitecpPermissions', $userId, $permission);
     }
 
     public static function nameToNumberOptions($category) {
@@ -93,17 +93,17 @@ class PermissionHelper {
         return ['staff_permission.check:' . $permission];
     }
 
-    public static function getAdminMiddleware($permission) {
+    public static function getSitecpMiddleware($permission) {
         if (is_array($permission)) {
             $permissions = implode('|', $permission);
-            return ['admin_permission.check:' . $permissions];
+            return ['sitecp_permission.check:' . $permissions];
         }
-        return ['admin_permission.check:' . $permission];
+        return ['sitecp_permission.check:' . $permission];
     }
 
     private static function checkPermission($type, $userId, $permission) {
-        $availableTypes = ['adminPermissions', 'staffPermissions'];
-        if (self::isSuperAdmin($userId)) {
+        $availableTypes = ['sitecpPermissions', 'staffPermissions'];
+        if (self::isSuperSitecp($userId)) {
             return true;
         }
 

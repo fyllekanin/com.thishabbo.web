@@ -37,7 +37,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->mapApiRoutes();
 
-        $this->mapApiAdminRoutes();
+        $this->mapApiSitecpRoutes();
 
         $this->mapApiForumRoutes();
 
@@ -70,12 +70,12 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function mapApiAdminRoutes()
+    protected function mapApiSitecpRoutes()
     {
-        Route::prefix('api/admin')
+        Route::prefix('api/sitecp')
             ->middleware(['api', 'user.check', 'auth.check', 'maintenance'])
             ->namespace($this->namespace)
-            ->group(base_path('routes/admin/api.php'));
+            ->group(base_path('routes/sitecp/api.php'));
     }
 
     /**

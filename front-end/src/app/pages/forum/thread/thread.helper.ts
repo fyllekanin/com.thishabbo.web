@@ -70,7 +70,7 @@ export class ThreadActionExecutor {
                 this.onDeletePoll();
                 break;
             case ThreadActions.VIEW_POLL:
-                this._router.navigateByUrl(`/admin/moderation/polls/${this._threadPage.threadId}`);
+                this._router.navigateByUrl(`/sitecp/moderation/polls/${this._threadPage.threadId}`);
                 break;
             case ThreadActions.CLOSE_THREAD:
                 this.onCloseThread();

@@ -1,0 +1,1 @@
+{"topic":"Align names","type":"Refactor / Improvement","body":"Renamed admin to sitecp and colour to color all around the code base including all the direction etc. This to align the code everywhere on the site with these things."}

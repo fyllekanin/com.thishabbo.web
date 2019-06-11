@@ -1,16 +1,16 @@
-import { NotificationService } from '../notification/notification.service';
-import { Observable, Subject, Subscription, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
 import { HttpHeaders } from '@angular/common/http';
-import { AdminPermissions, AuthUser, StaffPermissions } from 'core/services/auth/auth.model';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Injectable } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthUser, SitecpPermissions, StaffPermissions } from 'core/services/auth/auth.model';
+import { DialogService } from 'core/services/dialog/dialog.service';
 import { HttpService } from 'core/services/http/http.service';
 import { RouterStateService } from 'core/services/router/router-state.service';
+import { Observable, Subject, Subscription, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
 import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
-import { DialogService } from 'core/services/dialog/dialog.service';
-import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
+import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
 export class AuthService {
@@ -18,7 +18,7 @@ export class AuthService {
 
     private _onUserChangeSubject: Subject<void> = new Subject();
 
-    constructor (
+    constructor(
         private _routerState: RouterStateService,
         private _activatedRoute: ActivatedRoute,
         private _notificationService: NotificationService,
@@ -28,13 +28,13 @@ export class AuthService {
     ) {
     }
 
-    set user (user: AuthUser) {
+    set user(user: AuthUser) {
         this._user = user;
         this.storeAuthUser(this._user);
     }
 
-    login (loginName: string, password: string, onFailure?: () => void): Subscription {
-        return this._httpService.post('auth/login', {loginName: loginName, password: password})
+    login(loginName: string, password: string, onFailure?: () => void): Subscription {
+        return this._httpService.post('auth/login', { loginName: loginName, password: password })
             .subscribe(res => {
                 this.doLogin(res);
             }, error => {
@@ -46,7 +46,7 @@ export class AuthService {
             });
     }
 
-    logout (isRedirect: boolean): void {
+    logout(isRedirect: boolean): void {
         this.clearUserAndNavigate(isRedirect);
         this._onUserChangeSubject.next();
         this._httpService.post('auth/logout', null).subscribe(() => {
@@ -57,20 +57,20 @@ export class AuthService {
         });
     }
 
-    isLoggedIn (): boolean {
+    isLoggedIn(): boolean {
         return Boolean(this._user);
     }
 
-    navigateToHome (): void {
+    navigateToHome(): void {
         this._router.navigateByUrl('/home');
     }
 
-    getRefreshToken (): string {
+    getRefreshToken(): string {
         const user = this.getAuthUser();
         return user ? user.oauth.refreshToken : '';
     }
 
-    refreshToken (): Observable<string> {
+    refreshToken(): Observable<string> {
         return this._httpService.get('auth/refresh', null, {
             headers: new HttpHeaders().set('RefreshAuthorization', this.getRefreshToken())
         }).pipe(map((res: AuthUser) => {
@@ -88,28 +88,28 @@ export class AuthService {
         }));
     }
 
-    getAccessToken (): string {
+    getAccessToken(): string {
         const user = this.getAuthUser();
         return user ? user.oauth.accessToken : '';
     }
 
-    get onUserChange (): Observable<void> {
+    get onUserChange(): Observable<void> {
         return this._onUserChangeSubject.asObservable();
     }
 
-    get adminPermissions (): AdminPermissions {
-        return this._user ? this._user.adminPermissions : new AdminPermissions();
+    get sitecpPermissions(): SitecpPermissions {
+        return this._user ? this._user.sitecpPermissions : new SitecpPermissions();
     }
 
-    get staffPermissions (): StaffPermissions {
+    get staffPermissions(): StaffPermissions {
         return this._user ? this._user.staffPermissions : new StaffPermissions();
     }
 
-    get authUser (): AuthUser {
+    get authUser(): AuthUser {
         return this._user;
     }
 
-    getAuthUser (): AuthUser {
+    getAuthUser(): AuthUser {
         const user = localStorage.getItem(LOCAL_STORAGE.AUTH_USER);
         if (!user) {
             return null;
@@ -121,7 +121,7 @@ export class AuthService {
         }
     }
 
-    private doLogin (res: AuthUser): void {
+    private doLogin(res: AuthUser): void {
         this._user = new AuthUser(res);
         this.storeAuthUser(res);
         this.checkGdpr();
@@ -160,7 +160,7 @@ export class AuthService {
         }
     }
 
-    private checkGdpr (): void {
+    private checkGdpr(): void {
         if (this._user.gdpr) {
             return;
         }
@@ -193,17 +193,17 @@ Until you accept our terms and conditions you will not be able to use most of th
         });
     }
 
-    private clearUserAndNavigate (isRedirect: boolean): void {
+    private clearUserAndNavigate(isRedirect: boolean): void {
         this._user = null;
         this.storeAuthUser(null);
         this.navigateToLogin(isRedirect);
     }
 
-    private navigateToLogin (isRedirect: boolean): void {
+    private navigateToLogin(isRedirect: boolean): void {
         this._router.navigateByUrl(`/auth/login${isRedirect ? '?redirected=true' : ''}`);
     }
 
-    private storeAuthUser (user: AuthUser): void {
+    private storeAuthUser(user: AuthUser): void {
         localStorage.setItem(LOCAL_STORAGE.AUTH_USER, btoa(JSON.stringify(user) || ''));
     }
 }

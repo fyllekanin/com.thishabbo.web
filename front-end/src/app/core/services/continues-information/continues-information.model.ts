@@ -91,7 +91,7 @@ export class ContinuesInformationModel {
 }
 
 export enum PING_TYPES {
-    ADMIN = 'admin',
+    SITECP = 'sitecp',
     STAFF = 'staff',
     USER = 'user'
 }

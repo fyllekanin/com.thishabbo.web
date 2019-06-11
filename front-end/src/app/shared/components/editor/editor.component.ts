@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { HttpService } from 'core/services/http/http.service';
-import { BBcodeModel } from '../../../pages/admin/sub-pages/content/bbcodes/bbcode.model';
+import { BBcodeModel } from '../../../pages/sitecp/sub-pages/content/bbcodes/bbcode.model';
 import { IdHelper } from 'shared/helpers/id.helper';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 

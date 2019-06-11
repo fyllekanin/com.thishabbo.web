@@ -46,7 +46,7 @@ export class ContinuesInformationService implements Resolve<void> {
     resolve (activatedRouteSnapshot: ActivatedRouteSnapshot): Observable<void> {
         let prefix = '';
         if (activatedRouteSnapshot.data['type']) {
-            prefix = activatedRouteSnapshot.data['type'] === PING_TYPES.ADMIN ? 'admin/' : 'staff/';
+            prefix = activatedRouteSnapshot.data['type'] === PING_TYPES.SITECP ? 'sitecp/' : 'staff/';
         }
         return this._httpService.get(prefix + 'ping');
     }

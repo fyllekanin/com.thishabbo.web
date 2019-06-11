@@ -84,7 +84,7 @@ Default logins are:
 * test / test1234
 * test1234 / test1234
 
-Tovven is the super admin account for easier development
+Tovven is the super sitecp account for easier development
 
 ## Running the tests
 

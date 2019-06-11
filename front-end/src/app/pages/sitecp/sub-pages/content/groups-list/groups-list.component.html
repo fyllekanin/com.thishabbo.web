@@ -1,0 +1,22 @@
+<app-title [title]="'Staff List'" [tabs]="tabs" (onTabClick)="onSave()"></app-title>
+<app-content>
+    <div class="grid-container full">
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-4 medium-5">
+                <app-form-select [(value)]="selectedGroup" [items]="selectableGroups"></app-form-select>
+            </div>
+            <div class="small-4 medium-5">
+                <select [(ngModel)]="selectedColor" name="color">
+                    <option [value]="undefined">Select Color...</option>
+                    <option *ngFor="let color of possibleColors" [value]="color.color">
+                        {{color.label}}
+                    </option>
+                </select>
+            </div>
+            <div class="cell small-4 medium-2">
+                <button appButton (click)="addGroup()">Add Group</button>
+            </div>
+        </div>
+    </div>
+</app-content>
+<app-table [config]="tableConfig" (onAction)="onRemove($event)"></app-table>

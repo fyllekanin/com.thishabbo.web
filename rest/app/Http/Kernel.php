@@ -2,7 +2,7 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\CheckAdminPermission;
+use App\Http\Middleware\CheckSitecpPermission;
 use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\CheckHabboVerified;
 use App\Http\Middleware\CheckMaintenance;
@@ -61,7 +61,7 @@ class Kernel extends HttpKernel
         'guest' => RedirectIfAuthenticated::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'admin_permission.check' => CheckAdminPermission::class,
+        'sitecp_permission.check' => CheckSitecpPermission::class,
         'staff_permission.check' => CheckStaffPermission::class,
         'maintenance' => CheckMaintenance::class,
         'habbo_verify.check' => CheckHabboVerified::class,

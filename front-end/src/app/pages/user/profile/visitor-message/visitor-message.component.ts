@@ -57,7 +57,7 @@ export class VisitorMessageComponent implements AfterContentInit {
     }
 
     get canDeleteVisitorMessage (): boolean {
-        return this._authService.adminPermissions.canModerateVisitorMessage;
+        return this._authService.sitecpPermissions.canModerateVisitorMessage;
     }
 
     delete (event, visitorMessage: ProfileVisitorMessage): void {
@@ -89,7 +89,7 @@ export class VisitorMessageComponent implements AfterContentInit {
 
     canInfract (visitorMessage: ProfileVisitorMessage): boolean {
         return this._authService.isLoggedIn() && visitorMessage.user.userId !== this._authService.authUser.userId &&
-            this._authService.adminPermissions.canDoInfractions;
+            this._authService.sitecpPermissions.canDoInfractions;
     }
 
     ngAfterContentInit (): void {

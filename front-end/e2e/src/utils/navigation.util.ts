@@ -32,7 +32,7 @@ export class NavigationUtil {
     }
 
     static clickSiteCpTool (value: string): void {
-        const ele = element(by.cssContainingText('app-admin app-side-menu app-content span', value));
+        const ele = element(by.cssContainingText('app-sitecp app-side-menu app-content span', value));
         CommonUtil.click(ele);
     }
 

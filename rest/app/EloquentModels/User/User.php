@@ -79,7 +79,7 @@ class User extends Authenticatable {
     }
 
     public static function getImmunity($userId) {
-        if (PermissionHelper::isSuperAdmin($userId)) {
+        if (PermissionHelper::isSuperSitecp($userId)) {
             return 101;
         }
 

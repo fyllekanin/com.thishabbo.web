@@ -14,7 +14,7 @@ class IpSearchController extends Controller {
         $ipAddress = $request->input('ipAddress');
 
         $items = [];
-        $logTables = ['login', 'log_admin', 'log_staff', 'log_mod', 'log_user'];
+        $logTables = ['login', 'log_sitecp', 'log_staff', 'log_mod', 'log_user'];
         foreach ($logTables as $table) {
             $items = array_merge($items, DB::table($table)
                 ->join('users', 'users.userId', '=', $table . '.userId')
