@@ -91,7 +91,7 @@ class FormController extends Controller {
         $repo = $githubSettings->repository;
         $token = $githubSettings->token;
 
-        $auth = 'Authorization: Bearer ' . $token;
+        $auth = 'Authorization: Token ' . $token;
 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, 'https://api.github.com/repos/' . $owner . '/' . $repo . '/issues');
