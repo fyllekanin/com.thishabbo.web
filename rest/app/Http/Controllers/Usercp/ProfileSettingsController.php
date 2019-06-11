@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Usercp;
 
-use App\Helpers\AvatarHelper;
 use App\EloquentModels\User\Avatar;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserData;
 use App\EloquentModels\User\UserProfile;
+use App\Helpers\AvatarHelper;
 use App\Helpers\ConfigHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
@@ -299,7 +299,7 @@ class ProfileSettingsController extends Controller {
         $userData->nameColor = json_encode($colors);
         $userData->save();
 
-        Logger::user($user->userId, $request->ip(), Action::UPDATED_NAME_ColorS);
+        Logger::user($user->userId, $request->ip(), Action::UPDATED_NAME_COLORS);
         return response()->json([
             'colors' => $colors
         ]);

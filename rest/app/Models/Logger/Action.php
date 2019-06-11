@@ -1484,7 +1484,7 @@ class Action {
         'log' => 'log_sitecp'
     ];
 
-    const UPDATED_NAME_ColorS = [
+    const UPDATED_NAME_COLORS = [
         'id' => 174,
         'description' => 'User updated name colors',
         'data' => [],
