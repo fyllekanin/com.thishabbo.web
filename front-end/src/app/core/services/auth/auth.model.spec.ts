@@ -1,4 +1,14 @@
-import { AuthUser, DisplayGroup, SitecpPermissions, SlimUser, StaffPermissions, User, UserBadge, UserBar, UserSocial } from 'core/services/auth/auth.model';
+import {
+    AuthUser,
+    DisplayGroup,
+    SitecpPermissions,
+    SlimUser,
+    StaffPermissions,
+    User,
+    UserBadge,
+    UserBar,
+    UserSocial
+} from 'core/services/auth/auth.model';
 
 describe('Auth Model', () => {
 
