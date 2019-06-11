@@ -1,6 +1,6 @@
 import { arrayOf, ClassHelper, objectOf, primitive, time } from 'shared/helpers/class.helper';
 import { SlimUser } from 'core/services/auth/auth.model';
-import { Prefix } from '../../../pages/admin/sub-pages/forum/prefixes/prefix.model';
+import { Prefix } from '../../../pages/sitecp/sub-pages/forum/prefixes/prefix.model';
 
 export enum ARTICLE_TAG {
     AVAILABLE = 'AVAILABLE',

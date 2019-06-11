@@ -1,7 +1,7 @@
 import {
-    AdminPermissions,
     AuthUser,
     DisplayGroup,
+    SitecpPermissions,
     SlimUser,
     StaffPermissions,
     User,
@@ -12,28 +12,28 @@ import {
 
 describe('Auth Model', () => {
 
-    describe('isAdmin', () => {
-        it('should return false if adminPermissions isAdmin is false', () => {
+    describe('isSitecp', () => {
+        it('should return false if sitecpPermissions isSitecp is false', () => {
             // Given
             const authUser = new AuthUser({
-                adminPermissions: new AdminPermissions({
-                    isAdmin: false
+                sitecpPermissions: new SitecpPermissions({
+                    isSitecp: false
                 })
             });
 
             // Then
-            expect(authUser.isAdmin).toBeFalsy();
+            expect(authUser.isSitecp).toBeFalsy();
         });
-        it('should return true if adminPermissions isAdmin is true', () => {
+        it('should return true if sitecpPermissions isSitecp is true', () => {
             // Given
             const authUser = new AuthUser({
-                adminPermissions: new AdminPermissions({
-                    isAdmin: true
+                sitecpPermissions: new SitecpPermissions({
+                    isSitecp: true
                 })
             });
 
             // Then
-            expect(authUser.isAdmin).toBeTruthy();
+            expect(authUser.isSitecp).toBeTruthy();
         });
     });
 

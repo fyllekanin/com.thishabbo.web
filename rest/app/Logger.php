@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\EloquentModels\Log\LogAdmin;
+use App\EloquentModels\Log\LogSitecp;
 use App\EloquentModels\Log\LogMod;
 use App\EloquentModels\Log\LogStaff;
 use App\EloquentModels\Log\LogUser;
@@ -34,9 +34,9 @@ class Logger {
      * @param $contentId
      * @param array $data
      */
-    public static function admin ($userId, $ipAddress, Array $action, Array $data = [], $contentId = 0) {
+    public static function sitecp ($userId, $ipAddress, Array $action, Array $data = [], $contentId = 0) {
         $data = self::checkData($data);
-        $log = new LogAdmin([
+        $log = new LogSitecp([
             'userId' => $userId,
             'ip' => $ipAddress,
             'action' => Action::getAction($action),

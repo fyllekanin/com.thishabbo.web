@@ -1,0 +1,372 @@
+<app-title [title]="title" [tabs]="tabs" (onTabClick)="onTabClick($event)"></app-title>
+<app-content>
+    <div class="grid-container full">
+        <div class="grid-x margin-x">
+            <div class="cell small-6">
+                <label>Name</label>
+                <input type="text" name="name" [(ngModel)]="group.name" />
+            </div>
+            <div class="cell small-6">
+                <label>Immunity</label>
+                <input type="number" [(ngModel)]="group.immunity" (keyup)="onImmunityChange()" min="0" />
+            </div>
+            <div class="cell small-4">
+                <label>Avatar width</label>
+                <input type="number" [(ngModel)]="group.avatarWidth" min="0" />
+            </div>
+            <div class="cell small-4">
+                <label>Avatar height</label>
+                <input type="number" [(ngModel)]="group.avatarHeight" min="0" />
+            </div>
+            <div class="cell small-2">
+                <label class="checkbox-container checkbox-align-with-input">
+                    Is public
+                    <input type="checkbox" [(ngModel)]="group.isPublic">
+                    <span class="checkmark"></span>
+                </label>
+                <span tooltip="Is it possible to apply to join this group?" class="checkbox-info">
+                    <em class="fas fa-question-circle"></em>
+                </span>
+            </div>
+        </div>
+    </div>
+</app-content>
+
+<app-title [title]="'Sitecp Permissions'">
+</app-title>
+<app-content>
+    <div class="grid-container full">
+        <div class="grid-x margin-x">
+            <div class="cell small-6">
+                <div>
+                    <label class="checkbox-container">
+                        Access to manage BBCodes
+                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canManageBBcodes">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to manage Staff List
+                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canManageGroupsList">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can edit website settings <em>(maintenance, pages etc)</em>
+                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canEditWebsiteSettings">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can manage prefixes
+                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canManagePrefixes">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to manage Betting Hub <em>(create, update, delete etc)</em>
+                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canManageBetting">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to approve Group Requests from Public Groups
+                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canApprovePublicGroups">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can manage AutoBans & infraction levels
+                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canManageInfractions">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can give infractions & see infraction history
+                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canDoInfractions">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can pass private profiles?
+                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canPassPrivate">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can remove another users avatar, cover photo and signature
+                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canRemoveEssentials">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can moderate visitor messages
+                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canModerateVisitorMessage">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can manage shop <em>(Items, Loot boxes and subscription handling)</em>
+                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canManageShop">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="cell small-6">
+                <div>
+                    <label class="checkbox-container">
+                        Access to manage the Forum
+                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canManageForum">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to manage Forum Permissions <em>(in forum categories)</em>
+                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canManageForumPermissions">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to manage Usergroups
+                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canManageGroups">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to basic editing of a User <em>(name, verify Habbo etc)</em>
+                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canEditUserBasic">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to advanced editing of a User <em>(password, user groups, display group, accolades
+                            etc)</em>
+                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canEditUserAdvanced">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to Ban/Unban a User
+                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canBanUser">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can manage THC <em>(accept/deny requests and create voucher codes)</em>
+                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canManageTHC">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can see IP:s on the site, search etc
+                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canSeeIps">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can merge users
+                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canMergeUsers">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can see user, mod, staff and sitecp logs?
+                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canSeeLogs">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can read server logs? (laravel, cron etc)
+                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canReadServerLogs">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can manage subscriptions and assign subscription to users ?
+                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canManageSubscriptions">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-content>
+
+<app-title [title]="'Staff Permissions'">
+</app-title>
+<app-content>
+    <div class="grid-container full">
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-6">
+                <div>
+                    <label class="checkbox-container">
+                        Access to Radio (booking, radio info, requests etc)
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canRadio">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to Book/Unbook other users on Radio Timetable
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canBookRadioForOthers">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to see IP on Radio Requests
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canSeeIpOnRequests">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can override DJ says without being on air
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canOverrideDjSays">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can see events & radio bookings logs
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canSeeBookingLogs">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to Kick a DJ Off Air
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canKickDjOffAir">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to change Connection Information
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canEditRadioInfo">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="cell small-6">
+                <div>
+                    <label class="checkbox-container">
+                        Access to Events (booking, ban on sight)
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canEvent">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to Book/Unbook other users on Events Timetable
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canBookEventForOthers">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to Add/Remove Event Types
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canManageEvents">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to Do Not Hire list
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canSeeDoNotHire">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Manage Ban on Sight List
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canManageBanOnSight">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can see current listeners (ip and relative user)
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canSeeListeners">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-content>
+
+<app-title [title]="'Group Options'">
+</app-title>
+<app-content>
+    <div class="grid-container full">
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-6">
+                <label class="checkbox-container">
+                    Threads & Posts need approval? <br><em>If ticked, any user in this user group will be limited. They
+                        will need a moderator to "approve" all their posts & threads before they are public.</em>
+                    <input type="checkbox" [(ngModel)]="options.contentNeedApproval">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div class="cell small-6">
+                <label class="checkbox-container">
+                    Usergroup can be tagged?<br> <em>If ticked, if somebody posts <strong>@user group name</strong> it
+                        will tag
+                        everyone within that user group. Useful for Sitecp groups - not useful for groups with tons of
+                        people
+                        as they will all be tagged and can be abused. Like @RegisteredUsers - that's a tag to 25,000+
+                        people!</em>
+                    <input type="checkbox" [(ngModel)]="options.canBeTagged">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+</app-content>
+
+<app-title [title]="'Styling'"></app-title>
+<app-content>
+    <div class="grid-container full">
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-6">
+                <label>Name Styling</label>
+                <textarea autocomplete="off" autocapitalize="off" spellcheck="false" type="text"
+                    [(ngModel)]="group.nameColor"></textarea>
+
+                <label>Preview</label>
+                <div [style]="nicknameStyle | safeStyle">nickname</div>
+            </div>
+            <div class="cell small-6">
+                <label>Userbar Styling</label>
+                <textarea autocomplete="off" autocapitalize="off" spellcheck="false" type="text"
+                    [(ngModel)]="group.userBarStyling"></textarea>
+
+                <label>Preview</label>
+                <div [style]="userBarStyle | safeStyle">{{group.name}}</div>
+            </div>
+        </div>
+    </div>
+</app-content>

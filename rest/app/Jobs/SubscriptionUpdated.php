@@ -22,8 +22,8 @@ use Illuminate\Queue\SerializesModels;
  * The jobs purpose is to remove perks from a user gained by the subscription if it's changed.
  *
  * Example case:
- * User has custom name colour and the subscription is updated to no longer have this options.
- * Then all users which has custom name colour from this subscription needs to be updated if they don't have
+ * User has custom name color and the subscription is updated to no longer have this options.
+ * Then all users which has custom name color from this subscription needs to be updated if they don't have
  * another subscription and get the custom name removed.
  *
  * @package App\Jobs
@@ -69,7 +69,7 @@ class SubscriptionUpdated implements ShouldQueue {
             return !UserHelper::hasSubscriptionFeature($userId, ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor);
         });
         UserData::whereIn('userId', $ids)->update([
-            'nameColour' => null
+            'nameColor' => null
         ]);
     }
 

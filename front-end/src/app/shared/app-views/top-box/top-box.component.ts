@@ -1,10 +1,10 @@
-import { AuthService } from 'core/services/auth/auth.service';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthUser } from 'core/services/auth/auth.model';
+import { AuthService } from 'core/services/auth/auth.service';
+import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 import { MainItem } from 'shared/app-views/navigation/navigation.model';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
-import { Router } from '@angular/router';
-import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 
 @Component({
     selector: 'app-top-box',
@@ -18,7 +18,7 @@ export class TopBoxComponent {
     isFixed: boolean;
     showMenu: boolean;
 
-    constructor (
+    constructor(
         private _authService: AuthService,
         private _router: Router,
         continuesInformationService: ContinuesInformationService
@@ -34,15 +34,15 @@ export class TopBoxComponent {
         });
     }
 
-    logout (): void {
+    logout(): void {
         this._authService.logout(false);
     }
 
-    goToProfile (): void {
+    goToProfile(): void {
         this._router.navigateByUrl(`/user/profile/${this._authService.authUser.nickname}`);
     }
 
-    closeMenu (): void {
+    closeMenu(): void {
         this.showMenu = false;
         this._navigation = this._navigation.map(item => {
             item.isExpanded = false;
@@ -50,11 +50,11 @@ export class TopBoxComponent {
         });
     }
 
-    get credits (): number {
+    get credits(): number {
         return this._authService.authUser.credits;
     }
 
-    get menuClasses (): string {
+    get menuClasses(): string {
         const classes = [];
         if (this.showMenu) {
             classes.push('menu-show');
@@ -65,36 +65,36 @@ export class TopBoxComponent {
         return classes.join(' ');
     }
 
-    get routes (): Array<MainItem> {
+    get routes(): Array<MainItem> {
         return this._navigation
             .filter(item => item.loginRequired ? this._authService.isLoggedIn() : true);
     }
 
-    get avatar (): string {
+    get avatar(): string {
         return `/rest/resources/images/users/${this._authService.authUser.userId}.gif?${this._authService.authUser.avatarUpdatedAt}`;
     }
 
-    get username (): string {
+    get username(): string {
         return this._authService.authUser.nickname;
     }
 
-    get isLoggedIn (): boolean {
+    get isLoggedIn(): boolean {
         return Boolean(this._user);
     }
 
-    get nickname (): string {
+    get nickname(): string {
         return this._user ? this._user.nickname : 'User';
     }
 
-    get isAdmin (): boolean {
-        return this._user && this._user.isAdmin;
+    get isSitecp(): boolean {
+        return this._user && this._user.isSitecp;
     }
 
-    get isStaff (): boolean {
+    get isStaff(): boolean {
         return this._user && this._user.isStaff;
     }
 
-    private setUser (): void {
+    private setUser(): void {
         this._user = this._authService.isLoggedIn() ? this._authService.authUser : null;
     }
 }

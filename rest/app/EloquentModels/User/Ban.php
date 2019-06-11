@@ -39,6 +39,6 @@ class Ban extends UnixTimeModel {
                          GROUP BY users.userId)
                         as sub"), 'bans.bannedId', '=', 'sub.userId')
             ->where('highest_immunity', '<', $immunity)
-            ->whereNotIn('bannedId', PermissionHelper::getSuperAdmins());
+            ->whereNotIn('bannedId', PermissionHelper::getSuperSitecps());
     }
 }

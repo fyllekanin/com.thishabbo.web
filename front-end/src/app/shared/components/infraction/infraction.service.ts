@@ -44,7 +44,7 @@ export class InfractionService {
             this.invalidInfractData();
             return;
         }
-        this._httpService.post('admin/moderation/infract', { infraction: data })
+        this._httpService.post('sitecp/moderation/infract', { infraction: data })
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage( {
                     title: 'Success',
@@ -63,7 +63,7 @@ export class InfractionService {
     }
 
     private getModel(userId: number): Observable<InfractionContext> {
-        return this._httpService.get(`admin/moderation/infract/${userId}`)
+        return this._httpService.get(`sitecp/moderation/infract/${userId}`)
             .pipe(map(res => new InfractionContext(res)));
     }
 }

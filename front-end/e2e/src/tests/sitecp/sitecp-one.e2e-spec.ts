@@ -18,7 +18,7 @@ describe('SiteCP #1', () => {
                 NavigationUtil.clickUserNavigation('Logout');
             }
             CommonUtil.login(USERNAME, PASSWORD);
-            CommonUtil.open('/admin/dashboard');
+            CommonUtil.open('/sitecp/dashboard');
             done();
         });
     });
@@ -144,8 +144,8 @@ describe('SiteCP #1', () => {
         InputUtil.clickRowAction(0, 'Manage Bans');
 
         NavigationUtil.clickTab('Ban');
-        InputUtil.selectOption(element(by.css('app-admin-user-ban-reason select')), '1 hour');
-        InputUtil.fillInput(element(by.css('app-admin-user-ban-reason input')), 'You are banned');
+        InputUtil.selectOption(element(by.css('app-sitecp-user-ban-reason select')), '1 hour');
+        InputUtil.fillInput(element(by.css('app-sitecp-user-ban-reason input')), 'You are banned');
 
         NavigationUtil.clickButton('Ban');
         browser.sleep(2000);

@@ -16,10 +16,10 @@ class Value {
         return isset($object[$property]) ? $object[$property] : $orElse;
     }
 
-    public static function validateHexColours($colours) {
+    public static function validateHexColors($colors) {
         $regex = '/^#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?$/';
-        return Iterables::every($colours, function ($colour) use ($regex) {
-            return preg_match($regex, $colour);
+        return Iterables::every($colors, function ($color) use ($regex) {
+            return preg_match($regex, $color);
         });
     }
 

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { InnerDialogComponent } from 'shared/app-views/dialog/dialog.model';
 import { Infraction, InfractionContext, InfractModel } from 'shared/components/infraction/infraction.model';
-import { InfractionLevel } from '../../../pages/admin/sub-pages/moderation/infraction-levels/infraction-level.model';
+import { InfractionLevel } from '../../../pages/sitecp/sub-pages/moderation/infraction-levels/infraction-level.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
 
 @Component({

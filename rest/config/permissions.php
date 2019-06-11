@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'ADMIN' => [
+    'SITECP' => [
         'canManageBadges' => 1,
         'canManageForum' => 2,
         'canManageForumPermissions' => 4,

@@ -247,7 +247,7 @@ class ProfileController extends Controller {
             return false;
         }
 
-        if (PermissionHelper::haveAdminPermission($user->userId, ConfigHelper::getAdminConfig()->canPassPrivate)) {
+        if (PermissionHelper::haveSitecpPermission($user->userId, ConfigHelper::getSitecpConfig()->canPassPrivate)) {
             return false;
         }
 

@@ -10,8 +10,8 @@ Route::put('groups/displaygroup', 'Usercp\GroupsController@updateDisplayGroup');
 Route::get('signature', 'Usercp\ProfileSettingsController@getSignature');
 Route::put('signature', 'Usercp\ProfileSettingsController@updateSignature');
 
-Route::get('name-colour', 'Usercp\ProfileSettingsController@getNameColours');
-Route::put('name-colour', 'Usercp\ProfileSettingsController@updateNameColours');
+Route::get('name-color', 'Usercp\ProfileSettingsController@getNameColors');
+Route::put('name-color', 'Usercp\ProfileSettingsController@updateNameColors');
 
 Route::put('password', 'Usercp\AccountController@updatePassword');
 Route::put('homepage', 'Usercp\AccountController@updateHomePage');

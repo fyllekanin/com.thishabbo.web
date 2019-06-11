@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class Group extends DeletableModel {
     protected $primaryKey = 'groupId';
-    protected $fillable = ['name', 'nameColour', 'userBarStyling', 'immunity', 'adminPermissions', 'staffPermissions',
+    protected $fillable = ['name', 'nameColor', 'userBarStyling', 'immunity', 'sitecpPermissions', 'staffPermissions',
         'options', 'isPublic', 'avatarHeight', 'avatarWidth'];
 
     public function scopeWithName (Builder $query, $name) {

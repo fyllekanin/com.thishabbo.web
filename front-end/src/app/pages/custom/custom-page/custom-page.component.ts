@@ -3,7 +3,7 @@ import { Page } from 'shared/page/page.model';
 import { ActivatedRoute } from '@angular/router';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
-import { PageModel } from '../../admin/sub-pages/website-settings/pages/page.model';
+import { PageModel } from '../../sitecp/sub-pages/website-settings/pages/page.model';
 import { StringHelper } from 'shared/helpers/string.helper';
 
 @Component({

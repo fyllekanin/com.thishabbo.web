@@ -1,5 +1,5 @@
 import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
-import { InfractionLevel } from '../../../pages/admin/sub-pages/moderation/infraction-levels/infraction-level.model';
+import { InfractionLevel } from '../../../pages/sitecp/sub-pages/moderation/infraction-levels/infraction-level.model';
 import { SlimUser } from 'core/services/auth/auth.model';
 
 export class Infraction {

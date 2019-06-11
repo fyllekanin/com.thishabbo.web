@@ -1,6 +1,6 @@
 import { ClassHelper, primitive } from 'shared/helpers/class.helper';
 import { ButtonColor } from 'shared/directives/button/button.model';
-import { BBcodeModel } from '../../../pages/admin/sub-pages/content/bbcodes/bbcode.model';
+import { BBcodeModel } from '../../../pages/sitecp/sub-pages/content/bbcodes/bbcode.model';
 
 export class EditorAction {
     @primitive()

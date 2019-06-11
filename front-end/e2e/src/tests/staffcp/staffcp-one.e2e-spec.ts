@@ -1,8 +1,8 @@
-import { CommonUtil } from '../../utils/common.util';
-import { NavigationUtil } from '../../utils/navigation.util';
-import { StaffCpPage } from '../../pages/staff-cp.page';
 import { browser } from 'protractor';
+import { StaffCpPage } from '../../pages/staff-cp.page';
+import { CommonUtil } from '../../utils/common.util';
 import { InputUtil } from '../../utils/input.util';
+import { NavigationUtil } from '../../utils/navigation.util';
 
 describe('StaffCP #1', () => {
     const USERNAME = 'tovven';
@@ -88,7 +88,7 @@ describe('StaffCP #1', () => {
         StaffCpPage.setRadioInfoIP('test.thishabbo.com');
         StaffCpPage.setRadioInfoPort('8081');
         StaffCpPage.setRadioInfoPassword('ThIsIsANewPassword');
-        StaffCpPage.setRadioInfoAdminPassword('ThisIsATestAdminPassword');
+        StaffCpPage.setRadioInfoSitecpPassword('ThisIsATestSitecpPassword');
         NavigationUtil.clickTab('Save');
 
         browser.sleep(1000);

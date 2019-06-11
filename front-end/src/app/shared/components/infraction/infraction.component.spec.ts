@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Infraction, InfractionContext, InfractModel } from 'shared/components/infraction/infraction.model';
 import { SlimUser } from 'core/services/auth/auth.model';
-import { InfractionLevel } from '../../../pages/admin/sub-pages/moderation/infraction-levels/infraction-level.model';
+import { InfractionLevel } from '../../../pages/sitecp/sub-pages/moderation/infraction-levels/infraction-level.model';
 
 describe('InfractionComponent', () => {
 

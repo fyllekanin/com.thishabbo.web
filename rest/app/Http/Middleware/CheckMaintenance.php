@@ -22,9 +22,9 @@ class CheckMaintenance {
     }
 
     private function canPassMaintenance($request) {
-        $adminPermissions = ConfigHelper::getAdminConfig();
+        $sitecpPermissions = ConfigHelper::getSitecpConfig();
         $user = $request->get('auth');
 
-        return PermissionHelper::haveAdminPermission($user->userId, $adminPermissions->canEditWebsiteSettings);
+        return PermissionHelper::haveSitecpPermission($user->userId, $sitecpPermissions->canEditWebsiteSettings);
     }
 }

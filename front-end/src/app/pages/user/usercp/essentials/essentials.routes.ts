@@ -10,8 +10,8 @@ import { SocialNetworksComponent } from './social-networks/social-networks.compo
 import { SocialNetworksService } from './services/social-networks.service';
 import { ProfileComponent } from './profile/profile.component';
 import { ProfileService } from './services/profile.service';
-import { NameColourComponent } from './name-colour/name-colour.component';
-import { NameColourService } from './services/name-colour.service';
+import { NameColorComponent } from './name-color/name-color.component';
+import { NameColorService } from './services/name-color.service';
 
 export const essentialsRoutes: Routes = [
     {
@@ -58,10 +58,10 @@ export const essentialsRoutes: Routes = [
         }
     },
     {
-        path: 'name-colour',
-        component: NameColourComponent,
+        path: 'name-color',
+        component: NameColorComponent,
         resolve: {
-            data: NameColourService
+            data: NameColorService
         }
     }
 ];

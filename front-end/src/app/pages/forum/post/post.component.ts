@@ -121,7 +121,7 @@ ${this._postModel.content}[/quotepost]\n\r`);
     }
 
     get canInfractUser (): boolean {
-        return this._authService.adminPermissions.canDoInfractions &&
+        return this._authService.sitecpPermissions.canDoInfractions &&
             this._postModel.user.userId !== this._authService.authUser.userId;
     }
 

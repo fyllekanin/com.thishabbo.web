@@ -5,14 +5,14 @@
         <img class="avatar" [style.backgroundImage]="'url(' + avatar + ')'" />
         <span class="mobile-nickname">{{username}}</span>
         <div class="quick-links">
-            <a *ngIf="isAdmin" [routerLink]="['/admin/dashboard']" (click)="closeMenu()">SiteCP</a>
+            <a *ngIf="isSitecp" [routerLink]="['/sitecp/dashboard']" (click)="closeMenu()">SiteCP</a>
             <a *ngIf="isStaff" [routerLink]="['/staff/dashboard']" (click)="closeMenu()">StaffCP</a>
             <a [routerLink]="['/user/usercp']" (click)="closeMenu()">UserCP</a>
         </div>
     </div>
     <div class="menu-item" *ngFor="let item of routes">
-        <a *ngIf="!item.isLogout" [routerLink]="[item.url]" (click)="closeMenu()"><em
-                [ngClass]="item.icon"></em> {{item.label}}</a>
+        <a *ngIf="!item.isLogout" [routerLink]="[item.url]" (click)="closeMenu()"><em [ngClass]="item.icon"></em>
+            {{item.label}}</a>
         <a *ngIf="item.isLogout" (click)="closeMenu(); logout()"><em [ngClass]="item.icon"></em> {{item.label}}</a>
         <em *ngIf="item.haveChildren" class="fas expand"
             [ngClass]="item.isExpanded ? 'fa-minus-square' : 'fa-plus-square'"
@@ -39,7 +39,7 @@
                         <div class="dropdown nickname-wrapper">
                             Hello, <span class="nickname" (click)="goToProfile()">{{nickname}}</span>
                             <div class="dropdown-content">
-                                <a *ngIf="isAdmin" [routerLink]="['/admin/dashboard']">SiteCP</a>
+                                <a *ngIf="isSitecp" [routerLink]="['/sitecp/dashboard']">SiteCP</a>
                                 <a *ngIf="isStaff" [routerLink]="['/staff/dashboard']">StaffCP</a>
                                 <a [routerLink]="['/user/usercp']">UserCP</a>
                                 <div class="divider"></div>

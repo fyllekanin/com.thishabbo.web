@@ -38,11 +38,11 @@ class UserHelper {
             ->leftJoin('userdata', 'userdata.userId', '=', 'users.userId')
             ->select('users.userId', 'users.nickname', 'users.createdAt',
                 'users.displayGroupId', 'userdata.avatarUpdatedAt',
-                'userdata.nameColour AS customColour', 'groups.nameColour AS groupColour')->first();
+                'userdata.nameColor AS customColor', 'groups.nameColor AS groupColor')->first();
 
 
-        $slimUser->nameColour = $slimUser->customColour ? $slimUser->customColour : $slimUser->groupColour;
-        $slimUser->nameColour = Value::objectJsonProperty($slimUser, 'nameColour', []);
+        $slimUser->nameColor = $slimUser->customColor ? $slimUser->customColor : $slimUser->groupColor;
+        $slimUser->nameColor = Value::objectJsonProperty($slimUser, 'nameColor', []);
 
         Cache::add('slim-user-' . $userId, $slimUser, 5);
 
@@ -89,13 +89,13 @@ class UserHelper {
             ];
         });
 
-        if (isset($userdata->nameColour)) {
-            $user->nameColour = $userdata->nameColour;
+        if (isset($userdata->nameColor)) {
+            $user->nameColor = $userdata->nameColor;
         } else if (isset($userObj->displayGroup)) {
-            $user->nameColour = $userObj->displayGroup->nameColour;
+            $user->nameColor = $userObj->displayGroup->nameColor;
         }
 
-        $user->nameColour = Value::objectJsonProperty($user, 'nameColour', []);
+        $user->nameColor = Value::objectJsonProperty($user, 'nameColor', []);
 
         $user = self::setUserDataFields($user, $userdata, $postBit);
 

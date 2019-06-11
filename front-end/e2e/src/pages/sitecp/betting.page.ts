@@ -5,13 +5,13 @@ import { CommonUtil } from '../../utils/common.util';
 export class BettingPage {
 
     static setCategoryName(name: string): void {
-        const ele = element(by.css('app-admin-betting-category input[name="name"]'));
+        const ele = element(by.css('app-sitecp-betting-category input[name="name"]'));
         InputUtil.clearInput(ele);
         InputUtil.fillInput(ele, name);
     }
 
     static setCategoryDisplayOrder(order: number): void {
-        const ele = element(by.css('app-admin-betting-category input[name="displayOrder"]'));
+        const ele = element(by.css('app-sitecp-betting-category input[name="displayOrder"]'));
         InputUtil.fillInput(ele, order);
     }
 
@@ -44,7 +44,7 @@ export class BettingPage {
     }
 
     static setResult(result: string): void {
-        const ele = element(by.cssContainingText('app-admin-betting-bet-result select option', result));
+        const ele = element(by.cssContainingText('app-sitecp-betting-bet-result select option', result));
         CommonUtil.click(ele);
     }
 }

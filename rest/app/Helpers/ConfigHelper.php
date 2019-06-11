@@ -16,8 +16,8 @@ class ConfigHelper {
         return (object)Config::get(self::$PERMISSIONS . '.FORUM');
     }
 
-    public static function getAdminConfig() {
-        return (object)Config::get(self::$PERMISSIONS . '.ADMIN');
+    public static function getSitecpConfig() {
+        return (object)Config::get(self::$PERMISSIONS . '.SITECP');
     }
 
     public static function getPostBitConfig() {

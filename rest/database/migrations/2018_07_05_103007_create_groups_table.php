@@ -16,10 +16,10 @@ class CreateGroupsTable extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->increments('groupId');
             $table->string('name')->unique();
-            $table->text('nameColour');
+            $table->text('nameColor');
             $table->text('userBarStyling');
             $table->integer('immunity')->default(0);
-            $table->integer('adminPermissions')->default(0);
+            $table->integer('sitecpPermissions')->default(0);
             $table->integer('staffPermissions')->default(0);
             $table->integer('isDeleted')->default(0);
             $table->integer('options')->default(0);
@@ -31,7 +31,7 @@ class CreateGroupsTable extends Migration
 
             // Indexes
             $table->index('immunity');
-            $table->index('adminPermissions');
+            $table->index('sitecpPermissions');
             $table->index('staffPermissions');
             $table->index('isDeleted');
             $table->index('createdAt');

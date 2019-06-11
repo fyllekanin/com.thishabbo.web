@@ -120,7 +120,7 @@ class ParagraphsTableSeeder extends Seeder
             ),
             17 =>
             array (
-                'text' => 'It has been over three hundred years since Emperor Shah Jahan of Delhi built the Taj Mahal as a tomb for his wife in Agra. Architecturally, it is still one of the most beautiful buildings in the world. The building is made of fine white marble with inlays of coloured sandstone. Four slender white towers rise from the corners of the terrace.',
+                'text' => 'It has been over three hundred years since Emperor Shah Jahan of Delhi built the Taj Mahal as a tomb for his wife in Agra. Architecturally, it is still one of the most beautiful buildings in the world. The building is made of fine white marble with inlays of colored sandstone. Four slender white towers rise from the corners of the terrace.',
                 'createdAt' => time(),
                 'updatedAt' => time()
             ),

@@ -64,7 +64,7 @@ export class UsercpComponent extends Page implements OnDestroy, OnInit {
                     new SideMenuItem({ title: 'Edit Cover Photo', link: '/user/usercp/essentials/cover' }),
                     new SideMenuItem({ title: 'Edit Postbit', link: '/user/usercp/essentials/post-bit' }),
                     new SideMenuItem({ title: 'Edit Social Networks', link: '/user/usercp/essentials/social-networks' }),
-                    new SideMenuItem({ title: 'Edit Name Colour', link: '/user/usercp/essentials/name-colour'})
+                    new SideMenuItem({ title: 'Edit Name Color', link: '/user/usercp/essentials/name-color'})
                 ]
             }),
             new SideMenuBlock({

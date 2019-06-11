@@ -10,7 +10,7 @@ export class UserLinkComponent {
     @Input() user = new SlimUser();
 
     get nameStyling (): string {
-        return UserHelper.getNameColour(this.user.nameColour);
+        return UserHelper.getNameColor(this.user.nameColor);
     }
 }
 

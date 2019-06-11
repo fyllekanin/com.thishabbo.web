@@ -34,7 +34,7 @@ class SettingsHelper {
         }
     }
 
-    public static function getRadioConnectionInformation($withAdminPassword = false) {
+    public static function getRadioConnectionInformation($withSitecpPassword = false) {
         $settingKeys = ConfigHelper::getKeyConfig();
         $radio = new RadioSettings(SettingsHelper::getSettingValue($settingKeys->radio));
 
@@ -42,7 +42,7 @@ class SettingsHelper {
             'ip' => $radio->ip,
             'port' => $radio->port,
             'password' => $radio->password,
-            'adminPassword' => $withAdminPassword ? $radio->adminPassword : null,
+            'sitecpPassword' => $withSitecpPassword ? $radio->sitecpPassword : null,
             'serverType' => $radio->serverType
         ];
     }

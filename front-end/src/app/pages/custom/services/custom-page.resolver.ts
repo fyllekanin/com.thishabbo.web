@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
-import { PageModel } from '../../admin/sub-pages/website-settings/pages/page.model';
+import { PageModel } from '../../sitecp/sub-pages/website-settings/pages/page.model';
 import { HttpService } from 'core/services/http/http.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';

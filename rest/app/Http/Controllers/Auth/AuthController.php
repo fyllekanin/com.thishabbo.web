@@ -140,7 +140,7 @@ class AuthController extends Controller {
         $this->updateOrSetUserToken($user->userId, $accessToken, $refreshToken, $expiresAt, $request);
 
         return response()->json([
-            'adminPermissions' => self::buildAdminPermissions($user),
+            'sitecpPermissions' => self::buildSitecpPermissions($user),
             'staffPermissions' => self::buildStaffPermissions($user),
             'oauth' => [
                 'accessToken' => $accessToken,
@@ -165,7 +165,7 @@ class AuthController extends Controller {
 
         $token = Token::where('userId', $user->userId)->where('ip', $request->ip())->first();
         return response()->json([
-            'adminPermissions' => self::buildAdminPermissions($user),
+            'sitecpPermissions' => self::buildSitecpPermissions($user),
             'staffPermissions' => self::buildStaffPermissions($user),
             'oauth' => [
                 'accessToken' => $token->accessToken,
@@ -243,7 +243,7 @@ class AuthController extends Controller {
 
         Logger::login($user->userId, $request->ip(), true);
         return response()->json([
-            'adminPermissions' => self::buildAdminPermissions($user),
+            'sitecpPermissions' => self::buildSitecpPermissions($user),
             'staffPermissions' => self::buildStaffPermissions($user),
             'oauth' => [
                 'accessToken' => $accessToken,
@@ -344,33 +344,33 @@ class AuthController extends Controller {
      *
      * @return array
      */
-    private function buildAdminPermissions($user) {
-        $obj = ['isAdmin' => false];
-        $adminPermissions = ConfigHelper::getAdminConfig();
+    private function buildSitecpPermissions($user) {
+        $obj = ['isSitecp' => false];
+        $sitecpPermissions = ConfigHelper::getSitecpConfig();
         $forumPermissions = ConfigHelper::getForumPermissions();
 
-        // General admin permissions
-        foreach ($adminPermissions as $key => $value) {
-            $obj[$key] = PermissionHelper::haveAdminPermission($user->userId, $value);
+        // General sitecp permissions
+        foreach ($sitecpPermissions as $key => $value) {
+            $obj[$key] = PermissionHelper::haveSitecpPermission($user->userId, $value);
         }
 
         // Moderation permissions
-        $obj['canModerateThreads'] = PermissionHelper::isSuperAdmin($user->userId) ||
+        $obj['canModerateThreads'] = PermissionHelper::isSuperSitecp($user->userId) ||
             ForumPermission::withGroups($user->groupIds)
                 ->withPermission($forumPermissions->canApproveThreads)
                 ->count('categoryId') > 0;
-        $obj['canModeratePosts'] = PermissionHelper::isSuperAdmin($user->userId) ||
+        $obj['canModeratePosts'] = PermissionHelper::isSuperSitecp($user->userId) ||
             ForumPermission::withGroups($user->groupIds)
                 ->withPermission($forumPermissions->canApprovePosts)
                 ->count('categoryId') > 0;
-        $obj['canManagePolls'] = PermissionHelper::isSuperAdmin($user->userId) ||
+        $obj['canManagePolls'] = PermissionHelper::isSuperSitecp($user->userId) ||
             ForumPermission::withGroups($user->groupIds)
                 ->withPermission($forumPermissions->canManagePolls)
                 ->count('categoryId') > 0;
 
         foreach ($obj as $key => $value) {
             if ($value) {
-                $obj['isAdmin'] = true;
+                $obj['isSitecp'] = true;
                 break;
             }
         }

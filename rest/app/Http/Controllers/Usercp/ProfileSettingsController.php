@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Usercp;
 
-use App\Helpers\AvatarHelper;
 use App\EloquentModels\User\Avatar;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserData;
 use App\EloquentModels\User\UserProfile;
+use App\Helpers\AvatarHelper;
 use App\Helpers\ConfigHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
@@ -263,45 +263,45 @@ class ProfileSettingsController extends Controller {
     }
 
     /**
-     * Get request to fetch the users current name colours
+     * Get request to fetch the users current name colors
      *
      * @param Request $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getNameColours(Request $request) {
+    public function getNameColors(Request $request) {
         $user = $request->get('auth');
 
         $userdata = UserData::where('userId', $user->userId)->first();
         return response()->json([
-            'colours' => Value::objectJsonProperty($userdata, 'nameColour', []),
-            'canUpdateColour' => UserHelper::hasSubscriptionFeature($user->userId, ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor)
+            'colors' => Value::objectJsonProperty($userdata, 'nameColor', []),
+            'canUpdateColor' => UserHelper::hasSubscriptionFeature($user->userId, ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor)
         ]);
     }
 
     /**
-     * Put request to update the user name colours
+     * Put request to update the user name colors
      *
      * @param Request $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateNameColours(Request $request) {
+    public function updateNameColors(Request $request) {
         $user = $request->get('auth');
 
         Condition::precondition(!UserHelper::hasSubscriptionFeature($user->userId,
-            ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor), 400, 'You do not have the permissions to edit name colour!');
+            ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor), 400, 'You do not have the permissions to edit name color!');
 
-        $colours = $request->input('colours');
-        Condition::precondition(!Value::validateHexColours($colours), 400, 'Invalid Hex Codes');
+        $colors = $request->input('colors');
+        Condition::precondition(!Value::validateHexColors($colors), 400, 'Invalid Hex Codes');
 
         $userData = UserHelper::getUserDataOrCreate($user->userId);
-        $userData->nameColour = json_encode($colours);
+        $userData->nameColor = json_encode($colors);
         $userData->save();
 
-        Logger::user($user->userId, $request->ip(), Action::UPDATED_NAME_COLOURS);
+        Logger::user($user->userId, $request->ip(), Action::UPDATED_NAME_COLORS);
         return response()->json([
-            'colours' => $colours
+            'colors' => $colors
         ]);
     }
 }
