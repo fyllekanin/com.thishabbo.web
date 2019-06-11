@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
@@ -13,7 +13,7 @@ import { HttpService } from 'core/services/http/http.service';
     selector: 'app-custom-report-bug',
     templateUrl: 'report-bug.component.html'
 })
-export class ReportBugComponent extends Page implements OnDestroy {
+export class ReportBugComponent extends Page {
     data = new ReportBugModel();
     notLoggedIn: InfoBoxModel = {
         type: INFO_BOX_TYPE.INFO,
