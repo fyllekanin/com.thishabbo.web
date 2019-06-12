@@ -7,6 +7,7 @@ import { BadgeArticlesComponent } from './badge-articles/badge-articles.componen
 import { BadgeArticlesResolver } from './services/badge-articles.resolver';
 import { ContactComponent } from './contact/contact.component';
 import { JobComponent } from './job/job.component';
+import { ReportBugComponent } from './report-bug/report-bug.component';
 
 export const customRoutes: Routes = [
     {
@@ -28,6 +29,10 @@ export const customRoutes: Routes = [
             {
                 path: 'job',
                 component: JobComponent
+            },
+            {
+                path: 'bug',
+                component: ReportBugComponent
             },
             {
                 path: 'badge-articles/page/:page',

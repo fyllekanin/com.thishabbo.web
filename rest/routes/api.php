@@ -69,6 +69,7 @@ Route::group(['middleware' => ['maintenance']], function () {
 
         Route::post('form/job', 'FormController@createApplication');
         Route::post('form/contact', 'FormController@createContact');
+        Route::post('form/bug', 'FormController@createBugReport');
 
         Route::prefix('betting')->group(function () {
             Route::get('/dashboard', 'BettingController@getDashboardPage');
