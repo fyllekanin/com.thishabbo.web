@@ -4,7 +4,7 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
-import { AuthService } from "core/services/auth/auth.service";
+import { AuthService } from 'core/services/auth/auth.service';
 
 @Component({
     selector: 'app-forum-thread-poll',
