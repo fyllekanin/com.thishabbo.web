@@ -65,6 +65,8 @@ export class Category {
     isOpen = true;
     @primitive()
     link: string;
+    @primitive()
+    icon: string;
 
     constructor (source?: Partial<Category>) {
         ClassHelper.assign(this, source);

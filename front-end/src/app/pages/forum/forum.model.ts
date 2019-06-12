@@ -156,6 +156,8 @@ export class SlimCategory {
     childs: Array<SlimCategory> = [];
     @primitive()
     displayOrder: number;
+    @primitive()
+    icon: string;
 
     constructor (source?: Partial<SlimCategory>) {
         ClassHelper.assign(this, source);
