@@ -245,7 +245,7 @@ class CategoryCrudController extends Controller {
         $children = Category::nonHidden()
             ->withParent($categoryId)
             ->whereIn('categoryId', $categoryIds)
-            ->select('categoryId', 'description', 'displayOrder', 'link', 'title', 'lastPostId')
+            ->select('categoryId', 'description', 'displayOrder', 'link', 'title', 'lastPostId', 'icon')
             ->get();
         $childs = [];
 

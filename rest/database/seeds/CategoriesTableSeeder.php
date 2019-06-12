@@ -33,6 +33,7 @@ class CategoriesTableSeeder extends Seeder
                 'isOpen' => 1,
                 'createdAt' => 1538578022,
                 'updatedAt' => 1553981474,
+                'icon' => NULL,
             ),
             1 => 
             array (
@@ -49,7 +50,8 @@ class CategoriesTableSeeder extends Seeder
                 'isHidden' => 0,
                 'isOpen' => 1,
                 'createdAt' => 1538578022,
-                'updatedAt' => 1553982205,
+                'updatedAt' => 1560370328,
+                'icon' => 'fas fa-bullhorn',
             ),
             2 => 
             array (
@@ -67,6 +69,7 @@ class CategoriesTableSeeder extends Seeder
                 'isOpen' => 1,
                 'createdAt' => 1538578022,
                 'updatedAt' => 1553981453,
+                'icon' => NULL,
             ),
             3 => 
             array (
@@ -84,6 +87,7 @@ class CategoriesTableSeeder extends Seeder
                 'isOpen' => 1,
                 'createdAt' => 1538578022,
                 'updatedAt' => 1553981590,
+                'icon' => NULL,
             ),
             4 => 
             array (
@@ -101,6 +105,7 @@ class CategoriesTableSeeder extends Seeder
                 'isOpen' => 1,
                 'createdAt' => 1538578022,
                 'updatedAt' => 1552148693,
+                'icon' => NULL,
             ),
             5 => 
             array (
@@ -118,6 +123,7 @@ class CategoriesTableSeeder extends Seeder
                 'isOpen' => 1,
                 'createdAt' => 1538578022,
                 'updatedAt' => 1553981590,
+                'icon' => NULL,
             ),
             6 => 
             array (
@@ -135,6 +141,7 @@ class CategoriesTableSeeder extends Seeder
                 'isOpen' => 1,
                 'createdAt' => 1538578022,
                 'updatedAt' => 1552158798,
+                'icon' => NULL,
             ),
             7 => 
             array (
@@ -152,6 +159,7 @@ class CategoriesTableSeeder extends Seeder
                 'isOpen' => 1,
                 'createdAt' => 1547220711,
                 'updatedAt' => 1559421133,
+                'icon' => NULL,
             ),
             8 => 
             array (
@@ -169,6 +177,7 @@ class CategoriesTableSeeder extends Seeder
                 'isOpen' => 1,
                 'createdAt' => 1547221324,
                 'updatedAt' => 1547223762,
+                'icon' => NULL,
             ),
             9 => 
             array (
@@ -186,6 +195,7 @@ class CategoriesTableSeeder extends Seeder
                 'isOpen' => 1,
                 'createdAt' => 1547221397,
                 'updatedAt' => 1547223762,
+                'icon' => NULL,
             ),
             10 => 
             array (
@@ -203,6 +213,7 @@ class CategoriesTableSeeder extends Seeder
                 'isOpen' => 1,
                 'createdAt' => 1547222161,
                 'updatedAt' => 1547222172,
+                'icon' => NULL,
             ),
             11 => 
             array (
@@ -220,6 +231,7 @@ class CategoriesTableSeeder extends Seeder
                 'isOpen' => 1,
                 'createdAt' => 1559420462,
                 'updatedAt' => 1559420543,
+                'icon' => NULL,
             ),
             12 => 
             array (
@@ -237,6 +249,7 @@ class CategoriesTableSeeder extends Seeder
                 'isOpen' => 1,
                 'createdAt' => 1559421088,
                 'updatedAt' => 1559421133,
+                'icon' => NULL,
             ),
         ));
         
