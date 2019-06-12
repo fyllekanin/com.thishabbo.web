@@ -1,5 +1,5 @@
 import { AuthService } from 'core/services/auth/auth.service';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ThreadAnswer, ThreadPoll } from './thread-poll.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { HttpService } from 'core/services/http/http.service';
@@ -11,7 +11,7 @@ import { NotificationMessage } from 'shared/app-views/global-notification/global
     templateUrl: 'thread-poll.component.html',
     styleUrls: ['thread-poll.component.css']
 })
-export class ThreadPollComponent {
+export class ThreadPollComponent implements OnInit {
     private _poll: ThreadPoll;
     private _threadId: number;
     private _authService: AuthService;
