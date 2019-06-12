@@ -1,0 +1,1 @@
+{"topic":"Bug report page","type":"Feature","body":"Created a page for reporting bugs. The page allows the user to enter information which will help developers reproduce the bug in order to troubleshoot. The bug is then submitted to the projects GitHub issues in order to bring it to the attention to the developers."}
