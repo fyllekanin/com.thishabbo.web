@@ -17,23 +17,26 @@ export class ThreadPollComponent {
     private _authService: AuthService;
 
     answerId: string;
-    tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Vote' })
-    ];
+    tabs: Array<TitleTab> = [];
 
     constructor(
         private _httpService: HttpService,
         private _notificationService: NotificationService
-    ) {}
+    ) {
+    }
 
-    ngOnInit (): void {
-        this.tabs = !this._authService.isLoggedIn() ? [] : [
+    ngOnInit(): void {
+        if (!this._authService.isLoggedIn()) {
+            this.tabs = [];
+            return;
+        }
+        this.tabs = [
             new TitleTab({title: 'Vote'})
         ];
     }
 
     vote(): void {
-        this._httpService.post(`forum/thread/${this._threadId}/vote`, { answerId: this.answerId })
+        this._httpService.post(`forum/thread/${this._threadId}/vote`, {answerId: this.answerId})
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
