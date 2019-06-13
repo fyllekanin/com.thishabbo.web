@@ -104,6 +104,7 @@ class CategoryCrudController extends Controller {
 
         $category = Category::where('categoryId', $categoryId)->first();
         Condition::precondition(!$category, 404, 'No category with that ID');
+        $this->forumService->updateReadCategory($category->categoryId, $user->userId);
         $forumPermissions = $this->getCategoryPermissions($categoryId, $user->userId);
 
         $sortedBy = $this->queryParamService->getSortedBy($sortedByQuery);
@@ -245,13 +246,14 @@ class CategoryCrudController extends Controller {
         $children = Category::nonHidden()
             ->withParent($categoryId)
             ->whereIn('categoryId', $categoryIds)
-            ->select('categoryId', 'description', 'displayOrder', 'link', 'title', 'lastPostId', 'icon')
+            ->select('categoryId', 'description', 'displayOrder', 'link', 'title', 'lastPostId', 'icon', 'updatedAt')
             ->get();
         $childs = [];
 
         foreach ($children as $child) {
             if (PermissionHelper::haveForumPermission($userId, ConfigHelper::getForumPermissions()->canViewOthersThreads, $child->categoryId)) {
                 $child->lastPost = $this->forumService->getSlimPost($child->lastPostId);
+                $child->haveRead = $this->forumService->haveReadCategory($child, $userId);
             } else {
                 $canApproveThreads = PermissionHelper::haveForumPermission($userId, ConfigHelper::getForumPermissions()->canApproveThreads, $child->categoryId);
                 $categoryIdsChain = $this->getCategoryIdsChain($child->categoryId, $categoryIds);

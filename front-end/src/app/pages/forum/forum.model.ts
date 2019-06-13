@@ -158,6 +158,8 @@ export class SlimCategory {
     displayOrder: number;
     @primitive()
     icon: string;
+    @primitive()
+    haveRead: boolean;
 
     constructor (source?: Partial<SlimCategory>) {
         ClassHelper.assign(this, source);
