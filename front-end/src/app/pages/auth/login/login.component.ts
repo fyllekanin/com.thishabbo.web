@@ -3,7 +3,9 @@ import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Page } from 'shared/page/page.model';
 import { AuthService } from 'core/services/auth/auth.service';
 import { Component, ElementRef, OnDestroy } from '@angular/core';
-import { Button } from 'shared/directives/button/button.model';
+import { TitleTab } from 'shared/app-views/title/title.model';
+import { LoginAction } from './login.model';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-auth-login',
@@ -13,13 +15,18 @@ import { Button } from 'shared/directives/button/button.model';
 
 export class LoginComponent extends Page implements OnDestroy {
     private haveTriedAuthentication = false;
-
-    registerButton = Button.GREEN;
     loginName = '';
     password = '';
 
+    tabs: Array<TitleTab> = [
+        new TitleTab({title: 'Login', value: LoginAction.LOGIN}),
+        new TitleTab({title: 'Register', value: LoginAction.REGISTER}),
+        new TitleTab({title: 'Forgotten Password', value: LoginAction.FORGOTTEN_PASSWORD})
+    ];
+
     constructor(
         private _authService: AuthService,
+        private _router: Router,
         breadcrumbService: BreadcrumbService,
         elementRef: ElementRef
     ) {
@@ -29,6 +36,20 @@ export class LoginComponent extends Page implements OnDestroy {
 
     ngOnDestroy(): void {
         super.destroy();
+    }
+
+    onAction (action: number) {
+        switch (action) {
+            case LoginAction.LOGIN:
+                this.doLogin();
+                break;
+            case LoginAction.REGISTER:
+                this._router.navigateByUrl('auth/register');
+                break;
+            case LoginAction.FORGOTTEN_PASSWORD:
+                this._router.navigateByUrl('auth/forgot-password')
+                break;
+        }
     }
 
     keyDownFunction(event): void {
