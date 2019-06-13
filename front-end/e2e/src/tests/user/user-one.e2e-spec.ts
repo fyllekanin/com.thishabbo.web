@@ -95,7 +95,7 @@ describe('User #1', () => {
             habbo: 'psyyduck'
         });
         UserCpPage.acceptGdpr();
-        NavigationUtil.clickButton('Register');
+        NavigationUtil.clickTab('Register');
 
         expect(CommonUtil.getNicknameElement().getText()).toEqual('erico');
     });

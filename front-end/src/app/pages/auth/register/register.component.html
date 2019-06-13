@@ -2,7 +2,9 @@
     <div class="grid-x margin-x">
         <div class="cell small-12">
             <app-title
-                [title]="'Register'">
+                [title]="'Register'"
+                [tabs]="tabs"
+                (onTabClick)="register()">
             </app-title>
             <app-content>
                 <div class="grid-x margin-x">
@@ -37,10 +39,6 @@
                             <input type="checkbox" [(ngModel)]="registerModel.gdpr">
                             <span class="checkmark"></span>
                         </label>
-                    </div>
-                    <div class="cell small-12">
-                        <button appButton (onClick)="register()" [color]="registerButton" [float]="'right'">Register
-                        </button>
                     </div>
                 </div>
             </app-content>
