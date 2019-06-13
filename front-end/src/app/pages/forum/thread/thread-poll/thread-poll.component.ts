@@ -18,14 +18,14 @@ export class ThreadPollComponent implements OnInit {
     answerId: string;
     tabs: Array<TitleTab> = [];
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService,
         private _authService: AuthService
     ) {
     }
 
-    ngOnInit(): void {
+    ngOnInit (): void {
         if (!this._authService.isLoggedIn()) {
             this.tabs = [];
             return;
@@ -35,8 +35,8 @@ export class ThreadPollComponent implements OnInit {
         ];
     }
 
-    vote(): void {
-        this._httpService.post(`forum/thread/${this._threadId}/vote`, { answerId: this.answerId })
+    vote (): void {
+        this._httpService.post(`forum/thread/${this._threadId}/vote`, {answerId: this.answerId})
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
@@ -49,24 +49,28 @@ export class ThreadPollComponent implements OnInit {
     }
 
     @Input()
-    set poll(poll: ThreadPoll) {
+    set poll (poll: ThreadPoll) {
         this._poll = poll;
     }
 
     @Input()
-    set threadId(threadId: number) {
+    set threadId (threadId: number) {
         this._threadId = threadId;
     }
 
-    get question(): string {
+    get question (): string {
         return this._poll.question;
     }
 
-    get haveVoted(): boolean {
+    get haveVoted (): boolean {
         return this._poll.haveVoted;
     }
 
-    get answers(): Array<{ label: string, percentage: number, votes: number }> {
+    get options (): Array<ThreadAnswer> {
+        return this._poll.answers;
+    }
+
+    get answers (): Array<{ label: string, percentage: number, votes: number }> {
         const total = this._poll.answers.reduce((prev, curr) => {
             return prev + curr.answers;
         }, 0);
