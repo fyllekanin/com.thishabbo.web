@@ -10,7 +10,7 @@ import { IUserProfile } from 'shared/directives/user-profile.directive';
 })
 
 export class SlimCategoryComponent extends Page implements OnDestroy {
-    private _slimCategory: SlimCategory = new SlimCategory();
+    private _slimCategory = new SlimCategory();
 
     constructor (
         elementRef: ElementRef
@@ -61,5 +61,9 @@ export class SlimCategoryComponent extends Page implements OnDestroy {
 
     get icon (): string {
         return this._slimCategory.icon || 'fas fa-comment-alt';
+    }
+
+    get haveRead (): boolean {
+        return this._slimCategory.haveRead;
     }
 }
