@@ -47,7 +47,7 @@ export class LoginComponent extends Page implements OnDestroy {
                 this._router.navigateByUrl('auth/register');
                 break;
             case LoginAction.FORGOTTEN_PASSWORD:
-                this._router.navigateByUrl('auth/forgot-password')
+                this._router.navigateByUrl('auth/forgot-password');
                 break;
         }
     }
