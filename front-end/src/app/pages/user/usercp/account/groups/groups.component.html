@@ -6,6 +6,7 @@
                 <strong>Display Group</strong> <br />
                 <em>(Group which decides styling on name)</em>
                 <select [(ngModel)]="displayGroupId">
+                    <option [value]="0">No Display Group</option>
                     <option *ngFor="let group of memberGroups" [value]="group.groupId">{{group.name}}</option>
                 </select>
             </div>
