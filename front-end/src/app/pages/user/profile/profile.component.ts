@@ -137,7 +137,7 @@ export class ProfileComponent extends Page implements OnDestroy {
     }
 
     get youtube (): SafeResourceUrl {
-        return this._data.youtube ? this._sanitizer.bypassSecurityTrustResourceUrl(this._data.youtube) : null;
+        return this._data.youtube ? this._sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube.com/watch?v=${this._data.youtube}`) : null;
     }
 
     get relations (): ProfileRelations {
