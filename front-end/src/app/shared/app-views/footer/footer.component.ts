@@ -22,7 +22,7 @@ export class FooterComponent {
     }
 
     get activeUsers (): Array<ActiveUser> {
-        return this._info.activeUsers;
+        return this._info ? this._info.activeUsers : null;
     }
 
     getAvatarUrl (id: number): string {
