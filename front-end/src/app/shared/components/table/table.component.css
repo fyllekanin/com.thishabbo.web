@@ -12,27 +12,6 @@
     border-radius: 3px;
 }
 
-.header {
-    background: #ffffff;
-    padding: 0.2rem;
-    border: 1px solid #fffbfb;
-    text-transform: uppercase;
-    font-weight: bold;
-    margin-bottom: 4px;
-}
-
-.row {
-    padding: 0.2rem 0.2rem 0.2rem 0.3rem;
-}
-
-.row:nth-child(even) {
-    background: #f7f7f7;
-}
-
-.column {
-    line-height: 34px;
-}
-
 .editable {
     width: 2rem !important;
     margin-bottom: 0;
@@ -42,33 +21,65 @@
     margin-bottom: 1rem;
 }
 
-.clickable {
+table {
+    width: 100%;
+}
+
+tr:nth-child(even) {
+    background: #f7f7f7;
+}
+
+th {
+    text-align: left;
+}
+
+.action {
+    color: #ababab;
+    font-size: 16px;
+    text-align: right;
+    position: relative;
+}
+
+.action em {
     cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 100%;
+    transition: 0.3s;
+    outline: none;
 }
 
-.clickable em {
-    padding-left: 5px;
-    font-size: 13px;
+.action em:hover {
+    background: #f1f1f1;
 }
 
-.clickable:hover {
-    background: #f8f8f8;
+.actions {
+    display: none;
+    background: #ffffff;
+    box-shadow: 0 1px white, 0 1px 4px #6d6d6d42;
+    text-align: left;
+    font-size: 11px;
+    width: auto;
+    position: absolute;
+    top: 17px;
+    right: 17px;
+    z-index: 10;
+    min-width: 161px;
 }
 
-.row-data {
-    padding: 0.5rem;
-    background-color: #ececec;
-
-    overflow: hidden;
-    max-height: 500px; /* approximate max height */
-    box-sizing: border-box;
-
-    transition-property: all;
-    transition-duration: .5s;
-    transition-timing-function: ease;
+.actions:hover {
+    display: block;
 }
 
-.closed {
-    max-height: 0;
-    padding: 0;
+.actions div {
+    cursor: pointer;
+    padding: 5px;
+    transition: 0.3s;
+}
+
+.actions div:hover {
+    background: #f7f7f7;
+}
+
+em:focus ~ .actions {
+    display: block;
 }
