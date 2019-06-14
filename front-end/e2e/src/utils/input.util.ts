@@ -42,9 +42,8 @@ export class InputUtil {
     }
 
     static clickRowAction (index: number, action: string): void {
-        const ele = element.all(by.css('app-table .row select')).get(index);
-        browser.wait(ExpectedConditions.presenceOf(ele), 10000, `Expected row ${index} to be present`);
-
-        InputUtil.selectOption(ele, action);
+        const selector = element.all(by.css('app-table tbody tr')).get(index);
+        CommonUtil.click(selector.element(by.css('em')));
+        CommonUtil.click(selector.element(by.cssContainingText('em div', action)));
     }
 }

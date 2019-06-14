@@ -25,10 +25,6 @@ table {
     width: 100%;
 }
 
-td {
-    padding: 10px 5px;
-}
-
 tr:nth-child(even) {
     background: #f7f7f7;
 }

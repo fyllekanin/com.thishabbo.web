@@ -32,19 +32,20 @@
                 <th *ngFor="let header of headers">{{header.title}}</th>
                 <th *ngIf="haveActions"></th>
             </tr>
+            <tbody>
             <tr *ngFor="let row of rows">
                 <td *ngFor="let cell of row.cells">
-                    <span *ngIf="cell.statusBox" [ngClass]="cell.status ? 'status-good' : 'status-bad'">
-                        {{cell.title}}
-                    </span>
+                        <span *ngIf="cell.statusBox" [ngClass]="cell.status ? 'status-good' : 'status-bad'">
+                            {{cell.title}}
+                        </span>
                     <input *ngIf="cell.isEditable" class="editable" [(ngModel)]="cell.value">
 
                     <span *ngIf="!cell.statusBox && !cell.isEditable">
-                        <span *ngIf="cell.innerHTML" [innerHTML]="cell.title | safeHtml"></span>
-                        <span *ngIf="!cell.innerHTML">
-                            {{cell.title}}
+                            <span *ngIf="cell.innerHTML" [innerHTML]="cell.title | safeHtml"></span>
+                            <span *ngIf="!cell.innerHTML">
+                                {{cell.title}}
+                            </span>
                         </span>
-                    </span>
                 </td>
                 <td *ngIf="row.actions.length > 0" class="action">
                     <em class="fas fa-ellipsis-v" tabindex="1"></em>
@@ -54,6 +55,7 @@
                     </div>
                 </td>
             </tr>
+            </tbody>
         </table>
 
         <!--<div class="grid-x header">
