@@ -11,7 +11,7 @@ export class StaffListPage {
 
             CommonUtil.click(element(by.cssContainingText('button', 'Add Group')));
 
-            const row = element(by.cssContainingText('app-table .row', group));
+            const row = element(by.cssContainingText('app-table tr', group));
             browser.wait(ExpectedConditions.presenceOf(row), 10000, `Expected group ${group} to be in the list`);
         });
     }

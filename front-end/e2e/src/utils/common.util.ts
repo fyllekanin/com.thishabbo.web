@@ -44,7 +44,7 @@ export class CommonUtil {
 
         const loadingWrapper = element(by.css('.loading-wrapper'));
         browser.wait(ExpectedConditions.invisibilityOf(loadingWrapper), 10000, 'Expected loading wrapper to be gone');
-        browser.sleep(200);
+        browser.sleep(500);
     }
 
     static getTableRows () {
