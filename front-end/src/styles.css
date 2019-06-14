@@ -63,6 +63,7 @@ h2 {
 }
 
 .quote, details {
+    width: 100%;
     padding: 10px;
     margin: 10px 0;
     background: #fbfbfb;
@@ -238,4 +239,10 @@ summary {
     overflow: hidden;
     width: 100%;
     float: left;
+}
+
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

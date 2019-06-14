@@ -1,5 +1,5 @@
 #!/bin/bash
-if [[ -f build-prod.sh ]]; then
+if [[ -f install.sh ]]; then
     cd ./..
 fi
 

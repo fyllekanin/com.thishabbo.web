@@ -14,7 +14,8 @@ import { Category, CategoryActions, CategoryLeaf, CategoryOptions, CategoryPage 
 
 @Component({
     selector: 'app-sitecp-forum-category',
-    templateUrl: 'category.component.html'
+    templateUrl: 'category.component.html',
+    styleUrls: ['category.component.css']
 })
 export class CategoryComponent extends Page implements OnDestroy {
     private _categoryPage: CategoryPage = new CategoryPage();
