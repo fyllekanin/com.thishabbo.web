@@ -106,13 +106,13 @@ class GroupsController extends Controller {
         $groupId = $request->input('groupId');
         $group = Group::find($groupId);
 
-        Condition::precondition(!$group, 404, 'Group with that ID do not exist');
-        Condition::precondition(!in_array($groupId, $user->groupIds), 400, 'You are not part of this group');
+        Condition::precondition(!$group && $groupId != 0, 404, 'Group with that ID do not exist');
+        Condition::precondition(!in_array($groupId, $user->groupIds) && $groupId != 0, 400, 'You are not part of this group');
 
         $user->displayGroupId = $groupId;
         $user->save();
 
-        Logger::user($user->userId, $request->ip(), Action::UPDATED_DISPLAY_GROUP, ['group' => $group->name]);
+        Logger::user($user->userId, $request->ip(), Action::UPDATED_DISPLAY_GROUP, ['group' => $groupId != 0 ? $group->name : 'No Display Group']);
         return response()->json();
     }
 }

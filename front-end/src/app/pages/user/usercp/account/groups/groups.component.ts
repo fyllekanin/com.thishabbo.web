@@ -81,7 +81,7 @@ export class GroupsComponent extends Page implements OnDestroy {
     }
 
     set displayGroupId (groupId: number) {
-        this._data.displayGroup = this._data.groups.find(group => group.groupId === Number(groupId));
+        this._data.displayGroup = groupId !== 0 ? this._data.groups.find(group => group.groupId === Number(groupId)) : null;
     }
 
     private onApply (groupId: number): void {
