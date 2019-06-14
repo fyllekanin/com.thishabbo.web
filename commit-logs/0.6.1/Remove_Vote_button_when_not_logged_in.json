@@ -1,0 +1,1 @@
+{"topic":"Hide Vote Button for non-logged in visitors","type":"Bug","body":"The vote tab for polls is visible for users which are not logged in. This patch fixes that so the vote button does not show unless you are logged in."}

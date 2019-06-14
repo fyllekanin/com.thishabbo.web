@@ -1,0 +1,1 @@
+{"topic":"Cateogry icon","type":"Feature","body":"Categories can now have font awesome icon, the icon is displayed on forum home page and on sub-categories when you are inside a category. The icons are font-awesome icons with validation to prevent HTML etc to get in."}

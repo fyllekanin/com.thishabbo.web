@@ -26,6 +26,7 @@ class CreateCategoriesTables extends Migration {
             $table->integer('isOpen')->default(1);
             $table->bigInteger('createdAt');
             $table->bigInteger('updatedAt');
+            $table->string('icon')->nullable();
 
             // Indexes
             $table->index('title');

@@ -1,31 +1,42 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ThreadAnswer, ThreadPoll } from './thread-poll.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
+import { AuthService } from 'core/services/auth/auth.service';
 
 @Component({
     selector: 'app-forum-thread-poll',
     templateUrl: 'thread-poll.component.html',
     styleUrls: ['thread-poll.component.css']
 })
-export class ThreadPollComponent {
+export class ThreadPollComponent implements OnInit {
     private _poll: ThreadPoll;
     private _threadId: number;
 
     answerId: string;
-    tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Vote' })
-    ];
+    tabs: Array<TitleTab> = [];
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
-        private _notificationService: NotificationService
-    ) {}
+        private _notificationService: NotificationService,
+        private _authService: AuthService
+    ) {
+    }
 
-    vote(): void {
-        this._httpService.post(`forum/thread/${this._threadId}/vote`, { answerId: this.answerId })
+    ngOnInit (): void {
+        if (!this._authService.isLoggedIn()) {
+            this.tabs = [];
+            return;
+        }
+        this.tabs = [
+            new TitleTab({title: 'Vote'})
+        ];
+    }
+
+    vote (): void {
+        this._httpService.post(`forum/thread/${this._threadId}/vote`, {answerId: this.answerId})
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
@@ -38,28 +49,28 @@ export class ThreadPollComponent {
     }
 
     @Input()
-    set poll(poll: ThreadPoll) {
+    set poll (poll: ThreadPoll) {
         this._poll = poll;
     }
 
     @Input()
-    set threadId(threadId: number) {
+    set threadId (threadId: number) {
         this._threadId = threadId;
     }
 
-    get question(): string {
+    get question (): string {
         return this._poll.question;
     }
 
-    get haveVoted(): boolean {
+    get haveVoted (): boolean {
         return this._poll.haveVoted;
     }
 
-    get options(): Array<ThreadAnswer> {
+    get options (): Array<ThreadAnswer> {
         return this._poll.answers;
     }
 
-    get answers(): Array<{ label: string, percentage: number, votes: number }> {
+    get answers (): Array<{ label: string, percentage: number, votes: number }> {
         const total = this._poll.answers.reduce((prev, curr) => {
             return prev + curr.answers;
         }, 0);

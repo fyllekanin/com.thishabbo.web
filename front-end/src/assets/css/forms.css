@@ -92,6 +92,10 @@ label {
     padding: 5px 0 5px 0;
 }
 
+label em {
+    font-weight: normal;
+}
+
 input, select, textarea {
     border: 0;
     background: white;
