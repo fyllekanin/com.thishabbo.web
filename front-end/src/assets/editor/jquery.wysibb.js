@@ -2458,22 +2458,18 @@ wbbdebug = false;
                 $(node.previousSibling).remove();
             }
         },
-        modeSwitch: function (skipFocus) {
+        modeSwitch: function () {
             $(".mswitch").toggleClass("on");
             if (this.options.bbmode) {
                 //to HTML
                 this.$body.html(this.getHTML(this.$txtArea.val()));
                 this.$txtArea.hide().removeAttr("wbbsync").val("");
-                if (!skipFocus) {
-                    this.$body.css("min-height", this.$txtArea.height()).show().focus();
-                }
+                this.$body.css("min-height", this.$txtArea.height()).show().focus();
             } else {
                 //to bbcode
                 this.$txtArea.val(this.getBBCode()).css("min-height", this.$body.height());
                 this.$body.hide();
-                if (!skipFocus) {
-                    this.$txtArea.show().focus();
-                }
+                this.$txtArea.show().focus();
             }
             this.options.bbmode = !this.options.bbmode;
         },
@@ -3097,8 +3093,8 @@ wbbdebug = false;
     $.fn.isBBMode = function () {
         return this.data('wbb').options.bbmode;
     }
-    $.fn.modeSwitch = function (skipFocus) {
-        this.data('wbb').modeSwitch(skipFocus)
+    $.fn.modeSwitch = function () {
+        this.data('wbb').modeSwitch()
     }
     $.fn.getDoc = function () {
         return this.data('wbb').doc;

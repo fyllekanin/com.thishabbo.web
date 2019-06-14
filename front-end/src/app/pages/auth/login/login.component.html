@@ -2,9 +2,7 @@
     <div class="grid-x margin-x">
         <div class="cell small-12">
             <app-title
-                    [title]="'Login'"
-                    [tabs]="tabs"
-                    (onTabClick)="onAction($event)">
+                    [title]="'Login'">
             </app-title>
             <app-content>
                 <div class="small-12 cell" *ngIf="showError">
@@ -19,6 +17,15 @@
                     <input (keydown)="keyDownFunction($event)" [(ngModel)]="password" type="password" name="password">
                 </div>
                 <br/>
+                <div class="small-12 cell align-right">
+                    <button appButton (onClick)="doLogin()">Login</button>
+                    <button appButton [color]="registerButton" [routerLink]="['/auth/register']">
+                        Register
+                    </button>
+                    <button appButton [color]="registerButton" [routerLink]="['/auth/forgot-password']">Forgot
+                        Password?
+                    </button>
+                </div>
             </app-content>
         </div>
     </div>

@@ -38,10 +38,9 @@
             </div>
 
             <div *ngFor="let row of rows" [ngClass]="row.isExpandable && row.data ? 'clickable' : ''"
-                 (click)="toggleRow(row)" class="row">
-                <div class="grid-x">
-                    <div class="cell column truncate" [ngClass]="columnSize.column"
-                         *ngFor="let cell of row.cells; let index = index">
+                 (click)="toggleRow(row)">
+                <div class="grid-x row">
+                    <div class="cell" [ngClass]="columnSize.column" *ngFor="let cell of row.cells; let index = index">
                         <div *ngIf="cell.statusBox">
                             <span [ngClass]="cell.status ? 'status-good' : 'status-bad'">
                                 {{cell.title}}

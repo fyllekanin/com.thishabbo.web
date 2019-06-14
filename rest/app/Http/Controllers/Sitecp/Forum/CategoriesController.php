@@ -63,7 +63,6 @@ class CategoriesController extends Controller {
         Condition::precondition($cantAddChildren, 400, 'You dont have permission to add children to this parent');
         Condition::precondition(empty($newCategory->title), 400, 'Title cant be empty');
         Condition::precondition(!$this->forumService->isValidTemplate($newCategory->template), 400, 'Invalid template');
-        Condition::precondition(isset($newCategory->icon) && !preg_match('/^[a-zA-Z\- ]+$/', $newCategory->icon), 400, 'Icon string is invalid');
 
         $newCategory->options = PermissionHelper::nameToNumberOptions($newCategory);
 
@@ -77,8 +76,7 @@ class CategoriesController extends Controller {
             'template' => $newCategory->template,
             'isHidden' => $newCategory->isHidden,
             'isOpen' => $newCategory->isOpen,
-            'link' => Value::objectProperty($newCategory, 'link', ''),
-            'icon' => Value::objectProperty($newCategory, 'icon', null)
+            'link' => Value::objectProperty($newCategory, 'link', '')
         ]);
         $category->save();
 
@@ -134,7 +132,6 @@ class CategoriesController extends Controller {
         Condition::precondition(!$category, 404, 'Category do not exist');
         Condition::precondition(empty($newCategory->title), 400, 'Title cant be empty');
         Condition::precondition(!$this->forumService->isValidTemplate($newCategory->template), 400, 'Invalid template');
-        Condition::precondition(isset($newCategory->icon) && !preg_match('/^[a-zA-Z\- ]+$/', $newCategory->icon), 400, 'Icon string is invalid');
 
         $newCategoryId = $newCategory->categoryId;
         $oldCategoryId = $category->categoryId;
@@ -150,8 +147,7 @@ class CategoriesController extends Controller {
                 'template' => $newCategory->template,
                 'isHidden' => $newCategory->isHidden,
                 'isOpen' => $newCategory->isOpen,
-                'link' => Value::objectProperty($newCategory, 'link', ''),
-                'icon' => Value::objectProperty($newCategory, 'icon', null)
+                'link' => Value::objectProperty($newCategory, 'link', '')
             ]);
 
         if ($newCategoryId != $oldCategoryId) {

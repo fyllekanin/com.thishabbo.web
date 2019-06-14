@@ -1,84 +1,85 @@
 <div class="grid-container full">
     <div class="grid-x margin-x">
-        <div class="cell small-12">
+        <div class="cell small-12 large-9">
             <div *ngFor="let category of categories">
                 <app-title [title]="category.title" [titlePointer]="true" [tabs]="[toggleTab]"
-                           (onTabClick)="toggleCategory(category)" (onTitleClick)="onTitleClick(category)">
+                    (onTabClick)="toggleCategory(category)" (onTitleClick)="onTitleClick(category)">
                 </app-title>
                 <app-content [isContracted]="isCategoryContracted(category)">
                     <app-forum-slim-category *ngFor="let child of category.childs.sort(sortCategories)"
-                                             [category]="child"></app-forum-slim-category>
+                        [category]="child"></app-forum-slim-category>
                 </app-content>
             </div>
             <div *ngIf="categories.length === 0">
                 <app-title [title]="'No categories available'"></app-title>
                 <app-content>
-                    You don't have access to see any categories on the forum. <br/>
+                    You don't have access to see any categories on the forum. <br />
                     If you are logged in and seeing this error message, please contact an Sitecpistrator. If you aren't
                     logged in, please do so!
                 </app-content>
             </div>
-
-            <app-title [title]="'Forum Stats'" [top]="latestPostersTop" [tabs]="[refreshTab]"
-                       (onTabClick)="updateForumStats()"></app-title>
+        </div>
+        <div class="cell small-12 large-3">
+            <app-title [title]="'Latest Posts'" [top]="latestPostersTop" [tabs]="[refreshTab]"
+                (onTabClick)="updateForumStats()"></app-title>
             <app-content>
-                <div class="grid-container full">
-                    <div class="grid-x margin-x">
-                        <div class="cell small-3">
-                            <label>Top Posters</label>
-                            <div *ngIf="!topPosters">
-                                Loading...
-                            </div>
-                            <div *ngIf="topPosters && topPosters.length === 0">
-                                No top posters as of now...
-                            </div>
-                            <div class="gray-content-wrapper" *ngFor="let topPoster of topPosters; let i = index;">
-                                {{i + 1}}.
-                                <app-user-link [user]="topPoster.user"></app-user-link>
+                <div *ngIf="!latestPosts">
+                    Loading...
+                </div>
+                <div *ngIf="latestPosts && latestPosts.length === 0">
+                    No posts as of now...
+                </div>
+                <div *ngFor="let latestPost of latestPosts;" class="latest-post-row">
+                    <span class="image">
+                        <img appUserProfile [isSmall]="true" [info]="latestPost.user" />
+                    </span>
+                    <span class="data">
+                        <a class="title"
+                            [routerLink]="['/forum', 'thread', latestPost.threadId, 'page', latestPost.page]"
+                            [queryParams]="{ scrollTo: 'post-' + latestPost.postId}">
+                            <span *ngIf="latestPost.text" [style]="latestPost.style | safeStyle">
+                                {{latestPost.text}} &#xbb;
+                            </span>
+                            {{latestPost.title}}
+                        </a>
+                        <br />
+                        Latest: <app-user-link [user]="latestPost.user"></app-user-link>
+                        - {{latestPost.time}}
+                        <br />
+                        In {{latestPost.category}}
+                    </span>
+                </div>
+            </app-content>
 
-                                <span class="float-right">({{topPoster.posts | number: '1.'}})</span>
-                            </div>
-                        </div>
-                        <div class="cell small-3">
-                            <label>Top Posters Today</label>
-                            <div *ngIf="!topPostersToday">
-                                Loading...
-                            </div>
-                            <div *ngIf="topPostersToday && topPostersToday.length === 0">
-                                No top posters today as of now...
-                            </div>
-                            <div class="gray-content-wrapper" *ngFor="let topPoster of topPostersToday; let i = index;">
-                                {{i + 1}}.
-                                <app-user-link [user]="topPoster.user"></app-user-link>
+            <app-title [title]="'Top Posters Today'"></app-title>
+            <app-content>
+                <div *ngIf="!topPostersToday">
+                    Loading...
+                </div>
+                <div *ngIf="topPostersToday && topPostersToday.length === 0">
+                    No top posters today as of now...
+                </div>
+                <div class="gray-content-wrapper" *ngFor="let topPoster of topPostersToday; let i = index;">
+                    {{i + 1}}.
+                    <app-user-link [user]="topPoster.user"></app-user-link>
 
-                                <span class="float-right">({{topPoster.posts | number: '1.'}})</span>
-                            </div>
-                        </div>
-                        <div class="cell small-6">
-                            <label>Latest Posts</label>
-                            <div *ngIf="!latestPosts">
-                                Loading...
-                            </div>
-                            <div *ngIf="latestPosts && latestPosts.length === 0">
-                                No posts as of now...
-                            </div>
-                            <div *ngFor="let latestPost of latestPosts;" class="latest-post-row">
-                                <span class="data">
-                                    <a class="title"
-                                       [routerLink]="['/forum', 'thread', latestPost.threadId, 'page', latestPost.page]"
-                                       [queryParams]="{ scrollTo: 'post-' + latestPost.postId}">
-                                        <span *ngIf="latestPost.text" [style]="latestPost.style | safeStyle">
-                                            {{latestPost.text}} &#xbb;
-                                        </span>
-                                        {{latestPost.title}}
-                                    </a>
-                                    <br/>
-                                    Latest: <app-user-link [user]="latestPost.user"></app-user-link>
-                                    - {{latestPost.time}}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
+                    <span class="float-right">({{topPoster.posts | number: '1.'}})</span>
+                </div>
+            </app-content>
+
+            <app-title [title]="'Top Posters'"></app-title>
+            <app-content>
+                <div *ngIf="!topPosters">
+                    Loading...
+                </div>
+                <div *ngIf="topPosters && topPosters.length === 0">
+                    No top posters as of now...
+                </div>
+                <div class="gray-content-wrapper" *ngFor="let topPoster of topPosters; let i = index;">
+                    {{i + 1}}.
+                    <app-user-link [user]="topPoster.user"></app-user-link>
+
+                    <span class="float-right">({{topPoster.posts | number: '1.'}})</span>
                 </div>
             </app-content>
         </div>

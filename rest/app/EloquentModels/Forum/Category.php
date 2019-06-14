@@ -19,7 +19,7 @@ class Category extends DeletableModel {
     private $forumService;
 
     protected $primaryKey = 'categoryId';
-    protected $fillable = ['parentId', 'title', 'description', 'options', 'displayOrder', 'template', 'isOpen', 'isHidden', 'link', 'lastPostId', 'icon'];
+    protected $fillable = ['parentId', 'title', 'description', 'options', 'displayOrder', 'template', 'isOpen', 'isHidden', 'link', 'lastPostId'];
 
     public function __construct(array $attributes = []) {
         parent::__construct($attributes);

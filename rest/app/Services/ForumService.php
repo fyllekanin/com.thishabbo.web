@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\EloquentModels\Forum\Category;
-use App\EloquentModels\Forum\CategoryRead;
 use App\EloquentModels\Forum\Post;
 use App\EloquentModels\Forum\Thread;
 use App\EloquentModels\Forum\ThreadRead;
@@ -68,37 +67,6 @@ class ForumService {
             $threadRead->save();
         } else {
             ThreadRead::where('threadId', $threadId)->where('userId', $userId)->update(['updatedAt' => time()]);
-        }
-    }
-
-    public function haveReadCategory($category, $userId) {
-        $categoryRead = CategoryRead::where('categoryId', $category->categoryId)
-            ->where('userId', $userId)->first();
-        $categoryUpdatedAt = is_numeric($category->updatedAt) ? $category->updatedAt : $category->updatedAt->timestamp;
-
-        return $categoryRead && $categoryRead->updatedAt->timestamp > $categoryUpdatedAt;
-    }
-
-    /**
-     * @param $categoryId
-     * @param $userId
-     */
-    public function updateReadCategory($categoryId, $userId) {
-        if (!$userId) {
-            return;
-        }
-        $categoryRead = CategoryRead::where('categoryId', $categoryId)
-            ->where('userId', $userId)
-            ->first();
-
-        if (!$categoryRead) {
-            $categoryRead = new CategoryRead([
-                'categoryId' => $categoryId,
-                'userId' => $userId
-            ]);
-            $categoryRead->save();
-        } else {
-            CategoryRead::where('categoryId', $categoryId)->where('userId', $userId)->update(['updatedAt' => time()]);
         }
     }
 

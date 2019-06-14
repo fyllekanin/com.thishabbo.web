@@ -113,7 +113,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
     private setMode (): void {
         const isSourceMode = Boolean(localStorage.getItem(LOCAL_STORAGE.EDITOR_MODE));
         if (isSourceMode && !this._editorInstance.isBBMode()) {
-            this._editorInstance.modeSwitch(true);
+            this._editorInstance.modeSwitch();
         }
     }
 

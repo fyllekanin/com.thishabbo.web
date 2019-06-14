@@ -5,10 +5,10 @@ import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { HttpService } from 'core/services/http/http.service';
 import { Page } from 'shared/page/page.model';
 import { RegisterModel, RegisterPage } from './register.model';
+import { Button } from 'shared/directives/button/button.model';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { AuthService } from 'core/services/auth/auth.service';
-import { TitleTab } from 'shared/app-views/title/title.model';
 
 @Component({
     selector: 'app-auth-register',
@@ -18,7 +18,8 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 export class RegisterComponent extends Page implements OnDestroy {
     private _data: RegisterPage;
     registerModel: RegisterModel = new RegisterModel();
-    tabs: Array<TitleTab> = [new TitleTab({title: 'Register'})];
+
+    registerButton = Button.GREEN;
 
     constructor(
         private _notificationService: NotificationService,

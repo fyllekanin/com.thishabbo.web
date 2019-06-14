@@ -66,10 +66,10 @@ export class AppComponent extends Page implements OnDestroy {
                     if (AppComponent.isScrollToSet()) {
                         this.tryToScrollToElement();
                     } else if (!AppComponent.isScrollOff()) {
-                        document.getElementsByTagName('app-header-tabs')[0].scrollIntoView({behavior: 'smooth'});
+                        document.getElementsByTagName('app-top-box')[0].scrollIntoView({behavior: 'smooth'});
                     }
                 } catch (e) {
-                    document.getElementsByTagName('app-header-tabs')[0].scrollIntoView({behavior: 'smooth'});
+                    document.getElementsByTagName('app-top-box')[0].scrollIntoView({behavior: 'smooth'});
                 }
             }
         });

@@ -238,7 +238,6 @@ class PostCrudController extends Controller {
         $thread->save();
 
         $this->forumService->updateReadThread($thread->threadId, $user->userId);
-        $this->forumService->updateReadCategory($thread->categoryId, $user->userId);
         $this->forumService->updateLastPostIdOnCategory($thread->categoryId);
 
         Logger::user($user->userId, $request->ip(), Action::CREATED_POST, [
