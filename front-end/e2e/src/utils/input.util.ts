@@ -43,7 +43,7 @@ export class InputUtil {
 
     static clickRowAction (index: number, action: string): void {
         const selector = element.all(by.css('app-table tbody tr')).get(index);
-        CommonUtil.click(selector.element(by.css('em')));
-        CommonUtil.click(selector.element(by.cssContainingText('em div', action)));
+        CommonUtil.click(selector.element(by.css('.action em')));
+        CommonUtil.click(selector.element(by.cssContainingText('.action .actions div', action)));
     }
 }
