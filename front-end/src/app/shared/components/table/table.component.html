@@ -41,11 +41,11 @@
                     <input *ngIf="cell.isEditable" class="editable" [(ngModel)]="cell.value">
 
                     <span *ngIf="!cell.statusBox && !cell.isEditable">
-                            <span *ngIf="cell.innerHTML" [innerHTML]="cell.title | safeHtml"></span>
-                            <span *ngIf="!cell.innerHTML">
-                                {{cell.title}}
-                            </span>
+                        <span *ngIf="cell.innerHTML" [innerHTML]="cell.title | safeHtml"></span>
+                        <span *ngIf="!cell.innerHTML">
+                            {{cell.title}}
                         </span>
+                    </span>
                 </td>
                 <td *ngIf="row.actions.length > 0" class="action">
                     <em class="fas fa-ellipsis-v" tabindex="1"></em>

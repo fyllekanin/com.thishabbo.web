@@ -19,6 +19,6 @@ export class StaffListPage {
     static removeGroup (group: string): void {
         const row = element(by.cssContainingText('app-table tbody tr', group));
         CommonUtil.click(row.element(by.xpath('../../..')).element(by.css('em')));
-        CommonUtil.click(row.element(by.xpath('../../..')).element(by.cssContainingText('em div', 'Remove')));
+        CommonUtil.click(row.element(by.xpath('../../..')).element(by.cssContainingText('.action .actions div', 'Remove')));
     }
 }
