@@ -64,17 +64,15 @@ class ProfileSettingsController extends Controller {
         $like = User::withNickname($data->relations->like)->first();
         $hate = User::withNickname($data->relations->hate)->first();
 
-
         $youtubeRegExp = '/[a-z0-9_-]{11}/';
         Condition::precondition(!empty($data->youtube) && preg_match($youtubeRegExp, $data->youtube), 400, 'YouTube ID Invalid');
 
-        Condition::precondition(!empty($data->relations->love) && !$love, 404,
+        Condition::precondition(!empty($data->relations->love) && !$love, 400,
             'No user with the nickname: ' . $data->relations->love);
-        Condition::precondition(!empty($data->relations->like) && !$like, 404,
+        Condition::precondition(!empty($data->relations->like) && !$like, 400,
             'No user with the nickname: ' . $data->relations->like);
-        Condition::precondition(!empty($data->relations->hate) && !$hate, 404,
+        Condition::precondition(!empty($data->relations->hate) && !$hate, 400,
             'No user with the nickname: ' . $data->relations->hate);
-
 
         $profile->isPrivate = Value::objectProperty($data, 'isPrivate', false);
         $profile->youtube = Value::objectJsonProperty($data, 'youtube', null);
@@ -138,7 +136,8 @@ class ProfileSettingsController extends Controller {
         return response()->json([
             'width' => $avatarSize->width,
             'height' => $avatarSize->height,
-            'oldAvatarIds' => Avatar::where('userId', $user->userId)->take(5)->orderBy('updatedAt', 'DESC')->skip(1)->pluck('avatarId')
+            'oldAvatarIds' => Avatar::where('userId', $user->userId)->take(5)->orderBy('updatedAt', 'DESC')->skip(1)->pluck('avatarId'),
+            'user' => UserHelper::getUser($user->userId)
         ]);
     }
 

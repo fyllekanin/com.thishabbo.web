@@ -5,7 +5,7 @@ import { TitleTab, TitleTopBorder } from 'shared/app-views/title/title.model';
 @Component({
     selector: 'app-title',
     templateUrl: 'title.component.html',
-    styleUrls: [ 'title.component.css' ]
+    styleUrls: ['title.component.css']
 })
 
 export class TitleComponent {
@@ -40,9 +40,16 @@ export class TitleComponent {
         this.topBorder = top || TitleTopBorder.BLUE;
     }
 
-    onTabSelect(event): void {
-        this.onTabClick.emit(Number(event.target.value));
-        this.tabs = this._tabs.concat([]);
+    onTabSelect (): void {
+        if (!this.selectValue) {
+            return;
+        }
+        if (this.selectValue.link) {
+            this._router.navigateByUrl(this.selectValue.link);
+        } else {
+            this.onTabClick.emit(this.selectValue.value);
+        }
+        this.tabs = this._tabs.map(tab => new TitleTab(tab));
     }
 
     titleClick (): void {
@@ -70,7 +77,7 @@ export class TitleComponent {
         return this._tabs;
     }
 
-    get activeValue(): number {
+    get activeValue (): number {
         const activeTab = this._tabs.find(item => item.isActive);
         return activeTab ? activeTab.value : null;
     }

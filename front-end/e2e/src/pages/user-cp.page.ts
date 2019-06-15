@@ -4,12 +4,12 @@ import { InputUtil } from '../utils/input.util';
 
 export class UserCpPage {
 
-    static acceptGdpr(): void {
+    static acceptGdpr (): void {
         const gdpr = element(by.css('app-auth-register .cell .checkbox-container'));
         CommonUtil.click(gdpr);
     }
 
-    static fillRegisterInformation(data: {
+    static fillRegisterInformation (data: {
         username,
         password,
         habbo
@@ -33,7 +33,7 @@ export class UserCpPage {
         InputUtil.fillInput(habbo, data.habbo);
     }
 
-    static getChangePasswordInputs(): Array<ElementFinder> {
+    static getChangePasswordInputs (): Array<ElementFinder> {
         const passwordEle = element(by.css('app-usercp-password input[name="password"]'));
         const repasswordEle = element(by.css('app-usercp-password input[name="repassword"]'));
         const currentPasswordEle = element(by.css('app-usercp-password input[name="currentPassword"]'));
@@ -45,44 +45,44 @@ export class UserCpPage {
         return [passwordEle, repasswordEle, currentPasswordEle];
     }
 
-    static getEditHomePageInput(): ElementFinder {
+    static getEditHomePageInput (): ElementFinder {
         const ele = element(by.css('app-usercp-home-page input[name="homePage"]'));
         browser.wait(ExpectedConditions.presenceOf(ele), 10000, 'Expected home page input to be present');
 
         return ele;
     }
 
-    static getSignatureEditor(): ElementFinder {
+    static getSignatureEditor (): ElementFinder {
         const ele = element(by.css('app-usercp-signature app-editor .wysibb-text-editor'));
         browser.wait(ExpectedConditions.presenceOf(ele), 10000, 'Expected signature editor to be present');
 
         return ele;
     }
 
-    static getThreadSubscription(value: string): ElementFinder {
-        return element(by.cssContainingText('app-usercp-thread-subscriptions .cell', value));
+    static getThreadSubscription (value: string): ElementFinder {
+        return element(by.cssContainingText('app-usercp-thread-subscriptions app-table td span', value));
     }
 
-    static applyToGroup(value: string): void {
+    static applyToGroup (value: string): void {
         const ele = element(by.cssContainingText('.groups', value)).element(by.xpath('..'))
             .element(by.cssContainingText('span', 'Apply'));
         CommonUtil.click(ele);
     }
 
-    static getGroupStatus(value: string): ElementFinder {
+    static getGroupStatus (value: string): ElementFinder {
         return element(by.cssContainingText('.groups', value)).element(by.xpath('..'))
             .element(by.css('span'));
     }
 
-    static getHabboInput(): ElementFinder {
+    static getHabboInput (): ElementFinder {
         return element(by.css('app-usercp-habbo input[name="habbo"]'));
     }
 
-    static getCurrentHabbo(): ElementFinder {
+    static getCurrentHabbo (): ElementFinder {
         return element(by.css('app-usercp-habbo .habbo'));
     }
 
-    static toggleSetting(name: string): void {
+    static toggleSetting (name: string): void {
         const ele = element(by.cssContainingText('app-user-usercp-dashboard .checkbox-container', name));
         CommonUtil.click(ele);
     }

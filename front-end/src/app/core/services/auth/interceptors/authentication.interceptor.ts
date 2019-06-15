@@ -20,7 +20,7 @@ import { NotificationMessage, NotificationType } from 'shared/app-views/global-n
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
-
+    private readonly GET_METHOD = 'GET';
     private isRefreshingToken = false;
     private tokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
@@ -49,6 +49,9 @@ export class AuthenticationInterceptor implements HttpInterceptor {
                             this._router.navigateByUrl('/page/access');
                             return observableThrowError(error);
                         case 404:
+                            if (req.method !== this.GET_METHOD) {
+                                return observableThrowError(error);
+                            }
                             this._notificationService.sendNotification(new NotificationMessage({
                                 title: 'Oops!',
                                 message: error.error.message,
