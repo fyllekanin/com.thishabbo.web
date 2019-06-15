@@ -63,13 +63,12 @@ class ProfileSettingsController extends Controller {
         $like = User::withNickname($data->relations->like)->first();
         $hate = User::withNickname($data->relations->hate)->first();
 
-        Condition::precondition(!empty($data->relations->love) && !$love, 404,
+        Condition::precondition(!empty($data->relations->love) && !$love, 400,
             'No user with the nickname: ' . $data->relations->love);
-        Condition::precondition(!empty($data->relations->like) && !$like, 404,
+        Condition::precondition(!empty($data->relations->like) && !$like, 400,
             'No user with the nickname: ' . $data->relations->like);
-        Condition::precondition(!empty($data->relations->hate) && !$hate, 404,
+        Condition::precondition(!empty($data->relations->hate) && !$hate, 400,
             'No user with the nickname: ' . $data->relations->hate);
-
 
         $profile->isPrivate = Value::objectProperty($data, 'isPrivate', false);
         $profile->youtube = Value::objectProperty($data, 'youtube', null);
