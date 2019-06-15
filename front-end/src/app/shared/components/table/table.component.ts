@@ -120,7 +120,7 @@ export class TableComponent implements DoCheck {
         switch (this._config.headers.length) {
             case 1:
                 return {
-                    column: this.haveActions ? 'small-9 medium-10' : 'small-12',
+                    column: 'small-11',
                     actions: this.haveActions ? 'small-3 medium-2' : ''
                 };
             case 2:

@@ -26,59 +26,85 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <table cellspacing="0" cellpadding="0">
+            <tr>
+                <th *ngFor="let header of headers">{{header.title}}</th>
+                <th *ngIf="haveActions"></th>
+            </tr>
+            <tbody>
+            <tr *ngFor="let row of rows">
+                <td *ngFor="let cell of row.cells">
+                        <span *ngIf="cell.statusBox" [ngClass]="cell.status ? 'status-good' : 'status-bad'">
+                            {{cell.title}}
+                        </span>
+                    <input *ngIf="cell.isEditable" class="editable" [(ngModel)]="cell.value">
 
-            <div class="grid-x header">
-                <div class="cell" [ngClass]="columnSize.column" *ngFor="let header of headers">
-                    {{header.title}}
-                </div>
+                    <span *ngIf="!cell.statusBox && !cell.isEditable">
+                        <span *ngIf="cell.innerHTML" [innerHTML]="cell.title | safeHtml"></span>
+                        <span *ngIf="!cell.innerHTML">
+                            {{cell.title}}
+                        </span>
+                    </span>
+                </td>
+                <td *ngIf="row.actions.length > 0" class="action">
+                    <em class="fas fa-ellipsis-v" tabindex="1"></em>
+                    <div class="actions">
+                        <div *ngFor="let action of row.actions"
+                             (click)="onActionClick(row.id, action.value)">{{action.title}}</div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
-                <div class="cell" [ngClass]="columnSize.actions" *ngIf="haveActions">
-                    Actions
-                </div>
+        <!--<div class="grid-x header">
+            <div class="cell" [ngClass]="columnSize.column" *ngFor="let header of headers">
+                {{header.title}}
             </div>
 
-            <div *ngFor="let row of rows" [ngClass]="row.isExpandable && row.data ? 'clickable' : ''"
-                 (click)="toggleRow(row)" class="row">
-                <div class="grid-x">
-                    <div class="cell column truncate" [ngClass]="columnSize.column"
-                         *ngFor="let cell of row.cells; let index = index">
-                        <div *ngIf="cell.statusBox">
+            <div class="cell" [ngClass]="columnSize.actions" *ngIf="haveActions">
+                Actions
+            </div>
+        </div>
+
+        <div *ngFor="let row of rows" [ngClass]="row.isExpandable && row.data ? 'clickable' : ''"
+             (click)="toggleRow(row)" class="row">
+            <div class="grid-x">
+                <div class="cell column truncate" [ngClass]="columnSize.column"
+                     *ngFor="let cell of row.cells; let index = index">
+                    <div *ngIf="cell.statusBox">
                             <span [ngClass]="cell.status ? 'status-good' : 'status-bad'">
                                 {{cell.title}}
                             </span>
-                        </div>
-                        <div *ngIf="cell.isEditable">
-                            <input class="editable" [(ngModel)]="cell.value">
-                        </div>
-                        <div *ngIf="!cell.statusBox && !cell.isEditable">
-                            <span *ngIf="cell.innerHTML" [innerHTML]="cell.title | safeHtml"></span>
-                            <span *ngIf="!cell.innerHTML">
+                    </div>
+                    <div *ngIf="cell.isEditable">
+                        <input class="editable" [(ngModel)]="cell.value">
+                    </div>
+                    <div *ngIf="!cell.statusBox && !cell.isEditable">
+                        <span *ngIf="cell.innerHTML" [innerHTML]="cell.title | safeHtml"></span>
+                        <span *ngIf="!cell.innerHTML">
                                 {{cell.title}}
                             </span>
-                            <span *ngIf="row.isExpandable && row.data && index === 0">
+                        <span *ngIf="row.isExpandable && row.data && index === 0">
                                 <em class="fas fa-arrow-alt-circle-right" *ngIf="!row.isOpen"></em>
                                 <em class="fas fa-arrow-alt-circle-down" *ngIf="row.isOpen"></em>
                             </span>
-                        </div>
                     </div>
+                </div>
 
-                    <div class="cell action"
-                         [ngClass]="row.actions.length === 1 ? columnSize.actions : columnSize.actions"
-                         *ngIf="haveActions">
-                        <select (change)="onChange(row, $event)" [disabled]="row.actions.length === 0">
-                            <option [value]="null" disabled="disabled">{{ row.actionsPlaceholder || 'Choose' }}</option>
-                            <option *ngFor="let item of row.actions" [value]="item.value">{{item.title}}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row-data" [ngClass]="!row.isOpen ? 'closed' : ''">
-                    {{row.dataTitle}}
-                    <div [innerHTML]="row.data | safeHtml"></div>
+                <div class="cell action"
+                     [ngClass]="row.actions.length === 1 ? columnSize.actions : columnSize.actions"
+                     *ngIf="haveActions">
+                    <select (change)="onChange(row, $event)" [disabled]="row.actions.length === 0">
+                        <option [value]="null" disabled="disabled">{{ row.actionsPlaceholder || 'Choose' }}</option>
+                        <option *ngFor="let item of row.actions" [value]="item.value">{{item.title}}</option>
+                    </select>
                 </div>
             </div>
-            <div *ngIf="rows.length === 0" class="align-center">
-                There no data! ¯\_(ツ)_/¯
-            </div>
+        </div>-->
+        <div *ngIf="rows.length === 0" class="align-center">
+            There no data! ¯\_(ツ)_/¯
         </div>
     </app-content>
 </div>

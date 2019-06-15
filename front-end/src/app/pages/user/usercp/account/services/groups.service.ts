@@ -31,7 +31,7 @@ export class GroupsService implements Resolve<UserCpGroupsPage> {
     }
 
     updateDisplayGroup(group: UserCpGroup): void {
-        this._httpService.put('usercp/groups/displaygroup', { groupId: group.groupId })
+        this._httpService.put('usercp/groups/displaygroup', { groupId: group ? group.groupId : 0 })
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',

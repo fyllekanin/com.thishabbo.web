@@ -44,11 +44,11 @@ export class CommonUtil {
 
         const loadingWrapper = element(by.css('.loading-wrapper'));
         browser.wait(ExpectedConditions.invisibilityOf(loadingWrapper), 10000, 'Expected loading wrapper to be gone');
-        browser.sleep(200);
+        browser.sleep(500);
     }
 
     static getTableRows () {
-        return element.all(by.css('app-table .row'));
+        return element.all(by.css('app-table tbody tr'));
     }
 
     static enterTableFilter (placeholder: string, value: string): void {

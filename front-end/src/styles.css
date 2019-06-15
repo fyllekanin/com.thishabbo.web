@@ -112,10 +112,9 @@ h2 {
 
 .generic-radio-button {
     color: white;
-    background-image: url(/assets/images/bargradient.png) !important;
+    background: #dddddd url(/assets/images/bargradient.png) !important;
     font-size: 11px;
     height: 30px;
-    background: #dddddd;
     padding: 8px 8px 0 9px;
     margin-right: 5px;
     margin-top: 10px;
@@ -127,30 +126,25 @@ h2 {
 }
 
 .generic-pink-button {
-    background-image: url(/assets/images/bargradient.png) !important;
-    background: #9a9393;
+    background: #9a9393 url(/assets/images/bargradient.png) !important;
 }
 
 .generic-blue-button {
     cursor: pointer;
-    background-image: url(/assets/images/bargradient.png) !important;
-    background: #139bfb;
+    background: #139bfb url(/assets/images/bargradient.png) !important;
 }
 
 .generic-yellow-button {
     cursor: pointer;
-    background-image: url(/assets/images/bargradient.png) !important;
-    background-color: #d5e028;
+    background: #d5e028 url(/assets/images/bargradient.png) !important;
 }
 
 .generic-green-button {
-    background-image: url(/assets/images/bargradient.png) !important;
-    background: #79b554;
+    background: #79b554 url(/assets/images/bargradient.png) !important;
 }
 
 .generic-red-button {
-    background-image: url(/assets/images/bargradient.png) !important;
-    background-color: #c37070;
+    background: #c37070 url(/assets/images/bargradient.png) !important;
 }
 
 .gold-trophy {

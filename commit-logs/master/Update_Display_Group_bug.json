@@ -1,0 +1,1 @@
+{"topic":"Update Display Group bug","type":"Bug","body":"When you had no display group, it didn't allow it to save. Fixed this."}
