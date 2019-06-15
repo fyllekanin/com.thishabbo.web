@@ -2,10 +2,10 @@
 <app-content>
     <div class="grid-container full">
         <div class="grid-x grid-margin-x">
-            <div class="cell small-6 medium-6">
+            <div class="cell small-6">
                 <app-form-select [(value)]="selectedGroup" [items]="selectableGroups"></app-form-select>
             </div>
-            <div class="small-6 medium-6">
+            <div class="cell small-6">
                 <select [(ngModel)]="selectedColor" name="color">
                     <option [value]="undefined">Select Color...</option>
                     <option *ngFor="let color of possibleColors" [value]="color.color">

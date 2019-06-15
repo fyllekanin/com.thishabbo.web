@@ -148,7 +148,7 @@ export class GroupsListComponent extends Page implements OnDestroy {
         this._groupsList = data.data;
         this.updateSelectableGroups();
         this.createOrUpdateTable();
-        this.addTabs();
+        this.createOrUpdateTabs();
     }
 
     private updateSelectableGroups(): void {
@@ -191,11 +191,10 @@ export class GroupsListComponent extends Page implements OnDestroy {
         ];
     }
 
-    private addTabs(): void {
-        const tabs = [
-            {title: 'Save', value: GroupsActions.SAVE, condition: true},
-            {title: 'Add Group', value: GroupsActions.ADD, condition: true}
-        ];
-        this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));
+    private createOrUpdateTabs(): void {
+        this.tabs = [
+            new TitleTab({title: 'Save', value: GroupsActions.SAVE}),
+            new TitleTab({title: 'Add Group', value: GroupsActions.ADD})
+        ]
     }
 }
