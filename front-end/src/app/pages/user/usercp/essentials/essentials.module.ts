@@ -23,6 +23,7 @@ import { NameColorComponent } from './name-color/name-color.component';
 import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
 import { InfoBoxModule } from 'shared/app-views/info-box/info-box.module';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
+import { UserPostBitModule } from 'shared/components/user-post-bit/user-post-bit.module';
 
 @NgModule({
     imports: [
@@ -34,7 +35,8 @@ import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
         EditorModule,
         SafeStyleModule,
         SafeHtmlModule,
-        InfoBoxModule
+        InfoBoxModule,
+        UserPostBitModule
     ],
     declarations: [
         AvatarComponent,
@@ -61,4 +63,5 @@ import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
         RouterModule
     ]
 })
-export class EssentialsModule {}
+export class EssentialsModule {
+}

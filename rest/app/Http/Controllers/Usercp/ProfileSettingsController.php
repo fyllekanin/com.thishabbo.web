@@ -132,7 +132,8 @@ class ProfileSettingsController extends Controller {
         return response()->json([
             'width' => $avatarSize->width,
             'height' => $avatarSize->height,
-            'oldAvatarIds' => Avatar::where('userId', $user->userId)->take(5)->orderBy('updatedAt', 'DESC')->skip(1)->pluck('avatarId')
+            'oldAvatarIds' => Avatar::where('userId', $user->userId)->take(5)->orderBy('updatedAt', 'DESC')->skip(1)->pluck('avatarId'),
+            'user' => UserHelper::getUser($user->userId)
         ]);
     }
 

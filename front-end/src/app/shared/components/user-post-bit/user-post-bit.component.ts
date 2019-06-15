@@ -3,6 +3,7 @@ import { User } from 'core/services/auth/auth.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
 import { StringHelper } from 'shared/helpers/string.helper';
 import { NAME_POSITIONS } from 'shared/constants/name-positions.constants';
+import { AvatarModel } from '../../../pages/user/usercp/essentials/avatar/avatar.model';
 
 @Component({
     selector: 'app-user-post-bit',
@@ -11,7 +12,11 @@ import { NAME_POSITIONS } from 'shared/constants/name-positions.constants';
 })
 export class UserPostBitComponent {
     @Input()
-    user: User;
+    user = new User();
+    @Input()
+    avatarSize = new AvatarModel(null);
+    @Input()
+    previewAvatar: string;
 
     useAvatarImage = true;
 
@@ -40,7 +45,7 @@ export class UserPostBitComponent {
     }
 
     get userAvatarUrl (): string {
-        return `/rest/resources/images/users/${this.user.userId}.gif?${this.user.avatarUpdatedAt}`;
+        return this.previewAvatar || `/rest/resources/images/users/${this.user.userId}.gif?${this.user.avatarUpdatedAt}`;
     }
 
     get socials (): Array<{ label: string, value: string }> {
@@ -51,5 +56,13 @@ export class UserPostBitComponent {
                     value: this.user.social[key]
                 };
             }).filter(item => item.value);
+    }
+
+    get width (): string {
+        return this.avatarSize ? `${this.avatarSize.width}px` : 'auto';
+    }
+
+    get height (): string {
+        return this.avatarSize ? `${this.avatarSize.height}px` : 'auto';
     }
 }
