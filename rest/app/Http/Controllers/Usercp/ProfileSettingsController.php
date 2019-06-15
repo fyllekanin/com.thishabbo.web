@@ -77,7 +77,7 @@ class ProfileSettingsController extends Controller {
 
 
         $profile->isPrivate = Value::objectProperty($data, 'isPrivate', false);
-        $profile->youtube = Value::objectJsonProperty($data, 'youtube', null);
+        $profile->youtube = Value::objectProperty($data, 'youtube', null);
         $profile->love = $love ? $love->userId : null;
         $profile->like = $like ? $like->userId : null;
         $profile->hate = $hate ? $hate->userId : null;
