@@ -2,7 +2,7 @@ import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { ActivatedRoute } from '@angular/router';
-import { GroupList } from './groups-list.model';
+import { GroupList, GroupsActions } from './groups-list.model';
 import { Page } from 'shared/page/page.model';
 import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
@@ -33,9 +33,7 @@ export class GroupsListComponent extends Page implements OnDestroy {
     selectedColor: string;
     selectableGroups: Array<SelectItem> = [];
     tableConfig: TableConfig;
-    tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Save' })
-    ];
+    tabs: Array<TitleTab> = [];
 
     constructor(
         private _httpService: HttpService,
@@ -58,6 +56,14 @@ export class GroupsListComponent extends Page implements OnDestroy {
 
     ngOnDestroy(): void {
         super.destroy();
+    }
+
+    onTabClick(value: number): void {
+        switch (value) {
+            case GroupsActions.ADD:
+                this.addGroup();
+                break;
+        }
     }
 
     onSave(): void {
@@ -179,5 +185,16 @@ export class GroupsListComponent extends Page implements OnDestroy {
             new TableHeader({ title: 'Display Order' }),
             new TableHeader({ title: 'Color' })
         ];
+    }
+
+    private onData(data: { data: GroupsModel }): void {
+        this._groupsList = data.data;
+
+        const tabs = [
+            {title: 'Save'},
+            {title: 'Add Group', value: GroupsActions.ADD, condition: true}
+        ];
+
+        this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));
     }
 }

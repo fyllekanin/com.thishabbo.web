@@ -1,4 +1,4 @@
-import { primitive, ClassHelper } from 'shared/helpers/class.helper';
+import { ClassHelper, primitive } from 'shared/helpers/class.helper';
 
 export class GroupList {
     @primitive()
@@ -14,4 +14,9 @@ export class GroupList {
         ClassHelper.assign(this, source);
         this.displayOrder = this.displayOrder || -1;
     }
+}
+
+export enum GroupsActions {
+    ADD,
+    SAVE
 }
