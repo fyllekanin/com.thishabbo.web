@@ -60,6 +60,9 @@ export class GroupsListComponent extends Page implements OnDestroy {
 
     onTabClick(value: number): void {
         switch (value) {
+            case GroupsActions.SAVE:
+                this.onSave();
+                break;
             case GroupsActions.ADD:
                 this.addGroup();
                 break;
@@ -72,7 +75,7 @@ export class GroupsListComponent extends Page implements OnDestroy {
             group.displayOrder = Number(row.cells.find(cell => cell.isEditable).value);
             return group;
         });
-        this._httpService.put('sitecp/content/groupslist', { groups: groups })
+        this._httpService.put('sitecp/content/groupslist', {groups: groups})
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
@@ -145,11 +148,12 @@ export class GroupsListComponent extends Page implements OnDestroy {
         this._groupsList = data.data;
         this.updateSelectableGroups();
         this.createOrUpdateTable();
+        this.addTabs();
     }
 
     private updateSelectableGroups(): void {
         this.selectableGroups = this._groupsList.filter(item => item.displayOrder === -1).map(item => {
-            return { label: item.name, value: item.groupId };
+            return {label: item.name, value: item.groupId};
         });
     }
 
@@ -169,32 +173,29 @@ export class GroupsListComponent extends Page implements OnDestroy {
         return this.addedGroups.map(item => new TableRow({
             id: String(item.groupId),
             cells: [
-                new TableCell({ title: item.name }),
-                new TableCell({ title: 'Display Order', isEditable: true, value: item.displayOrder.toString() }),
-                new TableCell({ title: StringHelper.prettifyString(item.color) })
+                new TableCell({title: item.name}),
+                new TableCell({title: 'Display Order', isEditable: true, value: item.displayOrder.toString()}),
+                new TableCell({title: StringHelper.prettifyString(item.color)})
             ],
             actions: [
-                new TableAction({ title: 'Remove' })
+                new TableAction({title: 'Remove'})
             ]
         }));
     }
 
     private getTableHeaders(): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'Group' }),
-            new TableHeader({ title: 'Display Order' }),
-            new TableHeader({ title: 'Color' })
+            new TableHeader({title: 'Group'}),
+            new TableHeader({title: 'Display Order'}),
+            new TableHeader({title: 'Color'})
         ];
     }
 
-    private onData(data: { data: GroupsModel }): void {
-        this._groupsList = data.data;
-
+    private addTabs(): void {
         const tabs = [
-            {title: 'Save'},
+            {title: 'Save', value: GroupsActions.SAVE, condition: true},
             {title: 'Add Group', value: GroupsActions.ADD, condition: true}
         ];
-
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));
     }
 }
