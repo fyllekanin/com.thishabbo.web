@@ -1,0 +1,1 @@
+{"topic":"Fix Relations in Profile Settings","type":"Bug","body":"Rather than saying the user in your love is random, it redirects you to a missing page. This should now be fixed."}
