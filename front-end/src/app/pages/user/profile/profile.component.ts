@@ -24,6 +24,7 @@ import { EditorAction } from 'shared/components/editor/editor.model';
 import { EditorComponent } from 'shared/components/editor/editor.component';
 import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
+import { UserHelper } from 'shared/helpers/user.helper';
 
 @Component({
     selector: 'app-user-profile',
@@ -138,7 +139,7 @@ export class ProfileComponent extends Page implements OnDestroy {
 
     get youtube (): SafeResourceUrl {
         return this._data.youtube
-            ? this._sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube.com/watch?v=${this._data.youtube}`) : null;
+            ? this._sanitizer.bypassSecurityTrustResourceUrl(UserHelper.getYoutubeLink(this._data.youtube)) : null;
     }
 
     get relations (): ProfileRelations {

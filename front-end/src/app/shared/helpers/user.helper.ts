@@ -19,4 +19,8 @@ export class UserHelper {
 
         return style;
     }
+
+    static getYoutubeLink(id: string): string {
+
+    }
 }

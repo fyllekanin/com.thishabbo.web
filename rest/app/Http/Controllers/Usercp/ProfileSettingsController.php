@@ -35,7 +35,7 @@ class ProfileSettingsController extends Controller {
 
         return response()->json([
             'isPrivate' => $profile->isPrivate,
-            'youtube' => 'http://www.youtube.com/watch?v=' . $profile->youtube,
+            'youtube' => $profile->youtube,
             'relations' => [
                 'love' => isset($profile->love) ? UserHelper::getSlimUser($profile->love)->nickname : null,
                 'like' => isset($profile->like) ? UserHelper::getSlimUser($profile->like)->nickname : null,
@@ -59,15 +59,14 @@ class ProfileSettingsController extends Controller {
             $profile->save();
         }
 
-        $youtubeUrl = Value::objectProperty($data, 'youtube', null);
-        $youtubeRegExp = '/http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/';
-        $youtubeValid = $youtubeUrl ? preg_match($youtubeRegExp, $youtubeUrl, $matches) : true;
-        Condition::precondition(!$youtubeValid, 400, 'YouTube Link Invalid');
-        $youtubeId = $youtubeUrl ? $matches[1] : null;
 
         $love = User::withNickname($data->relations->love)->first();
         $like = User::withNickname($data->relations->like)->first();
         $hate = User::withNickname($data->relations->hate)->first();
+
+
+        $youtubeRegExp = '/[a-z0-9_-]{11}/';
+        Condition::precondition(!empty($data->youtube) && preg_match($youtubeRegExp, $data->youtube), 400, 'YouTube ID Invalid');
 
         Condition::precondition(!empty($data->relations->love) && !$love, 404,
             'No user with the nickname: ' . $data->relations->love);
@@ -78,7 +77,7 @@ class ProfileSettingsController extends Controller {
 
 
         $profile->isPrivate = Value::objectProperty($data, 'isPrivate', false);
-        $profile->youtube = $youtubeId;
+        $profile->youtube = Value::objectJsonProperty($data, 'youtube', null);
         $profile->love = $love ? $love->userId : null;
         $profile->like = $like ? $like->userId : null;
         $profile->hate = $hate ? $hate->userId : null;
