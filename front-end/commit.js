@@ -53,7 +53,10 @@ async function main() {
     const result = JSON.stringify(answers);
     const fileName = answers.topic.replace(new RegExp(/ /, 'g'), '_');
     fs.writeFile(`../commit-logs/master/${fileName}.json`, result, 'utf8', err => {
-        if (err) console.log('Something went wrong');
+        if (err) {
+            console.log('Something went wrong');
+            return;
+        }
         console.log('Commit saved');
     });
 }

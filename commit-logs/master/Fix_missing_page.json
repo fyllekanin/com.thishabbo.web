@@ -1,0 +1,1 @@
+{"topic":"Fix missing page","type":"Bug","body":"When backend throwed 404 the user got redirected but this should only happen on GEt"}
