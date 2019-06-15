@@ -1,7 +1,7 @@
 import { CommonUtil } from '../../utils/common.util';
 import { browser, by, element, ExpectedConditions } from 'protractor';
 import { InputUtil } from '../../utils/input.util';
-import { NavigationUtil } from "../../utils/navigation.util";
+import { NavigationUtil } from '../../utils/navigation.util';
 
 export class StaffListPage {
 
