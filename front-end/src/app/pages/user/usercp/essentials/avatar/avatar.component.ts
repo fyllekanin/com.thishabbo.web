@@ -11,6 +11,7 @@ import { NotificationMessage, NotificationType } from 'shared/app-views/global-n
 import { NotificationService } from 'core/services/notification/notification.service';
 import { AvatarModel } from './avatar.model';
 import { DialogService } from 'core/services/dialog/dialog.service';
+import { User } from 'core/services/auth/auth.model';
 
 @Component({
     selector: 'app-usercp-avatar',
@@ -18,9 +19,11 @@ import { DialogService } from 'core/services/dialog/dialog.service';
     styleUrls: ['avatar.component.css']
 })
 export class AvatarComponent extends Page implements OnDestroy {
-    private _avatarSize: AvatarModel = new AvatarModel({height: 200, width: 200});
+    private _avatarSize = new AvatarModel(null);
 
-    @ViewChild('avatar', { static: true }) avatarInput;
+    preview: string | ArrayBuffer;
+
+    @ViewChild('avatar', {static: true}) avatarInput;
     tabs: Array<TitleTab> = [
         new TitleTab({title: 'Save'})
     ];
@@ -43,6 +46,17 @@ export class AvatarComponent extends Page implements OnDestroy {
                 USERCP_BREADCRUM_ITEM
             ]
         });
+    }
+
+    readURL (event): void {
+        if (event.target.files && event.target.files[0]) {
+            const file = event.target.files[0];
+
+            const reader = new FileReader();
+            reader.onload = () => this.preview = reader.result;
+
+            reader.readAsDataURL(file);
+        }
     }
 
     ngOnDestroy (): void {
@@ -81,6 +95,10 @@ export class AvatarComponent extends Page implements OnDestroy {
 
     get model (): AvatarModel {
         return this._avatarSize;
+    }
+
+    get user (): User {
+        return this._avatarSize.user;
     }
 
     private onSwitchBack (id: number): void {

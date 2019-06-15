@@ -3,9 +3,9 @@
 
     <span class="sub-title" *ngIf="subTitle">{{subTitle}}</span>
 
-    <select *ngIf="tabs.length" class="mobile" [ngModel]="selectValue" (change)="onTabSelect($event)">
-        <option [value]="null">Select Action..</option>
-        <option *ngFor="let item of tabs" [value]="item.value">{{item.title}}</option>
+    <select *ngIf="tabs.length" class="mobile" [(ngModel)]="selectValue" (ngModelChange)="onTabSelect()">
+        <option [ngValue]="null">Select Action..</option>
+        <option *ngFor="let item of tabs" [ngValue]="item">{{item.title}}</option>
     </select>
     <span *ngFor="let item of tabs" class="tab desktop" (click)="tabClick(item)"
           [ngClass]="item.isActive ? 'active' : ''">
