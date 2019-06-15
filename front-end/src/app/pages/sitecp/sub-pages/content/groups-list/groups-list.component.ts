@@ -195,6 +195,6 @@ export class GroupsListComponent extends Page implements OnDestroy {
         this.tabs = [
             new TitleTab({title: 'Save', value: GroupsActions.SAVE}),
             new TitleTab({title: 'Add Group', value: GroupsActions.ADD})
-        ]
+        ];
     }
 }
