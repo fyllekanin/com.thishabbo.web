@@ -57,6 +57,11 @@ export class ProfileComponent extends Page implements OnDestroy {
         return this._data.relations;
     }
 
+    get testForUrl (): Array<string> {
+        const regExp = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/;
+        return this._data.youtube.match(regExp);
+    }
+
     private onData (data: { data: ProfileModel }): void {
         this._data = data.data;
     }

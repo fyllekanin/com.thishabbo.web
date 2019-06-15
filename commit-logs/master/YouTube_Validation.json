@@ -1,0 +1,1 @@
+{"topic":"YouTube Validation","type":"Bug","body":"There was no validation on YouTube link, so added this. Also made it futureproof by parsing the id and storing it and creating the link."}

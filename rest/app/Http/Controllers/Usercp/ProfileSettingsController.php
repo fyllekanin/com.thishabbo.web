@@ -59,9 +59,13 @@ class ProfileSettingsController extends Controller {
             $profile->save();
         }
 
+
         $love = User::withNickname($data->relations->love)->first();
         $like = User::withNickname($data->relations->like)->first();
         $hate = User::withNickname($data->relations->hate)->first();
+
+        $youtubeRegExp = '/[a-z0-9_-]{11}/';
+        Condition::precondition(!empty($data->youtube) && preg_match($youtubeRegExp, $data->youtube), 400, 'YouTube ID Invalid');
 
         Condition::precondition(!empty($data->relations->love) && !$love, 400,
             'No user with the nickname: ' . $data->relations->love);
