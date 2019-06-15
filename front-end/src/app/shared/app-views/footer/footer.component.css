@@ -1,12 +1,15 @@
+:host {
+    background-color: rgba(255, 255, 255, 0.32);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
+    padding: 0.5rem;
+    display: block;
+}
+
 .members {
-    background-color: rgba(255,255,255,0.32);
-    box-shadow: 0 0 0 1px rgba(0,0,0,0.05);
     font-size: 11px;
     height: 148px;
     margin-top: 10px;
-    text-shadow: 1px 1px 0 rgba(255,255,255,0.44);
-
-    padding-top: 0.5rem;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.44);
 }
 
 .copyright {
@@ -16,7 +19,6 @@
 
 .quick-links {
     float: right;
-    padding: 0.5rem 0;
 }
 
 .quick-links a {
@@ -35,4 +37,8 @@
     width: 50px;
     margin: 6px 4px 6px 0;
     box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .18), inset 0 0 0 2px rgba(255, 255, 255, .18), 0 2px 0 rgba(0, 0, 0, 0.0);
+}
+
+.links {
+    margin-top: 1rem;
 }
