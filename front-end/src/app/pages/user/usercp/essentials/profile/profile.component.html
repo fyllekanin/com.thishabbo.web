@@ -5,7 +5,7 @@
             <div class="cell small-12 medium-6">
                 <label>Youtube Video ID<em>(Leave empty for none)</em></label>
                 <span>Only enter the ID, not the full link. Eg:<br /> https://www.youtube.com/watch?v=<strong>dQw4w9WgXcQ</strong></span>
-                <input [(ngModel)]="model.youtube" placeholder="Full YouTube Link..."/>
+                <input [(ngModel)]="model.youtube" placeholder="Video ID..."/>
                 <span *ngIf="testForUrl">It looks like you have entered a full URL, did you mean <strong>{{ testForUrl[1] }}</strong></span>
             </div>
             <div class="cell small-12 medium-6">
