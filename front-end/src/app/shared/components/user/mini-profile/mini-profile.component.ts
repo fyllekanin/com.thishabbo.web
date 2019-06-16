@@ -1,6 +1,6 @@
-import { Component, Input } from "@angular/core";
-import { UserHelper } from "shared/helpers/user.helper";
-import { MiniProfileModel } from "./mini-profile.model";
+import { Component, Input } from '@angular/core';
+import { UserHelper } from 'shared/helpers/user.helper';
+import { MiniProfileModel } from './mini-profile.model';
 
 @Component({
     selector: 'app-mini-profile',
@@ -23,16 +23,15 @@ export class MiniProfileComponent {
         return UserHelper.getNameColor(this.data.user.nameColor);
     }
 
-    get coverUrl (): string {;
+    get coverUrl (): string {
         return `background-image: url('/rest/resources/images/covers/${this.data.user.userId}');`;
     }
 
     get posts (): string {
-        return this.data.user.posts < 1000 ? `${this.data.user.posts}` : `${this.data.user.posts/1000}K`;
+        return this.data.user.posts < 1000 ? `${this.data.user.posts}` : `${this.data.user.posts / 1000}K`;
     }
 
     get likes (): string {
-        return this.data.user.likes < 1000 ? `${this.data.user.likes}` : `${this.data.user.likes/1000}K`;
+        return this.data.user.likes < 1000 ? `${this.data.user.likes}` : `${this.data.user.likes / 1000}K`;
     }
-
 }

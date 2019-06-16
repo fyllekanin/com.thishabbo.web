@@ -1,5 +1,5 @@
-import { objectOf, primitive, ClassHelper } from "shared/helpers/class.helper";
-import { SlimUser } from "core/services/auth/auth.model";
+import { objectOf, primitive, ClassHelper } from 'shared/helpers/class.helper';
+import { SlimUser } from 'core/services/auth/auth.model';
 
 export class MiniProfileModel {
     @objectOf(SlimUser)

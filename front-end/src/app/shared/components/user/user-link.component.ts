@@ -27,7 +27,7 @@ export class UserLinkComponent {
             user: this.user,
             left: event.pageX + 25,
             top: event.pageY - 90
-        }
+        };
     }
 
     hideMiniProfile() {

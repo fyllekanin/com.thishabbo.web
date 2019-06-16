@@ -1,7 +1,7 @@
 import { Directive, ViewContainerRef } from '@angular/core';
 
 @Directive({
-    selector: '[mini-profile-host]',
+    selector: '[miniProfileHost]',
 })
 
 export class MiniProfileDirective {

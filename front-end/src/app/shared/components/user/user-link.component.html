@@ -1,5 +1,5 @@
 <div class="user-link" (mouseenter)="showMiniProfile($event)" (mouseleave)="hideMiniProfile()">
-    <ng-template mini-profile-host></ng-template>
+    <ng-template miniProfileHost></ng-template>
     <a [routerLink]="['/user/profile/', user.nickname]">
         <span [style]="nameStyling | safeStyle">{{user.nickname}}</span>
     </a>
