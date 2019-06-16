@@ -124,18 +124,15 @@
 
 .blue-button {
     cursor: pointer;
-    background-image: url(/assets/images/bargradient.png) !important;
-    background: #139bfb;
+    background: #139bfb url(/assets/images/bargradient.png) !important;
 }
 
 .green-button {
-    background-image: url(/assets/images/bargradient.png) !important;
-    background: #79b554;
+    background: #79b554 url(/assets/images/bargradient.png) !important;
 }
 
 .red-button {
-    background-image: url(/assets/images/bargradient.png) !important;
-    background-color: #c37070;
+    background: #c37070 url(/assets/images/bargradient.png) !important;
 }
 
 .song {
