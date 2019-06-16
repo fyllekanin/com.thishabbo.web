@@ -34,7 +34,7 @@ export class LogsComponent extends Page implements OnDestroy {
     pagination: PaginationModel;
     options: Array<{ value: string, label: string }> = [];
 
-    constructor (
+    constructor(
         private _httpService: HttpService,
         private _router: Router,
         elementRef: ElementRef,
@@ -55,15 +55,15 @@ export class LogsComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy () {
+    ngOnDestroy() {
         super.destroy();
     }
 
-    onTypeChange (): void {
+    onTypeChange(): void {
         this._router.navigateByUrl(`/sitecp/moderation/logs/${this.logType}/page/1`);
     }
 
-    onFilter (filter: QueryParameters): void {
+    onFilter(filter: QueryParameters): void {
         clearTimeout(this._filterTimer);
         this._filter = filter;
 
@@ -75,7 +75,7 @@ export class LogsComponent extends Page implements OnDestroy {
         }, 200);
     }
 
-    private onData (data: { data: LogPage }): void {
+    private onData(data: { data: LogPage }): void {
         this._data = data.data;
         this.createOrUpdateTable();
 
@@ -87,7 +87,7 @@ export class LogsComponent extends Page implements OnDestroy {
         });
     }
 
-    private createOrUpdateTable (): void {
+    private createOrUpdateTable(): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -115,7 +115,7 @@ export class LogsComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableRows (): Array<TableRow> {
+    private getTableRows(): Array<TableRow> {
         return this._data.items.map(item => new TableRow({
             cells: [
                 new TableCell({title: item.user.nickname}),
@@ -128,7 +128,7 @@ export class LogsComponent extends Page implements OnDestroy {
         }));
     }
 
-    private getDataHTML (data: object): string {
+    private getDataHTML(data: object): string {
         let html = '';
         Object.keys(data).forEach(key => {
             html += `<strong>${key}:</strong> ${data[key]} <br />`;
@@ -136,7 +136,7 @@ export class LogsComponent extends Page implements OnDestroy {
         return html;
     }
 
-    private getTableHeaders (): Array<TableHeader> {
+    private getTableHeaders(): Array<TableHeader> {
         return [
             new TableHeader({title: 'User'}),
             new TableHeader({title: 'Action'}),

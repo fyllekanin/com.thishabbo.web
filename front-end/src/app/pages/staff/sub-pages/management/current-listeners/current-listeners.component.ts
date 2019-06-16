@@ -16,7 +16,7 @@ export class CurrentListenersComponent extends Page implements OnDestroy {
 
     tableConfig: TableConfig;
 
-    constructor (
+    constructor(
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute,
         breadcrumbService: BreadcrumbService
@@ -31,11 +31,11 @@ export class CurrentListenersComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy (): void {
+    ngOnDestroy(): void {
         super.destroy();
     }
 
-    private onData (data: { data: Array<CurrentListener> }): void {
+    private onData(data: { data: Array<CurrentListener> }): void {
         this._data = data.data;
         this.tableConfig = new TableConfig({
             title: `Current Listeners (${this._data.length})`,
@@ -49,7 +49,7 @@ export class CurrentListenersComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableHeaders (): Array<TableHeader> {
+    private getTableHeaders(): Array<TableHeader> {
         return [
             new TableHeader({title: 'User'}),
             new TableHeader({title: 'Listening Time'})

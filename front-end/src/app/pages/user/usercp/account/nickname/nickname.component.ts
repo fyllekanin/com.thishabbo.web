@@ -20,7 +20,7 @@ export class NicknameComponent extends Page implements OnDestroy {
         new TitleTab({title: 'Change Nickname'})
     ];
 
-    constructor (
+    constructor(
         private _httpService: HttpService,
         private _notificationService: NotificationService,
         private _authService: AuthService,
@@ -36,7 +36,7 @@ export class NicknameComponent extends Page implements OnDestroy {
         });
     }
 
-    onSave (): void {
+    onSave(): void {
         this._httpService.put('usercp/nickname', {nickname: this.nickname})
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
@@ -47,7 +47,7 @@ export class NicknameComponent extends Page implements OnDestroy {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    ngOnDestroy (): void {
+    ngOnDestroy(): void {
         super.destroy();
     }
 }
