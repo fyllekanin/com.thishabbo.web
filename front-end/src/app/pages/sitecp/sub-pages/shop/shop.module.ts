@@ -14,6 +14,9 @@ import { SubscriptionsListComponent } from './subscriptions/list/subscriptions-l
 import { SubscriptionsListService } from './services/subscriptions-list.service';
 import { SubscriptionService } from './services/subscription.service';
 import { SubscriptionComponent } from './subscriptions/subscription/subscription.component';
+import { ItemsListService } from './services/items-list.service';
+import { ItemComponent } from './items/item/item.component';
+import { ItemService } from './services/item.service';
 
 @NgModule({
     imports: [
@@ -30,11 +33,14 @@ import { SubscriptionComponent } from './subscriptions/subscription/subscription
     declarations: [
         ItemsListComponent,
         SubscriptionsListComponent,
-        SubscriptionComponent
+        SubscriptionComponent,
+        ItemComponent
     ],
     providers: [
         SubscriptionsListService,
-        SubscriptionService
+        SubscriptionService,
+        ItemsListService,
+        ItemService
     ],
     exports: [
         RouterModule
