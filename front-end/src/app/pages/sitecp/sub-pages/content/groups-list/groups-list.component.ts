@@ -33,7 +33,10 @@ export class GroupsListComponent extends Page implements OnDestroy {
     selectedColor: string;
     selectableGroups: Array<SelectItem> = [];
     tableConfig: TableConfig;
-    tabs: Array<TitleTab> = [];
+    tabs: Array<TitleTab> = [
+        new TitleTab({title: 'Save', value: GroupsActions.SAVE}),
+        new TitleTab({title: 'Add Group', value: GroupsActions.ADD})
+    ];
 
     constructor(
         private _httpService: HttpService,
@@ -148,7 +151,6 @@ export class GroupsListComponent extends Page implements OnDestroy {
         this._groupsList = data.data;
         this.updateSelectableGroups();
         this.createOrUpdateTable();
-        this.createOrUpdateTabs();
     }
 
     private updateSelectableGroups(): void {
@@ -188,13 +190,6 @@ export class GroupsListComponent extends Page implements OnDestroy {
             new TableHeader({title: 'Group'}),
             new TableHeader({title: 'Display Order'}),
             new TableHeader({title: 'Color'})
-        ];
-    }
-
-    private createOrUpdateTabs(): void {
-        this.tabs = [
-            new TitleTab({title: 'Save', value: GroupsActions.SAVE}),
-            new TitleTab({title: 'Add Group', value: GroupsActions.ADD})
         ];
     }
 }
