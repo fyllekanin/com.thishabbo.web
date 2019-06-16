@@ -11,8 +11,7 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 
 @Component({
     selector: 'app-sitecp-user-essentials',
-    templateUrl: 'essentials.component.html',
-    styleUrls: ['essentials.component.css']
+    templateUrl: 'essentials.component.html'
 })
 export class EssentialsComponent extends Page implements OnDestroy {
     private _data: User;

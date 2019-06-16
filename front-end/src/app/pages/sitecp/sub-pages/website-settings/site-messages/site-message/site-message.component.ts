@@ -18,8 +18,7 @@ import { EditorComponent } from 'shared/components/editor/editor.component';
 
 @Component({
     selector: 'app-sitecp-website-settings-site-message',
-    templateUrl: 'site-message.component.html',
-    styleUrls: ['site-message.component.css']
+    templateUrl: 'site-message.component.html'
 })
 export class SiteMessageComponent extends Page implements OnDestroy {
     private _data: SiteMessageModel;

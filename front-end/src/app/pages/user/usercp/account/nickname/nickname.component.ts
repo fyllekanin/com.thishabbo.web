@@ -11,17 +11,16 @@ import { AuthService } from 'core/services/auth/auth.service';
 
 @Component({
     selector: 'app-usercp-nickname',
-    templateUrl: 'nickname.component.html',
-    styleUrls: ['nickname.component.css']
+    templateUrl: 'nickname.component.html'
 })
 export class NicknameComponent extends Page implements OnDestroy {
 
     nickname: string;
     tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Change Nickname' })
+        new TitleTab({title: 'Change Nickname'})
     ];
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService,
         private _authService: AuthService,
@@ -37,8 +36,8 @@ export class NicknameComponent extends Page implements OnDestroy {
         });
     }
 
-    onSave(): void {
-        this._httpService.put('usercp/nickname', { nickname: this.nickname })
+    onSave (): void {
+        this._httpService.put('usercp/nickname', {nickname: this.nickname})
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
@@ -48,7 +47,7 @@ export class NicknameComponent extends Page implements OnDestroy {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 }

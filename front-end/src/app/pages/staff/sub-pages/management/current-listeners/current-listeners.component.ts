@@ -9,15 +9,14 @@ import { CurrentListener } from './current-listeners.model';
 
 @Component({
     selector: 'app-staff-management-current-listeners',
-    templateUrl: 'current-listeners.component.html',
-    styleUrls: ['current-listeners.component.css']
+    templateUrl: 'current-listeners.component.html'
 })
 export class CurrentListenersComponent extends Page implements OnDestroy {
     private _data: Array<CurrentListener> = [];
 
     tableConfig: TableConfig;
 
-    constructor(
+    constructor (
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute,
         breadcrumbService: BreadcrumbService
@@ -32,28 +31,28 @@ export class CurrentListenersComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    private onData(data: { data: Array<CurrentListener> }): void {
+    private onData (data: { data: Array<CurrentListener> }): void {
         this._data = data.data;
         this.tableConfig = new TableConfig({
             title: `Current Listeners (${this._data.length})`,
             headers: this.getTableHeaders(),
             rows: this._data.map(item => new TableRow({
                 cells: [
-                    new TableCell({ title: item.user ? item.user.nickname : 'Unknown' }),
-                    new TableCell({ title: `${item.time} seconds` })
+                    new TableCell({title: item.user ? item.user.nickname : 'Unknown'}),
+                    new TableCell({title: `${item.time} seconds`})
                 ]
             }))
         });
     }
 
-    private getTableHeaders(): Array<TableHeader> {
+    private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'User' }),
-            new TableHeader({ title: 'Listening Time' })
+            new TableHeader({title: 'User'}),
+            new TableHeader({title: 'Listening Time'})
         ];
     }
 }

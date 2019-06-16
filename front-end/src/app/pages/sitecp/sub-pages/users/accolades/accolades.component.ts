@@ -19,8 +19,7 @@ import { DialogService } from 'core/services/dialog/dialog.service';
 
 @Component({
     selector: 'app-sitecp-user-accolades',
-    templateUrl: 'accolades.component.html',
-    styleUrls: ['accolades.component.css']
+    templateUrl: 'accolades.component.html'
 })
 export class AccoladesComponent extends Page implements OnDestroy {
     private _data: AccoladesPage;

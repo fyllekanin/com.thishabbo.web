@@ -11,8 +11,7 @@ import { NotificationService } from 'core/services/notification/notification.ser
 
 @Component({
     selector: 'app-usercp-profile',
-    templateUrl: 'profile.component.html',
-    styleUrls: ['profile.component.css']
+    templateUrl: 'profile.component.html'
 })
 export class ProfileComponent extends Page implements OnDestroy {
     private _data: ProfileModel;

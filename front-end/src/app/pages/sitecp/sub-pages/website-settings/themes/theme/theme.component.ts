@@ -17,8 +17,7 @@ import { NotificationMessage } from 'shared/app-views/global-notification/global
 
 @Component({
     selector: 'app-sitecp-website-settings-theme',
-    templateUrl: 'theme.component.html',
-    styleUrls: ['theme.component.css']
+    templateUrl: 'theme.component.html'
 })
 export class ThemeComponent extends Page implements OnDestroy {
     private _data: Theme;

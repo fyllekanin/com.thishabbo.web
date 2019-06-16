@@ -22,7 +22,7 @@
                     </div>
 
                     <div class="profile-avatar">
-                        <img [src]="avatar" >
+                        <img [src]="avatar">
                     </div>
 
                     <div class="post-bit">
@@ -143,7 +143,7 @@
                            (onTabClick)="onFollowerTabClick($event)"></app-title>
                 <app-content>
                     <div class="followers" *ngFor="let follower of followers.followers">
-                        <img appUserProfile [isSmall]="true" [info]="follower" >
+                        <img appUserProfile [isSmall]="true" [info]="follower">
                         <div class="follower">
                             <strong>Follower</strong><br/>
                             <app-user-link [user]="follower"></app-user-link>
@@ -161,15 +161,15 @@
                     <app-title [title]="'Relations'"></app-title>
                     <app-content>
                         <div class="gray-content-wrapper" *ngIf="relations.love">
-                            <img src="/assets/images/heart.png" />
+                            <img src="/assets/images/heart.png"/>
                             <app-user-link [user]="relations.love"></app-user-link>
                         </div>
                         <div class="gray-content-wrapper" *ngIf="relations.like">
-                            <img src="/assets/images/smile.png" />
+                            <img src="/assets/images/smile.png"/>
                             <app-user-link [user]="relations.like"></app-user-link>
                         </div>
                         <div class="gray-content-wrapper" *ngIf="relations.hate">
-                            <img src="/assets/images/skull.png" />
+                            <img src="/assets/images/skull.png"/>
                             <app-user-link [user]="relations.hate"></app-user-link>
                         </div>
                     </app-content>
@@ -178,7 +178,7 @@
                 <div *ngIf="youtube">
                     <app-title [title]="'YouTube'"></app-title>
                     <app-content>
-                        <iframe title="youtube" width="274" height="400" [src]="youtube" frameborder="0"
+                        <iframe title="youtube" width="274" height="400" [src]="youtube"
                                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                                 allowfullscreen></iframe>
                     </app-content>

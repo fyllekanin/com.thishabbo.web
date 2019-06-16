@@ -20,24 +20,23 @@ import { NotificationService } from 'core/services/notification/notification.ser
 
 @Component({
     selector: 'app-usercp-account-followers',
-    templateUrl: 'followers.component.html',
-    styleUrls: ['followers.component.css']
+    templateUrl: 'followers.component.html'
 })
 export class FollowersComponent extends Page implements OnDestroy {
     private _data: FollowersPage;
     private _awaitingActions: Array<TableAction> = [
-        new TableAction({ title: 'Approve', value: FollowersAction.APPROVE }),
-        new TableAction({ title: 'Deny', value: FollowersAction.DENY })
+        new TableAction({title: 'Approve', value: FollowersAction.APPROVE}),
+        new TableAction({title: 'Deny', value: FollowersAction.DENY})
     ];
     private _followerActions: Array<TableAction> = [
-        new TableAction({ title: 'Remove', value: FollowersAction.REMOVE })
+        new TableAction({title: 'Remove', value: FollowersAction.REMOVE})
     ];
 
     pagination: PaginationModel;
     awaitingTable: TableConfig;
     followersTable: TableConfig;
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService,
         elementRef: ElementRef,
@@ -58,7 +57,7 @@ export class FollowersComponent extends Page implements OnDestroy {
         super.destroy();
     }
 
-    onAction(action: Action): void {
+    onAction (action: Action): void {
         switch (action.value) {
             case FollowersAction.APPROVE:
                 this.onApprove(Number(action.rowId));
@@ -72,7 +71,7 @@ export class FollowersComponent extends Page implements OnDestroy {
         }
     }
 
-    private onApprove(followerId: number): void {
+    private onApprove (followerId: number): void {
         this._httpService.put(`usercp/followers/approve/${followerId}`)
             .subscribe(() => {
                 this._notificationService.sendInfoNotification('Follower approved!');
@@ -83,7 +82,7 @@ export class FollowersComponent extends Page implements OnDestroy {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private onDeny(followerId: number): void {
+    private onDeny (followerId: number): void {
         this._httpService.delete(`usercp/followers/deny/${followerId}`)
             .subscribe(() => {
                 this._notificationService.sendInfoNotification('Follower denied!');
@@ -92,7 +91,7 @@ export class FollowersComponent extends Page implements OnDestroy {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private onRemove(followerId: number): void {
+    private onRemove (followerId: number): void {
         this._httpService.delete(`usercp/followers/remove/${followerId}`)
             .subscribe(() => {
                 this._notificationService.sendInfoNotification('Follower removed!');
@@ -101,7 +100,7 @@ export class FollowersComponent extends Page implements OnDestroy {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private onData(data: { data: FollowersPage }): void {
+    private onData (data: { data: FollowersPage }): void {
         this._data = data.data;
         this.updateTables();
 
@@ -112,12 +111,12 @@ export class FollowersComponent extends Page implements OnDestroy {
         });
     }
 
-    private updateTables(): void {
+    private updateTables (): void {
         this.createOrUpdateAwaitingTable();
         this.createOrUpdateFollowersTable();
     }
 
-    private createOrUpdateAwaitingTable(): void {
+    private createOrUpdateAwaitingTable (): void {
         if (this.awaitingTable) {
             this.awaitingTable.rows = this.getAwaitingTableRows();
             return;
@@ -129,7 +128,7 @@ export class FollowersComponent extends Page implements OnDestroy {
         });
     }
 
-    private createOrUpdateFollowersTable(): void {
+    private createOrUpdateFollowersTable (): void {
         if (this.followersTable) {
             this.followersTable.rows = this.getFollowersTableRows();
             return;
@@ -141,39 +140,39 @@ export class FollowersComponent extends Page implements OnDestroy {
         });
     }
 
-    private getAwaitingTableRows(): Array<TableRow> {
+    private getAwaitingTableRows (): Array<TableRow> {
         return this._data.awaiting.map(item => new TableRow({
             id: String(item.followerId),
             cells: [
-                new TableCell({ title: item.user.nickname }),
-                new TableCell({ title: TimeHelper.getLongDateWithTime(item.createdAt) })
+                new TableCell({title: item.user.nickname}),
+                new TableCell({title: TimeHelper.getLongDateWithTime(item.createdAt)})
             ],
-             actions: this._awaitingActions
+            actions: this._awaitingActions
         }));
     }
 
-    private getFollowersTableRows(): Array<TableRow> {
+    private getFollowersTableRows (): Array<TableRow> {
         return this._data.followers.map(item => new TableRow({
             id: String(item.followerId),
             cells: [
-                new TableCell({ title: item.user.nickname }),
-                new TableCell({ title: TimeHelper.getLongDateWithTime(item.createdAt) })
+                new TableCell({title: item.user.nickname}),
+                new TableCell({title: TimeHelper.getLongDateWithTime(item.createdAt)})
             ],
             actions: this._followerActions
         }));
     }
 
-    private getAwaitingTableHeaders(): Array<TableHeader> {
+    private getAwaitingTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'Nickname' }),
-            new TableHeader({ title: 'Requested At' })
+            new TableHeader({title: 'Nickname'}),
+            new TableHeader({title: 'Requested At'})
         ];
     }
 
-    private getFollowersTableHeaders(): Array<TableHeader> {
+    private getFollowersTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'Nickname' }),
-            new TableHeader({ title: 'Followed At' })
+            new TableHeader({title: 'Nickname'}),
+            new TableHeader({title: 'Followed At'})
         ];
     }
 }
