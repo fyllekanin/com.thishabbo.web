@@ -5,6 +5,9 @@ import { SubscriptionsListService } from './services/subscriptions-list.service'
 import { SubscriptionsListComponent } from './subscriptions/list/subscriptions-list.component';
 import { SubscriptionComponent } from './subscriptions/subscription/subscription.component';
 import { SubscriptionService } from './services/subscription.service';
+import { ItemsListService } from './services/items-list.service';
+import { ItemComponent } from './items/item/item.component';
+import { ItemService } from './services/item.service';
 
 export const shopRoutes: Routes = [
     {
@@ -17,7 +20,17 @@ export const shopRoutes: Routes = [
             },
             {
                 path: 'items/page/:page',
-                component: ItemsListComponent
+                component: ItemsListComponent,
+                resolve: {
+                    data: ItemsListService
+                }
+            },
+            {
+                path: 'items/:itemId',
+                component: ItemComponent,
+                resolve: {
+                    data: ItemService
+                }
             },
             {
                 path: 'subscriptions/page/:page',

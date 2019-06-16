@@ -1,18 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreateShopItemsTable extends Migration
-{
+class CreateShopItemsTable extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('shop_items', function (Blueprint $table) {
             $table->bigIncrements('shopItemId');
             $table->string('title');
@@ -20,6 +18,7 @@ class CreateShopItemsTable extends Migration
             $table->integer('rarity');
             $table->integer('type');
             $table->integer('isDeleted')->default(0);
+            $table->text('data');
             $table->bigInteger('createdAt');
             $table->bigInteger('updatedAt');
 
@@ -35,8 +34,7 @@ class CreateShopItemsTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('shop_items');
     }
 }

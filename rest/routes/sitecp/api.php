@@ -232,7 +232,8 @@ Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions
 });
 
 Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canManageShop)], function () {
-    Route::post('/shop/items/page/{page}', 'Sitecp\Shop\ItemsController@getItems');
+    Route::get('/shop/items/page/{page}', 'Sitecp\Shop\ItemsController@getItems');
+    Route::get('/shop/items/{itemId}', 'Sitecp\Shop\ItemsController@getItem');
 });
 
 Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canManageSubscriptions)], function () {

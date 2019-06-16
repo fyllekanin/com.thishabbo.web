@@ -4,7 +4,8 @@ return [
     'TYPES' => [
         'badge' => 1,
         'nameIcon' => 2,
-        'nameEffect' => 3
+        'nameEffect' => 3,
+        'subscription' => 4
     ],
     'RARITIES' => [
         'common' => 80,

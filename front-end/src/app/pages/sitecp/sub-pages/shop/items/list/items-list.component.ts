@@ -5,9 +5,21 @@ import { ActivatedRoute } from '@angular/router';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { SHOP_ITEMS_BREADCRUMB_ITEMS, SITECP_BREADCRUMB_ITEM } from '../../../../sitecp.constants';
 import { ShopListPage } from './list.model';
-import { TableCell, TableConfig, TableHeader, TableRow } from 'shared/components/table/table.model';
+import {
+    FilterConfig,
+    FilterConfigItem,
+    FilterConfigType,
+    TableCell,
+    TableConfig,
+    TableHeader,
+    TableRow
+} from 'shared/components/table/table.model';
 import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 import { SHOP_ITEM_RARITIES, SHOP_ITEM_TYPES } from '../../shop.helper';
+import { CONFIGURABLE_ITEMS } from 'shared/constants/shop.constants';
+import { TitleTab } from 'shared/app-views/title/title.model';
+import { QueryParameters } from 'core/services/http/http.model';
+import { ItemsListService } from '../../services/items-list.service';
 
 @Component({
     selector: 'app-sitecp-shop-items-list',
@@ -15,11 +27,17 @@ import { SHOP_ITEM_RARITIES, SHOP_ITEM_TYPES } from '../../shop.helper';
 })
 export class ItemsListComponent extends Page implements OnDestroy {
     private _data: ShopListPage;
+    private _filterTimer;
+    private _filter: QueryParameters;
 
     tableConfig: TableConfig;
     pagination: PaginationModel;
+    tabs: Array<TitleTab> = [
+        new TitleTab({title: 'Create New', link: '/sitecp/shop/items/new'})
+    ];
 
     constructor (
+        private _service: ItemsListService,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService,
         activatedRoute: ActivatedRoute
@@ -38,9 +56,18 @@ export class ItemsListComponent extends Page implements OnDestroy {
         super.destroy();
     }
 
+    onFilter (params: QueryParameters): void {
+        clearTimeout(this._filterTimer);
+        this._filter = params;
+        this._filterTimer = setTimeout(() => {
+            this._service.getPage(1, this._filter).subscribe(res => {
+                this.onData({data: res});
+            });
+        }, 200);
+    }
+
     private onData (data: { data: ShopListPage }): void {
         this._data = data.data;
-
         this.createOrUpdateTable();
     }
 
@@ -52,7 +79,23 @@ export class ItemsListComponent extends Page implements OnDestroy {
         this.tableConfig = new TableConfig({
             title: 'Shop Items',
             headers: this.getTableHeaders(),
-            rows: this.getTableRows()
+            rows: this.getTableRows(),
+            filterConfigs: [
+                new FilterConfig({
+                    title: 'Filter',
+                    placeholder: 'Search by title..',
+                    key: 'filter'
+                }),
+                new FilterConfig({
+                    title: 'Type',
+                    key: 'type',
+                    type: FilterConfigType.SELECT,
+                    items: CONFIGURABLE_ITEMS.map(item => new FilterConfigItem({
+                        label: item.label,
+                        value: item.value.toString()
+                    }))
+                })
+            ]
         });
     }
 
