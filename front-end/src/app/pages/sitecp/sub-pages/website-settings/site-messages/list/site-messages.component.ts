@@ -26,8 +26,7 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 
 @Component({
     selector: 'app-sitecp-website-settings-site-messages',
-    templateUrl: 'site-messages.component.html',
-    styleUrls: ['site-messages.component.css']
+    templateUrl: 'site-messages.component.html'
 })
 export class SiteMessagesComponent extends Page implements OnDestroy {
     private _data: Array<SiteMessageModel> = [];

@@ -84,6 +84,7 @@ a:hover {
 
 .checkbox {
     float: right;
+    margin: 5px;
 }
 
 .active {
@@ -112,10 +113,6 @@ a:hover {
 
 .purple-top {
     border-top: 3px solid #925779;
-}
-
-.checkbox {
-    margin: 5px;
 }
 
 .mobile {

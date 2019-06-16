@@ -21,7 +21,7 @@ export class ItemComponent extends Page implements OnDestroy {
     @ViewChild('image', {static: false}) image;
     tabs: Array<TitleTab> = [];
 
-    constructor (
+    constructor(
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService,
         activatedRoute: ActivatedRoute
@@ -43,36 +43,36 @@ export class ItemComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy (): void {
+    ngOnDestroy(): void {
         super.destroy();
     }
 
-    get title (): string {
+    get title(): string {
         return `${this._data.createdAt ? 'Editing: ' : 'Creating: '} ${this._data.title}`;
     }
 
-    get model (): ShopItem {
+    get model(): ShopItem {
         return this._data;
     }
 
-    get types (): Array<{ label: string, value: number }> {
+    get types(): Array<{ label: string, value: number }> {
         return CONFIGURABLE_ITEMS;
     }
 
-    get rarities (): Array<{ label: string, value: number }> {
+    get rarities(): Array<{ label: string, value: number }> {
         return this._configurableRarities;
     }
 
-    get subscriptions (): Array<SlimSubscription> {
+    get subscriptions(): Array<SlimSubscription> {
         return this._data.subscriptions;
     }
 
-    private onData (data: { data: ShopItem }): void {
+    private onData(data: { data: ShopItem }): void {
         this._data = data.data;
         this.setTabs();
     }
 
-    private setTabs (): void {
+    private setTabs(): void {
         const tabs = [
             {title: 'Save', value: ShopItemActions.SAVE, condition: true},
             {title: 'Delete', value: ShopItemActions.DELETE, condition: this._data.createdAt},

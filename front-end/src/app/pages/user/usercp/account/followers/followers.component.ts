@@ -20,17 +20,16 @@ import { NotificationService } from 'core/services/notification/notification.ser
 
 @Component({
     selector: 'app-usercp-account-followers',
-    templateUrl: 'followers.component.html',
-    styleUrls: ['followers.component.css']
+    templateUrl: 'followers.component.html'
 })
 export class FollowersComponent extends Page implements OnDestroy {
     private _data: FollowersPage;
     private _awaitingActions: Array<TableAction> = [
-        new TableAction({ title: 'Approve', value: FollowersAction.APPROVE }),
-        new TableAction({ title: 'Deny', value: FollowersAction.DENY })
+        new TableAction({title: 'Approve', value: FollowersAction.APPROVE}),
+        new TableAction({title: 'Deny', value: FollowersAction.DENY})
     ];
     private _followerActions: Array<TableAction> = [
-        new TableAction({ title: 'Remove', value: FollowersAction.REMOVE })
+        new TableAction({title: 'Remove', value: FollowersAction.REMOVE})
     ];
 
     pagination: PaginationModel;
@@ -54,7 +53,7 @@ export class FollowersComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy () {
+    ngOnDestroy() {
         super.destroy();
     }
 
@@ -145,10 +144,10 @@ export class FollowersComponent extends Page implements OnDestroy {
         return this._data.awaiting.map(item => new TableRow({
             id: String(item.followerId),
             cells: [
-                new TableCell({ title: item.user.nickname }),
-                new TableCell({ title: TimeHelper.getLongDateWithTime(item.createdAt) })
+                new TableCell({title: item.user.nickname}),
+                new TableCell({title: TimeHelper.getLongDateWithTime(item.createdAt)})
             ],
-             actions: this._awaitingActions
+            actions: this._awaitingActions
         }));
     }
 
@@ -156,8 +155,8 @@ export class FollowersComponent extends Page implements OnDestroy {
         return this._data.followers.map(item => new TableRow({
             id: String(item.followerId),
             cells: [
-                new TableCell({ title: item.user.nickname }),
-                new TableCell({ title: TimeHelper.getLongDateWithTime(item.createdAt) })
+                new TableCell({title: item.user.nickname}),
+                new TableCell({title: TimeHelper.getLongDateWithTime(item.createdAt)})
             ],
             actions: this._followerActions
         }));
@@ -165,15 +164,15 @@ export class FollowersComponent extends Page implements OnDestroy {
 
     private getAwaitingTableHeaders(): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'Nickname' }),
-            new TableHeader({ title: 'Requested At' })
+            new TableHeader({title: 'Nickname'}),
+            new TableHeader({title: 'Requested At'})
         ];
     }
 
     private getFollowersTableHeaders(): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'Nickname' }),
-            new TableHeader({ title: 'Followed At' })
+            new TableHeader({title: 'Nickname'}),
+            new TableHeader({title: 'Followed At'})
         ];
     }
 }

@@ -9,8 +9,7 @@ import { CurrentListener } from './current-listeners.model';
 
 @Component({
     selector: 'app-staff-management-current-listeners',
-    templateUrl: 'current-listeners.component.html',
-    styleUrls: ['current-listeners.component.css']
+    templateUrl: 'current-listeners.component.html'
 })
 export class CurrentListenersComponent extends Page implements OnDestroy {
     private _data: Array<CurrentListener> = [];
@@ -43,8 +42,8 @@ export class CurrentListenersComponent extends Page implements OnDestroy {
             headers: this.getTableHeaders(),
             rows: this._data.map(item => new TableRow({
                 cells: [
-                    new TableCell({ title: item.user ? item.user.nickname : 'Unknown' }),
-                    new TableCell({ title: `${item.time} seconds` })
+                    new TableCell({title: item.user ? item.user.nickname : 'Unknown'}),
+                    new TableCell({title: `${item.time} seconds`})
                 ]
             }))
         });
@@ -52,8 +51,8 @@ export class CurrentListenersComponent extends Page implements OnDestroy {
 
     private getTableHeaders(): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'User' }),
-            new TableHeader({ title: 'Listening Time' })
+            new TableHeader({title: 'User'}),
+            new TableHeader({title: 'Listening Time'})
         ];
     }
 }
