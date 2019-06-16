@@ -56,6 +56,10 @@ class ConfigHelper {
         return (object)Config::get(self::$SHOP . '.TYPES');
     }
 
+    public static function getRaritiesConfig() {
+        return (object)Config::get(self::$SHOP . '.RARITIES');
+    }
+
     public static function getSubscriptionOptions() {
         return (object)Config::get(self::$SHOP . '.SUBSCRIPTION_OPTIONS');
     }

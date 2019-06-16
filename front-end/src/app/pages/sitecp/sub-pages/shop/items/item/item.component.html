@@ -1,4 +1,4 @@
-<app-title [title]="title" [tabs]="tabs"></app-title>
+<app-title [title]="title" [tabs]="tabs" (onTabClick)="onTabClick($event)"></app-title>
 <app-content>
     <div class="grid-container">
         <div class="grid-x grid-margin-x grid-margin-y">
@@ -35,12 +35,32 @@
     <app-title [title]="'Configuration'"></app-title>
     <app-content>
         <div *ngIf="model.isNameIcon">
-            <label>Icon</label>
-            <input #image accept="image/*" type="file"/>
+            <div class="grid-container">
+                <div class="grid-x grid-margin-x grid-margin-y">
+                    <div class="cell small-12 medium-6">
+                        <label>Icon 16x16px</label>
+                        <input #icon accept="image/*" type="file"/>
+                    </div>
+                    <div class="cell smell-12 medium-6" *ngIf="model.createdAt">
+                        <label>Current Icon</label>
+                        <img [src]="currentImage"/>
+                    </div>
+                </div>
+            </div>
         </div>
         <div *ngIf="model.isNameEffect">
-            <label>Effect</label>
-            <input #image accept="image/*" type="file"/>
+            <div class="grid-container">
+                <div class="grid-x grid-margin-x grid-margin-y">
+                    <div class="cell small-12 medium-6">
+                        <label>Effect 32x32px</label>
+                        <input #effect accept="image/*" type="file"/>
+                    </div>
+                    <div class="cell smell-12 medium-6" *ngIf="model.createdAt">
+                        <label>Current Effect</label>
+                        <img [src]="currentImage"/>
+                    </div>
+                </div>
+            </div>
         </div>
         <div *ngIf="model.isSubscription">
             <div class="grid-container">

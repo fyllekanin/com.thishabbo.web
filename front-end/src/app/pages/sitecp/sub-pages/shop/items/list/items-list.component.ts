@@ -1,14 +1,16 @@
 import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { SHOP_ITEMS_BREADCRUMB_ITEMS, SITECP_BREADCRUMB_ITEM } from '../../../../sitecp.constants';
-import { ShopListPage } from './list.model';
+import { ShopItemListAction, ShopListPage } from './list.model';
 import {
+    Action,
     FilterConfig,
     FilterConfigItem,
     FilterConfigType,
+    TableAction,
     TableCell,
     TableConfig,
     TableHeader,
@@ -20,6 +22,8 @@ import { CONFIGURABLE_ITEMS } from 'shared/constants/shop.constants';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { QueryParameters } from 'core/services/http/http.model';
 import { ItemsListService } from '../../services/items-list.service';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { DialogService } from 'core/services/dialog/dialog.service';
 
 @Component({
     selector: 'app-sitecp-shop-items-list',
@@ -38,6 +42,9 @@ export class ItemsListComponent extends Page implements OnDestroy {
 
     constructor (
         private _service: ItemsListService,
+        private _router: Router,
+        private _notificationService: NotificationService,
+        private _dialogService: DialogService,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService,
         activatedRoute: ActivatedRoute
@@ -64,6 +71,26 @@ export class ItemsListComponent extends Page implements OnDestroy {
                 this.onData({data: res});
             });
         }, 200);
+    }
+
+    onAction (action: Action): void {
+        switch (action.value) {
+            case ShopItemListAction.EDIT:
+                this._router.navigateByUrl(`/sitecp/shop/items/${action.rowId}`);
+                break;
+            case ShopItemListAction.DELETE:
+                this._dialogService.confirm({
+                    title: 'Are you sure?',
+                    content: 'Are you sure you wanna delete this?',
+                    callback: () => {
+                        this._service.delete(action.rowId).subscribe(() => {
+                            this._notificationService.sendInfoNotification('Item deleted');
+                            this._data.items = this._data.items.filter(item => item.shopItemId !== Number(action.rowId));
+                            this._dialogService.closeDialog();
+                        }, this._notificationService.failureNotification.bind(this._notificationService));
+                    }
+                });
+        }
     }
 
     private onData (data: { data: ShopListPage }): void {
@@ -114,6 +141,10 @@ export class ItemsListComponent extends Page implements OnDestroy {
                 new TableCell({title: item.title}),
                 new TableCell({title: SHOP_ITEM_TYPES.find(type => type.id === item.type).name}),
                 new TableCell({title: SHOP_ITEM_RARITIES.find(rarity => rarity.percentage === item.rarity).name})
+            ],
+            actions: [
+                new TableAction({title: 'Edit', value: ShopItemListAction.EDIT}),
+                new TableAction({title: 'Delete', value: ShopItemListAction.DELETE})
             ]
         }));
     }
