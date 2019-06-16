@@ -58,6 +58,10 @@ export class SlimUser {
     @primitive()
     avatarUpdatedAt: number;
     @primitive()
+    posts: number;
+    @primitive()
+    likes: number;
+    @primitive()
     createdAt: number;
 
     constructor(source?: Partial<SlimUser>) {
@@ -74,10 +78,6 @@ export class User extends SlimUser {
     avatarUpdatedAt: number;
     @objectOf(DisplayGroup)
     displayGroup: DisplayGroup;
-    @primitive()
-    posts: number;
-    @primitive()
-    likes: number;
     @objectOf(UserSocial)
     social: UserSocial;
     @arrayOf(UserBadge)
