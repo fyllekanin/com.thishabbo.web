@@ -9,6 +9,7 @@ import { ElementRef } from '@angular/core';
 import { TitleTab, TitleTopBorder } from 'shared/app-views/title/title.model';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { HttpService } from 'core/services/http/http.service';
+import { SlimUser } from 'core/services/auth/auth.model';
 
 @Component({
     selector: 'app-forum-home',
@@ -96,6 +97,14 @@ export class ForumHomeComponent extends Page implements OnInit, OnDestroy {
 
     get topPosters(): Array<ForumTopPoster> {
         return this._forumStats.topPosters;
+    }
+
+    get currentlyActive(): Array<SlimUser> {
+        return this._forumStats.currentlyActive;
+    }
+
+    get activeToday(): Array<SlimUser> {
+        return this._forumStats.activeToday;
     }
 
     private onPage(data: { data: Array<SlimCategory> }): void {

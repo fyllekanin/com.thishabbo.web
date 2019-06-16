@@ -21,6 +21,10 @@ export class ForumStats {
     topPosters: Array<ForumTopPoster>;
     @arrayOf(ForumTopPoster)
     topPostersToday: Array<ForumTopPoster>;
+    @arrayOf(SlimUser)
+    currentlyActive: Array<SlimUser> = [];
+    @arrayOf(SlimUser)
+    activeToday: Array<SlimUser> = [];
 
     constructor(source?: Partial<ForumStats>) {
         ClassHelper.assign(this, source);

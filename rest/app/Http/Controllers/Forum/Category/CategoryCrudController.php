@@ -80,7 +80,9 @@ class CategoryCrudController extends Controller {
         return response()->json([
             'latestPosts' => $this->getLatestPosts($user, $categoryIds),
             'topPosters' => $this->getTopPosters(),
-            'topPostersToday' => $this->getTopPostersToday($clientTodayMidnight)
+            'topPostersToday' => $this->getTopPostersToday($clientTodayMidnight),
+            'currentlyActive' => $this->getOnline(1),
+            'activeToday' => $this->getOnline(24)
         ]);
     }
 
@@ -329,6 +331,20 @@ class CategoryCrudController extends Controller {
                     'user' => UserHelper::getSlimUser($user->userId)
                 ];
             });
+    }
+
+    /**
+     * Get method to get an array of all the users currently active
+     *
+     * @param $hours
+     *
+     * @return array
+     */
+    private function getOnline($hours) {
+        $userIds = User::where('lastActivity', '>=', time() - ($hours * 3600))->orderBy('lastActivity', 'DESC')->pluck('userId');
+        return $userIds->map(function ($id) {
+            return UserHelper::getSlimUser($id);
+        });
     }
 
     /**

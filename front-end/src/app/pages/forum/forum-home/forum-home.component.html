@@ -81,6 +81,20 @@
                     </div>
                 </div>
             </app-content>
+
+            <app-title [title]="currentlyActive.length + ' users currently active'" [top]="latestPostersTop"></app-title>
+            <app-content>
+                <span *ngFor="let user of currentlyActive; let lst = last;" >
+                    <app-user-link [user]="user"></app-user-link><span *ngIf="!lst">, </span><span *ngIf="last">.</span>
+                </span>
+            </app-content>
+
+            <app-title [title]="activeToday.length  + ' users active in the last 24 hours'" [top]="latestPostersTop"></app-title>
+            <app-content>
+                <span *ngFor="let user of activeToday; let lst = last;" >
+                    <app-user-link [user]="user"></app-user-link><span *ngIf="!lst">, </span><span *ngIf="last">.</span>
+                </span>
+            </app-content>
         </div>
     </div>
 </div>
