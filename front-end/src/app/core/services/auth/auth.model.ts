@@ -6,7 +6,7 @@ export class DisplayGroup {
     @primitive()
     nameStyling: string;
 
-    constructor(source: Partial<DisplayGroup>) {
+    constructor (source: Partial<DisplayGroup>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -17,7 +17,7 @@ export class UserBar {
     @primitive()
     styling: string;
 
-    constructor(source: Partial<UserBar>) {
+    constructor (source: Partial<UserBar>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -28,7 +28,7 @@ export class UserSocial {
     @primitive()
     twitter: string;
 
-    constructor(source: Partial<UserSocial>) {
+    constructor (source: Partial<UserSocial>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -43,7 +43,7 @@ export class UserBadge {
     @primitive()
     updatedAt: number;
 
-    constructor(source: Partial<UserBadge>) {
+    constructor (source: Partial<UserBadge>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -56,11 +56,19 @@ export class SlimUser {
     @arrayOf(String)
     nameColor: Array<string> = [];
     @primitive()
+    namePosition: number;
+    @primitive()
+    iconId: number;
+    @primitive()
+    iconPosition: string;
+    @primitive()
+    effectId: number;
+    @primitive()
     avatarUpdatedAt: number;
     @primitive()
     createdAt: number;
 
-    constructor(source?: Partial<SlimUser>) {
+    constructor (source?: Partial<SlimUser>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -85,7 +93,7 @@ export class User extends SlimUser {
     @primitive()
     namePosition: number;
 
-    constructor(source?: Partial<User>) {
+    constructor (source?: Partial<User>) {
         super(source);
         ClassHelper.assign(this, source);
     }
@@ -99,7 +107,7 @@ export class OAuth {
     @primitive()
     refreshToken: string;
 
-    constructor(source: Partial<OAuth>) {
+    constructor (source: Partial<OAuth>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -136,7 +144,7 @@ export class StaffPermissions {
     @primitive()
     canSeeListeners: boolean;
 
-    constructor(source?: Partial<StaffPermissions>) {
+    constructor (source?: Partial<StaffPermissions>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -201,7 +209,7 @@ export class SitecpPermissions {
     @primitive()
     canManageSubscriptions: boolean;
 
-    constructor(source?: Partial<SitecpPermissions>) {
+    constructor (source?: Partial<SitecpPermissions>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -226,15 +234,15 @@ export class AuthUser {
     @primitiveOf(Number)
     credits = 0;
 
-    constructor(source: Partial<AuthUser>) {
+    constructor (source: Partial<AuthUser>) {
         ClassHelper.assign(this, source);
     }
 
-    get isSitecp(): boolean {
+    get isSitecp (): boolean {
         return this.sitecpPermissions && this.sitecpPermissions.isSitecp;
     }
 
-    get isStaff(): boolean {
+    get isStaff (): boolean {
         return this.staffPermissions && this.staffPermissions.isStaff;
     }
 }
