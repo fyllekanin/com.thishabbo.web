@@ -1504,4 +1504,25 @@ class Action {
         'data' => [],
         'log' => 'log_user'
     ];
+
+    const CREATED_SHOP_ITEM = [
+        'id' => 177,
+        'description' => 'User created shop item',
+        'data' => [],
+        'log' => 'log_sitecp'
+    ];
+
+    const UPDATED_SHOP_ITEM = [
+        'id' => 178,
+        'description' => 'User updated shop item',
+        'data' => [],
+        'log' => 'log_sitecp'
+    ];
+
+    const DELETED_SHOP_ITEM = [
+        'id' => 179,
+        'description' => 'User deleted shop item',
+        'data' => [],
+        'log' => 'log_sitecp'
+    ];
 }
