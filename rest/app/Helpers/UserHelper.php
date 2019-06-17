@@ -38,7 +38,8 @@ class UserHelper {
             ->leftJoin('userdata', 'userdata.userId', '=', 'users.userId')
             ->select('users.userId', 'users.nickname', 'users.createdAt',
                 'users.displayGroupId', 'userdata.avatarUpdatedAt',
-                'userdata.nameColor AS customColor', 'groups.nameColor AS groupColor')->first();
+                'userdata.nameColor AS customColor', 'groups.nameColor AS groupColor',
+                'userdata.iconId', 'userdata.iconPosition', 'userdata.effectId')->first();
 
 
         $slimUser->nameColor = $slimUser->customColor ? $slimUser->customColor : $slimUser->groupColor;
@@ -209,6 +210,9 @@ class UserHelper {
         $user->signature = BBcodeUtil::bbcodeParser($userdata->signature);
         $user->avatarUpdatedAt = $userdata->avatarUpdatedAt;
         $user->namePosition = $userdata->namePosition;
+        $user->iconId = $userdata->iconId;
+        $user->iconPosition = $userdata->iconPosition;
+        $user->effectId = $userdata->effectId;
         $user->social = $userdata && !$postBit->hideSocials ? (object)[
             'discord' => $userdata->discord,
             'twitter' => $userdata->twitter

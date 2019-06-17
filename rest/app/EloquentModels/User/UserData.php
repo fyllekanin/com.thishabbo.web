@@ -35,7 +35,10 @@ class UserData extends UnixTimeModel {
         'twitter',
         'badges',
         'nameColor',
-        'namePosition'
+        'namePosition',
+        'iconId',
+        'iconPosition',
+        'effectId'
     ];
 
     public function user() {

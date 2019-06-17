@@ -15,8 +15,13 @@ class CreateUserdataTable extends Migration {
             $table->bigIncrements('userdataId');
             $table->bigInteger('userId')->unique();
             $table->text('signature')->nullable();
+
             $table->text('nameColor')->nullable();
             $table->integer('namePosition')->default(0);
+            $table->integer('iconId')->nullable();
+            $table->string('iconPosition')->nullable();
+            $table->integer('effectId')->nullable();
+
             $table->bigInteger('postBit')->default(0);
             $table->bigInteger('avatarUpdatedAt')->default(0);
             $table->bigInteger('credits')->default(0);
@@ -28,6 +33,8 @@ class CreateUserdataTable extends Migration {
 
             $table->index('createdAt');
             $table->index('updatedAt');
+            $table->index('credits');
+            $table->index('postBit');
         });
     }
 

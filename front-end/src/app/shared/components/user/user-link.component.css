@@ -1,0 +1,13 @@
+a {
+    display: inline-block;
+}
+
+.left-icon {
+    float: left;
+    margin-right: 3px;
+}
+
+.right-icon {
+    float: right;
+    margin-left: 3px;
+}
