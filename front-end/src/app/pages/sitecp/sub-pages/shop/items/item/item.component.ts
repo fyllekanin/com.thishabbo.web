@@ -103,22 +103,27 @@ export class ItemComponent extends Page implements OnDestroy {
     private onCreate (): void {
         const form = new FormData();
 
-        const fileElement = this._data.isNameIcon ? this.icon : this.effect;
-        const file = fileElement.nativeElement.files ? fileElement.nativeElement.files[0] : null;
-        form.append('image', file);
+        if (this._data.isNameIcon || this._data.isNameEffect) {
+            const fileElement = this._data.isNameIcon ? this.icon : this.effect;
+            const file = fileElement.nativeElement.files ? fileElement.nativeElement.files[0] : null;
+            form.append('image', file);
+        }
         form.append('data', JSON.stringify(this._data));
         this._service.create(form).subscribe(item => {
             this._data = item;
+            this.setTabs();
         }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private onUpdate (): void {
         const form = new FormData();
 
-        const fileElement = this._data.isNameIcon ? this.icon : this.effect;
-        const file = fileElement.nativeElement.files ? fileElement.nativeElement.files[0] : null;
-        if (file) {
-            form.append('image', file);
+        if (this._data.isNameIcon || this._data.isNameEffect) {
+            const fileElement = this._data.isNameIcon ? this.icon : this.effect;
+            const file = fileElement.nativeElement.files ? fileElement.nativeElement.files[0] : null;
+            if (file) {
+                form.append('image', file);
+            }
         }
         form.append('data', JSON.stringify(this._data));
         this._service.update(form, this._data.shopItemId).subscribe(item => {
