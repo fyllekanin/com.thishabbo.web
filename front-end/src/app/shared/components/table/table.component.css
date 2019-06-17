@@ -23,6 +23,8 @@
 
 table {
     width: 100%;
+    padding: 0px;
+    border-spacing: 0px;
 }
 
 tr:nth-child(even) {
