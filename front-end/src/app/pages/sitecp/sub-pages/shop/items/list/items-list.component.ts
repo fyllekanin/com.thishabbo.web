@@ -128,6 +128,7 @@ export class ItemsListComponent extends Page implements OnDestroy {
 
     private getTableHeaders (): Array<TableHeader> {
         return [
+            new TableHeader({title: ''}),
             new TableHeader({title: 'Title'}),
             new TableHeader({title: 'Type'}),
             new TableHeader({title: 'Rarity'})
@@ -138,6 +139,7 @@ export class ItemsListComponent extends Page implements OnDestroy {
         return this._data.items.map(item => new TableRow({
             id: String(item.shopItemId),
             cells: [
+                new TableCell({title: item.getResource(), innerHTML: true}),
                 new TableCell({title: item.title}),
                 new TableCell({title: SHOP_ITEM_TYPES.find(type => type.id === item.type).name}),
                 new TableCell({title: SHOP_ITEM_RARITIES.find(rarity => rarity.percentage === item.rarity).name})

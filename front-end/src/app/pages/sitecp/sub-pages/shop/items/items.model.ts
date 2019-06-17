@@ -47,6 +47,13 @@ export class ShopItem {
     get isSubscription (): boolean {
         return this.type === SHOP_ITEM_TYPES.subscription.value;
     }
+
+    getResource (): string {
+        if (this.isNameEffect || this.isNameIcon) {
+            return `<img src="/rest/resources/images/shop/${this.shopItemId}.gif" />`;
+        }
+        return '<em class="far fa-address-card" style="font-size: 14px;"></em>';
+    }
 }
 
 export enum ShopItemActions {
