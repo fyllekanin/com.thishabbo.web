@@ -1,5 +1,28 @@
 <div class="user-link" (mouseenter)="showMiniProfile($event)" (mouseleave)="hideMiniProfile()">
-    <ng-template appMiniProfileHost></ng-template>
+    <div class="mini-profile">
+        <div class="mini-cover" [style]="coverUrl | safeStyle">
+            <div class="mini-username">
+                <span [style]="nameStyling | safeStyle">{{ user.nickname }}</span>
+            </div>
+        </div>
+        <div [style]="avatarUrl | safeStyle" class="mini-av"></div>
+        <div class="mini-info">
+            <div class="grid-x">
+                <div class="cell small-6 mini-stat">
+                    <em class="fa fa-comment-alt"></em><br />
+                    {{ posts }} Posts
+                </div>
+                <div class="cell small-6 mini-stat">
+                    <em class="fa fa-thumbs-up"></em><br />
+                    {{ likes }} Likes
+                </div>
+                <div class="cell small-12 mini-links">
+                    <a [routerLink]="['/user/profile/', user.nickname]">Visit full profile &raquo;</a> <br />
+                    <a [routerLink]="['/home/search/threads/page/1']" [queryParams]="{ byUser: user.nickname, order: 'desc'}">Search threads by user &raquo;</a>
+                </div>
+            </div>
+        </div>
+    </div>
     <a [routerLink]="['/user/profile/', user.nickname]">
         <span [style]="nameStyling | safeStyle">{{user.nickname}}</span>
     </a>

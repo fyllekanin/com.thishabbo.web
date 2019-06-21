@@ -1,8 +1,6 @@
-import { Component, Input, ViewChild, ComponentFactoryResolver } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { SlimUser } from 'core/services/auth/auth.model';
 import { UserHelper } from 'shared/helpers/user.helper';
-import { MiniProfileComponent } from './mini-profile/mini-profile.component';
-import { MiniProfileDirective } from './mini-profile/mini-profile.directive';
 
 @Component({
     selector: 'app-user-link',
@@ -11,32 +9,25 @@ import { MiniProfileDirective } from './mini-profile/mini-profile.directive';
 })
 export class UserLinkComponent {
     @Input() user = new SlimUser();
-    @ViewChild(MiniProfileDirective, {static: true}) miniProfileHost: MiniProfileDirective;
-
-    constructor(
-        private componentFactoryResolver: ComponentFactoryResolver
-    ) { }
-
-    showMiniProfile(event: MouseEvent) {
-        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(MiniProfileComponent);
-        const viewContainerRef = this.miniProfileHost.viewContainerRef;
-        viewContainerRef.clear();
-
-        const componentRef = viewContainerRef.createComponent(componentFactory);
-        (<MiniProfileComponent>componentRef.instance).data = {
-            user: this.user,
-            left: event.pageX + 25,
-            top: event.pageY - 90
-        };
-    }
-
-    hideMiniProfile() {
-        const viewContainerRef = this.miniProfileHost.viewContainerRef;
-        viewContainerRef.clear();
-    }
 
     get nameStyling (): string {
         return UserHelper.getNameColor(this.user.nameColor);
+    }
+
+    get avatarUrl (): string {
+        return `background-image: url('/rest/resources/images/users/${this.user.userId}.gif')`;
+    }
+
+    get coverUrl (): string {
+        return `background-image: url('/rest/resources/images/covers/${this.user.userId}');`;
+    }
+
+    get posts (): string {
+        return this.user.posts < 1000 ? `${this.user.posts}` : `${this.user.posts / 1000}K`;
+    }
+
+    get likes (): string {
+        return this.user.likes < 1000 ? `${this.user.likes}` : `${this.user.likes / 1000}K`;
     }
 }
 
