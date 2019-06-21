@@ -888,42 +888,6 @@ wbbdebug = false;
                     this.txtAreaInitContent();
                 }
 
-
-                //clear html on paste from external editors
-                this.$body.bind('keydown', $.proxy(function (e) {
-                    if ((e.which == 86 && (e.ctrlKey == true || e.metaKey == true)) || (e.which == 45 && (e.shiftKey == true || e.metaKey == true))) {
-                        if (!this.$pasteBlock) {
-                            this.saveRange();
-                            this.$pasteBlock = $(this.elFromString('<div style="opacity:0;" contenteditable="true">\uFEFF</div>'));
-
-                            this.$pasteBlock.appendTo(this.body);
-                            //if (!$.support.search?type=2) {this.$pasteBlock.focus();} //IE 7,8 FIX
-                            setTimeout($.proxy(function () {
-                                    this.clearPaste(this.$pasteBlock);
-                                    var rdata = '<span>' + this.$pasteBlock.html() + '</span>';
-                                    this.$body.attr("contentEditable", "true");
-                                    this.$pasteBlock.blur().remove();
-                                    this.body.focus();
-
-                                    if (this.cleartext) {
-                                        $.log("Check if paste to clearText Block");
-                                        if (this.isInClearTextBlock()) {
-                                            rdata = this.toBB(rdata).replace(/\n/g, "<br/>").replace(/\s{3}/g, '<span class="wbbtab"></span>');
-                                        }
-                                    }
-                                    rdata = rdata.replace(/\t/g, '<span class="wbbtab"></span>');
-                                    this.selectRange(this.lastRange);
-                                    this.insertAtCursor(rdata, false);
-                                    this.lastRange = false;
-                                    this.$pasteBlock = false;
-                                }
-                                , this), 1);
-                            this.selectNode(this.$pasteBlock[0]);
-                        }
-                        return true;
-                    }
-                }, this));
-
                 //insert BR on press enter
                 this.$body.bind('keydown', $.proxy(function (e) {
                     if (e.which == 13) {
