@@ -150,7 +150,7 @@ class ProfileSettingsController extends Controller {
         $user = $request->get('auth');
         $cover = $request->file('cover');
 
-        $this->validate($request, [
+        $request->validate([
             'cover' => 'required|mimes:jpg,jpeg,bmp,png,gif',
         ]);
 

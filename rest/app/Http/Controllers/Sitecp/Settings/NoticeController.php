@@ -86,7 +86,7 @@ class NoticeController extends Controller {
         Condition::precondition(empty($notice->text), 400, 'Text can not be empty');
         Condition::precondition(empty($notice->backgroundColor), 400, 'Background color can not be empty');
 
-        $this->validate($request, [
+        $request->validate([
             'backgroundImage' => 'required|mimes:jpg,jpeg,bmp,png,gif',
         ]);
 
