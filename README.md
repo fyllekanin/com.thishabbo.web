@@ -93,6 +93,8 @@ We got 3 different types of tests in this project, we got:
 * Unit tests for the Back-end
 * E2E tests which test the full application
 
+Look in the scripts/run_tests.sh file to see how they are ran
+
 
 ## Running the development
 If you have passed all the previous steps, what you have to do when you wanna run
