@@ -2,21 +2,35 @@
 <app-content>
     <div class="grid-container full">
         <div class="grid-x margin-x">
-            <div class="cell small-6">
+            <div class="cell small-12 medium-4">
                 <label>Name</label>
-                <input type="text" name="name" [(ngModel)]="group.name" />
+                <input type="text" name="name" [(ngModel)]="group.name"/>
             </div>
-            <div class="cell small-6">
+            <div class="cell small-12 medium-4">
                 <label>Immunity</label>
-                <input type="number" [(ngModel)]="group.immunity" (keyup)="onImmunityChange()" min="0" />
+                <input type="number" [(ngModel)]="group.immunity" (keyup)="onImmunityChange()" min="0"/>
+            </div>
+            <div class="cell small-12 medium-4">
+                <label>
+                    Based On
+                    <span tooltip="Will not copy forum permissions" class="checkbox-info">
+                        <em class="fas fa-question-circle"></em>
+                    </span>
+                </label>
+                <select [(ngModel)]="baseGroup" (change)="onBaseChange()" [disabled]="group.createdAt">
+                    <option [ngValue]="null">Select...</option>
+                    <option *ngFor="let item of groups" [ngValue]="item">
+                        {{item.name}}
+                    </option>
+                </select>
             </div>
             <div class="cell small-4">
                 <label>Avatar width</label>
-                <input type="number" [(ngModel)]="group.avatarWidth" min="0" />
+                <input type="number" [(ngModel)]="group.avatarWidth" min="0"/>
             </div>
             <div class="cell small-4">
                 <label>Avatar height</label>
-                <input type="number" [(ngModel)]="group.avatarHeight" min="0" />
+                <input type="number" [(ngModel)]="group.avatarHeight" min="0"/>
             </div>
             <div class="cell small-2">
                 <label class="checkbox-container checkbox-align-with-input">
@@ -155,7 +169,7 @@
                 <div>
                     <label class="checkbox-container">
                         Access to advanced editing of a User <em>(password, user groups, display group, accolades
-                            etc)</em>
+                        etc)</em>
                         <input type="checkbox" [(ngModel)]="sitecpPermissions.canEditUserAdvanced">
                         <span class="checkmark"></span>
                     </label>
@@ -326,7 +340,7 @@
             <div class="cell small-6">
                 <label class="checkbox-container">
                     Threads & Posts need approval? <br><em>If ticked, any user in this user group will be limited. They
-                        will need a moderator to "approve" all their posts & threads before they are public.</em>
+                    will need a moderator to "approve" all their posts & threads before they are public.</em>
                     <input type="checkbox" [(ngModel)]="options.contentNeedApproval">
                     <span class="checkmark"></span>
                 </label>
@@ -334,11 +348,11 @@
             <div class="cell small-6">
                 <label class="checkbox-container">
                     Usergroup can be tagged?<br> <em>If ticked, if somebody posts <strong>@user group name</strong> it
-                        will tag
-                        everyone within that user group. Useful for Sitecp groups - not useful for groups with tons of
-                        people
-                        as they will all be tagged and can be abused. Like @RegisteredUsers - that's a tag to 25,000+
-                        people!</em>
+                    will tag
+                    everyone within that user group. Useful for Sitecp groups - not useful for groups with tons of
+                    people
+                    as they will all be tagged and can be abused. Like @RegisteredUsers - that's a tag to 25,000+
+                    people!</em>
                     <input type="checkbox" [(ngModel)]="options.canBeTagged">
                     <span class="checkmark"></span>
                 </label>
@@ -354,7 +368,7 @@
             <div class="cell small-6">
                 <label>Name Styling</label>
                 <textarea autocomplete="off" autocapitalize="off" spellcheck="false" type="text"
-                    [(ngModel)]="group.nameColor"></textarea>
+                          [(ngModel)]="group.nameColor"></textarea>
 
                 <label>Preview</label>
                 <div [style]="nicknameStyle | safeStyle">nickname</div>
@@ -362,7 +376,7 @@
             <div class="cell small-6">
                 <label>Userbar Styling</label>
                 <textarea autocomplete="off" autocapitalize="off" spellcheck="false" type="text"
-                    [(ngModel)]="group.userBarStyling"></textarea>
+                          [(ngModel)]="group.userBarStyling"></textarea>
 
                 <label>Preview</label>
                 <div [style]="userBarStyle | safeStyle">{{group.name}}</div>

@@ -22,10 +22,15 @@
 
 .dialog-wrapper {
     background-color: #fefefe;
-    margin: auto;
     padding: 20px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.28);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.28);
     border-radius: 3px;
+    transition: 0.3s;
+    margin-top: -1000px;
+}
+
+.show {
+    margin-top: 0;
 }
 
 h2 {
