@@ -69,7 +69,7 @@ export class DialogComponent {
 
     private onCloseDialog (): void {
         this.show = false;
-        setInterval(() => this.isVisible = false, 200);
+        setTimeout(() => this.isVisible = false, 200);
     }
 
     private setButtons (): void {
