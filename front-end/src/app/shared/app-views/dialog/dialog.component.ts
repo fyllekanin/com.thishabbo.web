@@ -5,7 +5,7 @@ import { DialogButton, DialogCloseButton, DialogConfig } from 'shared/app-views/
 @Component({
     selector: 'app-dialog',
     templateUrl: 'dialog.component.html',
-    styleUrls: [ 'dialog.component.css' ]
+    styleUrls: ['dialog.component.css']
 })
 export class DialogComponent {
     private _config: DialogConfig;
@@ -13,14 +13,13 @@ export class DialogComponent {
     private _buttons: Array<DialogButton | DialogCloseButton> = [];
 
     @HostBinding('class.visible') isVisible = false;
-    @ViewChild('container', { read: ViewContainerRef, static: true }) container;
+    @ViewChild('container', {read: ViewContainerRef, static: true}) container;
+    show = false;
 
     constructor (
         dialogService: DialogService
     ) {
-        dialogService.onDialogClose.subscribe(() => {
-            this.isVisible = false;
-        });
+        dialogService.onDialogClose.subscribe(this.onCloseDialog.bind(this));
         dialogService.onDialogConfig.subscribe(config => {
             this.container.clear();
             this._config = config;
@@ -30,21 +29,22 @@ export class DialogComponent {
             }
             this.setButtons();
             this.isVisible = true;
+            this.show = true;
         });
     }
 
-    @HostListener('click', [ '$event' ])
+    @HostListener('click', ['$event'])
     onClose (event): void {
         const isInsideWrapper = event.path
             .some(item => item.classList && item.classList.contains('dialog-wrapper'));
         if (!isInsideWrapper) {
-            this.isVisible = false;
+            this.onCloseDialog();
         }
     }
 
     onButton (button: DialogButton | DialogCloseButton): void {
         if (button instanceof DialogCloseButton) {
-            this.isVisible = false;
+            this.onCloseDialog();
             return;
         }
         const arg = this._componentRef && this._componentRef.instance ? this._componentRef.instance.getData() : null;
@@ -67,7 +67,12 @@ export class DialogComponent {
         return this._buttons;
     }
 
-    private setButtons(): void {
+    private onCloseDialog (): void {
+        this.show = false;
+        setTimeout(() => this.isVisible = false, 200);
+    }
+
+    private setButtons (): void {
         const buttons = this._config.buttons || [];
         buttons.sort((a, _b) => {
             return a instanceof DialogCloseButton ? 1 : -1;
@@ -75,7 +80,7 @@ export class DialogComponent {
         this._buttons = buttons;
     }
 
-    private createComponent(): void {
+    private createComponent (): void {
         this._componentRef = this.container.createComponent(this._config.component);
         this._componentRef.instance.setData(this._config.data);
     }

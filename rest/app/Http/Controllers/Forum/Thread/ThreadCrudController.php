@@ -255,6 +255,7 @@ class ThreadCrudController extends Controller {
         Condition::precondition(!$thread, 404, 'Thread does not exist');
         Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canViewThreadContent, $thread->categoryId), 403, 'You can not view thread content');
 
+        $this->forumService->updateReadCategory($thread->categoryId, $user->userId);
         $this->forumService->updateReadThread($thread->threadId, $user->userId);
         $isCreator = $thread->userId == $user->userId;
         Condition::precondition(!$isCreator && !PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canViewOthersThreads, $thread->categoryId), 403,

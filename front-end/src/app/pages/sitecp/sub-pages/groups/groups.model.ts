@@ -1,5 +1,5 @@
 import { SitecpPermissions, StaffPermissions } from 'core/services/auth/auth.model';
-import { ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
 
 export class GroupOptions {
     @primitive()
@@ -7,12 +7,14 @@ export class GroupOptions {
     @primitive()
     canBeTagged: boolean;
 
-    constructor(source?: Partial<GroupOptions>) {
+    constructor (source?: Partial<GroupOptions>) {
         ClassHelper.assign(this, source);
     }
 }
 
 export class Group {
+    @arrayOf(Group)
+    groups: Array<Group> = [];
     @objectOf(SitecpPermissions)
     sitecpPermissions: SitecpPermissions;
     @objectOf(StaffPermissions)
@@ -42,7 +44,7 @@ export class Group {
     @primitive()
     avatarHeight: number;
 
-    constructor(source?: Partial<Group>) {
+    constructor (source?: Partial<Group>) {
         ClassHelper.assign(this, source);
     }
 }
