@@ -108,6 +108,7 @@ Route::group(['middleware' => PermissionHelper::getSitecpMiddleware([$permission
     $permissions->canBanUser, $permissions->canRemoveEssentials, $permissions->canDoInfractions, $permissions->canManageSubscriptions])], function () use ($permissions) {
 
     Route::get('/users/list/page/{page}', 'Sitecp\User\UserController@getUsers');
+    Route::get('/users/{userId}/history/page/{page}', 'Sitecp\User\UserHistoryController@getHistory');
 
     Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canManageSubscriptions)], function () {
         Route::get('/users/{userId}/subscriptions', 'Sitecp\User\UserSubscriptionsController@getUserSubscriptions');

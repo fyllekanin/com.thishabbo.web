@@ -198,7 +198,7 @@ class AccountController extends Controller {
         $gotTimeout = LogUser::where('action', Action::getAction(Action::CHANGED_NICKNAME))->where('userId', $user->userId)
                 ->where('createdAt', '>', (time() - $oneWeek))->count('logId') > 0;
         Condition::precondition($gotTimeout, 400, 'You need to wait one week until you can change nickname again');
-        Condition::precondition(!$this->creditsService->haveEnoughCredits($user->userId, 300), 400, 'You do not have enough credits');
+        Condition::precondition(!$this->creditsService->haveEnoughCredits($user->userId, ConfigHelper::getCostSettings()->nickname), 400, 'You do not have enough credits');
         Condition::precondition(!isset($nickname) || empty($nickname) || strlen($nickname) < 3, 400,
             'Nickname is not valid');
 
@@ -210,7 +210,7 @@ class AccountController extends Controller {
             $userWithNickname->save();
         }
 
-        $this->creditsService->takeCredits($user->userId, 300);
+        $this->creditsService->takeCredits($user->userId, ConfigHelper::getCostSettings()->nickname);
         $oldNickname = $user->nickname;
         $user->nickname = $nickname;
         $user->save();

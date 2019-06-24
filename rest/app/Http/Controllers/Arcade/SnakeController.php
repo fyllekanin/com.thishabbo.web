@@ -7,6 +7,7 @@ use App\Helpers\ConfigHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
+use App\Services\CreditsService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
 
@@ -43,11 +44,15 @@ class SnakeController extends Controller {
      * Get request to start a new game
      *
      * @param Request $request
+     * @param CreditsService $creditsService
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getSnakeGame(Request $request) {
+    public function getSnakeGame(Request $request, CreditsService $creditsService) {
         $user = $request->get('auth');
+
+        Condition::precondition(!$creditsService->haveEnoughCredits($user->userId, ConfigHelper::getCostSettings()->arcade), 400,
+            'You need at least ' . ConfigHelper::getCostSettings()->arcade . ' credits to play');
 
         $game = new Game([
             'userId' => $user->userId,

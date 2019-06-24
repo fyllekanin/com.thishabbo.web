@@ -640,9 +640,8 @@ class Action {
         'id' => 71,
         'description' => 'Updated a users group',
         'data' => [
-            'name' => 'Name of user',
-            'before' => 'Usergroups before update',
-            'after' => 'Usergroups after update'
+            'before' => 'Usergroup ids before update',
+            'after' => 'Usergroup ids after update'
         ],
         'log' => 'log_sitecp'
     ];
@@ -651,8 +650,10 @@ class Action {
         'id' => 72,
         'description' => 'Updated basic settings of a user',
         'data' => [
-            'name' => 'Name of user',
-            'userId' => 'User id of affected user'
+            'beforeNickname' => 'Nickname before change',
+            'afterNickname' => 'Nickname after change',
+            'beforeHabbo' => 'Habbo before change',
+            'afterHabbo' => 'Habbo after change'
         ],
         'log' => 'log_sitecp'
     ];
@@ -660,9 +661,7 @@ class Action {
     const BANNED_USER = [
         'id' => 73,
         'description' => 'Banned a user',
-        'data' => [
-            'name' => 'Name of user'
-        ],
+        'data' => [],
         'log' => 'log_sitecp'
     ];
 
@@ -1405,7 +1404,7 @@ class Action {
         'id' => 163,
         'description' => 'Created a accolade for user',
         'data' => [
-            'userId' => 'User that got the accolade'
+            'accoladeId' => 'ID of accolade'
         ],
         'log' => 'log_sitecp'
     ];
@@ -1414,7 +1413,7 @@ class Action {
         'id' => 164,
         'description' => 'Updated a accolade for user',
         'data' => [
-            'userId' => 'ID of user for the accolade'
+            'accoladeId' => 'ID of accolade'
         ],
         'log' => 'log_sitecp'
     ];
@@ -1423,7 +1422,7 @@ class Action {
         'id' => 165,
         'description' => 'Deleted a accolade for user',
         'data' => [
-            'userId' => 'ID of user for the accolade'
+            'accoladeId' => 'ID of accolade'
         ],
         'log' => 'log_sitecp'
     ];
@@ -1466,21 +1465,27 @@ class Action {
     const CREATED_USER_SUBSCRIPTION = [
         'id' => 171,
         'description' => 'Created a user subscription',
-        'data' => [],
+        'data' => [
+            'subscriptionId' => 'ID of subscription'
+        ],
         'log' => 'log_sitecp'
     ];
 
     const UPDATED_USER_SUBSCRIPTION = [
         'id' => 172,
         'description' => 'Updated a user subscription',
-        'data' => [],
+        'data' => [
+            'subscriptionId' => 'ID of subscription'
+        ],
         'log' => 'log_sitecp'
     ];
 
     const DELETED_USER_SUBSCRIPTION = [
         'id' => 173,
         'description' => 'Deleted a user subscription',
-        'data' => [],
+        'data' => [
+            'subscriptionId' => 'ID of subscription'
+        ],
         'log' => 'log_sitecp'
     ];
 

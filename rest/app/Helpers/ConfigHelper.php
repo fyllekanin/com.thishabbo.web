@@ -87,4 +87,8 @@ class ConfigHelper {
     public static function getGithubSettings() {
         return (object)Config::get(self::$SETTINGS . '.GITHUB');
     }
+
+    public static function getCostSettings() {
+        return (object)Config::get(self::$SETTINGS . '.COSTS');
+    }
 }
