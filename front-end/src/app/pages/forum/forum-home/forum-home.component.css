@@ -34,16 +34,11 @@
     display: inline-block;
     width: calc(100% - 50px);
     padding: 5px 0 0 5px;
-
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .latest-post-row .image {
     width: 50px;
     display: inline-block;
-    float: left;
 }
 
 a {
@@ -52,4 +47,7 @@ a {
 
 .title {
     font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

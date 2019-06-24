@@ -3,7 +3,6 @@ import { RouterModule } from '@angular/router';
 import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 import { UserLinkComponent } from 'shared/components/user/user-link.component';
-import { MiniProfileComponent } from './mini-profile/mini-profile.component';
 
 @NgModule({
     imports: [
@@ -12,14 +11,10 @@ import { MiniProfileComponent } from './mini-profile/mini-profile.component';
         SafeHtmlModule
     ],
     declarations: [
-        UserLinkComponent,
-        MiniProfileComponent
+        UserLinkComponent
     ],
     exports: [
         UserLinkComponent
-    ],
-    entryComponents: [
-        MiniProfileComponent
     ]
 })
 export class UserLinkModule {}

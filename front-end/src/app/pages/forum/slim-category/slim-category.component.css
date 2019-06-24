@@ -1,9 +1,12 @@
 .icon {
-    font-size: 32px;
-    height: 100%;
+    font-size: 27px;
+    height: 60px;
     float: left;
     padding: 3px 13px 0 0;
-    color: #81a2b9;
+    color: #bcc2c7;
+    background: #f3f3f3;
+    padding: 15px;
+    margin-right: 13px;
 }
 
 .read {
