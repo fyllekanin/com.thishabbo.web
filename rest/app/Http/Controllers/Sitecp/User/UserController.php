@@ -171,6 +171,8 @@ class UserController extends Controller {
             400, 'Re-password not valid');
         Condition::precondition(!isset($newUser->habbo) || empty($newUser->habbo), 400, 'Habbo needs to be set');
 
+        $beforeHabbo = $current->habbo;
+        $beforeNickname = $current->nickname;
         if ($shouldCheckPassword) {
             $current->password = Hash::make($newUser->password);
         }
@@ -181,8 +183,12 @@ class UserController extends Controller {
         }
         $current->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_USERS_BASIC_SETTINGS,
-            ['name' => $current->nickname, 'userId' => $current->userId], $current->userId);
+        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_USERS_BASIC_SETTINGS, [
+            'beforeNickname' => $beforeNickname,
+            'afterNickname' => $current->nickname,
+            'beforeHabbo' => $beforeHabbo,
+            'afterHabbo' => $current->habbo
+        ], $current->userId);
         return response()->json();
     }
 

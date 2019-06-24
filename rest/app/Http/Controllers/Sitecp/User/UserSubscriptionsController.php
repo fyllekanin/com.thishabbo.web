@@ -59,7 +59,9 @@ class UserSubscriptionsController extends Controller {
         ]);
         $userSubscription->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_USER_SUBSCRIPTION);
+        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_USER_SUBSCRIPTION, [
+            'subscriptionId' => $data->subscriptionId
+        ], $userId);
         return response()->json([
             'userSubscriptionId' => $userSubscription->userSubscriptionId,
             'title' => $userSubscription->subscription->title,
@@ -84,7 +86,9 @@ class UserSubscriptionsController extends Controller {
         $userSubscription->expiresAt = $data->expiresAt;
         $userSubscription->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_USER_SUBSCRIPTION);
+        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_USER_SUBSCRIPTION, [
+            'subscriptionId' => $userSubscription->subscriptionId
+        ], $userSubscription->userId);
         return response()->json();
     }
 
@@ -97,11 +101,14 @@ class UserSubscriptionsController extends Controller {
             'You are not able to edit this user');
 
         $userId = $userSubscription->userId;
+        $subscriptionId = $userSubscription->subscriptionId;
         UserUpdated::dispatch($userId, ConfigHelper::getUserUpdateTypes()->CLEAR_SUBSCRIPTION);
 
         $userSubscription->delete();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_USER_SUBSCRIPTION, [], $userId);
+        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_USER_SUBSCRIPTION, [
+            'subscriptionId' => $subscriptionId
+        ], $userId);
         return response()->json();
     }
 
