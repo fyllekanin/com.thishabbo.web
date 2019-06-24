@@ -97,6 +97,10 @@ export class UsersListComponent extends Page implements OnDestroy {
                 break;
             case UserListAction.MANAGE_SUBSCRIPTIONS:
                 this._router.navigateByUrl(`/sitecp/users/${action.rowId}/subscriptions`);
+                break;
+            case UserListAction.CHANGE_HISTORY:
+                this._router.navigateByUrl(`/sitecp/users/${action.rowId}/history/page/1`);
+                break;
         }
     }
 
@@ -173,6 +177,11 @@ export class UsersListComponent extends Page implements OnDestroy {
                 title: 'Give Infraction',
                 value: UserListAction.GIVE_INFRACTION,
                 condition: sitecpPermissions.canDoInfractions
+            },
+            {
+                title: 'Change History',
+                value: UserListAction.CHANGE_HISTORY,
+                condition: true
             }
         ];
 

@@ -34,6 +34,8 @@ import { AccoladesService } from './services/accolades.service';
 import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
 import { SubscriptionsService } from './services/subscriptions.service';
 import { SubscriptionComponent } from './subscriptions/subscription/subscription.component';
+import { ChangeHistoryComponent } from './change-history/change-history.component';
+import { ChangeHistoryResolver } from './services/change-history.resolver';
 
 @NgModule({
     imports: [
@@ -63,7 +65,8 @@ import { SubscriptionComponent } from './subscriptions/subscription/subscription
         AccoladesComponent,
         AccoladeComponent,
         SubscriptionsComponent,
-        SubscriptionComponent
+        SubscriptionComponent,
+        ChangeHistoryComponent
     ],
     providers: [
         UsersListService,
@@ -74,7 +77,8 @@ import { SubscriptionComponent } from './subscriptions/subscription/subscription
         VoucherCodesResolver,
         EssentialsService,
         AccoladesService,
-        SubscriptionsService
+        SubscriptionsService,
+        ChangeHistoryResolver
     ],
     entryComponents: [
         MergeUsersComponent,

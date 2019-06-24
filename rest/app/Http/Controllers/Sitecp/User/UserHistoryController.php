@@ -43,6 +43,7 @@ class UserHistoryController extends Controller {
         return response()->json([
             'total' => $total,
             'page' => $page,
+            'userId' => $userId,
             'items' => $items->map(function ($item) {
                 return $this->myImpl->mapItem($item);
             })

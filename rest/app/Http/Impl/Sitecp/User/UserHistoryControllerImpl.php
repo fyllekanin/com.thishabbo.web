@@ -5,6 +5,7 @@ namespace App\Http\Impl\Sitecp\Shop;
 use App\EloquentModels\Group\Group;
 use App\EloquentModels\Shop\Subscription;
 use App\EloquentModels\User\Accolade;
+use App\Helpers\UserHelper;
 use App\Models\Logger\Action;
 
 class UserHistoryControllerImpl {
@@ -16,6 +17,7 @@ class UserHistoryControllerImpl {
         return [
             'logId' => $item->logId,
             'action' => $item->action,
+            'user' => UserHelper::getSlimUser($item->userId),
             'oldValue' => $oldValue,
             'newValue' => $newValue,
             'createdAt' => $item->createdAt->timestamp
@@ -56,7 +58,7 @@ class UserHistoryControllerImpl {
             case Action::getAction(Action::DELETED_ACCOLADE):
                 return '';
             case Action::getAction(Action::UPDATED_USERS_GROUPS):
-                return Group::whereIn('groupId', $item->getData()->before)->pluck('title');
+                return implode(', ', Group::whereIn('groupId', $item->getData()->after)->pluck('name')->toArray());
             case Action::getAction(Action::UPDATED_USERS_BASIC_SETTINGS):
                 return 'Nickname: ' . $item->getData()->afterNickname . ', Habbo: ' . $item->getData()->afterHabbo;
             default:
@@ -81,7 +83,7 @@ class UserHistoryControllerImpl {
                     ->where('accoladeId', $item->getData()->accoladeId)
                     ->value('role');
             case Action::getAction(Action::UPDATED_USERS_GROUPS):
-                return Group::whereIn('groupId', $item->getData()->before)->pluck('title');
+                return implode(', ', Group::whereIn('groupId', $item->getData()->before)->pluck('name')->toArray());
             case Action::getAction(Action::UPDATED_USERS_BASIC_SETTINGS):
                 return 'Nickname: ' . $item->getData()->beforeNickname . ', Habbo: ' . $item->getData()->beforeHabbo;
             default:
