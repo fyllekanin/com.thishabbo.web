@@ -115,7 +115,7 @@ class BetsController extends Controller
         $status = $request->input('status');
 
         $getBadgeSql = Bet::where('name', 'LIKE', Value::getFilterValue($request, $filter))
-            ->orderBy('leftSide', 'ASC')->orderBy('rightSide', 'DESC');
+            ->orderBy('displayOrder', 'ASC');
 
         if ($status) {
             switch ($status) {
