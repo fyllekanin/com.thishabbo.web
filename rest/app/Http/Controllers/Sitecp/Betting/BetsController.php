@@ -172,7 +172,7 @@ class BetsController extends Controller
             'leftSide' => $bet->leftSide,
             'rightSide' => $bet->rightSide,
             'betCategoryId' => $bet->betCategoryId,
-            'displayOrder' => $bet->displayOrder,
+            'displayOrder' => $bet->displayOrder
         ]);
         $newBet->save();
 
