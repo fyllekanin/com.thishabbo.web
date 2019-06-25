@@ -111,7 +111,7 @@ export class SubscriptionsComponent extends Page implements OnDestroy {
 
     private onCreate (): void {
         this._dialogService.openDialog({
-            title: 'Creating subscription',
+            title: 'Create Subscription',
             component: this._componentFactory.resolveComponentFactory(SubscriptionComponent),
             data: {subscription: new UserSubscriptionItem(null), subscriptions: this._data.subscriptions},
             buttons: [

@@ -1,7 +1,7 @@
-<strong>Reason</strong> <br/>
+<label>Reason</label>
 <input type="text" [(ngModel)]="reason"/>
 
-<strong>Infraction Level</strong>
+<label>Infraction / Warning Level</label>
 <select [(ngModel)]="infractionLevelId">
     <option [value]="0" disabled="disabled">Choose level</option>
     <option *ngFor="let item of levels" [value]="item.infractionLevelId">

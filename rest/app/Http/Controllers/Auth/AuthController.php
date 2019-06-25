@@ -328,7 +328,7 @@ class AuthController extends Controller {
             400, 'Password must be at least 8 characters long');
         Condition::precondition(!$this->authService->isRePasswordValid($data->repassword, $data->password),
             400, 'The passwords entered do not match');
-        Condition::precondition(!isset($data->habbo) || empty($data->habbo), 400, 'Habbo needs to be set');
+        Condition::precondition(!isset($data->habbo) || empty($data->habbo), 400, 'A Habbo name needs to be set!');
 
         $habbo = $this->habboService->getHabboByName($data->habbo);
         Condition::precondition(!$habbo, 404, 'There is no Habbo with that name!');

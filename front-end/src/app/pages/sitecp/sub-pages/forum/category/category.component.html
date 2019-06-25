@@ -1,27 +1,27 @@
 <app-title [title]="title" [tabs]="tabs" (onTabClick)="onTabClick($event)"></app-title>
 <app-content>
     <div class="grid-container full">
-        <div class="grid-x margin-x">
-            <div class="cell small-6">
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-12 medium-6">
                 <label>Title</label>
                 <input name="category-text" type="text" [(ngModel)]="category.title"/>
             </div>
-            <div class="cell small-6">
+            <div class="cell small-12 medium-6">
                 <label>Parent</label>
                 <select [(ngModel)]="parentId" name="parent">
                     <option selected="selected" value="-1">None</option>
                     <option *ngFor="let item of categories" value="{{item.categoryId}}">{{item.title}}</option>
                 </select>
             </div>
-            <div class="cell small-6">
+            <div class="cell small-12 medium-6">
                 <label>Description</label>
                 <input type="text" [(ngModel)]="category.description"/>
             </div>
-            <div class="cell small-6">
+            <div class="cell small-12 medium-6">
                 <label>Display Order <em>(Lower = higher up)</em></label>
                 <input type="number" [(ngModel)]="category.displayOrder"/>
             </div>
-            <div class="cell small-6">
+            <div class="cell small-12 medium-6">
                 <label>Template</label>
                 <select [(ngModel)]="template" name="template">
                     <option selected="selected" value="DEFAULT">Default</option>
@@ -29,29 +29,29 @@
                     <option value="MEDIA">Media</option>
                 </select>
             </div>
-            <div class="cell small-6">
+            <div class="cell small-12 medium-6">
                 <label>Is Hidden</label>
                 <select [(ngModel)]="category.isHidden" name="isHidden">
                     <option [ngValue]="false">No</option>
                     <option [ngValue]="true">Yes</option>
                 </select>
             </div>
-            <div class="cell small-6">
+            <div class="cell small-12 medium-6">
                 <label>Is Open</label>
                 <select [(ngModel)]="category.isOpen" name="isOpen">
                     <option [ngValue]="false">No</option>
                     <option [ngValue]="true">Yes</option>
                 </select>
             </div>
-            <div class="cell small-6">
+            <div class="cell small-12 medium-6">
                 <label>Link <em>(Clicking the category header leads here)</em></label>
                 <input type="text" [(ngModel)]="category.link"/>
             </div>
-            <div class="cell small-6">
+            <div class="cell small-12 medium-6">
                 <label>Icon <em>(Font-awesome icon class)</em></label>
                 <input type="text" [(ngModel)]="category.icon">
             </div>
-            <div class="cell small-6">
+            <div class="cell small-12 medium-6">
                 <label>Icon Preview</label>
                 <em class="preview" [ngClass]="category.icon"></em>
             </div>

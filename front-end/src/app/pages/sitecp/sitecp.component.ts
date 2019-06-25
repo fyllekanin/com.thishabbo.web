@@ -9,7 +9,7 @@ import { Page } from 'shared/page/page.model';
     selector: 'app-sitecp',
     template: `
         <div class="grid-container">
-            <div class="grid-x margin-x">
+            <div class="grid-x grid-margin-x">
                 <div class="cell small-12 medium-9 position-relative">
                     <router-outlet></router-outlet>
                 </div>

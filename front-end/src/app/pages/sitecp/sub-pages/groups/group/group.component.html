@@ -1,7 +1,7 @@
 <app-title [title]="title" [tabs]="tabs" (onTabClick)="onTabClick($event)"></app-title>
 <app-content>
     <div class="grid-container full">
-        <div class="grid-x margin-x">
+        <div class="grid-x grid-margin-x">
             <div class="cell small-12 medium-4">
                 <label>Name</label>
                 <input type="text" name="name" [(ngModel)]="group.name"/>
@@ -13,7 +13,8 @@
             <div class="cell small-12 medium-4">
                 <label>
                     Based On
-                    <span tooltip="Will not copy forum permissions" class="checkbox-info">
+                    <span tooltip="If you want your permission to copy a usergroups permissions, select it here!"
+                          class="checkbox-info">
                         <em class="fas fa-question-circle"></em>
                     </span>
                 </label>
@@ -25,11 +26,11 @@
                 </select>
             </div>
             <div class="cell small-4">
-                <label>Avatar width</label>
+                <label>Avatar Width</label>
                 <input type="number" [(ngModel)]="group.avatarWidth" min="0"/>
             </div>
             <div class="cell small-4">
-                <label>Avatar height</label>
+                <label>Avatar Height</label>
                 <input type="number" [(ngModel)]="group.avatarHeight" min="0"/>
             </div>
             <div class="cell small-2">
@@ -50,7 +51,7 @@
 </app-title>
 <app-content>
     <div class="grid-container full">
-        <div class="grid-x margin-x">
+        <div class="grid-x grid-margin-x">
             <div class="cell small-6">
                 <div>
                     <label class="checkbox-container">
@@ -103,7 +104,7 @@
                 </div>
                 <div>
                     <label class="checkbox-container">
-                        Can give infractions & see infraction history
+                        Can give infractions, warnings & see infraction history
                         <input type="checkbox" [(ngModel)]="sitecpPermissions.canDoInfractions">
                         <span class="checkmark"></span>
                     </label>

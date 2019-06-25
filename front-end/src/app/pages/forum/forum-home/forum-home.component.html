@@ -1,5 +1,5 @@
 <div class="grid-container full">
-    <div class="grid-x margin-x">
+    <div class="grid-x grid-margin-x">
         <div class="cell small-12">
             <div *ngFor="let category of categories">
                 <app-title [title]="category.title" [titlePointer]="true" [tabs]="[toggleTab]"
@@ -19,11 +19,11 @@
                 </app-content>
             </div>
 
-            <app-title [title]="'Forum Stats'" [top]="latestPostersTop" [tabs]="[refreshTab]"
-                       (onTabClick)="updateForumStats()"></app-title>
+            <app-title [title]="'Forum Stats'" [top]="latestPostersTop" [tabs]="statTabs"
+                       (onTabClick)="onStatsTabClick($event)"></app-title>
             <app-content>
                 <div class="grid-container full">
-                    <div class="grid-x margin-x">
+                    <div class="grid-x grid-margin-x">
                         <div class="cell small-3">
                             <label>Top Posters</label>
                             <div *ngIf="!topPosters">
@@ -72,9 +72,9 @@
                                         </span>
                                         {{latestPost.title}}
                                     </a>
-                                    <br/>
-                                    Latest: <app-user-link [user]="latestPost.user"></app-user-link>
                                     - {{latestPost.time}}
+                                    <div class="latest-right"><app-user-link
+                                            [user]="latestPost.user"></app-user-link></div>
                                 </span>
                             </div>
                         </div>

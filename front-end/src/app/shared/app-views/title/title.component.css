@@ -75,11 +75,12 @@ a:hover {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    background: #00000008;
 }
 
 .tab:hover {
     cursor: pointer;
-    background-color: rgb(245, 245, 245);
+    background-color: #0000000f;
 }
 
 .checkbox {

@@ -22,6 +22,7 @@ import { PaginationModule } from 'shared/app-views/pagination/pagination.module'
 import { RouletteComponent } from './roulette/roulette.component';
 import { RouletteResolver } from './services/roulette.resolver';
 import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.module';
+import { SideMenuModule } from 'shared/app-views/side-menu/side-menu.module';
 
 @NgModule({
     imports: [
@@ -34,7 +35,8 @@ import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.modul
         CommonModule,
         FormsModule,
         PaginationModule,
-        StatsBoxesModule
+        StatsBoxesModule,
+        SideMenuModule
     ],
     declarations: [
         BettingNavComponent,
@@ -59,4 +61,5 @@ import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.modul
         RouterModule
     ]
 })
-export class BettingModule {}
+export class BettingModule {
+}

@@ -1,8 +1,18 @@
 <div class="grid-container content-margin">
-    <div class="grid-x margin-x">
+    <div class="grid-x">
         <div class="cell small-12 medium-9">
             <app-title [title]="'Job Form'" [tabs]="isLoggedIn ? tabs : []" (onTabClick)="onApply()"></app-title>
             <app-content>
+
+                <b>ThisHabbo</b> has remained strong and stable for the last 9 years, but, to continue we'll need <b>your</b>
+                help! Have a look at what we have available below and see what you want to apply for. Remember, you can
+                apply for multiple roles, so don't feel as if you should only apply for one, the more - the merrier!
+                <br/><br/>
+                ThisHabbo has moved to Discord because it's smarter and safer for our users & Staff, which is always our
+                priority. Don't worry, we can help you if you're having problems setting one up. You can sign up to
+                Discord by clicking <a href="https://discordapp.com/" target="_blank">here</a> if you don't have an
+                account already.
+                <br/><br/>
                 <div class="grid-container content-margin" *ngIf="isLoggedIn">
                     <div class="grid-x grid-margin-x">
                         <div class="cell small-12 medium-6">
@@ -20,16 +30,16 @@
                         <div class="cell small-12 medium-6">
                             <label>I'm interested in...</label>
                             <select [(ngModel)]="data.job">
-                                <option [value]="'Not sure / not listed'">Not sure / not listed</option>
-                                <option [value]="'Events'">Events</option>
-                                <option [value]="'Radio'">Radio</option>
-                                <option [value]="'Graphics'">Graphics</option>
-                                <option [value]="'Media'">Media</option>
-                                <option [value]="'Quest/tutorial reporter'">Quest/tutorial reporter</option>
+                                <option [value]="'Decide for me!'">Decide for me!</option>
+                                <option [value]="'Events Host'">Events Host</option>
+                                <option [value]="'Radio DJ'">Radio DJ</option>
+                                <option [value]="'Graphics Artist'">Graphics Artist</option>
+                                <option [value]="'Media Journalist'">Media Journalist</option>
+                                <option [value]="'Quest/Tutorial Reporter'">Quest/Tutorial Reporter</option>
                             </select>
                         </div>
                         <div class="cell small-12">
-                            <label>About myself</label>
+                            <label>Tell us about yourself</label>
                             <textarea [(ngModel)]="data.content"></textarea>
                         </div>
                     </div>
@@ -40,12 +50,13 @@
         <div class="cell small-12 medium-3">
             <app-title [title]="'Information'"></app-title>
             <app-content>
-                If you just wanna contact TH and apply for any position you can <a
-                    [routerLink]="['/page/contact']">Here</a> <br/>
-                <br/>
-                If you are looking for a position which are not available or are not sure then select "other" and type a
-                bit about
-                yourself and what you are interested in and we will try to find a good fit for you!
+                If you are trying to contact ThisHabbo that isn't in relation to a job position, then this is not the
+                form for you. Click <a
+                    [routerLink]="['/page/contact']">here</a> and we'll take you to a different form which goes to our
+                hardworking Administrators!
+                <br/><br/>
+                If you are looking for a position which isn't available or are not sure then select "Other". We'll then
+                need to know a little more about you to then decide where we can best place you!
             </app-content>
         </div>
     </div>

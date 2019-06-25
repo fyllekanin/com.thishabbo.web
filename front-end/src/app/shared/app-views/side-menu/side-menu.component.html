@@ -2,10 +2,11 @@
     <app-title
             [title]="block.title"
             [tabs]="toggleTab"
+            [top]="block.top"
             (onTabClick)="toggleMenuItem((block.title))">
     </app-title>
     <app-content [isContracted]="isMenuItemContracted(block.title)">
-        <a *ngFor="let item of block.items" [routerLink]="[item.link]">
+        <a *ngFor="let item of block.items" [routerLink]="[item.link]" [style.color]="block.color">
             <em class="fa fa-columns"></em>
             <span>{{item.title}}</span>
         </a>

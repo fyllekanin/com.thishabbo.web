@@ -1,3 +1,7 @@
+.latest-right {
+    float: right;
+}
+
 .latest-post-icon {
     background: #fbfbfb;
     padding: 7.5px;
@@ -32,12 +36,11 @@
 
 .latest-post-row .data {
     display: inline-block;
-    width: calc(100% - 50px);
-    padding: 5px 0 0 5px;
-
+    width: calc(100% - 5px);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    padding: 4px 0px 0px 0px;
 }
 
 .latest-post-row .image {

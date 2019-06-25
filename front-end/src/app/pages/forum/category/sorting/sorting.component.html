@@ -1,7 +1,7 @@
 <app-title [title]="'Display Options'" [tabs]="tabs" (onTabClick)="sortThreads()"></app-title>
 <app-content>
     <div class="grid-container">
-        <div class="grid-x margin-x">
+        <div class="grid-x grid-margin-x">
             <div class="cell small-4">
                 <label>Sorted By</label>
                 <select [(ngModel)]="options.sortedBy">

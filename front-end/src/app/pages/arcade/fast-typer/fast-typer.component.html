@@ -1,5 +1,5 @@
 <div class="grid-container full">
-    <div class="grid-x margin-x">
+    <div class="grid-x grid-margin-x">
         <div class="cell small-8">
             <app-title [title]="'Fastest Typer'"></app-title>
             <app-content>
@@ -8,7 +8,8 @@
 
             <app-title [title]="'Fastest Typer'" [tabs]="tabs" (onTabClick)="startGame()"></app-title>
             <app-content>
-                <input id="gameInput" class="game-input" type="text" [(ngModel)]="gameInput" (input)="checkContent()" [disabled]="!isGameRunning" />
+                <input id="gameInput" class="game-input" type="text" [(ngModel)]="gameInput" (input)="checkContent()"
+                       [disabled]="!isGameRunning"/>
                 <div class="timer" *ngIf="countDownGoing"><h3>{{timer}}</h3></div>
             </app-content>
         </div>

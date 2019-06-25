@@ -20,7 +20,7 @@
 }
 
 .checkbox-align-with-input {
-    margin-top: 30px;
+    margin-top: 22px;
 }
 
 .checkbox-info {
@@ -48,7 +48,7 @@
 }
 
 .checkbox-container input:checked ~ .checkmark {
-    background-color: #2ea1f3;
+    background-color: #139bfb;
 }
 
 .checkmark:after {

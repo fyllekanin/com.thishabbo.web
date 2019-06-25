@@ -9,7 +9,7 @@ import { AuthService } from 'core/services/auth/auth.service';
     selector: 'app-staff',
     template: `
         <div class="grid-container">
-            <div class="grid-x margin-x">
+            <div class="grid-x grid-margin-x">
                 <div class="cell small-12 medium-9 position-relative">
                     <router-outlet></router-outlet>
                 </div>
@@ -24,22 +24,22 @@ export class StaffComponent extends Page implements OnDestroy, OnInit {
 
     blocks: Array<SideMenuBlock> = [];
 
-    constructor (
+    constructor(
         private _authService: AuthService,
         breadcrumbService: BreadcrumbService,
         elementRef: ElementRef
     ) {
         super(elementRef);
-        breadcrumbService.breadcrumb = new Breadcrumb({current: 'StaffCP'});
+        breadcrumbService.breadcrumb = new Breadcrumb({ current: 'StaffCP' });
     }
 
-    ngOnInit (): void {
+    ngOnInit(): void {
         this.blocks = [
             new SideMenuBlock({
                 title: 'All Staff',
                 items: [
-                    new SideMenuItem({title: 'Dashboard', link: '/staff/dashboard'}),
-                    new SideMenuItem({title: 'Request THC', link: '/staff/request-thc'})
+                    new SideMenuItem({ title: 'Dashboard', link: '/staff/dashboard' }),
+                    new SideMenuItem({ title: 'Request THC', link: '/staff/request-thc' })
                 ]
             }),
             new SideMenuBlock({
@@ -106,7 +106,7 @@ export class StaffComponent extends Page implements OnDestroy, OnInit {
                         isApplicable: this._authService.staffPermissions.canSeeDoNotHire
                     }),
                     new SideMenuItem({
-                        title: 'Current listeners',
+                        title: 'Current Listeners',
                         link: '/staff/management/current-listeners',
                         isApplicable: this._authService.staffPermissions.canSeeListeners
                     }),
@@ -130,7 +130,7 @@ export class StaffComponent extends Page implements OnDestroy, OnInit {
         ];
     }
 
-    ngOnDestroy (): void {
+    ngOnDestroy(): void {
         super.destroy();
     }
 }

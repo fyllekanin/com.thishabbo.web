@@ -98,7 +98,7 @@ export class NavigationComponent extends Page implements OnDestroy {
         const config = this._tableConfigs.find(item => item.id === tableId);
         const mainItem = this._data.find(item => item.label === config.title);
         this._dialogService.openDialog({
-            title: 'Adding child',
+            title: 'Configuring',
             component: this._componentResolver.resolveComponentFactory(NavigationItemComponent),
             data: {isMainItem: false},
             buttons: [
@@ -128,7 +128,7 @@ export class NavigationComponent extends Page implements OnDestroy {
     private editItem (rowId: string): void {
         const item = this.getAllItems().find(nav => nav.id === rowId);
         this._dialogService.openDialog({
-            title: 'Adding child',
+            title: 'Configuring',
             component: this._componentResolver.resolveComponentFactory(NavigationItemComponent),
             data: {isMainItem: item instanceof MainItem, item: item},
             buttons: [

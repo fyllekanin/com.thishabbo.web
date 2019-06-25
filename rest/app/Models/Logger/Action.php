@@ -11,13 +11,16 @@ use ReflectionClass;
  *
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class Action {
+class Action
+{
 
-    public static function getAction($action) {
+    public static function getAction($action)
+    {
         return $action['id'];
     }
 
-    public static function getActionFromId($actionId) {
+    public static function getActionFromId($actionId)
+    {
         try {
             return Iterables::find(self::getAllConstants(), function ($action) use ($actionId) {
                 return $action['id'] == $actionId;
@@ -26,7 +29,8 @@ class Action {
         }
     }
 
-    public static function getActionsByLog($log) {
+    public static function getActionsByLog($log)
+    {
         try {
             return Iterables::filter(self::getAllConstants(), function ($action) use ($log) {
                 return $action['log'] == $log;
@@ -39,7 +43,8 @@ class Action {
      * @return array
      * @throws \ReflectionException
      */
-    public static function getAllConstants() {
+    public static function getAllConstants()
+    {
         return (new ReflectionClass(get_class()))->getConstants();
     }
 
@@ -1520,5 +1525,12 @@ class Action {
         'description' => 'User deleted shop item',
         'data' => [],
         'log' => 'log_sitecp'
+    ];
+
+    const READ_ALL_CATEGORIES = [
+        'id' => 180,
+        'description' => 'User read all categories',
+        'data' => [],
+        'log' => 'log_user'
     ];
 }
