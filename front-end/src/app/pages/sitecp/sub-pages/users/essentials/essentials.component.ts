@@ -18,7 +18,8 @@ export class EssentialsComponent extends Page implements OnDestroy {
     private _updatedAt = (new Date().getTime() / 1000);
 
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Remove'})
+        new TitleTab({title: 'Remove'}),
+        new TitleTab({title: 'Back', link: '/sitecp/users/page/1'})
     ];
 
     constructor (

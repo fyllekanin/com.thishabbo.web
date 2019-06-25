@@ -21,6 +21,8 @@ import { AccoladesComponent } from './accolades/accolades.component';
 import { AccoladesService } from './services/accolades.service';
 import { SubscriptionsService } from './services/subscriptions.service';
 import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
+import { ChangeHistoryComponent } from './change-history/change-history.component';
+import { ChangeHistoryResolver } from './services/change-history.resolver';
 
 export const usersRoutes: Routes = [
     {
@@ -102,6 +104,13 @@ export const usersRoutes: Routes = [
                 component: SubscriptionsComponent,
                 resolve: {
                     data: SubscriptionsService
+                }
+            },
+            {
+                path: ':userId/history/page/:page',
+                component: ChangeHistoryComponent,
+                resolve: {
+                    data: ChangeHistoryResolver
                 }
             }
         ]

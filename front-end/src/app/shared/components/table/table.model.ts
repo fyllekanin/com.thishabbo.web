@@ -129,6 +129,7 @@ export const FILTER_TYPE_CONFIG = new FilterConfig({
     title: 'Type',
     key: 'type',
     type: FilterConfigType.SELECT,
+    value: 'partial',
     items: [
         new FilterConfigItem({label: 'Partial', value: 'partial'}),
         new FilterConfigItem({label: 'Exact', value: 'exact'})

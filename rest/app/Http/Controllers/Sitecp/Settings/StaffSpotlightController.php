@@ -10,6 +10,7 @@ use App\Logger;
 use App\Models\Logger\Action;
 use App\Utils\Condition;
 use App\Utils\Value;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class StaffSpotlightController extends Controller {
@@ -33,7 +34,7 @@ class StaffSpotlightController extends Controller {
     /**
      * Get method to fetch the current motm
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getMemberOfTheMonth() {
         $motm = json_decode(SettingsHelper::getSettingValue($this->settingKeys->memberOfTheMonth));
@@ -49,7 +50,7 @@ class StaffSpotlightController extends Controller {
      *
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
 
     public function updateMemberOfTheMonth(Request $request) {
@@ -77,7 +78,7 @@ class StaffSpotlightController extends Controller {
     /**
      * Get method to fetch the current sotw
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getStaffOfTheWeek() {
         $sotw = json_decode(SettingsHelper::getSettingValue($this->settingKeys->staffOfTheWeek));
@@ -96,7 +97,7 @@ class StaffSpotlightController extends Controller {
      *
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
 
     public function updateStaffOfTheWeek(Request $request) {

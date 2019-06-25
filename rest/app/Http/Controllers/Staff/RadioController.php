@@ -179,7 +179,7 @@ class RadioController extends Controller {
         $djUser->likes++;
         $djUser->save();
 
-        Logger::user($user->userId, $request->ip(), Action::LIKED_DJ, ['djId' => $djUser->userId]);
+        Logger::user($user->userId, $request->ip(), Action::LIKED_DJ, [], $djUser->userId);
         return response()->json();
     }
 

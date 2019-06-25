@@ -116,5 +116,6 @@
 
 <app-editor #editor
             [content]="thread.content"
-            (onKeyUp)="onKeyUp($event)">
+            (onKeyUp)="onKeyUp($event)"
+            (onSave)="saveThread()">
 </app-editor>
