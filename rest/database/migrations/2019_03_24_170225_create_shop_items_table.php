@@ -19,6 +19,7 @@ class CreateShopItemsTable extends Migration {
             $table->integer('type');
             $table->integer('isDeleted')->default(0);
             $table->text('data');
+            $table->bigInteger('createdBy')->default(0);
             $table->bigInteger('createdAt');
             $table->bigInteger('updatedAt');
 
@@ -26,6 +27,7 @@ class CreateShopItemsTable extends Migration {
             $table->index('rarity');
             $table->index('type');
             $table->index('isDeleted');
+            $table->index('createdBy');
         });
     }
 

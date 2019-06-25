@@ -23,6 +23,8 @@ export class ShopItem {
     @primitive()
     rarity: number;
     @primitive()
+    createdBy: string;
+    @primitive()
     type: number;
     @objectOf(ShopItemData)
     data = new ShopItemData(null);
