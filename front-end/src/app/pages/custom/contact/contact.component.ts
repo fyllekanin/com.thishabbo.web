@@ -22,7 +22,7 @@ export class ContactComponent extends Page implements OnDestroy {
     };
     data = new ContactModel();
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Apply'})
+        new TitleTab({title: 'Submit'})
     ];
 
     constructor (
