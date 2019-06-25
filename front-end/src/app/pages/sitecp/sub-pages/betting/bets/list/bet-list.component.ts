@@ -233,7 +233,7 @@ export class BetListComponent extends Page implements OnDestroy {
                     new TableCell({title: bet.name}),
                     new TableCell({title: bet.isFinished ? 'Finished' : (bet.isSuspended ? 'Suspended' : 'Ongoing')}),
                     new TableCell({title: `${bet.leftSide}/${bet.rightSide}`}),
-                    new TableCell({title: bet.displayOrder})
+                    new TableCell({title: String(bet.displayOrder)})
                 ],
                 actions: actions.filter(action => action.condition)
                     .map(action => new TableAction(action))
