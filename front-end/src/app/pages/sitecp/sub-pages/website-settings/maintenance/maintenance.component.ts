@@ -20,7 +20,7 @@ export class MaintenanceComponent extends Page implements OnDestroy {
 
     @ViewChild('editor', {static: true}) editor: EditorComponent;
     buttons: Array<EditorAction> = [
-        new EditorAction({title: 'Save', value: MaintenanceActions.SAVE}),
+        new EditorAction({title: 'Save', value: MaintenanceActions.SAVE, saveCallback: this.onSave.bind(this) }),
         new EditorAction({title: 'Back', value: MaintenanceActions.BACK})
     ];
 
@@ -50,14 +50,7 @@ export class MaintenanceComponent extends Page implements OnDestroy {
     onTabClick (event: EditorAction): void {
         switch (event.value) {
             case MaintenanceActions.SAVE:
-                this._maintenanceModel.content = this.editor.getEditorValue();
-                this._httpService.put('sitecp/content/maintenance', {maintenance: this._maintenanceModel})
-                    .subscribe(() => {
-                        this._notificationService.sendNotification(new NotificationMessage({
-                            title: 'Success',
-                            message: this._maintenanceModel.content.length > 0 ? 'Maintenance turned on' : 'Maintenance turned off'
-                        }));
-                    }, this._notificationService.failureNotification.bind(this._notificationService));
+                this.onSave();
                 break;
             case MaintenanceActions.BACK:
                 this._router.navigateByUrl('/sitecp/website-settings');
@@ -71,5 +64,16 @@ export class MaintenanceComponent extends Page implements OnDestroy {
 
     private onData (data: { data: MaintenanceModel }): void {
         this._maintenanceModel = data.data;
+    }
+
+    private onSave(): void {
+        this._maintenanceModel.content = this.editor.getEditorValue();
+                this._httpService.put('sitecp/content/maintenance', {maintenance: this._maintenanceModel})
+                    .subscribe(() => {
+                        this._notificationService.sendNotification(new NotificationMessage({
+                            title: 'Success',
+                            message: this._maintenanceModel.content.length > 0 ? 'Maintenance turned on' : 'Maintenance turned off'
+                        }));
+                    }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 }
