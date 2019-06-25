@@ -26,6 +26,7 @@ import { ContinuesInformationService } from 'core/services/continues-information
             </div>
         </div>
         <app-footer></app-footer>
+        <div class="to-top" (click)="goToTop()">&#8249;</div>
     `,
     styleUrls: ['app.component.css'],
     animations: [fadeAnimation]
@@ -77,6 +78,10 @@ export class AppComponent extends Page implements OnDestroy {
 
     ngOnDestroy (): void {
         super.destroy();
+    }
+
+    goToTop(): void {
+        document.getElementsByTagName('app-header-tabs')[0].scrollIntoView({behavior: 'smooth'});
     }
 
     private addCustomListeners (): void {
