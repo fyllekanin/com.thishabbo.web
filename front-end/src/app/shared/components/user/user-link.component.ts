@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { SlimUser } from 'core/services/auth/auth.model';
 import { UserHelper } from 'shared/helpers/user.helper';
+import { TimeHelper } from 'shared/helpers/time.helper';
 
 @Component({
     selector: 'app-user-link',
@@ -28,6 +29,10 @@ export class UserLinkComponent {
 
     get likes (): string {
         return this.user.likes < 1000 ? `${this.user.likes}` : `${this.user.likes / 1000}K`;
+    }
+
+    get joinDate (): string {
+        return TimeHelper.getLongDate(this.user.createdAt);
     }
 }
 

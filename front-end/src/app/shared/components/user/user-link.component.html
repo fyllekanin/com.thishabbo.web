@@ -9,7 +9,7 @@
         <div class="mini-info">
             <div class="grid-x">
                 <div class="cell small-12 mini-links">
-                    <b>Join Date:</b> 23/06/2019<br />
+                    <b>Join Date:</b> {{ joinDate }}<br />
                     <b>Posts:</b> {{ posts }} - <b>Likes:</b> {{ likes }} <br />
                     <a [routerLink]="['/home/search/threads/page/1']" [queryParams]="{ byUser: user.nickname, order: 'desc'}">Search posts by user &raquo;</a> <br />
                 </div>
