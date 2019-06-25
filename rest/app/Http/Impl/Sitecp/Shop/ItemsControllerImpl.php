@@ -3,12 +3,27 @@
 namespace App\Http\Impl\Sitecp\Shop;
 
 use App\EloquentModels\Shop\Subscription;
+use App\EloquentModels\User\User;
+use App\EloquentModels\User\UserItem;
 use App\Helpers\ConfigHelper;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
 
 class ItemsControllerImpl {
 
+    public function giveCreatorItem($item) {
+        $types = ConfigHelper::getTypesConfig();
+        if (!in_array($item->type, [$types->nameIcon, $types->nameEffect])) {
+            return;
+        }
+
+        $userItem = new UserItem([
+            'type' => $item->type,
+            'userId' => $item->createdBy,
+            'itemId' => $item->shopItemId
+        ]);
+        $userItem->save();
+    }
 
     public function validateBasicItem($data) {
         $types = array_map(function ($type) {
@@ -33,6 +48,8 @@ class ItemsControllerImpl {
             'Type is not a valid type');
         Condition::precondition(!in_array($data->rarity, $rarities), 400,
             'Rarity is not a valid type');
+        Condition::precondition(isset($data->createdBy) && !empty($data->createdBy) && User::withNickname($data->createdBy)->count() == 0,
+            400, 'No user with that nickname');
     }
 
     public function validateSpecificItem(Request $request, $data) {

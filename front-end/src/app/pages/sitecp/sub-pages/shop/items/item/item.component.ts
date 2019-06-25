@@ -95,6 +95,10 @@ export class ItemComponent extends Page implements OnDestroy {
         return this._data.subscriptions;
     }
 
+    get isCreated(): boolean {
+        return Boolean(this._data.createdAt);
+    }
+
     private onData (data: { data: ShopItem }): void {
         this._data = data.data;
         this.setTabs();

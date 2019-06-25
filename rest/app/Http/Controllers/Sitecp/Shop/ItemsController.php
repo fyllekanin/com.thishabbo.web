@@ -66,14 +66,23 @@ class ItemsController extends Controller {
             'description' => $data->description,
             'rarity' => $data->rarity,
             'type' => $data->type,
-            'data' => json_encode($data->data)
+            'data' => json_encode($data->data),
+            'createdBy' => Value::objectProperty($data, 'createdBy', 0)
         ]);
         $item->save();
 
         if ($this->myImpl->typeHaveImage($data)) {
-            $this->myImpl->uploadImage($request, $item->shopItemId);
+            try {
+                $this->myImpl->uploadImage($request, $item->shopItemId);
+            } catch (\Exception $e) {
+                $item->delete();
+                Condition::precondition(true, 400, 'Could not upload image');
+            }
         }
 
+        if ($item->createdBy > 0) {
+            $this->myImpl->giveCreatorItem($item);
+        }
         Logger::sitecp($user->userId, $request->ip(), Action::CREATED_SHOP_ITEM);
         return $this->getItem($item->shopItemId);
     }
@@ -92,7 +101,8 @@ class ItemsController extends Controller {
             'type' => Value::objectProperty($item, 'type', null),
             'data' => new ShopItemData(Value::objectProperty($item, 'data', null)),
             'subscriptions' => Subscription::orderBy('title', 'ASC')->get(['subscriptionId', 'title']),
-            'createdAt' => $item ? $item->createdAt->timestamp : 0
+            'createdAt' => $item ? $item->createdAt->timestamp : 0,
+            'createdBy' => $item && $item->createdBy > 0 ? User::where('userId', $item->createdBy)->value('nickname') : null
         ]);
     }
 

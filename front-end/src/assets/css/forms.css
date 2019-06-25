@@ -145,7 +145,7 @@ textarea {
 }
 
 input:disabled, select:disabled, textarea:disabled {
-    background-color: rgba(239, 239, 239, 0.83);
+    background-color: rgba(220, 220, 220, 0.83);
     border: 1px solid #cecece;
 }
 

@@ -11,7 +11,7 @@ class UserItem extends UnixTimeModel {
 
     protected $table = 'user_items';
     protected $primaryKey = 'userItemId';
-    protected $fillable = ['type', 'userId', 'itemId', 'isActive'];
+    protected $fillable = ['type', 'userId', 'itemId'];
 
     public function __construct(array $attributes = []) {
         parent::__construct($attributes);
@@ -24,9 +24,5 @@ class UserItem extends UnixTimeModel {
 
     public function scopeBadge(Builder $query) {
         return $query->where('type', $this->itemTypes->badge);
-    }
-
-    public function scopeIsActive(Builder $query) {
-        return $query->where('isActive', '>', 0);
     }
 }
