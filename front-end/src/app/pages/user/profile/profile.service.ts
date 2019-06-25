@@ -30,8 +30,8 @@ export class ProfileService implements Resolve<ProfileModel> {
     delete (visitorMessage: ProfileVisitorMessage): Promise<void> {
         return new Promise(res => {
             this._dialogService.confirm({
-                title: 'Are you sure?',
-                content: 'Are you sure you wanna delete this visitor message / comment?',
+                title: 'Visitor Message Delete',
+                content: 'Are you sure you want to delete this visitor message / comment?',
                 callback: () => {
                     this._httpService.delete(`sitecp/moderation/visitor-message/${visitorMessage.visitorMessageId}`)
                         .subscribe(() => {

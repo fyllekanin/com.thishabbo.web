@@ -5,6 +5,11 @@
             <div class="cell small-12">
                 <label class="checkbox-container">
                     Ignore mention notification <em>(Also includes when users mention usergroups)</em>
+
+                    <span tooltip="When somebody mentions you, you will not get the notification if this is ticked." class="checkbox-info">
+                            <em class="fas fa-question-circle"></em>
+                    </span>
+
                     <input type="checkbox" [(ngModel)]="model.MENTION_NOTIFICATIONS">
                     <span class="checkmark"></span>
                 </label>
@@ -14,6 +19,10 @@
                     Ignore notifications when someone quotes you
                     <input type="checkbox" [(ngModel)]="model.QUOTE_NOTIFICATIONS">
                     <span class="checkmark"></span>
+
+                    <span tooltip="When somebody quotes you, you will not get the notification if this is ticked." class="checkbox-info">
+                            <em class="fas fa-question-circle"></em>
+                    </span>
                 </label>
             </div>
             <div class="cell small-12">
@@ -21,6 +30,10 @@
                     Do not subscribe to new thread automatically
                     <input type="checkbox" [(ngModel)]="model.AUTO_SUBSCRIBE_THREAD">
                     <span class="checkmark"></span>
+
+                    <span tooltip="When you post a new thread, it will automatically subscribe you to it to be notified when somebody replies. You will not get a auto subsribe to your new posts if this is ticked.." class="checkbox-info">
+                            <em class="fas fa-question-circle"></em>
+                    </span>
                 </label>
             </div>
         </div>

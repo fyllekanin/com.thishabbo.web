@@ -31,7 +31,7 @@ export class BBcodesListComponent extends Page implements OnDestroy {
     emojiConfig: TableConfig;
     systemConfig: TableConfig;
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'New BBCode', link: '/sitecp/content/bbcodes/new'})
+        new TitleTab({title: 'Create BBCode', link: '/sitecp/content/bbcodes/new'})
     ];
 
     constructor (

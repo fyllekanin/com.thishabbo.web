@@ -3,7 +3,12 @@
     <div class="grid-container">
         <div class="grid-x grid-margin-x">
             <div class="cell small-12">
-                <label>Home Page <em>(/home, /forum etc)</em></label>
+                <label>Home Page <em>(/home, /forum etc)</em>
+
+                    <span tooltip="When clicking the logo it will redirect you to /home - the fansites homepage, but this can be changed. If you prefer to use the forum as your homepage, use /forum." class="checkbox-info">
+                        <em class="fas fa-question-circle"></em>
+                    </span>
+                </label>
                 <input type="text" [(ngModel)]="homePage" name="homePage"/>
             </div>
         </div>

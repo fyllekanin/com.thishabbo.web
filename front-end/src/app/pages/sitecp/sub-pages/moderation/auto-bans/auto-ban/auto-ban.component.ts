@@ -68,8 +68,8 @@ export class AutoBanComponent extends Page implements OnDestroy {
 
     private onDelete (): void {
         this._dialogService.confirm({
-            title: `Are you sure?`,
-            content: `Are you sure you wanna delete ${this._data.title}?`,
+            title: `Delete Autoban`,
+            content: `Are you sure you want to delete ${this._data.title}?`,
             callback: () => {
                 this._httpService.delete(`sitecp/moderation/auto-bans/${this._data.autoBanId}`)
                     .subscribe(() => {

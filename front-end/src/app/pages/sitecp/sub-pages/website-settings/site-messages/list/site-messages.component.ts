@@ -69,8 +69,8 @@ export class SiteMessagesComponent extends Page implements OnDestroy {
             case SiteMessagesActions.DELETE:
                 const siteMessage = this._data.find(item => item.siteMessageId === Number(action.rowId));
                 this._dialogService.confirm({
-                    title: 'Are you sure?',
-                    content: `Are you sure you wanna delete ${siteMessage.title}?`,
+                    title: 'Delete Site Message',
+                    content: `Are you sure you want to delete ${siteMessage.title}?`,
                     callback: () => {
                         this._httpService.delete(`sitecp/content/site-messages/${action.rowId}`)
                             .subscribe(() => {
@@ -78,7 +78,7 @@ export class SiteMessagesComponent extends Page implements OnDestroy {
                                 this.createOrUpdateTable();
                                 this._notificationService.sendNotification(new NotificationMessage({
                                     title: 'Success',
-                                    message: 'Site message is deleted'
+                                    message: 'Site message has been deleted!'
                                 }));
                             });
                     }

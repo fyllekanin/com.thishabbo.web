@@ -316,7 +316,7 @@ Hope you will have a fun time here and join our team! ',
                 'postId' => 18,
                 'threadId' => 16,
                 'userId' => 2,
-                'content' => '2test1TovvenI wanna report tovven!Welcome [mention]@test[/mention] to thishabbo!
+                'content' => '2test1TovvenI want to report tovven!Welcome [mention]@test[/mention] to thishabbo!
 Hope you will have a fun time here and join our team! ',
                 'isDeleted' => 1,
                 'isApproved' => 1,

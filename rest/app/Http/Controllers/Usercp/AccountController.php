@@ -204,7 +204,7 @@ class AccountController extends Controller {
 
         $userWithNickname = User::withNickname($nickname)->first();
         if ($userWithNickname) {
-            Condition::precondition($userWithNickname->lastActivity > (time() - ($oneMonth * 3)), 400,
+            Condition::precondition($userWithNickname->lastActivity > (time() - ($oneMonth * 4)), 400,
                 'Nickname is already taken and user is not inactive');
             $userWithNickname->nickname = $this->generateString();
             $userWithNickname->save();

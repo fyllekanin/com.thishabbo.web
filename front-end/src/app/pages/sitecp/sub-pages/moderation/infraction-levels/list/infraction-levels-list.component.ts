@@ -37,7 +37,7 @@ export class InfractionLevelsListComponent extends Page implements OnDestroy {
 
     tabs: Array<TitleTab> = [
         new TitleTab({
-            title: 'Create New',
+            title: 'Create New Infraction Level',
             link: 'sitecp/moderation/infraction-levels/new'
         })
     ];
@@ -86,14 +86,14 @@ export class InfractionLevelsListComponent extends Page implements OnDestroy {
             case InfractionLevelsActions.DELETE:
                 const level = this._data.items.find(item => item.infractionLevelId === Number(action.rowId));
                 this._dialogService.confirm({
-                    title: 'Are you sure?',
-                    content: `Are you sure you wanna delete infraction level: ${level.title}?`,
+                    title: 'Infraction Level',
+                    content: `Are you sure you want to delete this infraction level: ${level.title}?`,
                     callback: () => {
                         this._httpService.delete(`sitecp/moderation/infraction-levels/${action.rowId}`)
                             .subscribe(() => {
                                 this._notificationService.sendNotification(new NotificationMessage({
                                     title: 'Success',
-                                    message: 'Infraction level deleted'
+                                    message: 'Infraction level deleted!'
                                 }));
                                 this._data.items = this._data.items
                                     .filter(item => item.infractionLevelId !== Number(action.rowId));

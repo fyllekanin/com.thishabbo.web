@@ -26,7 +26,7 @@ export class PermShowComponent extends Page implements OnDestroy {
     days: Array<Day> = TimeHelper.DAYS;
     hours: Array<Hour> = TimeHelper.getHours();
 
-    constructor (
+    constructor(
         private _dialogService: DialogService,
         private _notificationService: NotificationService,
         private _httpService: HttpService,
@@ -47,7 +47,7 @@ export class PermShowComponent extends Page implements OnDestroy {
         });
     }
 
-    onTabClick (value: number): void {
+    onTabClick(value: number): void {
         switch (value) {
             case PermShowActions.SAVE:
                 this.save();
@@ -61,11 +61,11 @@ export class PermShowComponent extends Page implements OnDestroy {
         }
     }
 
-    ngOnDestroy (): void {
+    ngOnDestroy(): void {
         super.destroy();
     }
 
-    private save (): void {
+    private save(): void {
         const convertedHour = TimeHelper.getConvertedHour(this._permShow.hour - TimeHelper.getTimeOffsetInHours());
         const convertedDay = TimeHelper.getConvertedDay(convertedHour, this._permShow.day);
         const booking = {
@@ -82,7 +82,7 @@ export class PermShowComponent extends Page implements OnDestroy {
 
         if (this._permShow.createdAt) {
             this._httpService.put(`staff/management/permanent-shows/${this._permShow.timetableId}`,
-                {booking: booking})
+                { booking: booking })
                 .subscribe(() => {
                         this.onSuccessUpdate();
                     },
@@ -90,7 +90,7 @@ export class PermShowComponent extends Page implements OnDestroy {
                         this._notificationService.failureNotification(error);
                     });
         } else {
-            this._httpService.post('staff/management/permanent-shows', {booking: booking})
+            this._httpService.post('staff/management/permanent-shows', { booking: booking })
                 .subscribe(() => {
                         this.onSuccessCreate();
                     },
@@ -100,34 +100,35 @@ export class PermShowComponent extends Page implements OnDestroy {
         }
     }
 
-    private delete (): void {
+    private delete(): void {
         this._dialogService.confirm({
-            title: `Deleting permanent show`,
-            content: `Are you sure that you wanna delete this? You can just pause it this week by unbooking it`,
+            title: `Delete Permanent Show`,
+            content: `Are you sure that you want to delete this perm show? If they are missing this week,
+             you can just unbook it and it'll automatically book next week!`,
             callback: this.onDelete.bind(this, this._permShow.timetableId)
         });
     }
 
-    private cancel (): void {
+    private cancel(): void {
         this._router.navigateByUrl('/staff/management/permanent-shows/page/1');
     }
 
-    get title (): string {
+    get title(): string {
         return this._permShow.createdAt ?
             `Editing Permanent Show: ${this._permShow.name}` :
             `Creating Permanent Show: ${this._permShow.name}`;
     }
 
-    get perm (): PermShow {
+    get perm(): PermShow {
         return this._permShow;
     }
 
-    private onDelete (permShowId: number): void {
+    private onDelete(permShowId: number): void {
         this._httpService.delete(`staff/management/permanent-shows/${permShowId}`)
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
-                    message: 'Perm show deleted!'
+                    message: 'Permanent show deleted!'
                 }));
                 this._router.navigateByUrl('/staff/management/permanent-shows/page/1');
             }, error => {
@@ -137,7 +138,7 @@ export class PermShowComponent extends Page implements OnDestroy {
             });
     }
 
-    private onSuccessCreate (): void {
+    private onSuccessCreate(): void {
         this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'Permanent show created!'
@@ -146,14 +147,14 @@ export class PermShowComponent extends Page implements OnDestroy {
         this.setTabs();
     }
 
-    private onSuccessUpdate (): void {
+    private onSuccessUpdate(): void {
         this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'Permanent show updated!'
         }));
     }
 
-    private onPage (data: { data: PermShow }): void {
+    private onPage(data: { data: PermShow }): void {
         this._permShow = data.data;
         this._permShow.hour = TimeHelper.getConvertedHour(this._permShow.hour + TimeHelper.getTimeOffsetInHours());
         this._permShow.day = TimeHelper.getConvertedDay(this._permShow.hour, this._permShow.day);
@@ -161,11 +162,11 @@ export class PermShowComponent extends Page implements OnDestroy {
         this.setTabs();
     }
 
-    private setTabs (): void {
+    private setTabs(): void {
         const tabs = [
-            {title: 'Save', value: PermShowActions.SAVE, condition: true},
-            {title: 'Delete', value: PermShowActions.DELETE, condition: this._permShow.createdAt},
-            {title: 'Back', value: PermShowActions.BACK, condition: true}
+            { title: 'Save', value: PermShowActions.SAVE, condition: true },
+            { title: 'Delete', value: PermShowActions.DELETE, condition: this._permShow.createdAt },
+            { title: 'Back', value: PermShowActions.BACK, condition: true }
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));

@@ -62,8 +62,8 @@ export class BetComponent extends Page implements OnDestroy {
 
     private onDelete (): void {
         this._dialogService.confirm({
-            title: `Delete Bet?`,
-            content: `Are you sure you wanna delete ${this._data.bet.name}?`,
+            title: `Delete Bet`,
+            content: `Are you sure you want to delete ${this._data.bet.name}?`,
             callback: this.doDelete.bind(this)
         });
     }

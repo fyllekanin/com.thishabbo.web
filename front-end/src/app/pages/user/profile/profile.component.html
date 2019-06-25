@@ -1,8 +1,9 @@
 <div *ngIf="isPrivate" class="align-center">
     <app-title [title]="'Private Profile'" [tabs]="followerTabs" (onTabClick)="onFollowerTabClick($event)"></app-title>
     <app-content>
-        This profile is private! You are not allowed to visit this profile, if you wanna be able to see<br/>
-        this profile you need to be an approved follower, so let's get following!
+        <b>This profile is private!</b>
+        
+        You are not allowed to visit this profile, if you want to be able to see this profile you need to be an approved follower, so let's get following and we'll see if they'll accept!
     </app-content>
 </div>
 

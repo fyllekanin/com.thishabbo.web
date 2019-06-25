@@ -82,8 +82,8 @@ export class AccoladesComponent extends Page implements OnDestroy {
                 break;
             case AccoladeActions.DELETE:
                 this._dialogService.confirm({
-                    title: 'Are you sure?',
-                    content: 'Are you sure you wanna delete this accolade?',
+                    title: 'Delete Accolade',
+                    content: 'Are you sure you want to delete this Accolade?',
                     callback: () => {
                         this._service.onDeleteAccolade(this._data, Number(action.rowId)).subscribe(accoladeId => {
                             this._data.items = this._data.items.filter(item => item.accoladeId !== accoladeId);

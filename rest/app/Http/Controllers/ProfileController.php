@@ -12,7 +12,6 @@ use App\EloquentModels\User\VisitorMessageLike;
 use App\Factories\Notification\NotificationFactory;
 use App\Helpers\ConfigHelper;
 use App\Helpers\DataHelper;
-use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Forum\Thread\ThreadCrudController;
 use App\Http\Impl\ProfileControllerImpl;
@@ -25,6 +24,7 @@ use App\Utils\BBcodeUtil;
 use App\Utils\Condition;
 use App\Utils\Iterables;
 use App\Views\VisitorMessageReportView;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller {
@@ -38,7 +38,7 @@ class ProfileController extends Controller {
     /**
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function createFollow(Request $request) {
         $user = $request->get('auth');
@@ -59,7 +59,7 @@ class ProfileController extends Controller {
      * @param Request $request
      * @param $userId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      * @throws \Exception
      */
     public function deleteFollow(Request $request, $userId) {
@@ -75,7 +75,7 @@ class ProfileController extends Controller {
     /**
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function createVisitorMessage(Request $request) {
         $user = $request->get('auth');
@@ -109,7 +109,7 @@ class ProfileController extends Controller {
      *
      * @param $page
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getProfile(Request $request, ActivityService $activityService, ForumService $forumService, $nickname, $page) {
         $user = $request->get('auth');
@@ -117,7 +117,7 @@ class ProfileController extends Controller {
         $profile = User::withNickname($nickname)->first();
         Condition::precondition(!$profile, 404, 'No user with that nickname');
 
-        if ($this->isPrivate($user, $profile)) {
+        if ($this->myImpl->isPrivate($user, $profile)) {
             return response()->json([
                 'user' => UserHelper::getSlimUser($profile->userId),
                 'followers' => $this->getFollowers($profile->userId, $user)
@@ -152,13 +152,13 @@ class ProfileController extends Controller {
      * @param Request $request
      * @param $visitorMessageId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function createVisitorMessageLike(Request $request, $visitorMessageId) {
         $user = $request->get('auth');
         $visitorMessage = VisitorMessage::find($visitorMessageId);
         Condition::precondition(!$visitorMessage, 404, 'No visitor message with that ID');
-        Condition::precondition($this->isPrivate($user, $visitorMessage->host), 400, 'You can not like this message');
+        Condition::precondition($this->myImpl->isPrivate($user, $visitorMessage->host), 400, 'You can not like this message');
 
         $visitorMessageLike = VisitorMessageLike::where('userId', $user->userId)->where('visitorMessageId', $visitorMessageId)->first();
         Condition::precondition($visitorMessageLike, 400, 'You have already liked this message!');
@@ -183,13 +183,13 @@ class ProfileController extends Controller {
      * @param Request $request
      * @param $visitorMessageId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function deleteVisitorMessageLike(Request $request, $visitorMessageId) {
         $user = $request->get('auth');
         $visitorMessage = VisitorMessage::find($visitorMessageId);
         Condition::precondition(!$visitorMessage, 404, 'No visitor message with that ID');
-        Condition::precondition($this->isPrivate($user, $visitorMessage->host), 400, 'You can not un-like this message');
+        Condition::precondition($this->myImpl->isPrivate($user, $visitorMessage->host), 400, 'You can not un-like this message');
 
         $visitorMessageLike = VisitorMessageLike::where('userId', $user->userId)->where('visitorMessageId', $visitorMessageId)->first();
         Condition::precondition(!$visitorMessageLike, 404, 'You have not liked this message');
@@ -211,7 +211,7 @@ class ProfileController extends Controller {
      * @param ForumValidatorService $validatorService
      * @param $visitorMessageId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
     public function createReportVisitorMessage(Request $request, ForumService $forumService,
@@ -234,28 +234,6 @@ class ProfileController extends Controller {
 
         Logger::user($user->userId, $request->ip(), Action::REPORTED_VISITOR_MESSAGE, [], $visitorMessage->visitorMessageId);
         return response()->json();
-    }
-
-    /**
-     * @param $user
-     * @param $profile
-     *
-     * @return bool
-     */
-    private function isPrivate($user, $profile) {
-        if ($user->userId == $profile->userId) {
-            return false;
-        }
-
-        if (PermissionHelper::haveSitecpPermission($user->userId, ConfigHelper::getSitecpConfig()->canPassPrivate)) {
-            return false;
-        }
-
-        if (!$profile->profile || !$profile->profile->isPrivate) {
-            return false;
-        }
-
-        return Follower::where('userId', $user->userId)->where('targetId', $profile->userId)->isApproved()->count('followerId') === 0;
     }
 
     /**

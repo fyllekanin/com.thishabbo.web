@@ -17,7 +17,7 @@ export class ProfileComponent extends Page implements OnDestroy {
     private _data: ProfileModel;
 
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Save'})
+        new TitleTab({ title: 'Save' })
     ];
 
     constructor(
@@ -42,7 +42,7 @@ export class ProfileComponent extends Page implements OnDestroy {
     }
 
     onSave(): void {
-        this._httpService.put('usercp/profile', {data: this._data})
+        this._httpService.put('usercp/profile', { data: this._data })
             .subscribe(() => {
                 this._notificationService.sendInfoNotification('Profile Updated!');
             }, this._notificationService.failureNotification.bind(this._notificationService));
@@ -58,7 +58,7 @@ export class ProfileComponent extends Page implements OnDestroy {
 
     get testForUrl(): Array<string> {
         const regExp = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/;
-        return this._data.youtube.match(regExp);
+        return this._data.youtube && this._data.youtube.match(regExp);
     }
 
     private onData(data: { data: ProfileModel }): void {

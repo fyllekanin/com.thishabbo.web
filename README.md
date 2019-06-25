@@ -97,7 +97,7 @@ Look in the scripts/run_tests.sh file to see how they are ran
 
 
 ## Running the development
-If you have passed all the previous steps, what you have to do when you wanna run
+If you have passed all the previous steps, what you have to do when you want to run
 the application is the following.
 
 1) Set the "localhost" of your webserver to the root of the project in the rest/public catalog

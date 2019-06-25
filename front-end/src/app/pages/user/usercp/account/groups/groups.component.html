@@ -3,8 +3,10 @@
     <div class="grid-container">
         <div class="grid-x grid-margin-x">
             <div class="cell small-12">
-                <strong>Display Group</strong> <br/>
-                <em>This will be your primary group and use that groups default colour.</em>
+                <strong>Display Group</strong> <span
+                    tooltip="This will be your primary group and use that groups default colour." class="checkbox-info">
+                        <em class="fas fa-question-circle"></em>
+                    </span>
                 <br/> <br/>
                 <select [(ngModel)]="displayGroupId">
                     <option [value]="0">No Display Group</option>
@@ -33,10 +35,17 @@
     <div class="grid-container">
         <div class="grid-x grid-margin-x">
             <div class="cell small-6 position-relative groups" *ngFor="let group of nonMemberPublicGroups">
+                <label>Public Usergroups
+
+                    <span tooltip="A public usergroup is a usergroup that can be joined by any user. Being accepted into one will most likely give you extra forums tailored for that group."
+                          class="checkbox-info">
+                        <em class="fas fa-question-circle"></em>
+                    </span>
+                </label>
                 <div>
                     <strong>Usergroup:</strong> {{group.name}}
                 </div>
-                <div>
+                <div class="status">
                     <strong>Status: </strong>
                     <span *ngIf="!group.isMember && !group.haveApplied" class="apply" (click)="apply(group.groupId)">Apply</span>
                     <span *ngIf="!group.isMember && group.haveApplied">Waiting approval or denial</span>

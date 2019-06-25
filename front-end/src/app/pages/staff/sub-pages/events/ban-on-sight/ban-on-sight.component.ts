@@ -64,7 +64,7 @@ export class BanOnSightComponent extends Page implements OnDestroy {
     private delete (): void {
         this._dialogService.confirm({
             title: `Deleting BOS Entry`,
-            content: `Are you sure that you wanna delete this?`,
+            content: `Are you sure that you want to delete this?`,
             callback: this.onDelete.bind(this, this._data.id)
         });
     }
@@ -96,7 +96,7 @@ export class BanOnSightComponent extends Page implements OnDestroy {
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
-                    message: 'Entry deleted!'
+                    message: 'BOS Entry has been deleted!'
                 }));
                 this._router.navigateByUrl('/staff/events/ban-on-sight');
             }, error => {
@@ -109,14 +109,14 @@ export class BanOnSightComponent extends Page implements OnDestroy {
     private onSuccessCreate (): void {
         this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
-            message: 'User added to Ban On Sight!'
+            message: 'User has been added to Ban On Sight!'
         }));
     }
 
     private onSuccessUpdate (): void {
         this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
-            message: 'Ban On Sight Updated!'
+            message: 'Ban On Sight has been updated!'
         }));
         this._router.navigateByUrl('/staff/events/ban-on-sight');
 

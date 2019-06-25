@@ -15,11 +15,11 @@ export class ThreadReader {
     @time()
     time: string;
 
-    constructor (source: Partial<ThreadReader>) {
+    constructor(source: Partial<ThreadReader>) {
         ClassHelper.assign(this, source);
     }
 
-    get timeAgo (): string {
+    get timeAgo(): string {
         return this.time;
     }
 }
@@ -77,7 +77,7 @@ export class ThreadPage {
     @primitive()
     roomLink: string;
 
-    constructor (source?: Partial<ThreadPage>) {
+    constructor(source?: Partial<ThreadPage>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -110,7 +110,8 @@ export enum ThreadActions {
     POST_HISTORY,
     TOGGLE_TOOLS,
     THREAD_POSTERS,
-    CHANGE_POST_OWNER
+    CHANGE_POST_OWNER,
+    SELECT_ALL
 }
 
 export class PostHistoryModel {
@@ -123,12 +124,12 @@ export class PostHistoryModel {
     @primitive()
     createdAt: number;
 
-    constructor (source: Partial<PostHistoryModel>) {
+    constructor(source: Partial<PostHistoryModel>) {
         ClassHelper.assign(this, source);
     }
 }
 
-export function getStatsBoxes (thread: ThreadPage): Array<StatsBoxModel> {
+export function getStatsBoxes(thread: ThreadPage): Array<StatsBoxModel> {
     if (thread.template !== CategoryTemplates.QUEST) {
         return [];
     }
@@ -162,13 +163,13 @@ export function getStatsBoxes (thread: ThreadPage): Array<StatsBoxModel> {
     return items.filter(item => item.condition).map(item => new StatsBoxModel(item));
 }
 
-export function getPostTools (forumPermissions: ForumPermissions) {
+export function getPostTools(forumPermissions: ForumPermissions) {
     return [
-        {title: 'Approve Posts', value: ThreadActions.APPROVE_POSTS, condition: forumPermissions.canApprovePosts},
-        {title: 'Unapprove Posts', value: ThreadActions.UNAPPROVE_POSTS, condition: forumPermissions.canApprovePosts},
-        {title: 'Merge Posts', value: ThreadActions.MERGE_POSTS, condition: forumPermissions.canMergePosts},
-        {title: 'Change Owner', value: ThreadActions.CHANGE_POST_OWNER, condition: forumPermissions.canChangeOwner},
-        {title: 'Edit History', value: ThreadActions.POST_HISTORY, condition: forumPermissions.canEditOthersPosts}
+        { title: 'Approve Posts', value: ThreadActions.APPROVE_POSTS, condition: forumPermissions.canApprovePosts },
+        { title: 'Unapprove Posts', value: ThreadActions.UNAPPROVE_POSTS, condition: forumPermissions.canApprovePosts },
+        { title: 'Merge Posts', value: ThreadActions.MERGE_POSTS, condition: forumPermissions.canMergePosts },
+        { title: 'Change Owner', value: ThreadActions.CHANGE_POST_OWNER, condition: forumPermissions.canChangeOwner },
+        { title: 'Edit History', value: ThreadActions.POST_HISTORY, condition: forumPermissions.canEditOthersPosts }
     ];
 }
 
@@ -178,7 +179,7 @@ export function getPostTools (forumPermissions: ForumPermissions) {
  * @param threadPage of the current thread
  * @param forumPermissions of the current user
  */
-export function getThreadTools (userId: number, threadPage: ThreadPage, forumPermissions: ForumPermissions) {
+export function getThreadTools(userId: number, threadPage: ThreadPage, forumPermissions: ForumPermissions) {
     return [
         {
             title: 'Edit Thread',

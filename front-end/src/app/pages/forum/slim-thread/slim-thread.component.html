@@ -24,7 +24,7 @@
         </div>
         <div class="cell small-1" *ngIf="canSelectThreads">
             <label class="checkbox-container">
-                <input type="checkbox" (change)="onCheck()"/>
+                <input type="checkbox" [checked]="isChecked" (change)="onCheck()"/>
                 <span class="checkmark"></span>
             </label>
         </div>

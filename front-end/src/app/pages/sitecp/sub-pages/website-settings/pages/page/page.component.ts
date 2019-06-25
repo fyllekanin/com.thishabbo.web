@@ -99,8 +99,8 @@ export class PageComponent extends Page implements OnDestroy {
 
     private onDelete (): void {
         this._dialogService.confirm({
-            title: 'Are you sure?',
-            content: 'Are you sure you wanna delete this page?',
+            title: 'Delete Page',
+            content: 'Are you sure you want to delete this page?',
             callback: () => {
                 this._httpService.delete(`sitecp/content/pages/${this._data.pageId}`)
                     .subscribe(() => {

@@ -35,7 +35,7 @@
     color: #ffffff;
     font-size: 12px;
     float: right;
-    margin: 0 155px 9px 0;
+    margin: 0px 144px 9px 0;
 }
 
 .experience-percentage {
@@ -133,7 +133,7 @@
 .fixed-menu {
     position: fixed;
     width: 100%;
-    margin-top: -39px;
+    margin-top: -52px;
 }
 
 @media screen and (max-width: 1200px) {

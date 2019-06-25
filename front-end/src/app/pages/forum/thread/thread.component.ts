@@ -185,11 +185,11 @@ export class ThreadComponent extends Page implements OnDestroy {
 
     get cantPostReason (): string {
         if (!this._authService.isLoggedIn()) {
-            return 'You need to be logged in to post';
+            return 'You need to be logged in to post!';
         } else if (!this._threadPage.isOpen) {
-            return 'Thread is closed';
+            return 'Thread is closed!';
         } else if (!this._threadPage.categoryIsOpen) {
-            return 'The category is closed';
+            return 'The category is closed!';
         }
         return '';
     }
@@ -199,7 +199,7 @@ export class ThreadComponent extends Page implements OnDestroy {
     }
 
     get subTitle (): string {
-        return this._threadPage.isOpen ? '' : 'Thread is closed';
+        return this._threadPage.isOpen ? '' : 'Thread is closed, sorry!';
     }
 
     get forumPermissions (): ForumPermissions {
@@ -217,7 +217,7 @@ export class ThreadComponent extends Page implements OnDestroy {
         this._httpService.post(`forum/thread/${threadId}`, {content: content, toggleThread: toggleThread})
             .subscribe(post => {
                 this.onSuccessPost(toggleThread, post);
-                this._notificationService.sendInfoNotification('Post created');
+                this._notificationService.sendInfoNotification('Your post has been created!');
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
@@ -251,9 +251,9 @@ export class ThreadComponent extends Page implements OnDestroy {
         AutoSaveHelper.remove(AutoSave.POST, this._threadPage.threadId);
         if (this._threadPage.contentApproval) {
             this._dialogService.openDialog({
-                title: 'You post is awaiting approval',
+                title: 'Your post is awaiting approval!',
                 content: `Your post is placed under the category of "unapproved" posts,
-                    it will be waiting approval from a moderator before visible`,
+                    it will be waiting approval from a moderator before it isvisible.`,
                 buttons: [new DialogCloseButton('Close')]
             });
         } else {

@@ -82,7 +82,7 @@ export class GroupsListComponent extends Page implements OnDestroy {
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
-                    message: 'List saved'
+                    message: 'List has been saved!'
                 }));
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }

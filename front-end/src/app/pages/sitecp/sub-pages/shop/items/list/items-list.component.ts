@@ -80,8 +80,8 @@ export class ItemsListComponent extends Page implements OnDestroy {
                 break;
             case ShopItemListAction.DELETE:
                 this._dialogService.confirm({
-                    title: 'Are you sure?',
-                    content: 'Are you sure you wanna delete this?',
+                    title: 'Shop Item Delete',
+                    content: 'Are you sure you want to delete this?',
                     callback: () => {
                         this._service.delete(action.rowId).subscribe(() => {
                             this._notificationService.sendInfoNotification('Item deleted');
