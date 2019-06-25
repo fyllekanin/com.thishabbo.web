@@ -4,6 +4,8 @@ namespace App\Http\Impl;
 
 use App\EloquentModels\User\Follower;
 use App\EloquentModels\User\User;
+use App\Helpers\ConfigHelper;
+use App\Helpers\PermissionHelper;
 use App\Utils\Condition;
 
 class ProfileControllerImpl {
@@ -40,5 +42,27 @@ class ProfileControllerImpl {
         Condition::precondition(isset($data->parentId) && !$parentMessage, 404, 'The parent visitor message do not exist');
         Condition::precondition($parentMessage && $parentMessage->hostId != $profile->userId, 400, 'Parent message and host do not match');
         Condition::precondition(!isset($data->content) || empty($data->content), 400, 'Message can not be empty');
+    }
+
+    /**
+     * @param $user
+     * @param $profile
+     *
+     * @return bool
+     */
+    public function isPrivate($user, $profile) {
+        if ($user->userId == $profile->userId) {
+            return false;
+        }
+
+        if (PermissionHelper::haveSitecpPermission($user->userId, ConfigHelper::getSitecpConfig()->canPassPrivate)) {
+            return false;
+        }
+
+        if (!$profile->profile || !$profile->profile->isPrivate) {
+            return false;
+        }
+
+        return Follower::where('userId', $user->userId)->where('targetId', $profile->userId)->isApproved()->count('followerId') === 0;
     }
 }

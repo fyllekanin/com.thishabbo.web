@@ -1,0 +1,1 @@
+{"topic":"Update table to app-table","type":"Refactor / Improvement","body":"The device tabs did not use the app-table which we have as a component, updated the page to use it"}

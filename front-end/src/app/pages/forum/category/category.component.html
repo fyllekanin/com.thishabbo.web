@@ -2,15 +2,16 @@
     <app-fixed-tools [tools]="fixedTools" (onAction)="onAction($event)"></app-fixed-tools>
 
     <app-pagination
-        [paginationModel]="pagination">
+            [paginationModel]="pagination">
     </app-pagination>
 
     <div *ngIf="haveSubCategories">
         <app-title
-            [title]="'Sub Categories'">
+                [title]="'Sub Categories'">
         </app-title>
         <app-content>
-            <app-forum-slim-category *ngFor="let category of categoryPage.categories" [category]="category"></app-forum-slim-category>
+            <app-forum-slim-category *ngFor="let category of categoryPage.categories"
+                                     [category]="category"></app-forum-slim-category>
         </app-content>
     </div>
 
@@ -26,14 +27,15 @@
 
     <div *ngIf="!isMainParent">
         <app-title
-            [title]="'Threads'"
-            [tabs]="tabs"
-            (onTabClick)="onTabClick($event)">
+                [title]="'Threads'"
+                [tabs]="tabs"
+                (onTabClick)="onTabClick($event)">
         </app-title>
         <app-content>
             <app-forum-slim-thread *ngFor="let thread of categoryPage.threads"
                                    [thread]="thread"
                                    [forumPermissions]="categoryPage.forumPermissions"
+                                   [isChecked]="isChecked(thread)"
                                    (onCheckChanged)="onCheckChanged($event)">
             </app-forum-slim-thread>
         </app-content>
@@ -44,7 +46,7 @@
         </app-forum-category-sorting>
 
         <app-pagination
-            [paginationModel]="pagination">
+                [paginationModel]="pagination">
         </app-pagination>
     </div>
 </div>
