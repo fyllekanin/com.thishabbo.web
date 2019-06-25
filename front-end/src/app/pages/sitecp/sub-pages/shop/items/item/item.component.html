@@ -1,8 +1,8 @@
 <app-title [title]="title" [tabs]="tabs" (onTabClick)="onTabClick($event)"></app-title>
 <app-content>
     <div class="grid-container full">
-        <div class="grid-x margin-x">
-            <div class="small-12">
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-12">
                 <label>Title</label>
                 <input name="title" [(ngModel)]="model.title" type="text">
             </div>
@@ -10,13 +10,13 @@
                 <label>Description</label>
                 <input name="description" [(ngModel)]="model.description" type="text">
             </div>
-            <div class="small-12 medium-6">
+            <div class="cell small-12 medium-6">
                 <label>Rarity</label>
                 <select [(ngModel)]="model.rarity">
                     <option *ngFor="let rarity of rarities" [ngValue]="rarity.value">{{rarity.label}}</option>
                 </select>
             </div>
-            <div class="cell small-12 medium-6">
+            <div class="cell cell small-12 medium-6">
                 <label>
                     Created by
                     <span tooltip="Nickname of the creator, can be left empty" class="checkbox-info">
@@ -47,11 +47,11 @@
         <div *ngIf="model.isNameIcon">
             <div class="grid-container">
                 <div class="grid-x grid-margin-x grid-margin-y">
-                    <div class="cell small-12 medium-12">
+                    <div class="cell small-12 medium-6">
                         <label>Icon 16x16px</label>
                         <input #icon accept="image/*" type="file"/>
                     </div>
-                    <div class="cell smell-12 medium-12" *ngIf="model.createdAt">
+                    <div class="cell smell-12 medium-6" *ngIf="model.createdAt">
                         <label>Current Icon</label>
                         <img [src]="currentImage"/>
                     </div>
@@ -61,11 +61,11 @@
         <div *ngIf="model.isNameEffect">
             <div class="grid-container">
                 <div class="grid-x grid-margin-x grid-margin-y">
-                    <div class="cell small-12 medium-12">
+                    <div class="cell small-12 medium-6">
                         <label>Effect 32x32px</label>
                         <input #effect accept="image/*" type="file"/>
                     </div>
-                    <div class="cell smell-12 medium-12" *ngIf="model.createdAt">
+                    <div class="cell smell-12 medium-6" *ngIf="model.createdAt">
                         <label>Current Effect</label>
                         <img [src]="currentImage"/>
                     </div>
@@ -75,7 +75,7 @@
         <div *ngIf="model.isSubscription">
             <div class="grid-container">
                 <div class="grid-x grid-margin-x grid-margin-y">
-                    <div class="cell small-12 medium-12">
+                    <div class="cell small-12">
                         <label>Subscription</label>
                         <select [(ngModel)]="model.data.subscriptionId">
                             <option *ngFor="let subscription of subscriptions" [ngValue]="subscription.subscriptionId">

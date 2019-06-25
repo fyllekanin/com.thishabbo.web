@@ -1,8 +1,8 @@
 <app-title [title]="title" [tabs]="tabs" (onTabClick)="onTabClick($event)"></app-title>
 <app-content>
     <div class="grid-container full">
-            <div class="grid-x margin-x">
-            <div class="small-12 medium-12">
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-12">
                 <label>Title</label>
                 <input name="title" [(ngModel)]="model.title" type="text">
             </div>
@@ -10,7 +10,7 @@
                 <label>Avatar Width</label>
                 <input name="title" [(ngModel)]="model.avatarWidth" type="text">
             </div>
-            <div class="small-12 medium-6">
+            <div class="cell small-12 medium-6">
                 <label>Avatar Height</label>
                 <input name="title" [(ngModel)]="model.avatarHeight" type="text">
             </div>
@@ -19,13 +19,13 @@
                 <label>Credits <em>(Price if bought with credits)</em></label>
                 <input name="title" [(ngModel)]="model.credits" type="text">
             </div>
-            <div class="small-12 medium-6">
+            <div class="cell small-12 medium-6">
                 <label>Pounds <em>(Price if bought with pounds)</em></label>
                 <input name="title" [(ngModel)]="model.pounds" type="text">
             </div>
 
             <div class="cell small-6">
-                <label>Other Additionals</label>
+                <label>Other Addition's</label>
                 <label class="checkbox-container">
                     Can use Custom Name color?
                     <input type="checkbox" [(ngModel)]="model.options.canHaveCustomNameColor">

@@ -1,7 +1,8 @@
 <app-title [title]="title" [tabs]="tabs" (onTabClick)="createBan()"></app-title>
 <app-content>
-    On this page you can see all the current and previous bans this user have related to this account. <br />
-    Each ban has it's own infraction (or warning) card and will contain information if the ban is still in effect. The effect of a ban could have been removed because of one of the following reasons: <br />
+    On this page you can see all the current and previous bans this user have related to this account. <br/>
+    Each ban has it's own infraction (or warning) card and will contain information if the ban is still in effect. The
+    effect of a ban could have been removed because of one of the following reasons: <br/>
     <ul>
         <li>The users ban got lifted</li>
         <li>The users ban have expired</li>
@@ -9,19 +10,20 @@
 </app-content>
 
 <div class="grid-container full">
-    <div class="grid-x grid-margin-y margin-x">
+    <div class="grid-x grid-margin-y grid-margin-x">
         <div class="cell small-6" *ngFor="let ban of bans">
-            <app-title [title]="'Ban'" [tabs]="canLift(ban) ? banTabs : []" (onTabClick)="liftBan(ban.banId)"></app-title>
+            <app-title [title]="'Ban'" [tabs]="canLift(ban) ? banTabs : []"
+                       (onTabClick)="liftBan(ban.banId)"></app-title>
             <app-content>
                 <div class="ban">
-                    <strong>User that made ban:</strong> {{ban.banner.nickname}} <br />
-                    <strong>Reason:</strong> {{ban.reason}} <br />
-                    <strong>Expires at:</strong> {{ban.isLifted ? 'Lifted' : getTime(ban.expiresAt)}} <br />
+                    <strong>User that made ban:</strong> {{ban.banner.nickname}} <br/>
+                    <strong>Reason:</strong> {{ban.reason}} <br/>
+                    <strong>Expires at:</strong> {{ban.isLifted ? 'Lifted' : getTime(ban.expiresAt)}} <br/>
                 </div>
                 <div *ngIf="ban.isLifted">
-                    <strong>Lifted by:</strong> {{ban.lifter.nickname}} <br />
-                    <strong>Lift reason:</strong> {{ban.liftReason}} <br />
-                    <strong>Ban lifted at:</strong> {{getTime(ban.updatedAt)}} <br />
+                    <strong>Lifted by:</strong> {{ban.lifter.nickname}} <br/>
+                    <strong>Lift reason:</strong> {{ban.liftReason}} <br/>
+                    <strong>Ban lifted at:</strong> {{getTime(ban.updatedAt)}} <br/>
                 </div>
             </app-content>
         </div>

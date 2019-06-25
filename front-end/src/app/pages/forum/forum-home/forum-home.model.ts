@@ -1,6 +1,5 @@
-import { ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
 import { ForumLatestPost } from '../forum.model';
-import { arrayOf } from 'shared/helpers/class.helper';
 import { SlimUser } from 'core/services/auth/auth.model';
 
 export class ForumTopPoster {
@@ -25,4 +24,9 @@ export class ForumStats {
     constructor(source?: Partial<ForumStats>) {
         ClassHelper.assign(this, source);
     }
+}
+
+export enum StatsActions {
+    REFRESH,
+    READ_ALL
 }

@@ -1,17 +1,18 @@
 <app-title [title]="'Welcome Bot Settings'" [tabs]="tabs" (onTabClick)="onSave()"></app-title>
 <app-content>
     <div class="grid-container full">
-        <div class="grid-x margin-x">
+        <div class="grid-x grid-margin-x">
             <div class="cell small-6">
                 <label>
                     User Account <em>(Account to be the Welcome Bot)</em>
-                    <span tooltip="This account is also used for infraction threads, if not set it won't work!" class="checkbox-info">
+                    <span tooltip="This account is also used for infraction threads, if not set it won't work!"
+                          class="checkbox-info">
                         <em class="fas fa-question-circle"></em>
                     </span>
                 </label>
-                <input name="welcome-bot-name" type="text" [(ngModel)]="user.nickname" />
+                <input name="welcome-bot-name" type="text" [(ngModel)]="user.nickname"/>
             </div>
-            <div class="small-6">
+            <div class="cell small-6">
                 <label>Forum Category</label>
                 <select [(ngModel)]="category.categoryId">
                     <option value="0">None</option>
@@ -31,6 +32,6 @@
 </app-content>
 
 <app-editor #editor
-    [content]="content"
-    (onSave)="onSave()">
+            [content]="content"
+            (onSave)="onSave()">
 </app-editor>

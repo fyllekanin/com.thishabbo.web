@@ -1,21 +1,21 @@
 <app-title
-    [title]="'User Login Statistics'">
+        [title]="'User Login Statistics'">
 </app-title>
 <app-content>
     <div class="grid-container full">
-        <div class="grid-x margin-x">
+        <div class="grid-x grid-margin-x">
             <div class="cell small-6">
                 <select (change)="onDateChange()" [(ngModel)]="model.month">
                     <option *ngFor="let month of months" [value]="month.number">{{month.name}}</option>
                 </select>
             </div>
-            <div class="small-6">
+            <div class="cell small-6">
                 <select (change)="onDateChange()" [(ngModel)]="model.year">
                     <option *ngFor="let year of years" [value]="year">{{year}}</option>
                 </select>
             </div>
         </div>
     </div>
-    <hr />
+    <hr/>
     <app-graph-bar-chart [data]="barChartData"></app-graph-bar-chart>
 </app-content>
