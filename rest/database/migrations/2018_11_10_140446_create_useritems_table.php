@@ -16,6 +16,7 @@ class CreateUseritemsTable extends Migration {
             $table->integer('type');
             $table->bigInteger('userId');
             $table->bigInteger('itemId');
+            $table->integer('isActive')->default(0);
             $table->bigInteger('createdAt');
             $table->bigInteger('updatedAt');
 
