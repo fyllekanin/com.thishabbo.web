@@ -22,6 +22,10 @@
     overflow: hidden;
 }
 
+.minimalistic-header {
+    height: 7.9rem;
+}
+
 .bottom-bar {
     background: -webkit-linear-gradient(top, #fefefe 0, #ececec 100%);
     color: white;
@@ -68,6 +72,10 @@
     margin-top: 52px;
     height: 48px;
     font-weight: normal;
+}
+
+.minimalistic-logo h2 {
+    margin-top: 11px;
 }
 
 .logo h1 {

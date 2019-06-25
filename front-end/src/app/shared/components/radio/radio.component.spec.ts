@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { RadioService } from 'shared/components/radio/services/radio.service';
 import { RadioModel } from 'shared/components/radio/radio.model';
 import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
+import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 
 describe('RadioComponent', () => {
 
@@ -21,7 +22,21 @@ describe('RadioComponent', () => {
                 RadioComponent
             ],
             providers: [
-                { provide: RadioService, useValue: { openRequest: () => {}, likeDj: () => {} }}
+                {
+                    provide: RadioService, useValue: {
+                        openRequest: () => {
+                        }, likeDj: () => {
+                        }
+                    }
+                },
+                {
+                    provide: ContinuesInformationService, useValue: {
+                        onDeviceSettingsUpdated: {
+                            subscribe: () => {
+                            }
+                        }
+                    }
+                }
             ]
         });
 
