@@ -2,24 +2,24 @@
   "apps": [
     {
       "name": "worker",
-      "script": "./scripts/worker.sh",
-      "cwd": "./../",
+      "script": "./job/worker.sh",
+      "cwd": "./",
       "watch": true,
       "log_file": "./storage/logs/worker.log",
       "instances": 1
     },
     {
       "name": "radio",
-      "script": "./scripts/radio.sh",
-      "cwd": "./../",
+      "script": "./job/radio.sh",
+      "cwd": "./",
       "watch": true,
       "log_file": "./storage/logs/radio.log",
       "instances": 1
     },
     {
       "name": "cron",
-      "script": "./scripts/cron.sh",
-      "cwd": "./../",
+      "script": "./job/cron.sh",
+      "cwd": "./",
       "watch": true,
       "log_file": "./storage/logs/cron.log",
       "instances": 1
