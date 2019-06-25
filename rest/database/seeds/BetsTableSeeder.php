@@ -3,16 +3,14 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class BetsTableSeeder extends Seeder
-{
+class BetsTableSeeder extends Seeder {
 
     /**
      * Auto generated seed file
      *
      * @return void
      */
-    public function run()
-    {
+    public function run() {
         DB::table('bets')->delete();
         DB::table('bets')->insert(array(
             0 =>

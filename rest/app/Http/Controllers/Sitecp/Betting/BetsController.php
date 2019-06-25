@@ -14,8 +14,7 @@ use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
 
-class BetsController extends Controller
-{
+class BetsController extends Controller {
     private $creditsService;
 
     /**
@@ -23,8 +22,7 @@ class BetsController extends Controller
      *
      * @param CreditsService $creditsService
      */
-    public function __construct(CreditsService $creditsService)
-    {
+    public function __construct(CreditsService $creditsService) {
         parent::__construct();
         $this->creditsService = $creditsService;
     }
@@ -35,8 +33,7 @@ class BetsController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function suspendBet(Request $request, $betId)
-    {
+    public function suspendBet(Request $request, $betId) {
         $user = $request->get('auth');
         $bet = Bet::find($betId);
         Condition::precondition(!$bet, 404, 'The specific bet do not exist');
@@ -57,8 +54,7 @@ class BetsController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function unsuspendBet(Request $request, $betId)
-    {
+    public function unsuspendBet(Request $request, $betId) {
         $user = $request->get('auth');
         $bet = Bet::find($betId);
         Condition::precondition(!$bet, 404, 'The specific bet do not exist');
@@ -79,8 +75,7 @@ class BetsController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function setResult(Request $request, $betId)
-    {
+    public function setResult(Request $request, $betId) {
         $user = $request->get('auth');
         $result = $request->input('result');
         $bet = Bet::find($betId);
@@ -109,8 +104,7 @@ class BetsController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getBets(Request $request, $page)
-    {
+    public function getBets(Request $request, $page) {
         $filter = $request->input('filter');
         $status = $request->input('status');
 
@@ -146,8 +140,7 @@ class BetsController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getBet($betId)
-    {
+    public function getBet($betId) {
         $bet = Bet::find($betId);
 
         return response()->json([
@@ -161,8 +154,7 @@ class BetsController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createBet(Request $request)
-    {
+    public function createBet(Request $request) {
         $user = $request->get('auth');
         $bet = (object)$request->input('bet');
 
@@ -186,8 +178,7 @@ class BetsController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateBet(Request $request, $betId)
-    {
+    public function updateBet(Request $request, $betId) {
         $user = $request->get('auth');
         $newBet = (object)$request->input('bet');
 
@@ -213,8 +204,7 @@ class BetsController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteBet(Request $request, $betId)
-    {
+    public function deleteBet(Request $request, $betId) {
         $user = $request->get('auth');
 
         $bet = Bet::find($betId);
@@ -234,8 +224,7 @@ class BetsController extends Controller
      *
      * @param $betId
      */
-    private function deleteUserBets($betId)
-    {
+    private function deleteUserBets($betId) {
         $userBets = UserBet::where('betId', $betId)->get();
 
         foreach ($userBets as $userBet) {
@@ -248,8 +237,7 @@ class BetsController extends Controller
     /**
      * @param $bet
      */
-    private function betConditionCollection($bet)
-    {
+    private function betConditionCollection($bet) {
         Condition::precondition(!$bet, 400, 'Stupid developer');
         Condition::precondition(!isset($bet->name) || empty($bet->name), 400, 'Name can not be empty');
 
@@ -266,8 +254,7 @@ class BetsController extends Controller
     /**
      * @param $betId
      */
-    private function giveUserPrizes($betId)
-    {
+    private function giveUserPrizes($betId) {
         $bets = UserBet::where('betId', $betId)->get();
 
         foreach ($bets as $bet) {
