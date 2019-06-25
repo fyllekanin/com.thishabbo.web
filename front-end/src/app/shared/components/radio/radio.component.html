@@ -29,7 +29,7 @@
         </div>
     </div>
 
-    <div class="events-box">
+    <div class="events-box" *ngIf="!isMinimalistic">
         <div class="event-info">
             <div class="event-buttons">
                 <button [disabled]="!eventsLink" class="events-box-button green-button" (click)="visitEvent()"><em
