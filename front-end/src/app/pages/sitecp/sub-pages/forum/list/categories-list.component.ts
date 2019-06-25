@@ -39,8 +39,8 @@ export class CategoriesListComponent extends Page implements OnDestroy {
     ];
 
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'New Category', link: '/sitecp/forum/categories/new'}),
-        new TitleTab({title: 'Save Order', value: CategoryListActions.SAVE_ORDER})
+        new TitleTab({title: 'Save Order', value: CategoryListActions.SAVE_ORDER}),
+        new TitleTab({title: 'New Category', link: '/sitecp/forum/categories/new'})
     ];
 
     constructor (

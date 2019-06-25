@@ -9,33 +9,59 @@
             <app-content>
                 <div class="grid-x grid-margin-x">
                     <div class="cell small-12 medium-6">
-                        <label>Username: <em>(What you login with)</em></label>
+                        <label>Username:
+
+                                <span tooltip="This is a private username you will use to always log into ThisHabbo with. Please choose one unique to you! This can not be changed in the future." class="checkbox-info">
+                                    <em class="fas fa-question-circle"></em>
+                                </span>
+
+                        </label>
                         <input name="username" [(ngModel)]="registerModel.username" type="text" placeholder="">
                     </div>
                     <div class="cell small-12 medium-6">
-                        <label>Nickname: <em>(Display name shown to other users)</em></label>
+                        <label>Nickname:
+                            <span tooltip="Your nickname is your name that can be seen by other users, and can be changedat anytime." class="checkbox-info">
+                                    <em class="fas fa-question-circle"></em>
+                            </span>
+                        </label>
                         <input name="nickname" [(ngModel)]="registerModel.nickname" type="text">
                     </div>
                     <div class="cell small-12 medium-6">
-                        <label>Password:</label>
+                        <label>Password:
+
+                                <span tooltip="Even though passwords can not be viewed by us, we do not recommend having the same password you do for Habbo." class="checkbox-info">
+                                    <em class="fas fa-question-circle"></em>
+                                </span>
+
+                        </label>
                         <input name="password" [(ngModel)]="registerModel.password" type="password">
                     </div>
                     <div class="cell small-12 medium-6">
-                        <label>Password again:</label>
+                        <label>Confirm Password:</label>
                         <input name="repassword" [(ngModel)]="registerModel.repassword" type="password">
                     </div>
                     <div class="cell small-12 medium-6">
-                        <label>Habbo: <em>(Your motto needs to be "thishabbo-register" while doing this)</em></label>
+                        <label>Habbo: <em>(Your motto needs to be "thishabbo-register" while doing this)</em>
+                        <span tooltip="As we do not use Email or store any other personal information, we need a way to verify you. Please be patient when changing your motto. You can change it back when it is done!" class="checkbox-info">
+                            <em class="fas fa-question-circle"></em>
+                        </span>
+                        </label>
                         <input name="habbo" [(ngModel)]="registerModel.habbo" type="text">
                     </div>
                     <div class="cell small-12 medium-6">
-                        <label>Referred by:</label>
+                        <label>Referred by:
+
+                                <span tooltip="Who recommended you to ThisHabbo? If nobody did, leave this blank!" class="checkbox-info">
+                                        <em class="fas fa-question-circle"></em>
+                                </span>
+
+                        </label>
                         <input name="referred" [(ngModel)]="registerModel.referredBy" type="text">
                     </div>
                     <div class="cell small-12 medium-6">
                         <br/>
                         <label class="checkbox-container">
-                            I Accept the private policy of Thishabbo & GDPR
+                            I accept the privacy policy of ThisHabbo 2019 & GDPR 2018.
                             <input type="checkbox" [(ngModel)]="registerModel.gdpr">
                             <span class="checkmark"></span>
                         </label>

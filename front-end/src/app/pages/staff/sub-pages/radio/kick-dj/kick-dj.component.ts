@@ -19,8 +19,7 @@ export class KickDjComponent extends Page implements OnDestroy {
     infoModel: InfoBoxModel = {
         title: 'Warning!',
         type: INFO_BOX_TYPE.WARNING,
-        content: `If you kick off the DJ there will be no one air! This action is direct and<br />
-you should be prepared or any other DJ to jump on air after this button click.`
+        content: `If you kick off the DJ there will be no one air! This action is direct and you should be prepared for any other DJ to jump on air after this button has been clicked.`
     };
 
     constructor (
@@ -34,8 +33,8 @@ you should be prepared or any other DJ to jump on air after this button click.`
 
     onKick (): void {
         this._dialogService.confirm({
-            title: `Kicking current DJ`,
-            content: `Are you sure you wanna kick the current DJ?`,
+            title: `Kick Current DJ`,
+            content: `Are you sure you want to kick off the current DJ?`,
             callback: this.doKick.bind(this)
         });
     }
@@ -48,8 +47,8 @@ you should be prepared or any other DJ to jump on air after this button click.`
         this._httpService.post('staff/radio/kick/dj', {})
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
-                    title: 'Success',
-                    message: 'DJ is kicked off air!'
+                    title: 'Success - Kicked',
+                    message: 'DJ has been kicked off air!'
                 }));
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }

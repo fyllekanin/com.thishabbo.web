@@ -133,7 +133,7 @@ export class ForumHomeComponent extends Page implements OnInit, OnDestroy {
                 category.childs.forEach(child => child.haveRead = true);
                 return category;
             });
-            this._notificationService.sendInfoNotification('You marked all read');
+            this._notificationService.sendInfoNotification('You marked all current posts read!');
         });
     }
 }

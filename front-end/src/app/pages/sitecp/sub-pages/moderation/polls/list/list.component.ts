@@ -89,8 +89,8 @@ export class ListComponent extends Page implements OnDestroy {
     private onDelete (threadPollId: number): void {
         const poll = this._data.polls.find(item => item.threadPollId === threadPollId);
         this._dialogService.confirm({
-            title: `Delete poll`,
-            content: `Are you sure you wanna delete the poll?`,
+            title: `Delete Poll`,
+            content: `Are you sure you want to delete this poll?`,
             callback: this.deletePoll.bind(this, threadPollId, poll)
         });
     }
@@ -100,7 +100,7 @@ export class ListComponent extends Page implements OnDestroy {
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
-                    message: 'Poll is deleted'
+                    message: 'Poll has been deleted!'
                 }));
                 this._data.polls = this._data.polls.filter(item => item.threadPollId !== threadPollId);
                 this.createOrUpdateTable();

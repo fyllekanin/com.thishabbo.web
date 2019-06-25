@@ -87,7 +87,7 @@ export class ThemeComponent extends Page implements OnDestroy {
                     this.updateTabs();
                     this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
-                        message: 'Theme is created!'
+                        message: 'Theme has been created!'
                     }));
                 }, this._notificationService.failureNotification.bind(this._notificationService));
         }
@@ -96,13 +96,13 @@ export class ThemeComponent extends Page implements OnDestroy {
     private onDelete (): void {
         this._dialogService.confirm({
             title: 'Are you sure?',
-            content: 'Are you sure you wanna delete this theme?',
+            content: 'Are you sure you want to delete this theme?',
             callback: () => {
                 this._httpService.delete(`sitecp/content/themes/${this._data.themeId}`)
                     .subscribe(() => {
                         this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
-                            message: 'Theme is deleted!'
+                            message: 'Theme has been deleted!'
                         }));
                         this._dialogService.closeDialog();
                         this._router.navigateByUrl('/sitecp/website-settings/themes');

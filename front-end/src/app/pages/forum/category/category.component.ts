@@ -246,7 +246,7 @@ export class CategoryComponent extends Page implements OnDestroy {
         this.fixedTools = new FixedTools({
             items: [
                 new FixedToolItem({
-                    title: 'Thread tools',
+                    title: 'Thread Tools',
                     children: this.getThreadTools().filter(item => item.condition).map(action => new FixedToolItem({
                         title: action.title,
                         value: action.value

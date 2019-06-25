@@ -79,7 +79,7 @@ export class ThemesComponent extends Page implements OnDestroy {
                 this.createOrUpdateTable();
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
-                    message: 'Cleared default theme'
+                    message: 'Cleared default theme!'
                 }));
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
@@ -100,8 +100,8 @@ export class ThemesComponent extends Page implements OnDestroy {
 
     private onMakeDefault (themeId: number): void {
         this._dialogService.confirm({
-            title: 'Are you sure?',
-            content: 'Are you sure you wanna make this theme default?',
+            title: 'Theme Manager',
+            content: 'Are you sure you want to make this theme default?',
             callback: () => {
                 this._httpService.put(`sitecp/content/themes/default/${themeId}`)
                     .subscribe(() => {
@@ -121,8 +121,8 @@ export class ThemesComponent extends Page implements OnDestroy {
 
     private onDelete (themeId: number): void {
         this._dialogService.confirm({
-            title: 'Are you sure?',
-            content: 'Are you sure you wanna delete this theme?',
+            title: 'Theme Manager',
+            content: 'Are you sure you to delete this theme?',
             callback: () => {
                 this._httpService.delete(`sitecp/content/themes/${themeId}`)
                     .subscribe(() => {
@@ -131,7 +131,7 @@ export class ThemesComponent extends Page implements OnDestroy {
                         this._dialogService.closeDialog();
                         this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
-                            message: 'Theme is deleted!'
+                            message: 'Theme has been deleted!'
                         }));
                     });
             }

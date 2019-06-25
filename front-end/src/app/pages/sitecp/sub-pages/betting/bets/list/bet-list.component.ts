@@ -91,7 +91,7 @@ export class BetListComponent extends Page implements OnDestroy {
             case BetActions.DELETE_BET:
                 this._dialogService.confirm({
                     title: `Deleting ${model.name}`,
-                    content: `Are you sure you wanna delete ${model.name}?`,
+                    content: `Are you sure you want to delete ${model.name}?`,
                     callback: this.doDelete.bind(this, model)
                 });
                 break;

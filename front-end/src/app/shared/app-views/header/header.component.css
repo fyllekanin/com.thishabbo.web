@@ -75,7 +75,7 @@
 }
 
 .minimalistic-logo h2 {
-    margin-top: 11px;
+    margin-top: 7px;
 }
 
 .logo h1 {
@@ -157,7 +157,7 @@ input, optgroup, select, textarea {
 }
 
 .radio-controls {
-    margin: 0 0 0 -8px;
+    margin: 0 0 0 7px;
 }
 
 .header-margin {
@@ -166,6 +166,6 @@ input, optgroup, select, textarea {
 
 .radio {
     margin-left: 0;
-    width: 298px;
+    width: 301px;
     margin-right: 0;
 }

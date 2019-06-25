@@ -55,15 +55,15 @@ export class PostsModerationComponent extends Page implements OnDestroy {
         switch (action.value) {
             case PostModerationActions.APPROVE_POST:
                 this._dialogService.confirm({
-                    title: `Approve post`,
-                    content: `Are you sure you wanna approve the post?`,
+                    title: `Approve Post`,
+                    content: `Are you sure you want to approve this post?`,
                     callback: this.approvePost.bind(this, post)
                 });
                 break;
             case PostModerationActions.DELETE_POST:
                 this._dialogService.confirm({
-                    title: `Delete post`,
-                    content: `Are you sure you wanna delete the post?`,
+                    title: `Delete Post`,
+                    content: `Are you sure you want to delete this post?`,
                     callback: this.deletePost.bind(this, post)
                 });
                 break;

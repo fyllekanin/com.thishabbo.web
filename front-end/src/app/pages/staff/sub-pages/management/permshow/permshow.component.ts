@@ -102,8 +102,8 @@ export class PermShowComponent extends Page implements OnDestroy {
 
     private delete (): void {
         this._dialogService.confirm({
-            title: `Deleting permanent show`,
-            content: `Are you sure that you wanna delete this? You can just pause it this week by unbooking it`,
+            title: `Delete Permanent Show`,
+            content: `Are you sure that you want to delete this perm show? If they are missing this week, you can just unbook it and it'll automatically book next week!`,
             callback: this.onDelete.bind(this, this._permShow.timetableId)
         });
     }
@@ -127,7 +127,7 @@ export class PermShowComponent extends Page implements OnDestroy {
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
-                    message: 'Perm show deleted!'
+                    message: 'Permanent show deleted!'
                 }));
                 this._router.navigateByUrl('/staff/management/permanent-shows/page/1');
             }, error => {

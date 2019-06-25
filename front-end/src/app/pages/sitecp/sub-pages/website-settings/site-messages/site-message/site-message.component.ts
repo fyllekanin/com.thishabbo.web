@@ -110,14 +110,14 @@ export class SiteMessageComponent extends Page implements OnDestroy {
 
     private onDelete (): void {
         this._dialogService.confirm({
-            title: 'Are you sure?',
-            content: 'Are you sure you wanna delete this site message?',
+            title: 'Site Message',
+            content: 'Are you sure you want to delete this site message?',
             callback: () => {
                 this._httpService.delete(`sitecp/content/site-messages/${this._data.siteMessageId}`)
                     .subscribe(() => {
                         this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
-                            message: 'Site message is deleted'
+                            message: 'Site Message has been deleted!'
                         }));
                         this._router.navigateByUrl('/sitecp/website-settings/site-messages');
                     });

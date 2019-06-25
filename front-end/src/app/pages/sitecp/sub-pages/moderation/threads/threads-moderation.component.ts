@@ -54,15 +54,15 @@ export class ThreadsModerationComponent extends Page implements OnDestroy {
         switch (action.value) {
             case ThreadModerationActions.APPROVE_THREAD:
                 this._dialogService.confirm({
-                    title: `Approve thread`,
-                    content: `Are you sure you wanna approve thread: ${thread.title}?`,
+                    title: `Approve Thread`,
+                    content: `Are you sure you want to approve thread: ${thread.title}?`,
                     callback: this.approveThread.bind(this, thread)
                 });
                 break;
             case ThreadModerationActions.DELETE_THREAD:
                 this._dialogService.confirm({
-                    title: `Delete thread`,
-                    content: `Are you sure you wanna delete thread: ${thread.title}?`,
+                    title: `Delete Thread`,
+                    content: `Are you sure you want to delete thread: ${thread.title}?`,
                     callback: this.deleteThread.bind(this, thread)
                 });
                 break;
@@ -77,7 +77,7 @@ export class ThreadsModerationComponent extends Page implements OnDestroy {
                 this._dialogService.closeDialog();
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
-                    message: `${thread.title} is now approved!`
+                    message: `${thread.title} has now been approved!`
                 }));
             });
     }
@@ -90,7 +90,7 @@ export class ThreadsModerationComponent extends Page implements OnDestroy {
                 this._dialogService.closeDialog();
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
-                    message: `${thread.title} is now deleted!`
+                    message: `${thread.title} has now been deleted!`
                 }));
             });
     }

@@ -93,7 +93,7 @@ export class CategoryComponent extends Page implements OnDestroy {
     private onDelete (): void {
         this._dialogService.confirm({
             title: `Deleting ${this._data.name}`,
-            content: `Are you sure you wanna delete ${this._data.name}?`,
+            content: `Are you sure you want to delete ${this._data.name}?`,
             callback: this.doDelete.bind(this)
         });
     }

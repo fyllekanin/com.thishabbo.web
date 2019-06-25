@@ -78,7 +78,7 @@ export class ListComponent extends Page implements OnDestroy {
             case BetCategoryActions.DELETE_CATEGORY:
                 this._dialogService.confirm({
                     title: `Deleting ${model.name}`,
-                    content: `Are you sure you wanna delete ${model.name}?`,
+                    content: `Are you sure you want to delete ${model.name}?`,
                     callback: this.doDelete.bind(this, model)
                 });
                 break;

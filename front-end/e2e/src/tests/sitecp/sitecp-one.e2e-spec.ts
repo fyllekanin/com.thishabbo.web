@@ -28,7 +28,7 @@ describe('SiteCP #1', () => {
         const updatedName = 'bbcode';
 
         NavigationUtil.clickSiteCpTool('Manage BBCode');
-        NavigationUtil.clickTab('New BBCode');
+        NavigationUtil.clickTab('Create BBCode');
 
         BbcodePage.setName(bbcodeName);
         BbcodePage.setContent('$1');
