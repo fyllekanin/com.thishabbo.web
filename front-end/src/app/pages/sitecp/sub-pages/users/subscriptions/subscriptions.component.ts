@@ -34,7 +34,7 @@ export class SubscriptionsComponent extends Page implements OnDestroy {
     tableConfig: TableConfig;
     tabs: Array<TitleTab> = [
         new TitleTab({title: 'Create Subscription'}),
-        new TitleTab({title: 'Cancel', link: '/sitecp/users/page/1'})
+        new TitleTab({title: 'Back', link: '/sitecp/users/page/1'})
     ];
 
     constructor(
