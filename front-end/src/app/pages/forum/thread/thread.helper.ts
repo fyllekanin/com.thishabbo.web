@@ -87,7 +87,7 @@ export class ThreadActionExecutor {
             case ThreadActions.MERGE_POSTS:
                 this._dialogService.confirm({
                     title: 'Are you sure?',
-                    content: 'Are you sure you wanna merge these posts?',
+                    content: 'Are you sure you want to merge these posts?',
                     callback: this.onMergePosts.bind(this)
                 });
                 break;
@@ -101,7 +101,7 @@ export class ThreadActionExecutor {
                 const selectedIds = this._threadPage.threadPosts.filter(post => post.isSelected)
                     .map(post => post.postId);
                 if (selectedIds.length !== 1) {
-                    this._notificationService.sendErrorNotification('You need to select one postId to view history, not more or less');
+                    this._notificationService.sendErrorNotification('You need to select one postId to view history, not more or less!');
                     return;
                 }
                 this.onPostHistory(selectedIds[0]);

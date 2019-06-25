@@ -103,7 +103,7 @@ export class UsersListComponent extends Page implements OnDestroy {
     private openMergeDialog (userId: string): void {
         const user = this._usersListPage.users.find(item => item.userId === Number(userId));
         this._dialogService.openDialog({
-            title: `Merge ${user.nickname} with another user`,
+            title: `Merge ${user.nickname}`,
             component: this._componentFactory.resolveComponentFactory(MergeUsersComponent),
             buttons: [
                 new DialogCloseButton('Close'),
@@ -170,7 +170,7 @@ export class UsersListComponent extends Page implements OnDestroy {
                 condition: sitecpPermissions.canRemoveEssentials
             },
             {
-                title: 'Give Infraction',
+                title: 'Give Infraction or Warning',
                 value: UserListAction.GIVE_INFRACTION,
                 condition: sitecpPermissions.canDoInfractions
             }

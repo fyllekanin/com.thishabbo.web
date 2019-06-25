@@ -8,7 +8,7 @@
     <app-content [isContracted]="isContracted">
         <div class="grid-container full position-relative">
             <div class="grid-x grid-margin-x filter" *ngIf="filterConfigs.length > 0">
-                <div class="cell" [ngClass]="filterConfigs.length > 1 ? 'small-6 medium-4' : 'small-12'"
+                <div class="cell" [ngClass]="filterConfigs.length > 1 ? 'small-6 medium-12' : 'small-12'"
                      *ngFor="let filterConfig of filterConfigs">
                     <div *ngIf="!filterConfig.isSelect()">
                         <label *ngIf="filterConfig.title">{{filterConfig.title}}</label>

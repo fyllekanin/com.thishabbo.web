@@ -1,12 +1,12 @@
 <app-title [title]="title" [tabs]="tabs" (onTabClick)="onTabClick($event)"></app-title>
 <app-content>
     <div class="grid-container full">
-        <div class="grid-x grid-margin-x">
+        <div class="grid-x margin-x">
             <div class="cell small-6">
-                <label>Text</label>
+                <label>Name</label>
                 <input name="prefix-text" type="text" [(ngModel)]="prefix.text" />
             </div>
-            <div class="cell small-6">
+            <div class="small-6">
                 <label>Style</label>
                 <textarea name="prefix-style" type="text" [(ngModel)]="prefix.style"></textarea>
             </div>

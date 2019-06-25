@@ -108,7 +108,7 @@ export class SubscriptionsListComponent extends Page implements OnDestroy {
             filterConfigs: [
                 new FilterConfig({
                     title: 'Filter',
-                    placeholder: 'Search by title..',
+                    placeholder: 'Search by Title...',
                     key: 'filter'
                 })
             ]
@@ -129,7 +129,7 @@ export class SubscriptionsListComponent extends Page implements OnDestroy {
     private getTableHeaders (): Array<TableHeader> {
         return [
             new TableHeader({title: 'Title'}),
-            new TableHeader({title: 'Members count'})
+            new TableHeader({title: 'Subscribers'})
         ];
     }
 }

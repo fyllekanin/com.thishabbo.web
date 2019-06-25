@@ -26,7 +26,7 @@ export class InfractionService {
 
     private openDialog(model: InfractionContext): void {
         this._dialogService.openDialog({
-            title: `Infracting ${model.user.nickname}`,
+            title: `Infract or Warn ${model.user.nickname}`,
             component: this._componentResolver.resolveComponentFactory(InfractionComponent),
             data: model,
             buttons: [

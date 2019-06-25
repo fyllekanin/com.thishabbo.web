@@ -106,7 +106,7 @@ export class StaffComponent extends Page implements OnDestroy, OnInit {
                         isApplicable: this._authService.staffPermissions.canSeeDoNotHire
                     }),
                     new SideMenuItem({
-                        title: 'Current listeners',
+                        title: 'Current Listeners',
                         link: '/staff/management/current-listeners',
                         isApplicable: this._authService.staffPermissions.canSeeListeners
                     }),

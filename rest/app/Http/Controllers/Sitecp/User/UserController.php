@@ -50,8 +50,8 @@ class UserController extends Controller {
         $srcUser = User::withNickname($srcNickname)->first();
         $destUser = User::withNickname($destNickname)->first();
 
-        Condition::precondition(!$srcUser, 404, 'Source user does not exist');
-        Condition::precondition(!$destUser, 404, 'Destination user does not exist');
+        Condition::precondition(!$srcUser, 404, 'Source user does not exist!');
+        Condition::precondition(!$destUser, 404, 'Destination user does not exist!');
 
         $sourceUser = $srcUser;
         $destinationUser = $destUser;
@@ -160,7 +160,7 @@ class UserController extends Controller {
         $newUser = (object)$request->input('user');
 
         Condition::precondition(!UserHelper::canManageUser($user, $userId),
-            400, 'You do not have high enough immunity');
+            400, 'You do not have high enough immunity!');
 
         $this->basicUserConditionCollection($current, $newUser);
         $shouldCheckPassword = isset($newUser->password) && strlen($newUser->password) > 0 &&
@@ -169,7 +169,7 @@ class UserController extends Controller {
             400, 'Password not valid');
         Condition::precondition($shouldCheckPassword && !$this->authService->isRePasswordValid($newUser->repassword, $newUser->password),
             400, 'Re-password not valid');
-        Condition::precondition(!isset($newUser->habbo) || empty($newUser->habbo), 400, 'Habbo needs to be set');
+        Condition::precondition(!isset($newUser->habbo) || empty($newUser->habbo), 400, 'A Habbo needs to be set!');
 
         if ($shouldCheckPassword) {
             $current->password = Hash::make($newUser->password);
@@ -197,10 +197,10 @@ class UserController extends Controller {
             return;
         }
 
-        Condition::precondition(!$user, 404, 'Given user do not exist');
-        Condition::precondition(!$newUser, 404, 'No data supplied');
+        Condition::precondition(!$user, 404, 'Given user do not exist!');
+        Condition::precondition(!$newUser, 404, 'No data supplied!');
 
         Condition::precondition(!isset($newUser->nickname) || ($user->nickname != $newUser->nickname && !$this->authService->isNicknameValid($newUser->nickname)),
-            400, 'nickname is not valid');
+            400, 'Nickname is not valid!');
     }
 }

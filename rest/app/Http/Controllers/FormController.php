@@ -24,12 +24,12 @@ class FormController extends Controller {
         $data = (object)$request->input('data');
 
         Condition::precondition(!$user || $user->userId == 0, 400, 'You need to be logged in to apply!');
-        Condition::precondition(!isset($data->habbo) || empty($data->habbo), 400, 'Habbo needs to be set');
-        Condition::precondition(!isset($data->discord) || empty($data->discord), 400, 'Discord needs to be set');
-        Condition::precondition(!isset($data->country) || empty($data->country), 400, 'Country needs to be set');
-        Condition::precondition(!isset($data->job) || empty($data->job), 400, 'Job needs to be set');
-        Condition::precondition(!isset($data->content) || empty($data->content), 400, 'You need to write something about yourself');
-        Condition::precondition(!preg_match('/[a-zA-Z0-9]+#[0-9]{4}/i', $data->discord), 400, 'Discord format most be name#xxxx');
+        Condition::precondition(!isset($data->habbo) || empty($data->habbo), 400, 'A Habbo needs to be set!');
+        Condition::precondition(!isset($data->discord) || empty($data->discord), 400, 'A Discord needs to be set!');
+        Condition::precondition(!isset($data->country) || empty($data->country), 400, 'A Country needs to be set!');
+        Condition::precondition(!isset($data->job) || empty($data->job), 400, 'A Job needs to be set!');
+        Condition::precondition(!isset($data->content) || empty($data->content), 400, 'You need to write something about yourself!');
+        Condition::precondition(!preg_match('/[a-zA-Z0-9]+#[0-9]{4}/i', $data->discord), 400, 'Discord format must be name#xxxx!');
 
         $threadSkeleton = JobApplicationView::of($data);
         $jobCategories = Category::isJobCategory()->get();
@@ -52,9 +52,9 @@ class FormController extends Controller {
         $data = (object)$request->input('data');
 
         Condition::precondition(!$user || $user->userId == 0, 400, 'You need to be logged in to apply!');
-        Condition::precondition(!isset($data->habbo) || empty($data->habbo), 400, 'Habbo needs to be set');
-        Condition::precondition(!isset($data->reason) || empty($data->reason), 400, 'Reason needs to be set');
-        Condition::precondition(!isset($data->content) || empty($data->content), 400, 'You need to write something about yourself');
+        Condition::precondition(!isset($data->habbo) || empty($data->habbo), 400, 'A Habbo needs to be set!');
+        Condition::precondition(!isset($data->reason) || empty($data->reason), 400, 'A Reason needs to be set!');
+        Condition::precondition(!isset($data->content) || empty($data->content), 400, 'You need to write why you\'re contacting us!');
 
         $threadSkeleton = ContactApplicationView::of($data);
         $jobCategories = Category::isContactCategory()->get();

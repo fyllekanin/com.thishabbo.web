@@ -9,7 +9,7 @@
                     <option *ngFor="let month of months" [value]="month.number">{{month.name}}</option>
                 </select>
             </div>
-            <div class="cell small-6">
+            <div class="small-6">
                 <select (change)="onDateChange()" [(ngModel)]="model.year">
                     <option *ngFor="let year of years" [value]="year">{{year}}</option>
                 </select>

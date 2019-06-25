@@ -1,19 +1,19 @@
 <div class="grid-container content-margin">
     <div class="grid-x margin-x">
-        <div class="cell small-12 medium-9">
+        <div class="cell small-12 medium-12">
             <app-title [title]="'Job Form'" [tabs]="isLoggedIn ? tabs : []" (onTabClick)="onApply()"></app-title>
             <app-content>
                 <div class="grid-container content-margin" *ngIf="isLoggedIn">
                     <div class="grid-x grid-margin-x">
-                        <div class="cell small-12 medium-6">
+                        <div class="cell small-12 medium-12">
                             <label>Habbo Name</label>
                             <input [(ngModel)]="data.habbo"/>
                         </div>
-                        <div class="cell small-12 medium-6">
-                            <label>Reason</label>
+                        <div class="cell small-12 medium-12">
+                            <label>Contact Reason</label>
                             <select [(ngModel)]="data.reason">
-                                <option [value]="'Fansite partnership'">Fansite Partnership</option>
-                                <option [value]="'Account related issue'">Account related issue</option>
+                                <option [value]="'Fansite partnership'">Fansite or Room Partnership</option>
+                                <option [value]="'Account related issue'">Account Issue</option>
                                 <option [value]="'Problem in/with an Event'">Problem in/with an Event</option>
                                 <option [value]="'Problem on/with Radio'">Problem on/with Radio</option>
                                 <option [value]="'Spelling error / typo'">Spelling error / typo</option>
@@ -21,20 +21,12 @@
                             </select>
                         </div>
                         <div class="cell small-12">
-                            <label>About myself</label>
+                            <label>Tell us more information in regards to your issue</label>
                             <textarea [(ngModel)]="data.content"></textarea>
                         </div>
                     </div>
                 </div>
                 <app-info-box *ngIf="!isLoggedIn" [model]="notLoggedIn"></app-info-box>
-            </app-content>
-        </div>
-        <div class="cell small-12 medium-3">
-            <app-title [title]="'Information'"></app-title>
-            <app-content>
-                If you are looking to apply to a position at TH click <a
-                    [routerLink]="['/page/job']">Here</a> <br/>
-                <br/>
             </app-content>
         </div>
     </div>

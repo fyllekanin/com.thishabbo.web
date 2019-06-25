@@ -6,7 +6,7 @@
                 <label>Title</label>
                 <input name="category-text" type="text" [(ngModel)]="category.title"/>
             </div>
-            <div class="cell small-6">
+            <div class="small-6">
                 <label>Parent</label>
                 <select [(ngModel)]="parentId" name="parent">
                     <option selected="selected" value="-1">None</option>
@@ -17,7 +17,7 @@
                 <label>Description</label>
                 <input type="text" [(ngModel)]="category.description"/>
             </div>
-            <div class="cell small-6">
+            <div class="small-6">
                 <label>Display Order <em>(Lower = higher up)</em></label>
                 <input type="number" [(ngModel)]="category.displayOrder"/>
             </div>
@@ -29,7 +29,7 @@
                     <option value="MEDIA">Media</option>
                 </select>
             </div>
-            <div class="cell small-6">
+            <div class="small-6">
                 <label>Is Hidden</label>
                 <select [(ngModel)]="category.isHidden" name="isHidden">
                     <option [ngValue]="false">No</option>
@@ -43,7 +43,7 @@
                     <option [ngValue]="true">Yes</option>
                 </select>
             </div>
-            <div class="cell small-6">
+            <div class="small-6">
                 <label>Link <em>(Clicking the category header leads here)</em></label>
                 <input type="text" [(ngModel)]="category.link"/>
             </div>
@@ -51,7 +51,7 @@
                 <label>Icon <em>(Font-awesome icon class)</em></label>
                 <input type="text" [(ngModel)]="category.icon">
             </div>
-            <div class="cell small-6">
+            <div class="small-6">
                 <label>Icon Preview</label>
                 <em class="preview" [ngClass]="category.icon"></em>
             </div>

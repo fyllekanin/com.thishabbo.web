@@ -1,10 +1,10 @@
 <div class="grid-container content-margin">
-    <div class="grid-x grid-margin-x">
+    <div class="grid-x margin-x">
         <div class="cell small-6">
             <label>Role</label>
             <input name="role" [(ngModel)]="accolade.role" type="text" placeholder="">
         </div>
-        <div class="cell small-6">
+        <div class="small-6">
             <label>Type</label>
             <select [(ngModel)]="accolade.type">
                 <option [disabled]="true" [value]="undefined">Type..</option>
@@ -22,7 +22,7 @@
                 </option>
             </select>
         </div>
-        <div class="cell small-6">
+        <div class="small-6">
             <label>Start Year</label>
             <input name="startYear" [(ngModel)]="start.year" type="number" placeholder="">
         </div>
@@ -35,7 +35,7 @@
                 </option>
             </select>
         </div>
-        <div class="cell small-6">
+        <div class="small-6">
             <label>End Year</label>
             <input name="endYear" [(ngModel)]="end.year" type="number" placeholder="">
         </div>

@@ -6,7 +6,7 @@
                 <label>nickname</label>
                 <input type="text" [(ngModel)]="user.nickname" />
             </div>
-            <div class="cell small-6" *ngIf="canDoBasic">
+            <div class="small-6" *ngIf="canDoBasic">
                 <label>Habbo</label>
                 <input type="text" [(ngModel)]="user.habbo" />
             </div>
@@ -14,8 +14,8 @@
                 <label>Password <em>(Leave empty to not change)</em></label>
                 <input type="password" [(ngModel)]="user.password" />
             </div>
-            <div class="cell small-6" *ngIf="canDoAdvanced">
-                <label>Re-Password <em>(Leave empty to not change)</em></label>
+            <div class="small-6" *ngIf="canDoAdvanced">
+                <label>Retype-Password <em>(Leave empty to not change)</em></label>
                 <input type="password" [(ngModel)]="user.repassword" />
             </div>
         </div>
