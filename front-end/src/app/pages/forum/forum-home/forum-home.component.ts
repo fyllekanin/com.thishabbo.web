@@ -107,6 +107,14 @@ export class ForumHomeComponent extends Page implements OnInit, OnDestroy {
         return this._forumStats.activeToday;
     }
 
+    get currentlyActiveTitle(): string {
+        return this.currentlyActive.length + ' users currently active';
+    }
+
+    get activeTodayTitle(): string {
+        return this.activeToday.length + ' users active in the last 24 hours';
+    }
+
     private onPage(data: { data: Array<SlimCategory> }): void {
         this._forumHomePage = data.data;
     }
