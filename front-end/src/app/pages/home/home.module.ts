@@ -17,7 +17,6 @@ import { MediaArticlesComponent } from './home-default/media-articles/media-arti
 import { LazyLoadModule } from 'shared/directives/lazy-load/lazy-load.module';
 import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
-import { CommunityPollComponent } from './home-default/community-poll/community-poll.component';
 import { StaffSpotlightComponent } from './home-default/staff-spotlight/staff-spotlight.component';
 import { SearchComponent } from './search/search.component';
 import { SearchResolver } from './services/search.resolver';
@@ -50,7 +49,6 @@ import { SlimArticleModule } from 'shared/components/slim-article/slim-article.m
         HomeDefaultComponent,
         LoginBoxComponent,
         MediaArticlesComponent,
-        CommunityPollComponent,
         StaffSpotlightComponent,
         SearchComponent,
         GroupListComponent
