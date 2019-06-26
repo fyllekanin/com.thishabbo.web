@@ -23,15 +23,6 @@ export const radioRoutes: Routes = [
         component: PageComponent,
         children: [
             {
-                path: '',
-                pathMatch: 'full',
-                redirectTo: `timetable/${new Date().getDay() === 0 ? 7 : new Date().getDay()}`
-            },
-            {
-                path: 'timetable',
-                redirectTo: `timetable/${new Date().getDay() === 0 ? 7 : new Date().getDay()}`
-            },
-            {
                 path: 'timetable/:day',
                 component: TimetableComponent,
                 data: { type: 'radio' },

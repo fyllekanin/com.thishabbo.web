@@ -13,19 +13,11 @@ export const statisticsRoutes: Routes = [
         component: PageComponent,
         children: [
             {
-                path: 'users',
-                redirectTo: `users/${new Date().getFullYear()}/${new Date().getMonth() + 1}`
-            },
-            {
                 path: 'users/:year/:month',
                 component: UsersStatisticsComponent,
                 resolve: {
                     data: UsersStatisticsResolver
                 }
-            },
-            {
-                path: 'posts',
-                redirectTo: `posts/${new Date().getFullYear()}/${new Date().getMonth() + 1}`
             },
             {
                 path: 'posts/:year/:month',
