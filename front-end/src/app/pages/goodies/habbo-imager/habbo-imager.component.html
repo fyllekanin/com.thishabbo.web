@@ -85,9 +85,6 @@
                         </div>
                     </div>
                 </div>
-            </app-content>
-
-            <app-content>
                 <div><strong>Body Directions</strong></div>
                 <div class="body-direction" *ngFor="let direction of bodyDirections">
                     <img [src]="direction.src" (click)="updateBodyDirection(direction.value)"/>
