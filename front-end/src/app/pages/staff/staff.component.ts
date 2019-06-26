@@ -47,7 +47,7 @@ export class StaffComponent extends Page implements OnDestroy, OnInit {
                 items: [
                     new SideMenuItem({
                         title: 'Radio Timetable',
-                        link: '/staff/radio/timetable',
+                        link: `/staff/radio/timetable/${new Date().getDay() === 0 ? 7 : new Date().getDay()}`,
                         isApplicable: this._authService.staffPermissions.canRadio
                     }),
                     new SideMenuItem({
@@ -77,7 +77,7 @@ export class StaffComponent extends Page implements OnDestroy, OnInit {
                 items: [
                     new SideMenuItem({
                         title: 'Events Timetable',
-                        link: '/staff/events/timetable',
+                        link: `/staff/events/timetable/${new Date().getDay() === 0 ? 7 : new Date().getDay()}`,
                         isApplicable: this._authService.staffPermissions.canEvent
                     }),
                     new SideMenuItem({

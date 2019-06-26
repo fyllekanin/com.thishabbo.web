@@ -19,18 +19,9 @@ export const eventsRoutes: Routes = [
         component: PageComponent,
         children: [
             {
-                path: '',
-                pathMatch: 'full',
-                redirectTo: `timetable/${new Date().getDay() === 0 ? 7 : new Date().getDay()}`
-            },
-            {
-                path: 'timetable',
-                redirectTo: `timetable/${new Date().getDay() === 0 ? 7 : new Date().getDay()}`
-            },
-            {
                 path: 'timetable/:day',
                 component: TimetableComponent,
-                data: {type: 'events'},
+                data: { type: 'events' },
                 resolve: {
                     data: TimetableResolver
                 }
@@ -38,7 +29,7 @@ export const eventsRoutes: Routes = [
             {
                 path: 'booking/page/:page',
                 component: BookingLogComponent,
-                data: {type: 'events'},
+                data: { type: 'events' },
                 resolve: {
                     data: BookingLogResolver
                 }
