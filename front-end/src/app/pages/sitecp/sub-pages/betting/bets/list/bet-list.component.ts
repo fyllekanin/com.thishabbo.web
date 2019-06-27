@@ -201,7 +201,7 @@ export class BetListComponent extends Page implements OnDestroy {
             filterConfigs: [
                 new FilterConfig({
                     title: 'Filter',
-                    placeholder: 'Filter on Title...',
+                    placeholder: 'Filter on bet name...',
                     key: 'filter'
                 }),
                 new FilterConfig({

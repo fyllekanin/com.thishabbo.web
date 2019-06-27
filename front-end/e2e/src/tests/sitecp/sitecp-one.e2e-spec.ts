@@ -115,14 +115,14 @@ describe('SiteCP #1', () => {
         NavigationUtil.clickTab('Back');
         expect(CommonUtil.getTableRows().count()).toEqual(4);
 
-        CommonUtil.enterTableFilter('Filter on Title...', betName);
+        CommonUtil.enterTableFilter('Filter on bet name...', betName);
         InputUtil.clickRowAction(0, 'Edit');
 
         BettingPage.setBetName(newBetName);
         NavigationUtil.clickTab('Save');
         NavigationUtil.clickTab('Back');
 
-        CommonUtil.enterTableFilter('Filter on Title...', newBetName);
+        CommonUtil.enterTableFilter('Filter on bet name...', newBetName);
         expect(CommonUtil.getTableRows().count()).toEqual(1);
 
         InputUtil.clickRowAction(0, 'Suspend');

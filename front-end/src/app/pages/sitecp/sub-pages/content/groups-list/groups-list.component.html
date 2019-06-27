@@ -9,7 +9,7 @@
             <div class="cell small-12">
                 <label>Bar Colour</label>
                 <select [(ngModel)]="selectedColor" name="color">
-                    <option [value]="undefined">Select Color...</option>
+                    <option [value]="undefined">Select Colour...</option>
                     <option *ngFor="let color of possibleColors" [value]="color.color">
                         {{color.label}}
                     </option>
