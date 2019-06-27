@@ -33,10 +33,10 @@ export class AuthService {
         this.storeAuthUser(this._user);
     }
 
-    login(loginName: string, password: string, onFailure?: () => void): Subscription {
+    login(loginName: string, password: string, stay = false, onFailure?: () => void): Subscription {
         return this._httpService.post('auth/login', { loginName: loginName, password: password })
             .subscribe(res => {
-                this.doLogin(res);
+                this.doLogin(res, stay);
             }, error => {
                 this._user = null;
                 this._notificationService.failureNotification(error);
@@ -121,7 +121,7 @@ export class AuthService {
         }
     }
 
-    private doLogin(res: AuthUser): void {
+    private doLogin(res: AuthUser, stay: boolean): void {
         this._user = new AuthUser(res);
         this.storeAuthUser(res);
         this.checkGdpr();
@@ -131,6 +131,10 @@ export class AuthService {
             title: 'Success',
             message: 'You are logged in!'
         }));
+
+        if (stay) {
+            return;
+        }
 
         if (this._activatedRoute.snapshot.queryParams['redirected']) {
             this._router.navigateByUrl(this._routerState.getPreviousUrl())
@@ -151,7 +155,7 @@ export class AuthService {
                     this.navigateToHome();
                     this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Warning',
-                        message: 'Your previous page is not a valid page',
+                        message: 'Your home page is not a valid page',
                         type: NotificationType.WARNING
                     }));
                 });
