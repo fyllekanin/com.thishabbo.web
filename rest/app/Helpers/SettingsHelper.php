@@ -48,7 +48,7 @@ class SettingsHelper {
             'ip' => $radio->ip,
             'port' => $radio->port,
             'password' => $radio->password,
-            'sitecpPassword' => $withAdminPassword ? $radio->adminPassword : null,
+            'adminPassword' => $withAdminPassword ? $radio->adminPassword : null,
             'serverType' => $radio->serverType
         ];
     }
