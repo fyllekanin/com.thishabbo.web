@@ -8,7 +8,7 @@ export class CategoryLeaf {
     @arrayOf(CategoryLeaf)
     children: Array<CategoryLeaf> = [];
 
-    constructor (source: Partial<CategoryLeaf>) {
+    constructor(source: Partial<CategoryLeaf>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -29,7 +29,7 @@ export class CategoryOptions {
     @primitive()
     contactPostsGoHere: boolean;
 
-    constructor (source?: Partial<CategoryOptions>) {
+    constructor(source?: Partial<CategoryOptions>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -67,8 +67,12 @@ export class Category {
     link: string;
     @primitive()
     icon: string;
+    @primitive()
+    credits: number;
+    @primitive()
+    xp: number;
 
-    constructor (source?: Partial<Category>) {
+    constructor(source?: Partial<Category>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -79,7 +83,7 @@ export class CategoryPage {
     @objectOf(Category)
     category: Category = new Category();
 
-    constructor (source?: Partial<CategoryPage>) {
+    constructor(source?: Partial<CategoryPage>) {
         ClassHelper.assign(this, source);
     }
 }
