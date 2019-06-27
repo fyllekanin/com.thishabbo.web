@@ -44,7 +44,7 @@ Hope you will have a fun time here and join our team! ',
                 array(
                     'settingId' => 4,
                     'key' => 'radio',
-                    'value' => '{"ip":"http:\\/\\/sc.thishabbo.com","port":8080,"password":"THpassdwad434543dwadawdaRADIO","sitecpPassword":"THpasswodwadaw43454dwadawAAasitecp","nickname":"","likes":0,"userId":0,"listeners":0,"song":"","albumArt":"","djSays":"","nextDj":"","serverType":"shoutCastV1"}',
+                    'value' => '{"ip":"http:\\/\\/sc.thishabbo.com","port":8080,"password":"THpassdwad434543dwadawdaRADIO","adminPassword":"THpasswodwadaw43454dwadawAAasitecp","nickname":"","likes":0,"userId":0,"listeners":0,"song":"","albumArt":"","djSays":"","nextDj":"","serverType":"shoutCastV1"}',
                     'createdAt' => 1548703886,
                     'updatedAt' => 1559666814,
                 ),

@@ -24,7 +24,7 @@ export class ContinuesInformationService implements Resolve<void> {
 
     private _onTabsUpdatedSubject: Subject<void> = new Subject();
 
-    constructor (
+    constructor(
         private _httpService: HttpService,
         private _ngZone: NgZone,
         private _authService: AuthService,
@@ -43,7 +43,7 @@ export class ContinuesInformationService implements Resolve<void> {
         });
     }
 
-    resolve (activatedRouteSnapshot: ActivatedRouteSnapshot): Observable<void> {
+    resolve(activatedRouteSnapshot: ActivatedRouteSnapshot): Observable<void> {
         let prefix = '';
         if (activatedRouteSnapshot.data['type']) {
             prefix = activatedRouteSnapshot.data['type'] === PING_TYPES.SITECP ? 'sitecp/' : 'staff/';
@@ -51,39 +51,39 @@ export class ContinuesInformationService implements Resolve<void> {
         return this._httpService.get(prefix + 'ping');
     }
 
-    removeNotification (notificationId: number): void {
+    removeNotification(notificationId: number): void {
         this._notifications = this._notifications.filter(item => item.notificationId !== notificationId);
     }
 
-    removeNotificationIds (ids: Array<number>): void {
+    removeNotificationIds(ids: Array<number>): void {
         this._notifications = this._notifications.filter(notification => ids.indexOf(notification.notificationId) === -1);
     }
 
-    tabsUpdated (): void {
+    tabsUpdated(): void {
         this._onTabsUpdatedSubject.next();
     }
 
-    deviceSettingsUpdated (): void {
+    deviceSettingsUpdated(): void {
         this._onDeviceSettingsUpdated.next();
     }
 
-    get onTabsUpdated (): Observable<void> {
+    get onTabsUpdated(): Observable<void> {
         return this._onTabsUpdatedSubject.asObservable();
     }
 
-    get onNotifications (): Observable<Array<NotificationModel<any>>> {
+    get onNotifications(): Observable<Array<NotificationModel<any>>> {
         return this._notificationsSubject.asObservable();
     }
 
-    get onContinuesInformation (): Observable<ContinuesInformationModel> {
+    get onContinuesInformation(): Observable<ContinuesInformationModel> {
         return this._onContinuesInformationSubject.asObservable();
     }
 
-    get onDeviceSettingsUpdated (): Observable<void> {
+    get onDeviceSettingsUpdated(): Observable<void> {
         return this._onDeviceSettingsUpdated.asObservable();
     }
 
-    private onUserActivityChange (isUserActive): void {
+    private onUserActivityChange(isUserActive): void {
         if (this.isFastInterval() && isUserActive) {
             return;
         }
@@ -96,12 +96,12 @@ export class ContinuesInformationService implements Resolve<void> {
         this.updateInterval();
     }
 
-    private doRequest (): void {
+    private doRequest(): void {
         this._httpService.get('puller/pull')
             .subscribe(this.onContinuesInformationData.bind(this));
     }
 
-    private updateInterval (): void {
+    private updateInterval(): void {
         this._ngZone.runOutsideAngular(() => {
             clearInterval(this._timer);
             if (this.isFastInterval()) {
@@ -113,7 +113,7 @@ export class ContinuesInformationService implements Resolve<void> {
         });
     }
 
-    private fetchNotifications (): void {
+    private fetchNotifications(): void {
         this._ngZone.run(() => {
             if (!this._authService.isLoggedIn()) {
                 return;
@@ -123,8 +123,9 @@ export class ContinuesInformationService implements Resolve<void> {
         });
     }
 
-    private onContinuesInformationData (response): void {
+    private onContinuesInformationData(response): void {
         const data = new ContinuesInformationModel(response);
+        this.setUserPoints(data);
         this._onContinuesInformationSubject.next(data);
 
         if (this._notifications.length < data.unreadNotifications) {
@@ -132,9 +133,18 @@ export class ContinuesInformationService implements Resolve<void> {
             this._notifications = [];
             this.fetchNotifications();
         }
+
     }
 
-    private onNotificationData (res: Array<any>): void {
+    private setUserPoints(data: ContinuesInformationModel): void {
+        if (!this._authService.isLoggedIn()) {
+            return;
+        }
+        this._authService.authUser.credits = data.user.credits;
+        this._authService.authUser.xp = data.user.xp;
+    }
+
+    private onNotificationData(res: Array<any>): void {
         const newNotifications = res.map(item => new NotificationModel(item));
         const newNotificationIds = newNotifications.map(noti => noti.notificationId);
 
@@ -146,7 +156,7 @@ export class ContinuesInformationService implements Resolve<void> {
         this._lastNotificationCheck = Math.floor(new Date().getTime() / 1000);
     }
 
-    private isFastInterval () {
+    private isFastInterval() {
         return this._currentInterval === this._fastInterval;
     }
 }

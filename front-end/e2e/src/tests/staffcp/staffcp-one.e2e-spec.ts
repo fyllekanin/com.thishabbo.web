@@ -88,7 +88,7 @@ describe('StaffCP #1', () => {
         StaffCpPage.setRadioInfoIP('test.thishabbo.com');
         StaffCpPage.setRadioInfoPort('8081');
         StaffCpPage.setRadioInfoPassword('ThIsIsANewPassword');
-        StaffCpPage.setRadioInfoSitecpPassword('ThisIsATestSitecpPassword');
+        StaffCpPage.setRadioInfoAdminPassword('ThisIsATestAdminPassword');
         NavigationUtil.clickTab('Save');
 
         browser.sleep(1000);
