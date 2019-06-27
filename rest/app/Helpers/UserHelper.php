@@ -37,7 +37,7 @@ class UserHelper {
             ->leftJoin('groups', 'groups.groupId', '=', 'users.displayGroupId')
             ->leftJoin('userdata', 'userdata.userId', '=', 'users.userId')
             ->select('users.userId', 'users.nickname', 'users.createdAt',
-                'users.displayGroupId', 'users.posts', 'users.likes' 'userdata.avatarUpdatedAt',
+                'users.displayGroupId', 'users.posts', 'users.likes', 'userdata.avatarUpdatedAt',
                 'userdata.nameColor AS customColor', 'groups.nameColor AS groupColor',
                 'userdata.iconId', 'userdata.iconPosition', 'userdata.effectId')->first();
 
