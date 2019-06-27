@@ -132,7 +132,7 @@ export class AuthService {
             message: 'You are logged in!'
         }));
 
-        if (stay) {
+        if (stay && !this._router.url.includes('auth/login')) {
             return;
         }
 
