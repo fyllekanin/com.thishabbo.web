@@ -135,8 +135,8 @@ export class InfractionsComponent extends Page implements OnDestroy {
 
     private reverse (infractionId: number): void {
         this._dialogService.confirm({
-            title: 'Are you sure?',
-            content: 'Are you sure you wanna reverse this infraction?',
+            title: 'Infraction / Warning Reversal',
+            content: 'Are you sure you want to reverse this infraction?',
             callback: () => {
                 this._httpService.delete(`sitecp/moderation/infraction/${infractionId}`)
                     .subscribe(() => {

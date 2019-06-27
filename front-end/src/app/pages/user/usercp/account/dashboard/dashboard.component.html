@@ -2,15 +2,20 @@
 
 <app-title [title]="'Device Settings'" [tabs]="saveTab" (onTabClick)="onSave()"></app-title>
 <app-content>
-    <em>These are settings which are bound to the current device you are using. <br/>
-        If you visit ThisHabbo on another device these settings will be default until changed. Once ticked, the page
-        will automatically save your changes.</em>
+    These are settings which are bound to the current device you are using. <br/><br/>
+    <em>If you visit ThisHabbo on another device these settings will be default until changed. You can save your changes
+        in the top right when you have decided what you settings you prefer. These can be changed at any time.</em>
     <br/><br/>
     <div>
         <label class="checkbox-container">
-            Default BBcode mode in editor
+            Default BBCode Mode in Posting Editor
             <input type="checkbox" [(ngModel)]="isEditorSourceMode">
             <span class="checkmark"></span>
+
+            <span tooltip="Turning this setting on will ensure everytime you load the Posting Editor BBCode is automatically turned on."
+                  class="checkbox-info">
+                <em class="fas fa-question-circle"></em>
+            </span>
         </label>
     </div>
     <div>
@@ -18,61 +23,47 @@
             Ignore Signatures
             <input type="checkbox" [(ngModel)]="doIgnoreSignatures">
             <span class="checkmark"></span>
+            <span tooltip="Turning this on will ensure all users signatures are hidden." class="checkbox-info">
+                    <em class="fas fa-question-circle"></em>
+            </span>
         </label>
     </div>
 
     <div>
         <label class="checkbox-container">
-            Fixed menu <em>- Should the menu follow you when you scroll? (needs reload after checking this)</em>
+            Fixed Menu <em>(Please reload after ticking this!)</em>
             <input type="checkbox" [(ngModel)]="haveFixedMenu">
             <span class="checkmark"></span>
+            <span tooltip="Turning this setting on will ensure the menu & page navigation follows you as you scroll down the page."
+                  class="checkbox-info">
+                <em class="fas fa-question-circle"></em>
+            </span>
         </label>
     </div>
 
     <div>
         <label class="checkbox-container">
-            Forum Tools <em>- Should tools be default visible? (default tools are hidden until toggled)</em>
+            Forum Tools
             <input type="checkbox" [(ngModel)]="showThreadTools">
             <span class="checkmark"></span>
+            <span tooltip="The Forum Tools are the 2 buttons which appear on threads you own or can moderate at the bottom left. Turning this on will ensure they are always visible by default."
+                  class="checkbox-info">
+                <em class="fas fa-question-circle"></em>
+            </span>
+        </label>
+    </div>
+
+    <div>
+        <label class="checkbox-container">
+            Minimalistic Header
+            <input type="checkbox" [(ngModel)]="minimalisticHeader">
+            <span class="checkmark"></span>
+            <span tooltip="A style aimed for those who prefer smaller headers. You will lose extra features for this."
+                  class="checkbox-info">
+                <em class="fas fa-question-circle"></em>
+            </span>
         </label>
     </div>
 </app-content>
 
-<app-title [title]="'Device Tabs'"></app-title>
-<app-content>
-    <em>These are the device locked tabs in the header, you can only remove them from here. If you wanna add a new one
-        you need to click in the header</em>
-    <br/><br/>
-    <div *ngIf="tabs.length > 0">
-        <div class="grid-container">
-            <div class="grid-x">
-                <div class="cell small-5">
-                    <strong>Label</strong>
-                </div>
-                <div class="cell small-5">
-                    <strong>URL</strong>
-                </div>
-                <div class="cell small-2">
-                    <strong>Remove</strong>
-                </div>
-            </div>
-        </div>
-
-        <div class="grid-container" *ngFor="let tab of tabs">
-            <div class="grid-x grid-margin-y">
-                <div class="cell small-5">
-                    {{tab.label}}
-                </div>
-                <div class="cell small-5">
-                    {{tab.url}}
-                </div>
-                <div class="cell small-2">
-                    <button appButton (onClick)="onRemove(tab)">Remove</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div *ngIf="tabs.length === 0" class="align-center">
-        You don't have any tabs created! ¯\_(ツ)_/¯
-    </div>
-</app-content>
+<app-table [config]="tableConfig" (onAction)="onAction($event)"></app-table>

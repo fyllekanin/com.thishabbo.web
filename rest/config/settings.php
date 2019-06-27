@@ -94,5 +94,9 @@ return [
         'token' => '72f50ad550f560601a24f1862e065f710a7862e9',
         'owner' => 'fyllekanin',
         'repository' => 'com.thishabbo.web'
+    ],
+    'COSTS' => [
+        'nickname' => 300,
+        'arcade' => 25
     ]
 ];

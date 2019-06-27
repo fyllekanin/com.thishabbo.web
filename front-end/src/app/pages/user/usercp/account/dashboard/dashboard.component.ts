@@ -9,6 +9,14 @@ import { TitleTab, TitleTopBorder } from 'shared/app-views/title/title.model';
 import { TabModel } from 'shared/app-views/header/tabs/tabs.model';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 import { NotificationService } from 'core/services/notification/notification.service';
+import {
+    Action,
+    TableAction,
+    TableCell,
+    TableConfig,
+    TableHeader,
+    TableRow
+} from 'shared/components/table/table.model';
 
 @Component({
     selector: 'app-user-usercp-dashboard',
@@ -17,12 +25,15 @@ import { NotificationService } from 'core/services/notification/notification.ser
 export class DashboardComponent extends Page implements OnDestroy {
     private _tabs: Array<TabModel> = [];
 
+    tableConfig: TableConfig;
+
     isEditorSourceMode: boolean;
     doIgnoreSignatures: boolean;
     haveFixedMenu: boolean;
     showThreadTools: boolean;
+    minimalisticHeader: boolean;
     saveTab: Array<TitleTab> = [
-        new TitleTab({title: 'Save'})
+        new TitleTab({ title: 'Save' })
     ];
 
     stats: Array<StatsBoxModel> = [
@@ -52,7 +63,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         })
     ];
 
-    constructor (
+    constructor(
         private _continuesInformation: ContinuesInformationService,
         private _notificationService: NotificationService,
         elementRef: ElementRef,
@@ -68,6 +79,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         try {
             this._tabs = JSON.parse(localStorage.getItem(LOCAL_STORAGE.TABS))
                 .map(item => new TabModel(item));
+            this.createOrUpdateTable();
         } catch (e) {
             this._tabs = [];
         }
@@ -76,28 +88,31 @@ export class DashboardComponent extends Page implements OnDestroy {
         this.doIgnoreSignatures = Boolean(localStorage.getItem(LOCAL_STORAGE.IGNORE_SIGNATURES));
         this.haveFixedMenu = Boolean(localStorage.getItem(LOCAL_STORAGE.FIXED_MENU));
         this.showThreadTools = Boolean(localStorage.getItem(LOCAL_STORAGE.FORUM_TOOLS));
+        this.minimalisticHeader = Boolean(localStorage.getItem(LOCAL_STORAGE.MINIMALISTIC));
     }
 
-    onSave (): void {
+    onSave(): void {
         this.updateEditorSourceMode();
         this.updateIgnoreSignatures();
         this.updateFixedMenu();
         this.updateThreadTools();
+        this.updateMinimalisticHeader();
         this._notificationService.sendInfoNotification('Device settings saved!');
         this._continuesInformation.deviceSettingsUpdated();
     }
 
-    onRemove (tab: TabModel): void {
-        this._tabs = this._tabs.filter(item => item.label.toLowerCase() !== tab.label.toLowerCase());
+    onAction(action: Action): void {
+        this._tabs = this._tabs.filter(item => item.label.toLowerCase() !== action.rowId.toLowerCase());
         localStorage.setItem(LOCAL_STORAGE.TABS, JSON.stringify(this._tabs));
         this._continuesInformation.tabsUpdated();
+        this.createOrUpdateTable();
     }
 
-    ngOnDestroy (): void {
+    ngOnDestroy(): void {
         super.destroy();
     }
 
-    private updateEditorSourceMode (): void {
+    private updateEditorSourceMode(): void {
         if (this.isEditorSourceMode) {
             localStorage.setItem(LOCAL_STORAGE.EDITOR_MODE, 'true');
         } else {
@@ -105,7 +120,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         }
     }
 
-    private updateIgnoreSignatures (): void {
+    private updateIgnoreSignatures(): void {
         if (this.doIgnoreSignatures) {
             localStorage.setItem(LOCAL_STORAGE.IGNORE_SIGNATURES, 'true');
         } else {
@@ -113,7 +128,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         }
     }
 
-    private updateFixedMenu (): void {
+    private updateFixedMenu(): void {
         if (this.haveFixedMenu) {
             localStorage.setItem(LOCAL_STORAGE.FIXED_MENU, 'true');
         } else {
@@ -121,7 +136,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         }
     }
 
-    private updateThreadTools (): void {
+    private updateThreadTools(): void {
         if (this.showThreadTools) {
             localStorage.setItem(LOCAL_STORAGE.FORUM_TOOLS, 'true');
         } else {
@@ -129,7 +144,36 @@ export class DashboardComponent extends Page implements OnDestroy {
         }
     }
 
-    get tabs (): Array<TabModel> {
-        return this._tabs;
+    private updateMinimalisticHeader(): void {
+        if (this.minimalisticHeader) {
+            localStorage.setItem(LOCAL_STORAGE.MINIMALISTIC, 'true');
+        } else {
+            localStorage.removeItem(LOCAL_STORAGE.MINIMALISTIC);
+        }
+    }
+
+    private createOrUpdateTable(): void {
+        if (this.tableConfig) {
+            this.tableConfig.rows = this.getTableRows();
+            return;
+        }
+        this.tableConfig = new TableConfig({
+            title: 'Device Tabs',
+            headers: [new TableHeader({ title: 'Label' }), new TableHeader({ title: 'URL' })],
+            rows: this.getTableRows()
+        });
+    }
+
+    private getTableRows(): Array<TableRow> {
+        return this._tabs.map(tab => new TableRow({
+            id: tab.label,
+            cells: [
+                new TableCell({ title: tab.label }),
+                new TableCell({ title: tab.url })
+            ],
+            actions: [
+                new TableAction({ title: 'Remove' })
+            ]
+        }));
     }
 }

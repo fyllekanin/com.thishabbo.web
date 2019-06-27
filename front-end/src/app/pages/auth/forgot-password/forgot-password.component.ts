@@ -5,6 +5,7 @@ import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { Router } from '@angular/router';
+import { TitleTab } from 'shared/app-views/title/title.model';
 
 @Component({
     selector: 'app-auth-forgot-password',
@@ -13,7 +14,11 @@ import { Router } from '@angular/router';
 export class ForgotPasswordComponent extends Page implements OnDestroy {
     habbo: string;
 
-    constructor (
+    tabs: Array<TitleTab> = [
+        new TitleTab({ title: 'Change Password' })
+    ];
+
+    constructor(
         private _httpService: HttpService,
         private _notificationService: NotificationService,
         private _router: Router,
@@ -26,11 +31,11 @@ export class ForgotPasswordComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy (): void {
+    ngOnDestroy(): void {
         super.destroy();
     }
 
-    onClick (): void {
+    onClick(): void {
         this._httpService.get(`auth/forgot-password/code/${this.habbo}`)
             .subscribe((item: { userId: number, code: string }) => {
                 this._router.navigateByUrl(`/auth/change-password/${item.userId}/${item.code}`);

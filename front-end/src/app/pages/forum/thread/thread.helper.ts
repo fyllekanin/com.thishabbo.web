@@ -87,7 +87,7 @@ export class ThreadActionExecutor {
             case ThreadActions.MERGE_POSTS:
                 this._dialogService.confirm({
                     title: 'Are you sure?',
-                    content: 'Are you sure you wanna merge these posts?',
+                    content: 'Are you sure you want to merge these posts?',
                     callback: this.onMergePosts.bind(this)
                 });
                 break;
@@ -101,7 +101,7 @@ export class ThreadActionExecutor {
                 const selectedIds = this._threadPage.threadPosts.filter(post => post.isSelected)
                     .map(post => post.postId);
                 if (selectedIds.length !== 1) {
-                    this._notificationService.sendErrorNotification('You need to select one postId to view history, not more or less');
+                    this._notificationService.sendErrorNotification('You need to select one postId to view history, not more or less!');
                     return;
                 }
                 this.onPostHistory(selectedIds[0]);
@@ -114,8 +114,8 @@ export class ThreadActionExecutor {
             .subscribe((data: Array<any>) => {
                 if (data.length < 1) {
                     this._notificationService.sendNotification(new NotificationMessage({
-                        title: 'Sorry',
-                        message: 'There are no edits on this thread/post'
+                        title: 'Moderation',
+                        message: 'There are no edits on this thread/post!'
                     }));
                     return;
                 }
@@ -136,7 +136,7 @@ export class ThreadActionExecutor {
     private onMergePosts (): void {
         const selectedPostIds = this._threadPage.threadPosts.filter(post => post.isSelected).map(post => post.postId);
         if (selectedPostIds.length < 2) {
-            this._notificationService.sendErrorNotification('You most select at least two posts to merge');
+            this._notificationService.sendErrorNotification('You most select at least two posts to merge!');
             return;
         }
 
@@ -251,8 +251,8 @@ export class ThreadActionExecutor {
 
     private onDeletePoll (): void {
         this._dialogService.confirm({
-            title: `Delete poll`,
-            content: `Are you sure you wanna delete the poll?`,
+            title: `Delete Poll`,
+            content: `Are you sure you want to delete the poll?`,
             callback: () => {
                 this._httpService.delete(`forum/moderation/thread/poll/delete/${this._threadPage.threadId}`)
                     .subscribe(() => {
@@ -331,8 +331,8 @@ export class ThreadActionExecutor {
 
     private onDeleteThread (): void {
         this._dialogService.confirm({
-            title: `Delete thread`,
-            content: `Are you sure you wanna delete the thread: ${this._threadPage.title}?`,
+            title: `Delete Thread`,
+            content: `Are you sure you want to delete the thread: ${this._threadPage.title}?`,
             callback: () => {
                 this._httpService.delete(`forum/moderation/thread/delete/${this._threadPage.threadId}`)
                     .subscribe(() => {

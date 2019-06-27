@@ -225,6 +225,17 @@ class GroupsController extends Controller {
             $group->sitecpPermissions = 0;
             $group->options = 0;
             $group->staffPermissions = 0;
+            $group->groups = Group::where('immunity', '<', $immunity)->get()->map(function ($group) {
+                $nameColor = Value::objectJsonProperty($group, 'nameColor', '');
+                return [
+                    'sitecpPermissions' => $this->buildSitecpPermissions($group),
+                    'staffPermissions' => $this->buildStaffPermissions($group),
+                    'options' => $this->buildGroupOptions($group),
+                    'name' => $group->name,
+                    'immunity' => $group->immunity,
+                    'nameColor' => $nameColor == '' ? '' : $group->nameColor[0]
+                ];
+            });
         }
 
         Condition::precondition($group->immunity >= $immunity, 400, 'This group have higher immunity then you!');

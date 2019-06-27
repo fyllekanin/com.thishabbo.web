@@ -1,13 +1,15 @@
-<strong>Label</strong> <br />
+<label>Label</label>
 <input type="text" [(ngModel)]="data.label" />
 
-<strong>Url</strong> <br />
+<label>Url</label>
 <input type="text" [(ngModel)]="data.url" [disabled]="data.isHomePage"/>
 
 <div *ngIf="isMainItem">
-    <strong>Icon <em>(full font-awesome class)</em></strong> <br />
+    <label>Icon <em>(full font-awesome class)</em></label>
     <input type="text" [(ngModel)]="data.icon" />
 </div>
+
+<br />
 
 <div>
     <label class="checkbox-container">
@@ -19,7 +21,7 @@
 
 <div>
     <label class="checkbox-container">
-        Is only on mobile menu?
+        Is this only on for mobile users aka mobile menu?
         <input type="checkbox" [(ngModel)]="data.isOnMobile">
         <span class="checkmark"></span>
     </label>
@@ -27,7 +29,7 @@
 
 <div>
     <label class="checkbox-container" *ngIf="!isMainItem">
-        Is a divider
+        Is this a divider?
         <input type="checkbox" [(ngModel)]="data.isDivider">
         <span class="checkmark"></span>
     </label>

@@ -8,11 +8,11 @@ export class ManageConnectionModel {
     @primitive()
     password: string;
     @primitive()
-    sitecpPassword: string;
+    adminPassword: string;
     @primitive()
     serverType: string;
 
-    constructor (source?: Partial<ManageConnectionModel>) {
+    constructor(source?: Partial<ManageConnectionModel>) {
         ClassHelper.assign(this, source);
     }
 }

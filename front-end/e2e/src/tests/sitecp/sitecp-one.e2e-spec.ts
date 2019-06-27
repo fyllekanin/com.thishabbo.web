@@ -28,7 +28,7 @@ describe('SiteCP #1', () => {
         const updatedName = 'bbcode';
 
         NavigationUtil.clickSiteCpTool('Manage BBCode');
-        NavigationUtil.clickTab('New BBCode');
+        NavigationUtil.clickTab('Create BBCode');
 
         BbcodePage.setName(bbcodeName);
         BbcodePage.setContent('$1');
@@ -115,14 +115,14 @@ describe('SiteCP #1', () => {
         NavigationUtil.clickTab('Back');
         expect(CommonUtil.getTableRows().count()).toEqual(4);
 
-        CommonUtil.enterTableFilter('Filter on bet title', betName);
+        CommonUtil.enterTableFilter('Filter on Title...', betName);
         InputUtil.clickRowAction(0, 'Edit');
 
         BettingPage.setBetName(newBetName);
         NavigationUtil.clickTab('Save');
         NavigationUtil.clickTab('Back');
 
-        CommonUtil.enterTableFilter('Filter on bet title', newBetName);
+        CommonUtil.enterTableFilter('Filter on Title...', newBetName);
         expect(CommonUtil.getTableRows().count()).toEqual(1);
 
         InputUtil.clickRowAction(0, 'Suspend');

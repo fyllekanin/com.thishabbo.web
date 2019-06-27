@@ -91,8 +91,8 @@ export class VoucherCodesComponent extends Page implements OnDestroy {
 
     onDelete (action: Action): void {
         this._dialogService.confirm({
-            title: 'Are you sure?',
-            content: 'Are you sure you wanna delete this voucher code?',
+            title: 'Delete Voucher Code',
+            content: 'Are you sure you want to delete this voucher code?',
             callback: () => {
                 this._httpService.delete(`sitecp/voucher-codes/${action.rowId}`)
                     .subscribe(() => {
@@ -100,7 +100,7 @@ export class VoucherCodesComponent extends Page implements OnDestroy {
                         this.createOrUpdateTable();
                         this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
-                            message: 'Voucher code deleted!'
+                            message: 'Voucher code has been deleted!'
                         }));
                         this._dialogService.closeDialog();
                     }, this._notificationService.failureNotification.bind(this));
@@ -112,7 +112,7 @@ export class VoucherCodesComponent extends Page implements OnDestroy {
         if (!data.note) {
             this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Failure',
-                message: 'Note can not be empty',
+                message: 'This note can not be empty!',
                 type: NotificationType.ERROR
             }));
             return;
@@ -124,7 +124,7 @@ export class VoucherCodesComponent extends Page implements OnDestroy {
                 this._dialogService.closeDialog();
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
-                    message: 'Code created!'
+                    message: 'Code has been created!'
                 }));
                 this.createOrUpdateTable();
             }, this._notificationService.failureNotification.bind(this));

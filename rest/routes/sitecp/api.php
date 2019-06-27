@@ -108,6 +108,7 @@ Route::group(['middleware' => PermissionHelper::getSitecpMiddleware([$permission
     $permissions->canBanUser, $permissions->canRemoveEssentials, $permissions->canDoInfractions, $permissions->canManageSubscriptions])], function () use ($permissions) {
 
     Route::get('/users/list/page/{page}', 'Sitecp\User\UserController@getUsers');
+    Route::get('/users/{userId}/history/page/{page}', 'Sitecp\User\UserHistoryController@getHistory');
 
     Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canManageSubscriptions)], function () {
         Route::get('/users/{userId}/subscriptions', 'Sitecp\User\UserSubscriptionsController@getUserSubscriptions');
@@ -234,6 +235,10 @@ Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions
 Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canManageShop)], function () {
     Route::get('/shop/items/page/{page}', 'Sitecp\Shop\ItemsController@getItems');
     Route::get('/shop/items/{itemId}', 'Sitecp\Shop\ItemsController@getItem');
+
+    Route::post('/shop/items', 'Sitecp\Shop\ItemsController@createItem');
+    Route::post('/shop/items/{itemId}', 'Sitecp\Shop\ItemsController@updateItem');
+    Route::delete('/shop/items/{itemId}', 'Sitecp\Shop\ItemsController@deleteItem');
 });
 
 Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canManageSubscriptions)], function () {

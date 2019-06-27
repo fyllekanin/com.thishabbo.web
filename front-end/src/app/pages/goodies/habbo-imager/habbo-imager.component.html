@@ -1,5 +1,5 @@
 <div class="grid-container full">
-    <div class="grid-x margin-x">
+    <div class="grid-x grid-margin-x">
         <div class="cell small-12 medium-9">
             <app-title [title]="'Habbo Imager'"></app-title>
             <app-content>
@@ -86,7 +86,8 @@
                     </div>
                 </div>
             </app-content>
-
+            <app-title [title]="'Habbo Directions'"
+                       [top]="topBorderRed"></app-title>
             <app-content>
                 <div><strong>Body Directions</strong></div>
                 <div class="body-direction" *ngFor="let direction of bodyDirections">

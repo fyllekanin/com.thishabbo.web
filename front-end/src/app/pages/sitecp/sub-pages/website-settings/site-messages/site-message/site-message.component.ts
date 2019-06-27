@@ -62,6 +62,29 @@ export class SiteMessageComponent extends Page implements OnDestroy {
         }
     }
 
+    onSave (): void {
+        this._data.content = this.editor.getEditorValue();
+        if (this._data.createdAt) {
+            this._httpService.put(`sitecp/content/site-messages/${this._data.siteMessageId}`, {data: this._data})
+                .subscribe(() => {
+                    this._notificationService.sendNotification(new NotificationMessage({
+                        title: 'Success',
+                        message: 'Site message is updated'
+                    }));
+                }, this._notificationService.failureNotification.bind(this._notificationService));
+        } else {
+            this._httpService.post(`sitecp/content/site-messages`, {data: this._data})
+                .subscribe(() => {
+                    this._data.createdAt = new Date().getTime() / 1000;
+                    this.setTabs();
+                    this._notificationService.sendNotification(new NotificationMessage({
+                        title: 'Success',
+                        message: 'Site message is saved'
+                    }));
+                }, this._notificationService.failureNotification.bind(this._notificationService));
+        }
+    }
+
     get model (): SiteMessageModel {
         return this._data;
     }
@@ -85,39 +108,16 @@ export class SiteMessageComponent extends Page implements OnDestroy {
         this.tabs = tabs.filter(item => item.condition).map(item => new TitleTab(item));
     }
 
-    private onSave (): void {
-        this._data.content = this.editor.getEditorValue();
-        if (this._data.createdAt) {
-            this._httpService.put(`sitecp/content/site-messages/${this._data.siteMessageId}`, {data: this._data})
-                .subscribe(() => {
-                    this._notificationService.sendNotification(new NotificationMessage({
-                        title: 'Success',
-                        message: 'Site message is updated'
-                    }));
-                }, this._notificationService.failureNotification.bind(this._notificationService));
-        } else {
-            this._httpService.post(`sitecp/content/site-messages`, {data: this._data})
-                .subscribe(() => {
-                    this._data.createdAt = new Date().getTime() / 1000;
-                    this.setTabs();
-                    this._notificationService.sendNotification(new NotificationMessage({
-                        title: 'Success',
-                        message: 'Site message is saved'
-                    }));
-                }, this._notificationService.failureNotification.bind(this._notificationService));
-        }
-    }
-
     private onDelete (): void {
         this._dialogService.confirm({
-            title: 'Are you sure?',
-            content: 'Are you sure you wanna delete this site message?',
+            title: 'Site Message',
+            content: 'Are you sure you want to delete this site message?',
             callback: () => {
                 this._httpService.delete(`sitecp/content/site-messages/${this._data.siteMessageId}`)
                     .subscribe(() => {
                         this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
-                            message: 'Site message is deleted'
+                            message: 'Site Message has been deleted!'
                         }));
                         this._router.navigateByUrl('/sitecp/website-settings/site-messages');
                     });

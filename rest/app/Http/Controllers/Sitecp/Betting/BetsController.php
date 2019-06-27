@@ -109,7 +109,7 @@ class BetsController extends Controller {
         $status = $request->input('status');
 
         $getBadgeSql = Bet::where('name', 'LIKE', Value::getFilterValue($request, $filter))
-            ->orderBy('leftSide', 'ASC')->orderBy('rightSide', 'DESC');
+            ->orderBy('displayOrder', 'ASC');
 
         if ($status) {
             switch ($status) {
@@ -159,12 +159,12 @@ class BetsController extends Controller {
         $bet = (object)$request->input('bet');
 
         $this->betConditionCollection($bet);
-
         $newBet = new Bet([
             'name' => $bet->name,
             'leftSide' => $bet->leftSide,
             'rightSide' => $bet->rightSide,
-            'betCategoryId' => $bet->betCategoryId
+            'betCategoryId' => $bet->betCategoryId,
+            'displayOrder' => $bet->displayOrder
         ]);
         $newBet->save();
 
@@ -191,6 +191,7 @@ class BetsController extends Controller {
         $bet->leftSide = $newBet->leftSide;
         $bet->rightSide = $newBet->rightSide;
         $bet->betCategoryId = $newBet->betCategoryId;
+        $bet->displayOrder = $newBet->displayOrder;
         $bet->save();
 
         Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_BET, ['bet' => $bet->name]);;
@@ -245,6 +246,9 @@ class BetsController extends Controller {
 
         $bettingCategory = BetCategory::find($bet->betCategoryId);
         Condition::precondition(!$bettingCategory, 404, 'Betting category needs to be set');
+
+        Condition::precondition(!isset($bet->displayOrder) || !is_numeric($bet->displayOrder), 400, 'Display order is not a number');
+
     }
 
     /**

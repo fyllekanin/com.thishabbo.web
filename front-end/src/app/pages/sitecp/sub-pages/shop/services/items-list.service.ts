@@ -24,4 +24,8 @@ export class ItemsListService implements Resolve<ShopListPage> {
         return this._httpService.get(`sitecp/shop/items/page/${page}`, filter)
             .pipe(map(res => new ShopListPage(res)));
     }
+
+    delete (shopItemId: string): Observable<void> {
+        return this._httpService.delete(`sitecp/shop/items/${shopItemId}`);
+    }
 }

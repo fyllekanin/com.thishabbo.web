@@ -3,12 +3,21 @@
     <div class="grid-container">
         <div class="grid-x grid-margin-x">
             <div class="cell small-6">
-                <label>Information Shown</label>
+                <label>Information Shown
+
+                        <span tooltip="When posting a post, on the left hand side your user profile is displayed with the following things below. Tick those you wish to hide!" class="checkbox-info">
+                                <em class="fas fa-question-circle"></em>
+                        </span>
+                </label>
                 <div>
                     <label class="checkbox-container">
                         Hide Join Date
                         <input type="checkbox" [(ngModel)]="postBitOptions.hideJoinDate">
                         <span class="checkmark"></span>
+                        <span tooltip="This will hide your join date from your postbit for all users." class="checkbox-info">
+                                <em class="fas fa-question-circle"></em>
+                        </span>
+
                     </label>
                 </div>
                 <div>
@@ -16,6 +25,10 @@
                         Hide Post Count
                         <input type="checkbox" [(ngModel)]="postBitOptions.hidePostCount">
                         <span class="checkmark"></span>
+
+                        <span tooltip="This will hide your post count from your postbit for all users." class="checkbox-info">
+                                <em class="fas fa-question-circle"></em>
+                        </span>
                     </label>
                 </div>
                 <div>
@@ -23,6 +36,10 @@
                         Hide Likes Count
                         <input type="checkbox" [(ngModel)]="postBitOptions.hideLikesCount">
                         <span class="checkmark"></span>
+
+                        <span tooltip="This will hide your likes count from your postbit for all users." class="checkbox-info">
+                                <em class="fas fa-question-circle"></em>
+                        </span>
                     </label>
                 </div>
                 <div>
@@ -30,6 +47,11 @@
                         Hide Socials
                         <input type="checkbox" [(ngModel)]="postBitOptions.hideSocials">
                         <span class="checkmark"></span>
+
+
+                        <span tooltip="This will hide your social networking from your postbit for all users." class="checkbox-info">
+                                <em class="fas fa-question-circle"></em>
+                        </span>
                     </label>
                 </div>
             </div>

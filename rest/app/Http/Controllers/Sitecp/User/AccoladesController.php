@@ -45,7 +45,9 @@ class AccoladesController extends Controller {
         ]);
         $accolade->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_ACCOLADE, ['userId' => $userId], $accolade->accoladeId);
+        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_ACCOLADE, [
+            'accoladeId' => $accolade->accoladeId
+        ], $userId);
         return response()->json($accolade);
     }
 
@@ -64,7 +66,9 @@ class AccoladesController extends Controller {
         $accolade->type = $data->type;
         $accolade->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_ACCOLADE, ['userId' => $userId], $accolade->accoladeId);
+        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_ACCOLADE, [
+            'accoladeId' => $accolade->accoladeId
+        ], $userId);
         return response()->json($accolade);
     }
 
@@ -77,7 +81,9 @@ class AccoladesController extends Controller {
         $accolade->isDeleted = true;
         $accolade->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_ACCOLADE, ['userId' => $userId], $accolade->accoladeId);
+        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_ACCOLADE, [
+            'accoladeId' => $accolade->accoladeId
+        ], $userId);
         return response()->json();
     }
 

@@ -6,12 +6,86 @@ use App\EloquentModels\Shop\ShopItem;
 use App\EloquentModels\Shop\Subscription;
 use App\Helpers\DataHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Impl\Sitecp\Shop\ItemsControllerImpl;
+use App\Logger;
+use App\Models\Logger\Action;
 use App\Models\Shop\ShopItemData;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
 
 class ItemsController extends Controller {
+    private $myImpl;
+
+    public function __construct(ItemsControllerImpl $impl) {
+        parent::__construct();
+        $this->myImpl = $impl;
+    }
+
+    public function deleteItem(Request $request, $shopItemId) {
+        $user = $request->get('auth');
+        $item = ShopItem::find($shopItemId);
+        Condition::precondition(!$item, 404, 'No shop item with that ID');
+
+        $item->isDeleted = 1;
+        $item->save();
+
+        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_SHOP_ITEM);
+        return response()->json();
+    }
+
+    public function updateItem(Request $request, $shopItemId) {
+        $user = $request->get('auth');
+        $data = json_decode($request->input('data'), false);
+        $item = ShopItem::find($shopItemId);
+
+        Condition::precondition(!$item, 404, 'No shop item with that ID');
+        Condition::precondition($item->type != $data->type, 400, 'You are not allowed to change the type');
+        $this->myImpl->validateBasicItem($data);
+        $this->myImpl->validateSpecificItem($request, $data);
+
+        $item->title = $data->title;
+        $item->description = $data->description;
+        $item->rarity = $data->rarity;
+        $item->data = json_encode($data->data);
+        $item->save();
+
+        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_SHOP_ITEM);
+        return $this->getItem($shopItemId);
+    }
+
+    public function createItem(Request $request) {
+        $user = $request->get('auth');
+        $data = json_decode($request->input('data'), false);
+
+        $this->myImpl->validateBasicItem($data);
+        $this->myImpl->validateSpecificItem($request, $data);
+
+        $item = new ShopItem([
+            'title' => $data->title,
+            'description' => $data->description,
+            'rarity' => $data->rarity,
+            'type' => $data->type,
+            'data' => json_encode($data->data),
+            'createdBy' => Value::objectProperty($data, 'createdBy', 0)
+        ]);
+        $item->save();
+
+        if ($this->myImpl->typeHaveImage($data)) {
+            try {
+                $this->myImpl->uploadImage($request, $item->shopItemId);
+            } catch (\Exception $e) {
+                $item->delete();
+                Condition::precondition(true, 400, 'Could not upload image');
+            }
+        }
+
+        if ($item->createdBy > 0) {
+            $this->myImpl->giveCreatorItem($item);
+        }
+        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_SHOP_ITEM);
+        return $this->getItem($item->shopItemId);
+    }
 
     public function getItem($itemId) {
         $item = ShopItem::find($itemId);
@@ -27,7 +101,8 @@ class ItemsController extends Controller {
             'type' => Value::objectProperty($item, 'type', null),
             'data' => new ShopItemData(Value::objectProperty($item, 'data', null)),
             'subscriptions' => Subscription::orderBy('title', 'ASC')->get(['subscriptionId', 'title']),
-            'createdAt' => $item ? $item->createdAt->timestamp : 0
+            'createdAt' => $item ? $item->createdAt->timestamp : 0,
+            'createdBy' => $item && $item->createdBy > 0 ? User::where('userId', $item->createdBy)->value('nickname') : null
         ]);
     }
 

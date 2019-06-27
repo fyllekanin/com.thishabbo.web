@@ -83,8 +83,8 @@ export class AvatarComponent extends Page implements OnDestroy {
 
     onOldAvatar (id: number): void {
         this._dialogService.confirm({
-            title: 'Are you sure?',
-            content: 'Are you sure you wanna switch back to this avatar?',
+            title: 'Avatar Modification',
+            content: 'Are you sure you want to switch back to this Avatar?',
             callback: this.onSwitchBack.bind(this, id)
         });
     }

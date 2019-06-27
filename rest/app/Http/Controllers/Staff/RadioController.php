@@ -140,7 +140,7 @@ class RadioController extends Controller {
         curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         curl_setopt($curl, CURLOPT_HEADER, false);
         curl_setopt($curl, CURLOPT_POST, false);
-        curl_setopt($curl, CURLOPT_USERPWD, 'sitecp:' . $radio->sitecpPassword);
+        curl_setopt($curl, CURLOPT_USERPWD, 'sitecp:' . $radio->adminPassword);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($curl, CURLOPT_USERAGENT, $userAgent);
         curl_exec($curl);
@@ -179,7 +179,7 @@ class RadioController extends Controller {
         $djUser->likes++;
         $djUser->save();
 
-        Logger::user($user->userId, $request->ip(), Action::LIKED_DJ, ['djId' => $djUser->userId]);
+        Logger::user($user->userId, $request->ip(), Action::LIKED_DJ, [], $djUser->userId);
         return response()->json();
     }
 
@@ -345,7 +345,7 @@ class RadioController extends Controller {
         $newInformation->ip = $information->ip;
         $newInformation->port = $information->port;
         $newInformation->password = $information->password;
-        $newInformation->sitecpPassword = $information->sitecpPassword;
+        $newInformation->adminPassword = $information->adminPassword;
         $newInformation->serverType = $information->serverType;
 
         SettingsHelper::createOrUpdateSetting($settingKeys->radio, json_encode($newInformation));

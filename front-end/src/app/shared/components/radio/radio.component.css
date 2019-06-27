@@ -1,17 +1,18 @@
 .stats-box {
     position: absolute;
     float: right;
-    margin: -14px 0 0 1px;
+    margin: -14px 0 0 12px;
 }
 
 .events-box {
-    margin: 131px 0 0 -8px;
+    margin: 131px 0 0 -16px;
     position: absolute;
 }
 
 .event-buttons {
-    width: 10.7%;
+    width: 30px;
     float: right;
+    margin: 0px 1px 0px 0px;
 }
 
 .icon-position-events {
@@ -26,7 +27,7 @@
 }
 
 .radio-box {
-    margin: 0 0 0 -43px;
+    margin: 0 0 0 -52px;
     position: absolute;
 }
 
@@ -48,7 +49,7 @@
     float: right;
     background: white;
     color: #7d7d7d;
-    margin: 0 0 0 106px;
+    margin: 0 0 0 105px;
     font-size: 13px;
     height: 89px;
     padding: 1px;
@@ -60,7 +61,7 @@
 
 .next-dj {
     display: inline-block;
-    width: 44%;
+    width: 44.6%;
     margin: 0 0 0 1px;
 }
 
@@ -158,7 +159,7 @@
 }
 
 .stats {
-    width: 35%;
+    width: 35.4%;
     display: inline-block;
     margin-left: 1px;
 }

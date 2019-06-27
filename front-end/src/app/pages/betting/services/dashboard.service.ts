@@ -33,7 +33,7 @@ export class DashboardService {
         if (!Number(data) || data <= 0) {
             this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
-                message: 'The amount needs to be a positive number',
+                message: 'The amount needs to be a positive number!',
                 type: NotificationType.ERROR
             }));
             return;
@@ -42,7 +42,7 @@ export class DashboardService {
         if (data > maxThcAmount) {
             this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
-                message: 'You do not have enough credits',
+                message: 'You do not have enough THC!',
                 type: NotificationType.ERROR
             }));
             return;

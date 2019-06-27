@@ -19,6 +19,7 @@ import { NotificationMessage } from 'shared/app-views/global-notification/global
 import { MoveThreadComponent } from '../thread/move-thread/move-thread.component';
 import { ChangeOwnerComponent } from '../thread/change-owner/change-owner.component';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
+import { SlimThread } from '../forum.model';
 
 @Component({
     selector: 'app-forum-category',
@@ -34,9 +35,9 @@ export class CategoryComponent extends Page implements OnDestroy {
     fixedTools: FixedTools;
     pagination: PaginationModel;
     tabs: Array<TitleTab> = [];
-    toggleStickies: Array<TitleTab> = [new TitleTab({title: 'Toggle'})];
+    toggleStickies: Array<TitleTab> = [new TitleTab({ title: 'Toggle' })];
 
-    constructor (
+    constructor(
         private _dialogService: DialogService,
         private _authService: AuthService,
         private _httpService: HttpService,
@@ -53,11 +54,11 @@ export class CategoryComponent extends Page implements OnDestroy {
         this._isStickiesVisible = this.isStickiesContracted();
     }
 
-    ngOnDestroy (): void {
+    ngOnDestroy(): void {
         super.destroy();
     }
 
-    onToggleStickies (): void {
+    onToggleStickies(): void {
         if (this._isStickiesVisible) {
             this.onUnContractStickies();
         } else {
@@ -66,11 +67,11 @@ export class CategoryComponent extends Page implements OnDestroy {
         this._isStickiesVisible = !this._isStickiesVisible;
     }
 
-    onSort (options: CategoryDisplayOptions): void {
+    onSort(options: CategoryDisplayOptions): void {
         this._router.navigateByUrl(`/forum/category/${this._categoryPage.categoryId}/page/1${this.getQueryParams(options)}`);
     }
 
-    onTabClick (value: number): void {
+    onTabClick(value: number): void {
         switch (value) {
             case CategoryActions.SUBSCRIBE:
                 this._httpService.post(`forum/category/${this._categoryPage.categoryId}/subscribe`, {})
@@ -123,7 +124,7 @@ export class CategoryComponent extends Page implements OnDestroy {
         }
     }
 
-    onAction (action: number): void {
+    onAction(action: number): void {
         switch (action) {
             case ThreadActions.MOVE_THREAD:
                 this.onMoveThread();
@@ -131,10 +132,14 @@ export class CategoryComponent extends Page implements OnDestroy {
             case ThreadActions.CHANGE_THREAD_OWNER:
                 this.onChangeOwner();
                 break;
+            case ThreadActions.SELECT_ALL:
+                this._selectedThreadIds = this._categoryPage.threads.map(thread => thread.threadId).concat(
+                    this._categoryPage.stickyThreads.map(sticky => sticky.threadId));
+                break;
         }
     }
 
-    onCheckChanged (threadId: number) {
+    onCheckChanged(threadId: number) {
         if (this._selectedThreadIds.includes(threadId)) {
             this._selectedThreadIds = this._selectedThreadIds.filter(id => id !== threadId);
         } else {
@@ -142,23 +147,27 @@ export class CategoryComponent extends Page implements OnDestroy {
         }
     }
 
-    get isStickiesVisible (): boolean {
+    isChecked(thread: SlimThread): boolean {
+        return this._selectedThreadIds.indexOf(thread.threadId) > -1;
+    }
+
+    get isStickiesVisible(): boolean {
         return this._isStickiesVisible;
     }
 
-    get categoryPage (): CategoryPage {
+    get categoryPage(): CategoryPage {
         return this._categoryPage;
     }
 
-    get haveSubCategories (): boolean {
+    get haveSubCategories(): boolean {
         return this._categoryPage.categories.length > 0;
     }
 
-    get isMainParent (): boolean {
+    get isMainParent(): boolean {
         return this._categoryPage.parents.length === 0;
     }
 
-    private getQueryParams (options: CategoryDisplayOptions): string {
+    private getQueryParams(options: CategoryDisplayOptions): string {
         if (options.sortOrder === SORT_ORDER.DESC &&
             options.sortedBy === CATEGORY_SORT_BY.LAST_POST_TIME &&
             options.fromThe === 'BEGINNING') {
@@ -171,7 +180,7 @@ export class CategoryComponent extends Page implements OnDestroy {
         return `?${sortedBy}&${sortOrder}&${fromThe}`;
     }
 
-    private onCategory (data: { data: CategoryPage }): void {
+    private onCategory(data: { data: CategoryPage }): void {
         this._categoryPage = data.data;
         this.setPagination();
         this.setTabs();
@@ -179,7 +188,7 @@ export class CategoryComponent extends Page implements OnDestroy {
         this.buildModerationTools();
     }
 
-    private setTabs (): void {
+    private setTabs(): void {
         if (!this._authService.isLoggedIn()) {
             return;
         }
@@ -189,24 +198,29 @@ export class CategoryComponent extends Page implements OnDestroy {
                 title: 'Create Thread', link: `/forum/category/${this._categoryPage.categoryId}/thread/new`,
                 condition: this._categoryPage.forumPermissions.canCreateThreads && this._categoryPage.isOpen
             },
-            {title: 'Subscribe', value: CategoryActions.SUBSCRIBE, condition: !this._categoryPage.isSubscribed},
-            {title: 'Unsubscribe', value: CategoryActions.UNSUBSCRIBE, condition: this._categoryPage.isSubscribed},
-            {title: 'Ignore', value: CategoryActions.IGNORE, condition: !this._categoryPage.isIgnored},
-            {title: 'Unignore', value: CategoryActions.UNIGNORE, condition: this._categoryPage.isIgnored}
+            { title: 'Subscribe', value: CategoryActions.SUBSCRIBE, condition: !this._categoryPage.isSubscribed },
+            { title: 'Unsubscribe', value: CategoryActions.UNSUBSCRIBE, condition: this._categoryPage.isSubscribed },
+            { title: 'Ignore', value: CategoryActions.IGNORE, condition: !this._categoryPage.isIgnored },
+            { title: 'Unignore', value: CategoryActions.UNIGNORE, condition: this._categoryPage.isIgnored }
         ];
 
         actions.push({
             title: 'Toggle Tools',
             value: CategoryActions.TOGGLE_TOOLS,
-            condition: this.getThreadTools().filter(item => item.condition).length > 0
+            condition: this.getCategoryTools().filter(item => item.condition).length > 0
         });
 
         this.tabs = actions.filter(item => item.condition)
             .map(item => new TitleTab(item));
     }
 
-    private getThreadTools (): Array<{ title: string, value: number, condition: boolean }> {
+    private getCategoryTools(): Array<{ title: string, value: number, condition: boolean }> {
         return [
+            {
+                title: 'Select All',
+                value: ThreadActions.SELECT_ALL,
+                condition: true
+            },
             {
                 title: 'Move Thread(s)', value: ThreadActions.MOVE_THREAD,
                 condition: this._categoryPage.forumPermissions.canMoveThreads
@@ -218,7 +232,7 @@ export class CategoryComponent extends Page implements OnDestroy {
         ];
     }
 
-    private setBreadcrumb (): void {
+    private setBreadcrumb(): void {
         this._categoryPage.parents.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'displayOrder'));
         this._breadcrumbService.breadcrumb = new Breadcrumb({
             current: this._categoryPage.title,
@@ -229,7 +243,7 @@ export class CategoryComponent extends Page implements OnDestroy {
         });
     }
 
-    private setPagination (): void {
+    private setPagination(): void {
         this.pagination = new PaginationModel({
             total: this._categoryPage.total,
             page: this._categoryPage.page,
@@ -237,7 +251,7 @@ export class CategoryComponent extends Page implements OnDestroy {
         });
     }
 
-    private buildModerationTools (): void {
+    private buildModerationTools(): void {
         if (!this._isToolsVisible) {
             this.fixedTools = null;
             return;
@@ -246,8 +260,8 @@ export class CategoryComponent extends Page implements OnDestroy {
         this.fixedTools = new FixedTools({
             items: [
                 new FixedToolItem({
-                    title: 'Thread tools',
-                    children: this.getThreadTools().filter(item => item.condition).map(action => new FixedToolItem({
+                    title: 'Category Tools',
+                    children: this.getCategoryTools().filter(item => item.condition).map(action => new FixedToolItem({
                         title: action.title,
                         value: action.value
                     }))
@@ -256,7 +270,7 @@ export class CategoryComponent extends Page implements OnDestroy {
         });
     }
 
-    private onMoveThread (): void {
+    private onMoveThread(): void {
         this._dialogService.openDialog({
             title: `Move threads`,
             component: this._componentFactory.resolveComponentFactory(MoveThreadComponent),
@@ -265,7 +279,7 @@ export class CategoryComponent extends Page implements OnDestroy {
                 new DialogButton({
                     title: 'Done', callback: categoryId => {
                         this._httpService.put(`forum/moderation/thread/move/category/${categoryId}`,
-                            {threadIds: this._selectedThreadIds})
+                            { threadIds: this._selectedThreadIds })
                             .subscribe(() => {
                                 this._notificationService.sendNotification(new NotificationMessage({
                                     title: 'Success',
@@ -280,7 +294,7 @@ export class CategoryComponent extends Page implements OnDestroy {
         });
     }
 
-    private onChangeOwner (): void {
+    private onChangeOwner(): void {
         this._dialogService.openDialog({
             title: 'Change thread owner',
             component: this._componentFactory.resolveComponentFactory(ChangeOwnerComponent),
@@ -304,12 +318,12 @@ export class CategoryComponent extends Page implements OnDestroy {
         });
     }
 
-    private isStickiesContracted (): boolean {
+    private isStickiesContracted(): boolean {
         const contractedStickies = this.getContractedStickies();
         return Boolean(contractedStickies.indexOf(String(this._categoryPage.categoryId)) > -1);
     }
 
-    private onContractStickies (): void {
+    private onContractStickies(): void {
         const contractedStickies = this.getContractedStickies();
         if (contractedStickies.indexOf(String(this._categoryPage.categoryId)) === -1) {
             contractedStickies.push(String(this._categoryPage.categoryId));
@@ -317,7 +331,7 @@ export class CategoryComponent extends Page implements OnDestroy {
         localStorage.setItem(LOCAL_STORAGE.CONTRACTED_STICKIES, JSON.stringify(contractedStickies));
     }
 
-    private onUnContractStickies (): void {
+    private onUnContractStickies(): void {
         let contractedStickies = this.getContractedStickies();
         if (contractedStickies.indexOf(String(this._categoryPage.categoryId)) > -1) {
             contractedStickies = contractedStickies.filter(item => item !== String(this._categoryPage.categoryId));
@@ -325,7 +339,7 @@ export class CategoryComponent extends Page implements OnDestroy {
         localStorage.setItem(LOCAL_STORAGE.CONTRACTED_STICKIES, JSON.stringify(contractedStickies));
     }
 
-    private getContractedStickies (): Array<string> {
+    private getContractedStickies(): Array<string> {
         const stored = localStorage.getItem(LOCAL_STORAGE.CONTRACTED_STICKIES);
         return stored ? JSON.parse(stored) : [];
     }

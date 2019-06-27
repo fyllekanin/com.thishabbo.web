@@ -6,14 +6,13 @@ use App\EloquentModels\Setting;
 use App\EloquentModels\User\User;
 use App\Helpers\ConfigHelper;
 use App\Http\Controllers\Forum\Thread\ThreadCrudController;
+use Illuminate\Validation\ValidationException;
 
 class BotService {
-    private $forumService;
-    private $validatorService;
+    private $threadController;
 
-    public function __construct (ForumService $forumService, ForumValidatorService $validatorService) {
-        $this->forumService = $forumService;
-        $this->validatorService = $validatorService;
+    public function __construct(ThreadCrudController $threadController) {
+        $this->threadController = $threadController;
     }
 
     /**
@@ -21,9 +20,9 @@ class BotService {
      *
      * @param $user
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
-    public function triggerWelcomeBot ($user) {
+    public function triggerWelcomeBot($user) {
         $settingKeys = ConfigHelper::getKeyConfig();
         $welcomeBotKeys = [
             $settingKeys->botUserId,
@@ -61,7 +60,6 @@ class BotService {
         $threadSkeleton->content = str_replace(':nickname:', '[mention]@' . $user->nickname . '[/mention]', $welcomeBotSettings->content);
         $threadSkeleton->title = 'Welcome ' . $user->nickname . '!';
 
-        $threadController = new ThreadCrudController($this->forumService, $this->validatorService);
-        $threadController->doThread($botUser, null, $threadSkeleton, null);
+        $this->threadController->doThread($botUser, null, $threadSkeleton, null);
     }
 }

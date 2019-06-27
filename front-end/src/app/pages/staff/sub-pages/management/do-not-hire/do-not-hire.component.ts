@@ -64,8 +64,8 @@ export class DoNotHireComponent extends Page implements OnDestroy {
 
     private delete (): void {
         this._dialogService.confirm({
-            title: `Deleting DNH Entry`,
-            content: `Are you sure that you wanna delete this?`,
+            title: `Delete DNH Entry`,
+            content: `Are you sure that you want to delete this?`,
             callback: this.onDelete.bind(this, this._data.nickname)
         });
     }
@@ -102,7 +102,7 @@ export class DoNotHireComponent extends Page implements OnDestroy {
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
-                    message: 'Entry deleted!'
+                    message: 'DNH Entry has been deleted!'
                 }));
                 this._router.navigateByUrl('/staff/management/do-not-hire');
             }, error => {
@@ -115,7 +115,7 @@ export class DoNotHireComponent extends Page implements OnDestroy {
     private onSuccessCreate (): void {
         this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
-            message: 'User added to Do Not Hire!'
+            message: 'User added to the DNH list!'
         }));
         this._data.createdAt = new Date().getTime() / 1000;
         this._editing = this._data.nickname;
@@ -124,7 +124,7 @@ export class DoNotHireComponent extends Page implements OnDestroy {
     private onSuccessUpdate (): void {
         this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
-            message: 'Do Not Hire updated!'
+            message: 'DNH has been updated!'
         }));
     }
 
@@ -134,8 +134,8 @@ export class DoNotHireComponent extends Page implements OnDestroy {
 
     get title (): string {
         return this._data.createdAt ?
-            `Editing Do Not Hire: ${this._data.nickname}` :
-            `Adding to Do Not Hire list`;
+            `Editing DNH: ${this._data.nickname}` :
+            `Adding to DNH list`;
     }
 
     private onData (data: { data: DoNotHireItem }): void {

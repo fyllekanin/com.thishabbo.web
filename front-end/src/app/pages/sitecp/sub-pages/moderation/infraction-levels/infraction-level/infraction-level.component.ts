@@ -100,14 +100,14 @@ export class InfractionLevelComponent extends Page implements OnDestroy {
 
     private onDelete (): void {
         this._dialogService.confirm({
-            title: 'Are you sure?',
-            content: `Are you sure you wanna delete this infraction level?`,
+            title: 'Delete Infraction Level',
+            content: `Are you sure you want to delete this infraction level?`,
             callback: () => {
                 this._httpService.delete(`sitecp/moderation/infraction-levels/${this._page.infractionLevelId}`)
                     .subscribe(() => {
                         this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
-                            message: 'You deleted the infraction level'
+                            message: 'You have deleted this infraction level!'
                         }));
                         this._dialogService.closeDialog();
                         this._router.navigateByUrl('/sitecp/moderation/infraction-levels/page/1');

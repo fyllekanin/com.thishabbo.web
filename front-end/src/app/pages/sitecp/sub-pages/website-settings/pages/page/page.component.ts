@@ -66,15 +66,7 @@ export class PageComponent extends Page implements OnDestroy {
         }
     }
 
-    get title (): string {
-        return this._data.createdAt ? `Editing: ${this._data.title}` : `Creating: ${this._data.title}`;
-    }
-
-    get model (): PageModel {
-        return this._data;
-    }
-
-    private onSave (): void {
+    onSave (): void {
         this._data.content = this.editor.getEditorValue();
         if (this._data.createdAt) {
             this._httpService.put(`sitecp/content/pages/${this._data.pageId}`, {data: this._data})
@@ -97,10 +89,18 @@ export class PageComponent extends Page implements OnDestroy {
         }
     }
 
+    get title (): string {
+        return this._data.createdAt ? `Editing: ${this._data.title}` : `Creating: ${this._data.title}`;
+    }
+
+    get model (): PageModel {
+        return this._data;
+    }
+
     private onDelete (): void {
         this._dialogService.confirm({
-            title: 'Are you sure?',
-            content: 'Are you sure you wanna delete this page?',
+            title: 'Delete Page',
+            content: 'Are you sure you want to delete this page?',
             callback: () => {
                 this._httpService.delete(`sitecp/content/pages/${this._data.pageId}`)
                     .subscribe(() => {

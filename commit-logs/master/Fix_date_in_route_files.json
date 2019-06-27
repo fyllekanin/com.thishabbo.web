@@ -1,0 +1,1 @@
+{"topic":"Fix date in route files","type":"Bug","body":"Date in route files dont work when building production code, moving the date to the navigation items"}

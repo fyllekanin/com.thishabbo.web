@@ -28,8 +28,8 @@ import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 export class PermShowsListComponent extends Page implements OnDestroy {
     private _permShowsListPage: PermShowsListPage = new PermShowsListPage();
     private _actions: Array<TableAction> = [
-        new TableAction({title: 'Edit', value: PermShowActions.EDIT_PERM_SHOW}),
-        new TableAction({title: 'Delete', value: PermShowActions.DELETE_PERM_SHOW})
+        new TableAction({ title: 'Edit', value: PermShowActions.EDIT_PERM_SHOW }),
+        new TableAction({ title: 'Delete', value: PermShowActions.DELETE_PERM_SHOW })
     ];
 
     tabs: Array<TitleTab> = [new TitleTab({
@@ -39,7 +39,7 @@ export class PermShowsListComponent extends Page implements OnDestroy {
     tableConfig: TableConfig;
     pagination: PaginationModel;
 
-    constructor (
+    constructor(
         private _dialogService: DialogService,
         private _notificationService: NotificationService,
         private _httpService: HttpService,
@@ -59,7 +59,7 @@ export class PermShowsListComponent extends Page implements OnDestroy {
         });
     }
 
-    onAction (action: Action): void {
+    onAction(action: Action): void {
         switch (action.value) {
             case PermShowActions.DELETE_PERM_SHOW:
                 this.delete(Number(action.rowId));
@@ -70,11 +70,11 @@ export class PermShowsListComponent extends Page implements OnDestroy {
         }
     }
 
-    ngOnDestroy (): void {
+    ngOnDestroy(): void {
         super.destroy();
     }
 
-    private createOrUpdateTable (): void {
+    private createOrUpdateTable(): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -86,45 +86,46 @@ export class PermShowsListComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableHeaders (): Array<TableHeader> {
+    private getTableHeaders(): Array<TableHeader> {
         return [
-            new TableHeader({title: 'DJ'}),
-            new TableHeader({title: 'Name'}),
-            new TableHeader({title: 'Day & Hour'}),
-            new TableHeader({title: 'Type'})
+            new TableHeader({ title: 'DJ' }),
+            new TableHeader({ title: 'Name' }),
+            new TableHeader({ title: 'Day & Hour' }),
+            new TableHeader({ title: 'Type' })
         ];
     }
 
-    private getTableRows (): Array<TableRow> {
+    private getTableRows(): Array<TableRow> {
         const actions = [].concat(this._actions);
         return this._permShowsListPage.permShows.map(item => {
             return new TableRow({
                 id: String(item.timetableId),
                 cells: [
-                    new TableCell({title: item.nickname}),
-                    new TableCell({title: item.name}),
-                    new TableCell({title: `${TimeHelper.getDay(item.day).label} - ${TimeHelper.getHours()[item.hour].label}`}),
-                    new TableCell({title: item.type === 0 ? 'Radio' : 'Events'})
+                    new TableCell({ title: item.nickname }),
+                    new TableCell({ title: item.name }),
+                    new TableCell({ title: `${TimeHelper.getDay(item.day).label} - ${TimeHelper.getHours()[item.hour].label}` }),
+                    new TableCell({ title: item.type === 0 ? 'Radio' : 'Events' })
                 ],
                 actions: actions
             });
         });
     }
 
-    private delete (rowId: number): void {
+    private delete(rowId: number): void {
         this._dialogService.confirm({
-            title: `Deleting permanent show`,
-            content: `Are you sure that you wanna delete this? You can just pause it this week by unbooking it`,
+            title: `Delete Permanent Show`,
+            content: `Are you sure that you want to delete this? If they are just missing their slot,
+             you can simply unbook it and it'll book automatically next week and so on.`,
             callback: this.onDelete.bind(this, rowId)
         });
     }
 
-    private onDelete (permShowId: number): void {
+    private onDelete(permShowId: number): void {
         this._httpService.delete(`staff/management/permanent-shows/${permShowId}`)
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
-                    message: 'Perm show deleted!'
+                    message: 'Permanent Show has been deleted!'
                 }));
                 this._permShowsListPage.permShows = this._permShowsListPage.permShows.filter(item => permShowId !== item.timetableId);
                 this.createOrUpdateTable();
@@ -136,7 +137,7 @@ export class PermShowsListComponent extends Page implements OnDestroy {
     }
 
 
-    private onPage (data: { data: PermShowsListPage }): void {
+    private onPage(data: { data: PermShowsListPage }): void {
         this._permShowsListPage = data.data;
         this._permShowsListPage.permShows.forEach(item => {
             const convertedHour = item.hour + TimeHelper.getTimeOffsetInHours();

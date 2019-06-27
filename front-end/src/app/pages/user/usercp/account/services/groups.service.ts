@@ -35,7 +35,7 @@ export class GroupsService implements Resolve<UserCpGroupsPage> {
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
-                    message: 'Display group updated'
+                    message: 'Display usergroup updated!'
                 }));
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }

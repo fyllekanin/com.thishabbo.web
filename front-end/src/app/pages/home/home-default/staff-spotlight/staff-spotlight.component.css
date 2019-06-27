@@ -8,6 +8,7 @@
     font-size: 1rem;
     padding: 1rem;
     margin-top: 1.5rem;
+    cursor: pointer;
 }
 
 .spacing {
@@ -21,4 +22,25 @@
     text-align: center;
     border: 1px solid #d3d3d3;
     border-radius: 3px;
+}
+
+.habbo {
+    overflow: hidden;
+    height: 115px;
+}
+
+img {
+    transition: 0.5s;
+}
+
+.left {
+    margin-left: -500px;
+}
+
+.down {
+    margin-bottom: -500px;
+}
+
+.right {
+    margin-right: -500px;
 }

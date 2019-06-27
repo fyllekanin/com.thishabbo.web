@@ -40,11 +40,11 @@ export class ThreadViewComponent implements NotificationView {
     get text (): string {
         switch (this._notification.type) {
             case NotificationTypes.MENTION:
-                return `mentioned you in`;
+                return `mentioned you in a post in the thread`;
             case NotificationTypes.QUOTE:
-                return `quoted you in`;
+                return `quoted your post in the thread`;
             case NotificationTypes.THREAD_SUBSCRIPTION:
-                return `posted in`;
+                return `posted in one of your threads`;
         }
         return '';
     }

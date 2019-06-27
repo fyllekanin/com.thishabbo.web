@@ -20,33 +20,38 @@ use App\Logger;
 use App\Models\Logger\Action;
 use App\Services\ForumService;
 use App\Services\ForumValidatorService;
+use App\Services\PointsService;
 use App\Utils\BBcodeUtil;
 use App\Utils\Condition;
 use App\Views\PostReportView;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 class PostCrudController extends Controller {
     private $forumService;
     private $validatorService;
+    private $pointsService;
 
     /**
      * PostController constructor.
      *
      * @param ForumService $forumService
      * @param ForumValidatorService $validatorService
+     * @param PointsService $pointsService
      */
-    public function __construct(ForumService $forumService, ForumValidatorService $validatorService) {
+    public function __construct(ForumService $forumService, ForumValidatorService $validatorService, PointsService $pointsService) {
         parent::__construct();
         $this->forumService = $forumService;
         $this->validatorService = $validatorService;
+        $this->pointsService = $pointsService;
     }
 
     /**
      * @param Request $request
      * @param         $page
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getLatestPosts(Request $request, $page) {
         $user = $request->get('auth');
@@ -72,7 +77,7 @@ class PostCrudController extends Controller {
      * @param Request $request
      * @param         $postId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getEditHistory(Request $request, $postId) {
         $user = $request->get('auth');
@@ -106,9 +111,10 @@ class PostCrudController extends Controller {
     /**
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @param ThreadCrudController $threadCrudController
+     * @return JsonResponse
      */
-    public function createReportPost(Request $request) {
+    public function createReportPost(Request $request, ThreadCrudController $threadCrudController) {
         $user = $request->get('auth');
         $postId = $request->input('postId');
         $message = $request->input('message');
@@ -119,12 +125,11 @@ class PostCrudController extends Controller {
 
         $threadSkeleton = PostReportView::of($user, $post, $message);
         $reportCategories = Category::isReportCategory()->get();
-        $threadController = new ThreadCrudController($this->forumService, $this->validatorService);
 
         foreach ($reportCategories as $category) {
             $threadSkeleton->categoryId = $category->categoryId;
             try {
-                $threadController->doThread($user, null, $threadSkeleton, null, true);
+                $threadCrudController->doThread($user, null, $threadSkeleton, null, true);
             } catch (ValidationException $e) {
                 // Intentionally empty
             }
@@ -140,7 +145,7 @@ class PostCrudController extends Controller {
      * @param Request $request
      * @param         $postId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function updatePost(Request $request, $postId) {
         $user = $request->get('auth');
@@ -180,7 +185,7 @@ class PostCrudController extends Controller {
      * @param Request $request
      * @param         $threadId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function createPost(Request $request, $threadId) {
         $user = $request->get('auth');
@@ -240,6 +245,7 @@ class PostCrudController extends Controller {
         $this->forumService->updateReadThread($thread->threadId, $user->userId);
         $this->forumService->updateReadCategory($thread->categoryId, $user->userId);
         $this->forumService->updateLastPostIdOnCategory($thread->categoryId);
+        $this->pointsService->givePointsFromCategory($user->userId, $thread->categoryId);
 
         Logger::user($user->userId, $request->ip(), Action::CREATED_POST, [
             'thread' => $thread->title,

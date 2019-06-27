@@ -30,9 +30,9 @@ export class NotificationModel<T> {
     @primitive()
     isRead: boolean;
 
-    constructor (source: Partial<NotificationModel<any>>) {
+    constructor(source: Partial<NotificationModel<any>>) {
         ClassHelper.assign(this, source);
-        switch (source.type) {
+        switch (this.type) {
             case NotificationTypes.BADGE:
                 this._item = new BadgeView(source.item);
                 break;
@@ -57,11 +57,11 @@ export class NotificationModel<T> {
         }
     }
 
-    get item (): T {
+    get item(): T {
         return this._item;
     }
 
-    set item (_value) {
+    set item(_value) {
         // Intentionally Empty
     }
 }

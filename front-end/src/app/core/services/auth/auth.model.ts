@@ -56,6 +56,14 @@ export class SlimUser {
     @arrayOf(String)
     nameColor: Array<string> = [];
     @primitive()
+    namePosition: number;
+    @primitive()
+    iconId: number;
+    @primitive()
+    iconPosition: string;
+    @primitive()
+    effectId: number;
+    @primitive()
     avatarUpdatedAt: number;
     @primitive()
     createdAt: number;
@@ -225,6 +233,8 @@ export class AuthUser {
     homePage: string;
     @primitiveOf(Number)
     credits = 0;
+    @primitiveOf(Number)
+    xp = 0;
 
     constructor(source: Partial<AuthUser>) {
         ClassHelper.assign(this, source);

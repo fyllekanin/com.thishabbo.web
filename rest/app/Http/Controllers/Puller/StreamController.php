@@ -7,12 +7,14 @@ use App\EloquentModels\Staff\Timetable;
 use App\EloquentModels\User\User;
 use App\Helpers\ConfigHelper;
 use App\Helpers\SettingsHelper;
+use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Radio\RadioSettings;
 use App\Services\ActivityService;
 use App\Services\ForumService;
 use App\Services\NotificationService;
 use App\Utils\BBcodeUtil;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -44,7 +46,7 @@ class StreamController extends Controller {
      *
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getPull(Request $request) {
         $user = $request->get('auth');
@@ -58,7 +60,11 @@ class StreamController extends Controller {
             'unreadNotifications' => $this->getAmountOfUnreadNotifications($user->userId),
             'siteMessages' => $siteMessages,
             'activeUsers' => $activeUsers,
-            'activities' => $activities
+            'activities' => $activities,
+            'user' => $user->userId > 0 ? [
+                'credits' => UserHelper::getUserDataOrCreate($user->userId)->credits,
+                'xp' => UserHelper::getUserDataOrCreate($user->userId)->xp
+            ] : null
         ]);
     }
 
@@ -98,7 +104,7 @@ class StreamController extends Controller {
      */
     private function getRadioStats() {
         $stats = new RadioSettings(SettingsHelper::getSettingValue($this->settingKeys->radio));
-        $stats->sitecpPassword = null;
+        $stats->adminPassword = null;
         $stats->password = null;
         return $stats;
     }

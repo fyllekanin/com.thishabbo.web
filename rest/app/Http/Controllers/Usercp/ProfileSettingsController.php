@@ -150,7 +150,7 @@ class ProfileSettingsController extends Controller {
         $user = $request->get('auth');
         $cover = $request->file('cover');
 
-        $this->validate($request, [
+        $request->validate([
             'cover' => 'required|mimes:jpg,jpeg,bmp,png,gif',
         ]);
 
@@ -294,10 +294,10 @@ class ProfileSettingsController extends Controller {
         $user = $request->get('auth');
 
         Condition::precondition(!UserHelper::hasSubscriptionFeature($user->userId,
-            ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor), 400, 'You do not have the permissions to edit name color!');
+            ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor), 400, 'You do not have the permissions to edit the name colour!');
 
         $colors = $request->input('colors');
-        Condition::precondition(!Value::validateHexColors($colors), 400, 'Invalid Hex Codes');
+        Condition::precondition(!Value::validateHexColors($colors), 400, 'Invalid Hex Code!');
 
         $userData = UserHelper::getUserDataOrCreate($user->userId);
         $userData->nameColor = json_encode($colors);

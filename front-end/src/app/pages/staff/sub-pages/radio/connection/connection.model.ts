@@ -8,7 +8,7 @@ export class ConnectionModel {
     @primitive()
     password: string;
     @primitive()
-    sitecpPassword: string;
+    adminPassword: string;
     @primitive()
     serverType: string;
 

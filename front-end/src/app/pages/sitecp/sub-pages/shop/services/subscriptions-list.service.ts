@@ -32,8 +32,8 @@ export class SubscriptionsListService implements Resolve<SubscriptionsListPage> 
     delete (subscriptionId: number): Promise<void> {
         return new Promise(res => {
             this._dialogService.confirm({
-                title: 'Are you sure?',
-                content: 'Are you sure you wanna delete this subscription?',
+                title: 'Delete Subscription',
+                content: 'Are you sure you want to delete this subscription?',
                 callback: () => {
                     this._httpService.delete(`sitecp/shop/subscriptions/${subscriptionId}`)
                         .subscribe(() => {

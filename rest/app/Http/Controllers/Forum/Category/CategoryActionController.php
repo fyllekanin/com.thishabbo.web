@@ -13,6 +13,7 @@ use App\Models\Logger\Action;
 use App\Services\ForumService;
 use App\Services\QueryParamService;
 use App\Utils\Condition;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class CategoryActionController extends Controller {
@@ -35,11 +36,26 @@ class CategoryActionController extends Controller {
         $this->forumService = $forumService;
     }
 
+    public function readAll(Request $request) {
+        $user = $request->get('auth');
+
+        if ($user->userId < 1) {
+            return response()->json();
+        }
+
+        foreach ($this->forumService->getAccessibleCategories($user->userId) as $categoryId) {
+            $this->forumService->updateReadCategory($categoryId, $user->userId);
+        }
+
+        Logger::user($user->userId, $request->ip(), Action::READ_ALL_CATEGORIES);
+        return response()->json();
+    }
+
     /**
      * @param Request $request
      * @param         $categoryId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function createIgnore(Request $request, $categoryId) {
         $user = $request->get('auth');
@@ -64,7 +80,7 @@ class CategoryActionController extends Controller {
      * @param Request $request
      * @param         $categoryId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function deleteIgnore(Request $request, $categoryId) {
         $user = $request->get('auth');
@@ -81,7 +97,7 @@ class CategoryActionController extends Controller {
      * @param Request $request
      * @param         $categoryId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function createSubscription(Request $request, $categoryId) {
         $user = $request->get('auth');
@@ -107,7 +123,7 @@ class CategoryActionController extends Controller {
      * @param Request $request
      * @param         $categoryId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function deleteSubscription(Request $request, $categoryId) {
         $user = $request->get('auth');

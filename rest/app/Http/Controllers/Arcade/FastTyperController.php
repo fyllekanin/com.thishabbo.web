@@ -8,6 +8,7 @@ use App\Helpers\ConfigHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
+use App\Services\CreditsService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
 
@@ -46,10 +47,15 @@ class FastTyperController extends Controller {
      *
      * @param Request $request
      *
+     * @param CreditsService $creditsService
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getFastTyperParagraph(Request $request) {
+    public function getFastTyperParagraph(Request $request, CreditsService $creditsService) {
         $user = $request->get('auth');
+
+        Condition::precondition(!$creditsService->haveEnoughCredits($user->userId, ConfigHelper::getCostSettings()->arcade), 400,
+            'You need at least ' . ConfigHelper::getCostSettings()->arcade . ' credits to play');
 
         $paragraph = Paragraph::inRandomOrder()->first();
         $game = new Game([

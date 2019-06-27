@@ -23,6 +23,8 @@ export class ShopItem {
     @primitive()
     rarity: number;
     @primitive()
+    createdBy: string;
+    @primitive()
     type: number;
     @objectOf(ShopItemData)
     data = new ShopItemData(null);
@@ -46,6 +48,13 @@ export class ShopItem {
 
     get isSubscription (): boolean {
         return this.type === SHOP_ITEM_TYPES.subscription.value;
+    }
+
+    getResource (): string {
+        if (this.isNameEffect || this.isNameIcon) {
+            return `<img src="/rest/resources/images/shop/${this.shopItemId}.gif" />`;
+        }
+        return '<em class="far fa-address-card" style="font-size: 14px;"></em>';
     }
 }
 
