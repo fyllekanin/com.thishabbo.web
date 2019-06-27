@@ -15,11 +15,11 @@ import { Router } from '@angular/router';
 describe('AuthService', () => {
 
     class HttpServiceMock {
-        post () {
+        post() {
             return null;
         }
 
-        get () {
+        get() {
         }
     }
 
@@ -31,8 +31,8 @@ describe('AuthService', () => {
         TestBed.configureTestingModule({
             imports: [
                 RouterTestingModule.withRoutes([
-                    {path: 'auth/login', redirectTo: ''},
-                    {path: 'dashboard', redirectTo: ''}
+                    { path: 'auth/login', redirectTo: '' },
+                    { path: 'dashboard', redirectTo: '' }
                 ])
             ],
             providers: [
@@ -53,7 +53,7 @@ describe('AuthService', () => {
                         }
                     }
                 },
-                {provide: HttpService, useValue: httpServiceMock}
+                { provide: HttpService, useValue: httpServiceMock }
             ]
         });
 
@@ -62,7 +62,7 @@ describe('AuthService', () => {
 
     it('user should set the user and store it in localStorage', () => {
         // Given
-        const user = new AuthUser({nickname: 'test'});
+        const user = new AuthUser({ nickname: 'test' });
 
         // When
         authService.user = user;
@@ -96,7 +96,7 @@ describe('AuthService', () => {
         });
         it('should return the refreshToken if user is set', () => {
             // Given
-            authService.user = new AuthUser({oauth: new OAuth({refreshToken: 'test'})});
+            authService.user = new AuthUser({ oauth: new OAuth({ refreshToken: 'test' }) });
 
             // When
             const result = authService.getRefreshToken();
@@ -150,7 +150,7 @@ describe('AuthService', () => {
             });
 
             // When
-            authService.login('nickname', 'password', () => {
+            authService.login('nickname', 'password', false, () => {
                 done();
             });
         });
@@ -170,7 +170,7 @@ describe('AuthService', () => {
 
     it('getAccessToken should return "access-token" from localStorage', () => {
         // Given
-        const user = {oauth: {accessToken: 'token'}};
+        const user = { oauth: { accessToken: 'token' } };
         localStorage.setItem(LOCAL_STORAGE.AUTH_USER, btoa(JSON.stringify(user)));
 
         // When

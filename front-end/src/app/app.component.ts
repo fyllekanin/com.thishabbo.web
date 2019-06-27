@@ -148,3 +148,10 @@ export class AppComponent extends Page implements OnDestroy {
         return top > 0;
     }
 }
+
+@Component({
+    selector: 'app-dummy',
+    template: ''
+})
+export class DummyComponent {
+}
