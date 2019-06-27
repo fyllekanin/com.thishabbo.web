@@ -11,6 +11,7 @@ use App\Models\Logger\Action;
 use App\Services\ForumService;
 use App\Utils\Condition;
 use App\Utils\Value;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class GeneralSettingsController extends Controller {
@@ -37,7 +38,7 @@ class GeneralSettingsController extends Controller {
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getSiteMessages() {
         return response()->json(SiteMessage::all());
@@ -46,7 +47,7 @@ class GeneralSettingsController extends Controller {
     /**
      * @param $siteMessageId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getSiteMessage($siteMessageId) {
         $siteMessage = SiteMessage::find($siteMessageId);
@@ -58,7 +59,7 @@ class GeneralSettingsController extends Controller {
     /**
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function createSiteMessage(Request $request) {
         $user = $request->get('auth');
@@ -89,7 +90,7 @@ class GeneralSettingsController extends Controller {
      * @param Request $request
      * @param         $siteMessageId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function updateSiteMessage(Request $request, $siteMessageId) {
         $user = $request->get('auth');
@@ -120,7 +121,7 @@ class GeneralSettingsController extends Controller {
      * @param Request $request
      * @param         $siteMessageId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function deleteSiteMessage(Request $request, $siteMessageId) {
         $user = $request->get('auth');
@@ -136,7 +137,7 @@ class GeneralSettingsController extends Controller {
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getNavigation() {
         $navigation = null;
@@ -151,7 +152,7 @@ class GeneralSettingsController extends Controller {
     /**
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function updateNavigation(Request $request) {
         $user = $request->get('auth');
@@ -169,7 +170,7 @@ class GeneralSettingsController extends Controller {
     /**
      * Get the current maintenance mode message
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getMaintenance() {
         return response()->json([
@@ -182,7 +183,7 @@ class GeneralSettingsController extends Controller {
      *
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function updateMaintenance(Request $request) {
         $user = $request->get('auth');

@@ -74,8 +74,8 @@ export class DoNotHireListComponent extends Page implements OnDestroy {
 
     private delete (rowId: string): void {
         this._dialogService.confirm({
-            title: `Deleting DNH Entry`,
-            content: `Are you sure that you wanna delete this?`,
+            title: `Delete DNH Entry`,
+            content: `Are you sure that you want to delete this?`,
             callback: this.onDelete.bind(this, rowId)
         });
     }
@@ -85,7 +85,7 @@ export class DoNotHireListComponent extends Page implements OnDestroy {
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
-                    message: 'Entry deleted!'
+                    message: 'DNH Entry has been deleted!'
                 }));
                 this._data.items = this._data.items.filter(item => nickname !== item.nickname);
                 this.createOrUpdateTable();

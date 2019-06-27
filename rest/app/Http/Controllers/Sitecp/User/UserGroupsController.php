@@ -5,15 +5,15 @@ namespace App\Http\Controllers\Sitecp\User;
 use App\EloquentModels\Group\Group;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserGroup;
+use App\Helpers\ConfigHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
+use App\Jobs\UserUpdated;
 use App\Logger;
 use App\Models\Logger\Action;
 use App\Utils\Condition;
 use App\Utils\Iterables;
 use Illuminate\Http\Request;
-use App\Jobs\UserUpdated;
-use App\Helpers\ConfigHelper;
 
 class UserGroupsController extends Controller {
 
@@ -27,27 +27,28 @@ class UserGroupsController extends Controller {
      */
     public function updateUserGroups(Request $request, $userId) {
         $user = $request->get('auth');
+        $groupIds = $request->input('groupIds');
+        $displayGroupId = $request->input('displayGroupId');
+
         $current = UserHelper::getUserFromId($userId);
         Condition::precondition(!$current, 404, 'User do not exist');
 
         $myImmunity = User::getImmunity($user->userId);
         Condition::precondition(!UserHelper::canManageUser($user, $userId), 400, 'Not high enough immunity');
-
-        $groupIds = $request->input('groupIds');
-        $displayGroupId = $request->input('displayGroupId');
         Condition::precondition(!$groupIds, 400, 'Group ids are missing');
 
         $currentGroups = $current->groups->map(function ($group) {
             return Group::where('groupId', $group->groupId)->first();
         });
         $before = $currentGroups->map(function ($group) {
-            return $group->name;
+            return $group->groupId;
         });
         $highImmunityGroupIds = $currentGroups->filter(function ($group) use ($myImmunity) {
             return $group->immunity >= $myImmunity;
         })->map(function ($group) {
             return $group->groupId;
         });
+
         $groups = Group::whereIn('groupId', $groupIds)->get()->toArray();
         Condition::precondition(Iterables::filter($groups, function ($group) use ($myImmunity) {
             return $group['immunity'] >= $myImmunity;
@@ -70,12 +71,9 @@ class UserGroupsController extends Controller {
         UserUpdated::dispatch($userId, ConfigHelper::getUserUpdateTypes()->CLEAR_GROUP);
 
         Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_USERS_GROUPS, [
-            'name' => $current->nickname,
             'before' => $before->toArray(),
-            'after' => $current->groups->map(function ($group) {
-                return Group::where('groupId', $group->groupId)->first()->name;
-            })->toArray(), $current->userId
-        ]);
+            'after' => UserGroup::where('userId', $current->userId)->pluck('groupId')->toArray()
+        ], $current->userId);
         return response()->json();
     }
 

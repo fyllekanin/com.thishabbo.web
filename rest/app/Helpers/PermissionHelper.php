@@ -9,14 +9,14 @@ use Illuminate\Support\Facades\Cache;
 
 class PermissionHelper {
 
-    private static $superSitecps = [1];
+    private static $superUsers = [1];
 
     public static function isSuperSitecp($userId) {
-        return in_array($userId, self::$superSitecps);
+        return in_array($userId, self::$superUsers);
     }
 
-    public static function getSuperSitecps() {
-        return self::$superSitecps;
+    public static function getSuperUsers() {
+        return self::$superUsers;
     }
 
     public static function haveGroupOption($userId, $option) {

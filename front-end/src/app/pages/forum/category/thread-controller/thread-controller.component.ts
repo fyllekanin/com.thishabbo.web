@@ -109,6 +109,31 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
         this._threadSkeleton.poll.answers.push(new ThreadAnswer());
     }
 
+    saveThread (): void {
+        this._threadSkeleton.content = this.editor.getEditorValue();
+        const form = new FormData();
+        if (this._threadSkeleton.template !== CategoryTemplates.DEFAULT && this.fileInput.nativeElement.files) {
+            const file = this.fileInput.nativeElement.files[0];
+            form.append('thumbnail', file);
+        }
+        form.append('thread', JSON.stringify(this._threadSkeleton));
+        if (!this.isNew) {
+            this._httpClient.post(`rest/api/forum/thread/update/${this._threadSkeleton.threadId}`, form)
+                .subscribe(res => {
+                    this.onSuccessUpdate(res);
+                }, error => {
+                    this._notificationService.failureNotification(error);
+                });
+        } else {
+            this._httpClient.post('rest/api/forum/thread', form)
+                .subscribe((res: { threadId: number }) => {
+                    this.onSuccessCreate(res);
+                }, error => {
+                    this._notificationService.failureNotification(error);
+                });
+        }
+    }
+
     get thread (): ThreadSkeleton {
         return this._threadSkeleton;
     }
@@ -202,31 +227,6 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
         this._threadSkeleton.prefixId =
             this._threadSkeleton.prefixes.findIndex(prefix => prefix.prefixId === this._threadSkeleton.prefixId) > -1 ?
                 this._threadSkeleton.prefixId : 0;
-    }
-
-    private saveThread (): void {
-        this._threadSkeleton.content = this.editor.getEditorValue();
-        const form = new FormData();
-        if (this._threadSkeleton.template !== CategoryTemplates.DEFAULT && this.fileInput.nativeElement.files) {
-            const file = this.fileInput.nativeElement.files[0];
-            form.append('thumbnail', file);
-        }
-        form.append('thread', JSON.stringify(this._threadSkeleton));
-        if (!this.isNew) {
-            this._httpClient.post(`rest/api/forum/thread/update/${this._threadSkeleton.threadId}`, form)
-                .subscribe(res => {
-                    this.onSuccessUpdate(res);
-                }, error => {
-                    this._notificationService.failureNotification(error);
-                });
-        } else {
-            this._httpClient.post('rest/api/forum/thread', form)
-                .subscribe((res: { threadId: number }) => {
-                    this.onSuccessCreate(res);
-                }, error => {
-                    this._notificationService.failureNotification(error);
-                });
-        }
     }
 
     private onSuccessUpdate (res): void {

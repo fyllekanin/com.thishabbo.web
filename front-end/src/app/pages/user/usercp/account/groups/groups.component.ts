@@ -52,8 +52,8 @@ export class GroupsComponent extends Page implements OnDestroy {
     apply (groupId: number): void {
         const group = this._data.groups.find(gr => gr.groupId === groupId);
         this._dialogService.confirm({
-            title: `Apply for group`,
-            content: `Are you sure you wanna apply for ${group.name}?`,
+            title: `Apply to a Public Group`,
+            content: `Are you sure you want to apply for ${group.name}?`,
             callback: this.onApply.bind(this, groupId)
         });
     }
@@ -61,8 +61,8 @@ export class GroupsComponent extends Page implements OnDestroy {
     leave (groupId: number): void {
         const group = this._data.groups.find(gr => gr.groupId === groupId);
         this._dialogService.confirm({
-            title: `Apply for group`,
-            content: `Are you sure you wanna apply for ${group.name}?`,
+            title: `Apply to a Public Group`,
+            content: `Are you sure you want to apply for ${group.name}?`,
             callback: this.onLeave.bind(this, groupId)
         });
     }

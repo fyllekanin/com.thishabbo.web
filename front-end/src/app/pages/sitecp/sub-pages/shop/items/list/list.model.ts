@@ -9,7 +9,12 @@ export class ShopListPage {
     @arrayOf(ShopItem)
     items: Array<ShopItem> = [];
 
-    constructor(source: Partial<ShopListPage>) {
+    constructor (source: Partial<ShopListPage>) {
         ClassHelper.assign(this, source);
     }
+}
+
+export enum ShopItemListAction {
+    EDIT,
+    DELETE
 }

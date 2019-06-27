@@ -19,7 +19,7 @@
 }
 
 .title {
-    margin: 9px 10px 5px;
+    margin: 10px 10px 10px;
     float: left;
 }
 
@@ -75,15 +75,17 @@ a:hover {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    background: #00000008;
 }
 
 .tab:hover {
     cursor: pointer;
-    background-color: rgb(245, 245, 245);
+    background-color: #0000000f;
 }
 
 .checkbox {
     float: right;
+    margin: 5px;
 }
 
 .active {
@@ -112,10 +114,6 @@ a:hover {
 
 .purple-top {
     border-top: 3px solid #925779;
-}
-
-.checkbox {
-    margin: 5px;
 }
 
 .mobile {

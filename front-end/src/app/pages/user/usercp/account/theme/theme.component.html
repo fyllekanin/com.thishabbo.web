@@ -1,8 +1,14 @@
 <app-title [title]="'Theme Manager'" [tabs]="tabs" (onTabClick)="onSave()"></app-title>
 <app-content>
-    Select the Theme below which you wish to use on the website.<br/><br/> When selecting a Theme it will automatically change your CSS styling. Don't worry, if you don't want to keep the Theme just don't press save! If you wish to keep it then please press save before leaving the page.
-    <br><br>
-    <label>Select Theme</label>
+    Select the theme below which you wish to use on the website, this will then be your default theme.<br/><br/>
+    When selecting a theme it will automatically change your CSS styling. Don't worry, if you don't want to keep the theme just <b>don't press save</b>! If you wish to keep it then please press save before leaving the page.
+    <br>
+    <label>Select Theme
+
+        <span tooltip="A theme will change how the fansite looks, feel free to try one if you have collected some!" class="checkbox-info">
+             <em class="fas fa-question-circle"></em>
+        </span>
+    </label>
     <select [(ngModel)]="themeId" (ngModelChange)="applyTheme()">
         <option [value]="0">Default</option>
         <option *ngFor="let theme of themes" [value]="theme.themeId">

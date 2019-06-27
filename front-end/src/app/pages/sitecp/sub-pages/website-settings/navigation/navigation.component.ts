@@ -19,6 +19,9 @@ import { NotificationMessage, NotificationType } from 'shared/app-views/global-n
 import { HttpService } from 'core/services/http/http.service';
 import { NavigationActions } from './navigation.enum';
 import { ArrayHelper } from 'shared/helpers/array.helper';
+import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
+import { WEBSITE_SETTINGS_BREADCRUMB_ITEM, SITECP_BREADCRUMB_ITEM } from 'app/pages/sitecp/sitecp.constants';
+import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 
 @Component({
     selector: 'app-sitecp-website-settings-navigation',
@@ -45,11 +48,16 @@ export class NavigationComponent extends Page implements OnDestroy {
         private _notificationService: NotificationService,
         private _dialogService: DialogService,
         private _componentResolver: ComponentFactoryResolver,
+        breadcrumbService: BreadcrumbService,
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute
     ) {
         super(elementRef);
         this.addSubscription(activatedRoute.data, this.onData.bind(this));
+        breadcrumbService.breadcrumb = new Breadcrumb({
+            current: 'Navigation',
+            items: [SITECP_BREADCRUMB_ITEM, WEBSITE_SETTINGS_BREADCRUMB_ITEM]
+        });
     }
 
     onAction (value: number): void {
@@ -98,7 +106,7 @@ export class NavigationComponent extends Page implements OnDestroy {
         const config = this._tableConfigs.find(item => item.id === tableId);
         const mainItem = this._data.find(item => item.label === config.title);
         this._dialogService.openDialog({
-            title: 'Adding child',
+            title: 'Configuring',
             component: this._componentResolver.resolveComponentFactory(NavigationItemComponent),
             data: {isMainItem: false},
             buttons: [
@@ -128,7 +136,7 @@ export class NavigationComponent extends Page implements OnDestroy {
     private editItem (rowId: string): void {
         const item = this.getAllItems().find(nav => nav.id === rowId);
         this._dialogService.openDialog({
-            title: 'Adding child',
+            title: 'Configuring',
             component: this._componentResolver.resolveComponentFactory(NavigationItemComponent),
             data: {isMainItem: item instanceof MainItem, item: item},
             buttons: [

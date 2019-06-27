@@ -5,7 +5,8 @@ import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { SITECP_BREADCRUMB_ITEM } from '../../../sitecp.constants';
 import { LOG_TYPES, LogPage } from './logs.model';
 import {
-    FilterConfig, FilterConfigItem,
+    FilterConfig,
+    FilterConfigItem,
     FilterConfigType,
     TableCell,
     TableConfig,
@@ -21,8 +22,7 @@ import { HttpService } from 'core/services/http/http.service';
 
 @Component({
     selector: 'app-sitecp-moderation-logs',
-    templateUrl: 'logs.component.html',
-    styleUrls: ['logs.component.css']
+    templateUrl: 'logs.component.html'
 })
 export class LogsComponent extends Page implements OnDestroy {
     private _data: LogPage = null;
@@ -51,7 +51,7 @@ export class LogsComponent extends Page implements OnDestroy {
             ]
         });
         this.options = Object.keys(LOG_TYPES).map(key => {
-            return { value: LOG_TYPES[key], label: StringHelper.firstCharUpperCase(LOG_TYPES[key]) };
+            return {value: LOG_TYPES[key], label: StringHelper.firstCharUpperCase(LOG_TYPES[key])};
         });
     }
 
@@ -70,7 +70,7 @@ export class LogsComponent extends Page implements OnDestroy {
         this._filterTimer = setTimeout(() => {
             this._httpService.get(`sitecp/logs/${this.logType}/page/1`, filter)
                 .subscribe(res => {
-                    this.onData({ data: new LogPage(res) });
+                    this.onData({data: new LogPage(res)});
                 });
         }, 200);
     }
@@ -118,9 +118,9 @@ export class LogsComponent extends Page implements OnDestroy {
     private getTableRows(): Array<TableRow> {
         return this._data.items.map(item => new TableRow({
             cells: [
-                new TableCell({ title: item.user.nickname }),
-                new TableCell({ title: item.action }),
-                new TableCell({ title: TimeHelper.getTime(item.createdAt) })
+                new TableCell({title: item.user.nickname}),
+                new TableCell({title: item.action}),
+                new TableCell({title: TimeHelper.getTime(item.createdAt)})
             ],
             isExpandable: Boolean(item.data),
             dataTitle: 'Extra data in the log:',
@@ -138,9 +138,9 @@ export class LogsComponent extends Page implements OnDestroy {
 
     private getTableHeaders(): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'User' }),
-            new TableHeader({ title: 'Action' }),
-            new TableHeader({ title: 'When' })
+            new TableHeader({title: 'User'}),
+            new TableHeader({title: 'Action'}),
+            new TableHeader({title: 'When'})
         ];
     }
 }

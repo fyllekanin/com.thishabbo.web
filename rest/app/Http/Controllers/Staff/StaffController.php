@@ -90,13 +90,13 @@ class StaffController extends Controller {
     private function validateRequests($requests) {
         foreach ($requests as $request) {
             Condition::precondition(!isset($request['nickname']) && !isset($request['habbo']),
-                400, 'nickname or habbo needs to be set');
+                400, 'A nickname or habbo needs to be set!');
             Condition::precondition(empty($request['nickname']) && empty($request['habbo']),
-                400, 'nickname or habbo needs to be set');
+                400, 'A nickname or habbo needs to be set!');
             Condition::precondition(!is_numeric($request['amount']) || $request['amount'] < 1, 400,
-                'The amount is not valid, 1 or more number is mandatory');
+                'The amount is not valid, 1 or more number is mandatory!');
             Condition::precondition(!isset($request['reason']) || empty($request['reason']),
-                400, 'Each row needs a reason');
+                400, 'Each row needs a reason!');
 
             $nickname = Value::arrayProperty($request, 'nickname', '');
             $account = User::withNickname($nickname)->first();

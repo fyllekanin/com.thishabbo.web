@@ -16,6 +16,8 @@ use App\Helpers\SettingsHelper;
 use App\Helpers\UserHelper;
 use App\Http\Impl\PageControllerImpl;
 use App\Utils\BBcodeUtil;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class PageController extends Controller {
@@ -37,7 +39,7 @@ class PageController extends Controller {
     /**
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function loadInitial(Request $request) {
         $user = $request->get('auth');
@@ -52,7 +54,7 @@ class PageController extends Controller {
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getGroupList() {
         return response()->json(GroupList::orderBy('displayOrder', 'ASC')->get()->map(function ($item) {
@@ -69,7 +71,7 @@ class PageController extends Controller {
     /**
      * @param $path
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getCustomPage($path) {
         $page = Page::whereRaw('lower(path) = ?', [strtolower($path)])->first();
@@ -81,7 +83,7 @@ class PageController extends Controller {
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getEmojis() {
         return response()->json(BBcode::where('isEmoji', true)->orderByRaw("RAND()")->get());
@@ -90,7 +92,7 @@ class PageController extends Controller {
     /**
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function parseContent(Request $request) {
         $content = $request->input('content');
@@ -101,7 +103,7 @@ class PageController extends Controller {
     /**
      * Used for pages that don't load data to still see if they got connection
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getPing() {
         return response()->json();
@@ -110,7 +112,7 @@ class PageController extends Controller {
     /**
      * Get request for fetching the current maintenance mode message
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getMaintenanceMessage() {
         $settingKeys = ConfigHelper::getKeyConfig();
@@ -124,7 +126,7 @@ class PageController extends Controller {
      *
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getHomePage(Request $request) {
         $user = $request->get('auth');
@@ -133,7 +135,8 @@ class PageController extends Controller {
             'articles' => $this->getArticles($user, 4, $this->categoryTemplates->QUEST),
             'mediaArticles' => $this->getArticles($user, 5, $this->categoryTemplates->MEDIA),
             'notices' => $this->getNotices(),
-            'threads' => $this->getLatestThreads($user)
+            'threads' => $this->getLatestThreads($user),
+            'spotlight' => $this->myImpl->getStaffSpotlight()
         ]);
     }
 
@@ -141,7 +144,7 @@ class PageController extends Controller {
      * Get the resource for register page, used for helping the user validation
      * without doing extra requests.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getRegisterPage() {
         return response()->json([
@@ -153,7 +156,7 @@ class PageController extends Controller {
      * @param Request $request
      * @param $page
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getBadgeGuides(Request $request, $page) {
         $user = $request->get('auth');
@@ -197,17 +200,14 @@ class PageController extends Controller {
     /**
      * Get an array of all the notices
      *
-     * @return Notice[]|\Illuminate\Database\Eloquent\Collection
+     * @return Notice[]|Collection
      */
     private function getNotices() {
-        $notices = Notice::all();
-
-        foreach ($notices as $notice) {
+        return Notice::orderBy('order', 'ASC')->get()->map(function($notice) {
             $notice->makeHidden(['createdAt', 'updatedAt', 'userId', 'isDeleted']);
             $notice->text = nl2br(stripcslashes($notice->text));
-        }
-
-        return $notices;
+            return $notice;
+        });
     }
 
     /**

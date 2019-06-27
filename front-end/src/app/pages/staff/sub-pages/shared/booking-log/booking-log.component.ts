@@ -15,8 +15,7 @@ import { TimeHelper } from 'shared/helpers/time.helper';
 
 @Component({
     selector: 'app-staff-booking',
-    templateUrl: 'booking-log.component.html',
-    styleUrls: ['booking-log.component.css']
+    templateUrl: 'booking-log.component.html'
 })
 export class BookingLogComponent extends Page implements OnDestroy {
     private readonly _type;

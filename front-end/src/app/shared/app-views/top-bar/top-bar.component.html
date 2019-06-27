@@ -1,6 +1,6 @@
 <div class="wrapper">
     <div class="grid-container">
-        <div class="grid-x grid-margin-x margin-x">
+        <div class="grid-x grid-margin-x">
             <div class="cell small-7 medium-8 breadcrumb">
                 <a [routerLink]="homePage">ThisHabbo VX</a> &#187;
                 <a *ngFor="let item of breadcrumbItems" [routerLink]="[item.url]">
@@ -8,7 +8,7 @@
                 </a>
                 <span [innerHTML]="current | safeHtml"></span>
             </div>
-            <div class="small-4 medium-4 login-pc" *ngIf="!loggedIn">
+            <div class="cell small-4 medium-4 login-pc" *ngIf="!loggedIn">
                 <div class="login-wrapper">
                     <input type="text" class="top-login" (keydown)="keyDownFunction($event)" [(ngModel)]="loginName"
                            placeholder="Username/Habbo"
@@ -19,7 +19,7 @@
                     <button appButton [float]="'right'" class="top-login-button" (onClick)="login()">Login</button>
                 </div>
             </div>
-            <div class="small-5 medium-4 login-phone" *ngIf="!loggedIn">
+            <div class="cell small-5 medium-4 login-phone" *ngIf="!loggedIn">
                 <div class="login-wrapper">
                     <a [routerLink]="['/auth/login']">Login</a> or <a [routerLink]="['/auth/register']">Register</a>
                 </div>

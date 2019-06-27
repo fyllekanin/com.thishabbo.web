@@ -36,6 +36,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
     @Input() slim = false;
     @Output() onTabClick: EventEmitter<EditorAction> = new EventEmitter();
     @Output() onKeyUp: EventEmitter<string> = new EventEmitter();
+    @Output() onSave: EventEmitter<void> = new EventEmitter();
 
     tabs: Array<TitleTab> = [];
     bottomButtons: Array<EditorAction> = [];
@@ -125,9 +126,14 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
             this.onKeyUp.emit(this.getEditorValue());
             if (e.altKey && e.keyCode === 83) {
                 e.preventDefault();
-                this._editorActions.filter(button => button.saveCallback).forEach(button => {
-                    button.saveCallback();
-                });
+                const callbacks = this._editorActions.filter(button => button.saveCallback);
+                if (callbacks.length > 0) {
+                    callbacks.forEach(button => {
+                        button.saveCallback();
+                    });
+                } else {
+                    this.onSave.emit();
+                }
             }
         });
     }

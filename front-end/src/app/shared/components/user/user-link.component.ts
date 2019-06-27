@@ -34,5 +34,17 @@ export class UserLinkComponent {
     get joinDate (): string {
         return TimeHelper.getLongDate(this.user.createdAt);
     }
+  
+    get iconImage (): string {
+        return this.user.iconId ? `/rest/resources/images/shop/${this.user.iconId}.gif` : null;
+    }
+
+    get iconPosition (): string {
+        return this.user.iconPosition || 'left';
+    }
+
+    get effect (): string {
+        return this.user.effectId ? `url(/rest/resources/images/shop/${this.user.effectId}.gif)` : '';
+    }
 }
 

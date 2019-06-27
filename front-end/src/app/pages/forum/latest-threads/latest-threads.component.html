@@ -2,10 +2,10 @@
 
 <app-content>
     <div class="grid-container full">
-        <div class="grid-x margin-x">
+        <div class="grid-x grid-margin-x">
             <div class="cell small-12 medium-6 latest-thread-page" *ngFor="let item of items">
                 <img appUserProfile appLazyLoad [float]="'left'"
-                     [image]="'/rest/resources/images/users/' + item.user.userId + '.gif'" />
+                     [image]="'/rest/resources/images/users/' + item.user.userId + '.gif'"/>
                 <span class="latest-thread-info">
                     <a [routerLink]="['/forum', 'thread', item.threadId, 'page', 1]">
                         <span *ngIf="item.text" [style]="item.style | safeStyle">{{item.text}} »</span> {{item.title}}

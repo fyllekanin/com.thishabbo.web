@@ -1,7 +1,7 @@
 <div class="grid-container margin-bottom forum-home">
     <div class="grid-x grid-margin-x">
         <div class="cell small-7">
-            <i class="icon" [ngClass]="icon + (haveRead ? ' read' : '')"></i>
+            <em class="icon" [ngClass]="icon + (haveRead ? ' read' : '')"></em>
             <div class="title" [routerLink]="['/forum', 'category', categoryId, 'page', 1]">{{title}}</div>
             <div class="description">{{description}}</div>
             <div *ngIf="children.length > 0" class="children">

@@ -142,7 +142,7 @@ class BBcodeController extends Controller {
         Condition::precondition($isImageRequired && BBcode::where('pattern', $bbcode->pattern)->count('bbcodeId') > 0,
             404, 'Pattern already exists');
         if ($bbcode->isEmoji) {
-            $this->validate($request, [
+            $request->validate([
                 'image' => ($isImageRequired ? 'required|' : '') . 'mimes:jpg,jpeg,bmp,png,gif|dimensions:max_width=22,max_height=22',
             ]);
         } else {

@@ -1,7 +1,7 @@
 <app-title [title]="'Timetable'" [tabs]="tabs" (onTabClick)="onTabClick($event)"></app-title>
 <app-content>
     <div class="grid-container full">
-        <div class="grid-x margin-x">
+        <div class="grid-x grid-margin-x">
             <div class="cell small-4 hour" (click)="clickHour(0)"
                  [ngClass]="isCurrentSlot(0) ? 'current-slot ' + timezones[0] : timezones[0]">
                 <span *ngIf="!isBooked(0)">12AM - Book</span>

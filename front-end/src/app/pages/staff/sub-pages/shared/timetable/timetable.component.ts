@@ -115,7 +115,7 @@ export class TimetableComponent extends Page implements OnDestroy {
             ],
             component: this.isEvents() || this.canBookRadioForOther() ?
                 this._componentFactory.resolveComponentFactory(SelectionComponent) : null,
-            content: 'Sure you wanna book this slot?',
+            content: 'Are you sure you want to book this slot?',
             data: {
                 events: this._data.events,
                 canBookRadioForOther: this.canBookRadioForOther(),
@@ -188,8 +188,8 @@ export class TimetableComponent extends Page implements OnDestroy {
         }
 
         this._dialogService.confirm({
-            title: `Sure you wanna unbook?`,
-            content: `Are you sure you wanna unbook ${timetable.user.nickname}'s slot?`,
+            title: `Unbooking`,
+            content: `Are you sure you want to unbook ${timetable.user.nickname}'s slot?`,
             callback: () => {
                 this._dialogService.closeDialog();
                 this._httpService.delete(`staff/${this._type}/timetable/${timetable.timetableId}`)

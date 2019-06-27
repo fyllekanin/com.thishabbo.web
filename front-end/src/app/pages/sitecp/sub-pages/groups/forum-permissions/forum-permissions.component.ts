@@ -9,8 +9,7 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 
 @Component({
     selector: 'app-sitecp-groups-forum-permissions',
-    templateUrl: 'forum-permissions.component.html',
-    styleUrls: ['forum-permissions.component.css']
+    templateUrl: 'forum-permissions.component.html'
 })
 export class ForumPermissionsComponent extends Page implements OnDestroy {
 

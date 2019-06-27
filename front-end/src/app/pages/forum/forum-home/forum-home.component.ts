@@ -1,14 +1,14 @@
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Page } from 'shared/page/page.model';
-import { ForumStats, ForumTopPoster } from './forum-home.model';
+import { ForumStats, ForumTopPoster, StatsActions } from './forum-home.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { ForumLatestPost, SlimCategory } from '../forum.model';
-import { ElementRef } from '@angular/core';
 import { TitleTab, TitleTopBorder } from 'shared/app-views/title/title.model';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { HttpService } from 'core/services/http/http.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 
 @Component({
     selector: 'app-forum-home',
@@ -22,12 +22,16 @@ export class ForumHomeComponent extends Page implements OnInit, OnDestroy {
     private _contractedCategories: Array<number> = [];
 
     latestPostersTop = TitleTopBorder.RED;
-    refreshTab = new TitleTab({ title: 'Refresh' });
+    statTabs: Array<TitleTopBorder> = [
+        new TitleTab({ title: 'Refresh', value: StatsActions.REFRESH }),
+        new TitleTab({ title: 'Read All', value: StatsActions.READ_ALL })
+    ];
     toggleTab = new TitleTab({ title: 'Toggle' });
 
     constructor(
         private _router: Router,
         private _httpService: HttpService,
+        private _notificationService: NotificationService,
         activatedRoute: ActivatedRoute,
         breadcrumbService: BreadcrumbService,
         elementRef: ElementRef
@@ -82,6 +86,17 @@ export class ForumHomeComponent extends Page implements OnInit, OnDestroy {
             });
     }
 
+    onStatsTabClick(action: number): void {
+        switch (action) {
+            case StatsActions.REFRESH:
+                this.updateForumStats();
+                break;
+            case StatsActions.READ_ALL:
+                this.readAll();
+                break;
+        }
+    }
+
     get categories(): Array<SlimCategory> {
         return this._forumHomePage.sort(this.sortCategories);
     }
@@ -109,5 +124,16 @@ export class ForumHomeComponent extends Page implements OnInit, OnDestroy {
     private getContractedCategories(): Array<number> {
         const stored = localStorage.getItem(LOCAL_STORAGE.CONTRACTED_CATEGORIES);
         return stored ? JSON.parse(stored) : [];
+    }
+
+    private readAll(): void {
+        this._httpService.put('forum/category/read-all').subscribe(() => {
+            this._forumHomePage = this._forumHomePage.map(category => {
+                category.haveRead = true;
+                category.childs.forEach(child => child.haveRead = true);
+                return category;
+            });
+            this._notificationService.sendInfoNotification('You marked all current posts read!');
+        });
     }
 }

@@ -3,8 +3,8 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/rest/tests" isTestSource="true" packagePrefix="Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/rest/app" isTestSource="false" packagePrefix="App\" />
+      <sourceFolder url="file://$MODULE_DIR$/rest/tests" isTestSource="true" packagePrefix="Tests\" />
       <excludeFolder url="file://$MODULE_DIR$/front-end/dist" />
       <excludeFolder url="file://$MODULE_DIR$/front-end/tmp" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/composer" />
@@ -18,6 +18,8 @@
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/fideloper/proxy" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/filp/whoops" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/fzaninotto/faker" />
+      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/genealabs/laravel-model-caching" />
+      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/genealabs/laravel-pivot-events" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/guzzlehttp/psr7" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/hamcrest/hamcrest-php" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/intervention/image" />

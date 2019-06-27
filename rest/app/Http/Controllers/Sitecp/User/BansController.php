@@ -64,7 +64,7 @@ class BansController extends Controller {
 
         Token::where('userId', $userId)->delete();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::BANNED_USER, ['name' => $current->nickname]);
+        Logger::sitecp($user->userId, $request->ip(), Action::BANNED_USER, [], $userId);
         return response()->json($this->mapBan($ban));
     }
 

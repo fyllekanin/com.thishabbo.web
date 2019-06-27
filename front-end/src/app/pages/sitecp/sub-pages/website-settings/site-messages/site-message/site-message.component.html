@@ -24,4 +24,4 @@
         </div>
     </div>
 </app-content>
-<app-editor #editor [title]="'Content'" [content]="model.content"></app-editor>
+<app-editor #editor [title]="'Content'" [content]="model.content" (onSave)="onSave()"></app-editor>

@@ -16,7 +16,18 @@ export class HomePageThread {
     @time()
     createdAt: string;
 
-    constructor (source: Partial<HomePageThread>) {
+    constructor(source: Partial<HomePageThread>) {
+        ClassHelper.assign(this, source);
+    }
+}
+
+export class StaffSpotlightUser {
+    @primitive()
+    nickname: string;
+    @primitive()
+    habbo: string;
+
+    constructor(source: Partial<StaffSpotlightUser>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -30,8 +41,10 @@ export class HomeDefaultPage {
     notices: Array<Notice> = [];
     @arrayOf(HomePageThread)
     threads: Array<HomePageThread> = [];
+    @arrayOf(StaffSpotlightUser)
+    spotlight: Array<StaffSpotlightUser> = [];
 
-    constructor (source?: Partial<HomeDefaultPage>) {
+    constructor(source?: Partial<HomeDefaultPage>) {
         ClassHelper.assign(this, source);
     }
 }

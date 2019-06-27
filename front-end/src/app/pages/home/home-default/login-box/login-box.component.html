@@ -2,16 +2,16 @@
 
 <app-content>
     <app-info-box [model]="infoModel"></app-info-box>
-    <div class="small-6 cell">
+    <div class="cell small-6">
         <label>Nickname:</label>
         <input (keydown)="keyDownFunction($event)" [(ngModel)]="loginName" type="text" name="loginName">
     </div>
-    <div class="small-6 cell">
+    <div class="cell small-6">
         <label>Password:</label>
         <input (keydown)="keyDownFunction($event)" [(ngModel)]="password" type="password" name="password">
     </div>
-    <br />
-    <div class="small-12 cell align-right">
+    <br/>
+    <div class="cell small-12 align-right">
         <button appButton [float]="'right'" (onClick)="doLogin()">Login</button>
         <button appButton [color]="registerButton" [float]="'right'" [routerLink]="['/auth/register']">Register</button>
     </div>

@@ -1,0 +1,28 @@
+{
+  "apps": [
+    {
+      "name": "worker",
+      "script": "./job/worker.sh",
+      "cwd": "./",
+      "watch": true,
+      "log_file": "./storage/logs/worker.log",
+      "instances": 1
+    },
+    {
+      "name": "radio",
+      "script": "./job/radio.sh",
+      "cwd": "./",
+      "watch": true,
+      "log_file": "./storage/logs/radio.log",
+      "instances": 1
+    },
+    {
+      "name": "cron",
+      "script": "./job/cron.sh",
+      "cwd": "./",
+      "watch": true,
+      "log_file": "./storage/logs/cron.log",
+      "instances": 1
+    }
+  ]
+}

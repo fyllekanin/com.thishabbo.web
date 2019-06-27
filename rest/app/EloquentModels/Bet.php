@@ -11,7 +11,7 @@ use App\EloquentModels\User\UserBet;
 class Bet extends DeletableModel {
     protected $table = 'bets';
     protected $primaryKey = 'betId';
-    protected $fillable = ['name', 'betCategoryId', 'leftSide', 'rightSide', 'isFinished', 'result', 'isSuspended'];
+    protected $fillable = ['name', 'betCategoryId', 'leftSide', 'rightSide', 'isFinished', 'result', 'isSuspended', 'displayOrder'];
     protected $hidden = ['isDeleted'];
 
     public function category() {

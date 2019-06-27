@@ -1,4 +1,3 @@
-
 .user-link {
     display: inline-block;
     position: relative;
@@ -112,4 +111,18 @@
 
 .user-link:hover .mini-profile {
     display: block;
+}
+
+a {
+    display: inline-block;
+}
+
+.left-icon {
+    float: left;
+    margin-right: 3px;
+}
+
+.right-icon {
+    float: right;
+    margin-left: 3px;
 }

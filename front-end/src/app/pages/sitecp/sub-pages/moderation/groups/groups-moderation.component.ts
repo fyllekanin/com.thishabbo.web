@@ -48,8 +48,8 @@ export class GroupsModerationComponent extends Page implements OnDestroy {
         switch (action.value) {
             case GroupModerationActions.APPROVE_REQUEST:
                 this._dialogService.openDialog({
-                    title: 'Approve group request',
-                    content: `You sure you wanna approve ${groupRequest.nickname} to join ${groupRequest.name}?`,
+                    title: 'Approve Group Request',
+                    content: `Are you sure you want to approve ${groupRequest.nickname} to join ${groupRequest.name}?`,
                     buttons: [
                         new DialogCloseButton('Close'),
                         new DialogButton({
@@ -61,8 +61,8 @@ export class GroupsModerationComponent extends Page implements OnDestroy {
                 break;
             case GroupModerationActions.DENY_REQUEST:
                 this._dialogService.openDialog({
-                    title: 'Deny group request',
-                    content: `You sure you wanna deny ${groupRequest.nickname} to join ${groupRequest.name}?`,
+                    title: 'Deny Group Request',
+                    content: `You sure you want to deny ${groupRequest.nickname} to join ${groupRequest.name}?`,
                     buttons: [
                         new DialogCloseButton('Close'),
                         new DialogButton({title: 'Yes', callback: this.onDeny.bind(this, groupRequest.groupRequestId)})

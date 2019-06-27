@@ -81,7 +81,7 @@ export class BanOnSightListComponent extends Page implements OnDestroy, OnInit {
     private delete (rowId: number): void {
         this._dialogService.confirm({
             title: `Deleting BOS Entry`,
-            content: `Are you sure that you wanna delete this?`,
+            content: `Are you sure that you want to delete this?`,
             callback: this.onDelete.bind(this, rowId)
         });
     }
@@ -91,7 +91,7 @@ export class BanOnSightListComponent extends Page implements OnDestroy, OnInit {
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
-                    message: 'Entry deleted!'
+                    message: 'Entry has been deleted!'
                 }));
                 this._data = this._data.filter(item => entryId !== item.id);
                 this.createOrUpdateTable();

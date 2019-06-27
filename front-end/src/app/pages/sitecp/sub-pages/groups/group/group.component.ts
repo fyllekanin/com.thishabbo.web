@@ -21,8 +21,9 @@ export class GroupComponent extends Page implements OnDestroy {
     private _group: Group = new Group();
 
     tabs: Array<TitleTab> = [];
+    baseGroup: Group = null;
 
-    constructor(
+    constructor (
         private _dialogService: DialogService,
         private _notificationService: NotificationService,
         private _httpService: HttpService,
@@ -42,7 +43,7 @@ export class GroupComponent extends Page implements OnDestroy {
         });
     }
 
-    onTabClick(value: number): void {
+    onTabClick (value: number): void {
         switch (value) {
             case GroupActions.SAVE:
                 this.save();
@@ -56,20 +57,20 @@ export class GroupComponent extends Page implements OnDestroy {
         }
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    save(): void {
+    save (): void {
         if (this._group.createdAt) {
-            this._httpService.put(`sitecp/groups/${this._group.groupId}`, { group: this._group })
+            this._httpService.put(`sitecp/groups/${this._group.groupId}`, {group: this._group})
                 .subscribe(res => {
                     this.onSuccessUpdate(res);
                 }, error => {
                     this._notificationService.failureNotification(error);
                 });
         } else {
-            this._httpService.post('sitecp/groups', { group: this._group })
+            this._httpService.post('sitecp/groups', {group: this._group})
                 .subscribe(res => {
                     this.onSuccessCreate(res);
                 }, error => {
@@ -78,7 +79,7 @@ export class GroupComponent extends Page implements OnDestroy {
         }
     }
 
-    delete(): void {
+    delete (): void {
         this._dialogService.confirm({
             title: `Deleting group`,
             content: `Are you sure that you want to delete the group ${this._group.name}?`,
@@ -86,11 +87,11 @@ export class GroupComponent extends Page implements OnDestroy {
         });
     }
 
-    cancel(): void {
+    cancel (): void {
         this._router.navigateByUrl('/sitecp/groups/page/1');
     }
 
-    onImmunityChange(): void {
+    onImmunityChange (): void {
         if (this._group.immunity > this._group.maxImmunity) {
             this._group.immunity = this._group.maxImmunity;
         } else if (this._group.immunity < 0 || isNaN(this._group.immunity)) {
@@ -98,37 +99,49 @@ export class GroupComponent extends Page implements OnDestroy {
         }
     }
 
-    get userBarStyle(): string {
+    onBaseChange (): void {
+        this.group.sitecpPermissions = this.baseGroup.sitecpPermissions;
+        this.group.staffPermissions = this.baseGroup.staffPermissions;
+        this.group.options = this.baseGroup.options;
+        this.group.immunity = this.baseGroup.immunity;
+        this.group.nameColor = this.baseGroup.nameColor;
+    }
+
+    get userBarStyle (): string {
         return this._group.userBarStyling;
     }
 
-    get nicknameStyle(): string {
+    get nicknameStyle (): string {
         return UserHelper.getNameColor([this._group.nameColor]);
     }
 
-    get title(): string {
+    get title (): string {
         return this._group.createdAt ?
             `Editing Group: ${this._group.name}` :
             `Creating Group: ${this._group.name}`;
     }
 
-    get group(): Group {
+    get group (): Group {
         return this._group;
     }
 
-    get sitecpPermissions(): SitecpPermissions {
+    get groups (): Array<Group> {
+        return this._group.groups;
+    }
+
+    get sitecpPermissions (): SitecpPermissions {
         return this._group.sitecpPermissions || new SitecpPermissions();
     }
 
-    get staffPermissions(): StaffPermissions {
+    get staffPermissions (): StaffPermissions {
         return this._group.staffPermissions || new StaffPermissions();
     }
 
-    get options(): GroupOptions {
+    get options (): GroupOptions {
         return this._group.options || new GroupOptions();
     }
 
-    private onDelete(): void {
+    private onDelete (): void {
         this._httpService.delete(`sitecp/groups/${this._group.groupId}`)
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
@@ -143,19 +156,19 @@ export class GroupComponent extends Page implements OnDestroy {
             });
     }
 
-    private onPage(data: { data: Group }): void {
+    private onPage (data: { data: Group }): void {
         this._group = data.data;
 
         const tabs = [
-            { title: 'Save', value: GroupActions.SAVE, condition: true },
-            { title: 'Delete', value: GroupActions.DELETE, condition: this._group.createdAt },
-            { title: 'Back', value: GroupActions.BACK, condition: true }
+            {title: 'Save', value: GroupActions.SAVE, condition: true},
+            {title: 'Delete', value: GroupActions.DELETE, condition: this._group.createdAt},
+            {title: 'Back', value: GroupActions.BACK, condition: true}
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));
     }
 
-    private onSuccessUpdate(group: Group): void {
+    private onSuccessUpdate (group: Group): void {
         this._group = new Group(group);
         this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
@@ -163,8 +176,8 @@ export class GroupComponent extends Page implements OnDestroy {
         }));
     }
 
-    private onSuccessCreate(group: Group): void {
-        this.onPage({ data: new Group(group) });
+    private onSuccessCreate (group: Group): void {
+        this.onPage({data: new Group(group)});
         this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'Group created!'

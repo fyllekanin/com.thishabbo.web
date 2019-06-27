@@ -7,6 +7,7 @@ import { SHOP_SUBSCRIPTIONS_BREADCRUMB_ITEMS, SITECP_BREADCRUMB_ITEM } from '../
 import { SubscriptionListAction, SubscriptionsListPage } from './list.model';
 import {
     Action,
+    FilterConfig,
     TableAction,
     TableCell,
     TableConfig,
@@ -103,7 +104,14 @@ export class SubscriptionsListComponent extends Page implements OnDestroy {
         this.tableConfig = new TableConfig({
             title: 'Subscriptions',
             headers: this.getTableHeaders(),
-            rows: this.getTableRows()
+            rows: this.getTableRows(),
+            filterConfigs: [
+                new FilterConfig({
+                    title: 'Filter',
+                    placeholder: 'Search by Title...',
+                    key: 'filter'
+                })
+            ]
         });
     }
 
@@ -121,7 +129,7 @@ export class SubscriptionsListComponent extends Page implements OnDestroy {
     private getTableHeaders (): Array<TableHeader> {
         return [
             new TableHeader({title: 'Title'}),
-            new TableHeader({title: 'Members count'})
+            new TableHeader({title: 'Subscribers'})
         ];
     }
 }

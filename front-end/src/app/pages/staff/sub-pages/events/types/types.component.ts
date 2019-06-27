@@ -117,7 +117,7 @@ export class TypesComponent extends Page implements OnDestroy {
     private onDelete (eventId: number): void {
         this._dialogService.confirm({
             title: `Deleting Event`,
-            content: `Are you sure you wanna delete this event?`,
+            content: `Are you sure you want to delete this Event?`,
             callback: () => {
                 this._httpService.delete(`staff/events/types/${eventId}`)
                     .subscribe(() => {
@@ -138,7 +138,7 @@ export class TypesComponent extends Page implements OnDestroy {
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
-                    message: 'Event saved!'
+                    message: 'Event has been saved!'
                 }));
                 this._data.events = this._data.events.filter(evt => evt.eventId !== event.eventId);
                 this._data.events.push(event);
@@ -152,7 +152,7 @@ export class TypesComponent extends Page implements OnDestroy {
             .subscribe(res => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
-                    message: 'Event created!'
+                    message: 'Event has been created!'
                 }));
                 this._data.events.push(new EventType(res));
                 this._dialogService.closeDialog();

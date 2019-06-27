@@ -11,14 +11,13 @@ import { AuthService } from 'core/services/auth/auth.service';
 
 @Component({
     selector: 'app-usercp-nickname',
-    templateUrl: 'nickname.component.html',
-    styleUrls: ['nickname.component.css']
+    templateUrl: 'nickname.component.html'
 })
 export class NicknameComponent extends Page implements OnDestroy {
 
     nickname: string;
     tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Change Nickname' })
+        new TitleTab({title: 'Change Nickname'})
     ];
 
     constructor(
@@ -38,7 +37,7 @@ export class NicknameComponent extends Page implements OnDestroy {
     }
 
     onSave(): void {
-        this._httpService.put('usercp/nickname', { nickname: this.nickname })
+        this._httpService.put('usercp/nickname', {nickname: this.nickname})
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',

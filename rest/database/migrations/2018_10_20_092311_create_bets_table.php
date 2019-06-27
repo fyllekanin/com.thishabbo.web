@@ -1,18 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreateBetsTable extends Migration
-{
+class CreateBetsTable extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('bets', function (Blueprint $table) {
             $table->bigIncrements('betId');
             $table->bigInteger('betCategoryId');
@@ -21,6 +19,7 @@ class CreateBetsTable extends Migration
             $table->integer('rightSide');
             $table->integer('isFinished')->default(0);
             $table->integer('result')->nullable();
+            $table->integer('displayOrder')->default(0);
             $table->integer('isDeleted')->default(0);
             $table->integer('isSuspended')->default(0);
             $table->bigInteger('createdAt');
@@ -39,8 +38,7 @@ class CreateBetsTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('bets');
     }
 }

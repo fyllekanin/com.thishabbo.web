@@ -104,7 +104,7 @@ class BadgesController extends Controller {
         $nameIsUnique = Badge::withName($badge->name)->count('badgeId') == 0;
         Condition::precondition(!$nameIsUnique, 400, 'Name needs to be unique');
 
-        $this->validate($request, [
+        $request->validate([
             'badgeImage' => 'required|mimes:jpg,jpeg,bmp,png,gif',
         ]);
 
@@ -145,7 +145,7 @@ class BadgesController extends Controller {
         Condition::precondition(!$nameIsUnique, 400, 'Name needs to be unique');
 
         if ($badgeImage) {
-            $this->validate($request, [
+            $request->validate([
                 'badgeImage' => 'required|mimes:jpg,jpeg,bmp,png,gif',
             ]);
         }

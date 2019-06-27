@@ -5,6 +5,7 @@
     background-size: cover;
     float: left;
     margin-bottom: 15px;
+    box-shadow: rgba(0, 0, 0, 0.19) 0 0px 0px 1px inset, rgba(255, 255, 255, 0.09) 0px 0px 0px 2px inset, rgba(0, 0, 0, 0.1) 0px 2px 0px;
 }
 
 .avatar {

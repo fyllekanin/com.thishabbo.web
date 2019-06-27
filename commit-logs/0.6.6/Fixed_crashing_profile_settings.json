@@ -1,0 +1,1 @@
+{"topic":"Fixed crashing profile settings","type":"Bug","body":"Profile settings were crashing because trying to use undefined value"}

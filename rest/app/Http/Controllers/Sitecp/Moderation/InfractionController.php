@@ -177,15 +177,15 @@ class InfractionController extends Controller {
             }, 0);
 
         $threadSkeleton->content = "Hey [mention]@" . $infracted->nickname . "[/mention] 
-Below you can find information regarding the infraction you were just given.
-[i]Use this thead if you wanna appeal your infraction[/i]
+Below you can find information regarding the infraction or warning you have just been given.
+[i]If you'd like to appeal against your infraction or warning, please speak to the Forum Admin.[/i]
         
 [quote]
-[b]Infraction Type:[/b] " . $infractionLevel->title . "
+[b]Infraction/Warning Type:[/b] " . $infractionLevel->title . "
 [b]Penalty in credits:[/b] " . $infractionLevel->penalty . " credits was taken
 [b]Reason:[/b] " . $infraction->reason . "
             
-[b]Current infraction points:[/b] " . $points . "
+[b]Current Infraction/Warning Points:[/b] " . $points . "
 [/quote]";
         $threadSkeleton->title = $infracted->nickname . " received an infraction";
         $threadSkeleton->categoryId = $infractionLevel->categoryId;

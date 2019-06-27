@@ -37,7 +37,7 @@ export class AutoBansListComponent extends Page implements OnDestroy {
 
     tabs: Array<TitleTab> = [
         new TitleTab({
-            title: 'Create New',
+            title: 'Create New Auto Ban',
             link: 'sitecp/moderation/auto-bans/new'
         })
     ];
@@ -86,14 +86,14 @@ export class AutoBansListComponent extends Page implements OnDestroy {
             case AutoBansActions.DELETE:
                 const title = this._data.items.find(item => item.autoBanId === Number(action.rowId)).title;
                 this._dialogService.confirm({
-                    title: `Are you sure?`,
-                    content: `Are you sure you wanna delete ${title}?`,
+                    title: `Delete Auto Ban`,
+                    content: `Are you sure you want to delete ${title}?`,
                     callback: () => {
                         this._httpService.delete(`sitecp/moderation/auto-bans/${action.rowId}`)
                             .subscribe(() => {
                                 this._notificationService.sendNotification(new NotificationMessage({
                                     title: 'Success',
-                                    message: 'Autoban deleted'
+                                    message: 'Autoban has been deleted!'
                                 }));
                                 this._dialogService.closeDialog();
                                 this._data.items = this._data.items.filter(item => item.autoBanId !== Number(action.rowId));

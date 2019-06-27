@@ -11,15 +11,15 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 
 @Component({
     selector: 'app-sitecp-user-essentials',
-    templateUrl: 'essentials.component.html',
-    styleUrls: ['essentials.component.css']
+    templateUrl: 'essentials.component.html'
 })
 export class EssentialsComponent extends Page implements OnDestroy {
     private _data: User;
     private _updatedAt = (new Date().getTime() / 1000);
 
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Remove'})
+        new TitleTab({title: 'Remove'}),
+        new TitleTab({title: 'Back', link: '/sitecp/users/page/1'})
     ];
 
     constructor (

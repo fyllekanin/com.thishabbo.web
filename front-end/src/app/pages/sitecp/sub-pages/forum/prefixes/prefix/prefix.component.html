@@ -3,8 +3,8 @@
     <div class="grid-container full">
         <div class="grid-x grid-margin-x">
             <div class="cell small-6">
-                <label>Text</label>
-                <input name="prefix-text" type="text" [(ngModel)]="prefix.text" />
+                <label>Name</label>
+                <input name="prefix-text" type="text" [(ngModel)]="prefix.text"/>
             </div>
             <div class="cell small-6">
                 <label>Style</label>
@@ -21,12 +21,12 @@
 <app-title [title]="'Categories'"></app-title>
 <app-content>
     <div class="grid-container full">
-        <div class="grid-x margin-x">
+        <div class="grid-x grid-margin-x">
             <div class="cell small-12">
                 <div *ngFor="let category of categories"
-                    class="category"
-                    (click)="toggle(category.categoryId)"
-                    [ngClass]="isSelected(category.categoryId) ? 'selected' : ''">
+                     class="category"
+                     (click)="toggle(category.categoryId)"
+                     [ngClass]="isSelected(category.categoryId) ? 'selected' : ''">
                     {{category.title}}
                 </div>
             </div>

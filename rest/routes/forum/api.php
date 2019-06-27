@@ -31,6 +31,8 @@ Route::delete('/thread/{threadId}/ignore', 'Forum\Thread\ThreadActionController@
 
 Route::get('/thread/{threadId}/posters/page/{page}', 'Forum\Thread\ThreadCrudController@getPosters');
 
+Route::put('/category/read-all', 'Forum\Category\CategoryActionController@readAll');
+
 Route::prefix('moderation')->group(function () {
     Route::put('/thread/approve/posts', 'Moderation\PostController@approvePosts');
     Route::put('/thread/unapprove/posts', 'Moderation\PostController@unApprovePosts');

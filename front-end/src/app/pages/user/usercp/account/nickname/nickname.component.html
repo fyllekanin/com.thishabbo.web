@@ -1,24 +1,26 @@
 <app-title [title]="'Change Nickname'" [tabs]="tabs" (onTabClick)="onSave()"></app-title>
 <app-content>
-    <em>
-        VX does things differently. You will have two usernames - one will be your nickname that is displayed & visible
-        to other users on the website and a username that is soley used to login. While your nickname may change freely
-        if you don't hit the minimum requirements to keep it, your username will never be changed so you'll never lose
-        access to the website.
-        <br/><br/>
-        On our new version,
-        we made the decision to have 2 usernames to change names freely without worrying about locking users out. On
-        previous versions, names would be changed and it would lock users out and became very inconvienent. Having a
-        name that never changes will ensure users won't be locked out when strict requirements are implemented to keep
-        your nickname. <br/>
-    </em>
-    <br/>
-    <strong>Information:</strong>
+    VX does things differently. You will have two usernames - one will be your nickname that is displayed & visible
+    to other users on the website and a username that is soley used to login with. While your nickname may change freely
+    if you don't hit the minimum requirements to keep it, your username will never be changed so you'll never lose
+    access to the website, hooray!.
+    <br/><br/>
+    Why 2 usernames?
+    we made the decision to have 2 usernames to change names freely without having to worry about locking old users out
+    because their name had been changed. On
+    many occassions we've had several issues where a name has been changed and an older user can't access their account
+    any more, it causes a few issues. Having a
+    name that never changes will ensure users won't ever be locked out of their account when we do eventually bring in
+    relaxed rules for name changes.
+    <label>Information:</label>
     <ul>
-        <li>It costs 300 THC to change your nickname</li>
-        <li>Once changed, you won't be able to change your nickname again for 7 days</li>
-        <li>Your login username will never change</li>
+        <li>It costs 300 THC to change your nickname.</li>
+        <li>Once changed, you won't be able to change your nickname again for 7 days.</li>
+        <li>Your login username will never change.</li>
+        <li>You can change your nickname to anyone who hasn't logged onto the site for the past 4 months. If your name
+            is changed, it won't be changed back as this is an automatic and fair process.
+        </li>
     </ul>
     <label>New Nickname</label>
-    <input name="nickname" [(ngModel)]="nickname" type="text">
+    <input name="nickname" placeholder="Choose a nickname..." [(ngModel)]="nickname" type="text">
 </app-content>

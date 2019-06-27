@@ -1,4 +1,5 @@
 import { arrayOf, ClassHelper, primitive, primitiveOf } from 'shared/helpers/class.helper';
+import { TitleTopBorder } from 'shared/app-views/title/title.model';
 
 export class SideMenuItem {
     @primitive()
@@ -22,10 +23,16 @@ export class SideMenuBlock {
     title: string;
     @arrayOf(SideMenuItem)
     items: Array<SideMenuItem> = [];
+    @primitiveOf(String)
+    top: TitleTopBorder;
+    @primitiveOf(String)
+    color = '#179bfb';
 
     constructor(source: {
         title: string,
-        items: Array<SideMenuItem>
+        items: Array<SideMenuItem>,
+        top?: string,
+        color?: string
     }) {
         ClassHelper.assign(this, source);
         this.items = this.items.filter(item => item.isApplicable);
