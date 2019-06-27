@@ -27,6 +27,8 @@ class CreateCategoriesTables extends Migration {
             $table->bigInteger('createdAt');
             $table->bigInteger('updatedAt');
             $table->string('icon')->nullable();
+            $table->integer('xp')->default(0);
+            $table->integer('credits')->default(0);
 
             // Indexes
             $table->index('title');

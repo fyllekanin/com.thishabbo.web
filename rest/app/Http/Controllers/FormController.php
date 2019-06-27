@@ -3,23 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\EloquentModels\Forum\Category;
+use App\Helpers\ConfigHelper;
 use App\Http\Controllers\Forum\Thread\ThreadCrudController;
 use App\Logger;
 use App\Models\Logger\Action;
-use App\Services\ForumService;
-use App\Services\ForumValidatorService;
 use App\Utils\Condition;
+use App\Views\BugReportView;
 use App\Views\ContactApplicationView;
 use App\Views\JobApplicationView;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
-use App\Helpers\ConfigHelper;
-use League\Flysystem\Config;
-use App\Views\BugReportView;
 
 class FormController extends Controller {
 
-    public function createApplication(Request $request, ForumService $forumService, ForumValidatorService $validatorService) {
+    public function createApplication(Request $request, ThreadCrudController $threadCrudController) {
         $user = $request->get('auth');
         $data = (object)$request->input('data');
 
@@ -33,12 +30,11 @@ class FormController extends Controller {
 
         $threadSkeleton = JobApplicationView::of($data);
         $jobCategories = Category::isJobCategory()->get();
-        $threadController = new ThreadCrudController($forumService, $validatorService);
 
         foreach ($jobCategories as $category) {
             $threadSkeleton->categoryId = $category->categoryId;
             try {
-                $threadController->doThread($user, null, $threadSkeleton, null, true);
+                $threadCrudController->doThread($user, null, $threadSkeleton, null, true);
             } catch (ValidationException $e) {
             }
         }
@@ -47,7 +43,7 @@ class FormController extends Controller {
         return response()->json();
     }
 
-    public function createContact(Request $request, ForumService $forumService, ForumValidatorService $validatorService) {
+    public function createContact(Request $request, ThreadCrudController $threadCrudController) {
         $user = $request->get('auth');
         $data = (object)$request->input('data');
 
@@ -58,12 +54,11 @@ class FormController extends Controller {
 
         $threadSkeleton = ContactApplicationView::of($data);
         $jobCategories = Category::isContactCategory()->get();
-        $threadController = new ThreadCrudController($forumService, $validatorService);
 
         foreach ($jobCategories as $category) {
             $threadSkeleton->categoryId = $category->categoryId;
             try {
-                $threadController->doThread($user, null, $threadSkeleton, null, true);
+                $threadCrudController->doThread($user, null, $threadSkeleton, null, true);
             } catch (ValidationException $e) {
             }
         }

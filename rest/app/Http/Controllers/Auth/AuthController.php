@@ -17,8 +17,10 @@ use App\Services\BotService;
 use App\Services\HabboService;
 use App\Utils\Condition;
 use App\Utils\RequestUtil;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class AuthController extends Controller {
@@ -44,7 +46,7 @@ class AuthController extends Controller {
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getRegisterPage() {
         return response()->json([
@@ -56,7 +58,7 @@ class AuthController extends Controller {
     /**
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function acceptGdpr(Request $request) {
         $user = $request->get('auth');
@@ -72,8 +74,8 @@ class AuthController extends Controller {
      *
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
+     * @return JsonResponse
+     * @throws ValidationException
      */
     public function register(Request $request) {
         $data = (object)$request->input('data');
@@ -117,7 +119,7 @@ class AuthController extends Controller {
      *
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function refresh(Request $request) {
         $refreshToken = $request->header('RefreshAuthorization');
@@ -151,14 +153,15 @@ class AuthController extends Controller {
             'nickname' => $user->nickname,
             'gdpr' => $user->gdpr,
             'homePage' => UserHelper::getUserDataOrCreate($user->userId)->homePage,
-            'credits' => UserHelper::getUserDataOrCreate($user->userId)->credits
+            'credits' => UserHelper::getUserDataOrCreate($user->userId)->credits,
+            'xp' => UserHelper::getUserDataOrCreate($user->userId)->xp
         ]);
     }
 
     /**
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getUser(Request $request) {
         $user = $request->get('auth');
@@ -176,7 +179,8 @@ class AuthController extends Controller {
             'nickname' => $user->nickname,
             'gdpr' => $user->gdpr,
             'homePage' => UserHelper::getUserDataOrCreate($user->userId)->homePage,
-            'credits' => UserHelper::getUserDataOrCreate($user->userId)->credits
+            'credits' => UserHelper::getUserDataOrCreate($user->userId)->credits,
+            'xp' => UserHelper::getUserDataOrCreate($user->userId)->xp
         ]);
     }
 
@@ -185,7 +189,7 @@ class AuthController extends Controller {
      *
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function logout(Request $request) {
         $accessToken = RequestUtil::getAccessToken($request);
@@ -204,7 +208,7 @@ class AuthController extends Controller {
      *
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function login(Request $request) {
         $loginName = $request->input('loginName');
@@ -254,7 +258,8 @@ class AuthController extends Controller {
             'nickname' => $user->nickname,
             'gdpr' => $user->gdpr,
             'homePage' => UserHelper::getUserDataOrCreate($user->userId)->homePage,
-            'credits' => UserHelper::getUserDataOrCreate($user->userId)->credits
+            'credits' => UserHelper::getUserDataOrCreate($user->userId)->credits,
+            'xp' => UserHelper::getUserDataOrCreate($user->userId)->xp
         ]);
     }
 

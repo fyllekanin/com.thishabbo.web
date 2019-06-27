@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property mixed updatedAt
  * @property false|string nameColor
  * @property mixed namePosition
+ * @property mixed xp
  */
 class UserData extends UnixTimeModel {
     protected $table = 'userdata';
