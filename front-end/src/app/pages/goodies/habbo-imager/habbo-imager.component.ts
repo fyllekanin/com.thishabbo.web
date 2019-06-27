@@ -4,7 +4,7 @@ import { habboDirections, habboEmotions, habboItems, habboSizes } from './habbo-
 import { StringHelper } from 'shared/helpers/string.helper';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
-import { TitleTopBorder } from "shared/app-views/title/title.model";
+import { TitleTopBorder } from 'shared/app-views/title/title.model';
 
 @Component({
     selector: 'app-goodies-habbo-imager',
@@ -12,8 +12,6 @@ import { TitleTopBorder } from "shared/app-views/title/title.model";
     styleUrls: ['habbo-imager.component.css']
 })
 export class HabboImagerComponent extends Page implements OnDestroy {
-    topBorderRed = TitleTopBorder.RED;
-
     private _basicUrl = 'https://www.habbo.com/habbo-imaging/avatarimage?user={habbo}';
 
     private _queryArray = [
@@ -24,6 +22,7 @@ export class HabboImagerComponent extends Page implements OnDestroy {
         'action'
     ];
 
+    topBorderRed = TitleTopBorder.RED;
     // Results
     directLink = 'nothing now';
     bbcode = 'nothing now';
