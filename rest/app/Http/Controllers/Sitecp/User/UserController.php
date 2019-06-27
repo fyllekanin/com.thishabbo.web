@@ -209,4 +209,8 @@ class UserController extends Controller {
         Condition::precondition(!isset($newUser->nickname) || ($user->nickname != $newUser->nickname && !$this->authService->isNicknameValid($newUser->nickname)),
             400, 'Nickname is not valid!');
     }
+
+    private function getUserCpDashboardStats(Request $request) {
+        $user = UserHelper::getUserFromId($request->get('auth'));
+    }
 }

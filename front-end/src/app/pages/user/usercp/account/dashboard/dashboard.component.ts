@@ -17,6 +17,8 @@ import {
     TableHeader,
     TableRow
 } from 'shared/components/table/table.model';
+import { AuthService } from 'core/services/auth/auth.service';
+import { TimeHelper } from 'shared/helpers/time.helper';
 
 @Component({
     selector: 'app-user-usercp-dashboard',
@@ -39,9 +41,9 @@ export class DashboardComponent extends Page implements OnDestroy {
     stats: Array<StatsBoxModel> = [
         new StatsBoxModel({
             borderColor: TitleTopBorder.GREEN,
-            icon: 'fas fa-coins',
-            title: 'Template 1',
-            breadText: 'Template 1'
+            icon: 'fas fa-cid-card',
+            title: 'User ID',
+            breadText: String(this._authService.authUser.userId)
         }),
         new StatsBoxModel({
             borderColor: TitleTopBorder.RED,
@@ -66,6 +68,7 @@ export class DashboardComponent extends Page implements OnDestroy {
     constructor(
         private _continuesInformation: ContinuesInformationService,
         private _notificationService: NotificationService,
+        private _authService: AuthService,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService
     ) {
