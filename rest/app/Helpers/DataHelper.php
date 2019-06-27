@@ -33,7 +33,7 @@ class DataHelper {
 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $radio->ip . ':' . $radio->port . '/sitecp.cgi?mode=viewxml');
-        self::setCurlOptionsForRadio($curl, $radio->sitecpPassword);
+        self::setCurlOptionsForRadio($curl, $radio->adminPassword);
 
         $data = curl_exec($curl);
         curl_close($curl);
@@ -46,7 +46,7 @@ class DataHelper {
 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $radio->ip . ':' . $radio->port . '/stats?sid=1&json=1');
-        self::setCurlOptionsForRadio($curl, $radio->sitecpPassword);
+        self::setCurlOptionsForRadio($curl, $radio->adminPassword);
 
         $data = curl_exec($curl);
         curl_close($curl);

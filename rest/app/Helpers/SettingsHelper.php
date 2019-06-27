@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\EloquentModels\Setting;
 use App\Models\Radio\RadioSettings;
+use Illuminate\Support\Facades\Cache;
 
 class SettingsHelper {
 
@@ -13,7 +14,12 @@ class SettingsHelper {
     }
 
     public static function getSetting($key) {
-        return Setting::where('key', $key)->getQuery()->first();
+        if (Cache::has('setting-' . $key)) {
+            return Cache::get('setting-' . $key);
+        }
+        $setting = Setting::where('key', $key)->first();
+        Cache::add('setting-' . $key, $setting, 10);
+        return $setting;
     }
 
     public static function createOrUpdateSetting($key, $value) {
@@ -21,7 +27,7 @@ class SettingsHelper {
             return;
         }
 
-        $setting = Setting::where('key', $key)->first();
+        $setting = self::getSetting($key);
         if ($setting) {
             $setting->value = $value;
             $setting->save();
@@ -34,7 +40,7 @@ class SettingsHelper {
         }
     }
 
-    public static function getRadioConnectionInformation($withSitecpPassword = false) {
+    public static function getRadioConnectionInformation($withAdminPassword = false) {
         $settingKeys = ConfigHelper::getKeyConfig();
         $radio = new RadioSettings(SettingsHelper::getSettingValue($settingKeys->radio));
 
@@ -42,7 +48,7 @@ class SettingsHelper {
             'ip' => $radio->ip,
             'port' => $radio->port,
             'password' => $radio->password,
-            'sitecpPassword' => $withSitecpPassword ? $radio->sitecpPassword : null,
+            'sitecpPassword' => $withAdminPassword ? $radio->adminPassword : null,
             'serverType' => $radio->serverType
         ];
     }

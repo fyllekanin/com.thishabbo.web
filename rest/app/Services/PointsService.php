@@ -20,9 +20,9 @@ class PointsService {
         $this->addUserPoints($userId, $model['credits'], $model['xp']);
     }
 
-    private function addUserPoints($userId, $credits, $xp) {
+    private function addUserPoints($userId, $credits, $experience) {
         $userData = UserHelper::getUserDataOrCreate($userId);
-        $userData->xp += $xp;
+        $userData->xp += $experience;
         $userData->credits += $credits;
         $userData->save();
     }

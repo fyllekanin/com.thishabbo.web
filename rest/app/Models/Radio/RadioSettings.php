@@ -36,7 +36,7 @@ class RadioSettings {
     public $ip = '127.0.0.1';
     public $port = 8080;
     public $password = '';
-    public $sitecpPassword = '';
+    public $adminPassword = '';
     public $nickname = '';
     public $likes = 0;
     public $userId = 0;
@@ -53,7 +53,7 @@ class RadioSettings {
             $this->ip = $data->ip;
             $this->port = $data->port;
             $this->password = $data->password;
-            $this->sitecpPassword = $data->sitecpPassword;
+            $this->adminPassword = $data->adminPassword;
             $this->nickname = $data->nickname;
             $this->likes = $data->likes;
             $this->userId = $data->userId;
@@ -73,7 +73,7 @@ class RadioSettings {
             'ip' => $this->ip,
             'port' => $this->port,
             'password' => $this->password,
-            'sitecpPassword' => $this->sitecpPassword,
+            'adminPassword' => $this->adminPassword,
             'nickname' => $this->nickname,
             'likes' => $this->likes,
             'userId' => $this->userId,
