@@ -11,6 +11,11 @@ import { ContinuesInformationService } from 'core/services/continues-information
     template: `
         <div class="loader" [ngClass]="!isLoading ? 'not-loading' : ''"
              [ngStyle]="{'width': loadingProgress + '%'}"></div>
+        <div class="request-wrapper" [ngClass]="requestInProgress ? 'request-wrapper-show' : ''">
+            <div class="request" [ngClass]="requestInProgress ? 'request-show' : ''">
+                Loading....
+            </div>
+        </div>
         <app-dialog></app-dialog>
         <app-global-notification></app-global-notification>
         <app-top-bar></app-top-bar>
@@ -35,8 +40,9 @@ export class AppComponent extends Page implements OnDestroy {
     loadingProgress = 0;
     isLoading = false;
     isFixed = false;
+    requestInProgress = false;
 
-    constructor(
+    constructor (
         private _router: Router,
         private _elementRef: ElementRef,
         private _userService: UserService,
@@ -67,24 +73,24 @@ export class AppComponent extends Page implements OnDestroy {
                     if (AppComponent.isScrollToSet()) {
                         this.tryToScrollToElement();
                     } else if (!AppComponent.isScrollOff()) {
-                        document.getElementsByTagName('app-header')[0].scrollIntoView({ behavior: 'smooth' });
+                        document.getElementsByTagName('app-header')[0].scrollIntoView({behavior: 'smooth'});
                     }
                 } catch (e) {
-                    document.getElementsByTagName('app-header')[0].scrollIntoView({ behavior: 'smooth' });
+                    document.getElementsByTagName('app-header')[0].scrollIntoView({behavior: 'smooth'});
                 }
             }
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    goToTop(): void {
-        document.getElementsByTagName('app-header')[0].scrollIntoView({ behavior: 'smooth' });
+    goToTop (): void {
+        document.getElementsByTagName('app-header')[0].scrollIntoView({behavior: 'smooth'});
     }
 
-    private addCustomListeners(): void {
+    private addCustomListeners (): void {
         document.body.addEventListener('click', (event) => {
             const target = event.target;
             if (AppComponent.isTargetInternalLink(target)) {
@@ -95,36 +101,37 @@ export class AppComponent extends Page implements OnDestroy {
         });
     }
 
-    private addActivityListener(): void {
+    private addActivityListener (): void {
         window.addEventListener('focus', () => {
             this._userService.isUserActive = true;
         });
         window.addEventListener('blur', () => {
             this._userService.isUserActive = false;
         });
+        this._userService.onRequestInProgressChange.subscribe(val => this.requestInProgress = val);
     }
 
-    private static getUrl(ele): string {
+    private static getUrl (ele): string {
         return ele['dataset']['url'];
     }
 
-    private static isTargetInternalLink(ele): boolean {
+    private static isTargetInternalLink (ele): boolean {
         return ele instanceof Element
             && ele.nodeName.toUpperCase() === 'A'
             && ele['dataset']['type'] === 'internal';
     }
 
-    private static isScrollToSet(): boolean {
+    private static isScrollToSet (): boolean {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.has('scrollTo');
     }
 
-    private static isScrollOff(): boolean {
+    private static isScrollOff (): boolean {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.has('skipScroll');
     }
 
-    private tryToScrollToElement(): void {
+    private tryToScrollToElement (): void {
         let count = 0;
         const interval = setInterval(() => {
             const result = this.scrollToElement();
@@ -135,7 +142,7 @@ export class AppComponent extends Page implements OnDestroy {
         }, 500);
     }
 
-    private scrollToElement(): boolean {
+    private scrollToElement (): boolean {
         const urlParams = new URLSearchParams(window.location.search);
         let top = -1;
         if (urlParams.has('scrollTo')) {
@@ -144,7 +151,7 @@ export class AppComponent extends Page implements OnDestroy {
             top = eles.length > 0 ? eles[0]['offsetTop'] : -1;
         }
 
-        window.scrollTo({ left: 0, top: top, behavior: 'smooth' });
+        window.scrollTo({left: 0, top: top, behavior: 'smooth'});
         return top > 0;
     }
 }
