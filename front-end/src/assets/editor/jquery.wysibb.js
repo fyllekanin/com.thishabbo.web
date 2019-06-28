@@ -868,7 +868,6 @@ wbbdebug = false;
                     this.$body.css("direction", this.options.direction)
                 }
 
-
                 if ('contentEditable' in this.body) {
                     this.body.contentEditable = true;
                     try {

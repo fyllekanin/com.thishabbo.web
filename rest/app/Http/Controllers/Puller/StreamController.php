@@ -7,7 +7,6 @@ use App\EloquentModels\Staff\Timetable;
 use App\EloquentModels\User\User;
 use App\Helpers\ConfigHelper;
 use App\Helpers\SettingsHelper;
-use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Radio\RadioSettings;
 use App\Services\ActivityService;

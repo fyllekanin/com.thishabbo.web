@@ -4,7 +4,7 @@
             <app-user-post-bit [user]="user"></app-user-post-bit>
         </div>
         <div class="post-content-container">
-            <div *ngIf="isInEditMode" class="post-content">
+            <div class="post-content" [style.display]="isInEditMode ? 'block' : 'none'">
                 <app-editor #editor
                             [buttons]="editorButtons"
                             [content]="content"

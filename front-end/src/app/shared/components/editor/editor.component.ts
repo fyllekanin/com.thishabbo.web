@@ -30,7 +30,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
     private _emojis: Array<BBcodeModel> = [];
     private _haveLoaded = false;
 
-    @ViewChild('editor', { static: true }) editorEle;
+    @ViewChild('editor', { static: false }) editorEle;
     @Input() title = 'Editor';
     @Input() subTitle = '';
     @Input() slim = false;
