@@ -2200,7 +2200,7 @@ wbbdebug = false;
                     }
 
                     $.each(this.options.allButtons[b].transform, $.proxy(function (html, bb) {
-                        html = html.replace(/\n/g, ""); //IE 7,8 FIX
+                        html = html.replace(/\n/g, "<br/>"); //IE 7,8 FIX
                         var a = [];
                         bb = bb.replace(/(\(|\)|\[|\]|\.|\*|\?|\:|\\|\\)/g, "\\$1");
                         //.replace(/\s/g,"\\s");
