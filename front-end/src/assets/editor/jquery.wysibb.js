@@ -93,7 +93,6 @@ wbbdebug = false;
         }
         this.txtArea = txtArea;
         this.$txtArea = $(txtArea);
-        var id = this.$txtArea.attr("id") || this.setUID(this.txtArea);
         this.options = {
             bbmode: false,
             onlyBBmode: false,
@@ -501,12 +500,14 @@ wbbdebug = false;
             }, this));
         }
         $.extend(true, this.options, settings);
-        this.init();
+        this.init(settings.id);
     }
 
     $.wysibb.prototype = {
         lastid: 1,
-        init: function () {
+        id: null,
+        init: function (id) {
+            this.id = id;
             $.log("Init", this);
             //check for mobile
             this.isMobile = function (a) {
@@ -824,7 +825,7 @@ wbbdebug = false;
             $.log("Build editor");
 
             //this.$editor = $('<div class="wysibb">');
-            this.$editor = $('<div>').addClass("wysibb");
+            this.$editor = $('<div>').addClass("wysibb").attr('id', this.id);
 
             if (this.isMobile) {
                 this.$editor.addClass("wysibb-mobile");
@@ -866,7 +867,6 @@ wbbdebug = false;
                 if (this.options.direction) {
                     this.$body.css("direction", this.options.direction)
                 }
-
 
                 if ('contentEditable' in this.body) {
                     this.body.contentEditable = true;
@@ -916,7 +916,7 @@ wbbdebug = false;
 
                 //trace Textarea
                 if (this.options.traceTextarea === true) {
-                    $(document).bind("mousedown", $.proxy(this.traceTextareaEvent, this));
+                    $(this).bind("mousedown", $.proxy(this.traceTextareaEvent, this));
                     this.$txtArea.val("");
                 }
 
@@ -941,8 +941,6 @@ wbbdebug = false;
                             height: height
                         });
                 }
-
-                this.imgListeners();
             }
 
 
@@ -2202,7 +2200,7 @@ wbbdebug = false;
                     }
 
                     $.each(this.options.allButtons[b].transform, $.proxy(function (html, bb) {
-                        html = html.replace(/\n/g, ""); //IE 7,8 FIX
+                        html = html.replace(/\n/g, "<br/>"); //IE 7,8 FIX
                         var a = [];
                         bb = bb.replace(/(\(|\)|\[|\]|\.|\*|\?|\:|\\|\\)/g, "\\$1");
                         //.replace(/\s/g,"\\s");
@@ -2423,7 +2421,7 @@ wbbdebug = false;
             }
         },
         modeSwitch: function (skipFocus) {
-            $(".mswitch").toggleClass("on");
+            $("#" + this.id + " .mswitch").toggleClass("on");
             if (this.options.bbmode) {
                 //to HTML
                 this.$body.html(this.getHTML(this.$txtArea.val()));
@@ -2614,7 +2612,7 @@ wbbdebug = false;
             }
         },
         traceTextareaEvent: function (e) {
-            if ($(e.target).closest("div.wysibb").size() == 0) {
+            if ($(e.target).closest("#" + this.id + " div.wysibb").size() == 0) {
                 if ($(document.activeElement).is("div.wysibb-body")) {
                     this.saveRange();
                 }
@@ -2701,30 +2699,7 @@ wbbdebug = false;
             $(el).after(sl);
             this.selectNode(sl);
         },
-
-        //img listeners
-        imgListeners: function () {
-            $(document).on("mousedown", $.proxy(this.imgEventHandler, this));
-        },
-        imgEventHandler: function (e) {
-            var $e = $(e.target);
-            if (this.hasWrapedImage && ($e.closest(".wbb-img,#wbbmodal").size() == 0 || $e.hasClass("wbb-cancel-button"))) {
-                this.$body.find(".imgWrap ").each(function () {
-                    $.log("Removed imgWrap block");
-                    $(this).replaceWith($(this).find("img"));
-                })
-                this.hasWrapedImage = false;
-                this.updateUI();
-            }
-
-            if ($e.is("img") && $e.closest(".wysibb-body").size() > 0) {
-                $e.wrap("<span class='imgWrap'></span>");
-                this.hasWrapedImage = $e;
-                this.$body.focus();
-                this.selectNode($e.parent()[0]);
-            }
-        },
-
+        
         //MODAL WINDOW
         showModal: function (cmd, opt, queryState) {
             $.log("showModal: " + cmd);

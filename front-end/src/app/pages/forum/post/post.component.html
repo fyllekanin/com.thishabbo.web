@@ -4,14 +4,14 @@
             <app-user-post-bit [user]="user"></app-user-post-bit>
         </div>
         <div class="post-content-container">
-            <div *ngIf="isInEditMode" class="post-content" [style.display]="isInEditMode ? 'block' : 'hidden'">
+            <div class="post-content" [style.display]="isInEditMode ? 'block' : 'none'">
                 <app-editor #editor
                             [buttons]="editorButtons"
                             [content]="content"
                             (onTabClick)="onButtonClick($event)">
                 </app-editor>
             </div>
-            <div [style.display]="!isInEditMode ? 'block' : 'hidden'" class="post-content"
+            <div [style.display]="!isInEditMode ? 'block' : 'none'" class="post-content"
                  [innerHTML]="parsedContent | safeHtml"></div>
             <div class="post-likers" *ngIf="haveLikers">
                 <span *ngFor="let item of visibleLikers; let first = first;"><span
