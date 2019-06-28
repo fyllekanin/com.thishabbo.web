@@ -112,6 +112,7 @@ class PostCrudController extends Controller {
      * @param Request $request
      *
      * @param ThreadCrudController $threadCrudController
+     *
      * @return JsonResponse
      */
     public function createReportPost(Request $request, ThreadCrudController $threadCrudController) {

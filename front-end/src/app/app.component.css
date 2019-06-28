@@ -30,6 +30,42 @@
     transition: opacity 5s linear;
 }
 
+.request-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 11;
+    background-color: transparent;
+    height: 100vh;
+    width: 100%;
+    margin-top: 0;
+    display: none;
+}
+
+.request {
+    padding: 10px;
+    background-color: #3c3c3c;
+    bottom: 0;
+    position: fixed;
+    width: 330px;
+    left: 50%;
+    margin-left: -165px;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    opacity: 0;
+}
+
+.request-wrapper-show {
+    display: block;
+}
+
+.request-show {
+    opacity: 1;
+}
+
 .not-loading {
     opacity: 0;
 }
