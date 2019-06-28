@@ -1,7 +1,7 @@
-<app-title [title]="'Home Page Threads'" [tabs]="tabs" (onTabClick)="onSave()"></app-title>
+<app-title [title]="'Home Page Threads'" [tabs]="tabs" (onTabClick)="onAction($event)"></app-title>
 <app-content>
-    <div class="grid-container">
-        <div class="grid-x grid-margin-y">
+    <div class="grid-container full">
+        <div class="grid-x">
             <div class="cell small-12">
                 Select from which category ID's to fetch threads from to be presented on the home page. <br/>
                 Do not forget to click the save button on the table when it contains what you want! <br/>
@@ -9,9 +9,6 @@
             </div>
             <div class="cell small-6">
                 <app-form-select [items]="items" [(value)]="value"></app-form-select>
-            </div>
-            <div class="cell small-6">
-                <button appButton (onClick)="onAdd()" [disabled]="!value">Add</button>
             </div>
         </div>
     </div>
