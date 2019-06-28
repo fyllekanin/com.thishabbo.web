@@ -21,11 +21,11 @@ export class ForumLatestPost {
     @time()
     createdAt: string;
 
-    constructor (source: Partial<ForumLatestPost>) {
+    constructor(source: Partial<ForumLatestPost>) {
         ClassHelper.assign(this, source);
     }
 
-    get time (): string {
+    get time(): string {
         return this.createdAt;
     }
 }
@@ -65,7 +65,7 @@ export class ForumPermissions {
     @primitive()
     canOpenCloseOwnThread: boolean;
 
-    constructor (source?: Partial<ForumPermissions>) {
+    constructor(source?: Partial<ForumPermissions>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -78,7 +78,7 @@ export class ThreadPrefix {
     @primitive()
     style: string;
 
-    constructor (source: Partial<ThreadPrefix>) {
+    constructor(source: Partial<ThreadPrefix>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -99,7 +99,7 @@ export class SlimPost {
     @objectOf(ThreadPrefix)
     prefix: ThreadPrefix;
 
-    constructor (source: Partial<SlimPost>) {
+    constructor(source: Partial<SlimPost>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -131,8 +131,10 @@ export class SlimThread {
     prefix: ThreadPrefix;
     @primitive()
     haveRead: boolean;
+    @primitive()
+    icon: string;
 
-    constructor (source?: Partial<SlimThread>) {
+    constructor(source?: Partial<SlimThread>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -161,7 +163,7 @@ export class SlimCategory {
     @primitive()
     haveRead: boolean;
 
-    constructor (source?: Partial<SlimCategory>) {
+    constructor(source?: Partial<SlimCategory>) {
         ClassHelper.assign(this, source);
     }
 }

@@ -1,6 +1,7 @@
 <div class="grid-container margin-bottom forum-home" [ngClass]="isApproved ? '' : 'opacity'">
     <div class="grid-x grid-margin-x">
         <div class="cell small-7 medium-8">
+            <em class="icon" [ngClass]="icon + (haveRead ? ' read-icon' : '')"></em>
             <a class="title" [routerLink]="[threadUrl]" title="{{title}}" [ngClass]="haveRead ? 'read' : ''">
                 <span *ngIf="thread.prefix" [style]="thread.prefix.style | safeStyle">
                     {{thread.prefix.text}} &#xbb;

@@ -2,7 +2,7 @@ import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { ActivatedRoute } from '@angular/router';
-import { HomePageThreadsPage } from './home-page-threads.model';
+import { HomePageThreadsAction, HomePageThreadsPage } from './home-page-threads.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { SITECP_BREADCRUMB_ITEM, WEBSITE_SETTINGS_BREADCRUMB_ITEM } from '../../../sitecp.constants';
 import { SelectItem } from 'shared/components/form/select/select.model';
@@ -29,11 +29,12 @@ export class HomePageThreadsComponent extends Page implements OnDestroy {
     items: Array<SelectItem> = [];
     value: SelectItem = null;
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Save'}),
-        new TitleTab({title: 'Back', link: '/sitecp/website-settings'})
+        new TitleTab({ title: 'Save', value: HomePageThreadsAction.SAVE }),
+        new TitleTab({ title: 'Add Item', value: HomePageThreadsAction.ADD }),
+        new TitleTab({ title: 'Back', link: '/sitecp/website-settings' })
     ];
 
-    constructor (
+    constructor(
         private _httpService: HttpService,
         private _notificationService: NotificationService,
         elementRef: ElementRef,
@@ -51,38 +52,49 @@ export class HomePageThreadsComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy () {
+    ngOnDestroy() {
         super.destroy();
     }
 
-    onAdd (): void {
-        this._data.categoryIds.push(this.value.value);
-        this.value = null;
-        this.setItems();
-        this.createOrUpdateTable();
+    onAction(action: Action): void {
+        switch (action.value) {
+            case HomePageThreadsAction.SAVE:
+                this.onSave();
+                break;
+            case HomePageThreadsAction.ADD:
+                this.onAdd();
+                break;
+        }
     }
 
-    onSave (): void {
-        this._httpService.put('sitecp/content/home-page-threads', {data: this._data.categoryIds})
-            .subscribe(() => {
-                this._notificationService.sendInfoNotification('Categories set!');
-            }, this._notificationService.failureNotification.bind(this._notificationService));
-    }
-
-    onRemove (action: Action): void {
+    onRemove(action: Action): void {
         const categoryId = Number(action.rowId);
         this._data.categoryIds = this._data.categoryIds.filter(id => id !== categoryId);
         this.setItems();
         this.createOrUpdateTable();
     }
 
-    private onData (data: { data: HomePageThreadsPage }): void {
+    private onAdd(): void {
+        this._data.categoryIds.push(this.value.value);
+        this.value = null;
+        this.setItems();
+        this.createOrUpdateTable();
+    }
+
+    private onSave(): void {
+        this._httpService.put('sitecp/content/home-page-threads', { data: this._data.categoryIds })
+            .subscribe(() => {
+                this._notificationService.sendInfoNotification('Categories set!');
+            }, this._notificationService.failureNotification.bind(this._notificationService));
+    }
+
+    private onData(data: { data: HomePageThreadsPage }): void {
         this._data = data.data;
         this.setItems();
         this.createOrUpdateTable();
     }
 
-    private createOrUpdateTable (): void {
+    private createOrUpdateTable(): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -94,7 +106,7 @@ export class HomePageThreadsComponent extends Page implements OnDestroy {
         });
     }
 
-    private setItems (): void {
+    private setItems(): void {
         this.items = this._data.categories.filter(item => this._data.categoryIds.indexOf(item.categoryId) === -1)
             .map(item => ({
                 label: item.title,
@@ -102,22 +114,22 @@ export class HomePageThreadsComponent extends Page implements OnDestroy {
             }));
     }
 
-    private getTableRows (): Array<TableRow> {
+    private getTableRows(): Array<TableRow> {
         return this._data.categories.filter(category => this._data.categoryIds.indexOf(category.categoryId) > -1)
             .map(category => new TableRow({
                 id: category.categoryId.toString(),
                 cells: [
-                    new TableCell({title: category.title})
+                    new TableCell({ title: category.title })
                 ],
                 actions: [
-                    new TableAction({title: 'Remove'})
+                    new TableAction({ title: 'Remove' })
                 ]
             }));
     }
 
-    private getTableHeaders (): Array<TableHeader> {
+    private getTableHeaders(): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Category'})
+            new TableHeader({ title: 'Category' })
         ];
     }
 }

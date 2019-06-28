@@ -14,6 +14,18 @@
     max-width: 70%;
 }
 
+.icon {
+    font-size: 32px;
+    height: 100%;
+    float: left;
+    padding: 3px 13px 0 0;
+    color: #159cfc;
+}
+
+.read-icon {
+    color: #e2e2e2;
+}
+
 .read {
     font-weight: normal !important;
 }
