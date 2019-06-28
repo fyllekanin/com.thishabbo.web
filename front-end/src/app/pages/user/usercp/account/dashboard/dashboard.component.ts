@@ -17,7 +17,8 @@ import {
     TableHeader,
     TableRow
 } from 'shared/components/table/table.model';
-import { AuthService } from 'core/services/auth/auth.service';
+import { UserCpDashboardModel } from './dashboard.model';
+import { ActivatedRoute } from '@angular/router';
 import { TimeHelper } from 'shared/helpers/time.helper';
 
 @Component({
@@ -26,7 +27,7 @@ import { TimeHelper } from 'shared/helpers/time.helper';
 })
 export class DashboardComponent extends Page implements OnDestroy {
     private _tabs: Array<TabModel> = [];
-
+    private _stats: UserCpDashboardModel = new UserCpDashboardModel();
     tableConfig: TableConfig;
 
     isEditorSourceMode: boolean;
@@ -38,37 +39,10 @@ export class DashboardComponent extends Page implements OnDestroy {
         new TitleTab({ title: 'Save' })
     ];
 
-    stats: Array<StatsBoxModel> = [
-        new StatsBoxModel({
-            borderColor: TitleTopBorder.GREEN,
-            icon: 'fas fa-cid-card',
-            title: 'User ID',
-            breadText: String(this._authService.authUser.userId)
-        }),
-        new StatsBoxModel({
-            borderColor: TitleTopBorder.RED,
-            icon: 'fas fa-gem',
-            title: 'Template 2',
-            breadText: 'Template 2'
-        }),
-        new StatsBoxModel({
-            borderColor: TitleTopBorder.BLUE,
-            icon: 'fas fa-thumbs-up',
-            title: 'Template 3',
-            breadText: 'Template 3'
-        }),
-        new StatsBoxModel({
-            borderColor: TitleTopBorder.PINK,
-            icon: 'fas fa-thumbs-down',
-            title: 'Template 4',
-            breadText: 'Template 4'
-        })
-    ];
-
     constructor(
         private _continuesInformation: ContinuesInformationService,
         private _notificationService: NotificationService,
-        private _authService: AuthService,
+        activatedRoute: ActivatedRoute,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService
     ) {
@@ -92,6 +66,8 @@ export class DashboardComponent extends Page implements OnDestroy {
         this.haveFixedMenu = Boolean(localStorage.getItem(LOCAL_STORAGE.FIXED_MENU));
         this.showThreadTools = Boolean(localStorage.getItem(LOCAL_STORAGE.FORUM_TOOLS));
         this.minimalisticHeader = Boolean(localStorage.getItem(LOCAL_STORAGE.MINIMALISTIC));
+
+        this.addSubscription(activatedRoute.data, this.onData.bind(this));
     }
 
     onSave(): void {
@@ -113,6 +89,35 @@ export class DashboardComponent extends Page implements OnDestroy {
 
     ngOnDestroy(): void {
         super.destroy();
+    }
+
+    get stats(): Array<StatsBoxModel> {
+        return [
+            new StatsBoxModel({
+                borderColor: TitleTopBorder.GREEN,
+                icon: 'fas fa-cid-card',
+                title: 'User ID',
+                breadText: String(this._stats.userId)
+            }),
+            new StatsBoxModel({
+                borderColor: TitleTopBorder.PINK,
+                icon: 'fas fa-calendar-alt',
+                title: 'Join Date',
+                breadText: TimeHelper.getLongDate(this._stats.registerTimestamp)
+            }),
+            new StatsBoxModel({
+                borderColor: TitleTopBorder.RED,
+                icon: 'fas fa-thumbs-up',
+                title: 'Likes',
+                breadText: String(this._stats.likes)
+            }),
+            new StatsBoxModel({
+                borderColor: TitleTopBorder.BLUE,
+                icon: 'fas fa-shopping-cart',
+                title: 'Shop Items',
+                breadText: String(this._stats.itemsOwned)
+            })
+        ];
     }
 
     private updateEditorSourceMode(): void {
@@ -178,5 +183,9 @@ export class DashboardComponent extends Page implements OnDestroy {
                 new TableAction({ title: 'Remove' })
             ]
         }));
+    }
+
+    private onData (data: UserCpDashboardModel) {
+        this._stats = data;
     }
 }

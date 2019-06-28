@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { UsercpComponent } from './usercp.component';
+import { DashboardResolver } from './account/dashboard/dashboard.resolver';
 
 
 export const usercpRoutes: Routes = [
@@ -14,6 +15,9 @@ export const usercpRoutes: Routes = [
             },
             {
                 path: 'account',
+                resolve: {
+                    data: DashboardResolver
+                },
                 loadChildren: () => import('./account/account.module').then(m => m.AccountModule)
             }
             ,

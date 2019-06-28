@@ -426,6 +426,22 @@ class AccountController extends Controller {
     }
 
     /**
+     * Returns the statistics for UserCP dashboard
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getDashboardStatistics(Request $request) {
+        $user = $request->get('auth');
+        return response()->json([
+            'userId' => $user->userId,
+            'registerTimestamp' => $user->createdAt->timestamp,
+            'itemsOwned' => UserItem::where('userId', $user->userId)->count(),
+            'likes' => $user->likes
+        ]);
+    }
+
+    /**
      * Get method to convert option names to bitwise numbers
      *
      * @param $postBitOptions

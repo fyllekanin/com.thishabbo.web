@@ -8,9 +8,9 @@ export class UserCpDashboardModel {
     @primitive()
     itemsOwned: number;
     @primitive()
-    lootBoxesOwned: number;
+    likes: number;
 
-    constructor (source: Partial<UserCpDashboardModel>) {
+    constructor (source?: Partial<UserCpDashboardModel>) {
         ClassHelper.assign(this, source);
     }
 }

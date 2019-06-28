@@ -3,14 +3,15 @@ import { HttpService } from 'core/services/http/http.service';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
+import { UserCpDashboardModel } from './dashboard.model';
 
 @Injectable()
-export class ForumHomeResolver implements Resolve<Array<SlimCategory>> {
+export class DashboardResolver implements Resolve<UserCpDashboardModel> {
 
     constructor(private _httpService: HttpService) {}
 
-    resolve(): Observable<Array<SlimCategory>> {
-        return this._httpService.get('page/forum/categories')
-            .pipe(map(res => res.map(item => new SlimCategory(item))));
+    resolve(): Observable<UserCpDashboardModel> {
+        return this._httpService.get('usercp/dashboard')
+            .pipe(map(item => new UserCpDashboardModel(item)));
     }
 }
