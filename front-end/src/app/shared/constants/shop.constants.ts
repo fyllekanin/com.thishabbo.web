@@ -17,3 +17,30 @@ export const CONFIGURABLE_ITEMS = [
     SHOP_ITEM_TYPES.nameEffect,
     SHOP_ITEM_TYPES.subscription
 ];
+
+export const LOOT_BOX_ANIMATIONS = [
+    {
+        id: 1,
+        asset: '/assets/images/shop/1.png'
+    },
+    {
+        id: 2,
+        asset: '/assets/images/shop/2.png'
+    },
+    {
+        id: 3,
+        asset: '/assets/images/shop/3.png'
+    },
+    {
+        id: 4,
+        asset: '/assets/images/shop/4.png'
+    },
+    {
+        id: 5,
+        asset: '/assets/images/shop/5.png'
+    },
+    {
+        id: 6,
+        asset: '/assets/images/shop/6.png'
+    }
+];

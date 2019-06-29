@@ -1,0 +1,20 @@
+<div class="grid-container full">
+    <div class="grid-x grid-margin-x">
+        <div class="cell small-6 medium-4" *ngFor="let box of boxes">
+            <div class="loot-box-container">
+                <div class="inner-image">
+                    <img [src]="box.getAnimation().asset"/>
+                </div>
+                <div class="container">
+                    <a class="title">
+                        <em class="fas fa-box"></em>
+                        {{box.name}}
+                    </a>
+                    <div class="content">
+                        Do you feel lucky?
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

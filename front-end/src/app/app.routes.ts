@@ -36,6 +36,10 @@ export const appRoutes: Routes = [
         loadChildren: () => import('./pages/betting/betting.module').then(m => m.BettingModule)
     },
     {
+        path: 'shop',
+        loadChildren: () => import('./pages/shop/shop.module').then(m => m.ShopModule)
+    },
+    {
         path: 'goodies',
         loadChildren: () => import('./pages/goodies/goodies.module').then(m => m.GoodiesModule)
     },
