@@ -4,10 +4,10 @@ import { Page } from 'shared/page/page.model';
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { SideMenuBlock, SideMenuItem } from 'shared/app-views/side-menu/side-menu.model';
 import { TitleTopBorder } from 'shared/app-views/title/title.model';
-import { BETTING_HUB } from './betting.constants';
+import { SHOP_HUB } from './shop.constants';
 
 @Component({
-    selector: 'app-betting',
+    selector: 'app-shop',
     template: `
         <div class="grid-container full">
             <div class="grid-x grid-margin-x">
@@ -21,36 +21,32 @@ import { BETTING_HUB } from './betting.constants';
         </div>`
 })
 
-export class BettingComponent extends Page implements OnInit, OnDestroy {
+export class ShopComponent extends Page implements OnInit, OnDestroy {
     blocks: Array<SideMenuBlock> = [];
 
     constructor (breadcrumbService: BreadcrumbService, elementRef: ElementRef) {
         super(elementRef);
-        breadcrumbService.breadcrumb = new Breadcrumb({current: BETTING_HUB.title});
+        breadcrumbService.breadcrumb = new Breadcrumb({current: SHOP_HUB.title});
     }
 
     ngOnInit (): void {
         this.blocks = [
             new SideMenuBlock({
-                title: 'Betting Hub',
+                title: 'Shop Hub',
                 top: TitleTopBorder.RED,
                 color: '#ad6262',
                 items: [
                     new SideMenuItem({
                         title: 'Dashboard',
-                        link: '/betting/dashboard'
+                        link: '/shop/dashboard'
                     }),
                     new SideMenuItem({
-                        title: 'Arcade',
-                        link: '/arcade'
+                        title: 'Loot Boxes',
+                        link: '/betting/loot-boxes'
                     }),
                     new SideMenuItem({
-                        title: 'My Active Bets',
-                        link: '/betting/my-bets'
-                    }),
-                    new SideMenuItem({
-                        title: 'My History',
-                        link: '/betting/history/page/1'
+                        title: 'Subscriptions',
+                        link: '/shop/subscriptions'
                     })
                 ]
             })

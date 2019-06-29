@@ -2025,23 +2025,12 @@ wbbdebug = false;
             if (!data) {
                 return "";
             }
-            ;
             var $e = (typeof (data) == "string") ? $('<span>').html(data) : $(data);
-            //remove last BR
-            $e.find("div,blockquote,p").each(function () {
-                if (this.nodeType != 3 && this.lastChild && this.lastChild.tagName == "BR") {
-                    $(this.lastChild).remove();
-                }
-            })
-            if ($e.is("div,blockquote,p") && $e[0].nodeType != 3 && $e[0].lastChild && $e[0].lastChild.tagName == "BR") {
-                $($e[0].lastChild).remove();
-            }
-            //END remove last BR
 
             //Remove BR
             $e.find("ul > br, table > br, tr > br").remove();
-            //IE
 
+            //IE
             var outbb = "";
 
             //transform smiles
@@ -2433,9 +2422,7 @@ wbbdebug = false;
                 //to bbcode
                 this.$txtArea.val(this.getBBCode()).css("min-height", this.$body.height());
                 this.$body.hide();
-                if (!skipFocus) {
-                    this.$txtArea.show().focus();
-                }
+                this.$txtArea.show();
             }
             this.options.bbmode = !this.options.bbmode;
         },
@@ -2699,7 +2686,7 @@ wbbdebug = false;
             $(el).after(sl);
             this.selectNode(sl);
         },
-        
+
         //MODAL WINDOW
         showModal: function (cmd, opt, queryState) {
             $.log("showModal: " + cmd);
@@ -3032,6 +3019,7 @@ wbbdebug = false;
         //API
         $.fn.keybind = function (event, callback) {
             this.data('wbb').$body.bind(event, callback);
+            this.data('wbb').$txtArea.bind(event, callback);
         }
     $.fn.isBBMode = function () {
         return this.data('wbb').options.bbmode;
