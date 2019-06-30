@@ -22,12 +22,12 @@ class ScanBadges {
         $inserts = [];
         foreach ($items as $item) {
             $badge = $this->getBadge($item);
-            if (!$badge || in_array($badge->id, $addedIds)) {
+            if (!$badge || in_array($badge->habboBadgeId, $addedIds)) {
                 continue;
             }
 
             $inserts[] = [
-                'habboBadeId' => $badge->id,
+                'habboBadeId' => $badge->habboBadgeId,
                 'description' => $badge->description
             ];
         }
@@ -49,16 +49,16 @@ class ScanBadges {
     private function getFirstPatternBadge($item) {
         $parts = explode('_badge_desc=', $item);
         return (object)[
-            'id' => $parts[0],
+            'habboBadgeId' => $parts[0],
             'description' => $parts[1]
         ];
     }
 
     private function getSecondPatternBadge($item) {
         $parts = explode('=', $item);
-        $id = str_replace('badge_desc_', '', $parts[0]);
+        $habboBadgeId = str_replace('badge_desc_', '', $parts[0]);
         return (object)[
-            'id' => $id,
+            'habboBadgeId' => $habboBadgeId,
             'description' => $parts[1]
         ];
     }
