@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\EloquentModels\Forum\ForumPermission;
 use App\EloquentModels\User\Ban;
 use App\EloquentModels\User\Token;
 use App\EloquentModels\User\User;
-use App\Helpers\ConfigHelper;
-use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Impl\Auth\AuthControllerImpl;
 use App\Logger;
 use App\Models\Logger\Action;
 use App\Services\AuthService;
@@ -30,6 +28,7 @@ class AuthController extends Controller {
     private $botService;
     private $authService;
     private $habboService;
+    private $myImpl;
 
     /**
      * AuthController constructor.
@@ -37,12 +36,14 @@ class AuthController extends Controller {
      * @param BotService $botService
      * @param AuthService $authService
      * @param HabboService $habboService
+     * @param AuthControllerImpl $impl
      */
-    public function __construct(BotService $botService, AuthService $authService, HabboService $habboService) {
+    public function __construct(BotService $botService, AuthService $authService, HabboService $habboService, AuthControllerImpl $impl) {
         parent::__construct();
         $this->botService = $botService;
         $this->authService = $authService;
         $this->habboService = $habboService;
+        $this->myImpl = $impl;
     }
 
     /**
@@ -141,21 +142,7 @@ class AuthController extends Controller {
         $refreshToken = $this->generateToken();
         $this->updateOrSetUserToken($user->userId, $accessToken, $refreshToken, $expiresAt, $request);
 
-        return response()->json([
-            'sitecpPermissions' => self::buildSitecpPermissions($user),
-            'staffPermissions' => self::buildStaffPermissions($user),
-            'oauth' => [
-                'accessToken' => $accessToken,
-                'expiresIn' => $this->accessTokenLifetime,
-                'refreshToken' => $refreshToken
-            ],
-            'userId' => $user->userId,
-            'nickname' => $user->nickname,
-            'gdpr' => $user->gdpr,
-            'homePage' => UserHelper::getUserDataOrCreate($user->userId)->homePage,
-            'credits' => UserHelper::getUserDataOrCreate($user->userId)->credits,
-            'xp' => UserHelper::getUserDataOrCreate($user->userId)->xp
-        ]);
+        return response()->json($this->getAuthUser($user, $accessToken, $refreshToken));
     }
 
     /**
@@ -167,21 +154,7 @@ class AuthController extends Controller {
         $user = $request->get('auth');
 
         $token = Token::where('userId', $user->userId)->where('ip', $request->ip())->first();
-        return response()->json([
-            'sitecpPermissions' => self::buildSitecpPermissions($user),
-            'staffPermissions' => self::buildStaffPermissions($user),
-            'oauth' => [
-                'accessToken' => $token->accessToken,
-                'expiresIn' => $this->accessTokenLifetime,
-                'refreshToken' => $token->refreshToken
-            ],
-            'userId' => $user->userId,
-            'nickname' => $user->nickname,
-            'gdpr' => $user->gdpr,
-            'homePage' => UserHelper::getUserDataOrCreate($user->userId)->homePage,
-            'credits' => UserHelper::getUserDataOrCreate($user->userId)->credits,
-            'xp' => UserHelper::getUserDataOrCreate($user->userId)->xp
-        ]);
+        return response()->json($this->getAuthUser($user, $token->accessToken, $token->refreshToken));
     }
 
     /**
@@ -246,20 +219,17 @@ class AuthController extends Controller {
         $this->updateOrSetUserToken($user->userId, $accessToken, $refreshToken, $expiresAt, $request);
 
         Logger::login($user->userId, $request->ip(), true);
+        return response()->json($this->getAuthUser($user, $accessToken, $refreshToken));
+    }
+
+    public function getInitialLoad(Request $request) {
+        $user = $request->get('auth');
+
+        $token = Token::where('userId', $user->userId)->where('ip', $request->ip())->first();
         return response()->json([
-            'sitecpPermissions' => self::buildSitecpPermissions($user),
-            'staffPermissions' => self::buildStaffPermissions($user),
-            'oauth' => [
-                'accessToken' => $accessToken,
-                'expiresIn' => $this->accessTokenLifetime,
-                'refreshToken' => $refreshToken,
-            ],
-            'userId' => $user->userId,
-            'nickname' => $user->nickname,
-            'gdpr' => $user->gdpr,
-            'homePage' => UserHelper::getUserDataOrCreate($user->userId)->homePage,
-            'credits' => UserHelper::getUserDataOrCreate($user->userId)->credits,
-            'xp' => UserHelper::getUserDataOrCreate($user->userId)->xp
+            'user' => $token ? $this->getAuthUser($user, $token->accessToken, $token->refreshToken) : null,
+            'navigation' => $this->myImpl->getNavigation(),
+            'theme' => $this->myImpl->getTheme($user)
         ]);
     }
 
@@ -344,65 +314,21 @@ class AuthController extends Controller {
         Condition::precondition(strtotime($habbo->memberSince) > $threeDaysAgo, 400, 'Your Habbo needs to be at least three days old! Contact Support!');
     }
 
-    /**
-     * @param $user
-     *
-     * @return array
-     */
-    private function buildSitecpPermissions($user) {
-        $obj = ['isSitecp' => false];
-        $sitecpPermissions = ConfigHelper::getSitecpConfig();
-        $forumPermissions = ConfigHelper::getForumPermissions();
-
-        // General sitecp permissions
-        foreach ($sitecpPermissions as $key => $value) {
-            $obj[$key] = PermissionHelper::haveSitecpPermission($user->userId, $value);
-        }
-
-        // Moderation permissions
-        $obj['canModerateThreads'] = PermissionHelper::isSuperSitecp($user->userId) ||
-            ForumPermission::withGroups($user->groupIds)
-                ->withPermission($forumPermissions->canApproveThreads)
-                ->count('categoryId') > 0;
-        $obj['canModeratePosts'] = PermissionHelper::isSuperSitecp($user->userId) ||
-            ForumPermission::withGroups($user->groupIds)
-                ->withPermission($forumPermissions->canApprovePosts)
-                ->count('categoryId') > 0;
-        $obj['canManagePolls'] = PermissionHelper::isSuperSitecp($user->userId) ||
-            ForumPermission::withGroups($user->groupIds)
-                ->withPermission($forumPermissions->canManagePolls)
-                ->count('categoryId') > 0;
-
-        foreach ($obj as $key => $value) {
-            if ($value) {
-                $obj['isSitecp'] = true;
-                break;
-            }
-        }
-
-        return $obj;
-    }
-
-    /**
-     * @param $user
-     *
-     * @return array
-     */
-    private function buildStaffPermissions($user) {
-        $obj = [];
-        $staffPermissions = ConfigHelper::getStaffConfig();
-
-        foreach ($staffPermissions as $key => $value) {
-            $obj[$key] = PermissionHelper::haveStaffPermission($user->userId, $value);
-        }
-
-        foreach ($obj as $key => $value) {
-            if ($value) {
-                $obj['isStaff'] = true;
-                break;
-            }
-        }
-
-        return $obj;
+    private function getAuthUser($user, $accessToken, $refreshToken) {
+        return [
+            'sitecpPermissions' => $this->myImpl->buildSitecpPermissions($user),
+            'staffPermissions' => $this->myImpl->buildStaffPermissions($user),
+            'oauth' => [
+                'accessToken' => $accessToken,
+                'expiresIn' => $this->accessTokenLifetime,
+                'refreshToken' => $refreshToken
+            ],
+            'userId' => $user->userId,
+            'nickname' => $user->nickname,
+            'gdpr' => $user->gdpr,
+            'homePage' => UserHelper::getUserDataOrCreate($user->userId)->homePage,
+            'credits' => UserHelper::getUserDataOrCreate($user->userId)->credits,
+            'xp' => UserHelper::getUserDataOrCreate($user->userId)->xp
+        ];
     }
 }

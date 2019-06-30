@@ -1,0 +1,1 @@
+{"topic":"Refactor initial load and puller","type":"Refactor / Improvement","body":"The initial load is refactored to one request and also puller is a bit refactored to work more reliable"}

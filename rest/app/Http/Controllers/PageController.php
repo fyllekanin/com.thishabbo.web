@@ -35,24 +35,7 @@ class PageController extends Controller {
         $this->myImpl = $impl;
         $this->categoryTemplates = ConfigHelper::getCategoryTemplatesConfig();
     }
-
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function loadInitial(Request $request) {
-        $user = $request->get('auth');
-
-        $navigation = $this->myImpl->getNavigation();
-        $theme = $this->myImpl->getTheme($user);
-
-        return response()->json([
-            'navigation' => is_array($navigation) ? $navigation : [],
-            'theme' => $theme ? $theme->minified : ''
-        ]);
-    }
-
+    
     /**
      * @return JsonResponse
      */
@@ -203,7 +186,7 @@ class PageController extends Controller {
      * @return Notice[]|Collection
      */
     private function getNotices() {
-        return Notice::orderBy('order', 'ASC')->get()->map(function($notice) {
+        return Notice::orderBy('order', 'ASC')->get()->map(function ($notice) {
             $notice->makeHidden(['createdAt', 'updatedAt', 'userId', 'isDeleted']);
             $notice->text = nl2br(stripcslashes($notice->text));
             return $notice;

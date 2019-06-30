@@ -21,6 +21,9 @@ class PointsService {
     }
 
     private function addUserPoints($userId, $credits, $experience) {
+        if ($credits == 0 && $experience == 0) {
+            return;
+        }
         $userData = UserHelper::getUserDataOrCreate($userId);
         $userData->xp += $experience;
         $userData->credits += $credits;
