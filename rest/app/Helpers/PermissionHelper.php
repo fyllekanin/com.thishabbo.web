@@ -8,7 +8,6 @@ use App\EloquentModels\Group\Group;
 use Illuminate\Support\Facades\Cache;
 
 class PermissionHelper {
-
     private static $superUsers = [1];
 
     public static function isSuperSitecp($userId) {

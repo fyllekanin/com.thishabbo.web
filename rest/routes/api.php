@@ -14,7 +14,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/ping', 'PageController@getPing');
-Route::get('/load/initial', 'PageController@loadInitial');
+Route::get('/load/initial', 'Auth\AuthController@getInitialLoad');
 
 Route::get('/puller/pull', 'Puller\StreamController@getPull');
 Route::post('/radio/request', 'Staff\RadioController@createRequest');
