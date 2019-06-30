@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Radio;
+namespace App\Console\Commands;
 
 use App\EloquentModels\Staff\Timetable;
 use App\EloquentModels\User\User;
@@ -92,10 +92,7 @@ class RadioStats {
 
     private function getAlbumArt($song) {
         $url = 'https://itunes.apple.com/search?term=' . urlencode($song) . '&entity=album&limit=1';
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.92 Safari/537.36');
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $curl = DataHelper::getBasicCurl($url);
 
         $data = curl_exec($curl);
         curl_close($curl);

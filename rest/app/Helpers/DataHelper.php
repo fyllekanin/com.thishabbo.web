@@ -31,8 +31,7 @@ class DataHelper {
     public static function getShoutCastV1Stats() {
         $radio = new RadioSettings(SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->radio));
 
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $radio->ip . ':' . $radio->port . '/sitecp.cgi?mode=viewxml');
+        $curl = self::getBasicCurl($radio->ip . ':' . $radio->port . '/sitecp.cgi?mode=viewxml');
         self::setCurlOptionsForRadio($curl, $radio->adminPassword);
 
         $data = curl_exec($curl);
@@ -44,8 +43,7 @@ class DataHelper {
     public static function getShoutCastV2Stats() {
         $radio = new RadioSettings(SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->radio));
 
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $radio->ip . ':' . $radio->port . '/stats?sid=1&json=1');
+        $curl = self::getBasicCurl($radio->ip . ':' . $radio->port . '/stats?sid=1&json=1');
         self::setCurlOptionsForRadio($curl, $radio->adminPassword);
 
         $data = curl_exec($curl);
@@ -54,13 +52,21 @@ class DataHelper {
         return json_decode($data);
     }
 
-    private static function setCurlOptionsForRadio($curl, $adminPassword) {
+    public static function getBasicCurl($url) {
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type: text/html; charset=utf-8']);
         curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.92 Safari/537.36');
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($curl, CURLOPT_USERPWD, 'sitecp:' . $adminPassword);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 2);
         curl_setopt($curl, CURLOPT_TIMEOUT, 5);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type: text/html; charset=utf-8']);
+
+        return $curl;
+    }
+
+    private static function setCurlOptionsForRadio($curl, $adminPassword) {
+        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        curl_setopt($curl, CURLOPT_USERPWD, 'sitecp:' . $adminPassword);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\EloquentModels\Forum\Category;
 use App\Helpers\ConfigHelper;
+use App\Helpers\DataHelper;
 use App\Http\Controllers\Forum\Thread\ThreadCrudController;
 use App\Logger;
 use App\Models\Logger\Action;
@@ -88,15 +89,10 @@ class FormController extends Controller {
 
         $auth = 'Authorization: Token ' . $token;
 
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, 'https://api.github.com/repos/' . $owner . '/' . $repo . '/issues');
+        $curl = DataHelper::getBasicCurl('https://api.github.com/repos/' . $owner . '/' . $repo . '/issues');
         curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $auth));
-        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.92 Safari/537.36');
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_POST, 1);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $postFields);
-        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 2);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 5);
 
         $data = curl_exec($curl);
         curl_close($curl);
