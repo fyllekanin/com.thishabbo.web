@@ -2,11 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use App\EloquentModels\User\Token;
 use Closure;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class CheckAuth {
+class CheckGdpr {
 
     /**
      * Handle an incoming request.
@@ -18,13 +17,10 @@ class CheckAuth {
      */
     public function handle($request, Closure $next) {
         $user = $request->get('auth');
-        $token = Token::where('userId', $user->userId)->where('ip', $request->ip())->first();
 
-        /** No token or invalid */
-        if (!$token) {
-            throw new HttpException(401);
+        if ($user && $user->userId > 0 && !$user->gdpr) {
+            throw new HttpException(404, 'You need to accept gdpr!');
         }
-        
         return $next($request);
     }
 }
