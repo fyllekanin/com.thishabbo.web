@@ -17,6 +17,8 @@ export class BadgeModel {
     }
 
     get url (): string {
-        return this.notFound ? '/assets/images/badge_error.gif' : `https://habboo-a.akamaihd.net/c_images/album1584/${this.habboBadgeId}.gif`;
+        return this.notFound ?
+            '/assets/images/badge_error.gif' :
+            `https://habboo-a.akamaihd.net/c_images/album1584/${this.habboBadgeId}.gif`;
     }
 }
