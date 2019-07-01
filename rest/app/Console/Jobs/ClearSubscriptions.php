@@ -8,7 +8,7 @@ use App\Jobs\UserUpdated;
 
 class ClearSubscriptions {
 
-    public function __invoke() {
+    public function init() {
         $time = time();
         $userSubSql = UserSubscription::where('expiresAt', '<', $time);
 

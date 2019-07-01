@@ -7,14 +7,14 @@ import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AppComponent, DummyComponent } from './app.component';
+import { AppComponent } from './app.component';
 import { TopBarModule } from 'shared/app-views/top-bar/top-bar.module';
 import { TopBoxModule } from 'shared/app-views/top-box/top-box.module';
 import { AppLoadService } from 'core/loader/app-load.service';
 import { SiteMessagesModule } from 'shared/app-views/site-messages/site-messages.module';
 import { FooterModule } from 'shared/app-views/footer/footer.module';
 
-export function init_app(appLoadService: AppLoadService) {
+export function init_app (appLoadService: AppLoadService) {
     return () => appLoadService.initializeApp();
 }
 
@@ -37,12 +37,11 @@ export function init_app(appLoadService: AppLoadService) {
         FooterModule
     ],
     declarations: [
-        AppComponent,
-        DummyComponent
+        AppComponent
     ],
     providers: [
         AppLoadService,
-        { provide: APP_INITIALIZER, useFactory: init_app, deps: [AppLoadService], multi: true }
+        {provide: APP_INITIALIZER, useFactory: init_app, deps: [AppLoadService], multi: true}
     ],
     bootstrap: [AppComponent]
 })

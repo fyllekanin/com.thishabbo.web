@@ -8,7 +8,6 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { RouterStateService } from 'core/services/router/router-state.service';
 import { UserService } from 'core/services/user/user.service';
-import { HomePageGuard } from 'core/services/auth/home-page.guard';
 
 @NgModule({
     imports: [
@@ -20,7 +19,7 @@ import { HomePageGuard } from 'core/services/auth/home-page.guard';
 })
 
 export class CoreModule {
-    static forRoot(): ModuleWithProviders {
+    static forRoot (): ModuleWithProviders {
         return {
             ngModule: CoreModule,
             providers: [
@@ -31,8 +30,7 @@ export class CoreModule {
                 DialogService,
                 BreadcrumbService,
                 RouterStateService,
-                UserService,
-                HomePageGuard
+                UserService
             ]
         };
     }

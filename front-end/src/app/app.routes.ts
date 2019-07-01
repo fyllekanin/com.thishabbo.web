@@ -1,6 +1,4 @@
 import { Routes } from '@angular/router';
-import { HomePageGuard } from 'core/services/auth/home-page.guard';
-import { DummyComponent } from './app.component';
 
 export const appRoutes: Routes = [
     {
@@ -54,8 +52,7 @@ export const appRoutes: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        canActivate: [HomePageGuard],
-        component: DummyComponent
+        redirectTo: 'home'
     },
     {
         path: '**',
