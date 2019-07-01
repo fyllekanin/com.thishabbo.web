@@ -14,7 +14,8 @@ class HabboService {
      * @return mixed|null
      */
     public function getHabboByName($name) {
-        return $this->getHabboData($this->habboApi . 'users?name=' . $name);
+        $habbo = $this->getHabboData($this->habboApi . 'users?name=' . $name);
+        return is_object($habbo) && !isset($habbo->error) ? $habbo : null;
     }
 
     /**

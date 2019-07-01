@@ -1,5 +1,7 @@
 .badge {
     text-align: center;
+    position: relative;
+    display: block;
 }
 
 .badge img {
@@ -25,4 +27,17 @@
 
 .badge img:hover {
     background: #333333;
+}
+
+.new {
+    background-color: #c66464;
+    color: #fff;
+    font-size: .6rem;
+    font-weight: 700;
+    padding: 1px 2px 2px 2px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 2;
+    border-radius: 2px;
 }

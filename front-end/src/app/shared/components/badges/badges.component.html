@@ -4,6 +4,7 @@
         <div class="grid-x">
             <div *ngFor="let badge of badges" class="cell small-6 medium-3">
                 <div class="badge" [attr.tooltip]="badge.description + '&#xa;' + badge.createdAt">
+                    <div class="new" *ngIf="badge.isNew">New</div>
                     <img [src]="badge.url" (error)="badge.notFound = true;"/>
                 </div>
             </div>
