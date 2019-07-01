@@ -10,15 +10,19 @@ use App\Helpers\SettingsHelper;
 use App\Models\Radio\RadioServerTypes;
 use App\Models\Radio\RadioSettings;
 use App\Utils\Value;
+use Illuminate\Console\Command;
 
-class RadioStats {
+class RadioStats extends Command {
     private $settingKeys;
 
+    protected $signature = 'queue:radio';
+
     public function __construct() {
+        parent::__construct();
         $this->settingKeys = ConfigHelper::getKeyConfig();
     }
 
-    public function init() {
+    public function handle() {
 
         $radio = new RadioSettings(SettingsHelper::getSettingValue($this->settingKeys->radio));
         $statsData = $this->getStatsData($radio);

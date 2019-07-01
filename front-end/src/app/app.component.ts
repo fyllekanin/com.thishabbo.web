@@ -1,10 +1,11 @@
-import { Component, ElementRef, OnDestroy } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { NavigationStart, ResolveEnd, Router, Scroll } from '@angular/router';
 import { Page } from 'shared/page/page.model';
 import { UserService } from 'core/services/user/user.service';
 import { fadeAnimation } from 'shared/animations/fade.animation';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
+import { AuthService } from 'core/services/auth/auth.service';
 
 @Component({
     selector: 'app-root',
@@ -36,7 +37,7 @@ import { ContinuesInformationService } from 'core/services/continues-information
     styleUrls: ['app.component.css'],
     animations: [fadeAnimation]
 })
-export class AppComponent extends Page implements OnDestroy {
+export class AppComponent extends Page implements OnInit, OnDestroy {
     loadingProgress = 0;
     isLoading = false;
     isFixed = false;
@@ -46,6 +47,7 @@ export class AppComponent extends Page implements OnDestroy {
         private _router: Router,
         private _elementRef: ElementRef,
         private _userService: UserService,
+        private _authService: AuthService,
         continuesInformationService: ContinuesInformationService
     ) {
         super(_elementRef);
@@ -80,6 +82,18 @@ export class AppComponent extends Page implements OnDestroy {
                 }
             }
         });
+    }
+
+    ngOnInit (): void {
+        if (location.pathname !== '/') {
+            return;
+        }
+        if (this._authService.isLoggedIn()) {
+            this._router.navigateByUrl(this._authService.getAuthUser().homePage)
+                .catch(() => {
+                    this._router.navigateByUrl('/home');
+                });
+        }
     }
 
     ngOnDestroy (): void {
@@ -154,11 +168,4 @@ export class AppComponent extends Page implements OnDestroy {
         window.scrollTo({left: 0, top: top, behavior: 'smooth'});
         return top > 0;
     }
-}
-
-@Component({
-    selector: 'app-dummy',
-    template: ''
-})
-export class DummyComponent {
 }

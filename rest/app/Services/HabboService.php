@@ -20,16 +20,27 @@ class HabboService {
     /**
      * @param $url
      *
+     * @param bool $isJson
+     *
+     * @param bool $withEncoding
+     *
      * @return mixed|null
      */
-    public function getHabboData($url) {
+    public function getHabboData($url, $isJson = true, $withEncoding = true) {
+        $headers = [
+            'Cookie: ' . $this->cookies,
+            'Content-Type: text/html; charset=utf-8'
+        ];
+        if ($withEncoding) {
+            $headers[] = 'Accept-Encoding: gzip, deflate, sdch';
+        }
         $curl = DataHelper::getBasicCurl($url);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, ['Accept-Encoding: gzip, deflate, sdch', 'Cookie: ' . $this->cookies]);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 1);
 
-        $data = json_decode(curl_exec($curl));
+        $data = $isJson ? json_decode(curl_exec($curl)) : curl_exec($curl);
         curl_close($curl);
-        return isset($data) && is_object($data) && !isset($data->error) ? $data : null;
+        return isset($data) ? $data : null;
     }
 }

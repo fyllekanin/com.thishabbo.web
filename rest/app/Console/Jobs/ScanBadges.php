@@ -15,25 +15,19 @@ class ScanBadges {
         $this->habboService = $habboService;
     }
 
-    public function __invoke() {
+    public function init() {
         $items = $this->getItems();
-        $addedIds = HabboBadge::pluck('habboBadgeId');
 
-        $inserts = [];
         foreach ($items as $item) {
             $badge = $this->getBadge($item);
-            if (!$badge || in_array($badge->habboBadgeId, $addedIds)) {
+            if (!$badge || HabboBadge::where('habboBadgeId', $badge->habboBadgeId)->count() > 0) {
                 continue;
             }
 
-            $inserts[] = [
-                'habboBadeId' => $badge->habboBadgeId,
-                'description' => $badge->description
-            ];
-        }
-
-        if (count($inserts) > 0) {
-            HabboBadge::insert($inserts);
+            HabboBadge::create([
+                'habboBadgeId' => $badge->habboBadgeId,
+                'description' => $badge->description,
+            ]);
         }
     }
 
@@ -64,7 +58,7 @@ class ScanBadges {
     }
 
     private function getItems() {
-        $curl = $this->habboService->getHabboData('https://www.habbo.com/gamedata/external_flash_texts/1');
-        return explode('\n', $curl);
+        $data = $this->habboService->getHabboData('https://www.habbo.com/gamedata/external_flash_texts/1', false, false);
+        return explode("\n", $data);
     }
 }
