@@ -95,7 +95,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         return [
             new StatsBoxModel({
                 borderColor: TitleTopBorder.GREEN,
-                icon: 'fas fa-cid-card',
+                icon: 'fas fa-id-card',
                 title: 'User ID',
                 breadText: String(this._stats.userId)
             }),
@@ -185,7 +185,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         }));
     }
 
-    private onData (data: UserCpDashboardModel) {
-        this._stats = data;
+    private onData (data: { data: UserCpDashboardModel}) {
+        this._stats = data.data;
     }
 }
