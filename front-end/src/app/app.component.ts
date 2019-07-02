@@ -1,16 +1,22 @@
-import { Component, ElementRef, OnDestroy } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { NavigationStart, ResolveEnd, Router, Scroll } from '@angular/router';
 import { Page } from 'shared/page/page.model';
 import { UserService } from 'core/services/user/user.service';
 import { fadeAnimation } from 'shared/animations/fade.animation';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
+import { AuthService } from 'core/services/auth/auth.service';
 
 @Component({
     selector: 'app-root',
     template: `
         <div class="loader" [ngClass]="!isLoading ? 'not-loading' : ''"
              [ngStyle]="{'width': loadingProgress + '%'}"></div>
+        <div class="request-wrapper" [ngClass]="requestInProgress ? 'request-wrapper-show' : ''">
+            <div class="request" [ngClass]="requestInProgress ? 'request-show' : ''">
+                Loading....
+            </div>
+        </div>
         <app-dialog></app-dialog>
         <app-global-notification></app-global-notification>
         <app-top-bar></app-top-bar>
@@ -31,15 +37,17 @@ import { ContinuesInformationService } from 'core/services/continues-information
     styleUrls: ['app.component.css'],
     animations: [fadeAnimation]
 })
-export class AppComponent extends Page implements OnDestroy {
+export class AppComponent extends Page implements OnInit, OnDestroy {
     loadingProgress = 0;
     isLoading = false;
     isFixed = false;
+    requestInProgress = false;
 
-    constructor(
+    constructor (
         private _router: Router,
         private _elementRef: ElementRef,
         private _userService: UserService,
+        private _authService: AuthService,
         continuesInformationService: ContinuesInformationService
     ) {
         super(_elementRef);
@@ -67,24 +75,36 @@ export class AppComponent extends Page implements OnDestroy {
                     if (AppComponent.isScrollToSet()) {
                         this.tryToScrollToElement();
                     } else if (!AppComponent.isScrollOff()) {
-                        document.getElementsByTagName('app-header')[0].scrollIntoView({ behavior: 'smooth' });
+                        document.getElementsByTagName('app-header')[0].scrollIntoView({behavior: 'smooth'});
                     }
                 } catch (e) {
-                    document.getElementsByTagName('app-header')[0].scrollIntoView({ behavior: 'smooth' });
+                    document.getElementsByTagName('app-header')[0].scrollIntoView({behavior: 'smooth'});
                 }
             }
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnInit (): void {
+        if (location.pathname !== '/') {
+            return;
+        }
+        if (this._authService.isLoggedIn()) {
+            this._router.navigateByUrl(this._authService.getAuthUser().homePage)
+                .catch(() => {
+                    this._router.navigateByUrl('/home');
+                });
+        }
+    }
+
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    goToTop(): void {
-        document.getElementsByTagName('app-header')[0].scrollIntoView({ behavior: 'smooth' });
+    goToTop (): void {
+        document.getElementsByTagName('app-header')[0].scrollIntoView({behavior: 'smooth'});
     }
 
-    private addCustomListeners(): void {
+    private addCustomListeners (): void {
         document.body.addEventListener('click', (event) => {
             const target = event.target;
             if (AppComponent.isTargetInternalLink(target)) {
@@ -95,36 +115,37 @@ export class AppComponent extends Page implements OnDestroy {
         });
     }
 
-    private addActivityListener(): void {
+    private addActivityListener (): void {
         window.addEventListener('focus', () => {
             this._userService.isUserActive = true;
         });
         window.addEventListener('blur', () => {
             this._userService.isUserActive = false;
         });
+        this._userService.onRequestInProgressChange.subscribe(val => this.requestInProgress = val);
     }
 
-    private static getUrl(ele): string {
+    private static getUrl (ele): string {
         return ele['dataset']['url'];
     }
 
-    private static isTargetInternalLink(ele): boolean {
+    private static isTargetInternalLink (ele): boolean {
         return ele instanceof Element
             && ele.nodeName.toUpperCase() === 'A'
             && ele['dataset']['type'] === 'internal';
     }
 
-    private static isScrollToSet(): boolean {
+    private static isScrollToSet (): boolean {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.has('scrollTo');
     }
 
-    private static isScrollOff(): boolean {
+    private static isScrollOff (): boolean {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.has('skipScroll');
     }
 
-    private tryToScrollToElement(): void {
+    private tryToScrollToElement (): void {
         let count = 0;
         const interval = setInterval(() => {
             const result = this.scrollToElement();
@@ -135,16 +156,16 @@ export class AppComponent extends Page implements OnDestroy {
         }, 500);
     }
 
-    private scrollToElement(): boolean {
+    private scrollToElement (): boolean {
         const urlParams = new URLSearchParams(window.location.search);
         let top = -1;
         if (urlParams.has('scrollTo')) {
             const eleSelector = urlParams.get('scrollTo');
             const eles = this._elementRef.nativeElement.getElementsByClassName(`${eleSelector}`);
-            top = eles.length > 0 ? eles[0]['offsetTop'] : -1;
+            top = eles.length > 0 ? eles[0]['ofnfsetTop'] : -1;
         }
 
-        window.scrollTo({ left: 0, top: top, behavior: 'smooth' });
+        window.scrollTo({left: 0, top: top, behavior: 'smooth'});
         return top > 0;
     }
 }

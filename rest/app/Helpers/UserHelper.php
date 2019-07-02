@@ -41,6 +41,10 @@ class UserHelper {
                 'userdata.nameColor AS customColor', 'groups.nameColor AS groupColor',
                 'userdata.iconId', 'userdata.iconPosition', 'userdata.effectId')->first();
 
+        if (!$slimUser) {
+            Cache::add('slim-user-' . $userId, null, 5);
+            return null;
+        }
 
         $slimUser->nameColor = $slimUser->customColor ? $slimUser->customColor : $slimUser->groupColor;
         $slimUser->nameColor = Value::objectJsonProperty($slimUser, 'nameColor', []);

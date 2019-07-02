@@ -12,7 +12,7 @@ export class UserLinkComponent {
     @Input() user = new SlimUser();
 
     get nameStyling (): string {
-        return UserHelper.getNameColor(this.user.nameColor);
+        return this.user ? this.user.nameStyling : '';
     }
 
     get avatarUrl (): string {
@@ -36,15 +36,19 @@ export class UserLinkComponent {
     }
 
     get iconImage (): string {
-        return this.user.iconId ? `/rest/resources/images/shop/${this.user.iconId}.gif` : null;
+        return this.user && this.user.iconId ? `/rest/resources/images/shop/${this.user.iconId}.gif` : null;
     }
 
     get iconPosition (): string {
-        return this.user.iconPosition || 'left';
+        return this.user && this.user.iconPosition ? this.user.iconPosition : 'left';
     }
 
     get effect (): string {
-        return this.user.effectId ? `url(/rest/resources/images/shop/${this.user.effectId}.gif)` : '';
+        return this.user && this.user.effectId ? `url(/rest/resources/images/shop/${this.user.effectId}.gif)` : '';
+    }
+
+    get nickname (): string {
+        return this.user ? this.user.nickname : '';
     }
 }
 

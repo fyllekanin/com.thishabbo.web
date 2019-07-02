@@ -25,6 +25,7 @@ use App\Logger;
 use App\Models\Logger\Action;
 use App\Services\ForumService;
 use App\Services\ForumValidatorService;
+use App\Services\PointsService;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
@@ -35,6 +36,7 @@ class ThreadCrudController extends Controller {
 
     private $forumService;
     private $validatorService;
+    private $pointsService;
 
     /**
      * ThreadController constructor.
@@ -42,12 +44,14 @@ class ThreadCrudController extends Controller {
      *
      * @param ForumService $forumService
      * @param ForumValidatorService $validatorService
+     * @param PointsService $pointsService
      */
-    public function __construct(ForumService $forumService, ForumValidatorService $validatorService) {
+    public function __construct(ForumService $forumService, ForumValidatorService $validatorService, PointsService $pointsService) {
         parent::__construct();
         $this->categoryTemplates = ConfigHelper::getCategoryTemplatesConfig();
         $this->forumService = $forumService;
         $this->validatorService = $validatorService;
+        $this->pointsService = $pointsService;
     }
 
     /**
@@ -350,6 +354,8 @@ class ThreadCrudController extends Controller {
             $user->threads++;
             $user->posts++;
             $user->save();
+
+            $this->pointsService->givePointsFromCategory($user->userId, $thread->categoryId);
         }
 
         NotifyMentionsInPost::dispatch($threadSkeleton->content, $post->postId, $user->userId);

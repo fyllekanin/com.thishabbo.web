@@ -110,7 +110,7 @@ export class ItemsListComponent extends Page implements OnDestroy {
             filterConfigs: [
                 new FilterConfig({
                     title: 'Filter',
-                    placeholder: 'Search by Title...',
+                    placeholder: 'Search by title...',
                     key: 'filter'
                 }),
                 new FilterConfig({

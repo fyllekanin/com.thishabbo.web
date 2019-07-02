@@ -129,7 +129,7 @@ export class ListComponent extends Page implements OnDestroy {
             rows: this.getTableRows(),
             filterConfigs: [new FilterConfig({
                 title: 'Search',
-                placeholder: 'Filter on category name',
+                placeholder: 'Filter on Category Name...',
                 key: 'filter'
             })]
         });

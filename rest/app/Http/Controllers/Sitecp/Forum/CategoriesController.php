@@ -12,6 +12,7 @@ use App\Models\Logger\Action;
 use App\Services\ForumService;
 use App\Utils\Condition;
 use App\Utils\Value;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class CategoriesController extends Controller {
@@ -27,7 +28,7 @@ class CategoriesController extends Controller {
      *
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function updateCategoryOrders(Request $request) {
         $user = $request->get('auth');
@@ -48,7 +49,7 @@ class CategoriesController extends Controller {
      *
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function createCategory(Request $request) {
         $newCategory = (object)$request->input('category');
@@ -64,6 +65,8 @@ class CategoriesController extends Controller {
         Condition::precondition(empty($newCategory->title), 400, 'Title cant be empty');
         Condition::precondition(!$this->forumService->isValidTemplate($newCategory->template), 400, 'Invalid template');
         Condition::precondition(isset($newCategory->icon) && !preg_match('/^[a-zA-Z\- ]+$/', $newCategory->icon), 400, 'Icon string is invalid');
+        Condition::precondition(!isset($newCategory->credits) || !is_numeric($newCategory->credits), 400, 'Credits need to set');
+        Condition::precondition(!isset($newCategory->xp) || !is_numeric($newCategory->xp), 400, 'XP need to set');
 
         $newCategory->options = PermissionHelper::nameToNumberOptions($newCategory);
 
@@ -78,7 +81,9 @@ class CategoriesController extends Controller {
             'isHidden' => $newCategory->isHidden,
             'isOpen' => $newCategory->isOpen,
             'link' => Value::objectProperty($newCategory, 'link', ''),
-            'icon' => Value::objectProperty($newCategory, 'icon', null)
+            'icon' => Value::objectProperty($newCategory, 'icon', null),
+            'credits' => $newCategory->credits,
+            'xp' => $newCategory->xp
         ]);
         $category->save();
 
@@ -94,7 +99,7 @@ class CategoriesController extends Controller {
      * @param Request $request
      * @param         $categoryId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function deleteCategory(Request $request, $categoryId) {
         $user = $request->get('auth');
@@ -118,7 +123,7 @@ class CategoriesController extends Controller {
      * @param Request $request
      * @param         $categoryId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function updateCategory(Request $request, $categoryId) {
         $newCategory = (object)$request->category;
@@ -135,6 +140,8 @@ class CategoriesController extends Controller {
         Condition::precondition(empty($newCategory->title), 400, 'Title cant be empty');
         Condition::precondition(!$this->forumService->isValidTemplate($newCategory->template), 400, 'Invalid template');
         Condition::precondition(isset($newCategory->icon) && !preg_match('/^[a-zA-Z\- ]+$/', $newCategory->icon), 400, 'Icon string is invalid');
+        Condition::precondition(!isset($newCategory->credits) || !is_numeric($newCategory->credits), 400, 'Credits need to set');
+        Condition::precondition(!isset($newCategory->xp) || !is_numeric($newCategory->xp), 400, 'XP need to set');
 
         $newCategoryId = $newCategory->categoryId;
         $oldCategoryId = $category->categoryId;
@@ -151,7 +158,9 @@ class CategoriesController extends Controller {
                 'isHidden' => $newCategory->isHidden,
                 'isOpen' => $newCategory->isOpen,
                 'link' => Value::objectProperty($newCategory, 'link', ''),
-                'icon' => Value::objectProperty($newCategory, 'icon', null)
+                'icon' => Value::objectProperty($newCategory, 'icon', null),
+                'credits' => $newCategory->credits,
+                'xp' => $newCategory->xp
             ]);
 
         if ($newCategoryId != $oldCategoryId) {
@@ -169,7 +178,7 @@ class CategoriesController extends Controller {
      * @param Request $request
      * @param         $categoryId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getCategory(Request $request, $categoryId) {
         $category = Category::find($categoryId);
@@ -190,7 +199,7 @@ class CategoriesController extends Controller {
      *
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getCategories(Request $request) {
         $user = $request->get('auth');

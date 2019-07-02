@@ -131,18 +131,13 @@ class RadioController extends Controller {
 
         $settingKeys = ConfigHelper::getKeyConfig();
         $radio = new RadioSettings(SettingsHelper::getSettingValue($settingKeys->radio));
-        $userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36';
 
         $url = 'http://' . $radio->ip . ':' . $radio->port . '/sitecp.cgi?mode=kicksrc';
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $curl = DataHelper::getBasicCurl($url);
         curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         curl_setopt($curl, CURLOPT_HEADER, false);
         curl_setopt($curl, CURLOPT_POST, false);
-        curl_setopt($curl, CURLOPT_USERPWD, 'sitecp:' . $radio->sitecpPassword);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($curl, CURLOPT_USERAGENT, $userAgent);
+        curl_setopt($curl, CURLOPT_USERPWD, 'sitecp:' . $radio->adminPassword);
         curl_exec($curl);
 
         Condition::precondition(curl_getinfo($curl, CURLINFO_HTTP_CODE) != 200, 400,
@@ -345,7 +340,7 @@ class RadioController extends Controller {
         $newInformation->ip = $information->ip;
         $newInformation->port = $information->port;
         $newInformation->password = $information->password;
-        $newInformation->sitecpPassword = $information->sitecpPassword;
+        $newInformation->adminPassword = $information->adminPassword;
         $newInformation->serverType = $information->serverType;
 
         SettingsHelper::createOrUpdateSetting($settingKeys->radio, json_encode($newInformation));

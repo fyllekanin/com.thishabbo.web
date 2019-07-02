@@ -17,6 +17,7 @@ import { BehaviorSubject, Observable, throwError as observableThrowError } from 
 
 import { catchError, filter, finalize, switchMap, take } from 'rxjs/operators';
 import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { UserService } from 'core/services/user/user.service';
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
@@ -27,11 +28,15 @@ export class AuthenticationInterceptor implements HttpInterceptor {
     constructor (
         private _authService: AuthService,
         private _router: Router,
-        private _notificationService: NotificationService) {
+        private _notificationService: NotificationService,
+        private _userService: UserService) {
     }
 
     intercept (req: HttpRequest<any>, next: HttpHandler):
         Observable<HttpSentEvent | HttpHeaderResponse | HttpProgressEvent | HttpResponse<any> | HttpUserEvent<any>> {
+        if (req.method !== this.GET_METHOD) {
+            this._userService.isRequestInProgress = true;
+        }
         return next.handle(this.addToken(req, this._authService.getAccessToken())).pipe(
             catchError(error => {
                 if (error instanceof HttpErrorResponse) {
@@ -75,6 +80,8 @@ export class AuthenticationInterceptor implements HttpInterceptor {
                 } else {
                     return observableThrowError(error);
                 }
+            }), finalize(() => {
+                this._userService.isRequestInProgress = false;
             }));
     }
 

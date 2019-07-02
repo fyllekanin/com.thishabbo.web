@@ -28,6 +28,8 @@ export class RouterStateService {
     }
 
     getPreviousUrl(): string {
-        return this._urls[this._urls.length - 2];
+        const previous = this._urls[this._urls.length - 2];
+        this._urls = [];
+        return previous;
     }
 }

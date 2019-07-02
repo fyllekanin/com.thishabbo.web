@@ -17,43 +17,24 @@ export class AppLoadService {
     }
 
     initializeApp (): Promise<any> {
-        return this.initializeUser().then(() => {
-            return this.initializeNavigation();
-        });
-    }
-
-    initializeNavigation (): Promise<any> {
         const httpService = this._injector.get(HttpService);
+        const authService = this._injector.get(AuthService);
+        const routerStateService = this._injector.get(RouterStateService);
+
         this.clearAutoSaves();
+        routerStateService.pushUrl(location.pathname);
+
         return new Promise(resolve => {
             httpService.get('load/initial').subscribe(res => {
                 localStorage.setItem(LOCAL_STORAGE.NAVIGATION, JSON.stringify(res.navigation));
                 if (res.theme) {
                     ThemeHelper.applyTheme(res.theme);
                 }
+                if (authService.getAuthUser()) {
+                    authService.user = res.user ? new AuthUser(res.user) : null;
+                }
                 resolve();
             }, resolve);
-        });
-    }
-
-    initializeUser (): Promise<any> {
-        const httpService = this._injector.get(HttpService);
-        const authService = this._injector.get(AuthService);
-        const routerStateService = this._injector.get(RouterStateService);
-        routerStateService.pushUrl(location.pathname);
-
-        return new Promise(resolve => {
-            if (!authService.getAuthUser()) {
-                resolve();
-                return;
-            }
-            httpService.get('auth/user').subscribe(res => {
-                authService.user = new AuthUser(res);
-                resolve();
-            }, () => {
-                authService.user = null;
-                resolve();
-            });
         });
     }
 

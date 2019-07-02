@@ -25,6 +25,7 @@ import { GroupListComponent } from './group-list/group-list.component';
 import { GroupListResolver } from './services/group-list.resolver';
 import { UserLinkModule } from 'shared/components/user/user-link.module';
 import { SlimArticleModule } from 'shared/components/slim-article/slim-article.module';
+import { BadgesModule } from 'shared/components/badges/badges.module';
 
 @NgModule({
     imports: [
@@ -43,7 +44,8 @@ import { SlimArticleModule } from 'shared/components/slim-article/slim-article.m
         SafeHtmlModule,
         PaginationModule,
         UserLinkModule,
-        SlimArticleModule
+        SlimArticleModule,
+        BadgesModule
     ],
     declarations: [
         HomeDefaultComponent,

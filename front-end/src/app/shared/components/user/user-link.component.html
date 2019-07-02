@@ -16,8 +16,8 @@
             </div>
         </div>
     </div>
-    <a [routerLink]="['/user/profile/', user.nickname]" [style.background]="effect">
+    <a [routerLink]="['/user/profile/', nickname]" [style.background]="effect">
         <img *ngIf="iconImage" [ngClass]="iconPosition + '-icon'" [src]="iconImage" alt="Icon"/>
-        <span [style]="nameStyling | safeStyle">{{ user.nickname }}</span>
+        <span [style]="nameStyling | safeStyle">{{nickname}}</span>
     </a>
 </div>

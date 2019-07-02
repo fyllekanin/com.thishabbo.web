@@ -108,7 +108,7 @@ export class SubscriptionsListComponent extends Page implements OnDestroy {
             filterConfigs: [
                 new FilterConfig({
                     title: 'Filter',
-                    placeholder: 'Search by Title...',
+                    placeholder: 'Search by title...',
                     key: 'filter'
                 })
             ]

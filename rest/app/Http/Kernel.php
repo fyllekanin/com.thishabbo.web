@@ -2,10 +2,11 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\CheckSitecpPermission;
 use App\Http\Middleware\CheckAuth;
+use App\Http\Middleware\CheckGdpr;
 use App\Http\Middleware\CheckHabboVerified;
 use App\Http\Middleware\CheckMaintenance;
+use App\Http\Middleware\CheckSitecpPermission;
 use App\Http\Middleware\CheckSpam;
 use App\Http\Middleware\CheckStaffPermission;
 use App\Http\Middleware\CheckToken;
@@ -15,8 +16,7 @@ use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustProxies;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
-class Kernel extends HttpKernel
-{
+class Kernel extends HttpKernel {
     /**
      * The application's global HTTP middleware stack.
      *
@@ -66,6 +66,7 @@ class Kernel extends HttpKernel
         'maintenance' => CheckMaintenance::class,
         'habbo_verify.check' => CheckHabboVerified::class,
         'user.check' => CheckUser::class,
-        'auth.check' => CheckAuth::class
+        'auth.check' => CheckAuth::class,
+        'gdpr.check' => CheckGdpr::class
     ];
 }
