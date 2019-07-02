@@ -19,6 +19,10 @@
     display: none;
 }
 
+.user-link:hover .mini-profile {
+    display: block;
+}
+
 .mini-profile:before {
     content: '';
     position: absolute;
@@ -109,10 +113,6 @@
     width: 80%;
 }
 
-.user-link:hover .mini-profile {
-    display: block;
-}
-
 a {
     display: inline-block;
 }
@@ -125,4 +125,10 @@ a {
 .right-icon {
     float: right;
     margin-left: 3px;
+}
+
+@media screen and (max-width: 1024px) {
+    .user-link:hover .mini-profile {
+        display: none;
+    }
 }

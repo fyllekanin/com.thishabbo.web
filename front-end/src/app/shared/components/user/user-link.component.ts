@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { SlimUser } from 'core/services/auth/auth.model';
-import { UserHelper } from 'shared/helpers/user.helper';
 import { TimeHelper } from 'shared/helpers/time.helper';
 
 @Component({
