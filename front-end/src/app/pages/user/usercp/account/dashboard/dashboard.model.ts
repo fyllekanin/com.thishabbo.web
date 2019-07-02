@@ -1,4 +1,4 @@
-import { primitive, ClassHelper } from "shared/helpers/class.helper";
+import { primitive, ClassHelper } from 'shared/helpers/class.helper';
 
 export class UserCpDashboardModel {
     @primitive()
