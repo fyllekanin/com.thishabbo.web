@@ -7,6 +7,8 @@ export class SlimSubscriptionItem {
     title: string;
     @primitive()
     membersCount: number;
+    @primitive()
+    isListed: boolean;
 
     constructor (source: Partial<SlimSubscriptionItem>) {
         ClassHelper.assign(this, source);

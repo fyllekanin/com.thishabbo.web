@@ -8,11 +8,66 @@ use App\Helpers\ConfigHelper;
 use App\Helpers\DataHelper;
 use App\Helpers\ShopHelper;
 use App\Http\Controllers\Controller;
+use App\Logger;
+use App\Models\Logger\Action;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
 
 class LootBoxesController extends Controller {
+
+    public function createLootBox(Request $request) {
+        $user = $request->get('auth');
+        $data = (object)$request->input('lootBox');
+        $this->validateLootBox($data);
+
+        $lootBox = new LootBox([
+            'title' => $data->title,
+            'items' => json_encode(array_map(function ($item) {
+                return $item['shopItemId'];
+            }, $data->items)),
+            'boxId' => $data->boxId,
+            'credits' => $data->credits
+        ]);
+        $lootBox->save();
+
+        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_LOOT_BOX, [],
+            $lootBox->lootBoxId);
+        return response()->json();
+    }
+
+    public function updateLootBox(Request $request, $lootBoxId) {
+        $user = $request->get('auth');
+        $data = (object)$request->input('lootBox');
+        $lootBox = LootBox::find($lootBoxId);
+        Condition::precondition(!$lootBox, 404, 'No loot box with that ID');
+        $this->validateLootBox($data);
+
+        $lootBox->title = $data->title;
+        $lootBox->items = json_encode(array_map(function ($item) {
+            return $item['shopItemId'];
+        }, $data->items));
+        $lootBox->boxId = $data->boxId;
+        $lootBox->credits = $data->credits;
+        $lootBox->save();
+
+        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_LOOT_BOX, [],
+            $lootBox->lootBoxId);
+        return response()->json();
+    }
+
+    public function deleteLootBox(Request $request, $lootBoxId) {
+        $user = $request->get('auth');
+        $lootBox = LootBox::find($lootBoxId);
+        Condition::precondition(!$lootBox, 404, 'No loot box with that ID');
+
+        $lootBox->isDeleted = true;
+        $lootBox->save();
+
+        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_LOOT_BOX, [],
+            $lootBox->lootBoxId);
+        return response()->json();
+    }
 
     public function getItem($lootBoxId) {
         $lootBox = null;
@@ -102,5 +157,21 @@ class LootBoxesController extends Controller {
                 ];
             })
         ]);
+    }
+
+    private function validateLootBox($lootBox) {
+        Condition::precondition(!isset($lootBox->title) || empty($lootBox->title),
+            400, 'Title needs to be set');
+        Condition::precondition(!is_numeric($lootBox->boxId) || $lootBox->boxId < 1,
+            400, 'You need to select a box');
+        Condition::precondition(!is_numeric($lootBox->credits) || $lootBox->credits < 1,
+            400, 'You need to set a price');
+        Condition::precondition(!is_array($lootBox->items) || count($lootBox->items) < 2,
+            400, 'You need to select 2 or more items');
+
+        foreach ($lootBox->items as $item) {
+            Condition::precondition(ShopItem::where('shopItemId', $item['shopItemId'])->count() == 0,
+                404, 'No item with that ID');
+        }
     }
 }

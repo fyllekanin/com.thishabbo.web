@@ -11,16 +11,13 @@ use ReflectionClass;
  *
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class Action
-{
+class Action {
 
-    public static function getAction($action)
-    {
+    public static function getAction($action) {
         return $action['id'];
     }
 
-    public static function getActionFromId($actionId)
-    {
+    public static function getActionFromId($actionId) {
         try {
             return Iterables::find(self::getAllConstants(), function ($action) use ($actionId) {
                 return $action['id'] == $actionId;
@@ -29,8 +26,7 @@ class Action
         }
     }
 
-    public static function getActionsByLog($log)
-    {
+    public static function getActionsByLog($log) {
         try {
             return Iterables::filter(self::getAllConstants(), function ($action) use ($log) {
                 return $action['log'] == $log;
@@ -43,8 +39,7 @@ class Action
      * @return array
      * @throws \ReflectionException
      */
-    public static function getAllConstants()
-    {
+    public static function getAllConstants() {
         return (new ReflectionClass(get_class()))->getConstants();
     }
 
@@ -1533,4 +1528,26 @@ class Action
         'data' => [],
         'log' => 'log_user'
     ];
+
+    const CREATED_LOOT_BOX = [
+        'id' => 181,
+        'description' => 'User created loot box',
+        'data' => [],
+        'log' => 'log_sitecp'
+    ];
+
+    const UPDATED_LOOT_BOX = [
+        'id' => 182,
+        'description' => 'User updated loot box',
+        'data' => [],
+        'log' => 'log_sitecp'
+    ];
+
+    const DELETED_LOOT_BOX = [
+        'id' => 183,
+        'description' => 'User deleted loot box',
+        'data' => [],
+        'log' => 'log_sitecp'
+    ];
 }
+

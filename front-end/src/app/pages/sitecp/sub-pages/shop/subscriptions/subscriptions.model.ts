@@ -5,6 +5,8 @@ export class SubscriptionOptions {
     canHaveCustomNameColor: boolean;
     @primitive()
     canMoveNamePosition: boolean;
+    @primitive()
+    isListed: boolean;
 
     constructor (source?: Partial<SubscriptionOptions>) {
         ClassHelper.assign(this, source);
