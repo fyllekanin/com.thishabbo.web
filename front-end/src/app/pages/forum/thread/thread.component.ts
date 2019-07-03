@@ -181,7 +181,8 @@ export class ThreadComponent extends Page implements OnDestroy {
         return this._authService.isLoggedIn() &&
             (this._threadPage.isOpen || this._threadPage.forumPermissions.canCloseOpenThread) &&
             this._threadPage.categoryIsOpen &&
-            (this._threadPage.user.userId === this._authService.authUser.userId && !this._threadPage.forumPermissions.canPostInOthersThreads);
+            (this._threadPage.user.userId === this._authService.authUser.userId ||
+                this._threadPage.forumPermissions.canPostInOthersThreads);
     }
 
     get cantPostReason (): string {
@@ -191,7 +192,8 @@ export class ThreadComponent extends Page implements OnDestroy {
             return 'Thread is closed!';
         } else if (!this._threadPage.categoryIsOpen) {
             return 'The category is closed!';
-        } else if (this._threadPage.user.userId !== this._authService.authUser.userId && !this._threadPage.forumPermissions.canPostInOthersThreads) {
+        } else if (this._threadPage.user.userId !== this._authService.authUser.userId &&
+            !this._threadPage.forumPermissions.canPostInOthersThreads) {
             return 'You can\'t post in other users threads';
         }
         return '';
