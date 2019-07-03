@@ -10,8 +10,8 @@ export class ArrayHelper {
     }
 
     static sortByPropertyDesc (property: any, a, b): number {
-        const propA = String(a[property]).toLowerCase();
-        const propB = String(b[property]).toLowerCase();
+        const propA = a[property] instanceof Number ? a[property] : String(a[property]).toLowerCase();
+        const propB = b[property] instanceof Number ? b[property] : String(b[property]).toLowerCase();
         if (propA > propB) {
             return -1;
         } else if (propB > propA) {
@@ -21,8 +21,8 @@ export class ArrayHelper {
     }
 
     static sortByPropertyAsc (property: any, a, b): number {
-        const propA = String(a[property]).toLowerCase();
-        const propB = String(b[property]).toLowerCase();
+        const propA = a[property] instanceof Number ? a[property] : String(a[property]).toLowerCase();
+        const propB = b[property] instanceof Number ? b[property] : String(b[property]).toLowerCase();
         if (propA > propB) {
             return 1;
         } else if (propB > propA) {

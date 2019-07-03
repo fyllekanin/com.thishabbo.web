@@ -26,4 +26,17 @@ class ShopHelper {
             return [];
         }
     }
+
+    public static function getLootBoxItem($lootBox) {
+        $items = self::getLootBoxItems($lootBox);
+        $percentageList = [];
+        foreach ($items as $item) {
+            for ($i = 0; $i < $item->rarity; $i++) {
+                $percentageList[] = $item->shopItemId;
+            }
+        }
+        shuffle($percentageList);
+        $key = array_rand($percentageList);
+        return $percentageList[$key];
+    }
 }
