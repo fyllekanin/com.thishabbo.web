@@ -237,3 +237,7 @@ summary {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.clickable {
+    cursor: pointer;
+}

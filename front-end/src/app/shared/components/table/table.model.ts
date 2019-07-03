@@ -82,6 +82,8 @@ export class TableRow {
 
     @primitive()
     isOpen: boolean;
+    @primitive()
+    isSelected: boolean;
 
     constructor (source: Partial<TableRow>) {
         ClassHelper.assign(this, source);
@@ -113,6 +115,8 @@ export class FilterConfig {
     key: string;
     @primitive()
     value: string;
+    @primitiveOf(Boolean)
+    allOption = true;
     type: FilterConfigType = FilterConfigType.TEXT;
     items: Array<FilterConfigItem> = [];
 
@@ -126,13 +130,15 @@ export class FilterConfig {
 }
 
 export const FILTER_TYPE_CONFIG = new FilterConfig({
-    title: 'Type',
-    key: 'type',
+    title: 'Search Type',
+    key: 'searchType',
     type: FilterConfigType.SELECT,
     value: 'partial',
+    allOption: false,
     items: [
         new FilterConfigItem({label: 'Partial', value: 'partial'}),
-        new FilterConfigItem({label: 'Exact', value: 'exact'})
+        new FilterConfigItem({label: 'Exact', value: 'exact'}),
+        new FilterConfigItem({label: 'From start', value: 'fromStart'})
     ]
 });
 
@@ -151,6 +157,8 @@ export class TableConfig {
     filterConfigs: Array<FilterConfig> = [];
     @primitive()
     isSlim: boolean;
+    @primitiveOf(Boolean)
+    isRowsSelectable = false;
 
     constructor (source: Partial<TableConfig>) {
         ClassHelper.assign(this, source);

@@ -1,0 +1,8 @@
+<div class="grid-container">
+    <div class="grid-x grid-margin-x">
+        <div class="cell small-12 medium-3 align-center" *ngFor="let box of boxes">
+            <img [src]="box.asset" [ngClass]="boxId === box.id ? 'selected' : ''" class="clickable"
+                 (click)="boxId = box.id"/>
+        </div>
+    </div>
+</div>

@@ -8,6 +8,10 @@ import { SubscriptionService } from './services/subscription.service';
 import { ItemsListService } from './services/items-list.service';
 import { ItemComponent } from './items/item/item.component';
 import { ItemService } from './services/item.service';
+import { LootBoxesListComponent } from './loot-boxes/loot-boxes-list/loot-boxes-list.component';
+import { LootBoxesListService } from './services/loot-boxes-list.service';
+import { LootBoxComponent } from './loot-boxes/loot-box/loot-box.component';
+import { LootBoxService } from './services/loot-box.service';
 
 export const shopRoutes: Routes = [
     {
@@ -44,6 +48,20 @@ export const shopRoutes: Routes = [
                 component: SubscriptionComponent,
                 resolve: {
                     data: SubscriptionService
+                }
+            },
+            {
+                path: 'loot-boxes/page/:page',
+                component: LootBoxesListComponent,
+                resolve: {
+                    data: LootBoxesListService
+                }
+            },
+            {
+                path: 'loot-boxes/:lootBoxId',
+                component: LootBoxComponent,
+                resolve: {
+                    data: LootBoxService
                 }
             }
         ]

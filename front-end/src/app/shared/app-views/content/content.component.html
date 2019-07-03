@@ -1,4 +1,5 @@
-<div class="content-wrapper" [ngClass]="topBorder" [style.min-height]="minHeight ? minHeight : null">
+<div class="content-wrapper" [ngClass]="topBorder + (isSlim ? ' slim' : '')"
+     [style.min-height]="minHeight ? minHeight : null">
     <div #content>
         <ng-content></ng-content>
     </div>

@@ -8,10 +8,11 @@ import { Component, Input, ViewChild } from '@angular/core';
 })
 
 export class ContentComponent {
-    @ViewChild('content', { static: true }) contentEle;
+    @ViewChild('content', {static: true}) contentEle;
     topBorder: TitleTopBorder = '';
 
     @Input() minHeight = null;
+    @Input() isSlim = false;
 
     @Input()
     set top (top: TitleTopBorder) {
