@@ -19,7 +19,8 @@ class PermissionController extends Controller {
         'immunity' => 0,
         'groupId' => 0,
         'name' => 'Default',
-        'forumPermissions' => 0
+        'forumPermissions' => 0,
+        'isAuthOnly' => 0
     ];
 
     /**
@@ -35,6 +36,7 @@ class PermissionController extends Controller {
         $immunity = User::getImmunity($user->userId);
         $groups = $request->input('groups');
         $cascade = $request->input('cascade');
+        $isAuthOnly = $request->input('isAuthOnly');
         $permissions = $this->nameToNumberForumPermissions($request->input('permissions'));
 
         foreach ($groups as $grp) {
@@ -53,16 +55,19 @@ class PermissionController extends Controller {
                 $perm = new ForumPermission([
                     'categoryId' => $categoryId,
                     'groupId' => $groupToBeUpdated->groupId,
-                    'permissions' => $permissions
+                    'permissions' => $permissions,
+                    'isAuthOnly' => $isAuthOnly
                 ]);
                 $perm->save();
             } else {
                 $permission->update([
-                    'permissions' => $permissions
+                    'permissions' => $permissions,
+                    'isAuthOnly' => $isAuthOnly,
+                    'updatedAt' => time()
                 ]);
             }
             if ($cascade) {
-                $this->updateCategoryAndChildrenForumPermissions($categoryId, $groupToBeUpdated->groupId, $permissions);
+                $this->updateCategoryAndChildrenForumPermissions($categoryId, $groupToBeUpdated->groupId, $permissions, $isAuthOnly);
             }
 
             Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_FORUM_PERMISSIONS, ['wasCascade' => $cascade]);
@@ -100,7 +105,8 @@ class PermissionController extends Controller {
         return response()->json([
             'category' => $category,
             'group' => $group,
-            'groups' => Group::where('groupId', '!=', $groupId)->orderBy('name', 'ASC')->get(['groupId', 'name'])
+            'groups' => Group::where('groupId', '!=', $groupId)->orderBy('name', 'ASC')->get(['groupId', 'name']),
+            'isAuthOnly' => $permissions ? $permissions->isAuthOnly : 0
         ]);
     }
 
@@ -111,7 +117,7 @@ class PermissionController extends Controller {
      * @param $groupId
      * @param $permissions
      */
-    private function updateCategoryAndChildrenForumPermissions($categoryId, $groupId, $permissions) {
+    private function updateCategoryAndChildrenForumPermissions($categoryId, $groupId, $permissions, $isAuthOnly) {
         $categories = Category::where('parentId', $categoryId)->get();
 
         foreach ($categories as $category) {
@@ -120,6 +126,7 @@ class PermissionController extends Controller {
             if ($sqlSelection->count('categoryId') > 0) {
                 $sqlSelection->update([
                     'permissions' => $permissions,
+                    'isAuthOnly' => $isAuthOnly,
                     'updatedAt' => time()
                 ]);
             } else {
@@ -127,11 +134,12 @@ class PermissionController extends Controller {
                     'categoryId' => $category->categoryId,
                     'groupId' => $groupId,
                     'permissions' => $permissions,
+                    'isAuthOnly' => $isAuthOnly,
                     'createdAt' => time(),
                     'updatedAt' => time()
                 ]);
             }
-            $this->updateCategoryAndChildrenForumPermissions($category->categoryId, $groupId, $permissions);
+            $this->updateCategoryAndChildrenForumPermissions($category->categoryId, $groupId, $permissions, $isAuthOnly);
         }
     }
 
