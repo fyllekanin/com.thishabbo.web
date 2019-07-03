@@ -84,6 +84,7 @@ export class LootBoxesListComponent extends Page implements OnDestroy {
                             this._notificationService.sendInfoNotification('Loot box deleted');
                             this._data.items = this._data.items.filter(item => item.lootBoxId !== Number(action.rowId));
                             this.createOrUpdateTable();
+                            this._dialogService.closeDialog();
                         }, this._notificationService.failureNotification.bind(this._notificationService));
                     }
                 });

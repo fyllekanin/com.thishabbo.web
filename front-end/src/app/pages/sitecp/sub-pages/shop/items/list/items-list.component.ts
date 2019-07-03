@@ -121,6 +121,7 @@ export class ItemsListComponent extends Page implements OnDestroy {
                     placeholder: 'Search by title...',
                     key: 'filter'
                 }),
+                FILTER_TYPE_CONFIG,
                 new FilterConfig({
                     title: 'Type',
                     key: 'type',
@@ -129,8 +130,7 @@ export class ItemsListComponent extends Page implements OnDestroy {
                         label: item.label,
                         value: item.value.toString()
                     }))
-                }),
-                FILTER_TYPE_CONFIG
+                })
             ]
         });
     }

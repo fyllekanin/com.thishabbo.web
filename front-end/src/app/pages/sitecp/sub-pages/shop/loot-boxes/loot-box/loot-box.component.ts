@@ -53,12 +53,16 @@ export class LootBoxComponent extends Page implements OnDestroy {
     onTabClick (action: number): void {
         switch (action) {
             case LootBoxActions.SAVE:
-                this._service.save(this._data);
+                this._service.save(this._data).then(() => {
+                    this._data.createdAt = new Date().getTime() / 1000;
+                    this.setTabs();
+                });
                 break;
             case LootBoxActions.BACK:
                 this._router.navigateByUrl('/sitecp/shop/loot-boxes/page/1');
                 break;
             case LootBoxActions.DELETE:
+                this._service.delete(this._data.lootBoxId);
                 break;
             case LootBoxActions.ADD_ITEM:
                 this._dialogService.openDialog({
@@ -148,8 +152,8 @@ export class LootBoxComponent extends Page implements OnDestroy {
         const tabs = [
             {title: 'Save', value: LootBoxActions.SAVE, condition: true},
             {title: 'Back', value: LootBoxActions.BACK, condition: true},
-            {title: 'Delete', value: LootBoxActions.DELETE, condition: this._data.createdAt},
-            {title: 'Add Item', value: LootBoxActions.ADD_ITEM, condition: true}
+            {title: 'Add Item', value: LootBoxActions.ADD_ITEM, condition: true},
+            {title: 'Delete', value: LootBoxActions.DELETE, condition: this._data.createdAt}
         ];
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));
     }

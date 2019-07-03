@@ -31,7 +31,8 @@ class SubscriptionsController extends Controller {
                 return [
                     'subscriptionId' => $subscription->subscriptionId,
                     'title' => $subscription->title,
-                    'membersCount' => UserSubscription::where('subscriptionId', $subscription->subscriptionId)->count()
+                    'membersCount' => UserSubscription::where('subscriptionId', $subscription->subscriptionId)->count(),
+                    'isListed' => $subscription->options & ConfigHelper::getSubscriptionOptions()->isListed
                 ];
             })
         ]);

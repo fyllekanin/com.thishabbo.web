@@ -15,7 +15,8 @@ return [
     ],
     'SUBSCRIPTION_OPTIONS' => [
         'canHaveCustomNameColor' => 1,
-        'canMoveNamePosition' => 2
+        'canMoveNamePosition' => 2,
+        'isListed' => 4
     ],
     'NAME_POSITIONS' => [
         'topOutside' => 0,
