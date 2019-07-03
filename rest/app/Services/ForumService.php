@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\EloquentModels\Forum\Category;
 use App\EloquentModels\Forum\CategoryRead;
+use App\EloquentModels\Forum\ForumPermission;
 use App\EloquentModels\Forum\Post;
 use App\EloquentModels\Forum\Thread;
 use App\EloquentModels\Forum\ThreadRead;
@@ -128,6 +129,10 @@ class ForumService {
         $ids = [];
 
         foreach ($categoryIds as $categoryId) {
+            if ($userId == 0 && $forumPermission == ConfigHelper::getForumPermissions()->canRead && self::isCategoryAuthOnly($categoryId)) {
+                continue;
+            }
+
             if (PermissionHelper::haveForumPermission($userId, $forumPermission, $categoryId)) {
                 $ids[] = $categoryId;
             }
@@ -319,5 +324,9 @@ class ForumService {
         }
 
         return $categories;
+    }
+
+    private function isCategoryAuthOnly($categoryId) {
+        return ForumPermission::where('categoryId', $categoryId)->where('isAuthOnly', true)->count() > 0;
     }
 }
