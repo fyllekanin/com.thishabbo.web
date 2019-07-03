@@ -191,8 +191,8 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
 
         this.tabs = [
             new TitleTab({title: 'Save', value: ThreadControllerActions.SAVE}),
-            new TitleTab({title: 'Toggle Poll', value: ThreadControllerActions.TOGGLE_POLL}),
-            new TitleTab({title: 'Back', value: ThreadControllerActions.BACK})
+            new TitleTab({title: 'Back', value: ThreadControllerActions.BACK}),
+            new TitleTab({title: 'Toggle Poll', value: ThreadControllerActions.TOGGLE_POLL})
         ];
 
         if (this._threadSkeleton.poll || !this._threadSkeleton.canHavePoll) {

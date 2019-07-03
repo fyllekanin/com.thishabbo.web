@@ -90,8 +90,8 @@ export class SubscriptionComponent extends Page implements OnDestroy {
     private setTabs (): void {
         const tabs = [
             {title: 'Save', value: SubscriptionAction.SAVE, condition: true},
-            {title: 'Delete', value: SubscriptionAction.DELETE, condition: this._data.createdAt},
-            {title: 'Back', value: SubscriptionAction.BACK, condition: true}
+            {title: 'Back', value: SubscriptionAction.BACK, condition: true},
+            {title: 'Delete', value: SubscriptionAction.DELETE, condition: this._data.createdAt}
         ];
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));
     }

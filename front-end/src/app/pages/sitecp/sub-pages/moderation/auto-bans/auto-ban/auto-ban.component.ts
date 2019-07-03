@@ -111,8 +111,8 @@ export class AutoBanComponent extends Page implements OnDestroy {
 
         const tabs = [
             {title: 'Save', value: AutoBanActions.SAVE, condition: true},
-            {title: 'Delete', value: AutoBanActions.DELETE, condition: this._data.updatedAt},
-            {title: 'Back', value: AutoBanActions.BACK, condition: true}
+            {title: 'Back', value: AutoBanActions.BACK, condition: true},
+            {title: 'Delete', value: AutoBanActions.DELETE, condition: this._data.updatedAt}
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));

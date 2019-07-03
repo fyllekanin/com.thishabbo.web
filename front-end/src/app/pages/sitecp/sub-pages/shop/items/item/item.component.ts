@@ -95,7 +95,7 @@ export class ItemComponent extends Page implements OnDestroy {
         return this._data.subscriptions;
     }
 
-    get isCreated(): boolean {
+    get isCreated (): boolean {
         return Boolean(this._data.createdAt);
     }
 
@@ -144,8 +144,8 @@ export class ItemComponent extends Page implements OnDestroy {
     private setTabs (): void {
         const tabs = [
             {title: 'Save', value: ShopItemActions.SAVE, condition: true},
-            {title: 'Delete', value: ShopItemActions.DELETE, condition: this._data.createdAt},
-            {title: 'Back', value: ShopItemActions.BACK, condition: true}
+            {title: 'Back', value: ShopItemActions.BACK, condition: true},
+            {title: 'Delete', value: ShopItemActions.DELETE, condition: this._data.createdAt}
         ];
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));
     }
