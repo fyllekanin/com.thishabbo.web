@@ -3,7 +3,7 @@ import { Page } from 'shared/page/page.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { SHOP_HUB } from '../shop.constants';
-import { LOOT_BOX_ANIMATIONS } from 'shared/constants/shop.constants';
+import { LOOT_BOXES } from 'shared/constants/shop.constants';
 
 @Component({
     selector: 'app-shop-dashboard',
@@ -15,19 +15,19 @@ export class DashboardComponent extends Page implements OnDestroy {
         {
             name: 'Theme Box',
             getAnimation: function () {
-                return LOOT_BOX_ANIMATIONS.find(item => item.id === 1);
+                return LOOT_BOXES.find(item => item.id === 1);
             }
         },
         {
             name: 'Icon Box',
             getAnimation: function () {
-                return LOOT_BOX_ANIMATIONS.find(item => item.id === 5);
+                return LOOT_BOXES.find(item => item.id === 5);
             }
         },
         {
             name: 'Effect Box',
             getAnimation: function () {
-                return LOOT_BOX_ANIMATIONS.find(item => item.id === 3);
+                return LOOT_BOXES.find(item => item.id === 3);
             }
         }
     ];

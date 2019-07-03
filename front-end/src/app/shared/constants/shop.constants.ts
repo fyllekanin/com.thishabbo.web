@@ -18,7 +18,7 @@ export const CONFIGURABLE_ITEMS = [
     SHOP_ITEM_TYPES.subscription
 ];
 
-export const LOOT_BOX_ANIMATIONS = [
+export const LOOT_BOXES = [
     {
         id: 1,
         asset: '/assets/images/shop/1.png'

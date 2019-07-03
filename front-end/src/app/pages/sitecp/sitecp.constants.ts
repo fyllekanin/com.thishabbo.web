@@ -74,3 +74,8 @@ export const SHOP_SUBSCRIPTIONS_BREADCRUMB_ITEMS = new BreadcrumbItem({
     title: 'Subscriptions',
     url: '/sitecp/shop/subscriptions/page/1'
 });
+
+export const SHOP_LOOT_BOXES_BREADCRUMB_ITEMS = new BreadcrumbItem({
+    title: 'Shop Loot Boxes',
+    url: '/sitecp/shop/loot-boxes/page/1'
+});

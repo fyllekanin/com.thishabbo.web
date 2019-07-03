@@ -16,3 +16,8 @@
     font-size: 11px;
     display: block;
 }
+
+.slim {
+    border: none;
+    box-shadow: none;
+}

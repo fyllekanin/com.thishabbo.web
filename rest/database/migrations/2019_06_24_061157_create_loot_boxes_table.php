@@ -15,14 +15,16 @@ class CreateLootBoxesTable extends Migration {
             $table->bigIncrements('lootBoxId');
             $table->string('title');
             $table->text('items');
-            $table->integer('animation');
+            $table->integer('boxId');
+            $table->integer('credits');
             $table->integer('isDeleted')->default(0);
             $table->bigInteger('createdAt');
             $table->bigInteger('updatedAt');
 
             $table->index('title');
             $table->index('isDeleted');
-            $table->index('animation');
+            $table->index('boxId');
+            $table->index('credits');
             $table->index('createdAt');
             $table->index('updatedAt');
         });
