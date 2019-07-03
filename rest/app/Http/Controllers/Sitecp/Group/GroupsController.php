@@ -180,8 +180,9 @@ class GroupsController extends Controller {
         $nameIsUnique = Group::withName($newGroup->name)->where('groupId', '!=', $groupId)->count('groupId') == 0;
         Condition::precondition(!$nameIsUnique, 400, 'Name needs to be unique');
 
-        Condition::precondition($newGroup->nameColor && !Value::validateHexColors([$newGroup->nameColor]), 400, 'Invalid Hex Color!');
-        $newGroup->nameColor = json_encode([$newGroup->nameColor]);
+        $isNameColorSet = isset($newGroup->nameColor) && !empty($newGroup->nameColor);
+        Condition::precondition($isNameColorSet && !Value::validateHexColors([$newGroup->nameColor]), 400, 'Invalid Hex Color!');
+        $newGroup->nameColor = $isNameColorSet ? json_encode([$newGroup->nameColor]) : '';
 
         $newGroup->sitecpPermissions = $this->convertSitecpPermissions($newGroup);
         $newGroup->staffPermissions = $this->convertStaffPermissions($newGroup);
@@ -225,7 +226,7 @@ class GroupsController extends Controller {
             $group->sitecpPermissions = 0;
             $group->options = 0;
             $group->staffPermissions = 0;
-            $group->groups = Group::where('immunity', '<', $immunity)->get()->map(function ($group) {
+            $group->groups = Group::where('immunity', '<', $immunity)->orderBy('name', 'ASC')->get()->map(function ($group) {
                 $nameColor = Value::objectJsonProperty($group, 'nameColor', '');
                 return [
                     'sitecpPermissions' => $this->buildSitecpPermissions($group),

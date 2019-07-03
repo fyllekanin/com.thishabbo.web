@@ -132,8 +132,8 @@ export class PrefixComponent extends Page implements OnDestroy {
 
         const tabs = [
             {title: 'Save', value: PrefixActions.SAVE, condition: true},
-            {title: 'Delete', value: PrefixActions.DELETE, condition: this._prefix.createdAt},
-            {title: 'Back', value: PrefixActions.BACK, condition: true}
+            {title: 'Back', value: PrefixActions.BACK, condition: true},
+            {title: 'Delete', value: PrefixActions.DELETE, condition: this._prefix.createdAt}
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));

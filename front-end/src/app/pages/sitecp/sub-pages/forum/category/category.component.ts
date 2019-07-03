@@ -174,8 +174,8 @@ export class CategoryComponent extends Page implements OnDestroy {
 
         const tabs = [
             {title: 'Save', value: CategoryActions.SAVE, condition: true},
-            {title: 'Delete', value: CategoryActions.DELETE, condition: this._categoryPage.category.createdAt},
-            {title: 'Back', value: CategoryActions.BACK, condition: true}
+            {title: 'Back', value: CategoryActions.BACK, condition: true},
+            {title: 'Delete', value: CategoryActions.DELETE, condition: this._categoryPage.category.createdAt}
         ];
 
         this.categories = this.flat(this._categoryPage.forumTree, '');
