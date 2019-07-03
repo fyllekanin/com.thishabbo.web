@@ -38,7 +38,7 @@
                 <label>General Permissions</label>
                 <div>
                     <label class="checkbox-container">
-                        Is the category with authenticated only?
+                        Is the category authenticated only?
                         <span tooltip="Is this category only for people which are logged in? If so, check this!"
                               class="checkbox-info">
                             <em class="fas fa-question-circle"></em>
@@ -86,6 +86,13 @@
                     <label class="checkbox-container">
                         Can Open / Close Own Threads?
                         <input type="checkbox" [(ngModel)]="permissions.canOpenCloseOwnThread">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Can post in others threads?
+                        <input type="checkbox" [(ngModel)]="permissions.canPostInOthersThreads">
                         <span class="checkmark"></span>
                     </label>
                 </div>

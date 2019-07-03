@@ -15,6 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ThreadService } from '../services/thread.service';
 import { PostModel } from '../post/post.model';
 import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
+import { User } from 'core/services/auth/auth.model';
 
 describe('ThreadComponent', () => {
 
@@ -192,10 +193,14 @@ describe('ThreadComponent', () => {
         it('should return true if thread is open', () => {
             // Given
             spyOn(authService, 'isLoggedIn').and.returnValue(true);
+            spyOnProperty(authService, 'authUser', 'get').and.returnValue({userId: 1});
             sendThread.next({
                 data: new ThreadPage({
                     isOpen: true,
-                    categoryIsOpen: true
+                    categoryIsOpen: true,
+                    user: new User({
+                        userId: 1
+                    })
                 })
             });
 
@@ -209,11 +214,15 @@ describe('ThreadComponent', () => {
         it('should return true if thread is closed but have canCloseOpenThread permission and category is open', () => {
             // Given
             spyOn(authService, 'isLoggedIn').and.returnValue(true);
+            spyOnProperty(authService, 'authUser', 'get').and.returnValue({userId: 1});
             sendThread.next({
                 data: new ThreadPage({
                     isOpen: false,
                     categoryIsOpen: true,
-                    forumPermissions: new ForumPermissions({canCloseOpenThread: true})
+                    forumPermissions: new ForumPermissions({canCloseOpenThread: true}),
+                    user: new User({
+                        userId: 1
+                    })
                 })
             });
 
@@ -270,10 +279,14 @@ describe('ThreadComponent', () => {
         it('should return empty message if nothing', () => {
             // Given
             spyOn(authService, 'isLoggedIn').and.returnValue(true);
+            spyOnProperty(authService, 'authUser', 'get').and.returnValue({userId: 1});
             sendThread.next({
                 data: new ThreadPage({
                     isOpen: true,
-                    categoryIsOpen: true
+                    categoryIsOpen: true,
+                    user: new User({
+                        userId: 1
+                    })
                 })
             });
 

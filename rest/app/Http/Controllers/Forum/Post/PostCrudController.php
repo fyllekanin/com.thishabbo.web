@@ -209,6 +209,11 @@ class PostCrudController extends Controller {
         PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead, $thread->categoryId,
             'No permissions to post!', 550);
 
+        if ($thread->userId != $user->userId) {
+            PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canPostInOthersThreads, $thread->categoryId,
+                'You can not post in other users threads', 550);
+        }
+
         $canPost = ($thread->isOpen || PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canCloseOpenThread, $thread->categoryId))
             && $thread->categoryIsOpen;
         Condition::precondition(!$canPost, 550, 'Thread or category is closed, no permission to post!');

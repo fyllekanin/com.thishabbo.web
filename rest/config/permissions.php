@@ -35,6 +35,7 @@ return [
         'canViewThreadContent' => 128,
         'canViewOthersThreads' => 2048,
         'canOpenCloseOwnThread' => 65536,
+        'canPostInOthersThreads' => 131072,
         // Mod related
         'canEditOthersPosts' => 8,
         'canDeletePosts' => 32,
