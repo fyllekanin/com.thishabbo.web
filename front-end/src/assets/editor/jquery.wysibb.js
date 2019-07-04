@@ -2014,7 +2014,6 @@ var wbbdebug = false;
         },
         getBBCode: function () {
             if (!this.options.rules || this.options.bbmode) {
-                console.log(1);
                 return this.$txtArea.val();
             }
             this.clearEmpty();
