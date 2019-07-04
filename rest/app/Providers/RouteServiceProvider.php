@@ -38,6 +38,8 @@ class RouteServiceProvider extends ServiceProvider {
 
         $this->mapApiForumRoutes();
 
+        $this->mapApiShopRoutes();
+
         $this->mapApiStaffRoutes();
 
         $this->mapApiUsercpRoutes();
@@ -85,6 +87,13 @@ class RouteServiceProvider extends ServiceProvider {
             ->middleware(['api', 'user.check', 'maintenance', 'habbo_verify.check', 'gdpr.check'])
             ->namespace($this->namespace)
             ->group(base_path('routes/forum/api.php'));
+    }
+
+    protected function mapApiShopRoutes() {
+        Route::prefix('api/shop')
+            ->middleware(['api', 'user.check', 'auth.check', 'maintenance', 'habbo_verify.check', 'gdpr.check'])
+            ->namespace($this->namespace)
+            ->group(base_path('routes/shop/api.php'));
     }
 
     /**

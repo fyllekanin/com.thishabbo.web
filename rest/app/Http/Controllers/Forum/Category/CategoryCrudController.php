@@ -131,7 +131,6 @@ class CategoryCrudController extends Controller {
         $threads = $threadSql->skip(DataHelper::getOffset($page))
             ->take($this->perPage)
             ->with(['prefix', 'latestPost'])
-            ->withNickname()
             ->get();
 
         return response()->json([
@@ -182,6 +181,7 @@ class CategoryCrudController extends Controller {
      * @param $userId
      *
      * @param $category
+     *
      * @return mixed
      */
     private function buildThreadsForCategory($threads, $userId, $category) {
@@ -201,6 +201,7 @@ class CategoryCrudController extends Controller {
      * @param $userId
      *
      * @param $category
+     *
      * @return Collection
      */
     private function getStickyThreadsForCategory($categoryId, $categoryPermissions, $userId, $category) {
@@ -254,6 +255,7 @@ class CategoryCrudController extends Controller {
         $children = Category::nonHidden()
             ->withParent($categoryId)
             ->whereIn('categoryId', $categoryIds)
+            ->orderBy('displayOrder', 'ASC')
             ->select('categoryId', 'description', 'displayOrder', 'link', 'title', 'lastPostId', 'icon', 'updatedAt')
             ->get();
         $childs = [];
@@ -391,6 +393,9 @@ class CategoryCrudController extends Controller {
     }
 
     private function mapLastPost($thread, $post) {
+        if (!$post) {
+            return null;
+        }
         return (object)[
             'postId' => $post->postId,
             'threadId' => $post->threadId,

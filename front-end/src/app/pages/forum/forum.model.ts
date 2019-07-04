@@ -135,6 +135,8 @@ export class SlimThread {
     haveRead: boolean;
     @primitive()
     icon: string;
+    @objectOf(SlimUser)
+    user: SlimUser;
 
     constructor (source?: Partial<SlimThread>) {
         ClassHelper.assign(this, source);

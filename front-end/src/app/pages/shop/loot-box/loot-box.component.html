@@ -1,0 +1,25 @@
+<div class="loot-box-container">
+    <div class="inner-image">
+        <img [src]="box.boxUrl"/>
+    </div>
+    <div class="container">
+        <a class="title">
+            <em class="fas fa-box"></em>
+            {{box.title}}
+        </a>
+        <div class="content">
+            <strong>Items</strong>
+            <div *ngIf="box.items.length < 4">
+                <li *ngFor="let item of box.items">
+                    {{item.title}}
+                </li>
+            </div>
+            <div *ngIf="box.items.length > 3">
+                <li>{{box.items[0].title}}</li>
+                <li>{{box.items[1].title}}</li>
+                <li>{{box.items[2].title}}</li>
+                <em>And {{box.items.length - 3}} more</em>
+            </div>
+        </div>
+    </div>
+</div>

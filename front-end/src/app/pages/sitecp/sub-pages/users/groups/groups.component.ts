@@ -55,6 +55,7 @@ export class GroupsComponent extends Page implements OnDestroy {
     toggleGroup (group: Group): void {
         if (this.haveUserGroup(group)) {
             this._groupsModel.groups = this._groupsModel.groups.filter(grp => grp.groupId !== group.groupId);
+            this.checkDisplayGroup();
         } else {
             this._groupsModel.groups.push(group);
         }
@@ -83,5 +84,12 @@ export class GroupsComponent extends Page implements OnDestroy {
     private onData (data: { data: GroupsModel }): void {
         this._groupsModel = data.data;
         this._groupsModel.possibleGroups.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'name'));
+    }
+
+    private checkDisplayGroup (): void {
+        if (this._groupsModel.groups.findIndex(group =>
+            group.groupId === this._groupsModel.displayGroupId) === -1) {
+            this._groupsModel.displayGroupId = 0;
+        }
     }
 }

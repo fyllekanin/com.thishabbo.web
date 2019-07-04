@@ -12,6 +12,7 @@ class CreateForumPermissionsTable extends Migration {
      */
     public function up() {
         Schema::create('forum_permissions', function (Blueprint $table) {
+            $table->bigIncrements('forumPermissionId');
             $table->bigInteger('categoryId');
             $table->bigInteger('groupId');
             $table->bigInteger('permissions')->default(0);
