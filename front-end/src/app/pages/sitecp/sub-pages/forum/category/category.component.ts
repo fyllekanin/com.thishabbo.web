@@ -11,6 +11,7 @@ import { isAbsent } from 'shared/helpers/class.helper';
 import { Page } from 'shared/page/page.model';
 import { CATEGORY_LIST_BREADCRUMB_ITEM, SITECP_BREADCRUMB_ITEM } from '../../../sitecp.constants';
 import { Category, CategoryActions, CategoryLeaf, CategoryOptions, CategoryPage } from './category.model';
+import { ArrayHelper } from 'shared/helpers/array.helper';
 
 @Component({
     selector: 'app-sitecp-forum-category',
@@ -125,6 +126,7 @@ export class CategoryComponent extends Page implements OnDestroy {
 
     private flat (array: Array<CategoryLeaf>, prefix = '', shouldAppend = true) {
         let result = [];
+        array.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'displayOrder'));
         (array || []).forEach((item: CategoryLeaf) => {
             item.title = `${prefix} ${item.title}`;
             result.push(item);
