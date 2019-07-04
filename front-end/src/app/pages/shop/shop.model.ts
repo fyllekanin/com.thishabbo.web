@@ -1,5 +1,5 @@
 import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
-import { LOOT_BOXES } from 'shared/constants/shop.constants';
+import { LOOT_BOXES, SHOP_ITEM_RARITIES } from 'shared/constants/shop.constants';
 
 export class ShopLootBoxItem {
     @primitive()
@@ -15,6 +15,11 @@ export class ShopLootBoxItem {
 
     constructor (source: Partial<ShopLootBoxItem>) {
         ClassHelper.assign(this, source);
+    }
+
+    get color (): string {
+        const rarityKey = Object.keys(SHOP_ITEM_RARITIES).find(key => SHOP_ITEM_RARITIES[key].value === this.rarity);
+        return SHOP_ITEM_RARITIES[rarityKey].color;
     }
 }
 
