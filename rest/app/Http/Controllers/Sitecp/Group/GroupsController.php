@@ -141,6 +141,7 @@ class GroupsController extends Controller {
 
         $group = new Group([
             'name' => $group->name,
+            'nickname' => Value::objectProperty($group, 'nickname', ''),
             'nameColor' => Value::objectProperty($group, 'nameColor', ''),
             'userBarStyling' => Value::objectProperty($group, 'userBarStyling', ''),
             'immunity' => $group->immunity,
@@ -190,6 +191,7 @@ class GroupsController extends Controller {
 
         Group::where('groupId', $groupId)->update([
             'name' => $newGroup->name,
+            'nickname' => Value::objectProperty($newGroup, 'nickname', ''),
             'nameColor' => Value::objectProperty($newGroup, 'nameColor', $group->nameColor),
             'userBarStyling' => Value::objectProperty($newGroup, 'userBarStyling', $group->userBarStyling),
             'immunity' => $newGroup->immunity,

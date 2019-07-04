@@ -642,10 +642,10 @@ class BBcodesTableSeeder extends Seeder {
             49 =>
                 array(
                     'bbcodeid' => 50,
-                    'name' => 'Sitecpistrator Notice',
+                    'name' => 'Administrator Notice',
                     'example' => '[sitecp]My text goes here![/sitecp]',
                     'pattern' => '/\[sitecp\](.*?)\[\/sitecp\]/si',
-                    'replace' => '<div style="padding:8px 35px 8px 14px;background-color:#c66464;border:1px solid #FFFFFF;width:70%;margin: auto;color:#ffffff;"><div><strong>Sitecpistrator Message:</strong></div><div>$1</div></div>',
+                    'replace' => '<div style="padding:8px 35px 8px 14px;background-color:#c66464;border:1px solid #FFFFFF;width:70%;margin: auto;color:#ffffff;"><div><strong>Administrator Message:</strong></div><div>$1</div></div>',
                     'content' => '$1',
                     'isEmoji' => 0,
                     'isSystem' => 0,
@@ -658,7 +658,7 @@ class BBcodesTableSeeder extends Seeder {
                     'name' => 'Community Sitecp Notice',
                     'example' => '[ca]My text goes here![/ca]',
                     'pattern' => '/\[ca\](.*?)\[\/ca\]/si',
-                    'replace' => '<div style="padding:8px 35px 8px 14px;background-color:#c66464;border:1px solid #FFFFFF;width:70%;margin: auto;color:#ffffff;"><div><strong>Community Sitecpistrator Message:</strong></div><div>$1</div></div>',
+                    'replace' => '<div style="padding:8px 35px 8px 14px;background-color:#c66464;border:1px solid #FFFFFF;width:70%;margin: auto;color:#ffffff;"><div><strong>Community Administrator Message:</strong></div><div>$1</div></div>',
                     'content' => '$1',
                     'isEmoji' => 0,
                     'isSystem' => 0,

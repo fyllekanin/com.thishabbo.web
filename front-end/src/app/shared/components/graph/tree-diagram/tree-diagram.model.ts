@@ -51,7 +51,7 @@ export const exampleData: TreeDiagram = {
             name: 'ThisHabbo Staff Hub',
             children: [
                 {
-                    name: 'Sitecpistrator Lounge',
+                    name: 'Administrator Lounge',
                     children: [
                         {
                             name: 'Ownership',

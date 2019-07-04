@@ -22,6 +22,8 @@ export class Group {
     @primitive()
     name: string;
     @primitive()
+    nickname: string;
+    @primitive()
     immunity: number;
     @primitive()
     maxImmunity: number;
