@@ -64,7 +64,8 @@ class ThreadCrudController extends Controller {
         $query = Post::where('posts.threadId', $threadId)
             ->join('users', 'users.userId', '=', 'posts.userId')
             ->select('users.userId', DB::raw('COUNT(*) as amount'))
-            ->groupBy('users.userId');
+            ->groupBy('users.userId')
+            ->orderBy(DB::raw('COUNT(*)'), 'DESC');
         $total = DataHelper::getPage($query->count());
 
         return response()->json([

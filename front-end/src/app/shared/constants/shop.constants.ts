@@ -7,9 +7,9 @@ export const SHOP_ITEM_TYPES = {
 
 export const SHOP_ITEM_RARITIES = {
     common: {label: 'Common', value: 80, color: '#000000'},
-    rare: {label: 'Rare', value: 50},
-    epic: {label: 'Epic', value: 30},
-    legendary: {label: 'Legendary', value: 10}
+    rare: {label: 'Rare', value: 50, color: '#3682b9'},
+    epic: {label: 'Epic', value: 30, color: '#925779'},
+    legendary: {label: 'Legendary', value: 10, color: '#e49606'}
 };
 
 export const CONFIGURABLE_ITEMS = [
