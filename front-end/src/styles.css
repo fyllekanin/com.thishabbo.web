@@ -1,5 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 
+:root {
+    --main-blue-color: #139bfb;
+    --main-pink-color: #e887bf;
+    --main-green-color: #5ba23e;
+    --main-red-color: #ad6262;
+    --main-black-color: #000000;
+    --main-purple-color: #925779;
+}
+
 @font-face {
     font-family: Roboto;
     src: url('./assets/fonts/Roboto-Regular.ttf');
@@ -240,4 +249,52 @@ summary {
 
 .clickable {
     cursor: pointer;
+}
+
+.blue-top {
+    border-top: 3px solid var(--main-blue-color) !important;
+}
+
+.blue-text {
+    color: var(--main-blue-color) !important;
+}
+
+.pink-top {
+    border-top: 3px solid var(--main-pink-color) !important;
+}
+
+.pink-text {
+    color: var(--main-pink-color) !important;
+}
+
+.green-top {
+    border-top: 3px solid var(--main-green-color) !important;
+}
+
+.green-text {
+    color: var(--main-green-color) !important;
+}
+
+.red-top {
+    border-top: 3px solid var(--main-red-color) !important;
+}
+
+.red-text {
+    color: var(--main-red-color) !important;
+}
+
+.black-top {
+    border-top: 3px solid var(--main-black-color) !important;
+}
+
+.black-text {
+    color: var(--main-black-color) !important;
+}
+
+.purple-top {
+    border-top: 3px solid var(--main-purple-color) !important;
+}
+
+.purple-text {
+    color: var(--main-purple-color) !important;
 }
