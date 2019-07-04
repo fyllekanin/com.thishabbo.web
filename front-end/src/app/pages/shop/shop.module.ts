@@ -12,6 +12,8 @@ import { SideMenuModule } from 'shared/app-views/side-menu/side-menu.module';
 import { ShopComponent } from './shop.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { shopRoutes } from './shop.routes';
+import { DashboardResolver } from './services/dashboard.resolver';
+import { LootBoxComponent } from './loot-box/loot-box.component';
 
 @NgModule({
     imports: [
@@ -28,10 +30,13 @@ import { shopRoutes } from './shop.routes';
     ],
     declarations: [
         ShopComponent,
-        DashboardComponent
+        DashboardComponent,
+        LootBoxComponent
     ],
     entryComponents: [],
-    providers: [],
+    providers: [
+        DashboardResolver
+    ],
     exports: [
         RouterModule
     ]

@@ -5,6 +5,7 @@ import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { SideMenuBlock, SideMenuItem } from 'shared/app-views/side-menu/side-menu.model';
 import { TitleTopBorder } from 'shared/app-views/title/title.model';
 import { SHOP_HUB } from './shop.constants';
+import { SHOP_ITEM_RARITIES } from 'shared/constants/shop.constants';
 
 @Component({
     selector: 'app-shop',
@@ -16,6 +17,14 @@ import { SHOP_HUB } from './shop.constants';
                 </div>
                 <div class="cell small-12 medium-3">
                     <app-side-menu [blocks]="blocks"></app-side-menu>
+
+                    <app-title [title]="'Rarity Colors'"></app-title>
+                    <app-content>
+                        <div *ngFor="let rarity of rarities">
+                            <strong [style.color]="rarity.color">{{rarity.label}}</strong>
+                            <span class="float-right">{{rarity.value}}</span>
+                        </div>
+                    </app-content>
                 </div>
             </div>
         </div>`
@@ -23,6 +32,8 @@ import { SHOP_HUB } from './shop.constants';
 
 export class ShopComponent extends Page implements OnInit, OnDestroy {
     blocks: Array<SideMenuBlock> = [];
+
+    rarities: Array<{ label: string, value: string, color: string }> = [];
 
     constructor (breadcrumbService: BreadcrumbService, elementRef: ElementRef) {
         super(elementRef);
@@ -51,6 +62,14 @@ export class ShopComponent extends Page implements OnInit, OnDestroy {
                 ]
             })
         ];
+
+        this.rarities = Object.keys(SHOP_ITEM_RARITIES).map(key => {
+            return {
+                label: SHOP_ITEM_RARITIES[key].label,
+                value: `${SHOP_ITEM_RARITIES[key].value}%`,
+                color: SHOP_ITEM_RARITIES[key].color
+            };
+        });
     }
 
     ngOnDestroy (): void {

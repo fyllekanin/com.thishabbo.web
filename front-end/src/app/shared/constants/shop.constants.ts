@@ -6,7 +6,7 @@ export const SHOP_ITEM_TYPES = {
 };
 
 export const SHOP_ITEM_RARITIES = {
-    common: {label: 'Common', value: 80},
+    common: {label: 'Common', value: 80, color: '#000000'},
     rare: {label: 'Rare', value: 50},
     epic: {label: 'Epic', value: 30},
     legendary: {label: 'Legendary', value: 10}

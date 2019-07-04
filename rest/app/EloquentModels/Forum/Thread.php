@@ -71,7 +71,7 @@ class Thread extends DeletableModel {
     }
 
     public function getUserAttribute() {
-        return UserHelper::getUser($this->userId);
+        return UserHelper::getSlimUser($this->userId);
     }
 
     public function getParentsAttribute() {
