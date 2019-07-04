@@ -64,6 +64,7 @@
 
 .time-ago, .nickname {
     text-align: left;
+    margin: 0px 0px 0px 8px;
 }
 
 .nickname a {

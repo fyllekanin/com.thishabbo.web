@@ -2,8 +2,8 @@
     font-size: 32px;
     height: 100%;
     float: left;
-    padding: 3px 13px 0 0;
-    color: #159cfc;
+    padding: 3px 17px 0 0;
+    color: #c1bebe;
 }
 
 .read {
@@ -46,10 +46,12 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    margin: 0px 0px 0px 8px;
 }
 
 .time-ago, .nickname {
     text-align: left;
+    margin: 0px 0px 0px 8px;
 }
 
 a {
