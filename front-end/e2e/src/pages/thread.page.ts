@@ -16,7 +16,7 @@ export class ThreadPage {
     }
 
     static getPostOwner (index: number): ElementFinder {
-        const ele = element.all(by.css('app-user-post-bit .nickname a')).get(index);
+        const ele = element.all(by.css('app-user-post-bit .nickname app-user-link .user-link a')).get(index);
         browser.wait(ExpectedConditions.presenceOf(ele), 10000, `Expected post ${index} to be present`);
 
         return ele;
