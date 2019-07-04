@@ -14,7 +14,7 @@
                 <app-title [title]="'No categories available'"></app-title>
                 <app-content>
                     You don't have access to see any categories on the forum. <br/>
-                    If you are logged in and seeing this error message, please contact an Sitecpistrator. If you aren't
+                    If you are logged in and seeing this error message, please contact an Administrator. If you aren't
                     logged in, please do so!
                 </app-content>
             </div>
@@ -84,15 +84,17 @@
 
             <app-title [title]="currentlyActiveTitle" [top]="latestPostersTop"></app-title>
             <app-content>
-                <span *ngFor="let user of currentlyActive; let last = last;" >
-                    <app-user-link [user]="user"></app-user-link><span *ngIf="!last">, </span><span *ngIf="last">.</span>
+                <span *ngFor="let user of currentlyActive; let last = last;">
+                    <app-user-link [user]="user"></app-user-link><span *ngIf="!last">, </span><span
+                        *ngIf="last">.</span>
                 </span>
             </app-content>
 
             <app-title [title]="activeTodayTitle" [top]="latestPostersTop"></app-title>
             <app-content>
-                <span *ngFor="let user of activeToday; let last = last;" >
-                    <app-user-link [user]="user"></app-user-link><span *ngIf="!last">, </span><span *ngIf="last">.</span>
+                <span *ngFor="let user of activeToday; let last = last;">
+                    <app-user-link [user]="user"></app-user-link><span *ngIf="!last">, </span><span
+                        *ngIf="last">.</span>
                 </span>
             </app-content>
         </div>
