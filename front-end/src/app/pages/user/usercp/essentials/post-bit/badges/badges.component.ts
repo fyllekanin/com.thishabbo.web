@@ -26,6 +26,7 @@ export class BadgesComponent extends InnerDialogComponent {
     }
 
     onToggle(badge: SlimBadge): void {
+        console.log(badge);
         if (this.getIsActive(badge)) {
             this._selectedBadges = this._selectedBadges.filter(item => item.badgeId !== badge.badgeId);
             return;

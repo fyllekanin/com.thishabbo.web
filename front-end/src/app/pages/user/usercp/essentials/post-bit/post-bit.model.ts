@@ -11,21 +11,6 @@ export class NamePositionModel {
     }
 }
 
-export class PostBitInformation {
-    @primitive()
-    hideJoinDate: boolean;
-    @primitive()
-    hidePostCount: boolean;
-    @primitive()
-    hideLikesCount: boolean;
-    @primitive()
-    hideSocials: boolean;
-
-    constructor (source?: Partial<PostBitInformation>) {
-        ClassHelper.assign(this, source);
-    }
-}
-
 export class SlimBadge {
     @primitive()
     badgeId: number;
@@ -41,11 +26,26 @@ export class SlimBadge {
     }
 }
 
+export class PostBitInformation {
+    @primitive()
+    hideJoinDate: boolean;
+    @primitive()
+    hidePostCount: boolean;
+    @primitive()
+    hideLikesCount: boolean;
+    @primitive()
+    hideSocials: boolean;
+    @arrayOf(SlimBadge)
+    badges: Array<SlimBadge> = [];
+
+    constructor (source?: Partial<PostBitInformation>) {
+        ClassHelper.assign(this, source);
+    }
+}
+
 export class PostBitModel {
     @objectOf(PostBitInformation)
     information: PostBitInformation;
-    @arrayOf(SlimBadge)
-    badges: Array<SlimBadge> = [];
     @objectOf(NamePositionModel)
     namePosition: NamePositionModel;
 

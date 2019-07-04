@@ -31,6 +31,7 @@ class CreateUserdataTable extends Migration {
             $table->string('twitter')->nullable();
             $table->bigInteger('createdAt');
             $table->bigInteger('updatedAt');
+            $table->string('activeBadges')->nullable();
 
             $table->index('createdAt');
             $table->index('updatedAt');
