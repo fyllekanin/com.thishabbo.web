@@ -179,8 +179,9 @@ export class CategoriesListComponent extends Page implements OnDestroy {
     }
 
     private buildTableConfigs (): void {
-        this._tableConfigs = ArrayHelper.copyArray(this._categories)
-            .map(this.getTableConfig.bind(this));
+        const categories = ArrayHelper.copyArray(this._categories);
+        categories.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'displayOrder'));
+        this._tableConfigs = categories.map(this.getTableConfig.bind(this));
     }
 
     private getTableRows (item: ListCategory): Array<TableRow> {
