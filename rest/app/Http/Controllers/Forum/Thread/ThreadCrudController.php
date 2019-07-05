@@ -377,6 +377,8 @@ class ThreadCrudController extends Controller {
         $this->logThreadCreation($thread, $request, $user);
         $this->createThreadPoll($thread, $threadSkeleton);
         $this->forumService->updateLastPostIdOnCategory($thread->categoryId);
+        $this->forumService->updateReadCategory($thread->categoryId, $user->userId);
+        $this->forumService->updateReadThread($thread->threadId, $user->userId);
         NotifyCategorySubscribers::dispatch($thread->categoryId, $thread->userId, $thread->threadId);
         return response()->json(['threadId' => $thread->threadId], 201);
     }

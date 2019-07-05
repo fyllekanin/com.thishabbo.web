@@ -46,7 +46,7 @@ class ForumService {
             ->where('userId', $userId)->first();
         $threadUpdatedAt = is_numeric($thread->updatedAt) ? $thread->updatedAt : $thread->updatedAt->timestamp;
 
-        return $threadRead && $threadRead->updatedAt->timestamp > $threadUpdatedAt;
+        return $threadRead && $threadRead->updatedAt->timestamp >= $threadUpdatedAt;
     }
 
     /**
@@ -77,7 +77,7 @@ class ForumService {
             ->where('userId', $userId)->first();
         $categoryUpdatedAt = is_numeric($category->updatedAt) ? $category->updatedAt : $category->updatedAt->timestamp;
 
-        return $categoryRead && $categoryRead->updatedAt->timestamp > $categoryUpdatedAt;
+        return $categoryRead && $categoryRead->updatedAt->timestamp >= $categoryUpdatedAt;
     }
 
     /**
@@ -88,18 +88,26 @@ class ForumService {
         if (!$userId) {
             return;
         }
-        $categoryRead = CategoryRead::where('categoryId', $categoryId)
+        $category = Category::find($categoryId);
+        if (!$category) {
+            return;
+        }
+        $categoryRead = CategoryRead::where('categoryId', $category->categoryId)
             ->where('userId', $userId)
             ->first();
 
         if (!$categoryRead) {
             $categoryRead = new CategoryRead([
-                'categoryId' => $categoryId,
+                'categoryId' => $category->categoryId,
                 'userId' => $userId
             ]);
             $categoryRead->save();
         } else {
-            CategoryRead::where('categoryId', $categoryId)->where('userId', $userId)->update(['updatedAt' => time()]);
+            CategoryRead::where('categoryId', $category->categoryId)->where('userId', $userId)->update(['updatedAt' => time()]);
+        }
+
+        if ($category->parentId > 0) {
+            $this->updateReadCategory($category->parentId, $userId);
         }
     }
 
