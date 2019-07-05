@@ -80,7 +80,7 @@ export class NameColorComponent extends Page implements OnDestroy {
     }
 
     nameEffectStyle(effect: ShopItem): string {
-        return `url(/rest/resources/images/shop/${effect.shopItemId}.gif)`
+        return `url(/rest/resources/images/shop/${effect.shopItemId}.gif)`;
     }
 
     get name (): string {
