@@ -8,7 +8,6 @@ use App\EloquentModels\Shop\UserSubscription;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserData;
 use App\EloquentModels\User\UserGroup;
-use App\EloquentModels\User\UserItem;
 use App\Utils\BBcodeUtil;
 use App\Utils\Value;
 use Illuminate\Support\Facades\Cache;
@@ -84,15 +83,6 @@ class UserHelper {
         $user->createdAt = $postBit->hideJoinDate ? null : $userObj->createdAt->timestamp;
         $user->posts = $postBit->hidePostCount ? null : $userObj->posts;
         $user->likes = $postBit->hideLikesCount ? null : $userObj->likes;
-        $user->badges = UserItem::badge()->where('userId', $user->userId)->isActive()->pluck('itemId')->map(function ($badgeId) {
-            $badge = Badge::find($badgeId);
-            return [
-                'badgeId' => $badgeId,
-                'name' => $badge->name,
-                'description' => $badge->description,
-                'updatedAt' => $badge->updatedAt
-            ];
-        });
 
         if (isset($userdata->nameColor)) {
             $user->nameColor = $userdata->nameColor;
@@ -174,10 +164,13 @@ class UserHelper {
     public static function getUserPostBit($userdata) {
         $obj = [];
         $postBitOptions = ConfigHelper::getPostBitConfig();
+        $badges = Value::objectJsonProperty($userdata, 'activeBadges', []);
 
         foreach ($postBitOptions as $key => $value) {
             $obj[$key] = $userdata->postBit & $value;
         }
+
+        $obj['badges'] = Badge::whereIn('badgeId', $badges)->orderBy('updatedAt', 'ASC')->get(['badgeId', 'name', 'description', 'updatedAt']);
 
         return $obj;
     }
