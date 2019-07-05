@@ -1,4 +1,4 @@
-<app-title [title]="'Edit Name Colour'" [tabs]="tabs" (onTabClick)="onSave()"></app-title>
+<app-title [title]="'Edit Name Settings'" [tabs]="colorTabs" (onTabClick)="onSave()"></app-title>
 <app-content>
     <app-info-box [model]="infoModel" *ngIf="!canUpdateColor">
     </app-info-box>
@@ -7,6 +7,28 @@
             <div class="cell small-6">
                 <label>Name Color (Hex Code):<br>For gradients, enter a list of hex codes (separated by commas)</label>
                 <input [(ngModel)]="colors" type="text"/>
+                <label>Name Icon:</label>
+                <div class="cell small-4 medium-2" *ngFor="availableNameIcons as nameIcon"
+                    [style]="nameIconStyle(nameIcon)"
+                    [ngClass]="isCurrentIcon(nameIcon) ? 'selected' : ''">
+                    <div class="container" (click)="onNameIconSelect(nameIcon)">
+                        <img [src]="'/rest/resources/images/shop/' + nameIcon.itemId + '.gif?'" />
+                        <div class="overlay"></div>
+                    </div>
+                </div>
+                <label *ngIf="iconId">Icon Position</label>
+                <select *ngIf="iconId" [(ngModel)]="iconPosition">
+                    <option value="left">
+                    <option value="right">
+                </select>
+                <label>Name Effect:</label>
+                <div class="cell small-6 medium-4" *ngFor="availableNameEffects as nameEffect"
+                    [style]="nameEffectStyle(nameEffect)""
+                    [ngClass]="isCurrentEffect(nameEffect) ? 'selected' : ''">
+                    <div class="container" (click)="onNameEffectSelect(nameEffect)">
+                        {{ nameEffect.title }}
+                    </div>
+                </div>
             </div>
             <div class="cell small-6">
                 Preview:<br>
