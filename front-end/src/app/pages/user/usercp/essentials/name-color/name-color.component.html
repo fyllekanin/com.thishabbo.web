@@ -13,7 +13,7 @@
                     <div class="cell small-4 medium-2" *ngFor="let nameIcon of availableNameIcons"
                         [ngClass]="isCurrentIcon(nameIcon) ? 'selected' : ''">
                         <div class="container" (click)="onNameIconSelect(nameIcon)">
-                            <img [src]="'/rest/resources/images/shop/' + nameIcon.itemId + '.gif'" />
+                            <img [src]="'/rest/resources/images/shop/' + nameIcon.shopItemId + '.gif'" />
                             <div class="overlay"></div>
                         </div>
                     </div>
