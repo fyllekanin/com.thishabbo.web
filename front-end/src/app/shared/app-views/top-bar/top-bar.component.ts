@@ -25,7 +25,7 @@ export class TopBarComponent {
     loginName = '';
     password = '';
 
-    constructor (
+    constructor(
         private _authService: AuthService,
         private _router: Router,
         private _httpService: HttpService,
@@ -40,21 +40,21 @@ export class TopBarComponent {
         this._continuesInformationService.onNotifications.subscribe(this.onNotifications.bind(this));
     }
 
-    login (): void {
-        this._authService.login(this.loginName, this.password, () => {
+    login(): void {
+        this._authService.login(this.loginName, this.password, true, () => {
             this._router.navigateByUrl('/auth/login');
         });
         this.loginName = '';
         this.password = '';
     }
 
-    keyDownFunction (event): void {
+    keyDownFunction(event): void {
         if (event.keyCode === 13) {
             this.login();
         }
     }
 
-    notificationClick (notificationId: number): void {
+    notificationClick(notificationId: number): void {
         this._httpService.put(`puller/notifications/read/${notificationId}`)
             .subscribe(() => {
                 this._continuesInformationService.removeNotification(notificationId);
@@ -63,7 +63,7 @@ export class TopBarComponent {
             });
     }
 
-    readAllNotifications (): void {
+    readAllNotifications(): void {
         this._httpService.put('puller/notifications/read/all/notifications')
             .subscribe(() => {
                 this._continuesInformationService.removeNotificationIds(this._notifications
@@ -77,7 +77,7 @@ export class TopBarComponent {
             });
     }
 
-    readAllMessages (): void {
+    readAllMessages(): void {
         this._httpService.put('puller/notifications/read/all/messages')
             .subscribe(() => {
                 this._continuesInformationService.removeNotificationIds(this._messages
@@ -91,48 +91,48 @@ export class TopBarComponent {
             });
     }
 
-    get homePage (): Array<string> {
+    get homePage(): Array<string> {
         const homePage = this._authService.isLoggedIn() && this._authService.authUser.homePage ?
             this._authService.authUser.homePage : '/home';
         return [homePage];
     }
 
-    get loggedIn (): boolean {
+    get loggedIn(): boolean {
         return this._authService.isLoggedIn();
     }
 
-    get notifications (): Array<NotificationModel<any>> {
+    get notifications(): Array<NotificationModel<any>> {
         return this._notifications;
     }
 
-    get messages (): Array<NotificationModel<any>> {
+    get messages(): Array<NotificationModel<any>> {
         return this._messages;
     }
 
-    get breadcrumbItems (): Array<BreadcrumbItem> {
+    get breadcrumbItems(): Array<BreadcrumbItem> {
         return this._breadcrumb ? this._breadcrumb.items : [];
     }
 
-    get current (): string {
+    get current(): string {
         return this._breadcrumb ? this._breadcrumb.current : '';
     }
 
-    private onNotifications (notifications: Array<NotificationModel<any>>): void {
+    private onNotifications(notifications: Array<NotificationModel<any>>): void {
         notifications.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'createdAt'));
         this._notifications = notifications.filter(this.isNotification);
         this._messages = notifications.filter(this.isMessage);
         this.updateTitle();
     }
 
-    private updateTitle (): void {
+    private updateTitle(): void {
         this._routerStateService.updateTitle(this._notifications.length + this._messages.length);
     }
 
-    private isMessage (notification: NotificationModel<any>): boolean {
+    private isMessage(notification: NotificationModel<any>): boolean {
         return notification.type === NotificationTypes.VISITOR_MESSAGE;
     }
 
-    private isNotification (notification: NotificationModel<any>): boolean {
+    private isNotification(notification: NotificationModel<any>): boolean {
         return [
             NotificationTypes.FOLLOWED,
             NotificationTypes.BADGE,

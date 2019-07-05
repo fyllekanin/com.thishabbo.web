@@ -4,6 +4,7 @@ import { Page } from 'shared/page/page.model';
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { SideMenuBlock, SideMenuItem } from 'shared/app-views/side-menu/side-menu.model';
 import { TitleTopBorder } from 'shared/app-views/title/title.model';
+import { BETTING_HUB } from './betting.constants';
 
 @Component({
     selector: 'app-betting',
@@ -23,12 +24,12 @@ import { TitleTopBorder } from 'shared/app-views/title/title.model';
 export class BettingComponent extends Page implements OnInit, OnDestroy {
     blocks: Array<SideMenuBlock> = [];
 
-    constructor(breadcrumbService: BreadcrumbService, elementRef: ElementRef) {
+    constructor (breadcrumbService: BreadcrumbService, elementRef: ElementRef) {
         super(elementRef);
-        breadcrumbService.breadcrumb = new Breadcrumb({ current: 'Betting Hub' });
+        breadcrumbService.breadcrumb = new Breadcrumb({current: BETTING_HUB.title});
     }
 
-    ngOnInit(): void {
+    ngOnInit (): void {
         this.blocks = [
             new SideMenuBlock({
                 title: 'Betting Hub',
@@ -56,7 +57,7 @@ export class BettingComponent extends Page implements OnInit, OnDestroy {
         ];
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 }

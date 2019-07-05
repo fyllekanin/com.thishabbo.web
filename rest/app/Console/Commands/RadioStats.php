@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Radio;
+namespace App\Console\Commands;
 
 use App\EloquentModels\Staff\Timetable;
 use App\EloquentModels\User\User;
@@ -10,15 +10,19 @@ use App\Helpers\SettingsHelper;
 use App\Models\Radio\RadioServerTypes;
 use App\Models\Radio\RadioSettings;
 use App\Utils\Value;
+use Illuminate\Console\Command;
 
-class RadioStats {
+class RadioStats extends Command {
     private $settingKeys;
 
+    protected $signature = 'queue:radio';
+
     public function __construct() {
+        parent::__construct();
         $this->settingKeys = ConfigHelper::getKeyConfig();
     }
 
-    public function init() {
+    public function handle() {
 
         $radio = new RadioSettings(SettingsHelper::getSettingValue($this->settingKeys->radio));
         $statsData = $this->getStatsData($radio);
@@ -92,10 +96,7 @@ class RadioStats {
 
     private function getAlbumArt($song) {
         $url = 'https://itunes.apple.com/search?term=' . urlencode($song) . '&entity=album&limit=1';
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.92 Safari/537.36');
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $curl = DataHelper::getBasicCurl($url);
 
         $data = curl_exec($curl);
         curl_close($curl);

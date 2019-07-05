@@ -12,7 +12,7 @@ export class ListCategory {
     @arrayOf(ListCategory)
     children: Array<ListCategory> = [];
 
-    constructor(source: Partial<ListCategory>) {
+    constructor (source: Partial<ListCategory>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -21,5 +21,6 @@ export enum CategoryListActions {
     EDIT_CATEGORY,
     DELETE_CATEGORY,
     EDIT_PERMISSIONS,
-    SAVE_ORDER
+    SAVE_ORDER,
+    TOGGLE_CATEGORY
 }

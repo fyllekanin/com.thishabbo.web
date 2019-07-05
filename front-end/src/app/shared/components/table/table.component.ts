@@ -24,6 +24,7 @@ export class TableComponent implements DoCheck {
     @Output() onAction: EventEmitter<Action> = new EventEmitter();
     @Output() onFilter: EventEmitter<QueryParameters> = new EventEmitter();
     @Output() onTabClick: EventEmitter<string | number> = new EventEmitter();
+    @Output() onRowToggle: EventEmitter<TableRow> = new EventEmitter();
     @Input() tabs: Array<TitleTab> = [];
     @Input() isContracted: boolean;
 
@@ -58,17 +59,14 @@ export class TableComponent implements DoCheck {
         this.onFilter.emit(params);
     }
 
-    toggleRow (row: TableRow): void {
-        if (!row.isExpandable || !row.data) {
-            return;
-        }
-        row.isOpen = !row.isOpen;
-    }
-
     ngDoCheck (): void {
         if (this._columnSize !== this.getColumnSize()) {
             this._columnSize = this.getColumnSize();
         }
+    }
+
+    onRowSelect (row: TableRow): void {
+        this.onRowToggle.emit(row);
     }
 
     @Input()
@@ -79,10 +77,6 @@ export class TableComponent implements DoCheck {
 
     get isSlim (): boolean {
         return this._config.isSlim;
-    }
-
-    get columnSize (): ColumnSize {
-        return this._columnSize;
     }
 
     get topBorder (): TitleTopBorder {
@@ -111,6 +105,10 @@ export class TableComponent implements DoCheck {
 
     get filterConfigs (): Array<FilterConfig> {
         return this._config.filterConfigs;
+    }
+
+    get isRowsSelectable (): boolean {
+        return this._config.isRowsSelectable;
     }
 
     private getColumnSize (): ColumnSize {

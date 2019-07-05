@@ -35,7 +35,7 @@ return [
 
         'sqlite' => [
             'driver' => 'sqlite',
-            'database' => '',
+            'database' => database_path('thsite_db'),
             'prefix' => '',
         ],
 
@@ -47,8 +47,8 @@ return [
             'username' => CONST_DB_USERNAME,
             'password' => CONST_DB_PASSWORD,
             'unix_socket' => '',
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
             'prefix' => '',
             'strict' => true,
             'engine' => null,

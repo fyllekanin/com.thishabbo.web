@@ -6,7 +6,7 @@ export class HomePageCategory {
     @primitive()
     title: string;
 
-    constructor (source: Partial<HomePageCategory>) {
+    constructor(source: Partial<HomePageCategory>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -17,7 +17,12 @@ export class HomePageThreadsPage {
     @arrayOf(HomePageCategory)
     categories: Array<HomePageCategory> = [];
 
-    constructor (source: Partial<HomePageThreadsPage>) {
+    constructor(source: Partial<HomePageThreadsPage>) {
         ClassHelper.assign(this, source);
     }
+}
+
+export enum HomePageThreadsAction {
+    SAVE,
+    ADD
 }

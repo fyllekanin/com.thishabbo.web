@@ -7,6 +7,7 @@ import { SHOP_ITEMS_BREADCRUMB_ITEMS, SITECP_BREADCRUMB_ITEM } from '../../../..
 import { ShopItemListAction, ShopListPage } from './list.model';
 import {
     Action,
+    FILTER_TYPE_CONFIG,
     FilterConfig,
     FilterConfigItem,
     FilterConfigType,
@@ -17,13 +18,13 @@ import {
     TableRow
 } from 'shared/components/table/table.model';
 import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
-import { SHOP_ITEM_RARITIES, SHOP_ITEM_TYPES } from '../../shop.helper';
 import { CONFIGURABLE_ITEMS } from 'shared/constants/shop.constants';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { QueryParameters } from 'core/services/http/http.model';
 import { ItemsListService } from '../../services/items-list.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
+import { ShopHelper } from 'shared/helpers/shop.helper';
 
 @Component({
     selector: 'app-sitecp-shop-items-list',
@@ -96,6 +97,13 @@ export class ItemsListComponent extends Page implements OnDestroy {
     private onData (data: { data: ShopListPage }): void {
         this._data = data.data;
         this.createOrUpdateTable();
+
+        this.pagination = new PaginationModel({
+            total: this._data.total,
+            page: this._data.page,
+            url: '/sitecp/shop/items/page/:page',
+            params: this._filter
+        });
     }
 
     private createOrUpdateTable (): void {
@@ -110,9 +118,10 @@ export class ItemsListComponent extends Page implements OnDestroy {
             filterConfigs: [
                 new FilterConfig({
                     title: 'Filter',
-                    placeholder: 'Search by Title...',
+                    placeholder: 'Search by title...',
                     key: 'filter'
                 }),
+                FILTER_TYPE_CONFIG,
                 new FilterConfig({
                     title: 'Type',
                     key: 'type',
@@ -128,7 +137,7 @@ export class ItemsListComponent extends Page implements OnDestroy {
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: ''}),
+            new TableHeader({title: 'Resource'}),
             new TableHeader({title: 'Title'}),
             new TableHeader({title: 'Type'}),
             new TableHeader({title: 'Rarity'})
@@ -141,8 +150,8 @@ export class ItemsListComponent extends Page implements OnDestroy {
             cells: [
                 new TableCell({title: item.getResource(), innerHTML: true}),
                 new TableCell({title: item.title}),
-                new TableCell({title: SHOP_ITEM_TYPES.find(type => type.id === item.type).name}),
-                new TableCell({title: SHOP_ITEM_RARITIES.find(rarity => rarity.percentage === item.rarity).name})
+                new TableCell({title: ShopHelper.getTypeName(item.type)}),
+                new TableCell({title: ShopHelper.getRarityName(item.rarity)})
             ],
             actions: [
                 new TableAction({title: 'Edit', value: ShopItemListAction.EDIT}),

@@ -5,10 +5,10 @@
                [top]="topBorder"
                (onTabClick)="tabClick($event)">
     </app-title>
-    <app-content [isContracted]="isContracted">
+    <app-content [isContracted]="isContracted" [isSlim]="isSlim">
         <div class="grid-container full position-relative">
             <div class="grid-x grid-margin-x filter" *ngIf="filterConfigs.length > 0">
-                <div class="cell" [ngClass]="filterConfigs.length > 1 ? 'small-6 medium-12' : 'small-12'"
+                <div class="cell" [ngClass]="filterConfigs.length > 1 ? 'small-6' : 'small-12'"
                      *ngFor="let filterConfig of filterConfigs">
                     <div *ngIf="!filterConfig.isSelect()">
                         <label *ngIf="filterConfig.title">{{filterConfig.title}}</label>
@@ -19,7 +19,7 @@
                     <div *ngIf="filterConfig.isSelect()">
                         <label *ngIf="filterConfig.title">{{filterConfig.title}}</label>
                         <select [(ngModel)]="filterConfig.value" (change)="onFilterChange()">
-                            <option [ngValue]="undefined">All</option>
+                            <option *ngIf="filterConfig.allOption" [ngValue]="undefined">All</option>
                             <option *ngFor="let item of filterConfig.items"
                                     [ngValue]="item.value">{{item.label}}</option>
                         </select>
@@ -29,11 +29,18 @@
         </div>
         <table>
             <tr>
+                <th *ngIf="isRowsSelectable"></th>
                 <th *ngFor="let header of headers">{{header.title}}</th>
                 <th *ngIf="haveActions"></th>
             </tr>
             <tbody>
             <tr *ngFor="let row of rows">
+                <td *ngIf="isRowsSelectable">
+                    <label class="checkbox-container">
+                        <input type="checkbox" [(ngModel)]="row.isSelected" (change)="onRowSelect(row)">
+                        <span class="checkmark"></span>
+                    </label>
+                </td>
                 <td *ngFor="let cell of row.cells">
                         <span *ngIf="cell.statusBox" [ngClass]="cell.status ? 'status-good' : 'status-bad'">
                             {{cell.title}}
@@ -47,11 +54,13 @@
                         </span>
                     </span>
                 </td>
-                <td *ngIf="row.actions.length > 0" class="action">
-                    <em class="fas fa-ellipsis-v" tabindex="1"></em>
-                    <div class="actions">
-                        <div *ngFor="let action of row.actions"
-                             (click)="onActionClick(row.id, action.value)">{{action.title}}</div>
+                <td class="action">
+                    <div *ngIf="row.actions.length > 0">
+                        <em class="fas fa-ellipsis-v" tabindex="1"></em>
+                        <div class="actions">
+                            <div *ngFor="let action of row.actions"
+                                 (click)="onActionClick(row.id, action.value)">{{action.title}}</div>
+                        </div>
                     </div>
                 </td>
             </tr>

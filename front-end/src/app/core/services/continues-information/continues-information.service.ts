@@ -17,7 +17,7 @@ export class ContinuesInformationService implements Resolve<void> {
     private _notificationsSubject: Subject<Array<NotificationModel<any>>> = new Subject();
     private _notifications: Array<NotificationModel<any>> = [];
 
-    private _timer: NodeJS.Timer;
+    private _timer;
     private _fastInterval = 1000 * 5;
     private _slowInterval = (1000 * 60) * 5;
     private _currentInterval = this._fastInterval;
@@ -104,34 +104,40 @@ export class ContinuesInformationService implements Resolve<void> {
     private updateInterval (): void {
         this._ngZone.runOutsideAngular(() => {
             clearInterval(this._timer);
-            if (this.isFastInterval()) {
-                this.doRequest();
-            }
             this._timer = setInterval(() => {
-                this._ngZone.run(this.doRequest.bind(this));
+                this.doRequest();
             }, this._currentInterval);
         });
     }
 
     private fetchNotifications (): void {
-        this._ngZone.run(() => {
-            if (!this._authService.isLoggedIn()) {
-                return;
-            }
-            this._httpService.get(`puller/notifications/unread/${this._lastNotificationCheck}`)
-                .subscribe(this.onNotificationData.bind(this));
-        });
+        if (!this._authService.isLoggedIn()) {
+            return;
+        }
+        this._httpService.get(`puller/notifications/unread/${this._lastNotificationCheck}`)
+            .subscribe(this.onNotificationData.bind(this));
     }
 
     private onContinuesInformationData (response): void {
-        const data = new ContinuesInformationModel(response);
-        this._onContinuesInformationSubject.next(data);
+        this._ngZone.run(() => {
+            const data = new ContinuesInformationModel(response);
+            this.setUserPoints(data);
+            this._onContinuesInformationSubject.next(data);
 
-        if (this._notifications.length < data.unreadNotifications) {
-            this._lastNotificationCheck = 0;
-            this._notifications = [];
-            this.fetchNotifications();
+            if (this._notifications.length < data.unreadNotifications) {
+                this._lastNotificationCheck = 0;
+                this._notifications = [];
+                this.fetchNotifications();
+            }
+        });
+    }
+
+    private setUserPoints (data: ContinuesInformationModel): void {
+        if (!this._authService.isLoggedIn()) {
+            return;
         }
+        this._authService.authUser.credits = data.user.credits;
+        this._authService.authUser.xp = data.user.xp;
     }
 
     private onNotificationData (res: Array<any>): void {

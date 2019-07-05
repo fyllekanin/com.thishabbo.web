@@ -12,7 +12,7 @@
             <input type="checkbox" [(ngModel)]="isEditorSourceMode">
             <span class="checkmark"></span>
 
-            <span tooltip="Turning this setting on will ensure everytime you load the Posting Editor BBCode is automatically turned on."
+            <span tooltip="Turning this setting on will ensure everytime you load the &#xa;Posting Editor the BBCode is automatically turned on."
                   class="checkbox-info">
                 <em class="fas fa-question-circle"></em>
             </span>
@@ -34,7 +34,7 @@
             Fixed Menu <em>(Please reload after ticking this!)</em>
             <input type="checkbox" [(ngModel)]="haveFixedMenu">
             <span class="checkmark"></span>
-            <span tooltip="Turning this setting on will ensure the menu & page navigation follows you as you scroll down the page."
+            <span tooltip="Turning this setting on will ensure the menu & page&#xa; navigation follows you as you scroll down the page."
                   class="checkbox-info">
                 <em class="fas fa-question-circle"></em>
             </span>
@@ -46,7 +46,7 @@
             Forum Tools
             <input type="checkbox" [(ngModel)]="showThreadTools">
             <span class="checkmark"></span>
-            <span tooltip="The Forum Tools are the 2 buttons which appear on threads you own or can moderate at the bottom left. Turning this on will ensure they are always visible by default."
+            <span tooltip="The Forum Tools are the 2 buttons which appear on &#xa;threads you own or can moderate at the bottom left.&#xa;Turning this on will ensure they are always visible by default."
                   class="checkbox-info">
                 <em class="fas fa-question-circle"></em>
             </span>
@@ -58,7 +58,19 @@
             Minimalistic Header
             <input type="checkbox" [(ngModel)]="minimalisticHeader">
             <span class="checkmark"></span>
-            <span tooltip="A style aimed for those who prefer smaller headers. You will lose extra features for this."
+            <span tooltip="A style aimed for those who prefer smaller headers.&#xa;You will lose extra features for this."
+                  class="checkbox-info">
+                <em class="fas fa-question-circle"></em>
+            </span>
+        </label>
+    </div>
+
+    <div>
+        <label class="checkbox-container">
+            Disable Mini Profiles
+            <input type="checkbox" [(ngModel)]="disableMiniProfile">
+            <span class="checkmark"></span>
+            <span tooltip="Disables the mini profiles that are shown when hovering a username"
                   class="checkbox-info">
                 <em class="fas fa-question-circle"></em>
             </span>

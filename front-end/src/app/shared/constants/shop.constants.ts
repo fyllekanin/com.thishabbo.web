@@ -6,14 +6,41 @@ export const SHOP_ITEM_TYPES = {
 };
 
 export const SHOP_ITEM_RARITIES = {
-    common: {label: 'Common', value: 80},
-    rare: {label: 'Rare', value: 50},
-    epic: {label: 'Epic', value: 30},
-    legendary: {label: 'Legendary', value: 10}
+    common: {label: 'Common', value: 80, color: '#000000'},
+    rare: {label: 'Rare', value: 50, color: '#3682b9'},
+    epic: {label: 'Epic', value: 30, color: '#925779'},
+    legendary: {label: 'Legendary', value: 10, color: '#e49606'}
 };
 
 export const CONFIGURABLE_ITEMS = [
     SHOP_ITEM_TYPES.nameIcon,
     SHOP_ITEM_TYPES.nameEffect,
     SHOP_ITEM_TYPES.subscription
+];
+
+export const LOOT_BOXES = [
+    {
+        id: 1,
+        asset: '/assets/images/shop/1.png'
+    },
+    {
+        id: 2,
+        asset: '/assets/images/shop/2.png'
+    },
+    {
+        id: 3,
+        asset: '/assets/images/shop/3.png'
+    },
+    {
+        id: 4,
+        asset: '/assets/images/shop/4.png'
+    },
+    {
+        id: 5,
+        asset: '/assets/images/shop/5.png'
+    },
+    {
+        id: 6,
+        asset: '/assets/images/shop/6.png'
+    }
 ];

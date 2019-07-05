@@ -59,7 +59,7 @@ export class PostBitComponent extends Page implements OnDestroy {
             this._dialogService.openDialog({
                 title: 'Badges',
                 component: this._componentResolver.resolveComponentFactory(BadgesComponent),
-                data: [].concat(this._postBitModel.badges),
+                data: [].concat(this._postBitModel.information.badges),
                 buttons: [
                     new DialogCloseButton('Close'),
                     new DialogButton({
@@ -76,7 +76,7 @@ export class PostBitComponent extends Page implements OnDestroy {
     }
 
     get badges (): Array<SlimBadge> {
-        return this._postBitModel ? this._postBitModel.badges : [];
+        return this._postBitModel ? this._postBitModel.information.badges : [];
     }
 
     get namePosition (): NamePositionModel {
@@ -88,7 +88,7 @@ export class PostBitComponent extends Page implements OnDestroy {
     }
 
     private onSelectedBadges (badges: Array<SlimBadge>): void {
-        this._postBitModel.badges = badges;
+        this._postBitModel.information.badges = badges;
         this._dialogService.closeDialog();
     }
 }

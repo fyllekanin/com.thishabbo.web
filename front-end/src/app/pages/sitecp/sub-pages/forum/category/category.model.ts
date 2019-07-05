@@ -5,6 +5,8 @@ export class CategoryLeaf {
     categoryId: number;
     @primitive()
     title: string;
+    @primitive()
+    displayOrder: number;
     @arrayOf(CategoryLeaf)
     children: Array<CategoryLeaf> = [];
 
@@ -67,6 +69,10 @@ export class Category {
     link: string;
     @primitive()
     icon: string;
+    @primitive()
+    credits: number;
+    @primitive()
+    xp: number;
 
     constructor (source?: Partial<Category>) {
         ClassHelper.assign(this, source);
@@ -86,6 +92,7 @@ export class CategoryPage {
 
 export enum CategoryActions {
     SAVE,
+    SAVE_AND_CASCADE,
     DELETE,
     BACK
 }

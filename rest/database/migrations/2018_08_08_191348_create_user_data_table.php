@@ -25,11 +25,13 @@ class CreateUserdataTable extends Migration {
             $table->bigInteger('postBit')->default(0);
             $table->bigInteger('avatarUpdatedAt')->default(0);
             $table->bigInteger('credits')->default(0);
+            $table->bigInteger('xp')->default(0);
             $table->string('homePage')->nullable();
             $table->string('discord')->nullable();
             $table->string('twitter')->nullable();
             $table->bigInteger('createdAt');
             $table->bigInteger('updatedAt');
+            $table->string('activeBadges')->nullable();
 
             $table->index('createdAt');
             $table->index('updatedAt');

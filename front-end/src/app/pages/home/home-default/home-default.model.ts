@@ -3,6 +3,7 @@ import { arrayOf, ClassHelper, objectOf, primitive, time } from 'shared/helpers/
 import { SlimArticle } from 'shared/components/slim-article/slim-article.model';
 import { SlimUser } from 'core/services/auth/auth.model';
 import { ThreadPrefix } from '../../forum/forum.model';
+import { BadgeModel } from 'shared/components/badges/badges.model';
 
 export class HomePageThread {
     @primitive()
@@ -16,7 +17,7 @@ export class HomePageThread {
     @time()
     createdAt: string;
 
-    constructor(source: Partial<HomePageThread>) {
+    constructor (source: Partial<HomePageThread>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -27,7 +28,7 @@ export class StaffSpotlightUser {
     @primitive()
     habbo: string;
 
-    constructor(source: Partial<StaffSpotlightUser>) {
+    constructor (source: Partial<StaffSpotlightUser>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -43,8 +44,10 @@ export class HomeDefaultPage {
     threads: Array<HomePageThread> = [];
     @arrayOf(StaffSpotlightUser)
     spotlight: Array<StaffSpotlightUser> = [];
+    @arrayOf(BadgeModel)
+    badges: Array<BadgeModel> = [];
 
-    constructor(source?: Partial<HomeDefaultPage>) {
+    constructor (source?: Partial<HomeDefaultPage>) {
         ClassHelper.assign(this, source);
     }
 }

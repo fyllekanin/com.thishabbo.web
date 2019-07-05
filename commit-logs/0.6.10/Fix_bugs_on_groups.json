@@ -1,0 +1,1 @@
+{"topic":"Fix bugs on groups","type":"Bug","body":"Group name was a bit buggy, and based on list was not sorted. Also fixed all tabs to be aligned with save, back and delete"}

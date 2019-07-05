@@ -19,7 +19,7 @@ h2 {
 }
 
 .betting-box .fa {
-    font-size:12px;
+    font-size: 12px;
 }
 
 .container {
@@ -70,7 +70,7 @@ h2 {
     height: 65px;
 }
 
-.article-container {
+.arcade-container {
     display: block;
     border: 1px solid #cacaca !important;
     width: 100%;

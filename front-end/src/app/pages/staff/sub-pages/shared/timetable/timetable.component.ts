@@ -27,6 +27,7 @@ import { SelectionComponent } from './selection/selection.component';
 export class TimetableComponent extends Page implements OnDestroy {
     private readonly _type;
     private _data: TimetablePage = new TimetablePage();
+    private _timezones: Array<string> = [];
 
     tabs: Array<TitleTab> = [];
 
@@ -93,7 +94,7 @@ export class TimetableComponent extends Page implements OnDestroy {
     }
 
     get timezones (): Array<string> {
-        return this._data.timezones;
+        return this._timezones;
     }
 
     private getEventName (timetable: TimetableModel): string {
@@ -225,6 +226,11 @@ export class TimetableComponent extends Page implements OnDestroy {
             const convertedHour = booking.hour + TimeHelper.getTimeOffsetInHours();
             booking.day = TimeHelper.getConvertedDay(convertedHour, booking.day);
             booking.hour = TimeHelper.getConvertedHour(convertedHour);
+        });
+        const offset = TimeHelper.getTimeOffsetInHours();
+        this._data.timezones.forEach((region, index) => {
+            const newIndex = TimeHelper.getConvertedHour(index + offset);
+            this._timezones[newIndex] = region;
         });
     }
 

@@ -82,8 +82,9 @@ export class GroupsListComponent extends Page implements OnDestroy {
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
-                    message: 'List has been saved!'
+                    message: 'The staff list has been saved!'
                 }));
+                this.createOrUpdateTable();
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
@@ -94,8 +95,8 @@ export class GroupsListComponent extends Page implements OnDestroy {
 
         if (!group) {
             this._notificationService.sendNotification(new NotificationMessage({
-                title: 'Failure',
-                message: 'The group do not exist or is already added',
+                title: 'An error has occured!',
+                message: 'The group does not exist or it has already been added!',
                 type: NotificationType.ERROR
             }));
             return;
@@ -103,8 +104,8 @@ export class GroupsListComponent extends Page implements OnDestroy {
 
         if (!this.selectedColor) {
             this._notificationService.sendNotification(new NotificationMessage({
-                title: 'Failure',
-                message: 'You need to select a color!',
+                title: 'An error has occured!',
+                message: 'You need to select a colour!',
                 type: NotificationType.ERROR
             }));
             return;

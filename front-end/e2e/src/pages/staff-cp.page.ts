@@ -74,8 +74,8 @@ export class StaffCpPage {
         InputUtil.fillInput(ele, value);
     }
 
-    static setRadioInfoSitecpPassword(value: string): void {
-        const ele = element(by.css('input[name="info-sitecp-password"]'));
+    static setRadioInfoAdminPassword(value: string): void {
+        const ele = element(by.css('input[name="info-admin-password"]'));
         InputUtil.clearInput(ele);
         InputUtil.fillInput(ele, value);
     }

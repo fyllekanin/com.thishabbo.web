@@ -20,13 +20,17 @@ use App\Models\Logger\Action;
 use App\Services\CreditsService;
 use App\Services\ForumService;
 use App\Services\ForumValidatorService;
+use App\Services\PointsService;
 use App\Utils\Condition;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class InfractionController extends Controller {
     private $forumService;
     private $validatorService;
     private $creditsService;
+    private $pointsService;
 
     private $oneYear = 31449600;
 
@@ -36,19 +40,21 @@ class InfractionController extends Controller {
      * @param ForumService $forumService
      * @param ForumValidatorService $validatorService
      * @param CreditsService $creditsService
+     * @param PointsService $pointsService
      */
-    public function __construct(ForumService $forumService, ForumValidatorService $validatorService, CreditsService $creditsService) {
+    public function __construct(ForumService $forumService, ForumValidatorService $validatorService, CreditsService $creditsService, PointsService $pointsService) {
         parent::__construct();
         $this->forumService = $forumService;
         $this->validatorService = $validatorService;
         $this->creditsService = $creditsService;
+        $this->pointsService = $pointsService;
     }
 
     /**
      * @param Request $request
      * @param         $page
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getInfractions(Request $request, $page) {
         $filter = $request->input('filter');
@@ -83,7 +89,7 @@ class InfractionController extends Controller {
      * @param Request $request
      * @param         $infractionId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function deleteInfraction(Request $request, $infractionId) {
         $user = $request->get('auth');
@@ -102,8 +108,8 @@ class InfractionController extends Controller {
     /**
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
+     * @return JsonResponse
+     * @throws ValidationException
      */
     public function createInfraction(Request $request) {
         $user = $request->get('auth');
@@ -140,7 +146,7 @@ class InfractionController extends Controller {
     /**
      * @param $userId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getInfractionContext($userId) {
         $user = UserHelper::getSlimUser($userId);
@@ -160,13 +166,13 @@ class InfractionController extends Controller {
     }
 
     /**
+     * @param ThreadCrudController $threadCrudController
      * @param $infractionLevel
      * @param $infraction
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
-    private function createInfractionThread($infractionLevel, $infraction) {
-        $threadController = new ThreadCrudController($this->forumService, $this->validatorService);
+    private function createInfractionThread(ThreadCrudController $threadCrudController, $infractionLevel, $infraction) {
         $threadSkeleton = new \stdClass();
         $infracted = UserHelper::getUserFromId($infraction->infractedId);
         $points = Infraction::isActive()
@@ -192,7 +198,7 @@ Below you can find information regarding the infraction or warning you have just
 
         $botId = SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->botUserId);
         $bot = UserHelper::getUserFromId($botId);
-        $threadController->doThread($bot, null, $threadSkeleton, null, true);
+        $threadCrudController->doThread($bot, null, $threadSkeleton, null, true);
     }
 
     private function botAccountExists() {

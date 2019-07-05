@@ -8,7 +8,6 @@
 .members {
     font-size: 11px;
     height: 148px;
-    margin-top: 10px;
     text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.44);
 }
 
@@ -19,11 +18,12 @@
 
 .quick-links {
     float: right;
+    margin-right: 17px;
 }
 
 .quick-links a {
     padding: 0 0.5rem;
-    color: #7aa0a9 !important;
+    color: #919191 !important;
 }
 
 .active-user {

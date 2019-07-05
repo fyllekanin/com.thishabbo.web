@@ -64,6 +64,8 @@ export class ForumPermissions {
     canMoveThreads: boolean;
     @primitive()
     canOpenCloseOwnThread: boolean;
+    @primitive()
+    canPostInOthersThreads: boolean;
 
     constructor (source?: Partial<ForumPermissions>) {
         ClassHelper.assign(this, source);
@@ -131,6 +133,10 @@ export class SlimThread {
     prefix: ThreadPrefix;
     @primitive()
     haveRead: boolean;
+    @primitive()
+    icon: string;
+    @objectOf(SlimUser)
+    user: SlimUser;
 
     constructor (source?: Partial<SlimThread>) {
         ClassHelper.assign(this, source);

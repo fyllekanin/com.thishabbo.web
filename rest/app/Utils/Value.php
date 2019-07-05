@@ -24,11 +24,21 @@ class Value {
     }
 
     public static function getFilterValue($request, $value) {
-        return self::isExactFilter($request) ? $value : '%' . $value . '%';
+        if (self::isExactFilter($request)) {
+            return $value;
+        } else if (self::isFromStartFilter($request)) {
+            return $value . '%';
+        }
+        return '%' . $value . '%';
     }
 
     private static function isExactFilter($request) {
-        $type = $request->input('type');
+        $type = $request->input('searchType');
         return $type == 'exact';
+    }
+
+    private static function isFromStartFilter($request) {
+        $type = $request->input('searchType');
+        return $type == 'fromStart';
     }
 }

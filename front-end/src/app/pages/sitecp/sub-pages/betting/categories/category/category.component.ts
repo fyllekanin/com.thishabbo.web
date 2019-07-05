@@ -114,8 +114,8 @@ export class CategoryComponent extends Page implements OnDestroy {
 
         const tabs = [
             {title: 'Save', value: BetCategoryActions.SAVE, condition: true},
-            {title: 'Delete', value: BetCategoryActions.DELETE, condition: this._data.createdAt},
-            {title: 'Back', value: BetCategoryActions.BACK, condition: true}
+            {title: 'Back', value: BetCategoryActions.BACK, condition: true},
+            {title: 'Delete', value: BetCategoryActions.DELETE, condition: this._data.createdAt}
         ];
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));
     }

@@ -40,6 +40,7 @@ export class ThreadActionExecutor {
     }
 
     private execute (): void {
+        let selectedIds = [];
         switch (this._action) {
             case ThreadActions.DELETE_THREAD:
                 this.onDeleteThread();
@@ -98,7 +99,7 @@ export class ThreadActionExecutor {
                 this.onPostHistory(this._threadPage.firstPostId);
                 break;
             case ThreadActions.POST_HISTORY:
-                const selectedIds = this._threadPage.threadPosts.filter(post => post.isSelected)
+                selectedIds = this._threadPage.threadPosts.filter(post => post.isSelected)
                     .map(post => post.postId);
                 if (selectedIds.length !== 1) {
                     this._notificationService.sendErrorNotification('You need to select one postId to view history, not more or less!');
@@ -106,7 +107,31 @@ export class ThreadActionExecutor {
                 }
                 this.onPostHistory(selectedIds[0]);
                 break;
+            case ThreadActions.DELETE_POSTS:
+                selectedIds = this._threadPage.threadPosts.filter(post => post.isSelected)
+                    .map(post => post.postId);
+                if (selectedIds.length !== 1) {
+                    this._notificationService.sendErrorNotification('You need to select at least one post to delete');
+                    return;
+                }
+                this.deletePosts(selectedIds);
+                break;
         }
+    }
+
+    private deletePosts (postIds: Array<number>): void {
+        this._dialogService.confirm({
+            title: 'Are you sure?',
+            content: 'Are you sure you wanna delete these posts?',
+            callback: () => {
+                this._httpService.put(`forum/moderation/thread/delete/posts`, {postIds: postIds})
+                    .subscribe(() => {
+                        this._threadPage.threadPosts = this._threadPage.threadPosts.filter(po => postIds.indexOf(po.postId) === -1);
+                        this._dialogService.closeDialog();
+                        this._notificationService.sendInfoNotification('Posts is now deleted!');
+                    });
+            }
+        });
     }
 
     private onPostHistory (postId: number): void {

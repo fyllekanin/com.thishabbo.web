@@ -1,4 +1,5 @@
 import { arrayOf, ClassHelper, objectOf, primitive, primitiveOf } from 'shared/helpers/class.helper';
+import { UserHelper } from 'shared/helpers/user.helper';
 
 export class DisplayGroup {
     @primitive()
@@ -66,10 +67,18 @@ export class SlimUser {
     @primitive()
     avatarUpdatedAt: number;
     @primitive()
+    posts: number;
+    @primitive()
+    likes: number;
+    @primitive()
     createdAt: number;
 
     constructor (source?: Partial<SlimUser>) {
         ClassHelper.assign(this, source);
+    }
+
+    get nameStyling (): string {
+        return UserHelper.getNameColor(this.nameColor);
     }
 }
 
@@ -82,10 +91,6 @@ export class User extends SlimUser {
     avatarUpdatedAt: number;
     @objectOf(DisplayGroup)
     displayGroup: DisplayGroup;
-    @primitive()
-    posts: number;
-    @primitive()
-    likes: number;
     @objectOf(UserSocial)
     social: UserSocial;
     @arrayOf(UserBadge)
@@ -233,6 +238,8 @@ export class AuthUser {
     homePage: string;
     @primitiveOf(Number)
     credits = 0;
+    @primitiveOf(Number)
+    xp = 0;
 
     constructor (source: Partial<AuthUser>) {
         ClassHelper.assign(this, source);

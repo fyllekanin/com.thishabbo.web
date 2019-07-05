@@ -12,13 +12,14 @@ export class EditorAction {
     buttonColor?: ButtonColor;
     saveCallback?: () => {};
 
-    constructor (source: Partial<EditorAction>) {
+    constructor(source: Partial<EditorAction>) {
         ClassHelper.assign(this, source);
     }
 }
 
-export function getEditorSettings (emojis: Array<BBcodeModel>, isSlim: boolean) {
+export function getEditorSettings(emojis: Array<BBcodeModel>, isSlim: boolean, id: string) {
     return {
+        id: id,
         debug: false,
         minheight: isSlim ? 100 : 150,
         buttons: isSlim ? 'bold,italic,underline' : undefined,

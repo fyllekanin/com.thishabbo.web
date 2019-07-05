@@ -17,7 +17,9 @@ use App\Http\Controllers\Controller;
 use App\Services\ForumService;
 use App\Services\QueryParamService;
 use App\Utils\Condition;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class CategoryCrudController extends Controller {
@@ -43,7 +45,7 @@ class CategoryCrudController extends Controller {
     /**
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getCategoryList(Request $request) {
         $user = $request->get('auth');
@@ -57,7 +59,7 @@ class CategoryCrudController extends Controller {
      *
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getForumCategories(Request $request) {
         $user = $request->get('auth');
@@ -71,7 +73,7 @@ class CategoryCrudController extends Controller {
      * @param Request $request
      * @param         $clientTodayMidnight
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getForumStats(Request $request, $clientTodayMidnight) {
         $user = $request->get('auth');
@@ -80,7 +82,9 @@ class CategoryCrudController extends Controller {
         return response()->json([
             'latestPosts' => $this->getLatestPosts($user, $categoryIds),
             'topPosters' => $this->getTopPosters(),
-            'topPostersToday' => $this->getTopPostersToday($clientTodayMidnight)
+            'topPostersToday' => $this->getTopPostersToday($clientTodayMidnight),
+            'currentlyActive' => $this->getOnline(1),
+            'activeToday' => $this->getOnline(24)
         ]);
     }
 
@@ -91,7 +95,7 @@ class CategoryCrudController extends Controller {
      * @param         $categoryId
      * @param int $page
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getCategoryPage(Request $request, $categoryId, $page = 1) {
         $user = $request->get('auth');
@@ -127,17 +131,17 @@ class CategoryCrudController extends Controller {
         $threads = $threadSql->skip(DataHelper::getOffset($page))
             ->take($this->perPage)
             ->with(['prefix', 'latestPost'])
-            ->withNickname()
             ->get();
 
         return response()->json([
             'categoryId' => $categoryId,
             'title' => $category->title,
             'isOpen' => $category->isOpen,
+            'icon' => $category->icon,
             'parents' => $this->forumService->getCategoryParents($category),
             'categories' => $this->getSlimChildCategories($categoryId, $user->userId),
-            'stickyThreads' => $page <= 1 ? $this->getStickyThreadsForCategory($categoryId, $forumPermissions, $user->userId) : [],
-            'threads' => $this->buildThreadsForCategory($threads, $user->userId),
+            'stickyThreads' => $page <= 1 ? $this->getStickyThreadsForCategory($categoryId, $forumPermissions, $user->userId, $category) : [],
+            'threads' => $this->buildThreadsForCategory($threads, $user->userId, $category),
             'total' => $total,
             'forumPermissions' => $forumPermissions,
             'page' => $page,
@@ -176,12 +180,15 @@ class CategoryCrudController extends Controller {
      * @param $threads
      * @param $userId
      *
+     * @param $category
+     *
      * @return mixed
      */
-    private function buildThreadsForCategory($threads, $userId) {
+    private function buildThreadsForCategory($threads, $userId, $category) {
         foreach ($threads as $thread) {
             $thread->lastPost = $this->mapLastPost($thread, $thread->latestPost);
             $thread->haveRead = $this->forumService->haveReadThread($thread, $userId);
+            $thread->icon = $category->icon;
         }
         return $threads;
     }
@@ -193,9 +200,11 @@ class CategoryCrudController extends Controller {
      * @param $categoryPermissions
      * @param $userId
      *
-     * @return \Illuminate\Support\Collection
+     * @param $category
+     *
+     * @return Collection
      */
-    private function getStickyThreadsForCategory($categoryId, $categoryPermissions, $userId) {
+    private function getStickyThreadsForCategory($categoryId, $categoryPermissions, $userId, $category) {
         $threadSql = Thread::isApproved($categoryPermissions->canApproveThreads)
             ->isSticky()
             ->where('categoryId', $categoryId);
@@ -205,7 +214,7 @@ class CategoryCrudController extends Controller {
         }
         $threads = $threadSql->with(['prefix', 'latestPost'])->withNickname()->get();
 
-        return $this->buildThreadsForCategory($threads, $userId);
+        return $this->buildThreadsForCategory($threads, $userId, $category);
     }
 
     /**
@@ -246,6 +255,7 @@ class CategoryCrudController extends Controller {
         $children = Category::nonHidden()
             ->withParent($categoryId)
             ->whereIn('categoryId', $categoryIds)
+            ->orderBy('displayOrder', 'ASC')
             ->select('categoryId', 'description', 'displayOrder', 'link', 'title', 'lastPostId', 'icon', 'updatedAt')
             ->get();
         $childs = [];
@@ -302,7 +312,7 @@ class CategoryCrudController extends Controller {
      * @param $user
      * @param $categoryIds
      *
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     private function getLatestPosts($user, $categoryIds) {
         $ignoredCategoryIds = array_merge(IgnoredCategory::where('userId', $user->userId)->pluck('categoryId')->toArray(),
@@ -329,6 +339,20 @@ class CategoryCrudController extends Controller {
                     'user' => UserHelper::getSlimUser($user->userId)
                 ];
             });
+    }
+
+    /**
+     * Get method to get an array of all the users currently active
+     *
+     * @param $hours
+     *
+     * @return array
+     */
+    private function getOnline($hours) {
+        $userIds = User::where('lastActivity', '>=', time() - ($hours * 3600))->orderBy('lastActivity', 'DESC')->pluck('userId');
+        return $userIds->map(function ($id) {
+            return UserHelper::getSlimUser($id);
+        });
     }
 
     /**
@@ -369,6 +393,9 @@ class CategoryCrudController extends Controller {
     }
 
     private function mapLastPost($thread, $post) {
+        if (!$post) {
+            return null;
+        }
         return (object)[
             'postId' => $post->postId,
             'threadId' => $post->threadId,

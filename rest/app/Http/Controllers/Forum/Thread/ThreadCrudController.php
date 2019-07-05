@@ -25,6 +25,7 @@ use App\Logger;
 use App\Models\Logger\Action;
 use App\Services\ForumService;
 use App\Services\ForumValidatorService;
+use App\Services\PointsService;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
@@ -35,6 +36,7 @@ class ThreadCrudController extends Controller {
 
     private $forumService;
     private $validatorService;
+    private $pointsService;
 
     /**
      * ThreadController constructor.
@@ -42,12 +44,14 @@ class ThreadCrudController extends Controller {
      *
      * @param ForumService $forumService
      * @param ForumValidatorService $validatorService
+     * @param PointsService $pointsService
      */
-    public function __construct(ForumService $forumService, ForumValidatorService $validatorService) {
+    public function __construct(ForumService $forumService, ForumValidatorService $validatorService, PointsService $pointsService) {
         parent::__construct();
         $this->categoryTemplates = ConfigHelper::getCategoryTemplatesConfig();
         $this->forumService = $forumService;
         $this->validatorService = $validatorService;
+        $this->pointsService = $pointsService;
     }
 
     /**
@@ -60,7 +64,8 @@ class ThreadCrudController extends Controller {
         $query = Post::where('posts.threadId', $threadId)
             ->join('users', 'users.userId', '=', 'posts.userId')
             ->select('users.userId', DB::raw('COUNT(*) as amount'))
-            ->groupBy('users.userId');
+            ->groupBy('users.userId')
+            ->orderBy(DB::raw('COUNT(*)'), 'DESC');
         $total = DataHelper::getPage($query->count());
 
         return response()->json([
@@ -350,6 +355,8 @@ class ThreadCrudController extends Controller {
             $user->threads++;
             $user->posts++;
             $user->save();
+
+            $this->pointsService->givePointsFromCategory($user->userId, $thread->categoryId);
         }
 
         NotifyMentionsInPost::dispatch($threadSkeleton->content, $post->postId, $user->userId);
@@ -370,6 +377,8 @@ class ThreadCrudController extends Controller {
         $this->logThreadCreation($thread, $request, $user);
         $this->createThreadPoll($thread, $threadSkeleton);
         $this->forumService->updateLastPostIdOnCategory($thread->categoryId);
+        $this->forumService->updateReadCategory($thread->categoryId, $user->userId);
+        $this->forumService->updateReadThread($thread->threadId, $user->userId);
         NotifyCategorySubscribers::dispatch($thread->categoryId, $thread->userId, $thread->threadId);
         return response()->json(['threadId' => $thread->threadId], 201);
     }

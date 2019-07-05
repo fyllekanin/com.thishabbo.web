@@ -11,16 +11,24 @@ use App\Helpers\PermissionHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
+use App\Services\ForumService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
 
 class PermissionController extends Controller {
+    private $forumService;
     private $defaultGroup = [
         'immunity' => 0,
         'groupId' => 0,
         'name' => 'Default',
-        'forumPermissions' => 0
+        'forumPermissions' => 0,
+        'isAuthOnly' => 0
     ];
+
+    public function __construct(ForumService $forumService) {
+        parent::__construct();
+        $this->forumService = $forumService;
+    }
 
     /**
      * Put request to update forum permission for user group in given category
@@ -35,6 +43,7 @@ class PermissionController extends Controller {
         $immunity = User::getImmunity($user->userId);
         $groups = $request->input('groups');
         $cascade = $request->input('cascade');
+        $isAuthOnly = $request->input('isAuthOnly');
         $permissions = $this->nameToNumberForumPermissions($request->input('permissions'));
 
         foreach ($groups as $grp) {
@@ -53,16 +62,19 @@ class PermissionController extends Controller {
                 $perm = new ForumPermission([
                     'categoryId' => $categoryId,
                     'groupId' => $groupToBeUpdated->groupId,
-                    'permissions' => $permissions
+                    'permissions' => $permissions,
+                    'isAuthOnly' => $isAuthOnly
                 ]);
                 $perm->save();
             } else {
                 $permission->update([
-                    'permissions' => $permissions
+                    'permissions' => $permissions,
+                    'isAuthOnly' => $isAuthOnly,
+                    'updatedAt' => time()
                 ]);
             }
             if ($cascade) {
-                $this->updateCategoryAndChildrenForumPermissions($categoryId, $groupToBeUpdated->groupId, $permissions);
+                $this->updateCategoryAndChildrenForumPermissions($categoryId, $groupToBeUpdated->groupId, $permissions, $isAuthOnly);
             }
 
             Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_FORUM_PERMISSIONS, ['wasCascade' => $cascade]);
@@ -100,7 +112,8 @@ class PermissionController extends Controller {
         return response()->json([
             'category' => $category,
             'group' => $group,
-            'groups' => Group::where('groupId', '!=', $groupId)->orderBy('name', 'ASC')->get(['groupId', 'name'])
+            'groups' => Group::where('groupId', '!=', $groupId)->orderBy('name', 'ASC')->get(['groupId', 'name']),
+            'isAuthOnly' => $permissions ? $permissions->isAuthOnly : 0
         ]);
     }
 
@@ -110,28 +123,27 @@ class PermissionController extends Controller {
      * @param $categoryId
      * @param $groupId
      * @param $permissions
+     * @param $isAuthOnly
      */
-    private function updateCategoryAndChildrenForumPermissions($categoryId, $groupId, $permissions) {
-        $categories = Category::where('parentId', $categoryId)->get();
+    private function updateCategoryAndChildrenForumPermissions($categoryId, $groupId, $permissions, $isAuthOnly) {
+        $categoryIds = $this->forumService->getCategoryIdsDownStream($categoryId);
 
-        foreach ($categories as $category) {
-            $sqlSelection = ForumPermission::where('categoryId', $category->categoryId)->where('groupId', $groupId);
+        foreach ($categoryIds as $categoryId) {
+            $forumPermission = ForumPermission::where('categoryId', $categoryId)->where('groupId', $groupId)->first();
 
-            if ($sqlSelection->count('categoryId') > 0) {
-                $sqlSelection->update([
-                    'permissions' => $permissions,
-                    'updatedAt' => time()
-                ]);
+            if ($forumPermission) {
+                $forumPermission->permissions = $permissions;
+                $forumPermission->isAuthOnly = $isAuthOnly;
+                $forumPermission->save();
             } else {
-                $sqlSelection->insert([
-                    'categoryId' => $category->categoryId,
+                $forumPermission = new ForumPermission([
+                    'categoryId' => $categoryId,
                     'groupId' => $groupId,
                     'permissions' => $permissions,
-                    'createdAt' => time(),
-                    'updatedAt' => time()
+                    'isAuthOnly' => $isAuthOnly
                 ]);
+                $forumPermission->save();
             }
-            $this->updateCategoryAndChildrenForumPermissions($category->categoryId, $groupId, $permissions);
         }
     }
 

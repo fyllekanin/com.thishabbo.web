@@ -348,7 +348,7 @@
             </div>
             <div class="cell small-6">
                 <label class="checkbox-container">
-                    Usergroup can be tagged?<br> <em>If ticked, if somebody posts <strong>@user group name</strong> it
+                    Usergroup can be tagged?<br> <em>If ticked, if somebody posts <strong>@usergroup</strong> it
                     will tag
                     everyone within that user group. Useful for Sitecp groups - not useful for groups with tons of
                     people
@@ -367,20 +367,27 @@
     <div class="grid-container full">
         <div class="grid-x grid-margin-x">
             <div class="cell small-6">
-                <label>Name Styling</label>
-                <textarea autocomplete="off" autocapitalize="off" spellcheck="false" type="text"
-                          [(ngModel)]="group.nameColor"></textarea>
+                <label>Name Color</label>
+                <input [(ngModel)]="group.nameColor" type="text"/>
 
                 <label>Preview</label>
                 <div [style]="nicknameStyle | safeStyle">nickname</div>
             </div>
             <div class="cell small-6">
-                <label>Userbar Styling</label>
+                <label>
+                    Userbar Styling
+                    <span tooltip="Nickname is only for userbar, if empty it will use the group name"
+                          class="checkbox-info">
+                        <em class="fas fa-question-circle"></em>
+                    </span>
+                </label>
+                <input type="text" [(ngModel)]="group.nickname" placeholder="Name on userbar"/>
                 <textarea autocomplete="off" autocapitalize="off" spellcheck="false" type="text"
                           [(ngModel)]="group.userBarStyling"></textarea>
 
                 <label>Preview</label>
-                <div [style]="userBarStyle | safeStyle">{{group.name}}</div>
+                <div [style]="userBarStyle | safeStyle"
+                     [style.text-align]="'center'">{{group.nickname || group.name}}</div>
             </div>
         </div>
     </div>

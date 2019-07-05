@@ -25,22 +25,22 @@ export class SubscriptionService implements Resolve<SubscriptionItem> {
                 .pipe(map(res => new SubscriptionItem(res)));
     }
 
-    save (data: SubscriptionItem): Promise<void> {
+    save (data: SubscriptionItem): Promise<SubscriptionItem> {
         return new Promise(res => {
             this._httpService.post(`sitecp/shop/subscriptions`, {data: data})
-                .subscribe(() => {
+                .subscribe(response => {
                     this._notificationService.sendInfoNotification('Subscription created');
-                    res();
+                    res(new SubscriptionItem(response));
                 }, this._notificationService.failureNotification.bind(this._notificationService));
         });
     }
 
-    update (data: SubscriptionItem): Promise<void> {
+    update (data: SubscriptionItem): Promise<SubscriptionItem> {
         return new Promise(res => {
             this._httpService.put(`sitecp/shop/subscriptions/${data.subscriptionId}`, {data: data})
-                .subscribe(() => {
+                .subscribe(response => {
                     this._notificationService.sendInfoNotification('Subscription updated');
-                    res();
+                    res(new SubscriptionItem(response));
                 }, this._notificationService.failureNotification.bind(this._notificationService));
         });
     }

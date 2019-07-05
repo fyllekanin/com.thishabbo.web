@@ -1,7 +1,10 @@
 <div class="grid-container margin-bottom forum-home" [ngClass]="isApproved ? '' : 'opacity'">
     <div class="grid-x grid-margin-x">
         <div class="cell small-7 medium-8">
-            <a class="title" [routerLink]="[threadUrl]" title="{{title}}" [ngClass]="haveRead ? 'read' : ''">
+            <em class="icon"
+                [ngClass]="icon + (haveRead ? ' read-icon' : '') + (thread.isSticky ? ' red-text' : '')"></em>
+            <a class="title" [routerLink]="[threadUrl]" title="{{title}}"
+               [ngClass]="(haveRead ? 'read' : '') + (thread.isSticky ? ' red-text' : '')">
                 <span *ngIf="thread.prefix" [style]="thread.prefix.style | safeStyle">
                     {{thread.prefix.text}} &#xbb;
                 </span>
@@ -11,12 +14,15 @@
             <span *ngIf="!isApproved" class="unapproved">Unapproved</span>
             <span *ngIf="isSticky" class="sticky">Sticky</span>
             <div class="time-ago">{{timeAgo(thread.createdAt)}}</div>
-            <div class="nickname">by <a [routerLink]="['/user/profile/', thread.nickname]">{{thread.nickname}}</a>
+            <div class="nickname">by
+                <app-user-link [user]="thread.user"></app-user-link>
             </div>
         </div>
         <img class="mobile-hidden" appUserProfile [info]="lastPostInfo"/>
         <div class="cell small-4 medium-2">
-            <div class="latest-post" (click)="goToLastPost()">Latest Post</div>
+            <div class="latest-post" (click)="goToLastPost()" [ngClass]="thread.isSticky ? 'red-text' : ''">Latest
+                Post
+            </div>
             <div class="nickname">
                 <app-user-link [user]="thread.lastPost.user"></app-user-link>
             </div>

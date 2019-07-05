@@ -11,14 +11,14 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class Group extends DeletableModel {
     protected $primaryKey = 'groupId';
-    protected $fillable = ['name', 'nameColor', 'userBarStyling', 'immunity', 'sitecpPermissions', 'staffPermissions',
+    protected $fillable = ['name', 'nickname', 'nameColor', 'userBarStyling', 'immunity', 'sitecpPermissions', 'staffPermissions',
         'options', 'isPublic', 'avatarHeight', 'avatarWidth'];
 
-    public function scopeWithName (Builder $query, $name) {
+    public function scopeWithName(Builder $query, $name) {
         return $query->whereRaw('lower(name) = ?', [strtolower($name)]);
     }
 
-    public function userGroup () {
+    public function userGroup() {
         return $this->hasMany('App\EloquentModels\User\UserGroup', 'groupId');
     }
 }

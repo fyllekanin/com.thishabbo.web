@@ -25,6 +25,8 @@ table {
     width: 100%;
     padding: 0px;
     border-spacing: 0;
+    border: 1px solid #e4e1e1;
+    background-color: #fefefe;
 }
 
 tr:nth-child(even) {
@@ -33,14 +35,18 @@ tr:nth-child(even) {
 
 th {
     text-align: left;
+    padding: 0px 0px 0px 10px;
+    border-bottom: 1px solid #e4e1e1;
+    background: white;
 }
 
 tr {
-    height: 40px;
+    height: 39px;
+    background: #f2f2f2;
 }
 
 td {
-    padding-right: 10px;
+    padding: 0px 0px 0px 10px;
 }
 
 .action {

@@ -10,12 +10,12 @@ class CreateUsersTable extends Migration {
      *
      * @return void
      */
-    public function up () {
+    public function up() {
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('userId');
             $table->string('username')->unique();
             $table->string('nickname')->unique();
-            $table->string('habbo')->default(null);
+            $table->string('habbo')->nullable();
             $table->string('password');
             $table->integer('displayGroupId')->default(0);
             $table->bigInteger('referralId')->default(0);
@@ -47,7 +47,7 @@ class CreateUsersTable extends Migration {
      *
      * @return void
      */
-    public function down () {
+    public function down() {
         Schema::dropIfExists('users');
     }
 }

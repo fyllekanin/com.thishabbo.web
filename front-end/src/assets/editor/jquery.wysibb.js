@@ -1,9 +1,8 @@
 /*! WysiBB v1.5.1 2014-03-26 
     Author: Vadim Dobroskok
  */
-if (typeof (WBBLANG) == "undefined") {
-    WBBLANG = {};
-}
+var WBBLANG = {};
+var CURLANG = {};
 WBBLANG['en'] = CURLANG = {
     bold: "Bold",
     italic: "Italic",
@@ -79,7 +78,7 @@ WBBLANG['en'] = CURLANG = {
     sm8: "Pain",
     sm9: "Sick"
 };
-wbbdebug = false;
+var wbbdebug = false;
 (function ($) {
     'use strict';
     $.wysibb = function (txtArea, settings) {
@@ -93,7 +92,6 @@ wbbdebug = false;
         }
         this.txtArea = txtArea;
         this.$txtArea = $(txtArea);
-        var id = this.$txtArea.attr("id") || this.setUID(this.txtArea);
         this.options = {
             bbmode: false,
             onlyBBmode: false,
@@ -501,12 +499,14 @@ wbbdebug = false;
             }, this));
         }
         $.extend(true, this.options, settings);
-        this.init();
+        this.init(settings.id);
     }
 
     $.wysibb.prototype = {
         lastid: 1,
-        init: function () {
+        id: null,
+        init: function (id) {
+            this.id = id;
             $.log("Init", this);
             //check for mobile
             this.isMobile = function (a) {
@@ -824,7 +824,7 @@ wbbdebug = false;
             $.log("Build editor");
 
             //this.$editor = $('<div class="wysibb">');
-            this.$editor = $('<div>').addClass("wysibb");
+            this.$editor = $('<div>').addClass("wysibb").attr('id', this.id);
 
             if (this.isMobile) {
                 this.$editor.addClass("wysibb-mobile");
@@ -866,7 +866,6 @@ wbbdebug = false;
                 if (this.options.direction) {
                     this.$body.css("direction", this.options.direction)
                 }
-
 
                 if ('contentEditable' in this.body) {
                     this.body.contentEditable = true;
@@ -916,7 +915,7 @@ wbbdebug = false;
 
                 //trace Textarea
                 if (this.options.traceTextarea === true) {
-                    $(document).bind("mousedown", $.proxy(this.traceTextareaEvent, this));
+                    $(this).bind("mousedown", $.proxy(this.traceTextareaEvent, this));
                     this.$txtArea.val("");
                 }
 
@@ -941,8 +940,6 @@ wbbdebug = false;
                             height: height
                         });
                 }
-
-                this.imgListeners();
             }
 
 
@@ -2017,7 +2014,6 @@ wbbdebug = false;
         },
         getBBCode: function () {
             if (!this.options.rules || this.options.bbmode) {
-                console.log(1);
                 return this.$txtArea.val();
             }
             this.clearEmpty();
@@ -2027,23 +2023,12 @@ wbbdebug = false;
             if (!data) {
                 return "";
             }
-            ;
             var $e = (typeof (data) == "string") ? $('<span>').html(data) : $(data);
-            //remove last BR
-            $e.find("div,blockquote,p").each(function () {
-                if (this.nodeType != 3 && this.lastChild && this.lastChild.tagName == "BR") {
-                    $(this.lastChild).remove();
-                }
-            })
-            if ($e.is("div,blockquote,p") && $e[0].nodeType != 3 && $e[0].lastChild && $e[0].lastChild.tagName == "BR") {
-                $($e[0].lastChild).remove();
-            }
-            //END remove last BR
 
             //Remove BR
             $e.find("ul > br, table > br, tr > br").remove();
-            //IE
 
+            //IE
             var outbb = "";
 
             //transform smiles
@@ -2202,7 +2187,7 @@ wbbdebug = false;
                     }
 
                     $.each(this.options.allButtons[b].transform, $.proxy(function (html, bb) {
-                        html = html.replace(/\n/g, ""); //IE 7,8 FIX
+                        html = html.replace(/\n/g, "<br/>"); //IE 7,8 FIX
                         var a = [];
                         bb = bb.replace(/(\(|\)|\[|\]|\.|\*|\?|\:|\\|\\)/g, "\\$1");
                         //.replace(/\s/g,"\\s");
@@ -2423,7 +2408,7 @@ wbbdebug = false;
             }
         },
         modeSwitch: function (skipFocus) {
-            $(".mswitch").toggleClass("on");
+            $("#" + this.id + " .mswitch").toggleClass("on");
             if (this.options.bbmode) {
                 //to HTML
                 this.$body.html(this.getHTML(this.$txtArea.val()));
@@ -2435,9 +2420,7 @@ wbbdebug = false;
                 //to bbcode
                 this.$txtArea.val(this.getBBCode()).css("min-height", this.$body.height());
                 this.$body.hide();
-                if (!skipFocus) {
-                    this.$txtArea.show().focus();
-                }
+                this.$txtArea.show();
             }
             this.options.bbmode = !this.options.bbmode;
         },
@@ -2614,7 +2597,7 @@ wbbdebug = false;
             }
         },
         traceTextareaEvent: function (e) {
-            if ($(e.target).closest("div.wysibb").size() == 0) {
+            if ($(e.target).closest("#" + this.id + " div.wysibb").size() == 0) {
                 if ($(document.activeElement).is("div.wysibb-body")) {
                     this.saveRange();
                 }
@@ -2700,29 +2683,6 @@ wbbdebug = false;
             var sl = document.createTextNode("\uFEFF");
             $(el).after(sl);
             this.selectNode(sl);
-        },
-
-        //img listeners
-        imgListeners: function () {
-            $(document).on("mousedown", $.proxy(this.imgEventHandler, this));
-        },
-        imgEventHandler: function (e) {
-            var $e = $(e.target);
-            if (this.hasWrapedImage && ($e.closest(".wbb-img,#wbbmodal").size() == 0 || $e.hasClass("wbb-cancel-button"))) {
-                this.$body.find(".imgWrap ").each(function () {
-                    $.log("Removed imgWrap block");
-                    $(this).replaceWith($(this).find("img"));
-                })
-                this.hasWrapedImage = false;
-                this.updateUI();
-            }
-
-            if ($e.is("img") && $e.closest(".wysibb-body").size() > 0) {
-                $e.wrap("<span class='imgWrap'></span>");
-                this.hasWrapedImage = $e;
-                this.$body.focus();
-                this.selectNode($e.parent()[0]);
-            }
         },
 
         //MODAL WINDOW
@@ -3057,6 +3017,7 @@ wbbdebug = false;
         //API
         $.fn.keybind = function (event, callback) {
             this.data('wbb').$body.bind(event, callback);
+            this.data('wbb').$txtArea.bind(event, callback);
         }
     $.fn.isBBMode = function () {
         return this.data('wbb').options.bbmode;

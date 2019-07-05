@@ -4,6 +4,7 @@ import { habboDirections, habboEmotions, habboItems, habboSizes } from './habbo-
 import { StringHelper } from 'shared/helpers/string.helper';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
+import { TitleTopBorder } from 'shared/app-views/title/title.model';
 
 @Component({
     selector: 'app-goodies-habbo-imager',
@@ -21,6 +22,7 @@ export class HabboImagerComponent extends Page implements OnDestroy {
         'action'
     ];
 
+    topBorderRed = TitleTopBorder.RED;
     // Results
     directLink = 'nothing now';
     bbcode = 'nothing now';
@@ -129,7 +131,7 @@ export class HabboImagerComponent extends Page implements OnDestroy {
         this.urlBuilder();
     }
 
-    get items(): Array<{ label: string, value: string}> {
+    get items(): Array<{ label: string, value: string }> {
         return Object.keys(habboItems).map(key => {
             return {
                 label: StringHelper.prettifyString(key),
@@ -138,7 +140,7 @@ export class HabboImagerComponent extends Page implements OnDestroy {
         });
     }
 
-    get sizes(): Array<{ label: string, value: string}> {
+    get sizes(): Array<{ label: string, value: string }> {
         return Object.keys(habboSizes).map(key => {
             return {
                 label: StringHelper.prettifyString(key),

@@ -1,0 +1,43 @@
+.badge {
+    text-align: center;
+    position: relative;
+    display: block;
+}
+
+.badge img {
+    -moz-border-radius: 4px;
+    -moz-box-shadow: 0 2px rgba(0, 0, 0, .18);
+    -webkit-border-radius: 4px;
+    -webkit-box-shadow: 0 2px rgba(0, 0, 0, .18);
+    background: #f1f1f1;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    border-radius: 4px;
+    box-shadow: 0 2px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    display: inline-block;
+    height: 50px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    padding: 4px;
+    position: relative;
+    text-align: center;
+    transition: background .8s ease;
+    width: 50px;
+}
+
+.badge img:hover {
+    background: #333333;
+}
+
+.new {
+    background-color: #c66464;
+    color: #fff;
+    font-size: .6rem;
+    font-weight: 700;
+    padding: 1px 2px 2px 2px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 2;
+    border-radius: 2px;
+}

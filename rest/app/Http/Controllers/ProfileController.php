@@ -17,9 +17,11 @@ use App\Http\Controllers\Forum\Thread\ThreadCrudController;
 use App\Http\Impl\ProfileControllerImpl;
 use App\Logger;
 use App\Models\Logger\Action;
+use App\Models\User\Point;
 use App\Services\ActivityService;
 use App\Services\ForumService;
 use App\Services\ForumValidatorService;
+use App\Services\PointsService;
 use App\Utils\BBcodeUtil;
 use App\Utils\Condition;
 use App\Utils\Iterables;
@@ -29,10 +31,12 @@ use Illuminate\Http\Request;
 
 class ProfileController extends Controller {
     private $myImpl;
+    private $pointsService;
 
-    public function __construct(ProfileControllerImpl $impl) {
+    public function __construct(ProfileControllerImpl $impl, PointsService $pointsService) {
         parent::__construct();
         $this->myImpl = $impl;
+        $this->pointsService = $pointsService;
     }
 
     /**
@@ -96,6 +100,7 @@ class ProfileController extends Controller {
         ]);
         $visitorMessage->save();
 
+        $this->pointsService->givePointsFromModel($user->userId, Point::VISITOR_MESSAGE);
         NotificationFactory::newVisitorMessage($visitorMessage);
         Logger::user($user->userId, $request->ip(), Action::CREATED_VISITOR_MESSAGE, [], $visitorMessage->visitorMessageId);
         return response()->json($this->mapVisitorMessage($request, $visitorMessage));

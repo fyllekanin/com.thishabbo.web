@@ -4,6 +4,7 @@ export const LOCAL_STORAGE = {
     CONTRACTED_STICKIES: 'contracted-stickies',
     CONTRACTED_SECTIONS: 'contracted-sections',
     CONTRACTED_MENU_ITEMS: 'contracted-menu-items',
+    CONTRACTED_SITECP_CATEGORIES: 'contracted-sitecp-categories',
     NAVIGATION: 'navigation',
     READ_SITE_MESSAGE: 'read-site-message',
 
@@ -14,5 +15,6 @@ export const LOCAL_STORAGE = {
     TABS: 'tabs',
     VOLUME: 'volume',
     FORUM_TOOLS: 'forum-tools',
-    MINIMALISTIC: 'Minimalistic'
+    MINIMALISTIC: 'minimalistic',
+    MINI_PROFILE_DISABLED: 'mini-profile-disabled'
 };

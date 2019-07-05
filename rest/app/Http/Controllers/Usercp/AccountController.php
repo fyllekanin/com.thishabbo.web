@@ -28,6 +28,7 @@ use App\Utils\Iterables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Utils\Value;
 
 class AccountController extends Controller {
     private $authService;
@@ -330,11 +331,9 @@ class AccountController extends Controller {
      */
     public function getPostBit(Request $request) {
         $user = $request->get('auth');
-        $selectedBadgeIds = UserItem::where('userId', $user->userId)->badge()->isActive()->pluck('itemId');
 
         return response()->json([
             'information' => $this->buildPostBitOptions($user),
-            'badges' => Badge::whereIn('badgeId', $selectedBadgeIds)->orderBy('updatedAt', 'ASC')->get(['badgeId', 'name', 'updatedAt']),
             'namePosition' => [
                 'isAvailable' => UserHelper::hasSubscriptionFeature($user->userId, ConfigHelper::getSubscriptionOptions()->canMoveNamePosition),
                 'position' => UserHelper::getUserDataOrCreate($user->userId)->namePosition
@@ -350,9 +349,11 @@ class AccountController extends Controller {
     public function getAvailableBadges(Request $request) {
         $user = $request->get('auth');
         $availableBadgeIds = UserItem::where('userId', $user->userId)->badge()->pluck('itemId');
+        $userdata = UserHelper::getUserDataOrCreate($user->userId);
+        $activeBadges = Value::objectJsonProperty($userdata, 'activeBadges', []);
 
-        return response()->json(Badge::whereIn('badgeId', $availableBadgeIds)->get(['badgeId', 'name', 'updatedAt'])->map(function ($badge) use ($user) {
-            $badge->isActive = UserItem::badge()->where('itemId', $badge->badgeId)->isActive()->where('userId', $user->userId)->count('userItemId') > 0;
+        return response()->json(Badge::whereIn('badgeId', $availableBadgeIds)->get(['badgeId', 'name', 'updatedAt'])->map(function ($badge) use ($activeBadges) {
+            $badge->isActive = in_array($badge->badgeId, $activeBadges);
             return $badge;
         }));
     }
@@ -366,11 +367,11 @@ class AccountController extends Controller {
      */
     public function updatePostBit(Request $request) {
         $user = $request->get('auth');
-        $data = (object)$request->input('data');
+        $data = json_decode(json_encode($request->input('data')));
         $namePosition = (object)$data->namePosition;
         $badgeIds = array_map(function ($badge) {
-            return $badge['badgeId'];
-        }, $data->badges);
+            return $badge->badgeId;
+        }, $data->information->badges);
 
         Condition::precondition(count($badgeIds) > 3, 400, 'You can not have more then 3 badges selected!');
 
@@ -384,10 +385,8 @@ class AccountController extends Controller {
         $userData = UserHelper::getUserDataOrCreate($user->userId);
         $userData->postBit = $this->convertPostBitOptions($data->information);
         $userData->namePosition = $namePosition->position;
+        $userData->activeBadges = json_encode($badgeIds);
         $userData->save();
-
-        UserItem::badge()->where('userId', $user->userId)->update(['isActive' => false]);
-        UserItem::badge()->where('userId', $user->userId)->whereIn('itemId', $badgeIds)->update(['isActive' => true]);
 
         Logger::user($user->userId, $request->ip(), Action::UPDATED_POSTBIT);
         return response()->json();

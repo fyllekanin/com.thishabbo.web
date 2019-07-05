@@ -119,8 +119,8 @@ export class ThemeComponent extends Page implements OnDestroy {
     private updateTabs (): void {
         const tabs = [
             {title: 'Save', value: ThemeActions.SAVE, condition: true},
-            {title: 'Delete', value: ThemeActions.DELETE, condition: this._data.createdAt},
-            {title: 'Back', value: ThemeActions.BACK, condition: true}
+            {title: 'Back', value: ThemeActions.BACK, condition: true},
+            {title: 'Delete', value: ThemeActions.DELETE, condition: this._data.createdAt}
         ];
         this.tabs = tabs.filter(item => item.condition).map(item => new TitleTab(item));
     }

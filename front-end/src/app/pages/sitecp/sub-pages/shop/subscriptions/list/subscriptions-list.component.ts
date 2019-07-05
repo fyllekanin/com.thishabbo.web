@@ -108,7 +108,7 @@ export class SubscriptionsListComponent extends Page implements OnDestroy {
             filterConfigs: [
                 new FilterConfig({
                     title: 'Filter',
-                    placeholder: 'Search by Title...',
+                    placeholder: 'Search by title...',
                     key: 'filter'
                 })
             ]
@@ -120,7 +120,8 @@ export class SubscriptionsListComponent extends Page implements OnDestroy {
             id: item.subscriptionId.toString(),
             cells: [
                 new TableCell({title: item.title}),
-                new TableCell({title: item.membersCount.toString()})
+                new TableCell({title: item.membersCount.toString()}),
+                new TableCell({title: item.isListed ? 'Yes' : 'No'})
             ],
             actions: this._actions
         }));
@@ -129,7 +130,8 @@ export class SubscriptionsListComponent extends Page implements OnDestroy {
     private getTableHeaders (): Array<TableHeader> {
         return [
             new TableHeader({title: 'Title'}),
-            new TableHeader({title: 'Subscribers'})
+            new TableHeader({title: 'Subscribers'}),
+            new TableHeader({title: 'Is Listed'})
         ];
     }
 }

@@ -87,4 +87,8 @@ export class SlimThreadComponent extends Page implements OnDestroy {
     get haveRead(): boolean {
         return this._slimThread.haveRead;
     }
+
+    get icon(): string {
+        return this._slimThread.icon || 'fas fa-comment-alt';
+    }
 }

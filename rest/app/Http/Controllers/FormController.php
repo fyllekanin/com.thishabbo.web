@@ -3,23 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\EloquentModels\Forum\Category;
+use App\Helpers\ConfigHelper;
+use App\Helpers\DataHelper;
 use App\Http\Controllers\Forum\Thread\ThreadCrudController;
 use App\Logger;
 use App\Models\Logger\Action;
-use App\Services\ForumService;
-use App\Services\ForumValidatorService;
 use App\Utils\Condition;
+use App\Views\BugReportView;
 use App\Views\ContactApplicationView;
 use App\Views\JobApplicationView;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
-use App\Helpers\ConfigHelper;
-use League\Flysystem\Config;
-use App\Views\BugReportView;
 
 class FormController extends Controller {
 
-    public function createApplication(Request $request, ForumService $forumService, ForumValidatorService $validatorService) {
+    public function createApplication(Request $request, ThreadCrudController $threadCrudController) {
         $user = $request->get('auth');
         $data = (object)$request->input('data');
 
@@ -33,12 +31,11 @@ class FormController extends Controller {
 
         $threadSkeleton = JobApplicationView::of($data);
         $jobCategories = Category::isJobCategory()->get();
-        $threadController = new ThreadCrudController($forumService, $validatorService);
 
         foreach ($jobCategories as $category) {
             $threadSkeleton->categoryId = $category->categoryId;
             try {
-                $threadController->doThread($user, null, $threadSkeleton, null, true);
+                $threadCrudController->doThread($user, null, $threadSkeleton, null, true);
             } catch (ValidationException $e) {
             }
         }
@@ -47,7 +44,7 @@ class FormController extends Controller {
         return response()->json();
     }
 
-    public function createContact(Request $request, ForumService $forumService, ForumValidatorService $validatorService) {
+    public function createContact(Request $request, ThreadCrudController $threadCrudController) {
         $user = $request->get('auth');
         $data = (object)$request->input('data');
 
@@ -58,12 +55,11 @@ class FormController extends Controller {
 
         $threadSkeleton = ContactApplicationView::of($data);
         $jobCategories = Category::isContactCategory()->get();
-        $threadController = new ThreadCrudController($forumService, $validatorService);
 
         foreach ($jobCategories as $category) {
             $threadSkeleton->categoryId = $category->categoryId;
             try {
-                $threadController->doThread($user, null, $threadSkeleton, null, true);
+                $threadCrudController->doThread($user, null, $threadSkeleton, null, true);
             } catch (ValidationException $e) {
             }
         }
@@ -93,15 +89,10 @@ class FormController extends Controller {
 
         $auth = 'Authorization: Token ' . $token;
 
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, 'https://api.github.com/repos/' . $owner . '/' . $repo . '/issues');
+        $curl = DataHelper::getBasicCurl('https://api.github.com/repos/' . $owner . '/' . $repo . '/issues');
         curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $auth));
-        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.92 Safari/537.36');
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_POST, 1);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $postFields);
-        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 2);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 5);
 
         $data = curl_exec($curl);
         curl_close($curl);

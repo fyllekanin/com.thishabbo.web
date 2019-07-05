@@ -1,21 +1,23 @@
 import { Injectable } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
+import { DialogService } from 'core/services/dialog/dialog.service';
 
 @Injectable()
 export class RouterStateService {
     private _urls: Array<string> = [];
     private readonly _defaultTitle = 'TH';
 
-    constructor(router: Router) {
+    constructor (router: Router, dialogService: DialogService) {
         document.title = this._defaultTitle;
         router.events.subscribe(ev => {
             if (ev instanceof NavigationStart) {
                 this._urls.push(ev.url);
+                dialogService.closeDialog();
             }
         });
     }
 
-    updateTitle(amountOfNotifications: number): void {
+    updateTitle (amountOfNotifications: number): void {
         if (amountOfNotifications > 0) {
             document.title = `(${amountOfNotifications}) ${this._defaultTitle}`;
         } else {
@@ -23,11 +25,13 @@ export class RouterStateService {
         }
     }
 
-    pushUrl(url: string): void {
+    pushUrl (url: string): void {
         this._urls.push(url);
     }
 
-    getPreviousUrl(): string {
-        return this._urls[this._urls.length - 2];
+    getPreviousUrl (): string {
+        const previous = this._urls[this._urls.length - 2];
+        this._urls = [];
+        return previous;
     }
 }

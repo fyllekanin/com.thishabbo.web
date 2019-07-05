@@ -1,0 +1,36 @@
+<div class="wrapper">
+    <div class="inner-image">
+        <em class="fas fa-id-card"></em>
+    </div>
+    <div class="container">
+        <div class="prize float-right">
+            <span *ngIf="subscription.credits > 0">
+                <em class="fas fa-coins"></em>
+                {{subscription.credits}}
+            </span>
+            <span *ngIf="subscription.pounds > 0">
+                <em class="fas fa-pound-sign"></em>
+                {{subscription.pounds}}
+            </span>
+        </div>
+        <a class="title">
+            <em class="fas fa-box"></em>
+            {{subscription.title}}
+        </a>
+        <div class="content">
+            <strong>Perks</strong>
+            <div *ngIf="subscription.options.avatarHeight > 0 || subscription.options.avatarWidth > 0">
+                <div *ngIf="subscription.options.avatarHeight > 0">- Avatar
+                    Height: {{subscription.options.avatarHeight}}</div>
+                <div *ngIf="subscription.options.avatarWidth > 0">- Avatar
+                    Width: {{subscription.options.avatarWidth}}</div>
+            </div>
+            <div *ngIf="subscription.options.customNamePosition">
+                - Custom name position
+            </div>
+            <div *ngIf="subscription.options.customNameColor">
+                - Custom name color
+            </div>
+        </div>
+    </div>
+</div>

@@ -13,11 +13,11 @@ export class SlimSiteMessage {
     @primitive()
     content: string;
 
-    constructor (source: Partial<SlimSiteMessage>) {
+    constructor(source: Partial<SlimSiteMessage>) {
         ClassHelper.assign(this, source);
     }
 
-    getType (): INFO_BOX_TYPE {
+    getType(): INFO_BOX_TYPE {
         switch (this.type) {
             case 1:
                 return INFO_BOX_TYPE.WARNING;
@@ -36,7 +36,7 @@ export class ActiveUser {
     @primitive()
     nickname: string;
 
-    constructor (source: Partial<ActiveUser>) {
+    constructor(source: Partial<ActiveUser>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -49,7 +49,7 @@ export class ActivityThread {
     @primitive()
     page: number;
 
-    constructor (source: Partial<ActivityThread>) {
+    constructor(source: Partial<ActivityThread>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -66,7 +66,18 @@ export class Activity {
     @time()
     createdAt: string;
 
-    constructor (source: Partial<Activity>) {
+    constructor(source: Partial<Activity>) {
+        ClassHelper.assign(this, source);
+    }
+}
+
+export class UserInformation {
+    @primitive()
+    credits: number;
+    @primitive()
+    xp: number;
+
+    constructor(source?: Partial<UserInformation>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -84,8 +95,10 @@ export class ContinuesInformationModel {
     activeUsers: Array<ActiveUser> = [];
     @arrayOf(Activity)
     activities: Array<Activity> = [];
+    @objectOf(UserInformation)
+    user: UserInformation;
 
-    constructor (source?: Partial<ContinuesInformationModel>) {
+    constructor(source?: Partial<ContinuesInformationModel>) {
         ClassHelper.assign(this, source);
     }
 }

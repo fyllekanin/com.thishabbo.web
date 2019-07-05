@@ -24,10 +24,7 @@ class CheckAuth {
         if (!$token) {
             throw new HttpException(401);
         }
-
-        if (!$token->user->gdpr) {
-            throw new HttpException(404, 'You need to accept gdpr!');
-        }
+        
         return $next($request);
     }
 }

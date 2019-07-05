@@ -6,6 +6,7 @@ use App\EloquentModels\BBcode;
 use App\EloquentModels\Forum\Category;
 use App\EloquentModels\Forum\Thread;
 use App\EloquentModels\Group\GroupList;
+use App\EloquentModels\HabboBadge;
 use App\EloquentModels\Notice;
 use App\EloquentModels\Page;
 use App\EloquentModels\User\User;
@@ -34,23 +35,6 @@ class PageController extends Controller {
         parent::__construct();
         $this->myImpl = $impl;
         $this->categoryTemplates = ConfigHelper::getCategoryTemplatesConfig();
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function loadInitial(Request $request) {
-        $user = $request->get('auth');
-
-        $navigation = $this->myImpl->getNavigation();
-        $theme = $this->myImpl->getTheme($user);
-
-        return response()->json([
-            'navigation' => is_array($navigation) ? $navigation : [],
-            'theme' => $theme ? $theme->minified : ''
-        ]);
     }
 
     /**
@@ -130,13 +114,22 @@ class PageController extends Controller {
      */
     public function getHomePage(Request $request) {
         $user = $request->get('auth');
+        $threeDays = 259200;
 
         return response()->json([
             'articles' => $this->getArticles($user, 4, $this->categoryTemplates->QUEST),
             'mediaArticles' => $this->getArticles($user, 5, $this->categoryTemplates->MEDIA),
             'notices' => $this->getNotices(),
             'threads' => $this->getLatestThreads($user),
-            'spotlight' => $this->myImpl->getStaffSpotlight()
+            'spotlight' => $this->myImpl->getStaffSpotlight(),
+            'badges' => HabboBadge::orderBy('createdAt', 'DESC')->take(12)->get()->map(function ($item) use ($threeDays) {
+                return [
+                    'habboBadgeId' => $item->habboBadgeId,
+                    'description' => $item->description,
+                    'isNew' => $item->createdAt->timestamp > (time() - $threeDays),
+                    'createdAt' => $item->createdAt->timestamp
+                ];
+            })
         ]);
     }
 
@@ -203,7 +196,7 @@ class PageController extends Controller {
      * @return Notice[]|Collection
      */
     private function getNotices() {
-        return Notice::orderBy('order', 'ASC')->get()->map(function($notice) {
+        return Notice::orderBy('order', 'ASC')->get()->map(function ($notice) {
             $notice->makeHidden(['createdAt', 'updatedAt', 'userId', 'isDeleted']);
             $notice->text = nl2br(stripcslashes($notice->text));
             return $notice;

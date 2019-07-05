@@ -74,6 +74,7 @@ class ForumController extends Controller {
             ->whereIn('threads.categoryId', $categoryIds)
             ->where('posts.isApproved', 0)
             ->select('posts.*', 'threads.title as threadTitle', 'threads.categoryId')
+            ->orderBy('posts.updatedAt', 'DESC')
             ->get();
 
         foreach ($posts as $key => $post) {

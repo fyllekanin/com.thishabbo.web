@@ -2,8 +2,9 @@
 
 namespace App\Services;
 
+use App\Helpers\DataHelper;
+
 class HabboService {
-    private $agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36';
     private $cookies = 'browser_token=thisisabrowsertoken;session.id=thisisasessionid;';
     private $habboApi = 'http://www.habbo.com/api/public/';
 
@@ -13,25 +14,34 @@ class HabboService {
      * @return mixed|null
      */
     public function getHabboByName($name) {
-        return $this->getData($this->habboApi . 'users?name=' . $name);
+        $habbo = $this->getHabboData($this->habboApi . 'users?name=' . $name);
+        return is_object($habbo) && !isset($habbo->error) ? $habbo : null;
     }
 
     /**
      * @param $url
      *
+     * @param bool $isJson
+     *
+     * @param bool $withEncoding
+     *
      * @return mixed|null
      */
-    private function getData($url) {
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, ['Accept-Encoding: gzip, deflate, sdch', 'Cookie: ' . $this->cookies]);
-        curl_setopt($curl, CURLOPT_USERAGENT, $this->agent);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+    public function getHabboData($url, $isJson = true, $withEncoding = true) {
+        $headers = [
+            'Cookie: ' . $this->cookies,
+            'Content-Type: text/html; charset=utf-8'
+        ];
+        if ($withEncoding) {
+            $headers[] = 'Accept-Encoding: gzip, deflate, sdch';
+        }
+        $curl = DataHelper::getBasicCurl($url);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 1);
 
-        $data = json_decode(curl_exec($curl));
-        return isset($data) && is_object($data) && !isset($data->error) ? $data : null;
+        $data = $isJson ? json_decode(curl_exec($curl)) : curl_exec($curl);
+        curl_close($curl);
+        return isset($data) ? $data : null;
     }
 }

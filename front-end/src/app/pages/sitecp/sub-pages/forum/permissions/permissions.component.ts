@@ -76,7 +76,8 @@ export class PermissionsComponent extends Page implements OnDestroy {
         this._httpService.put(url, {
             groups: groups,
             cascade: cascade,
-            permissions: this._permissionsPage.group.forumPermissions
+            permissions: this._permissionsPage.group.forumPermissions,
+            isAuthOnly: this._permissionsPage.isAuthOnly
         })
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
@@ -95,10 +96,6 @@ export class PermissionsComponent extends Page implements OnDestroy {
             `Forum Permissions for Category: ${this._permissionsPage.category.title}` : '';
     }
 
-    get group (): PermissionGroup {
-        return this._permissionsPage.group;
-    }
-
     get groups (): Array<PermissionGroup> {
         return this._selectableGroups;
     }
@@ -113,6 +110,10 @@ export class PermissionsComponent extends Page implements OnDestroy {
 
     get rightHalf (): Array<PermissionGroup> {
         return this._permissionsPage.groups.slice(Math.ceil(this._permissionsPage.groups.length / 2));
+    }
+
+    get model (): PermissionsPage {
+        return this._permissionsPage;
     }
 
     private onPage (data: { data: PermissionsPage }): void {

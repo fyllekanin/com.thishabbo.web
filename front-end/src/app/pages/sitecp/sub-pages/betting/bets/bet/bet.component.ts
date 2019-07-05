@@ -110,8 +110,8 @@ export class BetComponent extends Page implements OnDestroy {
 
         const tabs = [
             {title: 'Save', value: BetActions.SAVE, condition: true},
-            {title: 'Delete', value: BetActions.DELETE, condition: this._data.bet.createdAt},
-            {title: 'Back', value: BetActions.BACK, condition: true}
+            {title: 'Back', value: BetActions.BACK, condition: true},
+            {title: 'Delete', value: BetActions.DELETE, condition: this._data.bet.createdAt}
         ];
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));
     }

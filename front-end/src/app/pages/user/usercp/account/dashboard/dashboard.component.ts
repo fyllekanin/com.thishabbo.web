@@ -30,13 +30,15 @@ export class DashboardComponent extends Page implements OnDestroy {
     private _stats: UserCpDashboardModel = new UserCpDashboardModel();
     tableConfig: TableConfig;
 
+    stats: StatsBoxModel;
     isEditorSourceMode: boolean;
     doIgnoreSignatures: boolean;
     haveFixedMenu: boolean;
     showThreadTools: boolean;
     minimalisticHeader: boolean;
+    disableMiniProfile: boolean;
     saveTab: Array<TitleTab> = [
-        new TitleTab({ title: 'Save' })
+        new TitleTab({title: 'Save'})
     ];
 
     constructor(
@@ -47,6 +49,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         breadcrumbService: BreadcrumbService
     ) {
         super(elementRef);
+        this.addSubscription(activatedRoute.data, this.onData.bind(this));
         breadcrumbService.breadcrumb = new Breadcrumb({
             current: 'Dashboard',
             items: [
@@ -66,33 +69,107 @@ export class DashboardComponent extends Page implements OnDestroy {
         this.haveFixedMenu = Boolean(localStorage.getItem(LOCAL_STORAGE.FIXED_MENU));
         this.showThreadTools = Boolean(localStorage.getItem(LOCAL_STORAGE.FORUM_TOOLS));
         this.minimalisticHeader = Boolean(localStorage.getItem(LOCAL_STORAGE.MINIMALISTIC));
-
-        this.addSubscription(activatedRoute.data, this.onData.bind(this));
+        this.disableMiniProfile = Boolean(localStorage.getItem(LOCAL_STORAGE.MINI_PROFILE_DISABLED));
     }
 
-    onSave(): void {
+    onSave (): void {
         this.updateEditorSourceMode();
         this.updateIgnoreSignatures();
         this.updateFixedMenu();
         this.updateThreadTools();
         this.updateMinimalisticHeader();
+        this.updateDisabledMiniProfile();
         this._notificationService.sendInfoNotification('Device settings saved!');
         this._continuesInformation.deviceSettingsUpdated();
     }
 
-    onAction(action: Action): void {
+    onAction (action: Action): void {
         this._tabs = this._tabs.filter(item => item.label.toLowerCase() !== action.rowId.toLowerCase());
         localStorage.setItem(LOCAL_STORAGE.TABS, JSON.stringify(this._tabs));
         this._continuesInformation.tabsUpdated();
         this.createOrUpdateTable();
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    get stats(): Array<StatsBoxModel> {
-        return [
+    private updateDisabledMiniProfile (): void {
+        if (this.disableMiniProfile) {
+            localStorage.setItem(LOCAL_STORAGE.MINI_PROFILE_DISABLED, 'true');
+        } else {
+            localStorage.removeItem(LOCAL_STORAGE.MINI_PROFILE_DISABLED);
+        }
+    }
+
+    private updateEditorSourceMode (): void {
+        if (this.isEditorSourceMode) {
+            localStorage.setItem(LOCAL_STORAGE.EDITOR_MODE, 'true');
+        } else {
+            localStorage.removeItem(LOCAL_STORAGE.EDITOR_MODE);
+        }
+    }
+
+    private updateIgnoreSignatures (): void {
+        if (this.doIgnoreSignatures) {
+            localStorage.setItem(LOCAL_STORAGE.IGNORE_SIGNATURES, 'true');
+        } else {
+            localStorage.removeItem(LOCAL_STORAGE.IGNORE_SIGNATURES);
+        }
+    }
+
+    private updateFixedMenu (): void {
+        if (this.haveFixedMenu) {
+            localStorage.setItem(LOCAL_STORAGE.FIXED_MENU, 'true');
+        } else {
+            localStorage.removeItem(LOCAL_STORAGE.FIXED_MENU);
+        }
+    }
+
+    private updateThreadTools (): void {
+        if (this.showThreadTools) {
+            localStorage.setItem(LOCAL_STORAGE.FORUM_TOOLS, 'true');
+        } else {
+            localStorage.removeItem(LOCAL_STORAGE.FORUM_TOOLS);
+        }
+    }
+
+    private updateMinimalisticHeader (): void {
+        if (this.minimalisticHeader) {
+            localStorage.setItem(LOCAL_STORAGE.MINIMALISTIC, 'true');
+        } else {
+            localStorage.removeItem(LOCAL_STORAGE.MINIMALISTIC);
+        }
+    }
+
+    private createOrUpdateTable (): void {
+        if (this.tableConfig) {
+            this.tableConfig.rows = this.getTableRows();
+            return;
+        }
+        this.tableConfig = new TableConfig({
+            title: 'Device Tabs',
+            headers: [new TableHeader({title: 'Label'}), new TableHeader({title: 'URL'})],
+            rows: this.getTableRows()
+        });
+    }
+
+    private getTableRows (): Array<TableRow> {
+        return this._tabs.map(tab => new TableRow({
+            id: tab.label,
+            cells: [
+                new TableCell({title: tab.label}),
+                new TableCell({title: tab.url})
+            ],
+            actions: [
+                new TableAction({title: 'Remove'})
+            ]
+        }));
+    }
+
+    private onData (data: { data: UserCpDashboardModel}) {
+        this._stats = data.data;
+        this.stats = [
             new StatsBoxModel({
                 borderColor: TitleTopBorder.GREEN,
                 icon: 'fas fa-id-card',
@@ -118,74 +195,5 @@ export class DashboardComponent extends Page implements OnDestroy {
                 breadText: String(this._stats.itemsOwned)
             })
         ];
-    }
-
-    private updateEditorSourceMode(): void {
-        if (this.isEditorSourceMode) {
-            localStorage.setItem(LOCAL_STORAGE.EDITOR_MODE, 'true');
-        } else {
-            localStorage.removeItem(LOCAL_STORAGE.EDITOR_MODE);
-        }
-    }
-
-    private updateIgnoreSignatures(): void {
-        if (this.doIgnoreSignatures) {
-            localStorage.setItem(LOCAL_STORAGE.IGNORE_SIGNATURES, 'true');
-        } else {
-            localStorage.removeItem(LOCAL_STORAGE.IGNORE_SIGNATURES);
-        }
-    }
-
-    private updateFixedMenu(): void {
-        if (this.haveFixedMenu) {
-            localStorage.setItem(LOCAL_STORAGE.FIXED_MENU, 'true');
-        } else {
-            localStorage.removeItem(LOCAL_STORAGE.FIXED_MENU);
-        }
-    }
-
-    private updateThreadTools(): void {
-        if (this.showThreadTools) {
-            localStorage.setItem(LOCAL_STORAGE.FORUM_TOOLS, 'true');
-        } else {
-            localStorage.removeItem(LOCAL_STORAGE.FORUM_TOOLS);
-        }
-    }
-
-    private updateMinimalisticHeader(): void {
-        if (this.minimalisticHeader) {
-            localStorage.setItem(LOCAL_STORAGE.MINIMALISTIC, 'true');
-        } else {
-            localStorage.removeItem(LOCAL_STORAGE.MINIMALISTIC);
-        }
-    }
-
-    private createOrUpdateTable(): void {
-        if (this.tableConfig) {
-            this.tableConfig.rows = this.getTableRows();
-            return;
-        }
-        this.tableConfig = new TableConfig({
-            title: 'Device Tabs',
-            headers: [new TableHeader({ title: 'Label' }), new TableHeader({ title: 'URL' })],
-            rows: this.getTableRows()
-        });
-    }
-
-    private getTableRows(): Array<TableRow> {
-        return this._tabs.map(tab => new TableRow({
-            id: tab.label,
-            cells: [
-                new TableCell({ title: tab.label }),
-                new TableCell({ title: tab.url })
-            ],
-            actions: [
-                new TableAction({ title: 'Remove' })
-            ]
-        }));
-    }
-
-    private onData (data: { data: UserCpDashboardModel}) {
-        this._stats = data.data;
     }
 }

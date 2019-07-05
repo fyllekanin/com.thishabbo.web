@@ -8,7 +8,6 @@ use App\EloquentModels\Shop\UserSubscription;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserData;
 use App\EloquentModels\User\UserGroup;
-use App\EloquentModels\User\UserItem;
 use App\Utils\BBcodeUtil;
 use App\Utils\Value;
 use Illuminate\Support\Facades\Cache;
@@ -37,10 +36,14 @@ class UserHelper {
             ->leftJoin('groups', 'groups.groupId', '=', 'users.displayGroupId')
             ->leftJoin('userdata', 'userdata.userId', '=', 'users.userId')
             ->select('users.userId', 'users.nickname', 'users.createdAt',
-                'users.displayGroupId', 'userdata.avatarUpdatedAt',
+                'users.displayGroupId', 'users.posts', 'users.likes', 'userdata.avatarUpdatedAt',
                 'userdata.nameColor AS customColor', 'groups.nameColor AS groupColor',
                 'userdata.iconId', 'userdata.iconPosition', 'userdata.effectId')->first();
 
+        if (!$slimUser) {
+            Cache::add('slim-user-' . $userId, null, 5);
+            return null;
+        }
 
         $slimUser->nameColor = $slimUser->customColor ? $slimUser->customColor : $slimUser->groupColor;
         $slimUser->nameColor = Value::objectJsonProperty($slimUser, 'nameColor', []);
@@ -80,15 +83,6 @@ class UserHelper {
         $user->createdAt = $postBit->hideJoinDate ? null : $userObj->createdAt->timestamp;
         $user->posts = $postBit->hidePostCount ? null : $userObj->posts;
         $user->likes = $postBit->hideLikesCount ? null : $userObj->likes;
-        $user->badges = UserItem::badge()->where('userId', $user->userId)->isActive()->pluck('itemId')->map(function ($badgeId) {
-            $badge = Badge::find($badgeId);
-            return [
-                'badgeId' => $badgeId,
-                'name' => $badge->name,
-                'description' => $badge->description,
-                'updatedAt' => $badge->updatedAt
-            ];
-        });
 
         if (isset($userdata->nameColor)) {
             $user->nameColor = $userdata->nameColor;
@@ -170,10 +164,13 @@ class UserHelper {
     public static function getUserPostBit($userdata) {
         $obj = [];
         $postBitOptions = ConfigHelper::getPostBitConfig();
+        $badges = Value::objectJsonProperty($userdata, 'activeBadges', []);
 
         foreach ($postBitOptions as $key => $value) {
             $obj[$key] = $userdata->postBit & $value;
         }
+
+        $obj['badges'] = Badge::whereIn('badgeId', $badges)->orderBy('updatedAt', 'ASC')->get(['badgeId', 'name', 'description', 'updatedAt']);
 
         return $obj;
     }
@@ -200,7 +197,7 @@ class UserHelper {
     private static function getUserBars($userId) {
         return UserGroup::where('userId', $userId)->get()->map(function ($userGroup) {
             return [
-                'name' => $userGroup->group->name,
+                'name' => !empty($userGroup->group->nickname) ? $userGroup->group->nickname : $userGroup->group->name,
                 'styling' => $userGroup->group->userBarStyling
             ];
         });
