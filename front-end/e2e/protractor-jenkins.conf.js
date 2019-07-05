@@ -43,8 +43,5 @@ exports.config = {
             captureOnlyFailedSpecs: true
         }));
         browser.waitForAngularEnabled(true);
-    },
-    beforeEach() {
-        browser.executeScript("window.localStorage.setItem('mini-profile-disabled', 'true');");
     }
 };
