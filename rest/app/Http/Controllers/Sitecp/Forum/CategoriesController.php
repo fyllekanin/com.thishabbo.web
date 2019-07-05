@@ -127,7 +127,8 @@ class CategoriesController extends Controller {
      * @return JsonResponse
      */
     public function updateCategory(Request $request, $categoryId) {
-        $newCategory = (object)$request->category;
+        $newCategory = (object)$request->input('category');
+        $isCascade = (boolean)$request->input('isCascade');
         $category = Category::find($categoryId);
         $parent = Category::find($newCategory->parentId);
         $user = $request->get('auth');
@@ -148,28 +149,33 @@ class CategoriesController extends Controller {
         $oldCategoryId = $category->categoryId;
 
         $newCategory->options = PermissionHelper::nameToNumberOptions($newCategory);
-        Category::where('categoryId', $category->categoryId)
-            ->update([
-                'parentId' => Value::objectProperty($newCategory, 'parentId', -1),
-                'title' => $newCategory->title,
-                'description' => Value::objectProperty($newCategory, 'description', ''),
-                'options' => $newCategory->options,
-                'displayOrder' => Value::objectProperty($newCategory, 'displayOrder', 0),
-                'template' => $newCategory->template,
-                'isHidden' => $newCategory->isHidden,
-                'isOpen' => $newCategory->isOpen,
-                'link' => Value::objectProperty($newCategory, 'link', ''),
-                'icon' => Value::objectProperty($newCategory, 'icon', null),
-                'credits' => $newCategory->credits,
-                'xp' => $newCategory->xp
-            ]);
+        $category->parentId = Value::objectProperty($newCategory, 'parentId', -1);
+        $category->title = $newCategory->title;
+        $category->description = Value::objectProperty($newCategory, 'description', '');
+        $category->options = $newCategory->options;
+        $category->displayOrder = Value::objectProperty($newCategory, 'displayOrder', 0);
+        $category->template = $newCategory->template;
+        $category->isHidden = $newCategory->isHidden;
+        $category->isOpen = $newCategory->isOpen;
+        $category->link = Value::objectProperty($newCategory, 'link', '');
+        $category->icon = Value::objectProperty($newCategory, 'icon', null);
+        $category->credits = $newCategory->credits;
+        $category->xp = $newCategory->xp;
+        $category->save();
 
         if ($newCategoryId != $oldCategoryId) {
             $this->forumService->updateLastPostIdOnCategory($newCategoryId);
             $this->forumService->updateLastPostIdOnCategory($oldCategoryId);
         }
 
-        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_CATEGORY, ['category' => $newCategory->title]);
+        if ($isCascade) {
+            $this->cascadeCategoryOptions($category);
+        }
+
+        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_CATEGORY, [
+            'category' => $newCategory->title,
+            'isCascade' => $isCascade
+        ]);
         return $this->getCategory($request, $categoryId);
     }
 
@@ -264,5 +270,16 @@ class CategoriesController extends Controller {
             ]);
             $permission->save();
         }
+    }
+
+    private function cascadeCategoryOptions($category) {
+        $categoryIds = $this->forumService->getCategoryIdsDownStream($category->categoryId);
+
+        Category::whereIn('categoryId', $categoryIds)->update([
+            'credits' => $category->credits,
+            'xp' => $category->xp,
+            'template' => $category->template,
+            'options' => $category->options
+        ]);
     }
 }

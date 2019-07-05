@@ -701,7 +701,8 @@ class Action {
         'id' => 78,
         'description' => 'User updated a category',
         'data' => [
-            'category' => 'Title of category'
+            'category' => 'Title of category',
+            'isCascade' => 'If the update was cascading for options'
         ],
         'log' => 'log_sitecp'
     ];

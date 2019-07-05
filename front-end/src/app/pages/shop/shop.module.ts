@@ -13,8 +13,12 @@ import { ShopComponent } from './shop.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { shopRoutes } from './shop.routes';
 import { DashboardResolver } from './services/dashboard.resolver';
-import { LootBoxComponent } from './loot-box/loot-box.component';
-import { SubscriptionComponent } from './subscription/subscription.component';
+import { LootBoxComponent } from './views/loot-box/loot-box.component';
+import { SubscriptionComponent } from './views/subscription/subscription.component';
+import { LootBoxesComponent } from './loot-boxes/loot-boxes.component';
+import { LootBoxesResolver } from './services/loot-boxes.resolver';
+import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
+import { SubscriptionsResolver } from './services/subscriptions.resolver';
 
 @NgModule({
     imports: [
@@ -33,11 +37,15 @@ import { SubscriptionComponent } from './subscription/subscription.component';
         ShopComponent,
         DashboardComponent,
         LootBoxComponent,
-        SubscriptionComponent
+        SubscriptionComponent,
+        LootBoxesComponent,
+        SubscriptionsComponent
     ],
     entryComponents: [],
     providers: [
-        DashboardResolver
+        DashboardResolver,
+        LootBoxesResolver,
+        SubscriptionsResolver
     ],
     exports: [
         RouterModule

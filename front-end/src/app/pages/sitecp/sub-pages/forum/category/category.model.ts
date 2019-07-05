@@ -92,6 +92,7 @@ export class CategoryPage {
 
 export enum CategoryActions {
     SAVE,
+    SAVE_AND_CASCADE,
     DELETE,
     BACK
 }

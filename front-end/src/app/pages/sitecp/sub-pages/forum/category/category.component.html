@@ -26,16 +26,9 @@
                 <input type="number" [(ngModel)]="category.displayOrder"/>
             </div>
             <div class="cell small-12 medium-6">
-                <label>Template</label>
-                <select [(ngModel)]="template" name="template">
-                    <option selected="selected" value="DEFAULT">Default</option>
-                    <option value="QUEST">Quest</option>
-                    <option value="MEDIA">Media</option>
-                </select>
-            </div>
-            <div class="cell small-12 medium-6">
                 <label>Is Hidden
-                    <span tooltip="This will hide the forum, however if they have&#xa;permission to access it they can with a direct link to it." class="checkbox-info">
+                    <span tooltip="This will hide the forum, however if they have&#xa;permission to access it they can with a direct link to it."
+                          class="checkbox-info">
                         <em class="fas fa-question-circle"></em>
                     </span>
                 </label>
@@ -53,12 +46,36 @@
             </div>
             <div class="cell small-12 medium-6">
                 <label>Link
-                    <span tooltip="Clicking the category header will link&#xa;to whatever has been specified here." class="checkbox-info">
+                    <span tooltip="Clicking the category header will link&#xa;to whatever has been specified here."
+                          class="checkbox-info">
                         <em class="fas fa-question-circle"></em>
                     </span>
                 </label>
                 <input type="text" [(ngModel)]="category.link"/>
             </div>
+            <div class="cell small-12 medium-6">
+                <label>Icon
+                    <span tooltip="Font-Awesome is supported.&#xa;Enter the class if you have found one."
+                          class="checkbox-info">
+                        <em class="fas fa-question-circle"></em>
+                    </span>
+                </label>
+                <input type="text" [(ngModel)]="category.icon">
+            </div>
+            <div class="cell small-12 medium-6 medium-offset-6">
+                <label>Icon Preview</label>
+                <em class="preview" [ngClass]="category.icon"></em>
+            </div>
+        </div>
+    </div>
+</app-content>
+
+<app-title
+        [title]="'Options'">
+</app-title>
+<app-content>
+    <div class="grid-container content-margin">
+        <div class="grid-x grid-margin-x">
             <div class="cell small-12 medium-6">
                 <label>Credits
                     <span tooltip="Amount of THC gained per post&#xa; & thread creation." class="checkbox-info">
@@ -76,28 +93,14 @@
                 <input type="number" [(ngModel)]="category.xp">
             </div>
             <div class="cell small-12 medium-6">
-                <label>Icon
-                    <span tooltip="Font-Awesome is supported.&#xa;Enter the class if you have found one." class="checkbox-info">
-                        <em class="fas fa-question-circle"></em>
-                    </span>
-                </label>
-                <input type="text" [(ngModel)]="category.icon">
+                <label>Template</label>
+                <select [(ngModel)]="template" name="template">
+                    <option selected="selected" value="DEFAULT">Default</option>
+                    <option value="QUEST">Quest</option>
+                    <option value="MEDIA">Media</option>
+                </select>
             </div>
-            <div class="cell small-12 medium-6">
-                <label>Icon Preview</label>
-                <em class="preview" [ngClass]="category.icon"></em>
-            </div>
-        </div>
-    </div>
-</app-content>
-
-<app-title
-        [title]="'Options'">
-</app-title>
-<app-content>
-    <div class="grid-container content-margin">
-        <div class="grid-x">
-            <div class="cell small-12 medium-6">
+            <div class="cell small-12 medium-offset-6 medium-6">
                 <label class="checkbox-container">
                     Do Threads need approving before posting?
                     <span tooltip="If yes, threads need approving before being seen by users." class="checkbox-info">

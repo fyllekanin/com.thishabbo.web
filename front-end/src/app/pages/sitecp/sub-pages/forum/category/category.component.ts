@@ -47,7 +47,10 @@ export class CategoryComponent extends Page implements OnDestroy {
     onTabClick (value: number): void {
         switch (value) {
             case CategoryActions.SAVE:
-                this.save();
+                this.save(false);
+                break;
+            case CategoryActions.SAVE_AND_CASCADE:
+                this.save(true);
                 break;
             case CategoryActions.DELETE:
                 this.delete();
@@ -62,9 +65,12 @@ export class CategoryComponent extends Page implements OnDestroy {
         super.destroy();
     }
 
-    private save (): void {
+    private save (isCascade: boolean): void {
         if (this._categoryPage.category.createdAt) {
-            this._httpService.put(`sitecp/categories/${this._categoryPage.category.categoryId}`, {category: this._categoryPage.category})
+            this._httpService.put(`sitecp/categories/${this._categoryPage.category.categoryId}`, {
+                category: this._categoryPage.category,
+                isCascade: isCascade
+            })
                 .subscribe(res => {
                     this.onSuccessUpdate(res);
                 }, error => {
@@ -176,6 +182,11 @@ export class CategoryComponent extends Page implements OnDestroy {
 
         const tabs = [
             {title: 'Save', value: CategoryActions.SAVE, condition: true},
+            {
+                title: 'Save & Cascade Options',
+                value: CategoryActions.SAVE_AND_CASCADE,
+                condition: this._categoryPage.category.createdAt
+            },
             {title: 'Back', value: CategoryActions.BACK, condition: true},
             {title: 'Delete', value: CategoryActions.DELETE, condition: this._categoryPage.category.createdAt}
         ];
