@@ -1,34 +1,40 @@
-<app-title [title]="'Edit Name Settings'" [tabs]="colorTabs" (onTabClick)="onSave()"></app-title>
+<app-title [title]="'Edit Name Settings'" [tabs]="tabs" (onTabClick)="onSave()"></app-title>
 <app-content>
-    <app-info-box [model]="infoModel" *ngIf="!canUpdateColor">
-    </app-info-box>
-    <div *ngIf="canUpdateColor" class="grid-container">
+    <div class="grid-container">
         <div class="grid-x">
             <div class="cell small-6">
                 <label>Name Color (Hex Code):<br>For gradients, enter a list of hex codes (separated by commas)</label>
-                <input [(ngModel)]="colors" type="text"/>
+                <div *ngIf="canUpdateColor">
+                    <input [(ngModel)]="colors" type="text"/>
+                </div>
+                <app-info-box [model]="colorInfoModel" *ngIf="!canUpdateColor"></app-info-box>
                 <label>Name Icon:</label>
-                <div class="cell small-4 medium-2" *ngFor="availableNameIcons as nameIcon"
-                    [style]="nameIconStyle(nameIcon)"
-                    [ngClass]="isCurrentIcon(nameIcon) ? 'selected' : ''">
-                    <div class="container" (click)="onNameIconSelect(nameIcon)">
-                        <img [src]="'/rest/resources/images/shop/' + nameIcon.itemId + '.gif?'" />
-                        <div class="overlay"></div>
+                <div *ngIf="availableNameIcons.length > 0">
+                    <div class="cell small-4 medium-2" *ngFor="let nameIcon of availableNameIcons"
+                        [ngClass]="isCurrentIcon(nameIcon) ? 'selected' : ''">
+                        <div class="container" (click)="onNameIconSelect(nameIcon)">
+                            <img [src]="'/rest/resources/images/shop/' + nameIcon.itemId + '.gif'" />
+                            <div class="overlay"></div>
+                        </div>
                     </div>
+                    <label>Icon Position</label>
+                    <select [(ngModel)]="iconPosition">
+                        <option value="left">Left</option>
+                        <option value="right">Right</option>
+                    </select>
                 </div>
-                <label *ngIf="iconId">Icon Position</label>
-                <select *ngIf="iconId" [(ngModel)]="iconPosition">
-                    <option value="left">
-                    <option value="right">
-                </select>
-                <label>Name Effect:</label>
-                <div class="cell small-6 medium-4" *ngFor="availableNameEffects as nameEffect"
-                    [style]="nameEffectStyle(nameEffect)""
-                    [ngClass]="isCurrentEffect(nameEffect) ? 'selected' : ''">
-                    <div class="container" (click)="onNameEffectSelect(nameEffect)">
-                        {{ nameEffect.title }}
-                    </div>
+                <app-info-box [model]="iconInfoModel" *ngIf="availableNameIcons.length === 0"></app-info-box>
+                <div *ngIf="availableNameEffects.length > 0">
+                    <label>Name Effect:</label>
+                    <span *ngFor="let nameEffect of availableNameEffects">
+                        <label class="checkbox-container">
+                            <span class="name-effect" [style.background]="nameEffectStyle(nameEffect)">{{ nameEffect.title }}</span>
+                            <input type="checkbox" [checked]="effectId === nameEffect.shopItemId" (change)="effectId = nameEffect.shopItemId">
+                            <span class="checkmark"></span>
+                        </label>
+                    </span>
                 </div>
+                <app-info-box [model]="effectInfoModel" *ngIf="availableNameEffects.length === 0"></app-info-box>
             </div>
             <div class="cell small-6">
                 Preview:<br>

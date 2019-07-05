@@ -15,11 +15,11 @@ export class NameColorService implements Resolve<NameColor> {
     }
 
     resolve(): Observable<NameColor> {
-        return this._httpService.get('usercp/name-color')
+        return this._httpService.get('usercp/name-settings')
             .pipe(map(res => new NameColor(res)));
     }
 
-    save(colors: Array<string>): Observable<NameColor> {
-        return this._httpService.put('usercp/name-color', { colors: colors });
+    save(settings: NameColor): Observable<NameColor> {
+        return this._httpService.put('usercp/name-settings', settings);
     }
 }

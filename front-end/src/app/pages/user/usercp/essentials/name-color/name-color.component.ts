@@ -11,10 +11,12 @@ import { ActivatedRoute } from '@angular/router';
 import { UserHelper } from 'shared/helpers/user.helper';
 import { AuthService } from 'core/services/auth/auth.service';
 import { INFO_BOX_TYPE, InfoBoxModel } from 'shared/app-views/info-box/info-box.model';
+import { ShopItem } from 'app/pages/sitecp/sub-pages/shop/items/items.model';
 
 @Component({
     selector: 'app-usercp-name-color',
-    templateUrl: 'name-color.component.html'
+    templateUrl: 'name-color.component.html',
+    styleUrls: ['name-color.component.css']
 })
 export class NameColorComponent extends Page implements OnDestroy {
     private _data: NameColor = new NameColor();
@@ -23,10 +25,22 @@ export class NameColorComponent extends Page implements OnDestroy {
         new TitleTab({title: 'Save'})
     ];
 
-    infoModel: InfoBoxModel = {
+    colorInfoModel: InfoBoxModel = {
         title: 'Warning!',
         type: INFO_BOX_TYPE.WARNING,
-        content: `You do not have the permissions to update your name color. Click here to purchase a subscription to do this!`
+        content: 'You do not have the permissions to update your name color!'
+    };
+
+    iconInfoModel: InfoBoxModel = {
+        title: 'Warning!',
+        type: INFO_BOX_TYPE.WARNING,
+        content: 'You do not own any name icons!'
+    };
+
+    effectInfoModel: InfoBoxModel = {
+        title: 'Warning!',
+        type: INFO_BOX_TYPE.WARNING,
+        content: 'You do not own any name effects!'
     };
 
     constructor (
@@ -40,7 +54,7 @@ export class NameColorComponent extends Page implements OnDestroy {
         super(elementRef);
         this.addSubscription(activatedRoute.data, this.onData.bind(this));
         breadcrumbService.breadcrumb = new Breadcrumb({
-            current: 'Name Color',
+            current: 'Name Settings',
             items: [
                 USERCP_BREADCRUM_ITEM
             ]
@@ -52,13 +66,21 @@ export class NameColorComponent extends Page implements OnDestroy {
     }
 
     onSave (): void {
-        if (this.isColorsValid()) {
-            this._service.save(this._data.colors).subscribe(() => {
-                this._notificationService.sendInfoNotification('Name Color Updated');
+        this._service.save(this._data).subscribe(() => {
+                this._notificationService.sendInfoNotification('Name Settings Updated!');
             }, this._notificationService.failureNotification.bind(this._notificationService));
-        } else {
-            this._notificationService.sendErrorNotification('Hex codes invalid');
-        }
+    }
+
+    onNameIconSelect (icon: ShopItem) {
+        this._data.iconId = icon.shopItemId;
+    }
+
+    isCurrentIcon (icon: ShopItem): boolean {
+        return icon.shopItemId === this._data.iconId;
+    }
+
+    nameEffectStyle(effect: ShopItem): string {
+        return `url(/rest/resources/images/shop/${effect.shopItemId}.gif)`
     }
 
     get name (): string {
@@ -77,6 +99,30 @@ export class NameColorComponent extends Page implements OnDestroy {
         return this._data.canUpdateColor;
     }
 
+    get availableNameIcons (): Array<ShopItem> {
+        return this._data.availableNameIcons;
+    }
+
+    get availableNameEffects (): Array<ShopItem> {
+        return this._data.availableNameEffects;
+    }
+
+    get iconPosition (): string {
+        return this._data.iconPosition;
+    }
+
+    get effectId (): number {
+        return this._data.effectId;
+    }
+
+    set effectId (id: number) {
+        this._data.effectId = id;
+    }
+
+    set iconPosition(position: string) {
+        this._data.iconPosition = position;
+    }
+
     set colors (colors: string) {
         this._data.colors = colors.split(',')
             .map(item => item.trim());
@@ -84,10 +130,5 @@ export class NameColorComponent extends Page implements OnDestroy {
 
     private onData (data: { data: NameColor }): void {
         this._data = data.data;
-    }
-
-    private isColorsValid (): boolean {
-        const regex = /^#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?$/;
-        return this._data.colors.every(color => regex.test(color));
     }
 }

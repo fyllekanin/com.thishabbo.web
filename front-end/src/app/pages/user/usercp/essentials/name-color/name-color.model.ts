@@ -6,6 +6,8 @@ export class NameColor {
     iconId: number;
     @primitive()
     effectId: number;
+    @primitive()
+    iconPosition: string;
     @arrayOf(ShopItem)
     availableNameIcons: Array<ShopItem> = [];
     @arrayOf(ShopItem)
