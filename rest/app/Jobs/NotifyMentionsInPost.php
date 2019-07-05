@@ -129,11 +129,11 @@ class NotifyMentionsInPost implements ShouldQueue {
 
     private function getMentionedIds($content, $mentionType) {
         if ($mentionType == $this->mentionTypeUser && preg_match_all($this->mentionRegex, $content, $matches)) {
-            return User::whereIn('nickname', $matches[1])->pluck('userId');
+            return User::whereIn('nickname', str_replace('_', ' ', $matches[1]))->pluck('userId');
         }
 
         if ($mentionType == $this->mentionTypeGroup && preg_match_all($this->mentionRegex, $content, $matches)) {
-            return Group::whereIn('name', $matches[1])->pluck('groupId');
+            return Group::whereIn('name', str_replace('_', ' ', $matches[1]))->pluck('groupId');
         }
 
         return [];

@@ -83,7 +83,7 @@ export class GroupsComponent extends Page implements OnDestroy {
 
     private onData (data: { data: GroupsModel }): void {
         this._groupsModel = data.data;
-        this._groupsModel.possibleGroups.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'name'));
+        this._groupsModel.possibleGroups.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'name'));
     }
 
     private checkDisplayGroup (): void {
