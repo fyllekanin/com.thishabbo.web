@@ -19,6 +19,7 @@ import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 import { FormsModule } from '@angular/forms';
 import { InfractionModule } from 'shared/components/infraction/infraction.module';
 import { ReportComponent } from './profile/report/report.component';
+import { DashboardResolver } from './usercp/account/dashboard/dashboard.resolver';
 
 @NgModule({
     imports: [
@@ -44,7 +45,8 @@ import { ReportComponent } from './profile/report/report.component';
         ReportComponent
     ],
     providers: [
-        ProfileService
+        ProfileService,
+        DashboardResolver
     ],
     entryComponents: [
         ReportComponent

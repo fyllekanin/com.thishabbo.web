@@ -17,6 +17,9 @@ import {
     TableHeader,
     TableRow
 } from 'shared/components/table/table.model';
+import { UserCpDashboardModel } from './dashboard.model';
+import { ActivatedRoute } from '@angular/router';
+import { TimeHelper } from 'shared/helpers/time.helper';
 
 @Component({
     selector: 'app-user-usercp-dashboard',
@@ -24,9 +27,10 @@ import {
 })
 export class DashboardComponent extends Page implements OnDestroy {
     private _tabs: Array<TabModel> = [];
-
+    private _stats: UserCpDashboardModel = new UserCpDashboardModel();
     tableConfig: TableConfig;
 
+    stats: Array<StatsBoxModel> = [];
     isEditorSourceMode: boolean;
     doIgnoreSignatures: boolean;
     haveFixedMenu: boolean;
@@ -37,40 +41,15 @@ export class DashboardComponent extends Page implements OnDestroy {
         new TitleTab({title: 'Save'})
     ];
 
-    stats: Array<StatsBoxModel> = [
-        new StatsBoxModel({
-            borderColor: TitleTopBorder.GREEN,
-            icon: 'fas fa-coins',
-            title: 'Template 1',
-            breadText: 'Template 1'
-        }),
-        new StatsBoxModel({
-            borderColor: TitleTopBorder.RED,
-            icon: 'fas fa-gem',
-            title: 'Template 2',
-            breadText: 'Template 2'
-        }),
-        new StatsBoxModel({
-            borderColor: TitleTopBorder.BLUE,
-            icon: 'fas fa-thumbs-up',
-            title: 'Template 3',
-            breadText: 'Template 3'
-        }),
-        new StatsBoxModel({
-            borderColor: TitleTopBorder.PINK,
-            icon: 'fas fa-thumbs-down',
-            title: 'Template 4',
-            breadText: 'Template 4'
-        })
-    ];
-
     constructor (
         private _continuesInformation: ContinuesInformationService,
         private _notificationService: NotificationService,
+        activatedRoute: ActivatedRoute,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService
     ) {
         super(elementRef);
+        this.addSubscription(activatedRoute.data, this.onData.bind(this));
         breadcrumbService.breadcrumb = new Breadcrumb({
             current: 'Dashboard',
             items: [
@@ -186,5 +165,35 @@ export class DashboardComponent extends Page implements OnDestroy {
                 new TableAction({title: 'Remove'})
             ]
         }));
+    }
+
+    private onData (data: { data: UserCpDashboardModel }) {
+        this._stats = data.data;
+        this.stats = [
+            new StatsBoxModel({
+                borderColor: TitleTopBorder.GREEN,
+                icon: 'fas fa-id-card',
+                title: 'User ID',
+                breadText: String(this._stats.userId)
+            }),
+            new StatsBoxModel({
+                borderColor: TitleTopBorder.PINK,
+                icon: 'fas fa-calendar-alt',
+                title: 'Join Date',
+                breadText: TimeHelper.getLongDate(this._stats.registerTimestamp)
+            }),
+            new StatsBoxModel({
+                borderColor: TitleTopBorder.RED,
+                icon: 'fas fa-thumbs-up',
+                title: 'Likes',
+                breadText: String(this._stats.likes)
+            }),
+            new StatsBoxModel({
+                borderColor: TitleTopBorder.BLUE,
+                icon: 'fas fa-shopping-cart',
+                title: 'Shop Items',
+                breadText: String(this._stats.itemsOwned)
+            })
+        ];
     }
 }
