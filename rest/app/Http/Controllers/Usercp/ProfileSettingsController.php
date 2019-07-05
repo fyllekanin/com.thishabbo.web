@@ -285,13 +285,13 @@ class ProfileSettingsController extends Controller {
 
         $iconPosition = Value::objectProperty($userdata, 'iconPosition', 'left');
         $availableNameIconIds = UserItem::where('userId', $user->userId)->where('type', ConfigHelper::getTypesConfig()->nameIcon)->pluck('itemId');
-        $availableNameEffectIds = UserItem::where('userId', $user->userId)->where('type', ConfigHelper::getTypesConfig()->nameEffect)->pluck('itemId');
+        $availableEffectIds = UserItem::where('userId', $user->userId)->where('type', ConfigHelper::getTypesConfig()->nameEffect)->pluck('itemId');
         return response()->json([
             'iconId' => Value::objectProperty($userdata, 'iconId', null),
             'iconPosition' => $iconPosition,
             'effectId' => Value::objectProperty($userdata, 'effectId', null),
             'availableNameIcons' => ShopItem::whereIn('shopItemId', $availableNameIconIds)->get(),
-            'availableNameEffects' => ShopItem::whereIn('shopItemId', $availableNameEffectIds)->get(),
+            'availableNameEffects' => ShopItem::whereIn('shopItemId', $availableEffectIds)->get(),
             'colors' => Value::objectJsonProperty($userdata, 'nameColor', []),
             'canUpdateColor' => UserHelper::hasSubscriptionFeature($user->userId, ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor)
         ]);
