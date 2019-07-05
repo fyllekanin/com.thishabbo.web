@@ -46,7 +46,6 @@
 .latest-post-row .image {
     width: 50px;
     display: inline-block;
-    float: left;
 }
 
 a {
@@ -55,4 +54,7 @@ a {
 
 .title {
     font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

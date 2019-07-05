@@ -32,8 +32,9 @@ export class DashboardComponent extends Page implements OnDestroy {
     haveFixedMenu: boolean;
     showThreadTools: boolean;
     minimalisticHeader: boolean;
+    disableMiniProfile: boolean;
     saveTab: Array<TitleTab> = [
-        new TitleTab({ title: 'Save' })
+        new TitleTab({title: 'Save'})
     ];
 
     stats: Array<StatsBoxModel> = [
@@ -63,7 +64,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         })
     ];
 
-    constructor(
+    constructor (
         private _continuesInformation: ContinuesInformationService,
         private _notificationService: NotificationService,
         elementRef: ElementRef,
@@ -89,30 +90,40 @@ export class DashboardComponent extends Page implements OnDestroy {
         this.haveFixedMenu = Boolean(localStorage.getItem(LOCAL_STORAGE.FIXED_MENU));
         this.showThreadTools = Boolean(localStorage.getItem(LOCAL_STORAGE.FORUM_TOOLS));
         this.minimalisticHeader = Boolean(localStorage.getItem(LOCAL_STORAGE.MINIMALISTIC));
+        this.disableMiniProfile = Boolean(localStorage.getItem(LOCAL_STORAGE.MINI_PROFILE_DISABLED));
     }
 
-    onSave(): void {
+    onSave (): void {
         this.updateEditorSourceMode();
         this.updateIgnoreSignatures();
         this.updateFixedMenu();
         this.updateThreadTools();
         this.updateMinimalisticHeader();
+        this.updateDisabledMiniProfile();
         this._notificationService.sendInfoNotification('Device settings saved!');
         this._continuesInformation.deviceSettingsUpdated();
     }
 
-    onAction(action: Action): void {
+    onAction (action: Action): void {
         this._tabs = this._tabs.filter(item => item.label.toLowerCase() !== action.rowId.toLowerCase());
         localStorage.setItem(LOCAL_STORAGE.TABS, JSON.stringify(this._tabs));
         this._continuesInformation.tabsUpdated();
         this.createOrUpdateTable();
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    private updateEditorSourceMode(): void {
+    private updateDisabledMiniProfile (): void {
+        if (this.disableMiniProfile) {
+            localStorage.setItem(LOCAL_STORAGE.MINI_PROFILE_DISABLED, 'true');
+        } else {
+            localStorage.removeItem(LOCAL_STORAGE.MINI_PROFILE_DISABLED);
+        }
+    }
+
+    private updateEditorSourceMode (): void {
         if (this.isEditorSourceMode) {
             localStorage.setItem(LOCAL_STORAGE.EDITOR_MODE, 'true');
         } else {
@@ -120,7 +131,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         }
     }
 
-    private updateIgnoreSignatures(): void {
+    private updateIgnoreSignatures (): void {
         if (this.doIgnoreSignatures) {
             localStorage.setItem(LOCAL_STORAGE.IGNORE_SIGNATURES, 'true');
         } else {
@@ -128,7 +139,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         }
     }
 
-    private updateFixedMenu(): void {
+    private updateFixedMenu (): void {
         if (this.haveFixedMenu) {
             localStorage.setItem(LOCAL_STORAGE.FIXED_MENU, 'true');
         } else {
@@ -136,7 +147,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         }
     }
 
-    private updateThreadTools(): void {
+    private updateThreadTools (): void {
         if (this.showThreadTools) {
             localStorage.setItem(LOCAL_STORAGE.FORUM_TOOLS, 'true');
         } else {
@@ -144,7 +155,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         }
     }
 
-    private updateMinimalisticHeader(): void {
+    private updateMinimalisticHeader (): void {
         if (this.minimalisticHeader) {
             localStorage.setItem(LOCAL_STORAGE.MINIMALISTIC, 'true');
         } else {
@@ -152,27 +163,27 @@ export class DashboardComponent extends Page implements OnDestroy {
         }
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
         }
         this.tableConfig = new TableConfig({
             title: 'Device Tabs',
-            headers: [new TableHeader({ title: 'Label' }), new TableHeader({ title: 'URL' })],
+            headers: [new TableHeader({title: 'Label'}), new TableHeader({title: 'URL'})],
             rows: this.getTableRows()
         });
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         return this._tabs.map(tab => new TableRow({
             id: tab.label,
             cells: [
-                new TableCell({ title: tab.label }),
-                new TableCell({ title: tab.url })
+                new TableCell({title: tab.label}),
+                new TableCell({title: tab.url})
             ],
             actions: [
-                new TableAction({ title: 'Remove' })
+                new TableAction({title: 'Remove'})
             ]
         }));
     }

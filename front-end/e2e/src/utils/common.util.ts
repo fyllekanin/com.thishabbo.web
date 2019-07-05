@@ -4,7 +4,9 @@ import { InputUtil } from './input.util';
 export class CommonUtil {
 
     static open (url: string = '/'): void {
-        browser.get(url);
+        browser.get(url).then(() => {
+            browser.executeScript('window.localStorage.setItem(\'mini-profile-disabled\', \'true\');');
+        });
     }
 
     static isLoggedIn () {

@@ -64,6 +64,18 @@
             </span>
         </label>
     </div>
+
+    <div>
+        <label class="checkbox-container">
+            Disable Mini Profiles
+            <input type="checkbox" [(ngModel)]="disableMiniProfile">
+            <span class="checkmark"></span>
+            <span tooltip="Disables the mini profiles that are shown when hovering a username"
+                  class="checkbox-info">
+                <em class="fas fa-question-circle"></em>
+            </span>
+        </label>
+    </div>
 </app-content>
 
 <app-table [config]="tableConfig" (onAction)="onAction($event)"></app-table>

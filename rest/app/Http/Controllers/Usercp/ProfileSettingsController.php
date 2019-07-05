@@ -158,6 +158,9 @@ class ProfileSettingsController extends Controller {
         $destination = base_path('/public/rest/resources/images/covers');
         $cover->move($destination, $fileName);
 
+        $userData = UserHelper::getUserDataOrCreate($user->userId);
+        $userData->avatarUpdatedAt = time();
+        $userData->save();
         Logger::user($user->userId, $request->ip(), Action::UPDATED_COVER);
         return response()->json();
     }
