@@ -76,8 +76,6 @@ class UserHelper {
         $userdata = self::getUserDataOrCreate($userId);
         $postBit = (object)self::getUserPostBit($userdata);
 
-        $activeBadges = Value::objectJsonProperty($userdata, 'activeBadges', []);
-
         $user = new \stdClass();
         $user->userId = $userId;
         $user->nickname = $userObj->nickname;
@@ -85,7 +83,6 @@ class UserHelper {
         $user->createdAt = $postBit->hideJoinDate ? null : $userObj->createdAt->timestamp;
         $user->posts = $postBit->hidePostCount ? null : $userObj->posts;
         $user->likes = $postBit->hideLikesCount ? null : $userObj->likes;
-        $user->badges = $postBit->badges;
 
         if (isset($userdata->nameColor)) {
             $user->nameColor = $userdata->nameColor;
@@ -167,7 +164,7 @@ class UserHelper {
     public static function getUserPostBit($userdata) {
         $obj = [];
         $postBitOptions = ConfigHelper::getPostBitConfig();
-        $badges = $userdata->activeBadges ? json_decode($userdata->activeBadges) : [];
+        $badges = Value::objectJsonProperty($userdata, 'activeBadges', []);
 
         foreach ($postBitOptions as $key => $value) {
             $obj[$key] = $userdata->postBit & $value;
