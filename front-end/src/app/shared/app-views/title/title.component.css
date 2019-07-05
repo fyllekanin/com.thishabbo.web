@@ -92,30 +92,6 @@ a:hover {
     background-color: rgb(245, 245, 245);
 }
 
-.blue-top {
-    border-top: 3px solid #159cfc;
-}
-
-.pink-top {
-    border-top: 3px solid #e887bf;
-}
-
-.green-top {
-    border-top: 3px solid #5ba23e;
-}
-
-.red-top {
-    border-top: 3px solid #ad6262;
-}
-
-.black-top {
-    border-top: 3px solid #000000;
-}
-
-.purple-top {
-    border-top: 3px solid #925779;
-}
-
 .mobile {
     display: none;
 }
