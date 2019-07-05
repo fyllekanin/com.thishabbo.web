@@ -30,7 +30,7 @@ export class DashboardComponent extends Page implements OnDestroy {
     private _stats: UserCpDashboardModel = new UserCpDashboardModel();
     tableConfig: TableConfig;
 
-    stats: StatsBoxModel;
+    stats: Array<StatsBoxModel> = [];
     isEditorSourceMode: boolean;
     doIgnoreSignatures: boolean;
     haveFixedMenu: boolean;
@@ -41,7 +41,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         new TitleTab({title: 'Save'})
     ];
 
-    constructor(
+    constructor (
         private _continuesInformation: ContinuesInformationService,
         private _notificationService: NotificationService,
         activatedRoute: ActivatedRoute,
@@ -167,7 +167,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         }));
     }
 
-    private onData (data: { data: UserCpDashboardModel}) {
+    private onData (data: { data: UserCpDashboardModel }) {
         this._stats = data.data;
         this.stats = [
             new StatsBoxModel({
