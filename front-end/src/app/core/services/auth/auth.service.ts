@@ -124,7 +124,10 @@ export class AuthService {
     private doLogin (res: AuthUser, stay: boolean): void {
         this._user = new AuthUser(res);
         this.storeAuthUser(res);
-        this.checkGdpr();
+        if (this._user.gdpr) {
+            this.askForGdpr();
+            return;
+        }
 
         this._onUserChangeSubject.next();
         this._notificationService.sendNotification(new NotificationMessage({
@@ -164,11 +167,7 @@ export class AuthService {
         }
     }
 
-    private checkGdpr (): void {
-        if (this._user.gdpr) {
-            return;
-        }
-
+    private askForGdpr (): void {
         this._dialogService.openDialog({
             title: 'Privacy Policy & GDPR',
             content: `You are an existing user of ThisHabbo & have not accepted our privacy policy and GDPR declaration.
