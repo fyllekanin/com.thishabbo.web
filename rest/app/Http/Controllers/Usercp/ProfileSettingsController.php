@@ -279,8 +279,17 @@ class ProfileSettingsController extends Controller {
     public function getNameColors(Request $request) {
         $user = $request->get('auth');
 
-        $userdata = UserData::where('userId', $user->userId)->first();
+        $userdata = UserHelper::getUserDataOrCreate($user->userId);
+
+        $iconPosition = Value::objectProperty($userdata, 'iconPosition', 'left');
+        $availableNameIcons = UserItem::where('userId', $user->userId)->where('type', ConfigHelper::getTypesConfig()->nameIcon)->get();
+        $availableNameEffects = UserItem::where('userId', $user->userId)->where('type', ConfigHelper::getTypesConfig()->nameEffect)->get();
         return response()->json([
+            'iconId' => Value::objectProperty($userdata, 'iconId', null),
+            'iconPosition' => $iconPosition;
+            'effectId' => Value::objectProperty($userdata, 'effectId', null),
+            'availableNameIcon' => $availableNameIcons,
+            'availableNameEffects' => $availableNameEffects,
             'colors' => Value::objectJsonProperty($userdata, 'nameColor', []),
             'canUpdateColor' => UserHelper::hasSubscriptionFeature($user->userId, ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor)
         ]);
