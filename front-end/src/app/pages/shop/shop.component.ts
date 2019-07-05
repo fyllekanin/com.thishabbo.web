@@ -53,11 +53,11 @@ export class ShopComponent extends Page implements OnInit, OnDestroy {
                     }),
                     new SideMenuItem({
                         title: 'Loot Boxes',
-                        link: '/betting/loot-boxes'
+                        link: '/shop/loot-boxes/page/1'
                     }),
                     new SideMenuItem({
                         title: 'Subscriptions',
-                        link: '/shop/subscriptions'
+                        link: '/shop/subscriptions/page/1'
                     })
                 ]
             })

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ShopSubscription } from '../shop.model';
+import { ShopSubscription } from '../../shop.model';
 
 @Component({
     selector: 'app-shop-subscription',

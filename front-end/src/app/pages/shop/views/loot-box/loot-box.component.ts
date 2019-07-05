@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ShopLootBox } from '../shop.model';
+import { ShopLootBox } from '../../shop.model';
 
 @Component({
     selector: 'app-shop-loot-box',
