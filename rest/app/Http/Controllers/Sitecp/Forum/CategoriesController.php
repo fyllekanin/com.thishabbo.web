@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Sitecp\Forum;
 use App\EloquentModels\Forum\Category;
 use App\EloquentModels\Forum\ForumPermission;
 use App\Helpers\ConfigHelper;
+use App\Helpers\ForumHelper;
 use App\Helpers\PermissionHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
@@ -63,7 +64,7 @@ class CategoriesController extends Controller {
         Condition::precondition($newCategory->parentId > 0 && !$parent, 400, 'Invalid parent');
         Condition::precondition($cantAddChildren, 400, 'You dont have permission to add children to this parent');
         Condition::precondition(empty($newCategory->title), 400, 'Title cant be empty');
-        Condition::precondition(!$this->forumService->isValidTemplate($newCategory->template), 400, 'Invalid template');
+        Condition::precondition(!ForumHelper::isValidTemplate($newCategory->template), 400, 'Invalid template');
         Condition::precondition(isset($newCategory->icon) && !preg_match('/^[a-zA-Z\- ]+$/', $newCategory->icon), 400, 'Icon string is invalid');
         Condition::precondition(!isset($newCategory->credits) || !is_numeric($newCategory->credits), 400, 'Credits need to set');
         Condition::precondition(!isset($newCategory->xp) || !is_numeric($newCategory->xp), 400, 'XP need to set');
@@ -138,7 +139,7 @@ class CategoriesController extends Controller {
         Condition::precondition($cantAddChildren, 400, 'You dont have permission to add children to this parent');
         Condition::precondition(!$category, 404, 'Category do not exist');
         Condition::precondition(empty($newCategory->title), 400, 'Title cant be empty');
-        Condition::precondition(!$this->forumService->isValidTemplate($newCategory->template), 400, 'Invalid template');
+        Condition::precondition(!ForumHelper::isValidTemplate($newCategory->template), 400, 'Invalid template');
         Condition::precondition(isset($newCategory->icon) && !preg_match('/^[a-zA-Z\- ]+$/', $newCategory->icon), 400, 'Icon string is invalid');
         Condition::precondition(!isset($newCategory->credits) || !is_numeric($newCategory->credits), 400, 'Credits need to set');
         Condition::precondition(!isset($newCategory->xp) || !is_numeric($newCategory->xp), 400, 'XP need to set');
