@@ -55,6 +55,6 @@
     </div>
 </div>
 
-<span *ngFor="let badge of user.badges" attr.tooltip="{{badge.description}}" class="post-badge">
+<span *ngFor="let badge of user.badges" attr.tooltip="badgeTooltip(badge)" class="post-badge">
     <img [src]="'/rest/resources/images/badges/' + badge.badgeId + '.gif?' + badge.updatedAt"/>
 </span>
