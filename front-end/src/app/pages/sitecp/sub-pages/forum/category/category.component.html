@@ -8,10 +8,7 @@
             </div>
             <div class="cell small-12 medium-6">
                 <label>Parent</label>
-                <select [(ngModel)]="parentId" name="parent">
-                    <option selected="selected" value="-1">None</option>
-                    <option *ngFor="let item of categories" value="{{item.categoryId}}">{{item.title}}</option>
-                </select>
+                <app-form-select [(value)]="selectedCategory" [items]="selectableCategories"></app-form-select>
             </div>
             <div class="cell small-12 medium-6">
                 <label>Description</label>

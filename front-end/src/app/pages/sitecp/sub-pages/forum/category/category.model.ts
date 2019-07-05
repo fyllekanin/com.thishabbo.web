@@ -69,10 +69,10 @@ export class Category {
     link: string;
     @primitive()
     icon: string;
-    @primitive()
-    credits: number;
-    @primitive()
-    xp: number;
+    @primitiveOf(Number)
+    credits = 0;
+    @primitiveOf(Number)
+    xp = 0;
 
     constructor (source?: Partial<Category>) {
         ClassHelper.assign(this, source);

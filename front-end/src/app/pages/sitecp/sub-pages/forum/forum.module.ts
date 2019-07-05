@@ -21,6 +21,7 @@ import { PermissionsResolver } from './services/permissions.resolver';
 import { PrefixListResolver } from './services/prefix-list.resolver';
 import { PrefixService } from './services/prefix.resolver';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
+import { SelectModule } from 'shared/components/form/select/select.module';
 
 @NgModule({
     imports: [
@@ -34,7 +35,8 @@ import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
         CommonModule,
         FixedToolsModule,
         ButtonModule,
-        SafeHtmlModule
+        SafeHtmlModule,
+        SelectModule
     ],
     declarations: [
         CategoriesListComponent,

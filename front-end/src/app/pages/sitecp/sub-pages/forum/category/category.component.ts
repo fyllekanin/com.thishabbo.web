@@ -12,6 +12,7 @@ import { Page } from 'shared/page/page.model';
 import { CATEGORY_LIST_BREADCRUMB_ITEM, SITECP_BREADCRUMB_ITEM } from '../../../sitecp.constants';
 import { Category, CategoryActions, CategoryLeaf, CategoryOptions, CategoryPage } from './category.model';
 import { ArrayHelper } from 'shared/helpers/array.helper';
+import { SelectItem } from 'shared/components/form/select/select.model';
 
 @Component({
     selector: 'app-sitecp-forum-category',
@@ -23,6 +24,8 @@ export class CategoryComponent extends Page implements OnDestroy {
 
     tabs: Array<TitleTab> = [];
     categories: Array<CategoryLeaf> = [];
+    selectedCategory: SelectItem;
+    selectableCategories: Array<SelectItem> = [];
 
     constructor (
         private _dialogService: DialogService,
@@ -65,7 +68,30 @@ export class CategoryComponent extends Page implements OnDestroy {
         super.destroy();
     }
 
+    get category (): Category {
+        return this._categoryPage.category;
+    }
+
+    get title (): string {
+        return this._categoryPage.category.createdAt ?
+            `Editing Category: ${this._categoryPage.category.title}` :
+            `Creating Category: ${this._categoryPage.category.title}`;
+    }
+
+    get template (): string {
+        return this._categoryPage.category.template || 'DEFAULT';
+    }
+
+    set template (template: string) {
+        this._categoryPage.category.template = template;
+    }
+
+    get options (): CategoryOptions {
+        return this._categoryPage.category.options || new CategoryOptions();
+    }
+
     private save (isCascade: boolean): void {
+        this._categoryPage.category.parentId = this.selectedCategory.value;
         if (this._categoryPage.category.createdAt) {
             this._httpService.put(`sitecp/categories/${this._categoryPage.category.categoryId}`, {
                 category: this._categoryPage.category,
@@ -98,36 +124,6 @@ export class CategoryComponent extends Page implements OnDestroy {
 
     private cancel (): void {
         this._router.navigateByUrl('/sitecp/forum/categories/page/1');
-    }
-
-    get category (): Category {
-        return this._categoryPage.category;
-    }
-
-    get parentId (): number {
-        return this._categoryPage.category.parentId || -1;
-    }
-
-    set parentId (parentId: number) {
-        this._categoryPage.category.parentId = parentId;
-    }
-
-    get title (): string {
-        return this._categoryPage.category.createdAt ?
-            `Editing Category: ${this._categoryPage.category.title}` :
-            `Creating Category: ${this._categoryPage.category.title}`;
-    }
-
-    get template (): string {
-        return this._categoryPage.category.template || 'DEFAULT';
-    }
-
-    set template (template: string) {
-        this._categoryPage.category.template = template;
-    }
-
-    get options (): CategoryOptions {
-        return this._categoryPage.category.options || new CategoryOptions();
     }
 
     private flat (array: Array<CategoryLeaf>, prefix = '', shouldAppend = true) {
@@ -180,6 +176,25 @@ export class CategoryComponent extends Page implements OnDestroy {
             this._categoryPage.category = new Category;
         }
 
+        this.setTabs();
+        this.setSelectItems();
+        this.categories = this.flat(this._categoryPage.forumTree, '');
+
+        const selected = this.selectableCategories.find(item => item.value === this._categoryPage.category.parentId);
+        this.selectedCategory = selected || this.selectableCategories[0];
+    }
+
+    private setSelectItems (): void {
+        this.selectableCategories = [{
+            label: 'None',
+            value: -1
+        }].concat(this.flat(this._categoryPage.forumTree, '').map(item => ({
+            label: item.title,
+            value: item.categoryId
+        })));
+    }
+
+    private setTabs (): void {
         const tabs = [
             {title: 'Save', value: CategoryActions.SAVE, condition: true},
             {
@@ -190,8 +205,6 @@ export class CategoryComponent extends Page implements OnDestroy {
             {title: 'Back', value: CategoryActions.BACK, condition: true},
             {title: 'Delete', value: CategoryActions.DELETE, condition: this._categoryPage.category.createdAt}
         ];
-
-        this.categories = this.flat(this._categoryPage.forumTree, '');
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));
     }
 }
