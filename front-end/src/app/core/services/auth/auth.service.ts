@@ -125,7 +125,7 @@ export class AuthService {
         this._user = new AuthUser(res);
         this.storeAuthUser(res);
         this._onUserChangeSubject.next();
-        
+
         if (!this._user.gdpr) {
             this.askForGdpr();
             return;
