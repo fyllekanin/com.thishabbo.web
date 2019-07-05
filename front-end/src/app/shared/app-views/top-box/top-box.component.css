@@ -133,7 +133,7 @@
 .fixed-menu {
     position: fixed;
     width: 100%;
-    margin-top: -52px;
+    margin-top: -53px;
 }
 
 @media screen and (max-width: 1200px) {
