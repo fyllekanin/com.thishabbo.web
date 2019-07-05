@@ -124,7 +124,7 @@ export class AuthService {
     private doLogin (res: AuthUser, stay: boolean): void {
         this._user = new AuthUser(res);
         this.storeAuthUser(res);
-        if (this._user.gdpr) {
+        if (!this._user.gdpr) {
             this.askForGdpr();
             return;
         }
