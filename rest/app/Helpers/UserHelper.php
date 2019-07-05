@@ -85,7 +85,6 @@ class UserHelper {
         $user->createdAt = $postBit->hideJoinDate ? null : $userObj->createdAt->timestamp;
         $user->posts = $postBit->hidePostCount ? null : $userObj->posts;
         $user->likes = $postBit->hideLikesCount ? null : $userObj->likes;
-        $user->badges = Badge::whereIn('badgeId', $activeBadges)->get(['badgeId', 'name', 'description', 'updatedAt']);
 
         if (isset($userdata->nameColor)) {
             $user->nameColor = $userdata->nameColor;
@@ -173,7 +172,7 @@ class UserHelper {
             $obj[$key] = $userdata->postBit & $value;
         }
 
-        $obj['badges'] = Badge::whereIn('badgeId', $badges)->orderBy('updatedAt', 'ASC')->get(['badgeId', 'name', 'updatedAt']);
+        $obj['badges'] = Badge::whereIn('badgeId', $badges)->orderBy('updatedAt', 'ASC')->get(['badgeId', 'name']);
 
         return $obj;
     }
