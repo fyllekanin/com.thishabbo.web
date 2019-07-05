@@ -1,7 +1,7 @@
 .wrapper {
     background: -webkit-linear-gradient(top, #fefefe 0, #ececec 100%);
     color: #6b6b6b;
-    box-shadow: 0 1px white, 0 1px 3px #0000006b;
+    box-shadow: 0 1px white, 0 1px 3px #00000033;
     z-index: 10;
     top: 0;
     position: fixed;

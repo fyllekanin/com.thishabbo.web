@@ -14,7 +14,7 @@
 
 .search-bar {
     background: -webkit-linear-gradient(top, #403d3d 0, #2d2d2d 100%);
-    box-shadow: 0 1px #ffffff30, 0 1px 9px #00000091;
+    box-shadow: 0 1px #ffffff30, 0 1px 9px #0000003d;
     height: 3.27rem;
     overflow: visible;
     position: relative;
@@ -39,7 +39,7 @@
 }
 
 .experience-percentage {
-    background: #139bfb url(/assets/images/bargradient.png) !important;
+    background: #51a6e4 url(/assets/images/bargradient.png) !important;
     width: 40%;
     height: 29px;
     box-shadow: rgba(255, 255, 255, 0.87) 0 0 0 1px inset, rgba(255, 255, 255, 0.15) 0 0 0 2px inset, rgba(0, 0, 0, 0) 0 2px 0;
