@@ -124,12 +124,13 @@ export class AuthService {
     private doLogin (res: AuthUser, stay: boolean): void {
         this._user = new AuthUser(res);
         this.storeAuthUser(res);
+        this._onUserChangeSubject.next();
+        
         if (!this._user.gdpr) {
             this.askForGdpr();
             return;
         }
 
-        this._onUserChangeSubject.next();
         this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'You are logged in!'
