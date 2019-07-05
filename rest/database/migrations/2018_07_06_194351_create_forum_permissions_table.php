@@ -1,22 +1,22 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreateForumPermissionsTable extends Migration
-{
+class CreateForumPermissionsTable extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('forum_permissions', function (Blueprint $table) {
+            $table->bigIncrements('forumPermissionId');
             $table->bigInteger('categoryId');
             $table->bigInteger('groupId');
             $table->bigInteger('permissions')->default(0);
+            $table->integer('isAuthOnly')->default(0);
             $table->bigInteger('createdAt');
             $table->bigInteger('updatedAt');
 
@@ -34,8 +34,7 @@ class CreateForumPermissionsTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('forum_permissions');
     }
 }

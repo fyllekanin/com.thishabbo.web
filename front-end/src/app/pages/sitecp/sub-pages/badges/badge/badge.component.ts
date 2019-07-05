@@ -128,9 +128,9 @@ export class BadgeComponent extends Page implements OnDestroy {
         this._badge = data.data;
 
         const tabs = [
+            {title: 'Save', value: BadgeActions.SAVE, condition: true},
             {title: 'Back', value: BadgeActions.BACK, condition: true},
-            {title: 'Delete', value: BadgeActions.DELETE, condition: this._badge.createdAt},
-            {title: 'Save', value: BadgeActions.SAVE, condition: true}
+            {title: 'Delete', value: BadgeActions.DELETE, condition: this._badge.createdAt}
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));

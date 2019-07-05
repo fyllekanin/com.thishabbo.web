@@ -1,5 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
-
 @font-face {
     font-family: Roboto;
     src: url('./assets/fonts/Roboto-Regular.ttf');
@@ -122,7 +121,7 @@ h2 {
 
 .generic-blue-button {
     cursor: pointer;
-    background: #139bfb url(/assets/images/bargradient.png) !important;
+    background: #159cfc url(/assets/images/bargradient.png) !important;
 }
 
 .generic-yellow-button {
@@ -236,4 +235,56 @@ summary {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.blue-top {
+    border-top: 3px solid #139bfb !important;
+}
+
+.blue-text {
+    color: #139bfb !important;
+}
+
+.pink-top {
+    border-top: 3px solid #e887bf !important;
+}
+
+.pink-text {
+    color: #e887bf !important;
+}
+
+.green-top {
+    border-top: 3px solid #5ba23e !important;
+}
+
+.green-text {
+    color: #5ba23e !important;
+}
+
+.red-top {
+    border-top: 3px solid #ad6262 !important;
+}
+
+.red-text {
+    color: #ad6262 !important;
+}
+
+.black-top {
+    border-top: 3px solid #000000 !important;
+}
+
+.black-text {
+    color: #000000 !important;
+}
+
+.purple-top {
+    border-top: 3px solid #925779 !important;
+}
+
+.purple-text {
+    color: #925779 !important;
 }

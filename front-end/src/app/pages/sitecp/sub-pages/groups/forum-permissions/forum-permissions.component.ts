@@ -12,7 +12,6 @@ import { TitleTab } from 'shared/app-views/title/title.model';
     templateUrl: 'forum-permissions.component.html'
 })
 export class ForumPermissionsComponent extends Page implements OnDestroy {
-
     tabs: Array<TitleTab> = [
         new TitleTab({title: 'Close', link: '/sitecp/groups/page/1'})
     ];

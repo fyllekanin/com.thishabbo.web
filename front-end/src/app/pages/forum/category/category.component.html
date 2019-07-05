@@ -16,7 +16,8 @@
     </div>
 
     <div *ngIf="categoryPage.stickyThreads.length > 0">
-        <app-title [title]="'Sticky Threads'" [tabs]="toggleStickies" (onTabClick)="onToggleStickies()"></app-title>
+        <app-title [title]="'Sticky Threads'" [tabs]="toggleStickies" (onTabClick)="onToggleStickies()"
+                   [top]="stickyHeader"></app-title>
         <app-content [isContracted]="isStickiesVisible">
             <app-forum-slim-thread *ngFor="let stickyThread of categoryPage.stickyThreads"
                                    [forumPermissions]="categoryPage.forumPermissions"

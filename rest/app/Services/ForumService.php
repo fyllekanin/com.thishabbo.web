@@ -9,6 +9,7 @@ use App\EloquentModels\Forum\Thread;
 use App\EloquentModels\Forum\ThreadRead;
 use App\Helpers\ConfigHelper;
 use App\Helpers\DataHelper;
+use App\Helpers\ForumHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
 use App\Utils\Iterables;
@@ -24,20 +25,15 @@ class ForumService {
             return;
         }
 
-        $lastPostId = $this->getLastPostIdForCategory($categoryId);
-        $category->lastPostId = $lastPostId;
-        $category->save();
-
-        $this->updateLastPostIdOnCategory($category->parentId);
-    }
-
-    public function getLastPostIdForCategory($categoryId) {
         $lastThreadPostId = Value::objectProperty(Thread::isApproved()->where('categoryId', $categoryId)->select('lastPostId')->orderBy('lastPostId', 'DESC')->first(),
             'lastPostId', -1);
         $lastChildPostId = Value::objectProperty(Category::where('parentId', $categoryId)->select('lastPostId')->orderBy('lastPostId', 'DESC')->first(),
             'lastPostId', -1);
+        $lastPostId = $lastThreadPostId > $lastChildPostId ? $lastThreadPostId : $lastChildPostId;;
+        $category->lastPostId = $lastPostId;
+        $category->save();
 
-        return $lastThreadPostId > $lastChildPostId ? $lastThreadPostId : $lastChildPostId;
+        $this->updateLastPostIdOnCategory($category->parentId);
     }
 
     public function haveReadThread($thread, $userId) {
@@ -45,7 +41,7 @@ class ForumService {
             ->where('userId', $userId)->first();
         $threadUpdatedAt = is_numeric($thread->updatedAt) ? $thread->updatedAt : $thread->updatedAt->timestamp;
 
-        return $threadRead && $threadRead->updatedAt->timestamp > $threadUpdatedAt;
+        return $threadRead && $threadRead->updatedAt->timestamp >= $threadUpdatedAt;
     }
 
     /**
@@ -76,7 +72,7 @@ class ForumService {
             ->where('userId', $userId)->first();
         $categoryUpdatedAt = is_numeric($category->updatedAt) ? $category->updatedAt : $category->updatedAt->timestamp;
 
-        return $categoryRead && $categoryRead->updatedAt->timestamp > $categoryUpdatedAt;
+        return $categoryRead && $categoryRead->updatedAt->timestamp >= $categoryUpdatedAt;
     }
 
     /**
@@ -87,29 +83,27 @@ class ForumService {
         if (!$userId) {
             return;
         }
-        $categoryRead = CategoryRead::where('categoryId', $categoryId)
+        $category = Category::find($categoryId);
+        if (!$category) {
+            return;
+        }
+        $categoryRead = CategoryRead::where('categoryId', $category->categoryId)
             ->where('userId', $userId)
             ->first();
 
         if (!$categoryRead) {
             $categoryRead = new CategoryRead([
-                'categoryId' => $categoryId,
+                'categoryId' => $category->categoryId,
                 'userId' => $userId
             ]);
             $categoryRead->save();
         } else {
-            CategoryRead::where('categoryId', $categoryId)->where('userId', $userId)->update(['updatedAt' => time()]);
+            CategoryRead::where('categoryId', $category->categoryId)->where('userId', $userId)->update(['updatedAt' => time()]);
         }
-    }
 
-    /**
-     * @param $template
-     *
-     * @return bool
-     */
-    public function isValidTemplate($template) {
-        $templates = (array)ConfigHelper::getCategoryTemplatesConfig();
-        return in_array($template, $templates);
+        if ($category->parentId > 0) {
+            $this->updateReadCategory($category->parentId, $userId);
+        }
     }
 
     /**
@@ -128,6 +122,10 @@ class ForumService {
         $ids = [];
 
         foreach ($categoryIds as $categoryId) {
+            if ($userId == 0 && $forumPermission == ConfigHelper::getForumPermissions()->canRead && ForumHelper::isCategoryAuthOnly($categoryId)) {
+                continue;
+            }
+
             if (PermissionHelper::haveForumPermission($userId, $forumPermission, $categoryId)) {
                 $ids[] = $categoryId;
             }
@@ -309,8 +307,8 @@ class ForumService {
      */
     public function getCategoryTree($user, $ignoreIds = [], $parentId = -1) {
         $forumPermissions = ConfigHelper::getForumPermissions();
-        $categories = Category::where('parentId', $parentId)->select('categoryId', 'title')->getQuery()->get();
-        Iterables::filter(Category::where('parentId', $parentId)->select('categoryId', 'title')->getQuery()->get()->toArray(),
+        $categories = Category::where('parentId', $parentId)->select('categoryId', 'title', 'displayOrder')->getQuery()->get();
+        Iterables::filter(Category::where('parentId', $parentId)->select('categoryId', 'title', 'displayOrder')->getQuery()->get()->toArray(),
             function ($category) use ($ignoreIds, $forumPermissions, $user) {
                 return in_array($category->categoryId, $ignoreIds) || !PermissionHelper::haveForumPermission($user->userId, $forumPermissions->canRead, $category->categoryId);
             });

@@ -20,7 +20,7 @@ import { HttpService } from 'core/services/http/http.service';
 import { NavigationActions } from './navigation.enum';
 import { ArrayHelper } from 'shared/helpers/array.helper';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
-import { WEBSITE_SETTINGS_BREADCRUMB_ITEM, SITECP_BREADCRUMB_ITEM } from 'app/pages/sitecp/sitecp.constants';
+import { SITECP_BREADCRUMB_ITEM, WEBSITE_SETTINGS_BREADCRUMB_ITEM } from 'app/pages/sitecp/sitecp.constants';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 
 @Component({
@@ -35,8 +35,8 @@ export class NavigationComponent extends Page implements OnDestroy {
 
     tabs = [
         new TitleTab({title: 'Save', value: this._saveAction}),
-        new TitleTab({title: 'Create Main Item', value: this._newMainItemAction}),
-        new TitleTab({title: 'Back', link: '/sitecp/website-settings'})
+        new TitleTab({title: 'Back', link: '/sitecp/website-settings'}),
+        new TitleTab({title: 'Create Main Item', value: this._newMainItemAction})
     ];
 
     tableTabs = [

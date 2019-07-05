@@ -12,6 +12,13 @@ import { SideMenuModule } from 'shared/app-views/side-menu/side-menu.module';
 import { ShopComponent } from './shop.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { shopRoutes } from './shop.routes';
+import { DashboardResolver } from './services/dashboard.resolver';
+import { LootBoxComponent } from './views/loot-box/loot-box.component';
+import { SubscriptionComponent } from './views/subscription/subscription.component';
+import { LootBoxesComponent } from './loot-boxes/loot-boxes.component';
+import { LootBoxesResolver } from './services/loot-boxes.resolver';
+import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
+import { SubscriptionsResolver } from './services/subscriptions.resolver';
 
 @NgModule({
     imports: [
@@ -28,10 +35,18 @@ import { shopRoutes } from './shop.routes';
     ],
     declarations: [
         ShopComponent,
-        DashboardComponent
+        DashboardComponent,
+        LootBoxComponent,
+        SubscriptionComponent,
+        LootBoxesComponent,
+        SubscriptionsComponent
     ],
     entryComponents: [],
-    providers: [],
+    providers: [
+        DashboardResolver,
+        LootBoxesResolver,
+        SubscriptionsResolver
+    ],
     exports: [
         RouterModule
     ]

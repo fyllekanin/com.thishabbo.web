@@ -1,20 +1,16 @@
 <div class="grid-container full">
     <div class="grid-x grid-margin-x">
+        <div class="cell small-12">
+            <h2>Latest Loot Boxes</h2>
+        </div>
         <div class="cell small-6 medium-4" *ngFor="let box of boxes">
-            <div class="loot-box-container">
-                <div class="inner-image">
-                    <img [src]="box.getAnimation().asset"/>
-                </div>
-                <div class="container">
-                    <a class="title">
-                        <em class="fas fa-box"></em>
-                        {{box.name}}
-                    </a>
-                    <div class="content">
-                        Do you feel lucky?
-                    </div>
-                </div>
-            </div>
+            <app-shop-loot-box [box]="box"></app-shop-loot-box>
+        </div>
+        <div class="cell small-12">
+            <h2>Latest Subscriptions</h2>
+        </div>
+        <div class="cell small-6 medium-4" *ngFor="let subscription of subscriptions">
+            <app-shop-subscription [subscription]="subscription"></app-shop-subscription>
         </div>
     </div>
 </div>

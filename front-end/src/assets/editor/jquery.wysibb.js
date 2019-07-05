@@ -1,9 +1,8 @@
 /*! WysiBB v1.5.1 2014-03-26 
     Author: Vadim Dobroskok
  */
-if (typeof (WBBLANG) == "undefined") {
-    WBBLANG = {};
-}
+var WBBLANG = {};
+var CURLANG = {};
 WBBLANG['en'] = CURLANG = {
     bold: "Bold",
     italic: "Italic",
@@ -79,7 +78,7 @@ WBBLANG['en'] = CURLANG = {
     sm8: "Pain",
     sm9: "Sick"
 };
-wbbdebug = false;
+var wbbdebug = false;
 (function ($) {
     'use strict';
     $.wysibb = function (txtArea, settings) {
@@ -2015,7 +2014,6 @@ wbbdebug = false;
         },
         getBBCode: function () {
             if (!this.options.rules || this.options.bbmode) {
-                console.log(1);
                 return this.$txtArea.val();
             }
             this.clearEmpty();

@@ -5,10 +5,12 @@ export class CategoryLeaf {
     categoryId: number;
     @primitive()
     title: string;
+    @primitive()
+    displayOrder: number;
     @arrayOf(CategoryLeaf)
     children: Array<CategoryLeaf> = [];
 
-    constructor(source: Partial<CategoryLeaf>) {
+    constructor (source: Partial<CategoryLeaf>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -29,7 +31,7 @@ export class CategoryOptions {
     @primitive()
     contactPostsGoHere: boolean;
 
-    constructor(source?: Partial<CategoryOptions>) {
+    constructor (source?: Partial<CategoryOptions>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -72,7 +74,7 @@ export class Category {
     @primitive()
     xp: number;
 
-    constructor(source?: Partial<Category>) {
+    constructor (source?: Partial<Category>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -83,13 +85,14 @@ export class CategoryPage {
     @objectOf(Category)
     category: Category = new Category();
 
-    constructor(source?: Partial<CategoryPage>) {
+    constructor (source?: Partial<CategoryPage>) {
         ClassHelper.assign(this, source);
     }
 }
 
 export enum CategoryActions {
     SAVE,
+    SAVE_AND_CASCADE,
     DELETE,
     BACK
 }

@@ -82,7 +82,9 @@ class CategoryCrudController extends Controller {
         return response()->json([
             'latestPosts' => $this->getLatestPosts($user, $categoryIds),
             'topPosters' => $this->getTopPosters(),
-            'topPostersToday' => $this->getTopPostersToday($clientTodayMidnight)
+            'topPostersToday' => $this->getTopPostersToday($clientTodayMidnight),
+            'currentlyActive' => $this->getOnline(1),
+            'activeToday' => $this->getOnline(24)
         ]);
     }
 
@@ -129,7 +131,6 @@ class CategoryCrudController extends Controller {
         $threads = $threadSql->skip(DataHelper::getOffset($page))
             ->take($this->perPage)
             ->with(['prefix', 'latestPost'])
-            ->withNickname()
             ->get();
 
         return response()->json([
@@ -180,6 +181,7 @@ class CategoryCrudController extends Controller {
      * @param $userId
      *
      * @param $category
+     *
      * @return mixed
      */
     private function buildThreadsForCategory($threads, $userId, $category) {
@@ -199,6 +201,7 @@ class CategoryCrudController extends Controller {
      * @param $userId
      *
      * @param $category
+     *
      * @return Collection
      */
     private function getStickyThreadsForCategory($categoryId, $categoryPermissions, $userId, $category) {
@@ -252,6 +255,7 @@ class CategoryCrudController extends Controller {
         $children = Category::nonHidden()
             ->withParent($categoryId)
             ->whereIn('categoryId', $categoryIds)
+            ->orderBy('displayOrder', 'ASC')
             ->select('categoryId', 'description', 'displayOrder', 'link', 'title', 'lastPostId', 'icon', 'updatedAt')
             ->get();
         $childs = [];
@@ -338,6 +342,20 @@ class CategoryCrudController extends Controller {
     }
 
     /**
+     * Get method to get an array of all the users currently active
+     *
+     * @param $hours
+     *
+     * @return array
+     */
+    private function getOnline($hours) {
+        $userIds = User::where('lastActivity', '>=', time() - ($hours * 3600))->orderBy('lastActivity', 'DESC')->pluck('userId');
+        return $userIds->map(function ($id) {
+            return UserHelper::getSlimUser($id);
+        });
+    }
+
+    /**
      * Get method to get an array of top poster for the current day.
      *
      * @param $clientTodayMidnight
@@ -375,6 +393,9 @@ class CategoryCrudController extends Controller {
     }
 
     private function mapLastPost($thread, $post) {
+        if (!$post) {
+            return null;
+        }
         return (object)[
             'postId' => $post->postId,
             'threadId' => $post->threadId,

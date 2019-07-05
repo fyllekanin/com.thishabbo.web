@@ -1,0 +1,28 @@
+<div class="wrapper">
+    <div class="inner-image">
+        <img [src]="box.boxUrl"/>
+    </div>
+    <div class="container">
+        <div class="prize float-right">
+            <em class="fas fa-coins"></em>
+            {{box.credits}}
+        </div>
+        <a class="title">
+            <em class="fas fa-box"></em>
+            {{box.title}}
+        </a>
+        <div class="content">
+            <strong>Items</strong>
+            <div *ngIf="box.items.length < 3">
+                <li *ngFor="let item of box.items" [style.color]="item.color">
+                    - {{item.title}}
+                </li>
+            </div>
+            <div *ngIf="box.items.length > 2">
+                <li [style.color]="box.items[0].color">- {{box.items[0].title}}</li>
+                <li [style.color]="box.items[1].color">- {{box.items[1].title}}</li>
+                <em>And {{box.items.length - 2}} more</em>
+            </div>
+        </div>
+    </div>
+</div>

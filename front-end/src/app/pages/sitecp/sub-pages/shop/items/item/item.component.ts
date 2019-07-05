@@ -10,6 +10,7 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 import { SlimSubscription } from '../../../users/subscriptions/subscriptions.model';
 import { ItemService } from '../../services/item.service';
 import { NotificationService } from 'core/services/notification/notification.service';
+import { DialogService } from 'core/services/dialog/dialog.service';
 
 @Component({
     selector: 'app-sitecp-shop-item',
@@ -28,6 +29,7 @@ export class ItemComponent extends Page implements OnDestroy {
         private _router: Router,
         private _service: ItemService,
         private _notificationService: NotificationService,
+        private _dialogService: DialogService,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService,
         activatedRoute: ActivatedRoute
@@ -95,7 +97,7 @@ export class ItemComponent extends Page implements OnDestroy {
         return this._data.subscriptions;
     }
 
-    get isCreated(): boolean {
+    get isCreated (): boolean {
         return Boolean(this._data.createdAt);
     }
 
@@ -136,16 +138,23 @@ export class ItemComponent extends Page implements OnDestroy {
     }
 
     private onDelete (): void {
-        this._service.delete(this._data.shopItemId).subscribe(() => {
-            this._router.navigateByUrl(SHOP_ITEMS_BREADCRUMB_ITEMS.url);
-        }, this._notificationService.failureNotification.bind(this._notificationService));
+        this._dialogService.confirm({
+            title: 'Are you sure?',
+            content: 'Are you sure that you wanna delete this item?',
+            callback: () => {
+                this._dialogService.closeDialog();
+                this._service.delete(this._data.shopItemId).subscribe(() => {
+                    this._router.navigateByUrl(SHOP_ITEMS_BREADCRUMB_ITEMS.url);
+                }, this._notificationService.failureNotification.bind(this._notificationService));
+            }
+        });
     }
 
     private setTabs (): void {
         const tabs = [
             {title: 'Save', value: ShopItemActions.SAVE, condition: true},
-            {title: 'Delete', value: ShopItemActions.DELETE, condition: this._data.createdAt},
-            {title: 'Back', value: ShopItemActions.BACK, condition: true}
+            {title: 'Back', value: ShopItemActions.BACK, condition: true},
+            {title: 'Delete', value: ShopItemActions.DELETE, condition: this._data.createdAt}
         ];
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));
     }

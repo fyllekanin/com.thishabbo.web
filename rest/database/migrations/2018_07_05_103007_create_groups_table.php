@@ -1,21 +1,20 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreateGroupsTable extends Migration
-{
+class CreateGroupsTable extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('groups', function (Blueprint $table) {
             $table->increments('groupId');
             $table->string('name')->unique();
+            $table->string('nickname')->nullable();
             $table->text('nameColor');
             $table->text('userBarStyling');
             $table->integer('immunity')->default(0);
@@ -44,8 +43,7 @@ class CreateGroupsTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('groups');
     }
 }

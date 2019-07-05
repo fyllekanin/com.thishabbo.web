@@ -3,7 +3,8 @@ import { Page } from 'shared/page/page.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { SHOP_HUB } from '../shop.constants';
-import { LOOT_BOX_ANIMATIONS } from 'shared/constants/shop.constants';
+import { DashboardPage } from './dashboardPage';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-shop-dashboard',
@@ -11,32 +12,15 @@ import { LOOT_BOX_ANIMATIONS } from 'shared/constants/shop.constants';
     styleUrls: ['dashboard.component.css']
 })
 export class DashboardComponent extends Page implements OnDestroy {
-    private _fakeBoxes = [
-        {
-            name: 'Theme Box',
-            getAnimation: function () {
-                return LOOT_BOX_ANIMATIONS.find(item => item.id === 1);
-            }
-        },
-        {
-            name: 'Icon Box',
-            getAnimation: function () {
-                return LOOT_BOX_ANIMATIONS.find(item => item.id === 5);
-            }
-        },
-        {
-            name: 'Effect Box',
-            getAnimation: function () {
-                return LOOT_BOX_ANIMATIONS.find(item => item.id === 3);
-            }
-        }
-    ];
+    private _data: DashboardPage;
 
     constructor (
         elementRef: ElementRef,
-        breadcrumbService: BreadcrumbService
+        breadcrumbService: BreadcrumbService,
+        activatedRoute: ActivatedRoute
     ) {
         super(elementRef);
+        this.addSubscription(activatedRoute.data, this.onData.bind(this));
         breadcrumbService.breadcrumb = new Breadcrumb({
             current: 'Dashboard',
             items: [
@@ -50,6 +34,14 @@ export class DashboardComponent extends Page implements OnDestroy {
     }
 
     get boxes () {
-        return this._fakeBoxes;
+        return this._data.lootBoxes;
+    }
+
+    get subscriptions () {
+        return this._data.subscriptions;
+    }
+
+    private onData (data: { data: DashboardPage }): void {
+        this._data = data.data;
     }
 }

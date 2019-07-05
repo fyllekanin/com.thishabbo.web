@@ -84,6 +84,7 @@ export class GroupsListComponent extends Page implements OnDestroy {
                     title: 'Success',
                     message: 'The staff list has been saved!'
                 }));
+                this.createOrUpdateTable();
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 

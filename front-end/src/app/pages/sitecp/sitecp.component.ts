@@ -23,16 +23,16 @@ import { Page } from 'shared/page/page.model';
 export class SitecpComponent extends Page implements OnDestroy, OnInit {
     blocks: Array<SideMenuBlock> = [];
 
-    constructor(
+    constructor (
         private _authService: AuthService,
         breadcrumbService: BreadcrumbService,
         elementRef: ElementRef
     ) {
         super(elementRef);
-        breadcrumbService.breadcrumb = new Breadcrumb({ current: 'SitecpCP' });
+        breadcrumbService.breadcrumb = new Breadcrumb({current: 'SitecpCP'});
     }
 
-    ngOnInit(): void {
+    ngOnInit (): void {
         this.blocks = [
             new SideMenuBlock({
                 title: 'Content Management',
@@ -69,6 +69,11 @@ export class SitecpComponent extends Page implements OnDestroy, OnInit {
                         title: 'Subscriptions',
                         link: '/sitecp/shop/subscriptions/page/1',
                         isApplicable: this._authService.sitecpPermissions.canManageSubscriptions
+                    }),
+                    new SideMenuItem({
+                        title: 'Loot Boxes',
+                        link: '/sitecp/shop/loot-boxes/page/1',
+                        isApplicable: this._authService.sitecpPermissions.canManageShop
                     }),
                     new SideMenuItem({
                         title: 'Items',
@@ -212,11 +217,11 @@ export class SitecpComponent extends Page implements OnDestroy, OnInit {
         ];
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    get canManageUsers(): boolean {
+    get canManageUsers (): boolean {
         return this._authService.sitecpPermissions.canEditUserBasic ||
             this._authService.sitecpPermissions.canEditUserAdvanced ||
             this._authService.sitecpPermissions.canBanUser ||

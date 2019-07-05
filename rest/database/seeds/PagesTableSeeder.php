@@ -2,27 +2,25 @@
 
 use Illuminate\Database\Seeder;
 
-class PagesTableSeeder extends Seeder
-{
+class PagesTableSeeder extends Seeder {
 
     /**
      * Auto generated seed file
      *
      * @return void
      */
-    public function run()
-    {
-        
+    public function run() {
+
 
         \DB::table('pages')->delete();
-        
-        \DB::table('pages')->insert(array (
-            0 => 
-            array (
-                'pageId' => 1,
-                'path' => 'rules',
-                'title' => 'Site Rules',
-                'content' => 'All rules apply to all ThisHabbo related services. If you have an issue regarding a giveaway or some form of event on Habbo, then please report this to the Habbo Moderators and not ourselves. Staff are not excluded from these rules below.
+
+        \DB::table('pages')->insert(array(
+            0 =>
+                array(
+                    'pageId' => 1,
+                    'path' => 'rules',
+                    'title' => 'Site Rules',
+                    'content' => 'All rules apply to all ThisHabbo related services. If you have an issue regarding a giveaway or some form of event on Habbo, then please report this to the Habbo Moderators and not ourselves. Staff are not excluded from these rules below.
 
 [center][b][size=6][u]Global Rules[/u][/size][/b][/center]
 [b]1. Intimidating or Abusive Behaviour:[/b]
@@ -31,8 +29,8 @@ Users are not permitted to be intimidating or inappropriate towards other member
 [b]2. Multiple Accounts:[/b]
 ThisHabbo allows users to only have access to one single account which is not to be shared with others. We have a system in place to make sure only one person is active on each account, any breach of this rule and you will be caught out. If you are found to breach this rule your account will be limited until you speak to Site Management requiring you must post a thread in the ban appeals section of the forum. If you don\'t provide a good reason for the multiple login your account will be dealt with fairly and efficiently.
 
-[b]3. Undermining a Moderator\'s or Sitecpistrator\'s Decision:[/b]
-Any user found undermining the actions taken by a Moderator or Sitecpistrator will be sanctioned accordingly. This includes but is not limited to removing post edits remaking closed threads and discussion of punishments such as infractions and bans, whether their own or others. If you disagree with the course of action taken by a Moderator, you may appeal the decision in the appropriate subforum. Moderators and Sitecpistrators reserve the right to remove posts, avatars, signatures and cover photos without warning.
+[b]3. Undermining a Moderator\'s or Administrator\'s Decision:[/b]
+Any user found undermining the actions taken by a Moderator or Administrator will be sanctioned accordingly. This includes but is not limited to removing post edits remaking closed threads and discussion of punishments such as infractions and bans, whether their own or others. If you disagree with the course of action taken by a Moderator, you may appeal the decision in the appropriate subforum. Moderators and Administrators reserve the right to remove posts, avatars, signatures and cover photos without warning.
 
 [b]4. Private and Personal Information:[/b]
 Users of ThisHabbo are discouraged from posting any form of private and personal information such as email addresses, Discord usernames and/or other form of social media. This also includes but is not limited to posting images of another user without permission. Any user found sharing this information will be doing so at their own risk; ThisHabbo will not be held liable for any negative consequences. Additionally, sharing the private and personal information of any other user without their permission whether in text or images is a punishable offence. The sanctions are down to the sole discretion of ThisHabbo Moderation and Sitecpistration.
@@ -47,7 +45,7 @@ Pointless posting regards any post that does not contribute to the topic of the 
 Users are not permitted to post in a thread that is over five months old (with the exception of stickied threads, spam section and trade city within reason - bumps of exceptionally old threads will see appropriate action taken). We aim to encourage new, fresh and current discussion. Users found obstructing this aim by breaching this rule outside of the exceptions will be sanctioned and the thread will be closed.
 
 [b]8. Breaking Individual Thread Rules:[/b]
-Specific threads, such as "Things you\'d like to say to someone but can\'t!" feature individual rules that must be followed within the thread. If a thread contains individual rules, they will be located on the first page. Failure to comply to these rules will result in warning/infractions and thread bans where appropriate. If an Sitecpistrator member is failing to abide to these rules, then you are free to go off topic within the thread without punishment. A moderator will then step in and post when thread rules are being abided again.
+Specific threads, such as "Things you\'d like to say to someone but can\'t!" feature individual rules that must be followed within the thread. If a thread contains individual rules, they will be located on the first page. Failure to comply to these rules will result in warning/infractions and thread bans where appropriate. If an Administrator member is failing to abide to these rules, then you are free to go off topic within the thread without punishment. A moderator will then step in and post when thread rules are being abided again.
 
 [b]9. Misuse of Donator:[/b]
 ThisHabbo prohibits users misusing and abusing of ThisHabboClub. It is not to be set to resemble that of Management or Sitecpistration. Names must also be visible at all times. This means white names are not to be used on white avatars or outside of the avatar space or black on black. In regards to white names, #FFFFFF is not allowed, the "whitest" hex code allowed to be used is #EEEEEE, this allows the name to also be visible on the forum homepage. Please bear this in mind when choosing your donator color - feel free to ask Community Sitecps or Moderators to see if your color is acceptable.
@@ -59,14 +57,14 @@ ThisHabbo prohibits users misusing and/or abusing the likes, mentioning, quotes 
 Users are not permitted to post an inappropriate signature. This includes but is not limited to images/usernames that stretch the skin or cause a nuisance such as excessive flashing. Failure to comply by this rule will result in the distribution of warnings/infractions. This rule also extends to avatars, no nudity or excessive flashing is permitted. Usernames are also prohibited from containing explicit language, or language that may offend others, usernames should also not contain an excessive amount of characters in which it would attempt to alter or change the regular skin limits. This rule must also be respected when it comes to the décor of profiles - inappropriate pieces of artwork will not be accepted.
 
 [b]11. Unauthorised Radio Access[/b]
-Only ThisHabbo Sitecpistrators, Management & Radio Staff have authorised access to ThisHabbo Radio.  An unauthorised connection to ThisHabbo Radio will be investigated and dealt with accordingly.  Please note, if you were once staff and are no longer, this does indeed mean you no longer have authorised access to the radio - whether you have the encoder details or not.
+Only ThisHabbo Administrators, Management & Radio Staff have authorised access to ThisHabbo Radio.  An unauthorised connection to ThisHabbo Radio will be investigated and dealt with accordingly.  Please note, if you were once staff and are no longer, this does indeed mean you no longer have authorised access to the radio - whether you have the encoder details or not.
 
 [b]12. [/b][b]Selling Habbo Accounts/Coins[/b]
 It is prohibited to use the forum to advertise the selling of Habbo coins, accounts, furniture or anything of a similar nature in exchange for real money. Anyone doing so will be sanctioned appropriately.
 
 Any user who feels they have been unfairly sanctioned by the moderation team are encouraged to contact Site Management or a member of Sitecpistration. Any user found undermining or attempting to go against a Moderator\'s decision will have their punishment worsened and possibly be banned. We do not condone any abusive or intimidating messages towards members of our moderation department who work tirelessly hard to keep the website a safe and happy environment; offenders will be punished.
 
-ThisHabbo reserves the right at any time to remove, edit, move or close any thread for any reason; change the rules; change any of the settings or usergroup permissions based on accounts when necessary; temporarily suspend or remove your access to this website without prior notice. Your continued usage of this service constitutes your acceptance of the above rules. Alongside that- Dez, Fergie, Kerry and mostly Dan are the people who put money into this fansite. Some of these Sitecps have put in over £1,000 and clocked up over 5 years of solid dedication. Therefore, Sitecps can use paid subscription money for any service they see fit. As long as bills are paid for, the money can be moved, sent and used for personal gain between these Sitecpistrators.
+ThisHabbo reserves the right at any time to remove, edit, move or close any thread for any reason; change the rules; change any of the settings or usergroup permissions based on accounts when necessary; temporarily suspend or remove your access to this website without prior notice. Your continued usage of this service constitutes your acceptance of the above rules. Alongside that- Dez, Fergie, Kerry and mostly Dan are the people who put money into this fansite. Some of these Sitecps have put in over £1,000 and clocked up over 5 years of solid dedication. Therefore, Sitecps can use paid subscription money for any service they see fit. As long as bills are paid for, the money can be moved, sent and used for personal gain between these Administrators.
 
 Whilst we as a fansite of Habbo are heavily moderated, it is impossible to catch every offense committed, we rely on the forum users to inform us through the reporting system. However those posts breaking the forum rules or those of the fansite or Habbo way in general which are not reported are at the liability of the original poster and the user(s) reading the post and not of ThisHabbo. We as Sitecpistration respect the views and opinions expressed by our community, but we have to follow and enforce the rules in place.
 
@@ -90,82 +88,82 @@ Firstly, ThisHabbo takes absolutely no responsibility of things which happen on 
 
 7. Sulake UK Ltd do not own or operate any events, competitions, giveaways or prizes that ThisHabbo own/hold.
 
-8. Every person who enters any of ThisHabbo’s events, competitions or giveaways are at their own risk. Never will any staff member ask for any kind of information This may include personal information or any Habbo information that may lead your Habbo account being at the risk of getting hacked or scammed. All entrants have all the right to contact an Sitecpistrator or member of ThisHabbo Management if they feel that any staff member has broken this rule.
+8. Every person who enters any of ThisHabbo’s events, competitions or giveaways are at their own risk. Never will any staff member ask for any kind of information This may include personal information or any Habbo information that may lead your Habbo account being at the risk of getting hacked or scammed. All entrants have all the right to contact an Administrator or member of ThisHabbo Management if they feel that any staff member has broken this rule.
 
 9. Any entrants who win Forum VIP will need to give certain details to the host of the event/competition. Forum VIP can NOT be paused.
 [center][/center]
 
 [sitecp]Last modified: 04-29-2018[/sitecp]',
-                'isDeleted' => 0,
-                'isSystem' => 0,
-                'canEdit' => 1,
-                'createdAt' => 1551197660,
-                'updatedAt' => 1551197660,
-            ),
-            1 => 
-            array (
-                'pageId' => 2,
-                'path' => 'access',
-                'title' => 'Access Denied',
-                'content' => 'You\'ve been denied access to this page! This could mean several things:
+                    'isDeleted' => 0,
+                    'isSystem' => 0,
+                    'canEdit' => 1,
+                    'createdAt' => 1551197660,
+                    'updatedAt' => 1551197660,
+                ),
+            1 =>
+                array(
+                    'pageId' => 2,
+                    'path' => 'access',
+                    'title' => 'Access Denied',
+                    'content' => 'You\'ve been denied access to this page! This could mean several things:
 
 [ol]
 [li]Your user account may not have sufficient privileges to access this page. Are you trying to do or access something you shouldn\'t?[/li]
-[li]If you are trying to post, the sitecpistrator may have disabled your account, or it may be awaiting activation.[/li]
+[li]If you are trying to post, the Administrator may have disabled your account, or it may be awaiting activation.[/li]
 [li]You aren\'t registered to the site at all - please register. You won\'t be able to view threads/posts until you do so.[/li]
 [li]You could be banned from the website, but this is very rare.[/li]
 [li]If you\'ve already registered then log in as some features are disabled to users who aren\'t logged in![/li]
 [/ol]
 
 If you\'re still having problems - tweet us [b]@[url=https://twitter.com/thishabbo]ThisHabbo[/url][/b]!',
-                'isDeleted' => 0,
-                'isSystem' => 1,
-                'canEdit' => 1,
-                'createdAt' => 1551197660,
-                'updatedAt' => 1551197660,
-            ),
-            2 => 
-            array (
-                'pageId' => 3,
-                'path' => 'leader-board',
-                'title' => 'Leader Board',
-                'content' => '',
-                'isDeleted' => 0,
-                'isSystem' => 1,
-                'canEdit' => 0,
-                'createdAt' => 1551197660,
-                'updatedAt' => 1551197660,
-            ),
-            3 => 
-            array (
-                'pageId' => 4,
-                'path' => 'badge-articles/page/1',
-                'title' => 'Badge Articles',
-                'content' => '',
-                'isDeleted' => 0,
-                'isSystem' => 1,
-                'canEdit' => 0,
-                'createdAt' => 1551197660,
-                'updatedAt' => 1551197660,
-            ),
-            4 => 
-            array (
-                'pageId' => 5,
-                'path' => 'job',
-                'title' => 'Job Form',
-                'content' => '',
-                'isDeleted' => 0,
-                'isSystem' => 1,
-                'canEdit' => 0,
-                'createdAt' => 1551197660,
-                'updatedAt' => 1551197660,
-            ),
-            5 => 
-            array (
-                'pageId' => 6,
-                'path' => 'about',
-                'title' => 'History',
-                'content' => '[atitle]The Start[/atitle]
+                    'isDeleted' => 0,
+                    'isSystem' => 1,
+                    'canEdit' => 1,
+                    'createdAt' => 1551197660,
+                    'updatedAt' => 1551197660,
+                ),
+            2 =>
+                array(
+                    'pageId' => 3,
+                    'path' => 'leader-board',
+                    'title' => 'Leader Board',
+                    'content' => '',
+                    'isDeleted' => 0,
+                    'isSystem' => 1,
+                    'canEdit' => 0,
+                    'createdAt' => 1551197660,
+                    'updatedAt' => 1551197660,
+                ),
+            3 =>
+                array(
+                    'pageId' => 4,
+                    'path' => 'badge-articles/page/1',
+                    'title' => 'Badge Articles',
+                    'content' => '',
+                    'isDeleted' => 0,
+                    'isSystem' => 1,
+                    'canEdit' => 0,
+                    'createdAt' => 1551197660,
+                    'updatedAt' => 1551197660,
+                ),
+            4 =>
+                array(
+                    'pageId' => 5,
+                    'path' => 'job',
+                    'title' => 'Job Form',
+                    'content' => '',
+                    'isDeleted' => 0,
+                    'isSystem' => 1,
+                    'canEdit' => 0,
+                    'createdAt' => 1551197660,
+                    'updatedAt' => 1551197660,
+                ),
+            5 =>
+                array(
+                    'pageId' => 6,
+                    'path' => 'about',
+                    'title' => 'History',
+                    'content' => '[atitle]The Start[/atitle]
 ThisHabbo is a Habbo fansite, currently owned by [b]irDez[/b]. Originally in 2010 the site was owned by [b]Brettles[/b], with [b]irDez [/b]and [b]Farmering [/b]as radio managers. Back then, it was a shake for fansites as Dez and Farmer were probably the best Radio Managers at the time. However, he bottled out before launch and handed the site over to Dez and Farmer.
 
 On [b]April 30th 2010[/b] ThisHabbo launched their forum, waiting almost a month to launch the site on[b] May 22nd 2010![/b] The site was given praise from all angles, everybody seemed to love the layout, and the community kept getting bigger every day! ThisHabbo was going very well and the fanbase was amazing, with a fantastic amount of support from every direction. With this new community continuing to grow and change, something new was needed.
@@ -208,7 +206,7 @@ We also seen the introduction of our new department - Habbo events. With this la
 
 Dez had returned from his 2 year of inactivity, scaring the current community (who had no idea who this Dez bloke was) that things would go back to it\'s depths - the staff stealing, the drama - however, he came back with one plan: Version 5. This would be a shock to the older fansites - because if ThisHabbo moved to something better, then they\'d be forced to do something similar.
 
-Dez began designing V4.6. However, he was stuck on a query and some guy called [url=https://www.thishabbo.com/profile/Bear94]Optra[/url] (Bear94) helped him with it. Instantly, Dez offered him a place on the Sitecp team and they began to talk. Eric had been at fansites before - but had never really taken on an Sitecpistrator role - ThisHabbo was the perfect site to show his work off.
+Dez began designing V4.6. However, he was stuck on a query and some guy called [url=https://www.thishabbo.com/profile/Bear94]Optra[/url] (Bear94) helped him with it. Instantly, Dez offered him a place on the Sitecp team and they began to talk. Eric had been at fansites before - but had never really taken on an Administrator role - ThisHabbo was the perfect site to show his work off.
 
 ...And on that day V4.6 was rebranded to V5.[b] September 3rd 2015[/b] development began on Version 5. Dez wanted TH, THF and the staff panel all as one in V2, V3 and V4 but back then, we didn\'t have the ability to make that change - until Eric stressed \'easy\'. Dez then decided that V5 will only be \'our best layout\' if our longest standing members had an influence on it. At that point, ThisHabbos most loyal members were given V5 exclusive access. They tested and tested - to try and make the release as smooth as possible.
 
@@ -237,15 +235,15 @@ While we weren\'t directly using vBulletin on V5, we still relied on its databas
 
 As V6 was a complete rewrite for us, it has been built with longevity in mind. We don\'t anticipate such a big change in the future. Instead, we intend to continually improve and evolve Version 6. We will be releasing new features and design changes all the time. Version 6 will never feel old.
 
-Version 6 also saw us tweak our staff structure, bringing in \'Community Sitecpistrators\', primarily responsible for the entire community and \'Site Sitecpistrators\', with their main responsibility being to ensure that the community gets exactly what they need from the site.',
-                'isDeleted' => 0,
-                'isSystem' => 0,
-                'canEdit' => 1,
-                'createdAt' => 1559664362,
-                'updatedAt' => 1559664918,
-            ),
+Version 6 also saw us tweak our staff structure, bringing in \'Community Administrators\', primarily responsible for the entire community and \'Site Administrators\', with their main responsibility being to ensure that the community gets exactly what they need from the site.',
+                    'isDeleted' => 0,
+                    'isSystem' => 0,
+                    'canEdit' => 1,
+                    'createdAt' => 1559664362,
+                    'updatedAt' => 1559664918,
+                ),
         ));
-        
-        
+
+
     }
 }

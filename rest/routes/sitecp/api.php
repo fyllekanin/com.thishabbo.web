@@ -239,6 +239,14 @@ Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions
     Route::post('/shop/items', 'Sitecp\Shop\ItemsController@createItem');
     Route::post('/shop/items/{itemId}', 'Sitecp\Shop\ItemsController@updateItem');
     Route::delete('/shop/items/{itemId}', 'Sitecp\Shop\ItemsController@deleteItem');
+
+    Route::get('/shop/loot-boxes/page/{page}', 'Sitecp\Shop\LootBoxesController@getItems');
+    Route::get('/shop/loot-boxes/{lootBoxId}', 'Sitecp\Shop\LootBoxesController@getItem');
+    Route::get('/shop/loot-boxes/items/page/{page}', 'Sitecp\Shop\LootBoxesController@getShopItems');
+
+    Route::post('/shop/loot-boxes', 'Sitecp\Shop\LootBoxesController@createLootBox');
+    Route::put('/shop/loot-boxes/{lootBoxId}', 'Sitecp\Shop\LootBoxesController@updateLootBox');
+    Route::delete('/shop/loot-boxes/{lootBoxId}', 'Sitecp\Shop\LootBoxesController@deleteLootBox');
 });
 
 Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canManageSubscriptions)], function () {

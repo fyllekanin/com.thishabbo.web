@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ForumPermission extends UnixTimeModel {
     protected $table = 'forum_permissions';
-    protected $fillable = ['categoryId', 'groupId', 'permissions'];
+    protected $primaryKey = 'forumPermissionId';
+    protected $fillable = ['categoryId', 'groupId', 'permissions', 'isAuthOnly'];
 
     public function scopeWithGroups(Builder $query, $groupIds) {
         return $query->whereIn('groupId', $groupIds);

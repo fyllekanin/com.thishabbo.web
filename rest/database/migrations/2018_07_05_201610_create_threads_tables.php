@@ -21,8 +21,8 @@ class CreateThreadsTables extends Migration {
             $table->bigInteger('views')->default(0);
             $table->integer('isApproved')->default(1);
             $table->bigInteger('userId');
-            $table->bigInteger('firstPostId');
-            $table->bigInteger('lastPostId');
+            $table->bigInteger('firstPostId')->nullable();
+            $table->bigInteger('lastPostId')->nullable();
             $table->integer('isSticky')->default(0);
             $table->integer('prefixId')->default(0);
             $table->bigInteger('createdAt');

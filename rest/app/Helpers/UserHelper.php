@@ -204,7 +204,7 @@ class UserHelper {
     private static function getUserBars($userId) {
         return UserGroup::where('userId', $userId)->get()->map(function ($userGroup) {
             return [
-                'name' => $userGroup->group->name,
+                'name' => !empty($userGroup->group->nickname) ? $userGroup->group->nickname : $userGroup->group->name,
                 'styling' => $userGroup->group->userBarStyling
             ];
         });

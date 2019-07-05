@@ -64,7 +64,8 @@ class ThreadCrudController extends Controller {
         $query = Post::where('posts.threadId', $threadId)
             ->join('users', 'users.userId', '=', 'posts.userId')
             ->select('users.userId', DB::raw('COUNT(*) as amount'))
-            ->groupBy('users.userId');
+            ->groupBy('users.userId')
+            ->orderBy(DB::raw('COUNT(*)'), 'DESC');
         $total = DataHelper::getPage($query->count());
 
         return response()->json([
@@ -376,6 +377,8 @@ class ThreadCrudController extends Controller {
         $this->logThreadCreation($thread, $request, $user);
         $this->createThreadPoll($thread, $threadSkeleton);
         $this->forumService->updateLastPostIdOnCategory($thread->categoryId);
+        $this->forumService->updateReadCategory($thread->categoryId, $user->userId);
+        $this->forumService->updateReadThread($thread->threadId, $user->userId);
         NotifyCategorySubscribers::dispatch($thread->categoryId, $thread->userId, $thread->threadId);
         return response()->json(['threadId' => $thread->threadId], 201);
     }

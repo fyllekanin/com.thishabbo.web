@@ -89,31 +89,7 @@ a:hover {
 }
 
 .active {
-    background-color: rgb(245, 245, 245);
-}
-
-.blue-top {
-    border-top: 3px solid #139bfb;
-}
-
-.pink-top {
-    border-top: 3px solid #e887bf;
-}
-
-.green-top {
-    border-top: 3px solid #5ba23e;
-}
-
-.red-top {
-    border-top: 3px solid #ad6262;
-}
-
-.black-top {
-    border-top: 3px solid #000000;
-}
-
-.purple-top {
-    border-top: 3px solid #925779;
+    background-color: #0000001a;
 }
 
 .mobile {

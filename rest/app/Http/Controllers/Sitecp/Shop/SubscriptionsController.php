@@ -31,7 +31,8 @@ class SubscriptionsController extends Controller {
                 return [
                     'subscriptionId' => $subscription->subscriptionId,
                     'title' => $subscription->title,
-                    'membersCount' => UserSubscription::where('subscriptionId', $subscription->subscriptionId)->count()
+                    'membersCount' => UserSubscription::where('subscriptionId', $subscription->subscriptionId)->count(),
+                    'isListed' => $subscription->options & ConfigHelper::getSubscriptionOptions()->isListed
                 ];
             })
         ]);
@@ -69,7 +70,7 @@ class SubscriptionsController extends Controller {
         $subscription->save();
 
         Logger::sitecp($user->userId, $request->ip(), Action::CREATED_SUBSCRIPTION, [], $subscription->subscriptionId);
-        return response()->json();
+        return $this->getSubscription($subscription->subscriptionId);
     }
 
     public function updateSubscription(Request $request, $subscriptionId) {
@@ -91,7 +92,7 @@ class SubscriptionsController extends Controller {
         $subscription->save();
 
         Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_SUBSCRIPTION, [], $subscription->subscriptionId);
-        return response()->json();
+        return $this->getSubscription($subscription->subscriptionId);
     }
 
     public function deleteSubscription(Request $request, $subscriptionId) {

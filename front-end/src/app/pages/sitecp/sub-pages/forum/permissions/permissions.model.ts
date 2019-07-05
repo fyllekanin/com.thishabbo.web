@@ -34,6 +34,8 @@ export class PermissionsPage {
     group: PermissionGroup;
     @arrayOf(PermissionGroup)
     groups: Array<PermissionGroup> = [];
+    @primitive()
+    isAuthOnly: boolean;
 
     constructor (source?: Partial<PermissionsPage>) {
         ClassHelper.assign(this, source);

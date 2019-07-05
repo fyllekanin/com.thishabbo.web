@@ -8,6 +8,7 @@ import { ForumLatestPost, SlimCategory } from '../forum.model';
 import { TitleTab, TitleTopBorder } from 'shared/app-views/title/title.model';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { HttpService } from 'core/services/http/http.service';
+import { SlimUser } from 'core/services/auth/auth.model';
 import { NotificationService } from 'core/services/notification/notification.service';
 
 @Component({
@@ -111,6 +112,22 @@ export class ForumHomeComponent extends Page implements OnInit, OnDestroy {
 
     get topPosters(): Array<ForumTopPoster> {
         return this._forumStats.topPosters;
+    }
+
+    get currentlyActive(): Array<SlimUser> {
+        return this._forumStats.currentlyActive;
+    }
+
+    get activeToday(): Array<SlimUser> {
+        return this._forumStats.activeToday;
+    }
+
+    get currentlyActiveTitle(): string {
+        return this.currentlyActive.length + ' users currently active';
+    }
+
+    get activeTodayTitle(): string {
+        return this.activeToday.length + ' users active in the last 24 hours';
     }
 
     private onPage(data: { data: Array<SlimCategory> }): void {

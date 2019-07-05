@@ -18,19 +18,20 @@
                 <input type="text" [(ngModel)]="category.description"/>
             </div>
             <div class="cell small-12 medium-6">
-                <label>Display Order <em>(Lower = higher up)</em></label>
+                <label>Display Order
+                    <span tooltip="The lower the number, the higher up it will be placed." class="checkbox-info">
+                        <em class="fas fa-question-circle"></em>
+                    </span>
+                </label>
                 <input type="number" [(ngModel)]="category.displayOrder"/>
             </div>
             <div class="cell small-12 medium-6">
-                <label>Template</label>
-                <select [(ngModel)]="template" name="template">
-                    <option selected="selected" value="DEFAULT">Default</option>
-                    <option value="QUEST">Quest</option>
-                    <option value="MEDIA">Media</option>
-                </select>
-            </div>
-            <div class="cell small-12 medium-6">
-                <label>Is Hidden</label>
+                <label>Is Hidden
+                    <span tooltip="This will hide the forum, however if they have&#xa;permission to access it they can with a direct link to it."
+                          class="checkbox-info">
+                        <em class="fas fa-question-circle"></em>
+                    </span>
+                </label>
                 <select [(ngModel)]="category.isHidden" name="isHidden">
                     <option [ngValue]="false">No</option>
                     <option [ngValue]="true">Yes</option>
@@ -44,22 +45,24 @@
                 </select>
             </div>
             <div class="cell small-12 medium-6">
-                <label>Link <em>(Clicking the category header leads here)</em></label>
+                <label>Link
+                    <span tooltip="Clicking the category header will link&#xa;to whatever has been specified here."
+                          class="checkbox-info">
+                        <em class="fas fa-question-circle"></em>
+                    </span>
+                </label>
                 <input type="text" [(ngModel)]="category.link"/>
             </div>
             <div class="cell small-12 medium-6">
-                <label>Credits <em>(Amount of credits per thread/post)</em></label>
-                <input type="number" [(ngModel)]="category.credits">
-            </div>
-            <div class="cell small-12 medium-6">
-                <label>XP <em>(Amount of XP per thread/post)</em></label>
-                <input type="number" [(ngModel)]="category.xp">
-            </div>
-            <div class="cell small-12 medium-6">
-                <label>Icon <em>(Font-awesome icon class)</em></label>
+                <label>Icon
+                    <span tooltip="Font-Awesome is supported.&#xa;Enter the class if you have found one."
+                          class="checkbox-info">
+                        <em class="fas fa-question-circle"></em>
+                    </span>
+                </label>
                 <input type="text" [(ngModel)]="category.icon">
             </div>
-            <div class="cell small-12 medium-6">
+            <div class="cell small-12 medium-6 medium-offset-6">
                 <label>Icon Preview</label>
                 <em class="preview" [ngClass]="category.icon"></em>
             </div>
@@ -72,52 +75,97 @@
 </app-title>
 <app-content>
     <div class="grid-container content-margin">
-        <div class="grid-x">
+        <div class="grid-x grid-margin-x">
             <div class="cell small-12 medium-6">
+                <label>Credits
+                    <span tooltip="Amount of THC gained per post&#xa; & thread creation." class="checkbox-info">
+                        <em class="fas fa-question-circle"></em>
+                    </span>
+                </label>
+                <input type="number" [(ngModel)]="category.credits">
+            </div>
+            <div class="cell small-12 medium-6">
+                <label>XP
+                    <span tooltip="Amount of XP gained per post&#xa; & thread creation." class="checkbox-info">
+                        <em class="fas fa-question-circle"></em>
+                    </span>
+                </label>
+                <input type="number" [(ngModel)]="category.xp">
+            </div>
+            <div class="cell small-12 medium-6">
+                <label>Template</label>
+                <select [(ngModel)]="template" name="template">
+                    <option selected="selected" value="DEFAULT">Default</option>
+                    <option value="QUEST">Quest</option>
+                    <option value="MEDIA">Media</option>
+                </select>
+            </div>
+            <div class="cell small-12 medium-offset-6 medium-6">
                 <label class="checkbox-container">
-                    Threads need approval? <em>(Tick if yes)</em>
+                    Do Threads need approving before posting?
+                    <span tooltip="If yes, threads need approving before being seen by users." class="checkbox-info">
+                        <em class="fas fa-question-circle"></em>
+                    </span>
                     <input type="checkbox" [(ngModel)]="options.threadsNeedApproval">
                     <span class="checkmark"></span>
                 </label>
             </div>
             <div class="cell small-12 medium-6">
                 <label class="checkbox-container">
-                    Threads need a prefix? <em>(Tick if yes)</em>
+                    Do Threads need a Prefix?
+                    <span tooltip="If yes, a thread will require a prefix before being posted." class="checkbox-info">
+                        <em class="fas fa-question-circle"></em>
+                    </span>
                     <input type="checkbox" [(ngModel)]="options.prefixMandatory">
                     <span class="checkmark"></span>
                 </label>
             </div>
             <div class="cell small-12 medium-6">
                 <label class="checkbox-container">
-                    Posts don't count <em>(Tick if yes)</em>
+                    Posts don't count in this forum
+                    <span tooltip="If yes, posts won't count in this forum." class="checkbox-info">
+                        <em class="fas fa-question-circle"></em>
+                    </span>
                     <input type="checkbox" [(ngModel)]="options.postsDontCount">
                     <span class="checkmark"></span>
                 </label>
             </div>
             <div class="cell small-12 medium-6">
                 <label class="checkbox-container">
-                    Threads can have polls <em>(Tick if yes)</em>
+                    Can Threads can have polls?
+                    <span tooltip="If yes, users will be able to add a poll to their threads." class="checkbox-info">
+                        <em class="fas fa-question-circle"></em>
+                    </span>
                     <input type="checkbox" [(ngModel)]="options.threadsCanHavePolls">
                     <span class="checkmark"></span>
                 </label>
             </div>
             <div class="cell small-12 medium-6">
                 <label class="checkbox-container">
-                    Is landing place for report posts <em>(Tick if yes)</em>
+                    Is this a landing place for reported posts?
+                    <span tooltip="If yes, any reported post will be posted here." class="checkbox-info">
+                        <em class="fas fa-question-circle"></em>
+                    </span>
                     <input type="checkbox" [(ngModel)]="options.reportPostsGoHere">
                     <span class="checkmark"></span>
                 </label>
             </div>
             <div class="cell small-12 medium-6">
                 <label class="checkbox-container">
-                    Is landing place for job applications? <em>(Tick if yes)</em>
+                    Is this a landing place for job applications?
+                    <span tooltip="If yes, any job application will be posted here." class="checkbox-info">
+                        <em class="fas fa-question-circle"></em>
+                    </span>
                     <input type="checkbox" [(ngModel)]="options.jobApplicationsGoHere">
                     <span class="checkmark"></span>
                 </label>
             </div>
             <div class="cell small-12 medium-6">
                 <label class="checkbox-container">
-                    Is landing place for contact posts? <em>(Tick if yes)</em>
+                    Is this a landing place for contact us posts?
+                    <span tooltip="If yes, any contact posts will be posted here." class="checkbox-info">
+                        <em class="fas fa-question-circle"></em>
+                    </span>
                     <input type="checkbox" [(ngModel)]="options.contactPostsGoHere">
                     <span class="checkmark"></span>
                 </label>

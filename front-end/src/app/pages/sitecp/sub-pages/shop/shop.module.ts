@@ -17,6 +17,12 @@ import { SubscriptionComponent } from './subscriptions/subscription/subscription
 import { ItemsListService } from './services/items-list.service';
 import { ItemComponent } from './items/item/item.component';
 import { ItemService } from './services/item.service';
+import { LootBoxesListComponent } from './loot-boxes/loot-boxes-list/loot-boxes-list.component';
+import { LootBoxesListService } from './services/loot-boxes-list.service';
+import { LootBoxService } from './services/loot-box.service';
+import { LootBoxComponent } from './loot-boxes/loot-box/loot-box.component';
+import { BoxSelectionComponent } from './loot-boxes/loot-box/box-selection/box-selection.component';
+import { ItemSelectionComponent } from './loot-boxes/loot-box/item-selection/item-selection.component';
 
 @NgModule({
     imports: [
@@ -34,13 +40,23 @@ import { ItemService } from './services/item.service';
         ItemsListComponent,
         SubscriptionsListComponent,
         SubscriptionComponent,
-        ItemComponent
+        ItemComponent,
+        LootBoxesListComponent,
+        LootBoxComponent,
+        BoxSelectionComponent,
+        ItemSelectionComponent
     ],
     providers: [
         SubscriptionsListService,
         SubscriptionService,
         ItemsListService,
-        ItemService
+        ItemService,
+        LootBoxesListService,
+        LootBoxService
+    ],
+    entryComponents: [
+        BoxSelectionComponent,
+        ItemSelectionComponent
     ],
     exports: [
         RouterModule
