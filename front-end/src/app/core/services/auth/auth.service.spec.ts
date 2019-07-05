@@ -15,11 +15,11 @@ import { Router } from '@angular/router';
 describe('AuthService', () => {
 
     class HttpServiceMock {
-        post() {
+        post () {
             return null;
         }
 
-        get() {
+        get () {
         }
     }
 
@@ -31,8 +31,8 @@ describe('AuthService', () => {
         TestBed.configureTestingModule({
             imports: [
                 RouterTestingModule.withRoutes([
-                    { path: 'auth/login', redirectTo: '' },
-                    { path: 'dashboard', redirectTo: '' }
+                    {path: 'auth/login', redirectTo: ''},
+                    {path: 'dashboard', redirectTo: ''}
                 ])
             ],
             providers: [
@@ -53,7 +53,7 @@ describe('AuthService', () => {
                         }
                     }
                 },
-                { provide: HttpService, useValue: httpServiceMock }
+                {provide: HttpService, useValue: httpServiceMock}
             ]
         });
 
@@ -62,7 +62,7 @@ describe('AuthService', () => {
 
     it('user should set the user and store it in localStorage', () => {
         // Given
-        const user = new AuthUser({ nickname: 'test' });
+        const user = new AuthUser({nickname: 'test'});
 
         // When
         authService.user = user;
@@ -96,7 +96,7 @@ describe('AuthService', () => {
         });
         it('should return the refreshToken if user is set', () => {
             // Given
-            authService.user = new AuthUser({ oauth: new OAuth({ refreshToken: 'test' }) });
+            authService.user = new AuthUser({oauth: new OAuth({refreshToken: 'test'})});
 
             // When
             const result = authService.getRefreshToken();
@@ -125,6 +125,7 @@ describe('AuthService', () => {
             const loginResponse = {
                 userId: 1,
                 nickname: 'Tovven',
+                gdpr: 1,
                 oauth: {
                     accessToken: 'ba63-c261-41e3-5d5f-cf3b-3175-2af0-8a69-7393-e8d6-d484-09b4',
                     refreshToken: '1bf2-7936-01e5-ac63-526e-f5f6-0568-fa8c-09cb-cc85-177f-1b58',
@@ -170,7 +171,7 @@ describe('AuthService', () => {
 
     it('getAccessToken should return "access-token" from localStorage', () => {
         // Given
-        const user = { oauth: { accessToken: 'token' } };
+        const user = {oauth: {accessToken: 'token'}};
         localStorage.setItem(LOCAL_STORAGE.AUTH_USER, btoa(JSON.stringify(user)));
 
         // When
