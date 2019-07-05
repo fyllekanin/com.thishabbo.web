@@ -15,5 +15,6 @@ export const LOCAL_STORAGE = {
     TABS: 'tabs',
     VOLUME: 'volume',
     FORUM_TOOLS: 'forum-tools',
-    MINIMALISTIC: 'Minimalistic'
+    MINIMALISTIC: 'minimalistic',
+    MINI_PROFILE_DISABLED: 'mini-profile-disabled'
 };

@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { SlimUser } from 'core/services/auth/auth.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
+import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 
 @Component({
     selector: 'app-user-link',
@@ -9,17 +10,22 @@ import { TimeHelper } from 'shared/helpers/time.helper';
 })
 export class UserLinkComponent {
     @Input() user = new SlimUser();
+    isMiniProfileDisabled = false;
+
+    constructor () {
+        this.isMiniProfileDisabled = Boolean(localStorage.getItem(LOCAL_STORAGE.MINI_PROFILE_DISABLED));
+    }
 
     get nameStyling (): string {
         return this.user ? this.user.nameStyling : '';
     }
 
     get avatarUrl (): string {
-        return `background-image: url('/rest/resources/images/users/${this.user.userId}.gif')`;
+        return `url('/rest/resources/images/users/${this.user.userId}.gif?${this.user.avatarUpdatedAt}')`;
     }
 
     get coverUrl (): string {
-        return `background-image: url('/rest/resources/images/covers/${this.user.userId}');`;
+        return `url('/rest/resources/images/covers/${this.user.userId}.gif?${this.user.avatarUpdatedAt}')`;
     }
 
     get posts (): string {

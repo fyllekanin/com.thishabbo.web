@@ -34,5 +34,6 @@ exports.config = {
         });
         jasmine.getEnv().addReporter(new SpecReporter({spec: {displayStacktrace: true}}));
         browser.waitForAngularEnabled(true);
+        browser.executeScript("window.localStorage.setItem('mini-profile-disabled', 'true');");
     }
 };
