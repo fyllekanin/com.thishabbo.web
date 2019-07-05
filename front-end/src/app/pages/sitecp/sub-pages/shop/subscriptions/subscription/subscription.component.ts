@@ -8,7 +8,6 @@ import { SHOP_SUBSCRIPTIONS_BREADCRUMB_ITEMS, SITECP_BREADCRUMB_ITEM } from '../
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { SubscriptionAction } from './subscription.model';
 import { SubscriptionService } from '../../services/subscription.service';
-import { TimeHelper } from 'shared/helpers/time.helper';
 
 @Component({
     selector: 'app-sitecp-shop-subscription',
@@ -65,12 +64,12 @@ export class SubscriptionComponent extends Page implements OnDestroy {
 
     private onSave (): void {
         if (this._data.createdAt) {
-            this._service.update(this._data).then(() => {
-                this._data.createdAt = TimeHelper.getTime(new Date().getTime() / 1000);
+            this._service.update(this._data).then(data => {
+                this._data = data;
             });
         } else {
-            this._service.save(this._data).then(() => {
-                this._data.createdAt = TimeHelper.getTime(new Date().getTime() / 1000);
+            this._service.save(this._data).then(data => {
+                this._data = data;
                 this.setTabs();
             });
         }

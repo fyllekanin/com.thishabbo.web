@@ -3,7 +3,7 @@ import { Followers, ProfileModel, ProfileVisitorMessage } from './profile.model'
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { Observable } from 'rxjs';
 import { HttpService } from 'core/services/http/http.service';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { ReportComponent } from './report/report.component';
@@ -79,7 +79,8 @@ export class ProfileService implements Resolve<ProfileModel> {
                 content: value,
                 parentId: parentId
             }
-        }).pipe(map(res => new ProfileVisitorMessage(res)));
+        }).pipe(map(res => new ProfileVisitorMessage(res)),
+            catchError(this._notificationService.failureNotification.bind(this._notificationService)));
     }
 
     likeMessage (visitorMessageId: number): Observable<void> {

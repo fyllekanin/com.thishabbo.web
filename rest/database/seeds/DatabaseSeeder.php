@@ -34,5 +34,6 @@ class DatabaseSeeder extends Seeder {
         $this->call(UsergroupsTableSeeder::class);
         $this->call(ShopItemsTableSeeder::class);
         $this->call(LootBoxesTableSeeder::class);
+        $this->call(SubscriptionsTableSeeder::class);
     }
 }

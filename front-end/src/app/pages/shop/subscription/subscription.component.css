@@ -15,12 +15,14 @@
     position: relative;
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
-
     text-align: center;
     padding-top: 35px;
+
+    color: #ffffff;
+    font-size: 40px;
 }
 
-.inner-image img:hover {
+.inner-image em:hover {
     -webkit-animation-name: shake;
     -webkit-animation-duration: 1s;
     -webkit-transform-origin: 50% 50%;

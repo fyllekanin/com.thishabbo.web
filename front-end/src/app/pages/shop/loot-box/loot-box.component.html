@@ -1,4 +1,4 @@
-<div class="loot-box-container">
+<div class="wrapper">
     <div class="inner-image">
         <img [src]="box.boxUrl"/>
     </div>
@@ -15,12 +15,12 @@
             <strong>Items</strong>
             <div *ngIf="box.items.length < 3">
                 <li *ngFor="let item of box.items" [style.color]="item.color">
-                    {{item.title}}
+                    - {{item.title}}
                 </li>
             </div>
             <div *ngIf="box.items.length > 2">
-                <li [style.color]="box.items[0].color">{{box.items[0].title}}</li>
-                <li [style.color]="box.items[1].color">{{box.items[1].title}}</li>
+                <li [style.color]="box.items[0].color">- {{box.items[0].title}}</li>
+                <li [style.color]="box.items[1].color">- {{box.items[1].title}}</li>
                 <em>And {{box.items.length - 2}} more</em>
             </div>
         </div>

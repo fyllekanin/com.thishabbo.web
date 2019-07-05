@@ -14,6 +14,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { shopRoutes } from './shop.routes';
 import { DashboardResolver } from './services/dashboard.resolver';
 import { LootBoxComponent } from './loot-box/loot-box.component';
+import { SubscriptionComponent } from './subscription/subscription.component';
 
 @NgModule({
     imports: [
@@ -31,7 +32,8 @@ import { LootBoxComponent } from './loot-box/loot-box.component';
     declarations: [
         ShopComponent,
         DashboardComponent,
-        LootBoxComponent
+        LootBoxComponent,
+        SubscriptionComponent
     ],
     entryComponents: [],
     providers: [

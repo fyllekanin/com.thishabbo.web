@@ -56,6 +56,32 @@ class ShopItemsTableSeeder extends Seeder
                 'createdAt' => 1562137893,
                 'updatedAt' => 1562137893,
             ),
+            3 => 
+            array (
+                'shopItemId' => 4,
+                'title' => 'New Subscription',
+                'description' => 'Avatar Subscription - 1 month',
+                'rarity' => 10,
+                'type' => 4,
+                'isDeleted' => 1,
+                'data' => '{"subscriptionTime":2419200,"subscriptionId":4}',
+                'createdBy' => 0,
+                'createdAt' => 1562312921,
+                'updatedAt' => 1562312922,
+            ),
+            4 => 
+            array (
+                'shopItemId' => 5,
+                'title' => 'Month Subscription - Avatar',
+                'description' => 'Cool',
+                'rarity' => 10,
+                'type' => 4,
+                'isDeleted' => 0,
+                'data' => '{"subscriptionTime":2419200,"subscriptionId":4}',
+                'createdBy' => 0,
+                'createdAt' => 1562313056,
+                'updatedAt' => 1562313056,
+            ),
         ));
         
         

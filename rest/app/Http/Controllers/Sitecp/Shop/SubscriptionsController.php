@@ -70,7 +70,7 @@ class SubscriptionsController extends Controller {
         $subscription->save();
 
         Logger::sitecp($user->userId, $request->ip(), Action::CREATED_SUBSCRIPTION, [], $subscription->subscriptionId);
-        return response()->json();
+        return $this->getSubscription($subscription->subscriptionId);
     }
 
     public function updateSubscription(Request $request, $subscriptionId) {
@@ -92,7 +92,7 @@ class SubscriptionsController extends Controller {
         $subscription->save();
 
         Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_SUBSCRIPTION, [], $subscription->subscriptionId);
-        return response()->json();
+        return $this->getSubscription($subscription->subscriptionId);
     }
 
     public function deleteSubscription(Request $request, $subscriptionId) {
