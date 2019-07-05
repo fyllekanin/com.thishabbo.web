@@ -20,6 +20,7 @@ import { ArrayHelper } from 'shared/helpers/array.helper';
 import { Page } from 'shared/page/page.model';
 import { CATEGORY_LIST_BREADCRUMB_ITEM, SITECP_BREADCRUMB_ITEM } from '../../../sitecp.constants';
 import { CategoryListActions, ListCategory } from './categories-list.model';
+import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 
 @Component({
     selector: 'app-sitecp-categories-list',
@@ -38,9 +39,13 @@ export class CategoriesListComponent extends Page implements OnDestroy {
         new TableAction({title: 'Delete Category', value: CategoryListActions.DELETE_CATEGORY})
     ];
 
-    tabs: Array<TitleTab> = [
+    mainTabs: Array<TitleTab> = [
+        new TitleTab({title: 'Toggle', value: CategoryListActions.TOGGLE_CATEGORY}),
         new TitleTab({title: 'Save Order', value: CategoryListActions.SAVE_ORDER}),
         new TitleTab({title: 'New Category', link: '/sitecp/forum/categories/new'})
+    ];
+    contractTabs: Array<TitleTab> = [
+        new TitleTab({title: 'Toggle', value: CategoryListActions.TOGGLE_CATEGORY})
     ];
 
     constructor (
@@ -79,10 +84,13 @@ export class CategoriesListComponent extends Page implements OnDestroy {
         this.updateCategoryDisplayOrder(data);
     }
 
-    onTabClick (action: number): void {
+    onTabClick (action, categoryId: number): void {
         switch (action) {
             case CategoryListActions.SAVE_ORDER:
                 this.onSaveOrder();
+                break;
+            case CategoryListActions.TOGGLE_CATEGORY:
+                this.toggleCategory(categoryId);
                 break;
         }
     }
@@ -105,6 +113,11 @@ export class CategoriesListComponent extends Page implements OnDestroy {
                 });
                 break;
         }
+    }
+
+    isCategoryContracted (categoryId: number): boolean {
+        const items = this.getContractedCategories();
+        return items.indexOf(categoryId) > -1;
     }
 
     get mainCategories (): Array<ListCategory> {
@@ -232,5 +245,20 @@ export class CategoriesListComponent extends Page implements OnDestroy {
             }
         });
         return result;
+    }
+
+    private toggleCategory (categoryId: number): void {
+        let items = this.getContractedCategories();
+        if (items.indexOf(categoryId) === -1) {
+            items.push(categoryId);
+        } else {
+            items = items.filter(item => item !== categoryId);
+        }
+        localStorage.setItem(LOCAL_STORAGE.CONTRACTED_SITECP_CATEGORIES, JSON.stringify(items));
+    }
+
+    private getContractedCategories (): Array<number> {
+        const stored = localStorage.getItem(LOCAL_STORAGE.CONTRACTED_SITECP_CATEGORIES);
+        return stored ? JSON.parse(stored).map(item => Number(item)) : [];
     }
 }
