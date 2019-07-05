@@ -1,14 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
-
-:root {
-    --main-blue-color: #139bfb;
-    --main-pink-color: #e887bf;
-    --main-green-color: #5ba23e;
-    --main-red-color: #ad6262;
-    --main-black-color: #000000;
-    --main-purple-color: #925779;
-}
-
 @font-face {
     font-family: Roboto;
     src: url('./assets/fonts/Roboto-Regular.ttf');
@@ -252,49 +242,49 @@ summary {
 }
 
 .blue-top {
-    border-top: 3px solid var(--main-blue-color) !important;
+    border-top: 3px solid #139bfb !important;
 }
 
 .blue-text {
-    color: var(--main-blue-color) !important;
+    color: #139bfb !important;
 }
 
 .pink-top {
-    border-top: 3px solid var(--main-pink-color) !important;
+    border-top: 3px solid #e887bf !important;
 }
 
 .pink-text {
-    color: var(--main-pink-color) !important;
+    color: #e887bf !important;
 }
 
 .green-top {
-    border-top: 3px solid var(--main-green-color) !important;
+    border-top: 3px solid #5ba23e !important;
 }
 
 .green-text {
-    color: var(--main-green-color) !important;
+    color: #5ba23e !important;
 }
 
 .red-top {
-    border-top: 3px solid var(--main-red-color) !important;
+    border-top: 3px solid #ad6262 !important;
 }
 
 .red-text {
-    color: var(--main-red-color) !important;
+    color: #ad6262 !important;
 }
 
 .black-top {
-    border-top: 3px solid var(--main-black-color) !important;
+    border-top: 3px solid #000000 !important;
 }
 
 .black-text {
-    color: var(--main-black-color) !important;
+    color: #000000 !important;
 }
 
 .purple-top {
-    border-top: 3px solid var(--main-purple-color) !important;
+    border-top: 3px solid #925779 !important;
 }
 
 .purple-text {
-    color: var(--main-purple-color) !important;
+    color: #925779 !important;
 }

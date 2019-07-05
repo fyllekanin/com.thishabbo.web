@@ -12,22 +12,6 @@
     display: block;
 }
 
-.blue-top {
-    border-top: 3px solid #139bfb;
-}
-
-.pink-top {
-    border-top: 3px solid #ee6db7;
-}
-
-.green-top {
-    border-top: 3px solid #5ba23e;
-}
-
-.red-top {
-    border-top: 3px solid #ad6262;
-}
-
 .content2 {
     text-align: center;
     font-size: 1.5rem;
