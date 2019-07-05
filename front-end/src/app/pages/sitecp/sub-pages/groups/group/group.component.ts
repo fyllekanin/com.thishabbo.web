@@ -104,7 +104,6 @@ export class GroupComponent extends Page implements OnDestroy {
         this.group.staffPermissions = this.baseGroup.staffPermissions;
         this.group.options = this.baseGroup.options;
         this.group.immunity = this.baseGroup.immunity;
-        this.group.nameColor = this.baseGroup.nameColor;
     }
 
     get userBarStyle (): string {
