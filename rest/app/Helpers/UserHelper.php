@@ -210,6 +210,7 @@ class UserHelper {
         $user->iconId = $userdata->iconId;
         $user->iconPosition = $userdata->iconPosition;
         $user->effectId = $userdata->effectId;
+        $user->barColor = Value::objectJsonProperty($userdata, 'barColor', null);
         $user->social = $userdata && !$postBit->hideSocials ? (object)[
             'discord' => $userdata->discord,
             'twitter' => $userdata->twitter

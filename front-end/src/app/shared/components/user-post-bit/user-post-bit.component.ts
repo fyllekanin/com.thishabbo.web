@@ -4,6 +4,7 @@ import { TimeHelper } from 'shared/helpers/time.helper';
 import { StringHelper } from 'shared/helpers/string.helper';
 import { NAME_POSITIONS } from 'shared/constants/name-positions.constants';
 import { AvatarModel } from '../../../pages/user/usercp/essentials/avatar/avatar.model';
+import { UserHelper } from 'shared/helpers/user.helper';
 
 @Component({
     selector: 'app-user-post-bit',
@@ -30,6 +31,10 @@ export class UserPostBitComponent {
 
     badgeTooltip (badge: UserBadge): string {
         return `${badge.name}: ${badge.description}`;
+    }
+
+    getBarColors (): string {
+        return UserHelper.getBarColor(this.user.barColor);
     }
 
     get isTopOutside () {

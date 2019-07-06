@@ -21,6 +21,8 @@ use Illuminate\Database\Eloquent\Builder;
  * @property false|string nameColor
  * @property mixed namePosition
  * @property mixed xp
+ * @property false|string activeBadges
+ * @property mixed barColor
  */
 class UserData extends UnixTimeModel {
     protected $table = 'userdata';
@@ -36,6 +38,7 @@ class UserData extends UnixTimeModel {
         'twitter',
         'badges',
         'nameColor',
+        'barColor',
         'namePosition',
         'iconId',
         'iconPosition',

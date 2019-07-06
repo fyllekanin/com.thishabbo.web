@@ -3,18 +3,20 @@
     <div class="grid-container">
         <div class="grid-x grid-margin-x">
             <div class="cell small-6">
-                <label>Information Shown
-
-                        <span tooltip="When posting a post, on the left hand side your&#xa;user profile is displayed with the following things below.&#xa;Tick those you wish to hide!" class="checkbox-info">
-                                <em class="fas fa-question-circle"></em>
-                        </span>
+                <label>
+                    Information Shown
+                    <span tooltip="When posting a post, on the left hand side your&#xa;user profile is displayed with the following things below.&#xa;Tick those you wish to hide!"
+                          class="checkbox-info">
+                            <em class="fas fa-question-circle"></em>
+                    </span>
                 </label>
                 <div>
                     <label class="checkbox-container">
                         Hide Join Date
                         <input type="checkbox" [(ngModel)]="postBitOptions.hideJoinDate">
                         <span class="checkmark"></span>
-                        <span tooltip="This will hide your join date&#xa;from your postbit for all users." class="checkbox-info">
+                        <span tooltip="This will hide your join date&#xa;from your postbit for all users."
+                              class="checkbox-info">
                                 <em class="fas fa-question-circle"></em>
                         </span>
 
@@ -26,7 +28,8 @@
                         <input type="checkbox" [(ngModel)]="postBitOptions.hidePostCount">
                         <span class="checkmark"></span>
 
-                        <span tooltip="This will hide your post count from&#xa;your postbit for all users." class="checkbox-info">
+                        <span tooltip="This will hide your post count from&#xa;your postbit for all users."
+                              class="checkbox-info">
                                 <em class="fas fa-question-circle"></em>
                         </span>
                     </label>
@@ -37,7 +40,8 @@
                         <input type="checkbox" [(ngModel)]="postBitOptions.hideLikesCount">
                         <span class="checkmark"></span>
 
-                        <span tooltip="This will hide your likes count from&#xa;your postbit for all users." class="checkbox-info">
+                        <span tooltip="This will hide your likes count from&#xa;your postbit for all users."
+                              class="checkbox-info">
                                 <em class="fas fa-question-circle"></em>
                         </span>
                     </label>
@@ -49,7 +53,8 @@
                         <span class="checkmark"></span>
 
 
-                        <span tooltip="This will hide your social networking from&#xa;your postbit for all users." class="checkbox-info">
+                        <span tooltip="This will hide your social networking from&#xa;your postbit for all users."
+                              class="checkbox-info">
                                 <em class="fas fa-question-circle"></em>
                         </span>
                     </label>
@@ -84,6 +89,18 @@
                         <span class="checkmark"></span>
                     </label>
                 </div>
+            </div>
+            <div class="cell small-6" *ngIf="userBar.isAvailable">
+                <label>
+                    Custom Userbar
+                    <span tooltip="Format is: #000000,#ffffff etc" class="checkbox-info">
+                        <em class="fas fa-question-circle"></em>
+                    </span>
+                </label>
+                <input type="text" [(ngModel)]="userBarColors" (ngModelChange)="onBarColorChange($event)">
+                <br/>
+                <label>Preview:</label>
+                <div class="custom-user-bar-template" [style]="getBarColors() | safeStyle">Donator</div>
             </div>
         </div>
     </div>

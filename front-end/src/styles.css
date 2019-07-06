@@ -288,3 +288,18 @@ summary {
 .purple-text {
     color: #925779 !important;
 }
+
+.custom-user-bar-template {
+    text-shadow: rgba(93, 79, 79, 0.51) 0px 1px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 0px 1px inset, rgba(255, 255, 255, 0.12) 0px 0px 0px 2px inset, rgba(0, 0, 0, 0.17) 0px 2px 0px;
+    background-image: url(/assets/images/bargradient.png);
+    width: 200px;
+    margin-top: 5px;
+    text-align: center;
+    color: white;
+    padding: 8px;
+    border-radius: 2px;
+    font-size: 10px;
+    font-weight: bold;
+    margin-left: 4px;
+}

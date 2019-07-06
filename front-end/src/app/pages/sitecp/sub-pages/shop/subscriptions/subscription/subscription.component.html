@@ -39,6 +39,12 @@
                 </label>
 
                 <label class="checkbox-container">
+                    Can use Custom Bar? <em>(Can the user make their own custom userbar?)</em>
+                    <input type="checkbox" [(ngModel)]="model.options.canHaveCustomBar">
+                    <span class="checkmark"></span>
+                </label>
+
+                <label class="checkbox-container">
                     Is listed? <em>(In the shop by itself and not only through loot box)</em>
                     <input type="checkbox" [(ngModel)]="model.options.isListed">
                     <span class="checkmark"></span>
