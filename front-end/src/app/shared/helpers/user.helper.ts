@@ -24,7 +24,7 @@ export class UserHelper {
             font-weight: bold;
             color: #ffffff;
             background: url(/assets/images/bargradient.png), ${colors && colors.length > 0 ? colors[0] : '#c1c1c1'};`;
-        
+
         if (colors && colors.length > 1) {
             let current = 0;
             const stops = 1 / colors.length;
