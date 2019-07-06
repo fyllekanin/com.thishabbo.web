@@ -270,30 +270,30 @@ class ProfileSettingsController extends Controller {
     }
 
     /**
-     * Get request to fetch the users current name colors
+     * Get request to fetch the users current name settings
      *
      * @param Request $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getNameColors(Request $request) {
+    public function getNameSettings(Request $request) {
         $user = $request->get('auth');
 
         $userdata = UserData::where('userId', $user->userId)->first();
         return response()->json([
             'colors' => Value::objectJsonProperty($userdata, 'nameColor', []),
-            'canUpdateColor' => UserHelper::hasSubscriptionFeature($user->userId, ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor)
+            'canUpdateSettings' => UserHelper::hasSubscriptionFeature($user->userId, ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor)
         ]);
     }
 
     /**
-     * Put request to update the user name colors
+     * Put request to update the user name settings
      *
      * @param Request $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateNameColors(Request $request) {
+    public function updateNameSettings(Request $request) {
         $user = $request->get('auth');
 
         Condition::precondition(!UserHelper::hasSubscriptionFeature($user->userId,

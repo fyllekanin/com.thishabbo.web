@@ -1,12 +1,12 @@
 import { ClassHelper, arrayOf, primitive } from 'shared/helpers/class.helper';
 
-export class NameColor {
+export class NameSettings {
     @arrayOf(String)
     colors: Array<string> = [];
     @primitive()
-    canUpdateColor: boolean;
+    canUpdateSettings: boolean;
 
-    constructor(source?: Partial<NameColor>) {
+    constructor(source?: Partial<NameSettings>) {
         ClassHelper.assign(this, source);
     }
 }
