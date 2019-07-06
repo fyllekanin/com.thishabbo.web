@@ -74,6 +74,7 @@
 .latest-post {
     font-weight: bold;
     color: #0591ff;
+    margin: 0px 0px 0px 8px;
 }
 
 .latest-post:hover {
