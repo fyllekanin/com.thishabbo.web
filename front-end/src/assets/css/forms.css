@@ -48,7 +48,7 @@
 }
 
 .checkbox-container input:checked ~ .checkmark {
-    background-color: #139bfb;
+    background-color: #31a2f2;
 }
 
 .checkmark:after {
