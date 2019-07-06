@@ -277,7 +277,7 @@ export class ThreadComponent extends Page implements OnDestroy {
         this._threadPage = data.data;
         this._threadPage.parents.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'displayOrder'));
         this._threadPage.threadPosts.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'postId'));
-
+        this._threadPage.currentReaders = this._threadPage.readers.filter(reader => reader.currentlyViewing);
         this.pagination = new PaginationModel({
             total: this._threadPage.total,
             page: this._threadPage.page,
