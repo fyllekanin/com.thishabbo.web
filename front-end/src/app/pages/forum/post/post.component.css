@@ -3,19 +3,6 @@
     margin-left: 10px;
 }
 
-.post-content img {
-    display: inline-block;
-    vertical-align: middle;
-    max-width: 100%;
-    height: auto;
-    border: 1px solid #00000021 !important;
-    padding: 1px;
-    box-shadow: transparent 0 0 0 1px inset, rgba(255, 255, 255, .09) 0 0 0 2px inset, rgba(0, 0, 0, 0.05) 0 2px 0;
-    margin-left: 5px;
-    margin-bottom: 5px;
-    -ms-interpolation-mode: bicubic;
-}
-
 .signature {
     margin: 10px 10px 0 10px;
     position: relative;
