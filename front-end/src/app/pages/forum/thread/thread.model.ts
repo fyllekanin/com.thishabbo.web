@@ -14,6 +14,8 @@ export class ThreadReader {
     user: SlimUser;
     @time()
     time: string;
+    @primitive()
+    currentlyViewing: boolean;
 
     constructor (source: Partial<ThreadReader>) {
         ClassHelper.assign(this, source);
