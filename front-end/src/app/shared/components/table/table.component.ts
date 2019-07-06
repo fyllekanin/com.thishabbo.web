@@ -117,6 +117,10 @@ export class TableComponent implements DoCheck {
         return this._config.isRowsSelectable;
     }
 
+    get selectionAmount (): number {
+        return this._config.rows.filter(row => row.isSelected).length;
+    }
+
     private getColumnSize (): ColumnSize {
         if (!this._config || !this._config.headers) {
             return null;

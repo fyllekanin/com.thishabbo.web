@@ -29,7 +29,7 @@
         </div>
         <table>
             <tr>
-                <th *ngIf="isRowsSelectable"></th>
+                <th *ngIf="isRowsSelectable">Selected: {{selectionAmount | number: '1.'}}</th>
                 <th *ngFor="let header of headers">{{header.title}}</th>
                 <th *ngIf="haveActions"></th>
             </tr>
