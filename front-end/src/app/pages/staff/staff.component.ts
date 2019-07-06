@@ -46,8 +46,13 @@ export class StaffComponent extends Page implements OnDestroy, OnInit {
                 title: 'Radio',
                 items: [
                     new SideMenuItem({
-                        title: 'Radio Timetable',
-                        link: `/staff/radio/timetable/${new Date().getDay() === 0 ? 7 : new Date().getDay()}`,
+                        title: 'Booking Logs',
+                        link: '/staff/radio/booking/page/1',
+                        isApplicable: this._authService.staffPermissions.canSeeBookingLogs
+                    }),
+                    new SideMenuItem({
+                        title: 'Connection Information',
+                        link: '/staff/radio/connection',
                         isApplicable: this._authService.staffPermissions.canRadio
                     }),
                     new SideMenuItem({
@@ -56,25 +61,30 @@ export class StaffComponent extends Page implements OnDestroy, OnInit {
                         isApplicable: this._authService.staffPermissions.canRadio
                     }),
                     new SideMenuItem({
-                        title: 'Connection Information',
-                        link: '/staff/radio/connection',
+                        title: 'Radio Timetable',
+                        link: `/staff/radio/timetable/${new Date().getDay() === 0 ? 7 : new Date().getDay()}`,
                         isApplicable: this._authService.staffPermissions.canRadio
                     }),
                     new SideMenuItem({
                         title: 'Requests',
                         link: '/staff/radio/requests',
                         isApplicable: this._authService.staffPermissions.canRadio
-                    }),
-                    new SideMenuItem({
-                        title: 'Booking Logs',
-                        link: '/staff/radio/booking/page/1',
-                        isApplicable: this._authService.staffPermissions.canSeeBookingLogs
                     })
                 ]
             }),
             new SideMenuBlock({
                 title: 'Event',
                 items: [
+                    new SideMenuItem({
+                        title: 'Ban On Sight',
+                        link: '/staff/events/ban-on-sight',
+                        isApplicable: this._authService.staffPermissions.canEvent
+                    }),
+                    new SideMenuItem({
+                        title: 'Booking Logs',
+                        link: '/staff/events/booking/page/1',
+                        isApplicable: this._authService.staffPermissions.canSeeBookingLogs
+                    }),
                     new SideMenuItem({
                         title: 'Events Timetable',
                         link: `/staff/events/timetable/${new Date().getDay() === 0 ? 7 : new Date().getDay()}`,
@@ -84,16 +94,6 @@ export class StaffComponent extends Page implements OnDestroy, OnInit {
                         title: 'Manage Event Types',
                         link: '/staff/events/types/page/1',
                         isApplicable: this._authService.staffPermissions.canManageEvents
-                    }),
-                    new SideMenuItem({
-                        title: 'Booking Logs',
-                        link: '/staff/events/booking/page/1',
-                        isApplicable: this._authService.staffPermissions.canSeeBookingLogs
-                    }),
-                    new SideMenuItem({
-                        title: 'BOS List',
-                        link: '/staff/events/ban-on-sight',
-                        isApplicable: this._authService.staffPermissions.canEvent
                     })
                 ]
             }),
@@ -101,14 +101,14 @@ export class StaffComponent extends Page implements OnDestroy, OnInit {
                 title: 'Management',
                 items: [
                     new SideMenuItem({
-                        title: 'Do Not Hire List',
-                        link: '/staff/management/do-not-hire',
-                        isApplicable: this._authService.staffPermissions.canSeeDoNotHire
-                    }),
-                    new SideMenuItem({
                         title: 'Current Listeners',
                         link: '/staff/management/current-listeners',
                         isApplicable: this._authService.staffPermissions.canSeeListeners
+                    }),
+                    new SideMenuItem({
+                        title: 'Do Not Hire',
+                        link: '/staff/management/do-not-hire',
+                        isApplicable: this._authService.staffPermissions.canSeeDoNotHire
                     }),
                     new SideMenuItem({
                         title: 'Manage Connection Information',
@@ -116,14 +116,14 @@ export class StaffComponent extends Page implements OnDestroy, OnInit {
                         isApplicable: this._authService.staffPermissions.canEditRadioInfo
                     }),
                     new SideMenuItem({
-                        title: 'Kick DJ',
-                        link: '/staff/radio/kick-dj',
-                        isApplicable: this._authService.staffPermissions.canKickDjOffAir
-                    }),
-                    new SideMenuItem({
                         title: 'Manage Permanent Shows',
                         link: '/staff/management/permanent-shows/page/1',
                         isApplicable: this._authService.staffPermissions.canManagePermShows
+                    }),
+                    new SideMenuItem({
+                        title: 'Kick DJ',
+                        link: '/staff/radio/kick-dj',
+                        isApplicable: this._authService.staffPermissions.canKickDjOffAir
                     })
                 ]
             })

@@ -30,7 +30,7 @@ export class ChangePasswordComponent extends Page implements OnDestroy {
         this._userId = activatedRoute.snapshot.params['userId'];
         this._code = activatedRoute.snapshot.params['code'];
         breadcrumbService.breadcrumb = new Breadcrumb({
-            current: 'Change Password'
+            current: 'Edit Password'
         });
     }
 
