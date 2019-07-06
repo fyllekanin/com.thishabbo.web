@@ -56,7 +56,7 @@ export class NameSettingsComponent extends Page implements OnDestroy {
             }, this._notificationService.failureNotification.bind(this._notificationService));
         } else {
             this._notificationService.sendErrorNotification(
-                'Hex codes invalid'
+                'The HEX Codes entered are invalid'
             );
         }
     }
