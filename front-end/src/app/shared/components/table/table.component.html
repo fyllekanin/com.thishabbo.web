@@ -42,9 +42,9 @@
                     </label>
                 </td>
                 <td *ngFor="let cell of row.cells">
-                        <span *ngIf="cell.statusBox" [ngClass]="cell.status ? 'status-good' : 'status-bad'">
-                            {{cell.title}}
-                        </span>
+                    <span *ngIf="cell.statusBox" [ngClass]="cell.status ? 'status-good' : 'status-bad'">
+                        {{cell.title}}
+                    </span>
                     <input *ngIf="cell.isEditable" class="editable" [(ngModel)]="cell.value">
 
                     <span *ngIf="!cell.statusBox && !cell.isEditable">

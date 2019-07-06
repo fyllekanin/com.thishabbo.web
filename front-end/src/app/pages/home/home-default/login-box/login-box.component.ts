@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from 'core/services/auth/auth.service';
-import { TitleTopBorder } from 'shared/app-views/title/title.model';
-import { Button } from 'shared/directives/button/button.model';
+import { TitleTab, TitleTopBorder } from 'shared/app-views/title/title.model';
 import { INFO_BOX_TYPE, InfoBoxModel } from 'shared/app-views/info-box/info-box.model';
 
 @Component({
@@ -11,10 +10,13 @@ import { INFO_BOX_TYPE, InfoBoxModel } from 'shared/app-views/info-box/info-box.
 })
 export class LoginBoxComponent {
 
-    registerButton = Button.GREEN;
-    titleTop = TitleTopBorder.BLUE;
+    titleTop = TitleTopBorder.RED;
     loginName: string;
     password: string;
+    tabs: Array<TitleTab> = [
+        new TitleTab({title: 'Login'}),
+        new TitleTab({title: 'Register', link: '/auth/register'})
+    ];
 
     infoModel: InfoBoxModel = {
         title: 'Warning!',
@@ -25,15 +27,16 @@ export class LoginBoxComponent {
         `
     };
 
-    constructor(
+    constructor (
         private _authService: AuthService
-    ) {}
+    ) {
+    }
 
-    doLogin(): void {
+    doLogin (): void {
         this._authService.login(this.loginName, this.password);
     }
 
-    keyDownFunction(event): void {
+    keyDownFunction (event): void {
         if (event.keyCode === 13) {
             this.doLogin();
         }

@@ -140,7 +140,10 @@ class ProfileController extends Controller {
                 'threads' => $profile->threads,
                 'likes' => $profile->likes,
                 'createdAt' => $profile->createdAt->timestamp,
-                'lastActivity' => $profile->lastActivity
+                'lastActivity' => $profile->lastActivity,
+                'habbo' => $profile->habbo,
+                'referrals' => User::where('referralId', $profile->userId)->count(),
+                'xp' => UserHelper::getUserDataOrCreate($profile->userId)->xp
             ],
             'visitorMessages' => $this->getVisitorMessages($request, $profile, $page),
             'relations' => !$profile->profile ? [] : [

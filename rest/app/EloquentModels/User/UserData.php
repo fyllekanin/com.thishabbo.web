@@ -42,6 +42,7 @@ class UserData extends UnixTimeModel {
         'namePosition',
         'iconId',
         'iconPosition',
+        'xp',
         'effectId'
     ];
 

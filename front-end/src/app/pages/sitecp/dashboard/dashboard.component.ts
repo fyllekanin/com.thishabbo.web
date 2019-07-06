@@ -8,6 +8,7 @@ import { StatsBoxModel } from 'shared/app-views/stats-boxes/stats-boxes.model';
 import { TitleTopBorder } from 'shared/app-views/title/title.model';
 import { ActivatedRoute } from '@angular/router';
 import { DashboardModel } from './dashboard.model';
+import { NumberHelper } from 'shared/helpers/number.helper';
 
 @Component({
     selector: 'app-sitecp-dashboard',
@@ -58,25 +59,25 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
             new StatsBoxModel({
                 borderColor: TitleTopBorder.GREEN,
                 icon: 'far fa-comment',
-                title: this._data.stats.posts.toString(),
+                title: NumberHelper.numberWithCommas(this._data.stats.posts),
                 breadText: 'Posts Today'
             }),
             new StatsBoxModel({
                 borderColor: TitleTopBorder.RED,
                 icon: 'far fa-comments',
-                title: this._data.stats.threads.toString(),
+                title: NumberHelper.numberWithCommas(this._data.stats.threads),
                 breadText: 'Threads Today'
             }),
             new StatsBoxModel({
                 borderColor: TitleTopBorder.BLUE,
                 icon: 'fas fa-coins',
-                title: this._data.stats.credits.toString(),
+                title: NumberHelper.numberWithCommas(this._data.stats.credits),
                 breadText: 'Credits In Economy'
             }),
             new StatsBoxModel({
                 borderColor: TitleTopBorder.PINK,
                 icon: 'far fa-address-book',
-                title: this._data.stats.subscriptions.toString(),
+                title: NumberHelper.numberWithCommas(this._data.stats.subscriptions),
                 breadText: 'Active Subscriptions'
             })
         ];

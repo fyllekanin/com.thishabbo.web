@@ -103,12 +103,12 @@ class LootBoxesController extends Controller {
         if ($title) {
             $items->where('title', 'LIKE', Value::getFilterValue($request, $title));
         }
-        $total = DataHelper::getPage($items->count());
+        $total = DataHelper::getPage($items->count(), 30);
 
         return response()->json([
             'total' => $total,
             'page' => $page,
-            'items' => $items->take($this->perPage)->skip(DataHelper::getOffset($page))->get()->map(function ($item) {
+            'items' => $items->take($this->perPage)->skip(DataHelper::getOffset($page), 30)->get()->map(function ($item) {
                 $items = json_decode($item->items);
 
                 return [

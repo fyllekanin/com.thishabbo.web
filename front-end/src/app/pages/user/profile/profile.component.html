@@ -2,8 +2,9 @@
     <app-title [title]="'Private Profile'" [tabs]="followerTabs" (onTabClick)="onFollowerTabClick($event)"></app-title>
     <app-content>
         <b>This profile is private!</b>
-        
-        You are not allowed to visit this profile, if you want to be able to see this profile you need to be an approved follower, so let's get following and we'll see if they'll accept!
+
+        You are not allowed to visit this profile, if you want to be able to see this profile you need to be an approved
+        follower, so let's get following and we'll see if they'll accept!
     </app-content>
 </div>
 
@@ -76,7 +77,7 @@
                     </app-content>
                 </div>
 
-                <app-title [title]="'All Time Stats'"></app-title>
+                <!--<app-title [title]="'All Time Stats'"></app-title>
                 <app-content>
                     <div class="gray-content-wrapper"><em class="fas fa-trophy gold-trophy"></em><strong> Best
                         Season:</strong> 3rd
@@ -110,7 +111,7 @@
                         in Season:</strong> 3
                         (23)
                     </div>
-                </app-content>
+                </app-content>-->
             </div>
             <div class="cell small-12 medium-6">
                 <app-editor #editor [title]="'Visitor Messages'" [slim]="true" [buttons]="sendButton"
@@ -126,6 +127,38 @@
             </div>
 
             <div class="cell small-12 medium-3">
+                <app-title [title]="'Quick Stats'"></app-title>
+                <app-content>
+                    <div class="post-bit">
+                        <div class="gray-content-wrapper">
+                            <strong>Habbo:</strong>
+                            <div class="float-right">
+                                {{stats.habbo}}
+                            </div>
+                        </div>
+                        <div class="gray-content-wrapper">
+                            <strong>Referrals:</strong>
+                            <div class="float-right">
+                                {{stats.referrals | number: '1.'}}
+                            </div>
+                        </div>
+                        <div class="gray-content-wrapper">
+                            <strong>XP:</strong>
+                            <div class="float-right">
+                                {{stats.xp | number: '1.'}}
+                            </div>
+                        </div>
+                        <div class="gray-content-wrapper">
+                            <a [routerLink]="['/home/search/posts/page/1']"
+                               [queryParams]="{ byUser: user.nickname, order: 'desc'}">Search posts by user &raquo;</a>
+                        </div>
+                        <div class="gray-content-wrapper">
+                            <a [routerLink]="['/home/search/threads/page/1']"
+                               [queryParams]="{ byUser: user.nickname, order: 'desc'}">Search threads by user
+                                &raquo;</a>
+                        </div>
+                    </div>
+                </app-content>
                 <app-title [title]="'Radio Slots'"></app-title>
                 <app-content>
                     <div class="radio-slot" *ngFor="let slot of slots.radio">

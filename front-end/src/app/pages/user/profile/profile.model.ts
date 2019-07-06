@@ -26,6 +26,12 @@ export class ProfileStats {
     createdAt: string;
     @primitive()
     userId: number;
+    @primitive()
+    habbo: string;
+    @primitive()
+    xp: number;
+    @primitive()
+    referrals: number;
     @time()
     lastActivity: string;
 
