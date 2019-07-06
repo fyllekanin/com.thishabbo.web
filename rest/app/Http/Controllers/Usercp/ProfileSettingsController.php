@@ -6,6 +6,8 @@ use App\EloquentModels\User\Avatar;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserData;
 use App\EloquentModels\User\UserProfile;
+use App\EloquentModels\User\UserItem;
+use App\EloquentModels\Shop\ShopItem;
 use App\Helpers\AvatarHelper;
 use App\Helpers\ConfigHelper;
 use App\Helpers\UserHelper;
@@ -270,39 +272,60 @@ class ProfileSettingsController extends Controller {
     }
 
     /**
-     * Get request to fetch the users current name colors
+     * Get request to fetch the users current name settings
      *
      * @param Request $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getNameColors(Request $request) {
+    public function getNameSettings (Request $request) {
         $user = $request->get('auth');
 
-        $userdata = UserData::where('userId', $user->userId)->first();
+        $userdata = UserHelper::getUserDataOrCreate($user->userId);
+
+        $iconPosition = Value::objectProperty($userdata, 'iconPosition', 'left');
+        $availableNameIconIds = UserItem::where('userId', $user->userId)->where('type', ConfigHelper::getTypesConfig()->nameIcon)->pluck('itemId');
+        $availableEffectIds = UserItem::where('userId', $user->userId)->where('type', ConfigHelper::getTypesConfig()->nameEffect)->pluck('itemId');
         return response()->json([
+            'iconId' => Value::objectProperty($userdata, 'iconId', null),
+            'iconPosition' => $iconPosition,
+            'effectId' => Value::objectProperty($userdata, 'effectId', null),
+            'availableNameIcons' => ShopItem::whereIn('shopItemId', $availableNameIconIds)->get(),
+            'availableNameEffects' => ShopItem::whereIn('shopItemId', $availableEffectIds)->get(),
             'colors' => Value::objectJsonProperty($userdata, 'nameColor', []),
             'canUpdateColor' => UserHelper::hasSubscriptionFeature($user->userId, ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor)
         ]);
     }
 
     /**
-     * Put request to update the user name colors
+     * Put request to update the user name settings
      *
      * @param Request $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateNameColors(Request $request) {
+    public function updateNameSettings(Request $request) {
         $user = $request->get('auth');
 
-        Condition::precondition(!UserHelper::hasSubscriptionFeature($user->userId,
+        $colors = $request->input('colors');
+
+        Condition::precondition($colors && !UserHelper::hasSubscriptionFeature($user->userId,
             ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor), 400, 'You do not have the permissions to edit the name colour!');
 
-        $colors = $request->input('colors');
         Condition::precondition(!Value::validateHexColors($colors), 400, 'Invalid Hex Code!');
 
+        $iconId = $request->input('iconId');
+        Condition::precondition($iconId && UserItem::where('userId', $user->userId)->where('itemId', $iconId)->count() == 0,
+            400, 'You do not own this icon!');
+
+        $effectId = $request->input('effectId');
+        Condition::precondition($effectId && UserItem::where('userId', $user->userId)->where('itemId', $effectId)->count() == 0,
+            400, 'You do not own this effect!');
+
         $userData = UserHelper::getUserDataOrCreate($user->userId);
+        $userData->iconId = $iconId;
+        $userData->effectId = $effectId;
+        $userData->iconPosition = $request->input('iconPosition');
         $userData->nameColor = json_encode($colors);
         $userData->save();
 
