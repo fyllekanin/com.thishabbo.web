@@ -213,13 +213,13 @@ class CategoriesController extends Controller {
 
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
 
-        $categories = Category::select('categoryId', 'title', 'displayOrder', 'isHidden')
+        $categories = Category::select('categoryId', 'title', 'displayOrder', 'isHidden', 'parentId')
             ->where('parentId', '<', 0)
             ->whereIn('categoryId', $categoryIds)
             ->get();
 
         foreach ($categories as $category) {
-            $category->children = $this->forumService->getChildren($category, $categoryIds);
+            $category->children = $this->forumService->getChildren($category, $categoryIds, true);
         }
 
         return response()->json($categories);

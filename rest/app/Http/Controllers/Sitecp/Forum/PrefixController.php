@@ -54,7 +54,7 @@ class PrefixController extends Controller {
             ->get();
 
         foreach ($categories as $category) {
-            $category->children = $this->forumService->getChildren($category, $categoryIds);
+            $category->children = $this->forumService->getChildren($category, $categoryIds, true);
         }
         $prefix->categories = $categories;
         return response()->json($prefix);

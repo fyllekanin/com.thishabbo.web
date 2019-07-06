@@ -210,7 +210,10 @@ export class CategoriesListComponent extends Page implements OnDestroy {
             return new TableRow({
                 id: category.categoryId,
                 cells: [
-                    new TableCell({title: category.title}),
+                    new TableCell({
+                        title: (category.isFirstChild ? `<strong>${category.title}</strong>` : category.title),
+                        innerHTML: true
+                    }),
                     new TableCell({
                         title: category.isHidden ? 'Hidden' : 'Visible'
                     }),

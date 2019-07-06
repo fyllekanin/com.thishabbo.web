@@ -284,15 +284,18 @@ class ForumService {
      * @param $category
      * @param $categoryIds
      *
+     * @param bool $isFirstChild
+     *
      * @return mixed
      */
-    public function getChildren($category, $categoryIds) {
+    public function getChildren($category, $categoryIds, $isFirstChild) {
         $children = Category::where('parentId', $category->categoryId)
             ->whereIn('categoryId', $categoryIds)
-            ->get(['categoryId', 'title', 'displayOrder', 'isHidden']);
+            ->get(['categoryId', 'title', 'displayOrder', 'isHidden', 'parentId']);
 
         foreach ($children as $child) {
-            $child->children = $this->getChildren($child, $categoryIds);
+            $child->isFirstChild = $isFirstChild;
+            $child->children = $this->getChildren($child, $categoryIds, false);
         }
 
         return $children;
@@ -307,13 +310,13 @@ class ForumService {
      */
     public function getCategoryTree($user, $ignoreIds = [], $parentId = -1) {
         $forumPermissions = ConfigHelper::getForumPermissions();
-        $categories = Category::where('parentId', $parentId)->select('categoryId', 'title', 'displayOrder')->getQuery()->get();
+        $categories = Category::where('parentId', $parentId)->select('categoryId', 'title', 'displayOrder')->get();
         Iterables::filter(Category::where('parentId', $parentId)->select('categoryId', 'title', 'displayOrder')->getQuery()->get()->toArray(),
             function ($category) use ($ignoreIds, $forumPermissions, $user) {
                 return in_array($category->categoryId, $ignoreIds) || !PermissionHelper::haveForumPermission($user->userId, $forumPermissions->canRead, $category->categoryId);
             });
         foreach ($categories as $category) {
-            $category->children = $this->getCategoryTree($user, $ignoreIds, [$category->categoryId]);
+            $category->children = $this->getCategoryTree($user, $ignoreIds, $category->categoryId);
         }
 
         return $categories;

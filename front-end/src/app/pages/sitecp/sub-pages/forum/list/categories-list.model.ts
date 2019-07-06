@@ -11,6 +11,8 @@ export class ListCategory {
     isHidden: boolean;
     @arrayOf(ListCategory)
     children: Array<ListCategory> = [];
+    @primitive(Boolean)
+    isFirstChild: boolean;
 
     constructor (source: Partial<ListCategory>) {
         ClassHelper.assign(this, source);

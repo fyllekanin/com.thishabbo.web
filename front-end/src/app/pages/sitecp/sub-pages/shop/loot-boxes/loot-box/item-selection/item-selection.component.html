@@ -1,2 +1,3 @@
-<app-table [config]="tableConfig" (onRowToggle)="onRowToggle($event)" (onFilter)="onFilter($event)"></app-table>
+<app-table [config]="tableConfig" [skipUrlUpdate]="true" (onRowToggle)="onRowToggle($event)"
+           (onFilter)="onFilter($event)"></app-table>
 <app-pagination [paginationModel]="pagination" (onPageSwitch)="onPageSwitch($event)"></app-pagination>

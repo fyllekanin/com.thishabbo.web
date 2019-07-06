@@ -27,6 +27,7 @@ export class TableComponent implements DoCheck {
     @Output() onRowToggle: EventEmitter<TableRow> = new EventEmitter();
     @Input() tabs: Array<TitleTab> = [];
     @Input() isContracted: boolean;
+    @Input() skipUrlUpdate = false;
 
     constructor (private _router: Router) {
     }
@@ -146,6 +147,9 @@ export class TableComponent implements DoCheck {
     }
 
     private updateStateOfUrl (): void {
+        if (this.skipUrlUpdate) {
+            return;
+        }
         const newPath = location.pathname.replace(new RegExp(/\/page\/[0-9]+/g), '/page/1');
         const setParams = this.filterConfigs.filter(item => item.value).reduce((prev, curr) => {
             prev[curr.key] = curr.value;
