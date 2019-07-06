@@ -5,6 +5,7 @@ import { AuthService } from 'core/services/auth/auth.service';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 import { MainItem } from 'shared/app-views/navigation/navigation.model';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
+import { XP_PER_LEVEL } from 'shared/constants/user.constants';
 
 @Component({
     selector: 'app-top-box',
@@ -94,6 +95,15 @@ export class TopBoxComponent {
 
     get isStaff (): boolean {
         return this._user && this._user.isStaff;
+    }
+
+    get level (): number {
+        return Math.floor(this._user.xp / XP_PER_LEVEL);
+    }
+
+    get percentage (): number {
+        const currentXp = this._user.xp - (this.level * XP_PER_LEVEL);
+        return Math.floor((currentXp / XP_PER_LEVEL) * 100);
     }
 
     private setUser (): void {
