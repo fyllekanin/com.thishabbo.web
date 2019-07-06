@@ -3,12 +3,16 @@ import { FooterComponent } from './footer.component';
 import { RouterModule } from '@angular/router';
 import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
 import { CommonModule } from '@angular/common';
+import { UserProfileModule } from 'shared/directives/user-profile.module';
+import { UserLinkModule } from 'shared/components/user/user-link.module';
 
 @NgModule({
     imports: [
         CommonModule,
         RouterModule,
-        SafeStyleModule
+        SafeStyleModule,
+        UserProfileModule,
+        UserLinkModule
     ],
     declarations: [
         FooterComponent
@@ -17,4 +21,5 @@ import { CommonModule } from '@angular/common';
         FooterComponent
     ]
 })
-export class FooterModule {}
+export class FooterModule {
+}

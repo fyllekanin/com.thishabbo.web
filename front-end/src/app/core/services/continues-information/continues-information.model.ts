@@ -13,11 +13,11 @@ export class SlimSiteMessage {
     @primitive()
     content: string;
 
-    constructor(source: Partial<SlimSiteMessage>) {
+    constructor (source: Partial<SlimSiteMessage>) {
         ClassHelper.assign(this, source);
     }
 
-    getType(): INFO_BOX_TYPE {
+    getType (): INFO_BOX_TYPE {
         switch (this.type) {
             case 1:
                 return INFO_BOX_TYPE.WARNING;
@@ -36,7 +36,7 @@ export class ActiveUser {
     @primitive()
     nickname: string;
 
-    constructor(source: Partial<ActiveUser>) {
+    constructor (source: Partial<ActiveUser>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -49,7 +49,7 @@ export class ActivityThread {
     @primitive()
     page: number;
 
-    constructor(source: Partial<ActivityThread>) {
+    constructor (source: Partial<ActivityThread>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -66,7 +66,7 @@ export class Activity {
     @time()
     createdAt: string;
 
-    constructor(source: Partial<Activity>) {
+    constructor (source: Partial<Activity>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -77,7 +77,33 @@ export class UserInformation {
     @primitive()
     xp: number;
 
-    constructor(source?: Partial<UserInformation>) {
+    constructor (source?: Partial<UserInformation>) {
+        ClassHelper.assign(this, source);
+    }
+}
+
+export class MonthInformation {
+    @objectOf(SlimUser)
+    member: SlimUser;
+    @objectOf(SlimUser)
+    staff: SlimUser;
+    @primitive()
+    month: string;
+    @primitive()
+    year: number;
+
+    constructor (source: Partial<MonthInformation>) {
+        ClassHelper.assign(this, source);
+    }
+}
+
+export class FooterInformation {
+    @arrayOf(ActiveUser)
+    activeUsers: Array<ActiveUser> = [];
+    @objectOf(MonthInformation)
+    month: MonthInformation;
+
+    constructor (source: Partial<FooterInformation>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -91,14 +117,14 @@ export class ContinuesInformationModel {
     unreadNotifications: number;
     @arrayOf(SlimSiteMessage)
     siteMessages: Array<SlimSiteMessage> = [];
-    @arrayOf(ActiveUser)
-    activeUsers: Array<ActiveUser> = [];
+    @objectOf(FooterInformation)
+    footer: FooterInformation;
     @arrayOf(Activity)
     activities: Array<Activity> = [];
     @objectOf(UserInformation)
     user: UserInformation;
 
-    constructor(source?: Partial<ContinuesInformationModel>) {
+    constructor (source?: Partial<ContinuesInformationModel>) {
         ClassHelper.assign(this, source);
     }
 }

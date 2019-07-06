@@ -14,6 +14,7 @@ use App\Services\ActivityService;
 use App\Services\ForumService;
 use App\Services\NotificationService;
 use App\Utils\BBcodeUtil;
+use App\Utils\Value;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -59,13 +60,30 @@ class StreamController extends Controller {
             'events' => $this->getEventsStats(),
             'unreadNotifications' => $this->getAmountOfUnreadNotifications($user->userId),
             'siteMessages' => $siteMessages,
-            'activeUsers' => $activeUsers,
             'activities' => $activities,
+            'footer' => [
+                'month' => $this->getStaffMemberOfTheMonth(),
+                'activeUsers' => $activeUsers
+            ],
             'user' => $user->userId > 0 ? [
                 'credits' => UserHelper::getUserDataOrCreate($user->userId)->credits,
                 'xp' => UserHelper::getUserDataOrCreate($user->userId)->xp
             ] : null
         ]);
+    }
+
+    private function getStaffMemberOfTheMonth() {
+        $motm = json_decode(SettingsHelper::getSettingValue($this->settingKeys->memberOfTheMonth));
+
+        $member = User::withNickname(Value::objectProperty($motm, 'member', ''))->first();
+        $staff = User::withNickname(Value::objectProperty($motm, 'staff', ''))->first();
+
+        return [
+            'member' => $member ? UserHelper::getSlimUser($member->userId) : null,
+            'staff' => $staff ? UserHelper::getSlimUser($staff->userId) : null,
+            'month' => Value::objectProperty($motm, 'month', null),
+            'year' => Value::objectProperty($motm, 'year', date('Y')),
+        ];
     }
 
     private function getEventsStats() {

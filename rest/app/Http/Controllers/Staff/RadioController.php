@@ -169,7 +169,7 @@ class RadioController extends Controller {
                 ->where('action', Action::getAction(Action::LIKED_DJ))
                 ->where('createdAt', '>', $nowMinus30Min)
                 ->count('logId') > 0;
-        Condition::precondition($haveLikedWithInLimit, 400, 'You are trying to like to fast!');
+        Condition::precondition($haveLikedWithInLimit, 400, 'You are trying too like to fast!');
 
         $djUser->likes++;
         $djUser->save();

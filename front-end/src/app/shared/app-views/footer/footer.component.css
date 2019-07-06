@@ -42,3 +42,8 @@
 .links {
     margin-top: 1rem;
 }
+
+.small-avatar {
+    float: left;
+    margin-right: 4px;
+}

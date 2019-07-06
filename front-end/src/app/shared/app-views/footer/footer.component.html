@@ -10,9 +10,23 @@
             </div>
             <div class="cell small-6 medium-2">
                 <label><em class="fa fa-user"></em> Member of the Month</label>
+                <div *ngIf="month && month.member">
+                    <img appUserProfile [info]="month.member" [isSmall]="true" class="small-avatar"/>
+                    <app-user-link [user]="month.member"></app-user-link>
+                    <br/>
+                    Member of the month <br/>
+                    {{month.year}} {{month.month}}
+                </div>
             </div>
             <div class="cell small-6 medium-2">
-                <label><em class="fa fa-camera"></em> Photo Competition</label>
+                <label><em class="fa fa-user"></em> Staff of the Month</label>
+                <div *ngIf="month && month.staff">
+                    <img appUserProfile [info]="month.staff" [isSmall]="true" class="small-avatar"/>
+                    <app-user-link [user]="month.staff"></app-user-link>
+                    <br/>
+                    Staff of the month <br/>
+                    {{month.year}} {{month.month}}
+                </div>
             </div>
         </div>
     </div>
