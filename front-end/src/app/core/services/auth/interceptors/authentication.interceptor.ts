@@ -45,6 +45,11 @@ export class AuthenticationInterceptor implements HttpInterceptor {
                             return this.logoutUser();
                         case 419:
                             return this.handle419Error(req, next);
+                        case 400:
+                            if (req.method === this.GET_METHOD) {
+                                this._notificationService.failureNotification(error);
+                            }
+                            return observableThrowError(error);
                         case 403:
                             this._notificationService.sendNotification(new NotificationMessage({
                                 title: 'Oops!',
