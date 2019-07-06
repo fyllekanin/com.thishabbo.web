@@ -1,6 +1,6 @@
-import { SlimUser } from 'core/services/auth/auth.model';
 import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
-import { EventType } from '../../events/types/types.model';
+import { EventType } from 'app/pages/staff/sub-pages/events/types/types.model';
+import { SlimUser } from 'core/services/auth/auth.model';
 
 export class TimetableModel {
     @primitive()
