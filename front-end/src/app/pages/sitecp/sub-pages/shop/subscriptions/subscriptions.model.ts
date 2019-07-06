@@ -7,6 +7,8 @@ export class SubscriptionOptions {
     canMoveNamePosition: boolean;
     @primitive()
     isListed: boolean;
+    @primitive()
+    canHaveCustomBar: boolean;
 
     constructor (source?: Partial<SubscriptionOptions>) {
         ClassHelper.assign(this, source);

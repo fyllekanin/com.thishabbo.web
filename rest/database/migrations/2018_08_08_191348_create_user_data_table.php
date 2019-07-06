@@ -17,6 +17,7 @@ class CreateUserdataTable extends Migration {
             $table->text('signature')->nullable();
 
             $table->text('nameColor')->nullable();
+            $table->text('barColor')->nullable();
             $table->integer('namePosition')->default(0);
             $table->integer('iconId')->nullable();
             $table->string('iconPosition')->nullable();

@@ -60,6 +60,7 @@ class UserUpdated implements ShouldQueue {
         }
         $nameColor = $userData->nameColor;
         $namePosition = $userData->namePosition;
+        $barColor = $userData->barColor;
         if ($userData->nameColor && !UserHelper::hasSubscriptionFeature($this->userId, ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor)) {
             $nameColor = null;
         }
@@ -67,9 +68,14 @@ class UserUpdated implements ShouldQueue {
         if ($userData->namePosition && !UserHelper::hasSubscriptionFeature($this->userId, ConfigHelper::getSubscriptionOptions()->canMoveNamePosition)) {
             $namePosition = 0;
         }
+
+        if ($userData->barColor && !UserHelper::hasSubscriptionFeature($this->userId, ConfigHelper::getSubscriptionOptions()->canHaveCustomBar)) {
+            $barColor = null;
+        }
         $userData->update([
             'nameColor' => $nameColor,
-            'namePosition' => $namePosition
+            'namePosition' => $namePosition,
+            'barColor' => $barColor
         ]);
     }
 }

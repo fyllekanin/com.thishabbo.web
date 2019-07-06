@@ -11,6 +11,17 @@ export class NamePositionModel {
     }
 }
 
+export class BarColorModel {
+    @primitive()
+    isAvailable: boolean;
+    @arrayOf(String)
+    color: Array<string> = [];
+
+    constructor (source: Partial<BarColorModel>) {
+        ClassHelper.assign(this, source);
+    }
+}
+
 export class SlimBadge {
     @primitive()
     badgeId: number;
@@ -48,6 +59,8 @@ export class PostBitModel {
     information: PostBitInformation;
     @objectOf(NamePositionModel)
     namePosition: NamePositionModel;
+    @objectOf(BarColorModel)
+    barColor: BarColorModel;
 
     constructor (source: Partial<PostBitModel>) {
         ClassHelper.assign(this, source);

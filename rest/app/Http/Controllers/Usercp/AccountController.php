@@ -25,10 +25,10 @@ use App\Services\HabboService;
 use App\Services\NotificationService;
 use App\Utils\Condition;
 use App\Utils\Iterables;
+use App\Utils\Value;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use App\Utils\Value;
 
 class AccountController extends Controller {
     private $authService;
@@ -337,6 +337,10 @@ class AccountController extends Controller {
             'namePosition' => [
                 'isAvailable' => UserHelper::hasSubscriptionFeature($user->userId, ConfigHelper::getSubscriptionOptions()->canMoveNamePosition),
                 'position' => UserHelper::getUserDataOrCreate($user->userId)->namePosition
+            ],
+            'barColor' => [
+                'isAvailable' => UserHelper::hasSubscriptionFeature($user->userId, ConfigHelper::getSubscriptionOptions()->canHaveCustomBar),
+                'color' => Value::objectJsonProperty(UserHelper::getUserDataOrCreate($user->userId), 'barColor', null)
             ]
         ]);
     }
@@ -369,14 +373,19 @@ class AccountController extends Controller {
         $user = $request->get('auth');
         $data = json_decode(json_encode($request->input('data')));
         $namePosition = (object)$data->namePosition;
+        $barColor = (object)$data->barColor;
         $badgeIds = array_map(function ($badge) {
             return $badge->badgeId;
         }, $data->information->badges);
 
         Condition::precondition(count($badgeIds) > 3, 400, 'You can not have more then 3 badges selected!');
 
+        Condition::precondition($barColor->isAvailable && !UserHelper::hasSubscriptionFeature($user->userId, ConfigHelper::getSubscriptionOptions()->canHaveCustomBar),
+            400, 'You can not have a custom bar');
+        Condition::precondition($barColor->isAvailable && !Value::validateHexColors($barColor->color),
+            400, 'One or more bar colors are invalid');
         Condition::precondition($namePosition->isAvailable && !UserHelper::hasSubscriptionFeature($user->userId, ConfigHelper::getSubscriptionOptions()->canMoveNamePosition),
-            400, 'You can not have another name position');
+            400, 'You can not choose name position');
         $position = Iterables::find((array)ConfigHelper::getNamePositionOptions(), function ($position) use ($namePosition) {
             return $position == $namePosition->position;
         });
@@ -385,6 +394,7 @@ class AccountController extends Controller {
         $userData = UserHelper::getUserDataOrCreate($user->userId);
         $userData->postBit = $this->convertPostBitOptions($data->information);
         $userData->namePosition = $namePosition->position;
+        $userData->barColor = json_encode($barColor->color);
         $userData->activeBadges = json_encode($badgeIds);
         $userData->save();
 
@@ -426,6 +436,7 @@ class AccountController extends Controller {
 
     /**
      * Returns the statistics for UserCP dashboard
+     *
      * @param Request $request
      *
      * @return \Illuminate\Http\JsonResponse

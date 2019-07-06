@@ -5,13 +5,21 @@ import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { Page } from 'shared/page/page.model';
 import { USERCP_BREADCRUM_ITEM } from '../../usercp.constants';
-import { NamePositionModel, PostBitActions, PostBitInformation, PostBitModel, SlimBadge } from './post-bit.model';
+import {
+    BarColorModel,
+    NamePositionModel,
+    PostBitActions,
+    PostBitInformation,
+    PostBitModel,
+    SlimBadge
+} from './post-bit.model';
 import { PostBitService } from '../services/post-bit.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { BadgesComponent } from './badges/badges.component';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
 import { NAME_POSITIONS } from 'shared/constants/name-positions.constants';
 import { StringHelper } from 'shared/helpers/string.helper';
+import { UserHelper } from 'shared/helpers/user.helper';
 
 @Component({
     selector: 'app-usercp-post-bit',
@@ -20,6 +28,7 @@ import { StringHelper } from 'shared/helpers/string.helper';
 export class PostBitComponent extends Page implements OnDestroy {
     private _postBitModel: PostBitModel;
 
+    userBarColors = '';
     namePositions: Array<{ label: string, value: number }> = [];
     tabs: Array<TitleTab> = [
         new TitleTab({title: 'Save', value: PostBitActions.SAVE}),
@@ -71,6 +80,16 @@ export class PostBitComponent extends Page implements OnDestroy {
         }
     }
 
+    getBarColors (): string {
+        return UserHelper.getBarColor(this._postBitModel.barColor.color);
+    }
+
+    onBarColorChange (colors): void {
+        const arr = colors.split(',').filter(item => Boolean(item))
+            .map(item => item.trim());
+        this._postBitModel.barColor.color = arr.length > 0 ? arr : null;
+    }
+
     get postBitOptions (): PostBitInformation {
         return this._postBitModel ? this._postBitModel.information : new PostBitInformation({});
     }
@@ -83,8 +102,14 @@ export class PostBitComponent extends Page implements OnDestroy {
         return this._postBitModel.namePosition ? this._postBitModel.namePosition : new NamePositionModel(null);
     }
 
+    get userBar (): BarColorModel {
+        return this._postBitModel.barColor ? this._postBitModel.barColor : new BarColorModel(null);
+    }
+
     private onData (data: { data: PostBitModel }): void {
         this._postBitModel = data.data;
+        this.userBarColors = this._postBitModel.barColor && this._postBitModel.barColor.isAvailable ?
+            this._postBitModel.barColor.color.toString() : '';
     }
 
     private onSelectedBadges (badges: Array<SlimBadge>): void {

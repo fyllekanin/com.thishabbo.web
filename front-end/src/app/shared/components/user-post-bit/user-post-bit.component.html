@@ -18,6 +18,9 @@
     <em class="fa fa-user"></em>
 </div>
 <div class="userbars">
+    <div *ngIf="user.barColor">
+        <div class="custom-user-bar-template" [style]="getBarColors() | safeStyle">Donator</div>
+    </div>
     <div *ngFor="let userBar of user.userBars" [style]="userBar.styling | safeStyle">
         {{userBar.name}}
     </div>

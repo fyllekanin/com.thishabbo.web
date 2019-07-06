@@ -97,6 +97,8 @@ export class User extends SlimUser {
     badges: Array<UserBadge> = [];
     @primitive()
     namePosition: number;
+    @arrayOf(String)
+    barColor: Array<string> = [];
 
     constructor (source?: Partial<User>) {
         super(source);
