@@ -107,11 +107,11 @@ class UserController extends Controller {
             $getUserSql->where('habbo', 'LIKE', Value::getFilterValue($request, $habbo));
         }
 
-        $total = DataHelper::getPage($getUserSql->count('userId'));
+        $total = DataHelper::getPage($getUserSql->count('userId'), $this->bigPerPage);
         $users = array_map(function ($user) {
             $user['credits'] = UserHelper::getUserDataOrCreate($user['userId'])->credits;
             return $user;
-        }, Iterables::filter($getUserSql->take($this->perPage)->skip(DataHelper::getOffset($page))->get()->toArray(), function ($item) use ($user) {
+        }, Iterables::filter($getUserSql->take($this->bigPerPage)->skip(DataHelper::getOffset($page, $this->bigPerPage))->get()->toArray(), function ($item) use ($user) {
             return UserHelper::canManageUser($user, $item['userId']);
         }));
 

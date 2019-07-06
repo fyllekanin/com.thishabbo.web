@@ -139,9 +139,9 @@ class ItemsController extends Controller {
         }
 
         return response()->json([
-            'total' => DataHelper::getPage($items->count()),
+            'total' => DataHelper::getPage($items->count(), $this->bigPerPage),
             'page' => $page,
-            'items' => $items->take($this->perPage)->skip(DataHelper::getOffset($page))->get()->map(function ($item) {
+            'items' => $items->take($this->bigPerPage)->skip(DataHelper::getOffset($page, $this->bigPerPage))->get()->map(function ($item) {
                 return [
                     'shopItemId' => $item->shopItemId,
                     'title' => $item->title,

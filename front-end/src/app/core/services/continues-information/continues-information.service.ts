@@ -133,7 +133,7 @@ export class ContinuesInformationService implements Resolve<void> {
     }
 
     private setUserPoints (data: ContinuesInformationModel): void {
-        if (!this._authService.isLoggedIn()) {
+        if (!this._authService.isLoggedIn() || !data.user) {
             return;
         }
         this._authService.authUser.credits = data.user.credits;

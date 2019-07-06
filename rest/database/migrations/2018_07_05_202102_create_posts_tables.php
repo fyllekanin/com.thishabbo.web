@@ -1,18 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreatePostsTables extends Migration
-{
+class CreatePostsTables extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('posts', function (Blueprint $table) {
             $table->bigIncrements('postId');
             $table->bigInteger('threadId');
@@ -25,6 +23,7 @@ class CreatePostsTables extends Migration
 
             // Indexes
             $table->index('threadId');
+            $table->index('content');
             $table->index('userId');
             $table->index('isDeleted');
             $table->index('isApproved');
@@ -38,8 +37,7 @@ class CreatePostsTables extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('posts');
     }
 }

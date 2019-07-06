@@ -19,6 +19,8 @@ import { LootBoxesComponent } from './loot-boxes/loot-boxes.component';
 import { LootBoxesResolver } from './services/loot-boxes.resolver';
 import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
 import { SubscriptionsResolver } from './services/subscriptions.resolver';
+import { LootBoxDetailsComponent } from './views/loot-box/loot-box-details/loot-box-details.component';
+import { ButtonModule } from 'shared/directives/button/button.module';
 
 @NgModule({
     imports: [
@@ -31,7 +33,8 @@ import { SubscriptionsResolver } from './services/subscriptions.resolver';
         CommonModule,
         FormsModule,
         PaginationModule,
-        SideMenuModule
+        SideMenuModule,
+        ButtonModule
     ],
     declarations: [
         ShopComponent,
@@ -39,9 +42,12 @@ import { SubscriptionsResolver } from './services/subscriptions.resolver';
         LootBoxComponent,
         SubscriptionComponent,
         LootBoxesComponent,
-        SubscriptionsComponent
+        SubscriptionsComponent,
+        LootBoxDetailsComponent
     ],
-    entryComponents: [],
+    entryComponents: [
+        LootBoxDetailsComponent
+    ],
     providers: [
         DashboardResolver,
         LootBoxesResolver,

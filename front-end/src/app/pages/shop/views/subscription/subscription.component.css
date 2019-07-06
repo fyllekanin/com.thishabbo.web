@@ -20,9 +20,10 @@
 
     color: #ffffff;
     font-size: 40px;
+    cursor: pointer;
 }
 
-.inner-image em:hover {
+.inner-image:hover em {
     -webkit-animation-name: shake;
     -webkit-animation-duration: 1s;
     -webkit-transform-origin: 50% 50%;

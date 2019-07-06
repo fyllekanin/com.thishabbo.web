@@ -50,7 +50,7 @@ class SearchControllerImpl {
 
     private function getUsersResult($request, $page) {
         $usersSql = User::where('nickname', 'LIKE', Value::getFilterValue($request, $request->input('text')));
-        $this->applyFilters($request, $usersSql);
+        $usersSql = $this->applyFilters($request, $usersSql);
 
         return (object)[
             'total' => DataHelper::getPage($usersSql->count('userId')),
@@ -69,7 +69,7 @@ class SearchControllerImpl {
     private function getPostsResult($request, $page, $user) {
         $threadIds = $this->forumService->getAccessibleThreads($user->userId);
         $postsSql = Post::where('content', 'LIKE', Value::getFilterValue($request, $request->input('text')))->whereIn('threadId', $threadIds);
-        $this->applyFilters($request, $postsSql);
+        $postsSql = $this->applyFilters($request, $postsSql);
 
         return (object)[
             'total' => DataHelper::getPage($postsSql->count('postId')),
@@ -90,7 +90,7 @@ class SearchControllerImpl {
     private function getThreadsResult($request, $page, $user) {
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
         $threadsSql = Thread::where('title', 'LIKE', Value::getFilterValue($request, $request->input('text')))->whereIn('categoryId', $categoryIds);
-        $this->applyFilters($request, $threadsSql);
+        $threadsSql = $this->applyFilters($request, $threadsSql);
 
         return (object)[
             'total' => DataHelper::getPage($threadsSql->count('threadId')),
