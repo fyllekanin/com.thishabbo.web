@@ -27,7 +27,7 @@ export class NameSettingsComponent extends Page implements OnDestroy {
     infoModel: InfoBoxModel = {
         title: 'Warning!',
         type: INFO_BOX_TYPE.WARNING,
-        content: `You do not have the permissions to update your name color. Click here to purchase a subscription to do this!`
+        content: `You do not have the permissions to update your name settings. Click here to purchase a subscription to do this!`
     };
 
     constructor(
