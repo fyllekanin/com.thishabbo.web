@@ -42,10 +42,6 @@ export class SitecpComponent extends Page implements OnDestroy, OnInit {
                         link: '/sitecp/dashboard'
                     }),
                     new SideMenuItem({
-                        title: 'Server Logs',
-                        link: '/sitecp/server-logs'
-                    }),
-                    new SideMenuItem({
                         title: 'Manage BBCode',
                         link: '/sitecp/content/bbcodes',
                         isApplicable: this._authService.sitecpPermissions.canManageBBcodes
@@ -54,6 +50,10 @@ export class SitecpComponent extends Page implements OnDestroy, OnInit {
                         title: 'Manage Staff List',
                         link: '/sitecp/content/groups-list',
                         isApplicable: this._authService.sitecpPermissions.canManageGroupsList
+                    }),
+                    new SideMenuItem({
+                        title: 'Server Logs',
+                        link: '/sitecp/server-logs'
                     }),
                     new SideMenuItem({
                         title: 'Website Settings',
@@ -66,18 +66,18 @@ export class SitecpComponent extends Page implements OnDestroy, OnInit {
                 title: 'Shop',
                 items: [
                     new SideMenuItem({
-                        title: 'Subscriptions',
+                        title: 'Manage Items',
+                        link: '/sitecp/shop/items/page/1',
+                        isApplicable: this._authService.sitecpPermissions.canManageShop
+                    }),
+                    new SideMenuItem({
+                        title: 'Manage Subscriptions',
                         link: '/sitecp/shop/subscriptions/page/1',
                         isApplicable: this._authService.sitecpPermissions.canManageSubscriptions
                     }),
                     new SideMenuItem({
-                        title: 'Loot Boxes',
+                        title: 'Manage Loot Boxes',
                         link: '/sitecp/shop/loot-boxes/page/1',
-                        isApplicable: this._authService.sitecpPermissions.canManageShop
-                    }),
-                    new SideMenuItem({
-                        title: 'Items',
-                        link: '/sitecp/shop/items/page/1',
                         isApplicable: this._authService.sitecpPermissions.canManageShop
                     })
                 ]
@@ -91,7 +91,7 @@ export class SitecpComponent extends Page implements OnDestroy, OnInit {
                         isApplicable: this._authService.sitecpPermissions.canManageBetting
                     }),
                     new SideMenuItem({
-                        title: 'Bets',
+                        title: 'Manage Bets',
                         link: '/sitecp/betting/bets/page/1',
                         isApplicable: this._authService.sitecpPermissions.canManageBetting
                     })
@@ -126,24 +126,9 @@ export class SitecpComponent extends Page implements OnDestroy, OnInit {
                         isApplicable: this._authService.sitecpPermissions.canManageInfractions
                     }),
                     new SideMenuItem({
-                        title: 'Infractions',
+                        title: 'Manage Infractions',
                         link: '/sitecp/moderation/infractions/page/1',
                         isApplicable: this._authService.sitecpPermissions.canDoInfractions
-                    }),
-                    new SideMenuItem({
-                        title: 'Moderate Threads',
-                        link: '/sitecp/moderation/threads',
-                        isApplicable: this._authService.sitecpPermissions.canModerateThreads
-                    }),
-                    new SideMenuItem({
-                        title: 'Moderate Posts',
-                        link: '/sitecp/moderation/posts',
-                        isApplicable: this._authService.sitecpPermissions.canModeratePosts
-                    }),
-                    new SideMenuItem({
-                        title: 'Moderate Group Applications',
-                        link: '/sitecp/moderation/groups',
-                        isApplicable: this._authService.sitecpPermissions.canApprovePublicGroups
                     }),
                     new SideMenuItem({
                         title: 'Manage Polls',
@@ -151,7 +136,22 @@ export class SitecpComponent extends Page implements OnDestroy, OnInit {
                         isApplicable: this._authService.sitecpPermissions.canManagePolls
                     }),
                     new SideMenuItem({
-                        title: 'Logs (user, staff, mod and sitecp)',
+                        title: 'Moderate Group Applications',
+                        link: '/sitecp/moderation/groups',
+                        isApplicable: this._authService.sitecpPermissions.canApprovePublicGroups
+                    }),
+                    new SideMenuItem({
+                        title: 'Moderate Posts',
+                        link: '/sitecp/moderation/posts',
+                        isApplicable: this._authService.sitecpPermissions.canModeratePosts
+                    }),
+                    new SideMenuItem({
+                        title: 'Moderate Threads',
+                        link: '/sitecp/moderation/threads',
+                        isApplicable: this._authService.sitecpPermissions.canModerateThreads
+                    }),
+                    new SideMenuItem({
+                        title: 'View User Logs',
                         link: '/sitecp/moderation/logs/user/page/1',
                         isApplicable: this._authService.sitecpPermissions.canSeeLogs
                     })
@@ -161,9 +161,14 @@ export class SitecpComponent extends Page implements OnDestroy, OnInit {
                 title: 'User Management',
                 items: [
                     new SideMenuItem({
-                        title: 'View Banned Users',
-                        link: '/sitecp/moderation/bans/page/1',
-                        isApplicable: this._authService.sitecpPermissions.canBanUser
+                        title: 'Manage Badges',
+                        link: '/sitecp/badges/page/1',
+                        isApplicable: this._authService.sitecpPermissions.canManageBadges
+                    }),
+                    new SideMenuItem({
+                        title: 'Manage THC Requests',
+                        link: '/sitecp/users/thc/requests',
+                        isApplicable: this._authService.sitecpPermissions.canManageTHC
                     }),
                     new SideMenuItem({
                         title: 'Manage Usergroups',
@@ -176,40 +181,35 @@ export class SitecpComponent extends Page implements OnDestroy, OnInit {
                         isApplicable: this.canManageUsers
                     }),
                     new SideMenuItem({
-                        title: 'Manage Badges',
-                        link: '/sitecp/badges/page/1',
-                        isApplicable: this._authService.sitecpPermissions.canManageBadges
-                    }),
-                    new SideMenuItem({
-                        title: 'Manage THC Requests',
-                        link: '/sitecp/users/thc/requests',
-                        isApplicable: this._authService.sitecpPermissions.canManageTHC
-                    }),
-                    new SideMenuItem({
                         title: 'Manage Voucher Codes',
                         link: '/sitecp/users/voucher-codes/page/1',
                         isApplicable: this._authService.sitecpPermissions.canManageTHC
                     }),
                     new SideMenuItem({
-                        title: 'IP Address Search',
+                        title: 'Search IP Address',
                         link: '/sitecp/users/ip-search',
                         isApplicable: this._authService.sitecpPermissions.canSeeIps
-                    })
+                    }),
+                    new SideMenuItem({
+                        title: 'View Banned Users',
+                        link: '/sitecp/moderation/bans/page/1',
+                        isApplicable: this._authService.sitecpPermissions.canBanUser
+                    }),
                 ]
             }),
             new SideMenuBlock({
                 title: 'Statistics',
                 items: [
                     new SideMenuItem({
-                        title: 'Users Logged In',
+                        title: 'View Logged In',
                         link: `/sitecp/statistics/users/${new Date().getFullYear()}/${new Date().getMonth() + 1}`
                     }),
                     new SideMenuItem({
-                        title: 'Posts',
+                        title: 'View Posts',
                         link: `/sitecp/statistics/posts/${new Date().getFullYear()}/${new Date().getMonth() + 1}`
                     }),
                     new SideMenuItem({
-                        title: 'Threads',
+                        title: 'View Threads',
                         link: `/sitecp/statistics/threads/${new Date().getFullYear()}/${new Date().getMonth() + 1}`
                     })
                 ]

@@ -27,7 +27,7 @@ describe('User #1', () => {
 
     it('should be possible to change password', () => {
         NavigationUtil.clickUserNavigation('UserCP');
-        NavigationUtil.clickUserCpTool('Change Password');
+        NavigationUtil.clickUserCpTool('Edit Password');
 
         const inputs = UserCpPage.getChangePasswordInputs();
         InputUtil.fillInput(inputs[2], OLD_PASSWORD);
