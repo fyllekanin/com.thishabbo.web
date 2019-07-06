@@ -1,7 +1,7 @@
-import { ClassHelper, arrayOf, primitive } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, primitive } from 'shared/helpers/class.helper';
 import { ShopItem } from 'app/pages/sitecp/sub-pages/shop/items/items.model';
 
-export class NameColor {
+export class NameSettings {
     @primitive()
     iconId: number;
     @primitive()
@@ -17,7 +17,7 @@ export class NameColor {
     @primitive()
     canUpdateColor: boolean;
 
-    constructor(source?: Partial<NameColor>) {
+    constructor (source?: Partial<NameSettings>) {
         ClassHelper.assign(this, source);
     }
 }

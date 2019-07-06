@@ -18,12 +18,12 @@ import { EditorModule } from 'shared/components/editor/editor.module';
 import { ProfileComponent } from './profile/profile.component';
 import { ProfileService } from './services/profile.service';
 import { BadgesComponent } from './post-bit/badges/badges.component';
-import { NameColorService } from './services/name-color.service';
-import { NameColorComponent } from './name-color/name-color.component';
 import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
 import { InfoBoxModule } from 'shared/app-views/info-box/info-box.module';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 import { UserPostBitModule } from 'shared/components/user-post-bit/user-post-bit.module';
+import { NameSettingsService } from './services/name-settings.service';
+import { NameSettingsComponent } from './name-settings/name-settings.component';
 
 @NgModule({
     imports: [
@@ -46,7 +46,7 @@ import { UserPostBitModule } from 'shared/components/user-post-bit/user-post-bit
         SocialNetworksComponent,
         ProfileComponent,
         BadgesComponent,
-        NameColorComponent
+        NameSettingsComponent
     ],
     entryComponents: [
         BadgesComponent
@@ -57,7 +57,7 @@ import { UserPostBitModule } from 'shared/components/user-post-bit/user-post-bit
         SignatureService,
         SocialNetworksService,
         ProfileService,
-        NameColorService
+        NameSettingsService
     ],
     exports: [
         RouterModule
