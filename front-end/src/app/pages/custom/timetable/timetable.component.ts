@@ -1,0 +1,91 @@
+import { Component, ElementRef, OnDestroy } from '@angular/core';
+import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
+import { ActivatedRoute } from '@angular/router';
+import { Page } from 'shared/page/page.model';
+import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
+import { TimeHelper, Day, Hour } from 'shared/helpers/time.helper';
+import { SlimUser } from 'core/services/auth/auth.model';
+import { TimetablePage, TimetableModel } from 'shared/models/timetable.model';
+
+@Component({
+    selector: 'app-timetable',
+    templateUrl: 'timetable.component.html',
+    styleUrls: ['timetable.component.css']
+})
+export class TimetableComponent extends Page implements OnDestroy {
+    private readonly _type;
+    private _data: TimetablePage = new TimetablePage();
+
+    constructor (
+        elementRef: ElementRef,
+        breadcrumbService: BreadcrumbService,
+        activatedRoute: ActivatedRoute
+    ) {
+        super(elementRef);
+        this._type = activatedRoute.snapshot.data['type'];
+        this.addSubscription(activatedRoute.data, this.onData.bind(this));
+        breadcrumbService.breadcrumb = new Breadcrumb({
+            current: this.title
+        });
+    }
+
+    ngOnDestroy () {
+        super.destroy();
+    }
+
+    isBooked (day: number, hour: number): boolean {
+        console.log("checking " + day + hour);
+        console.log(this.getSlot(day, hour));
+        return Boolean(this.getSlot(day, hour));
+    }
+
+    getHabboName (day: number, hour: number): string {
+        const slot = this.getSlot(day, hour);
+        return slot.user.habbo;
+    }
+
+    getEventName (day: number, hour: number): string {
+        const slot = this.getSlot(day, hour);
+        if(!slot.isPerm) {
+            return this.isEvents() ? (slot.event ? slot.event.name : 'unknown') : '';
+        }
+        return `(${slot.name})`;
+    }
+
+    getUser (day: number, hour: number): SlimUser {
+        const slot = this.getSlot(day, hour);
+        return slot.user;
+    }
+
+    get title (): string {
+        return this.isEvents() ? "Events Timetable" : "Radio Timetable";
+    }
+
+    get days (): Array<Day> {
+        return TimeHelper.DAYS;
+    }
+
+    get hours (): Array<Hour> {
+        return TimeHelper.getHours();
+    }
+
+    private isEvents (): boolean {
+        return this._type === 'events';
+    }
+
+    private getSlot (day: number, hour: number): TimetableModel {
+        return this._data.timetable
+            .filter(timetable => timetable.day === day)
+            .find(timetable => timetable.hour === hour);
+    }
+
+    private onData (data: { data: TimetablePage }): void {
+        this._data = data.data;
+        this._data.timetable.forEach(booking => {
+            const convertedHour = booking.hour + TimeHelper.getTimeOffsetInHours();
+            booking.day = TimeHelper.getConvertedDay(convertedHour, booking.day);
+            booking.hour = TimeHelper.getConvertedHour(convertedHour);
+        });
+    }
+
+}

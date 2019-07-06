@@ -16,8 +16,8 @@ import {
     STAFFCP_EVENTS_BREADCRUM_ITEM,
     STAFFCP_RADIO_BREADCRUM_ITEM
 } from '../../../staff.constants';
-import { TimetableModel, TimetablePage } from './timetable.model';
 import { SelectionComponent } from './selection/selection.component';
+import { TimetablePage, TimetableModel } from 'shared/models/timetable.model';
 
 @Component({
     selector: 'app-staff-timetable',

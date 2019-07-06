@@ -52,6 +52,9 @@ Route::group(['middleware' => ['maintenance']], function () {
 
     Route::get('puller/notifications/unread/{createdAfter}', 'Puller\NotificationController@getUnreadNotifications');
 
+    Route::get('radio/timetable', 'Staff\RadioController@getTimetable');
+    Route::get('events/timetable', 'Staff\EventsController@getTimetable');
+
     Route::group(['middleware' => ['auth.check']], function () {
         Route::get('/auth/user', 'Auth\AuthController@getUser');
         Route::post('/radio/like', 'Staff\RadioController@createDjLike');

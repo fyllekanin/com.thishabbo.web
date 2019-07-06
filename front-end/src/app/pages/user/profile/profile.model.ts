@@ -2,7 +2,7 @@ import { arrayOf, ClassHelper, objectOf, primitive, time } from 'shared/helpers/
 import { SlimUser } from 'core/services/auth/auth.model';
 import { Activity } from 'core/services/continues-information/continues-information.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
-import { TimetableModel } from 'app/pages/staff/sub-pages/shared/timetable/timetable.model';
+import { TimetableModel } from 'shared/models/timetable.model';
 
 export class ProfileSlots {
     @arrayOf(TimetableModel)
