@@ -192,6 +192,8 @@ export class LootBoxComponent extends Page implements OnDestroy {
                 return `<img src="/rest/resources/images/shop/${item.shopItemId}.gif" />`;
             case SHOP_ITEM_TYPES.subscription.value:
                 return '<em class="fas fa-id-card"></em>';
+            case SHOP_ITEM_TYPES.badge.value:
+                return `<img src="/rest/resources/images/badges/${item.data.badgeId}.gif" />`;
             default:
                 return '';
         }

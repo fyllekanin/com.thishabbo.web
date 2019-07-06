@@ -25,7 +25,6 @@ export class ItemSelectionComponent extends InnerDialogComponent {
     private _selectedItems: Array<LootBoxItem> = [];
     private _itemIds: Array<number> = [];
     private _data: LootBoxItemsPage;
-    private _page = 1;
     private _filterTimer;
     private _filter: QueryParameters;
 
@@ -38,7 +37,7 @@ export class ItemSelectionComponent extends InnerDialogComponent {
 
     setData (itemIds: Array<number>) {
         this._itemIds = itemIds;
-        this.fetchItems();
+        this.fetchItems(1);
     }
 
     getData (): Array<LootBoxItem> {
@@ -46,8 +45,7 @@ export class ItemSelectionComponent extends InnerDialogComponent {
     }
 
     onPageSwitch (page: number): void {
-        this._page = page;
-        this.fetchItems();
+        this.fetchItems(page);
     }
 
     onRowToggle (row: TableRow): void {
@@ -67,15 +65,15 @@ export class ItemSelectionComponent extends InnerDialogComponent {
         clearTimeout(this._filterTimer);
         this._filter = params;
         this._filterTimer = setTimeout(() => {
-            this.fetchItems();
+            this.fetchItems(1);
         }, 200);
     }
 
-    private fetchItems (): void {
+    private fetchItems (page: number): void {
         this._filter = (this._filter || {});
         this._filter.itemIds = this._itemIds.toString();
 
-        this._httpService.get(`sitecp/shop/loot-boxes/items/page/${this._page}`, this._filter)
+        this._httpService.get(`sitecp/shop/loot-boxes/items/page/${page}`, this._filter)
             .subscribe(res => {
                 this._data = new LootBoxItemsPage(res);
                 this.createOrUpdateTable();
@@ -140,7 +138,9 @@ export class ItemSelectionComponent extends InnerDialogComponent {
                 new TableCell({title: item.title}),
                 new TableCell({title: ShopHelper.getTypeName(item.type)}),
                 new TableCell({title: ShopHelper.getRarityName(item.rarity)})
-            ]
+            ],
+            isSelected: this._selectedItems
+                .findIndex(selectedItem => selectedItem.shopItemId === item.shopItemId) > -1
         }));
     }
 
@@ -160,6 +160,8 @@ export class ItemSelectionComponent extends InnerDialogComponent {
                 return `<img src="/rest/resources/images/shop/${item.shopItemId}.gif" />`;
             case SHOP_ITEM_TYPES.subscription.value:
                 return '<em class="fas fa-id-card"></em>';
+            case SHOP_ITEM_TYPES.badge.value:
+                return `<img src="/rest/resources/images/badges/${item.data.badgeId}.gif" />`;
             default:
                 return '';
         }

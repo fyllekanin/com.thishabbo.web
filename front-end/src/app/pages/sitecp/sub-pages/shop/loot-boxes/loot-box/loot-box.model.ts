@@ -1,5 +1,6 @@
-import { arrayOf, ClassHelper, primitive, primitiveOf } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, objectOf, primitive, primitiveOf } from 'shared/helpers/class.helper';
 import { LOOT_BOXES } from 'shared/constants/shop.constants';
+import { ShopItemData } from '../../items/items.model';
 
 export class LootBoxItem {
     @primitive()
@@ -10,6 +11,8 @@ export class LootBoxItem {
     rarity: number;
     @primitive()
     type: number;
+    @objectOf(ShopItemData)
+    data = new ShopItemData(null);
 
     constructor (source: Partial<LootBoxItem>) {
         ClassHelper.assign(this, source);

@@ -23,6 +23,7 @@ import { LootBoxService } from './services/loot-box.service';
 import { LootBoxComponent } from './loot-boxes/loot-box/loot-box.component';
 import { BoxSelectionComponent } from './loot-boxes/loot-box/box-selection/box-selection.component';
 import { ItemSelectionComponent } from './loot-boxes/loot-box/item-selection/item-selection.component';
+import { SelectBadgeComponent } from './items/item/select-badge/select-badge.component';
 
 @NgModule({
     imports: [
@@ -44,7 +45,8 @@ import { ItemSelectionComponent } from './loot-boxes/loot-box/item-selection/ite
         LootBoxesListComponent,
         LootBoxComponent,
         BoxSelectionComponent,
-        ItemSelectionComponent
+        ItemSelectionComponent,
+        SelectBadgeComponent
     ],
     providers: [
         SubscriptionsListService,
@@ -56,7 +58,8 @@ import { ItemSelectionComponent } from './loot-boxes/loot-box/item-selection/ite
     ],
     entryComponents: [
         BoxSelectionComponent,
-        ItemSelectionComponent
+        ItemSelectionComponent,
+        SelectBadgeComponent
     ],
     exports: [
         RouterModule

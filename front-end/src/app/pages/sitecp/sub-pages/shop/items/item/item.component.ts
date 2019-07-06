@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { Component, ComponentFactoryResolver, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,6 +11,8 @@ import { SlimSubscription } from '../../../users/subscriptions/subscriptions.mod
 import { ItemService } from '../../services/item.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
+import { SelectBadgeComponent } from './select-badge/select-badge.component';
+import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
 
 @Component({
     selector: 'app-sitecp-shop-item',
@@ -24,12 +26,16 @@ export class ItemComponent extends Page implements OnDestroy {
     @ViewChild('icon', {static: false}) icon;
     @ViewChild('effect', {static: false}) effect;
     tabs: Array<TitleTab> = [];
+    selectBadgeTabs: Array<TitleTab> = [
+        new TitleTab({title: 'Select Badge'})
+    ];
 
     constructor (
         private _router: Router,
         private _service: ItemService,
         private _notificationService: NotificationService,
         private _dialogService: DialogService,
+        private _componentResolver: ComponentFactoryResolver,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService,
         activatedRoute: ActivatedRoute
@@ -73,7 +79,24 @@ export class ItemComponent extends Page implements OnDestroy {
         }
     }
 
+    onSelectBadge (): void {
+        this._dialogService.openDialog({
+            title: 'Badge Selection',
+            component: this._componentResolver.resolveComponentFactory(SelectBadgeComponent),
+            buttons: [
+                new DialogCloseButton('Close'),
+                new DialogButton({
+                    title: 'Select',
+                    callback: this.onBadgeSelected.bind(this)
+                })
+            ]
+        });
+    }
+
     get currentImage (): string {
+        if (this._data.isBadge) {
+            return `/rest/resources/images/badges/${this._data.data.badgeId}.gif?${this._data.createdAt}`;
+        }
         return `/rest/resources/images/shop/${this._data.shopItemId}.gif?${this._data.createdAt}`;
     }
 
@@ -104,6 +127,11 @@ export class ItemComponent extends Page implements OnDestroy {
     private onData (data: { data: ShopItem }): void {
         this._data = data.data;
         this.setTabs();
+    }
+
+    private onBadgeSelected (badgeId: number): void {
+        this._data.data.badgeId = badgeId;
+        this._dialogService.closeDialog();
     }
 
     private onCreate (): void {
