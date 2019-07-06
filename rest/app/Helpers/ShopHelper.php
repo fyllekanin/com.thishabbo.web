@@ -3,7 +3,9 @@
 namespace App\Helpers;
 
 use App\EloquentModels\Shop\ShopItem;
+use App\Models\Shop\ShopItemData;
 use App\Utils\Iterables;
+use App\Utils\Value;
 
 class ShopHelper {
 
@@ -16,7 +18,8 @@ class ShopHelper {
                     'shopItemId' => $itemId,
                     'title' => $item->title,
                     'rarity' => $item->rarity,
-                    'type' => $item->type
+                    'type' => $item->type,
+                    'data' => new ShopItemData(Value::objectProperty($item, 'data', null))
                 ] : null;
             }, $itemIds);
             return Iterables::filter($items, function ($item) {

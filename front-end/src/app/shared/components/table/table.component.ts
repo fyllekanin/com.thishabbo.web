@@ -67,6 +67,11 @@ export class TableComponent implements DoCheck {
     }
 
     onRowSelect (row: TableRow): void {
+        if (this._config.rows.filter(item => item.isSelected).length > this._config.maxSelections) {
+            this._config.rows.forEach(item => {
+                item.isSelected = item.id === row.id;
+            });
+        }
         this.onRowToggle.emit(row);
     }
 
@@ -110,6 +115,10 @@ export class TableComponent implements DoCheck {
 
     get isRowsSelectable (): boolean {
         return this._config.isRowsSelectable;
+    }
+
+    get selectionAmount (): number {
+        return this._config.rows.filter(row => row.isSelected).length;
     }
 
     private getColumnSize (): ColumnSize {

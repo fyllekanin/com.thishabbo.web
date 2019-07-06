@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Sitecp\Shop;
 
+use App\EloquentModels\Badge;
 use App\EloquentModels\Shop\ShopItem;
 use App\EloquentModels\Shop\Subscription;
+use App\EloquentModels\User\User;
 use App\Helpers\DataHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Impl\Sitecp\Shop\ItemsControllerImpl;
@@ -20,6 +22,23 @@ class ItemsController extends Controller {
     public function __construct(ItemsControllerImpl $impl) {
         parent::__construct();
         $this->myImpl = $impl;
+    }
+
+    public function getBadges(Request $request, $page) {
+        $badges = Badge::orderBy('name', 'ASC')->where('isSystem', false);
+        $filter = $request->input('filter');
+
+        if ($filter) {
+            $badges->where('name', 'LIKE', Value::getFilterValue($request, $filter));
+        }
+        $total = DataHelper::getPage($badges->count());
+
+        return response()->json([
+            'total' => $total,
+            'page' => $page,
+            'items' => $badges->take($this->perPage)->skip(DataHelper::getOffset($page))
+                ->get(['badgeId', 'name', 'points', 'updatedAt'])
+        ]);
     }
 
     public function deleteItem(Request $request, $shopItemId) {
@@ -128,7 +147,8 @@ class ItemsController extends Controller {
                     'title' => $item->title,
                     'description' => $item->description,
                     'rarity' => $item->rarity,
-                    'type' => $item->type
+                    'type' => $item->type,
+                    'data' => new ShopItemData(Value::objectProperty($item, 'data', null)),
                 ];
             })
         ]);

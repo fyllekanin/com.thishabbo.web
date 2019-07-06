@@ -15,7 +15,8 @@ export const SHOP_ITEM_RARITIES = {
 export const CONFIGURABLE_ITEMS = [
     SHOP_ITEM_TYPES.nameIcon,
     SHOP_ITEM_TYPES.nameEffect,
-    SHOP_ITEM_TYPES.subscription
+    SHOP_ITEM_TYPES.subscription,
+    SHOP_ITEM_TYPES.badge
 ];
 
 export const LOOT_BOXES = [

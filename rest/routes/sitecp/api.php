@@ -239,6 +239,7 @@ Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions
     Route::post('/shop/items', 'Sitecp\Shop\ItemsController@createItem');
     Route::post('/shop/items/{itemId}', 'Sitecp\Shop\ItemsController@updateItem');
     Route::delete('/shop/items/{itemId}', 'Sitecp\Shop\ItemsController@deleteItem');
+    Route::get('/shop/items/badges/page/{page}', 'Sitecp\Shop\ItemsController@getBadges');
 
     Route::get('/shop/loot-boxes/page/{page}', 'Sitecp\Shop\LootBoxesController@getItems');
     Route::get('/shop/loot-boxes/{lootBoxId}', 'Sitecp\Shop\LootBoxesController@getItem');

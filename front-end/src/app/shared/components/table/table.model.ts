@@ -159,6 +159,8 @@ export class TableConfig {
     isSlim: boolean;
     @primitiveOf(Boolean)
     isRowsSelectable = false;
+    @primitiveOf(Number)
+    maxSelections = Number.MAX_SAFE_INTEGER;
 
     constructor (source: Partial<TableConfig>) {
         ClassHelper.assign(this, source);

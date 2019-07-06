@@ -2,6 +2,7 @@
 
 namespace App\Http\Impl\Sitecp\Shop;
 
+use App\EloquentModels\Badge;
 use App\EloquentModels\Shop\Subscription;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserItem;
@@ -9,11 +10,9 @@ use App\Helpers\ConfigHelper;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
 
-class ItemsControllerImpl
-{
+class ItemsControllerImpl {
 
-    public function giveCreatorItem($item)
-    {
+    public function giveCreatorItem($item) {
         $types = ConfigHelper::getTypesConfig();
         if (!in_array($item->type, [$types->nameIcon, $types->nameEffect])) {
             return;
@@ -27,8 +26,7 @@ class ItemsControllerImpl
         $userItem->save();
     }
 
-    public function validateBasicItem($data)
-    {
+    public function validateBasicItem($data) {
         $types = array_map(function ($type) {
             return $type;
         }, (array)ConfigHelper::getTypesConfig());
@@ -55,8 +53,7 @@ class ItemsControllerImpl
             400, 'No user with that nickname!');
     }
 
-    public function validateSpecificItem(Request $request, $data)
-    {
+    public function validateSpecificItem(Request $request, $data) {
         $types = ConfigHelper::getTypesConfig();
         switch ($data->type) {
             case $types->nameIcon:
@@ -65,28 +62,28 @@ class ItemsControllerImpl
             case $types->nameEffect:
                 $this->validateNameEffect($request, $data);
                 break;
+            case $types->badge:
+                $this->validateBadge($data);
+                break;
             case $types->subscription:
                 $this->validateSubscription($data);
                 break;
         }
     }
 
-    public function typeHaveImage($data)
-    {
+    public function typeHaveImage($data) {
         $types = ConfigHelper::getTypesConfig();
         return in_array($data->type, [$types->nameIcon, $types->nameEffect]);
     }
 
-    public function uploadImage($request, $shopItemId)
-    {
+    public function uploadImage($request, $shopItemId) {
         $image = $request->file('image');
         $fileName = $shopItemId . '.gif';
         $destination = base_path('/public/rest/resources/images/shop');
         $image->move($destination, $fileName);
     }
 
-    private function validateNameIcon(Request $request, $data)
-    {
+    private function validateNameIcon(Request $request, $data) {
         if ($data->createdAt && !$request->has('image')) {
             return;
         }
@@ -97,8 +94,7 @@ class ItemsControllerImpl
         ]);
     }
 
-    private function validateNameEffect(Request $request, $data)
-    {
+    private function validateNameEffect(Request $request, $data) {
         if ($data->createdAt && !$request->has('image')) {
             return;
         }
@@ -109,8 +105,12 @@ class ItemsControllerImpl
         ]);
     }
 
-    private function validateSubscription($data)
-    {
+    private function validateBadge($data) {
+        Condition::precondition(Badge::where('badgeId', $data->data->badgeId)->count() == 0,
+            404, 'No badge with that ID');
+    }
+
+    private function validateSubscription($data) {
         Condition::precondition(!is_numeric($data->data->subscriptionTime), 400,
             'Subscription duration is invalid!');
         Condition::precondition(Subscription::where('subscriptionId', $data->data->subscriptionId)->count() == 0,

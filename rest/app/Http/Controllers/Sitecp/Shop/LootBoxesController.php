@@ -10,6 +10,7 @@ use App\Helpers\ShopHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
+use App\Models\Shop\ShopItemData;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
@@ -129,7 +130,8 @@ class LootBoxesController extends Controller {
         $items = ShopItem::orderBy('title', 'ASC')->whereNotIn('shopItemId', $itemIds)->whereIn('type', [
             $types->nameIcon,
             $types->nameEffect,
-            $types->subscription
+            $types->subscription,
+            $types->badge
         ]);
 
         if ($title) {
@@ -153,7 +155,8 @@ class LootBoxesController extends Controller {
                     'shopItemId' => $item->shopItemId,
                     'title' => $item->title,
                     'rarity' => $item->rarity,
-                    'type' => $item->type
+                    'type' => $item->type,
+                    'data' => new ShopItemData(Value::objectProperty($item, 'data', null))
                 ];
             })
         ]);

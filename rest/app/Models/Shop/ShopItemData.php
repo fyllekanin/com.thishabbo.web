@@ -8,12 +8,14 @@ namespace App\Models\Shop;
 class ShopItemData {
     public $subscriptionTime;
     public $subscriptionId;
+    public $badgeId;
 
     public function __construct($data) {
         try {
             $data = json_decode($data);
             $this->subscriptionTime = $data->subscriptionTime;
             $this->subscriptionId = $data->subscriptionId;
+            $this->badgeId = $data->badgeId;
         } catch (\Exception $exception) {
 
         }

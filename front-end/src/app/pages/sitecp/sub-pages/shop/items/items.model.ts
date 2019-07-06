@@ -7,6 +7,8 @@ export class ShopItemData {
     subscriptionTime: number;
     @primitive()
     subscriptionId: number;
+    @primitive()
+    badgeId: number;
 
     constructor (source: Partial<ShopItemData>) {
         ClassHelper.assign(this, source);
@@ -50,9 +52,15 @@ export class ShopItem {
         return this.type === SHOP_ITEM_TYPES.subscription.value;
     }
 
+    get isBadge (): boolean {
+        return this.type === SHOP_ITEM_TYPES.badge.value;
+    }
+
     getResource (): string {
         if (this.isNameEffect || this.isNameIcon) {
             return `<img src="/rest/resources/images/shop/${this.shopItemId}.gif" />`;
+        } else if (this.isBadge) {
+            return `<img src="/rest/resources/images/badges/${this.data.badgeId}.gif" />`;
         }
         return '<em class="far fa-address-card" style="font-size: 14px;"></em>';
     }
