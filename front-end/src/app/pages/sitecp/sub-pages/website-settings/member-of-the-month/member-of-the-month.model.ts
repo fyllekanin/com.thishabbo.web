@@ -5,8 +5,10 @@ export class MemberOfTheMonthModel {
     month: string;
     @primitive()
     member: string;
+    @primitive()
+    staff: string;
 
-    constructor(source?) {
+    constructor (source?) {
         ClassHelper.assign(this, source);
     }
 }

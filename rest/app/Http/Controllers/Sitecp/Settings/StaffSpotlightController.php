@@ -41,6 +41,7 @@ class StaffSpotlightController extends Controller {
 
         return response()->json([
             'member' => Value::objectProperty($motm, 'member', null),
+            'staff' => Value::objectProperty($motm, 'staff', null),
             'month' => Value::objectProperty($motm, 'month', null)
         ]);
     }
@@ -61,17 +62,19 @@ class StaffSpotlightController extends Controller {
             Condition::precondition(!isset($value) || empty($value), 400, $key . ' is missing');
         }
 
-        Condition::precondition(User::withNickname($information->member)->count('userId') == 0, 404, 'No user with that nickname');
+        Condition::precondition(User::withNickname($information->member)->count('userId') == 0, 404, 'No member with that nickname');
+        Condition::precondition(User::withNickname($information->staff)->count('userId') == 0, 404, 'No staff with that nickname');
 
         $newInformation = [
             'member' => $information->member,
-            'month' => $information->month
+            'staff' => $information->staff,
+            'month' => $information->month,
+            'year' => date('Y')
         ];
 
         SettingsHelper::createOrUpdateSetting($this->settingKeys->memberOfTheMonth, json_encode($newInformation));
 
         Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_MEMBER_OF_THE_MONTH);
-
         return response()->json();
     }
 

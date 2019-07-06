@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { ActiveUser, ContinuesInformationModel } from 'core/services/continues-information/continues-information.model';
+import {
+    ActiveUser,
+    ContinuesInformationModel,
+    MonthInformation
+} from 'core/services/continues-information/continues-information.model';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 import { Router } from '@angular/router';
 
@@ -12,7 +16,7 @@ import { Router } from '@angular/router';
 export class FooterComponent {
     private _info: ContinuesInformationModel;
 
-    constructor(
+    constructor (
         private _router: Router,
         continuesInformationService: ContinuesInformationService
     ) {
@@ -22,7 +26,11 @@ export class FooterComponent {
     }
 
     get activeUsers (): Array<ActiveUser> {
-        return this._info ? this._info.activeUsers : null;
+        return this._info ? this._info.footer.activeUsers : null;
+    }
+
+    get month (): MonthInformation {
+        return this._info ? this._info.footer.month : null;
     }
 
     getAvatarUrl (id: number): string {
