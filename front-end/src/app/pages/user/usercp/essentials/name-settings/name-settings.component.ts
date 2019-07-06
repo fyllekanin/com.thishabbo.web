@@ -5,21 +5,21 @@ import { NotificationService } from 'core/services/notification/notification.ser
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { USERCP_BREADCRUM_ITEM } from '../../usercp.constants';
-import { NameColor } from './name-color.model';
-import { NameColorService } from '../services/name-color.service';
+import { NameSettings } from './name-settings.model';
 import { ActivatedRoute } from '@angular/router';
 import { UserHelper } from 'shared/helpers/user.helper';
 import { AuthService } from 'core/services/auth/auth.service';
 import { INFO_BOX_TYPE, InfoBoxModel } from 'shared/app-views/info-box/info-box.model';
 import { ShopItem } from 'app/pages/sitecp/sub-pages/shop/items/items.model';
+import { NameSettingsService } from '../services/name-settings.service';
 
 @Component({
-    selector: 'app-usercp-name-color',
-    templateUrl: 'name-color.component.html',
-    styleUrls: ['name-color.component.css']
+    selector: 'app-usercp-name-settings',
+    templateUrl: 'name-settings.component.html',
+    styleUrls: ['name-settings.component.css']
 })
-export class NameColorComponent extends Page implements OnDestroy {
-    private _data: NameColor = new NameColor();
+export class NameSettingsComponent extends Page implements OnDestroy {
+    private _data: NameSettings = new NameSettings();
 
     tabs: Array<TitleTab> = [
         new TitleTab({title: 'Save'})
@@ -44,7 +44,7 @@ export class NameColorComponent extends Page implements OnDestroy {
     };
 
     constructor (
-        private _service: NameColorService,
+        private _service: NameSettingsService,
         private _notificationService: NotificationService,
         private _authService: AuthService,
         activatedRoute: ActivatedRoute,
@@ -67,8 +67,8 @@ export class NameColorComponent extends Page implements OnDestroy {
 
     onSave (): void {
         this._service.save(this._data).subscribe(() => {
-                this._notificationService.sendInfoNotification('Name Settings Updated!');
-            }, this._notificationService.failureNotification.bind(this._notificationService));
+            this._notificationService.sendInfoNotification('Name Settings Updated!');
+        }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     onNameIconSelect (icon: ShopItem) {
@@ -79,7 +79,7 @@ export class NameColorComponent extends Page implements OnDestroy {
         return icon.shopItemId === this._data.iconId;
     }
 
-    nameEffectStyle(effect: ShopItem): string {
+    nameEffectStyle (effect: ShopItem): string {
         return `url(/rest/resources/images/shop/${effect.shopItemId}.gif)`;
     }
 
@@ -119,7 +119,7 @@ export class NameColorComponent extends Page implements OnDestroy {
         this._data.effectId = id;
     }
 
-    set iconPosition(position: string) {
+    set iconPosition (position: string) {
         this._data.iconPosition = position;
     }
 
@@ -128,7 +128,7 @@ export class NameColorComponent extends Page implements OnDestroy {
             .map(item => item.trim());
     }
 
-    private onData (data: { data: NameColor }): void {
+    private onData (data: { data: NameSettings }): void {
         this._data = data.data;
     }
 }

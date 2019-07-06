@@ -29,45 +29,45 @@ export class UsercpComponent extends Page implements OnDestroy, OnInit {
     blocks: Array<SideMenuBlock> = [];
     version = new Date().getTime();
 
-    constructor(
+    constructor (
         private _authService: AuthService,
         breadcrumbService: BreadcrumbService,
         elementRef: ElementRef
     ) {
         super(elementRef);
-        breadcrumbService.breadcrumb = new Breadcrumb({ current: 'UserCP' });
+        breadcrumbService.breadcrumb = new Breadcrumb({current: 'UserCP'});
     }
 
-    ngOnInit(): void {
+    ngOnInit (): void {
         this.blocks = [
             new SideMenuBlock({
                 title: 'Account',
                 items: [
-                    new SideMenuItem({ title: 'Account Overview', link: '/user/usercp' }),
-                    new SideMenuItem({ title: 'Edit Habbo', link: '/user/usercp/account/habbo' }),
-                    new SideMenuItem({ title: 'Edit Home Page', link: '/user/usercp/account/home-page' }),
-                    new SideMenuItem({ title: 'Edit Nickname', link: '/user/usercp/account/nickname' }),
-                    new SideMenuItem({ title: 'Edit Password', link: '/user/usercp/account/password' }),
-                    new SideMenuItem({ title: 'Manage Groups', link: '/user/usercp/account/groups' }),
-                    new SideMenuItem({ title: 'Manage Followers', link: '/user/usercp/account/followers/page/1' }),
-                    new SideMenuItem({ title: 'Manage Themes', link: '/user/usercp/account/theme' }),
-                    new SideMenuItem({ title: 'Notifications', link: '/user/usercp/account/notifications/page/1' }),
-                    new SideMenuItem({ title: 'Voucher Codes', link: '/user/usercp/account/voucher-code' })
+                    new SideMenuItem({title: 'Account Overview', link: '/user/usercp'}),
+                    new SideMenuItem({title: 'Edit Habbo', link: '/user/usercp/account/habbo'}),
+                    new SideMenuItem({title: 'Edit Home Page', link: '/user/usercp/account/home-page'}),
+                    new SideMenuItem({title: 'Edit Nickname', link: '/user/usercp/account/nickname'}),
+                    new SideMenuItem({title: 'Edit Password', link: '/user/usercp/account/password'}),
+                    new SideMenuItem({title: 'Manage Groups', link: '/user/usercp/account/groups'}),
+                    new SideMenuItem({title: 'Manage Followers', link: '/user/usercp/account/followers/page/1'}),
+                    new SideMenuItem({title: 'Manage Themes', link: '/user/usercp/account/theme'}),
+                    new SideMenuItem({title: 'Notifications', link: '/user/usercp/account/notifications/page/1'}),
+                    new SideMenuItem({title: 'Voucher Codes', link: '/user/usercp/account/voucher-code'})
                 ]
             }),
             new SideMenuBlock({
                 title: 'Essentials',
                 items: [
-                    new SideMenuItem({ title: 'Edit Avatar', link: '/user/usercp/essentials/avatar' }),
-                    new SideMenuItem({ title: 'Edit Cover Photo', link: '/user/usercp/essentials/cover' }),
-                    new SideMenuItem({ title: 'Edit Profile Settings', link: '/user/usercp/essentials/profile' }),
-                    new SideMenuItem({ title: 'Edit Postbit', link: '/user/usercp/essentials/post-bit' }),
-                    new SideMenuItem({ title: 'Edit Signature', link: '/user/usercp/essentials/signature' }),
+                    new SideMenuItem({title: 'Edit Avatar', link: '/user/usercp/essentials/avatar'}),
+                    new SideMenuItem({title: 'Edit Cover Photo', link: '/user/usercp/essentials/cover'}),
+                    new SideMenuItem({title: 'Edit Profile Settings', link: '/user/usercp/essentials/profile'}),
+                    new SideMenuItem({title: 'Edit Postbit', link: '/user/usercp/essentials/post-bit'}),
+                    new SideMenuItem({title: 'Edit Signature', link: '/user/usercp/essentials/signature'}),
                     new SideMenuItem({
                         title: 'Edit Social Networks',
                         link: '/user/usercp/essentials/social-networks'
                     }),
-                    new SideMenuItem({ title: 'Edit Name Color', link: '/user/usercp/essentials/name-color' })
+                    new SideMenuItem({title: 'Edit Name Settings', link: '/user/usercp/essentials/name-settings'})
                 ]
             }),
             new SideMenuBlock({
@@ -98,11 +98,11 @@ export class UsercpComponent extends Page implements OnDestroy, OnInit {
         ];
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    get userId(): number {
+    get userId (): number {
         return this._authService.isLoggedIn() ? this._authService.authUser.userId : 0;
 
     }

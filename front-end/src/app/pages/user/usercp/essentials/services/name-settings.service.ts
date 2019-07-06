@@ -1,25 +1,24 @@
-
 import { map } from 'rxjs/operators';
 import { HttpService } from 'core/services/http/http.service';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { NameColor } from '../name-color/name-color.model';
+import { NameSettings } from '../name-settings/name-settings.model';
 
 @Injectable()
-export class NameColorService implements Resolve<NameColor> {
+export class NameSettingsService implements Resolve<NameSettings> {
 
-    constructor(
+    constructor (
         private _httpService: HttpService
     ) {
     }
 
-    resolve(): Observable<NameColor> {
+    resolve (): Observable<NameSettings> {
         return this._httpService.get('usercp/name-settings')
-            .pipe(map(res => new NameColor(res)));
+            .pipe(map(res => new NameSettings(res)));
     }
 
-    save(settings: NameColor): Observable<NameColor> {
+    save (settings: NameSettings): Observable<NameSettings> {
         return this._httpService.put('usercp/name-settings', settings);
     }
 }
