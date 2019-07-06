@@ -1,9 +1,12 @@
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
-import { Page } from 'shared/page/page.model';
-import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
-import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
-import { SideMenuBlock, SideMenuItem } from 'shared/app-views/side-menu/side-menu.model';
 import { AuthService } from 'core/services/auth/auth.service';
+import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
+import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
+import {
+    SideMenuBlock,
+    SideMenuItem
+} from 'shared/app-views/side-menu/side-menu.model';
+import { Page } from 'shared/page/page.model';
 
 @Component({
     selector: 'app-usercp',
@@ -11,7 +14,10 @@ import { AuthService } from 'core/services/auth/auth.service';
         <div class="grid-container">
             <div class="grid-x grid-margin-x">
                 <div class="cell small-12 position-relative">
-                    <app-cover-photo-with-avatar [userId]="userId" [version]="version"></app-cover-photo-with-avatar>
+                    <app-cover-photo-with-avatar
+                        [userId]="userId"
+                        [version]="version"
+                    ></app-cover-photo-with-avatar>
                 </div>
                 <div class="cell small-12 medium-9 position-relative">
                     <router-outlet></router-outlet>
@@ -20,12 +26,10 @@ import { AuthService } from 'core/services/auth/auth.service';
                     <app-side-menu [blocks]="blocks"></app-side-menu>
                 </div>
             </div>
-        </div>`
+        </div>
+    `
 })
-
-
 export class UsercpComponent extends Page implements OnDestroy, OnInit {
-
     blocks: Array<SideMenuBlock> = [];
     version = new Date().getTime();
 
@@ -43,31 +47,79 @@ export class UsercpComponent extends Page implements OnDestroy, OnInit {
             new SideMenuBlock({
                 title: 'Account',
                 items: [
-                    new SideMenuItem({ title: 'Account Overview', link: '/user/usercp' }),
-                    new SideMenuItem({ title: 'Edit Nickname', link: '/user/usercp/account/nickname' }),
-                    new SideMenuItem({ title: 'Groups', link: '/user/usercp/account/groups' }),
-                    new SideMenuItem({ title: 'Change Password', link: '/user/usercp/account/password' }),
-                    new SideMenuItem({ title: 'Edit Habbo', link: '/user/usercp/account/habbo' }),
-                    new SideMenuItem({ title: 'Edit Home Page', link: '/user/usercp/account/home-page' }),
-                    new SideMenuItem({ title: 'Theme Manager', link: '/user/usercp/account/theme' }),
-                    new SideMenuItem({ title: 'Claim Voucher Code', link: '/user/usercp/account/voucher-code' }),
-                    new SideMenuItem({ title: 'Follower Management', link: '/user/usercp/account/followers/page/1' }),
-                    new SideMenuItem({ title: 'Notifications', link: '/user/usercp/account/notifications/page/1' })
+                    new SideMenuItem({
+                        title: 'Account Overview',
+                        link: '/user/usercp'
+                    }),
+                    new SideMenuItem({
+                        title: 'Edit Nickname',
+                        link: '/user/usercp/account/nickname'
+                    }),
+                    new SideMenuItem({
+                        title: 'Groups',
+                        link: '/user/usercp/account/groups'
+                    }),
+                    new SideMenuItem({
+                        title: 'Change Password',
+                        link: '/user/usercp/account/password'
+                    }),
+                    new SideMenuItem({
+                        title: 'Edit Habbo',
+                        link: '/user/usercp/account/habbo'
+                    }),
+                    new SideMenuItem({
+                        title: 'Edit Home Page',
+                        link: '/user/usercp/account/home-page'
+                    }),
+                    new SideMenuItem({
+                        title: 'Theme Manager',
+                        link: '/user/usercp/account/theme'
+                    }),
+                    new SideMenuItem({
+                        title: 'Claim Voucher Code',
+                        link: '/user/usercp/account/voucher-code'
+                    }),
+                    new SideMenuItem({
+                        title: 'Follower Management',
+                        link: '/user/usercp/account/followers/page/1'
+                    }),
+                    new SideMenuItem({
+                        title: 'Notifications',
+                        link: '/user/usercp/account/notifications/page/1'
+                    })
                 ]
             }),
             new SideMenuBlock({
                 title: 'Essentials',
                 items: [
-                    new SideMenuItem({ title: 'Edit Profile Settings', link: '/user/usercp/essentials/profile' }),
-                    new SideMenuItem({ title: 'Edit Signature', link: '/user/usercp/essentials/signature' }),
-                    new SideMenuItem({ title: 'Edit Avatar', link: '/user/usercp/essentials/avatar' }),
-                    new SideMenuItem({ title: 'Edit Cover Photo', link: '/user/usercp/essentials/cover' }),
-                    new SideMenuItem({ title: 'Edit Postbit', link: '/user/usercp/essentials/post-bit' }),
+                    new SideMenuItem({
+                        title: 'Edit Profile Settings',
+                        link: '/user/usercp/essentials/profile'
+                    }),
+                    new SideMenuItem({
+                        title: 'Edit Signature',
+                        link: '/user/usercp/essentials/signature'
+                    }),
+                    new SideMenuItem({
+                        title: 'Edit Avatar',
+                        link: '/user/usercp/essentials/avatar'
+                    }),
+                    new SideMenuItem({
+                        title: 'Edit Cover Photo',
+                        link: '/user/usercp/essentials/cover'
+                    }),
+                    new SideMenuItem({
+                        title: 'Edit Postbit',
+                        link: '/user/usercp/essentials/post-bit'
+                    }),
                     new SideMenuItem({
                         title: 'Edit Social Networks',
                         link: '/user/usercp/essentials/social-networks'
                     }),
-                    new SideMenuItem({ title: 'Edit Name Color', link: '/user/usercp/essentials/name-color' })
+                    new SideMenuItem({
+                        title: 'Edit Name Settings',
+                        link: '/user/usercp/essentials/name-settings'
+                    })
                 ]
             }),
             new SideMenuBlock({
@@ -83,7 +135,8 @@ export class UsercpComponent extends Page implements OnDestroy, OnInit {
                     }),
                     new SideMenuItem({
                         title: 'Edit Category Subscriptions',
-                        link: '/user/usercp/subscriptions/category-subscriptions'
+                        link:
+                            '/user/usercp/subscriptions/category-subscriptions'
                     }),
                     new SideMenuItem({
                         title: 'Edit Ignored Threads',
@@ -103,7 +156,8 @@ export class UsercpComponent extends Page implements OnDestroy, OnInit {
     }
 
     get userId(): number {
-        return this._authService.isLoggedIn() ? this._authService.authUser.userId : 0;
-
+        return this._authService.isLoggedIn()
+            ? this._authService.authUser.userId
+            : 0;
     }
 }

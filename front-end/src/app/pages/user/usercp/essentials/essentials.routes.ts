@@ -1,17 +1,17 @@
 import { Routes } from '@angular/router';
-import { SignatureComponent } from './signature/signature.component';
-import { SignatureService } from './services/signature.service';
 import { AvatarComponent } from './avatar/avatar.component';
-import { AvatarService } from './services/avatar.service';
 import { CoverPhotoComponent } from './cover-photo/cover-photo.component';
+import { NameSettingsComponent } from './name-settings/name-settings.component';
 import { PostBitComponent } from './post-bit/post-bit.component';
-import { PostBitService } from './services/post-bit.service';
-import { SocialNetworksComponent } from './social-networks/social-networks.component';
-import { SocialNetworksService } from './services/social-networks.service';
 import { ProfileComponent } from './profile/profile.component';
+import { AvatarService } from './services/avatar.service';
+import { NameSettingsService } from './services/name-settings.service';
+import { PostBitService } from './services/post-bit.service';
 import { ProfileService } from './services/profile.service';
-import { NameColorComponent } from './name-color/name-color.component';
-import { NameColorService } from './services/name-color.service';
+import { SignatureService } from './services/signature.service';
+import { SocialNetworksService } from './services/social-networks.service';
+import { SignatureComponent } from './signature/signature.component';
+import { SocialNetworksComponent } from './social-networks/social-networks.component';
 
 export const essentialsRoutes: Routes = [
     {
@@ -58,10 +58,10 @@ export const essentialsRoutes: Routes = [
         }
     },
     {
-        path: 'name-color',
-        component: NameColorComponent,
+        path: 'name-settings',
+        component: NameSettingsComponent,
         resolve: {
-            data: NameColorService
+            data: NameSettingsService
         }
     }
 ];

@@ -1,0 +1,25 @@
+<app-title
+    [title]="'Edit Name Settings'"
+    [tabs]="tabs"
+    (onTabClick)="onSave()"
+></app-title>
+<app-content>
+    <app-info-box [model]="infoModel" *ngIf="!canUpdateColor"> </app-info-box>
+    <div *ngIf="canUpdateColor" class="grid-container">
+        <div class="grid-x">
+            <div class="cell small-6">
+                <label>
+                    Name Color (Hex Code):<br />For gradients, enter a list of
+                    hex codes (separated by commas)
+                </label>
+                <input [(ngModel)]="colors" type="text" />
+            </div>
+            <div class="cell small-6">
+                Preview:<br />
+                <span class="username" [style]="nameStyle | safeStyle">{{
+                    name
+                }}</span>
+            </div>
+        </div>
+    </div>
+</app-content>
