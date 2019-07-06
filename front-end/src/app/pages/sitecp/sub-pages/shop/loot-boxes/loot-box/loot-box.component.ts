@@ -5,7 +5,14 @@ import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { SHOP_LOOT_BOXES_BREADCRUMB_ITEMS, SITECP_BREADCRUMB_ITEM } from '../../../../sitecp.constants';
 import { LootBoxActions, LootBoxItem, LootBoxModel } from './loot-box.model';
-import { TableCell, TableConfig, TableHeader, TableRow } from 'shared/components/table/table.model';
+import {
+    Action,
+    TableAction,
+    TableCell,
+    TableConfig,
+    TableHeader,
+    TableRow
+} from 'shared/components/table/table.model';
 import { ShopHelper } from 'shared/helpers/shop.helper';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { LootBoxService } from '../../services/loot-box.service';
@@ -99,6 +106,16 @@ export class LootBoxComponent extends Page implements OnDestroy {
         });
     }
 
+    onAction (action: Action): void {
+        switch (action.value) {
+            case LootBoxActions.REMOVE_ITEM:
+                const shopItemId = Number(action.rowId);
+                this._data.items = this._data.items.filter(item => item.shopItemId !== shopItemId);
+                this.createOrUpdateTable();
+                break;
+        }
+    }
+
     get title (): string {
         return this._data.createdAt ?
             `Editing: ${this._data.title}` :
@@ -135,6 +152,9 @@ export class LootBoxComponent extends Page implements OnDestroy {
                 new TableCell({title: item.title}),
                 new TableCell({title: ShopHelper.getTypeName(item.type)}),
                 new TableCell({title: ShopHelper.getRarityName(item.rarity)})
+            ],
+            actions: [
+                new TableAction({title: 'Remove', value: LootBoxActions.REMOVE_ITEM})
             ]
         }));
     }

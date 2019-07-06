@@ -57,5 +57,6 @@ export enum LootBoxActions {
     SAVE,
     DELETE,
     BACK,
-    ADD_ITEM
+    ADD_ITEM,
+    REMOVE_ITEM
 }
