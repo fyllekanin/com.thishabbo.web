@@ -86,7 +86,8 @@ class ItemsController extends Controller {
             'rarity' => $data->rarity,
             'type' => $data->type,
             'data' => json_encode($data->data),
-            'createdBy' => Value::objectProperty($data, 'createdBy', 0)
+            'createdBy' => isset($data->createdBy) && !empty($data->createdBy) ?
+                User::withNickname($data->createdBy)->value('userId') : 0
         ]);
         $item->save();
 
