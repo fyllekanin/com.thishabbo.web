@@ -11,6 +11,7 @@ import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
+import { DialogService } from 'core/services/dialog/dialog.service';
 
 @Component({
     selector: 'app-sitecp-forum-category-permissions',
@@ -31,6 +32,7 @@ export class PermissionsComponent extends Page implements OnDestroy {
         private _httpService: HttpService,
         private _authService: AuthService,
         private _router: Router,
+        private _dialogService: DialogService,
         breadcrumbService: BreadcrumbService,
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute
@@ -59,7 +61,14 @@ export class PermissionsComponent extends Page implements OnDestroy {
                 this.save(false);
                 break;
             case PermissionActions.SAVE_CASCADE:
-                this.save(true);
+                this._dialogService.confirm({
+                    title: 'Are you sure?',
+                    content: 'Are you sure you wanna cascade all these permission changes?',
+                    callback: () => {
+                        this._dialogService.closeDialog();
+                        this.save(true);
+                    }
+                });
                 break;
         }
     }

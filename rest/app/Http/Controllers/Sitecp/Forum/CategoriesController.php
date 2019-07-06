@@ -253,7 +253,7 @@ class CategoriesController extends Controller {
      */
     private function createForumPermissions($category) {
         $parentPermissions = ForumPermission::where('categoryId', $category->parentId)->get();
-        if ($parentPermissions) {
+        if ($parentPermissions && count($parentPermissions) > 0) {
             foreach ($parentPermissions as $parentPermission) {
                 $permission = new ForumPermission([
                     'categoryId' => $category->categoryId,

@@ -53,7 +53,14 @@ export class CategoryComponent extends Page implements OnDestroy {
                 this.save(false);
                 break;
             case CategoryActions.SAVE_AND_CASCADE:
-                this.save(true);
+                this._dialogService.confirm({
+                    title: 'Are you sure?',
+                    content: 'Are you sure you wanna cascade all these options to sub-categories?',
+                    callback: () => {
+                        this._dialogService.closeDialog();
+                        this.save(true);
+                    }
+                });
                 break;
             case CategoryActions.DELETE:
                 this.delete();
