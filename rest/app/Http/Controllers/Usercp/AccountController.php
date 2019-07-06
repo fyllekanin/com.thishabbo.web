@@ -130,7 +130,7 @@ class AccountController extends Controller {
     public function updateTheme(Request $request) {
         $user = $request->get('auth');
         $themeId = $request->input('themeId');
-        $theme = $themeId == 0 ? (object)['title' => 'Default'] : Theme::find($themeId);
+        $theme = $themeId == 0 || $themeId == -1 ? (object)['title' => 'Default'] : Theme::find($themeId);
         Condition::precondition(!$theme, 404, 'No theme with that ID');
 
         $user->theme = $themeId;

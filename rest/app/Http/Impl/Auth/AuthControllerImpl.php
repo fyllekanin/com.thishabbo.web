@@ -39,8 +39,12 @@ class AuthControllerImpl {
         }
         $themeId = Value::objectProperty($user, 'theme', 0);
         return Theme::where('themeId', $themeId)
-            ->orWhere('isDefault', true)
-            ->first();
+            ->orWhere(function ($query) use ($themeId) {
+                if ($themeId >= 0) {
+                    $query->where('isDefault', true);
+                }
+            })
+            ->value('minified');
     }
 
     /**

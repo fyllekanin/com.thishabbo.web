@@ -17,12 +17,12 @@ import { ThemeHelper } from 'shared/helpers/theme.helper';
 export class ThemeComponent extends Page implements OnDestroy {
     private _data: Array<ThemeModel> = [];
 
-    themeId: number;
+    themeId = -1;
     tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Save Selection' })
+        new TitleTab({title: 'Save Selection'})
     ];
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService,
         elementRef: ElementRef,
@@ -43,26 +43,26 @@ export class ThemeComponent extends Page implements OnDestroy {
         super.destroy();
     }
 
-    onSave(): void {
-        this._httpService.put('usercp/themes', { themeId: this.themeId })
+    onSave (): void {
+        this._httpService.put('usercp/themes', {themeId: this.themeId})
             .subscribe(() => {
                 this._notificationService.sendInfoNotification('Themed saved!');
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    applyTheme(): void {
+    applyTheme (): void {
         const theme = this._data.find(item => item.themeId === Number(this.themeId));
         ThemeHelper.applyTheme(theme ? theme.minified : '');
     }
 
-    get themes(): Array<ThemeModel> {
+    get themes (): Array<ThemeModel> {
         return this._data;
     }
 
-    private onData(data: { data: Array<ThemeModel> }): void {
+    private onData (data: { data: Array<ThemeModel> }): void {
         this._data = data.data;
 
         const selectedTheme = this._data.find(item => item.isSelected);
-        this.themeId = selectedTheme ? selectedTheme.themeId : 0;
+        this.themeId = selectedTheme ? selectedTheme.themeId : -1;
     }
 }
