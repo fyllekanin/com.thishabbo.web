@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreatePostsTables extends Migration {
@@ -23,13 +24,13 @@ class CreatePostsTables extends Migration {
 
             // Indexes
             $table->index('threadId');
-            $table->index('content');
             $table->index('userId');
             $table->index('isDeleted');
             $table->index('isApproved');
             $table->index('createdAt');
             $table->index('updatedAt');
         });
+        DB::statement('ALTER TABLE posts ADD FULLTEXT INDEX PostsContentIndex (content)');
     }
 
     /**
