@@ -29,6 +29,6 @@ class ForumHelper {
     }
 
     public static function isCategoryAuthOnly($categoryId) {
-        return ForumPermission::where('categoryId', $categoryId)->where('isAuthOnly', true)->count() > 0;
+        return ForumPermission::where('categoryId', $categoryId)->where('groupId', 0)->where('isAuthOnly', true)->count() > 0;
     }
 }
