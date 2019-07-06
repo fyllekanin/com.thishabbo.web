@@ -68,6 +68,8 @@ export class ThreadPage {
     isIgnored: boolean;
     @arrayOf(ThreadReader)
     readers: Array<ThreadReader> = [];
+    @arrayOf(ThreadReader)
+    currentReaders: Array<ThreadReader> = [];
     @primitive()
     template: string;
     @primitive()
