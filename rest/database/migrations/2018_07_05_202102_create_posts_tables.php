@@ -1,18 +1,17 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
-class CreatePostsTables extends Migration
-{
+class CreatePostsTables extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('posts', function (Blueprint $table) {
             $table->bigIncrements('postId');
             $table->bigInteger('threadId');
@@ -31,6 +30,7 @@ class CreatePostsTables extends Migration
             $table->index('createdAt');
             $table->index('updatedAt');
         });
+        DB::statement('ALTER TABLE posts ADD FULLTEXT INDEX PostsContentIndex (content)');
     }
 
     /**
@@ -38,8 +38,7 @@ class CreatePostsTables extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('posts');
     }
 }

@@ -1,6 +1,7 @@
-import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, objectOf, primitive, primitiveOf } from 'shared/helpers/class.helper';
 import { SHOP_ITEM_TYPES } from 'shared/constants/shop.constants';
 import { SlimSubscription } from '../../users/subscriptions/subscriptions.model';
+import { ShopHelper } from 'shared/helpers/shop.helper';
 
 export class ShopItemData {
     @primitive()
@@ -30,8 +31,8 @@ export class ShopItem {
     type: number;
     @objectOf(ShopItemData)
     data = new ShopItemData(null);
-    @primitive()
-    createdAt: number;
+    @primitiveOf(Number)
+    createdAt = new Date().getTime();
 
     @arrayOf(SlimSubscription)
     subscriptions: Array<SlimSubscription> = [];
@@ -57,12 +58,8 @@ export class ShopItem {
     }
 
     getResource (): string {
-        if (this.isNameEffect || this.isNameIcon) {
-            return `<img src="/rest/resources/images/shop/${this.shopItemId}.gif" />`;
-        } else if (this.isBadge) {
-            return `<img src="/rest/resources/images/badges/${this.data.badgeId}.gif" />`;
-        }
-        return '<em class="far fa-address-card" style="font-size: 14px;"></em>';
+        const itemId = this.isBadge ? this.data.badgeId : this.shopItemId;
+        return ShopHelper.getItemResource(itemId, this.type);
     }
 }
 

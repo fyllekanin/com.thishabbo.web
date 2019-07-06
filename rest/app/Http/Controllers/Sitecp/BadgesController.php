@@ -111,7 +111,7 @@ class BadgesController extends Controller {
         $badge = new Badge([
             'name' => $badge->name,
             'description' => $badge->description,
-            'points' => $badge->points,
+            'points' => Value::objectProperty($badge, 'points', 0),
         ]);
         $badge->save();
 
@@ -153,7 +153,7 @@ class BadgesController extends Controller {
         Badge::where('badgeId', $badgeId)->update([
             'name' => $newBadge->name,
             'description' => $newBadge->description,
-            'points' => $newBadge->points,
+            'points' => Value::objectProperty($newBadge, 'points', 0),
         ]);
 
         if ($badgeImage) {
