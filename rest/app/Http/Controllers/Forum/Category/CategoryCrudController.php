@@ -353,7 +353,7 @@ class CategoryCrudController extends Controller {
         $userIds = User::where('lastActivity', '>=', time() - ($hours * 3600))->orderBy('lastActivity', 'DESC')->pluck('userId');
         return Iterables::sortByProperty($userIds->map(function ($id) {
             return UserHelper::getSlimUser($id);
-        }), 'nickname');
+        })->toArray(), 'nickname');
     }
 
     /**
