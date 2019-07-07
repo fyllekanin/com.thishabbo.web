@@ -357,7 +357,7 @@ class BBcodesTableSeeder extends Seeder {
                     'bbcodeId' => 28,
                     'name' => 'Spoiler',
                     'example' => '[spoiler]test[/spoiler]',
-                    'pattern' => '/\\[spoiler\\](.*)\\[\\/spoiler\\]/si',
+                    'pattern' => '/\\[spoiler\\](.*?)\\[\\/spoiler\\]/si',
                     'replace' => '<details><summary>Spoiler</summary>$1</details>',
                     'content' => '$1',
                     'isEmoji' => 0,

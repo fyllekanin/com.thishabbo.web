@@ -364,7 +364,7 @@ class ManagementController extends Controller {
 
         $curl = DataHelper::getBasicCurl($url);
         curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($curl, CURLOPT_USERPWD, 'sitecp:' . $radio->adminPassword);
+        curl_setopt($curl, CURLOPT_USERPWD, 'admin:' . $radio->adminPassword);
 
         $data = curl_exec($curl);
         curl_close($curl);

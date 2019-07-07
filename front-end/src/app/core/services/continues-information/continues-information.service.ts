@@ -104,9 +104,13 @@ export class ContinuesInformationService implements Resolve<void> {
     private updateInterval (): void {
         this._ngZone.runOutsideAngular(() => {
             clearInterval(this._timer);
-            this._timer = setInterval(() => {
+            if (this._lastNotificationCheck < 1) {
                 this.doRequest();
-            }, this._currentInterval);
+            } else {
+                this._timer = setInterval(() => {
+                    this.doRequest();
+                }, this._currentInterval);
+            }
         });
     }
 

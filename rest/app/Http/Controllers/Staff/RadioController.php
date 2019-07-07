@@ -137,7 +137,7 @@ class RadioController extends Controller {
         curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         curl_setopt($curl, CURLOPT_HEADER, false);
         curl_setopt($curl, CURLOPT_POST, false);
-        curl_setopt($curl, CURLOPT_USERPWD, 'sitecp:' . $radio->adminPassword);
+        curl_setopt($curl, CURLOPT_USERPWD, 'admin:' . $radio->adminPassword);
         curl_exec($curl);
 
         Condition::precondition(curl_getinfo($curl, CURLINFO_HTTP_CODE) != 200, 400,
