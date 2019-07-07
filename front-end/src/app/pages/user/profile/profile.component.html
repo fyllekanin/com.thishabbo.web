@@ -150,11 +150,13 @@
                         </div>
                         <div class="gray-content-wrapper">
                             <a [routerLink]="['/home/search/posts/page/1']"
-                               [queryParams]="{ byUser: user.nickname, order: 'desc'}">Search posts by user &raquo;</a>
+                               [queryParams]="{ byUser: user ? user.nickname : '', order: 'desc'}">Search posts by user
+                                &raquo;</a>
                         </div>
                         <div class="gray-content-wrapper">
                             <a [routerLink]="['/home/search/threads/page/1']"
-                               [queryParams]="{ byUser: user.nickname, order: 'desc'}">Search threads by user
+                               [queryParams]="{ byUser: user ? user.nickname : '', order: 'desc'}">Search threads by
+                                user
                                 &raquo;</a>
                         </div>
                     </div>

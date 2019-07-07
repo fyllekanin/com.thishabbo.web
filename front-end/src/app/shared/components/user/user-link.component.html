@@ -2,7 +2,7 @@
     <div class="mini-profile" [ngClass]="isMiniProfileDisabled ? 'disabled' : ''">
         <div class="mini-cover" [style.background-image]="coverUrl">
             <div class="mini-username">
-                <span [style]="nameStyling | safeStyle">{{ user.nickname }}</span>
+                <span [style]="nameStyling | safeStyle">{{ user ? user.nickname : '' }}</span>
             </div>
         </div>
         <div [style.background-image]="avatarUrl" class="mini-av"></div>
@@ -12,7 +12,8 @@
                     <b>Join Date:</b> {{ joinDate }}<br/>
                     <b>Posts:</b> {{ posts }} - <b>Likes:</b> {{likes}} <br/>
                     <a [routerLink]="['/home/search/posts/page/1']"
-                       [queryParams]="{ byUser: user.nickname, order: 'desc'}">Search posts by user &raquo;</a> <br/>
+                       [queryParams]="{ byUser: user ? user.nickname : '', order: 'desc'}">Search posts by user
+                        &raquo;</a> <br/>
                 </div>
             </div>
         </div>
