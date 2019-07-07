@@ -34,8 +34,6 @@ export class TimetableComponent extends Page implements OnDestroy {
     }
 
     isBooked (day: number, hour: number): boolean {
-        console.log("checking " + day + hour);
-        console.log(this.getSlot(day, hour));
         return Boolean(this.getSlot(day, hour));
     }
 
@@ -46,9 +44,11 @@ export class TimetableComponent extends Page implements OnDestroy {
 
     getEventName (day: number, hour: number): string {
         const slot = this.getSlot(day, hour);
+
         if(!slot.isPerm) {
             return this.isEvents() ? (slot.event ? slot.event.name : 'unknown') : '';
         }
+
         return `(${slot.name})`;
     }
 
@@ -58,7 +58,7 @@ export class TimetableComponent extends Page implements OnDestroy {
     }
 
     get title (): string {
-        return this.isEvents() ? "Events Timetable" : "Radio Timetable";
+        return this.isEvents() ? 'Events Timetable' : 'Radio Timetable';
     }
 
     get days (): Array<Day> {
