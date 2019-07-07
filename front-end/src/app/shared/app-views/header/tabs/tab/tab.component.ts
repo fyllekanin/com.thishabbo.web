@@ -10,6 +10,9 @@ export class TabComponent extends InnerDialogComponent {
     private _tab = new TabModel({});
 
     getData () {
+        if (this._tab.url.indexOf(location.origin) > -1) {
+            this._tab.url = this._tab.url.replace(location.origin, '');
+        }
         return this._tab;
     }
 
@@ -17,7 +20,7 @@ export class TabComponent extends InnerDialogComponent {
         // Intentionally empty
     }
 
-    get tab(): TabModel {
+    get tab (): TabModel {
         return this._tab;
     }
 }
