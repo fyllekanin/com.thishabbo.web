@@ -4,7 +4,7 @@ import { TimeHelper } from 'shared/helpers/time.helper';
 
 export const ACCOLADE_LABEL_MAP = new Map([
     [1, 'Award'],
-    [2, 'Sitecp'],
+    [2, 'Admin'],
     [3, 'Management'],
     [4, 'Moderator'],
     [5, 'Veteran'],
