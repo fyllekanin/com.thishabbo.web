@@ -31,7 +31,8 @@
             <div class="top-bar pc">
                 <app-navigation></app-navigation>
                 <div class="welcome">
-                    <div class="experience" *ngIf="isLoggedIn">
+                    <div class="experience" *ngIf="isLoggedIn"
+                         [attr.tooltip]="xpLeft + ' xp until level ' + (level + 1)">
                         <div class="experience-level">Level {{level}} ({{percentage}}%)</div>
                         <div class="experience-percentage" [style.width]="percentage + '%'"></div>
                     </div>

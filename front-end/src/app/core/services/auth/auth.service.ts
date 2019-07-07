@@ -137,6 +137,10 @@ export class AuthService {
         }));
 
         if (stay && !this._router.url.includes('auth/login')) {
+            const currentUrl = this._router.url;
+            this._router.navigateByUrl(`/user/usercp/account`).then(() => {
+                this._router.navigateByUrl(currentUrl);
+            });
             return;
         }
 
