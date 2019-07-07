@@ -160,7 +160,7 @@ class RadioController extends Controller {
         $nowMinus30Min = time() - 1800;
         $settings = ConfigHelper::getKeyConfig();
         $radio = new RadioSettings(SettingsHelper::getSettingValue($settings->radio));
-        $djUser = User::find(SettingsHelper::getSettingValue($radio->userId));
+        $djUser = User::find($radio->userId);
 
         Condition::precondition(!$djUser, 404, 'The current DJ could not be found');
         Condition::precondition($user->userId == 0, 400, 'You need to be logged in to like a DJ');
