@@ -95,8 +95,8 @@ export class NameSettingsComponent extends Page implements OnDestroy {
         return this._data.colors.join(',');
     }
 
-    get canUpdateColor (): boolean {
-        return this._data.canUpdateColor;
+    get canUpdateSettings (): boolean {
+        return this._data.canUpdateSettings;
     }
 
     get availableNameIcons (): Array<ShopItem> {

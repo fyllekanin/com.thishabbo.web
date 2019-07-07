@@ -8,6 +8,7 @@ use App\EloquentModels\Forum\IgnoredCategory;
 use App\EloquentModels\Forum\IgnoredThread;
 use App\EloquentModels\Forum\ThreadSubscription;
 use App\EloquentModels\Log\LogUser;
+use App\EloquentModels\Shop\UserSubscription;
 use App\EloquentModels\Theme;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserItem;
@@ -441,13 +442,21 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getDashboardStatistics(Request $request) {
+    public function getDashboard(Request $request) {
         $user = $request->get('auth');
+
         return response()->json([
             'userId' => $user->userId,
             'registerTimestamp' => $user->createdAt->timestamp,
             'itemsOwned' => UserItem::where('userId', $user->userId)->count(),
-            'likes' => $user->likes
+            'likes' => $user->likes,
+            'subscriptions' => UserSubscription::where('userId', $user->userId)->where('expiresAt', '>', time())->orderBy('expiresAt', 'ASC')
+                ->with('subscription')->get()->map(function ($userSubscription) {
+                    return [
+                        'title' => $userSubscription->subscription->title,
+                        'expiresAt' => $userSubscription->expiresAt
+                    ];
+                })
         ]);
     }
 

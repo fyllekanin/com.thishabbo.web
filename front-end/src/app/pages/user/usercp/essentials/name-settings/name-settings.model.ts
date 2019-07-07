@@ -15,7 +15,7 @@ export class NameSettings {
     @arrayOf(String)
     colors: Array<string> = [];
     @primitive()
-    canUpdateColor: boolean;
+    canUpdateSettings: boolean;
 
     constructor (source?: Partial<NameSettings>) {
         ClassHelper.assign(this, source);

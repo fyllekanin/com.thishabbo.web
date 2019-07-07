@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('dashboard', 'Usercp\AccountController@getDashboardStatistics');
+Route::get('dashboard', 'Usercp\AccountController@getDashboard');
 
 Route::get('groups', 'Usercp\GroupsController@getGroups');
 Route::delete('groups/{groupId}', 'Usercp\GroupsController@leaveGroup');

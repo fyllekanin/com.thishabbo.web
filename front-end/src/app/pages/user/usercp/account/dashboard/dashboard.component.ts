@@ -27,8 +27,9 @@ import { TimeHelper } from 'shared/helpers/time.helper';
 })
 export class DashboardComponent extends Page implements OnDestroy {
     private _tabs: Array<TabModel> = [];
-    private _stats: UserCpDashboardModel = new UserCpDashboardModel();
-    tableConfig: TableConfig;
+    private _data: UserCpDashboardModel = new UserCpDashboardModel();
+    tabsTableConfig: TableConfig;
+    subscriptionsTableConfig: TableConfig;
 
     stats: Array<StatsBoxModel> = [];
     isEditorSourceMode: boolean;
@@ -56,13 +57,15 @@ export class DashboardComponent extends Page implements OnDestroy {
                 USERCP_BREADCRUM_ITEM
             ]
         });
+
         try {
             this._tabs = JSON.parse(localStorage.getItem(LOCAL_STORAGE.TABS))
                 .map(item => new TabModel(item));
-            this.createOrUpdateTable();
         } catch (e) {
             this._tabs = [];
         }
+        this.createOrUpdateTabsTable();
+        this.createOrUpdateSubscriptionsTable();
 
         this.isEditorSourceMode = Boolean(localStorage.getItem(LOCAL_STORAGE.EDITOR_MODE));
         this.doIgnoreSignatures = Boolean(localStorage.getItem(LOCAL_STORAGE.IGNORE_SIGNATURES));
@@ -87,7 +90,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         this._tabs = this._tabs.filter(item => item.label.toLowerCase() !== action.rowId.toLowerCase());
         localStorage.setItem(LOCAL_STORAGE.TABS, JSON.stringify(this._tabs));
         this._continuesInformation.tabsUpdated();
-        this.createOrUpdateTable();
+        this.createOrUpdateTabsTable();
     }
 
     ngOnDestroy (): void {
@@ -142,19 +145,43 @@ export class DashboardComponent extends Page implements OnDestroy {
         }
     }
 
-    private createOrUpdateTable (): void {
-        if (this.tableConfig) {
-            this.tableConfig.rows = this.getTableRows();
+    private createOrUpdateSubscriptionsTable (): void {
+        if (this.subscriptionsTableConfig) {
+            this.subscriptionsTableConfig.rows = this.getTabsSubscriptionsRows();
             return;
         }
-        this.tableConfig = new TableConfig({
-            title: 'Device Tabs',
-            headers: [new TableHeader({title: 'Label'}), new TableHeader({title: 'URL'})],
-            rows: this.getTableRows()
+        this.subscriptionsTableConfig = new TableConfig({
+            title: 'Active Subscriptions',
+            headers: [new TableHeader({title: 'Title'}), new TableHeader({title: 'Expires At'})],
+            rows: this.getTabsSubscriptionsRows()
         });
     }
 
-    private getTableRows (): Array<TableRow> {
+    private createOrUpdateTabsTable (): void {
+        if (this.tabsTableConfig) {
+            this.tabsTableConfig.rows = this.getTabsTableRows();
+            return;
+        }
+        this.tabsTableConfig = new TableConfig({
+            title: 'Device Tabs',
+            headers: [new TableHeader({title: 'Label'}), new TableHeader({title: 'URL'})],
+            rows: this.getTabsTableRows()
+        });
+    }
+
+    private getTabsSubscriptionsRows (): Array<TableRow> {
+        return this._data.subscriptions.map(subscription => {
+            return new TableRow({
+                id: subscription.title,
+                cells: [
+                    new TableCell({title: subscription.title}),
+                    new TableCell({title: TimeHelper.getLongDate(subscription.expiresAt)})
+                ]
+            });
+        });
+    }
+
+    private getTabsTableRows (): Array<TableRow> {
         return this._tabs.map(tab => new TableRow({
             id: tab.label,
             cells: [
@@ -168,31 +195,31 @@ export class DashboardComponent extends Page implements OnDestroy {
     }
 
     private onData (data: { data: UserCpDashboardModel }) {
-        this._stats = data.data;
+        this._data = data.data;
         this.stats = [
             new StatsBoxModel({
                 borderColor: TitleTopBorder.GREEN,
                 icon: 'fas fa-id-card',
                 title: 'User ID',
-                breadText: String(this._stats.userId)
+                breadText: String(this._data.userId)
             }),
             new StatsBoxModel({
                 borderColor: TitleTopBorder.PINK,
                 icon: 'fas fa-calendar-alt',
                 title: 'Join Date',
-                breadText: TimeHelper.getLongDate(this._stats.registerTimestamp)
+                breadText: TimeHelper.getLongDate(this._data.registerTimestamp)
             }),
             new StatsBoxModel({
                 borderColor: TitleTopBorder.RED,
                 icon: 'fas fa-thumbs-up',
                 title: 'Likes',
-                breadText: String(this._stats.likes)
+                breadText: String(this._data.likes)
             }),
             new StatsBoxModel({
                 borderColor: TitleTopBorder.BLUE,
                 icon: 'fas fa-shopping-cart',
                 title: 'Shop Items',
-                breadText: String(this._stats.itemsOwned)
+                breadText: String(this._data.itemsOwned)
             })
         ];
     }
