@@ -38,9 +38,8 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
         this.tableConfig = new TableConfig({
             title: 'Dashboard',
             headers: [
-                new TableHeader({title: 'Header #1'}),
-                new TableHeader({title: 'Header #2'}),
-                new TableHeader({title: 'Header #3'})
+                new TableHeader({title: 'Title'}),
+                new TableHeader({title: 'Value'})
             ]
         });
     }
