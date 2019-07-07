@@ -68,10 +68,10 @@ export class UserPostBitComponent {
     }
 
     get width (): string {
-        return this.avatarSize ? `${this.avatarSize.width}px` : 'auto';
+        return this.avatarSize.width ? `${this.avatarSize.width}px` : 'auto';
     }
 
     get height (): string {
-        return this.avatarSize ? `${this.avatarSize.height}px` : 'auto';
+        return this.avatarSize.height ? `${this.avatarSize.height}px` : 'auto';
     }
 }
