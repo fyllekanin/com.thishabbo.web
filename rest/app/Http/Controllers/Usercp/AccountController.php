@@ -390,7 +390,7 @@ class AccountController extends Controller {
         $position = Iterables::find((array)ConfigHelper::getNamePositionOptions(), function ($position) use ($namePosition) {
             return $position == $namePosition->position;
         });
-        Condition::precondition($namePosition->isAvailable && !$position, 400, 'Not a valid position');
+        Condition::precondition($namePosition->isAvailable && $position != null, 400, 'Not a valid position');
 
         $userData = UserHelper::getUserDataOrCreate($user->userId);
         $userData->postBit = $this->convertPostBitOptions($data->information);

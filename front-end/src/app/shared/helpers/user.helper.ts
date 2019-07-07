@@ -1,8 +1,11 @@
 export class UserHelper {
     static getNameColor (colors: Array<string>): string {
+        if (!colors || colors.length === 0) {
+            return 'color: #999999';
+        }
         let style = `
             font-weight: bold;
-            color: ${colors && colors.length > 0 ? colors[0] : '#c1c1c1'};`;
+            color: ${colors && colors.length > 0 ? colors[0] : '#999999'};`;
 
         if (colors && colors.length > 1) {
             let current = 0;

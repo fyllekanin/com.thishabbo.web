@@ -272,8 +272,7 @@ class AuthController extends Controller {
      * @param $request
      */
     private function updateOrSetUserToken($userId, $accessToken, $refreshToken, $expiresAt, $request) {
-        Token::where('userId', $userId)
-            ->where('ip', $request->ip())
+        Token::where('expiresAt', '<', (time() - 604800))
             ->delete();
 
         try {
