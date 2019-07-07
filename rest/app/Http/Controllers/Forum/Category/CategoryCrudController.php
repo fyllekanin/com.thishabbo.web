@@ -17,7 +17,6 @@ use App\Http\Controllers\Controller;
 use App\Services\ForumService;
 use App\Services\QueryParamService;
 use App\Utils\Condition;
-use App\Utils\Iterables;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -350,10 +349,10 @@ class CategoryCrudController extends Controller {
      * @return array
      */
     private function getOnline($hours) {
-        $userIds = User::where('lastActivity', '>=', time() - ($hours * 3600))->orderBy('lastActivity', 'DESC')->pluck('userId');
-        return Iterables::sortByProperty($userIds->map(function ($id) {
+        $userIds = User::where('lastActivity', '>=', time() - ($hours * 3600))->orderBy('nickname', 'ASC')->pluck('userId');
+        return $userIds->map(function ($id) {
             return UserHelper::getSlimUser($id);
-        })->toArray(), 'nickname');
+        });
     }
 
     /**
