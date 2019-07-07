@@ -7,6 +7,7 @@ use App\EloquentModels\Shop\Subscription;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserItem;
 use App\Helpers\ConfigHelper;
+use App\Helpers\SettingsHelper;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
 
@@ -79,7 +80,7 @@ class ItemsControllerImpl {
     public function uploadImage($request, $shopItemId) {
         $image = $request->file('image');
         $fileName = $shopItemId . '.gif';
-        $destination = base_path('/public/rest/resources/images/shop');
+        $destination = SettingsHelper::getResourcesPath('images/shop');
         $image->move($destination, $fileName);
     }
 

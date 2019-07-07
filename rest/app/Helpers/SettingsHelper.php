@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Cache;
 
 class SettingsHelper {
 
+    public static function getResourcesPath($path) {
+        return str_replace('//', '/', base_path('/rest/resources/' . $path));
+    }
+
     public static function getSettingValue($key) {
         $setting = self::getSetting($key);
         return $setting ? $setting->value : null;

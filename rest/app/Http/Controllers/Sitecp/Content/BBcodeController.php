@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Sitecp\Content;
 
 use App\EloquentModels\BBcode;
+use App\Helpers\SettingsHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
@@ -37,7 +38,7 @@ class BBcodeController extends Controller {
 
         if ($bbcode->isEmoji) {
             $fileName = $newBbcode->bbcodeId . '.gif';
-            $destination = base_path('/public/rest/resources/images/emojis');
+            $destination = SettingsHelper::getResourcesPath('images/emojis');
             $file->move($destination, $fileName);
         }
 
@@ -74,7 +75,7 @@ class BBcodeController extends Controller {
 
         if ($request->has('image')) {
             $fileName = $existing->bbcodeId . '.gif';
-            $destination = base_path('/public/rest/resources/images/emojis');
+            $destination = SettingsHelper::getResourcesPath('images/emojis');
             $file->move($destination, $fileName);
         }
 

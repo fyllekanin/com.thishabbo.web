@@ -7,6 +7,7 @@ use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserItem;
 use App\Helpers\ConfigHelper;
 use App\Helpers\DataHelper;
+use App\Helpers\SettingsHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
@@ -116,7 +117,7 @@ class BadgesController extends Controller {
         $badge->save();
 
         $fileName = $badge->badgeId . '.gif';
-        $destination = base_path('/public/rest/resources/images/badges');
+        $destination = SettingsHelper::getResourcesPath('images/badges');
         $badgeImage->move($destination, $fileName);
 
         Logger::sitecp($user->userId, $request->ip(), Action::CREATED_BADGE, ['badge' => $badge->name]);
@@ -158,7 +159,7 @@ class BadgesController extends Controller {
 
         if ($badgeImage) {
             $fileName = $badge->badgeId . '.gif';
-            $destination = base_path('/public/rest/resources/images/badges');
+            $destination = SettingsHelper::getResourcesPath('images/badges');
             $badgeImage->move($destination, $fileName);
         }
 

@@ -427,7 +427,7 @@ class ThreadCrudController extends Controller {
     private function uploadFileAndCreateTemplateData($threadSkeleton, $thumbnail, $threadId, $hasFile) {
         if ($hasFile) {
             $fileName = $threadId . '.gif';
-            $destination = base_path('/public/rest/resources/images/thumbnails');
+            $destination = base_path('/rest/resources/images/thumbnails');
             $thumbnail->move($destination, $fileName);
         }
 

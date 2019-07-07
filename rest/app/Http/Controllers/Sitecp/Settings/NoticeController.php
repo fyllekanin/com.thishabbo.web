@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Sitecp\Settings;
 
 use App\EloquentModels\Notice;
+use App\Helpers\SettingsHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
@@ -101,7 +102,7 @@ class NoticeController extends Controller {
         $notice->save();
 
         $fileName = $notice->noticeId . '.gif';
-        $destination = base_path('/public/rest/resources/images/notices');
+        $destination = SettingsHelper::getResourcesPath('images/notices');
         $backgroundImage->move($destination, $fileName);
 
         Logger::sitecp($user->userId, $request->ip(), Action::CREATED_NOTICE, ['notice' => $notice->title]);

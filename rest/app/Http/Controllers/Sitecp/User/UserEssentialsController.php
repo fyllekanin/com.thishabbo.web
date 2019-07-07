@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Sitecp\User;
 
 use App\EloquentModels\User\UserData;
+use App\Helpers\SettingsHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
@@ -34,7 +35,7 @@ class UserEssentialsController extends Controller {
      */
     public function deleteAvatar(Request $request, $userId) {
         $user = $request->get('auth');
-        $path = base_path('/public/rest/resources/images/users/' . $userId . '.gif');
+        $path = SettingsHelper::getResourcesPath('images/users/' . $userId . '.gif');
 
         Condition::precondition(!File::exists($path), 404, 'This user do not have a avatar');
 
@@ -52,7 +53,7 @@ class UserEssentialsController extends Controller {
      */
     public function deleteCoverPhoto(Request $request, $userId) {
         $user = $request->get('auth');
-        $path = base_path('/public/rest/resources/images/covers/' . $userId . '.gif');
+        $path = SettingsHelper::getResourcesPath('images/covers/' . $userId . 'gif');
 
         Condition::precondition(!File::exists($path), 404, 'This user do not have a coverphoto');
 

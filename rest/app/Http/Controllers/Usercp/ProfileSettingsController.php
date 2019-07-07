@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Usercp;
 
+use App\EloquentModels\Shop\ShopItem;
 use App\EloquentModels\User\Avatar;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserData;
-use App\EloquentModels\User\UserProfile;
 use App\EloquentModels\User\UserItem;
-use App\EloquentModels\Shop\ShopItem;
+use App\EloquentModels\User\UserProfile;
 use App\Helpers\AvatarHelper;
 use App\Helpers\ConfigHelper;
+use App\Helpers\SettingsHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
@@ -157,7 +158,7 @@ class ProfileSettingsController extends Controller {
         ]);
 
         $fileName = $user->userId . '.gif';
-        $destination = base_path('/public/rest/resources/images/covers');
+        $destination = SettingsHelper::getResourcesPath('images/covers');
         $cover->move($destination, $fileName);
 
         $userData = UserHelper::getUserDataOrCreate($user->userId);
@@ -187,7 +188,7 @@ class ProfileSettingsController extends Controller {
         AvatarHelper::backupAvatarIfExists(AvatarHelper::getCurrentAvatar($user->userId));
 
         $fileName = $user->userId . '.gif';
-        $destination = base_path('/public/rest/resources/images/users');
+        $destination = SettingsHelper::getResourcesPath('images/users');
         $avatar->move($destination, $fileName);
 
         $dimensions = getimagesize($destination . '/' . $fileName);
@@ -278,7 +279,7 @@ class ProfileSettingsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getNameSettings (Request $request) {
+    public function getNameSettings(Request $request) {
         $user = $request->get('auth');
 
         $userdata = UserHelper::getUserDataOrCreate($user->userId);
@@ -293,7 +294,7 @@ class ProfileSettingsController extends Controller {
             'availableNameIcons' => ShopItem::whereIn('shopItemId', $availableNameIconIds)->get(),
             'availableNameEffects' => ShopItem::whereIn('shopItemId', $availableEffectIds)->get(),
             'colors' => Value::objectJsonProperty($userdata, 'nameColor', []),
-            'canUpdateColor' => UserHelper::hasSubscriptionFeature($user->userId, ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor)
+            'canUpdateSettings' => UserHelper::hasSubscriptionFeature($user->userId, ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor)
         ]);
     }
 
@@ -310,7 +311,7 @@ class ProfileSettingsController extends Controller {
         $colors = $request->input('colors');
 
         Condition::precondition($colors && !UserHelper::hasSubscriptionFeature($user->userId,
-            ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor), 400, 'You do not have the permissions to edit the name colour!');
+                ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor), 400, 'You do not have the permissions to edit the name colour!');
 
         Condition::precondition(!Value::validateHexColors($colors), 400, 'Invalid Hex Code!');
 
