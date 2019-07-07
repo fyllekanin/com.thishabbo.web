@@ -304,8 +304,15 @@ class ThreadCrudController extends Controller {
             ->get(['userId', 'updatedAt'])->map(function ($read) {
                 return [
                     'user' => UserHelper::getSlimUser($read->userId),
-                    'time' => $read->updatedAt->timestamp,
-                    'currentlyViewing' => $read->updatedAt->timestamp > time() - 600
+                    'time' => $read->updatedAt->timestamp
+                ];
+            });
+
+        $thread->currentReaders = ThreadRead::where('threadId', $thread->threadId)->where('updatedAt', '>', time() - 600)
+            ->get(['userId', 'updatedAt'])->map(function ($read) {
+                return [
+                    'user' => UserHelper::getSlimUser($read->userId),
+                    'time' => $read->updatedAt->timestamp
                 ];
             });
 
