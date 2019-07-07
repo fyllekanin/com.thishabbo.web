@@ -31,7 +31,7 @@ class DataHelper {
     public static function getShoutCastV1Stats() {
         $radio = new RadioSettings(SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->radio));
 
-        $curl = self::getBasicCurl($radio->ip . ':' . $radio->port . '/sitecp.cgi?mode=viewxml');
+        $curl = self::getBasicCurl($radio->ip . ':' . $radio->port . '/admin.cgi?mode=viewxml');
         self::setCurlOptionsForRadio($curl, $radio->adminPassword);
 
         $data = curl_exec($curl);
@@ -67,6 +67,6 @@ class DataHelper {
 
     private static function setCurlOptionsForRadio($curl, $adminPassword) {
         curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($curl, CURLOPT_USERPWD, 'sitecp:' . $adminPassword);
+        curl_setopt($curl, CURLOPT_USERPWD, 'admin:' . $adminPassword);
     }
 }
