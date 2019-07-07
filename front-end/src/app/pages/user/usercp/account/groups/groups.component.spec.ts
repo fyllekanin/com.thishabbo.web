@@ -8,13 +8,14 @@ import { Subject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
+import { HttpService } from 'core/services/http/http.service';
 
 describe('GroupsComponent', () => {
 
     class ActivatedRouteMock {
         subject = new Subject();
 
-        get data() {
+        get data () {
             return this.subject.asObservable();
         }
     }
@@ -32,11 +33,22 @@ describe('GroupsComponent', () => {
                 GroupsComponent
             ],
             providers: [
-                { provide: NotificationService, useValue: {} },
-                { provide: DialogService, useValue: {} },
-                { provide: GroupsService, useValue: { updateDisplayGroup() {} } },
-                { provide: BreadcrumbService, useValue: { set breadcrum(_data) {} } },
-                { provide: ActivatedRoute, useValue: activatedRoute }
+                {provide: HttpService, useValue: {}},
+                {provide: NotificationService, useValue: {}},
+                {provide: DialogService, useValue: {}},
+                {
+                    provide: GroupsService, useValue: {
+                        updateDisplayGroup () {
+                        }
+                    }
+                },
+                {
+                    provide: BreadcrumbService, useValue: {
+                        set breadcrum (_data) {
+                        }
+                    }
+                },
+                {provide: ActivatedRoute, useValue: activatedRoute}
             ],
             schemas: [NO_ERRORS_SCHEMA]
         });
@@ -66,9 +78,9 @@ describe('GroupsComponent', () => {
         activatedRoute.subject.next({
             data: {
                 groups: [
-                    { isMember: true, isPublic: true },
-                    { isMember: false, isPublic: true },
-                    { isMember: true, isPublic: false }
+                    {isMember: true, isPublic: true},
+                    {isMember: false, isPublic: true},
+                    {isMember: true, isPublic: false}
                 ]
             }
         });
@@ -85,9 +97,9 @@ describe('GroupsComponent', () => {
         activatedRoute.subject.next({
             data: {
                 groups: [
-                    { isMember: true, isPublic: true },
-                    { isMember: false, isPublic: true },
-                    { isMember: true, isPublic: false }
+                    {isMember: true, isPublic: true},
+                    {isMember: false, isPublic: true},
+                    {isMember: true, isPublic: false}
                 ]
             }
         });
@@ -118,7 +130,7 @@ describe('GroupsComponent', () => {
             // Given
             activatedRoute.subject.next({
                 data: {
-                    displayGroup: { groupId: 5 }
+                    displayGroup: {groupId: 5}
                 }
             });
 
