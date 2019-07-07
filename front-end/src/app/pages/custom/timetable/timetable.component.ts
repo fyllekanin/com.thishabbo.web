@@ -45,7 +45,7 @@ export class TimetableComponent extends Page implements OnDestroy {
     getEventName (day: number, hour: number): string {
         const slot = this.getSlot(day, hour);
 
-        if(!slot.isPerm) {
+        if (!slot.isPerm) {
             return this.isEvents() ? (slot.event ? slot.event.name : 'unknown') : '';
         }
 
