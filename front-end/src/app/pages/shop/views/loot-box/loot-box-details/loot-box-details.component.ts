@@ -35,6 +35,26 @@ export class LootBoxDetailsComponent extends InnerDialogComponent {
         this.createTableConfig();
     }
 
+    getResourceResponse (): string {
+        const item = this.box.items.find(shopItem => shopItem.shopItemId === this.response.shopItemId);
+        return ShopHelper.getItemResource(item.shopItemId, item.type);
+    }
+
+    getItemTitle (): string {
+        const item = this.box.items.find(shopItem => shopItem.shopItemId === this.response.shopItemId);
+        return item.title;
+    }
+
+    isSubscriptionResponse (): boolean {
+        const item = this.box.items.find(shopItem => shopItem.shopItemId === this.response.shopItemId);
+        return item.type === SHOP_ITEM_TYPES.subscription.value;
+    }
+
+    getSubscriptionLength (): string {
+        const item = this.box.items.find(shopItem => shopItem.shopItemId === this.response.shopItemId);
+        return this.getExpireAfter(item.data.subscriptionTime);
+    }
+
     open (): void {
         this._httpService.post(`shop/loot-boxes/open/${this.box.lootBoxId}`, null)
             .subscribe(res => {

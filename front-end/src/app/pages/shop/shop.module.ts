@@ -21,6 +21,7 @@ import { SubscriptionsComponent } from './subscriptions/subscriptions.component'
 import { SubscriptionsResolver } from './services/subscriptions.resolver';
 import { LootBoxDetailsComponent } from './views/loot-box/loot-box-details/loot-box-details.component';
 import { ButtonModule } from 'shared/directives/button/button.module';
+import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 
 @NgModule({
     imports: [
@@ -34,7 +35,8 @@ import { ButtonModule } from 'shared/directives/button/button.module';
         FormsModule,
         PaginationModule,
         SideMenuModule,
-        ButtonModule
+        ButtonModule,
+        SafeHtmlModule
     ],
     declarations: [
         ShopComponent,

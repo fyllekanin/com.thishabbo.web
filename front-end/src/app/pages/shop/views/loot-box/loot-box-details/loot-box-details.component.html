@@ -1,4 +1,25 @@
-<app-table [config]="tableConfig"></app-table>
-<div class="open">
-    <button appButton (onClick)="open()">Open Loot Box</button>
+<div *ngIf="!response">
+    <app-table [config]="tableConfig"></app-table>
+    <div class="open">
+        <button appButton (onClick)="open()">Open Loot Box</button>
+    </div>
+</div>
+<div *ngIf="response" class="align-center">
+    <div *ngIf="response.isRefund">
+        <em class="fas fa-coins"></em> <br/><br/>
+        <span *ngIf="response.amount === box.credits">
+            Something went wrong, you got a full refund!
+        </span>
+        <span *ngIf="response.amount !== box.credits">
+            You already got the item! You got {{response.amount}} back!
+        </span>
+    </div>
+    <div *ngIf="!response.isRefund">
+        <span [innerHTML]="getResourceResponse() | safeHtml"></span> <br/><br/>
+        {{getItemTitle()}}<br/>
+        {{isSubscriptionResponse() ? getSubscriptionLength() : ''}}
+        <br/>
+        <br/>
+        Congrats on your new item! :D
+    </div>
 </div>
