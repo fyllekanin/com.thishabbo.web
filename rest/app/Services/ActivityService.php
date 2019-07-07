@@ -61,10 +61,18 @@ class ActivityService {
      * @return bool
      */
     private function isItemValid($item, $categoryIds) {
-        if (!$this->isThreadRelatedAction($item)) {
+        if (!$this->isThreadRelatedAction($item) && !$this->isPostRelatedAction($item)) {
             return true;
         }
-        return in_array($item->data->categoryId, $categoryIds);
+
+        $itemExists = false;
+        if ($this->isThreadRelatedAction($item)) {
+            $itemExists = Thread::where('threadId', $item->contentId)->count() > 0;
+        }
+        if ($this->isPostRelatedAction($item)) {
+            $itemExists = Post::where('postId', $item->contentId)->count() > 0;
+        }
+        return in_array($item->data->categoryId, $categoryIds) && $itemExists;
     }
 
     /**
@@ -96,7 +104,8 @@ class ActivityService {
             'logId' => $item->logId,
             'user' => UserHelper::getSlimUser($item->userId),
             'type' => $item->action,
-            'thread' => $this->isThreadRelatedAction($item) ? $this->createThreadItem($userId, $item) : null,
+            'thread' => $this->isThreadRelatedAction($item) || $this->isPostRelatedAction($item) ?
+                $this->createThreadItem($userId, $item) : null,
             'createdAt' => $item->createdAt->timestamp
         ];
     }
@@ -125,6 +134,10 @@ class ActivityService {
      * @return bool
      */
     private function isThreadRelatedAction($item) {
-        return in_array($item->action, [Action::CREATED_POST['id'], Action::CREATED_THREAD['id'], Action::LIKED_POST['id']]);
+        return in_array($item->action, [Action::CREATED_THREAD['id']]);
+    }
+
+    private function isPostRelatedAction($item) {
+        return in_array($item->action, [Action::CREATED_POST['id'], Action::LIKED_POST['id']]);
     }
 }
