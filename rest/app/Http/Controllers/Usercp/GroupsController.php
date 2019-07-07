@@ -6,16 +6,40 @@ use App\EloquentModels\Group\Group;
 use App\EloquentModels\Group\GroupRequest;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserGroup;
+use App\Helpers\ConfigHelper;
 use App\Http\Controllers\Controller;
+use App\Jobs\UserUpdated;
 use App\Logger;
 use App\Models\Logger\Action;
 use App\Utils\Condition;
 use App\Utils\Iterables;
 use Illuminate\Http\Request;
-use App\Jobs\UserUpdated;
-use App\Helpers\ConfigHelper;
 
 class GroupsController extends Controller {
+
+    public function showUserBar(Request $request, $groupId) {
+        $user = $request->get('auth');
+        $userGroup = UserGroup::where('userId', $user->userId)->where('groupId', $groupId)->first();
+        Condition::precondition(!$userGroup, 404, 'You do not have this group');
+
+        $userGroup->isBarActive = 1;
+        $userGroup->save();
+
+        Logger::user($user->userId, $request->ip(), Action::SHOWED_USER_BAR, [], $userGroup->groupId);
+        return response()->json();
+    }
+
+    public function hideUserBar(Request $request, $groupId) {
+        $user = $request->get('auth');
+        $userGroup = UserGroup::where('userId', $user->userId)->where('groupId', $groupId)->first();
+        Condition::precondition(!$userGroup, 404, 'You do not have this group');
+
+        $userGroup->isBarActive = 0;
+        $userGroup->save();
+
+        Logger::user($user->userId, $request->ip(), Action::HIDDEN_USER_BAR, [], $userGroup->groupId);
+        return response()->json();
+    }
 
     /**
      * Post request to perform a application for a public user group
@@ -75,6 +99,8 @@ class GroupsController extends Controller {
     /**
      * Get an array of all the public user groups the user is a part of
      *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function getGroups(Request $request) {
@@ -86,6 +112,7 @@ class GroupsController extends Controller {
             $group->isMember = in_array($group->groupId, $user->groupIds);
             $group->haveApplied = $group->isMember ? false : GroupRequest::where('userId', $user->userId)
                     ->where('groupId', $group->groupId)->count('groupRequestId') > 0;
+            $group->isBarActive = UserGroup::where('groupId', $group->groupId)->where('userId', $user->userId)->value('isBarActive');
         }
 
         return response()->json([

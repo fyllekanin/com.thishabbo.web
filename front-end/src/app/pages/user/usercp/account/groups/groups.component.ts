@@ -10,6 +10,7 @@ import { NotificationService } from 'core/services/notification/notification.ser
 import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { GroupsService } from '../services/groups.service';
 import { TitleTab } from 'shared/app-views/title/title.model';
+import { HttpService } from 'core/services/http/http.service';
 
 @Component({
     selector: 'app-usercp-groups',
@@ -27,6 +28,7 @@ export class GroupsComponent extends Page implements OnDestroy {
         private _notificationService: NotificationService,
         private _dialogService: DialogService,
         private _service: GroupsService,
+        private _httpService: HttpService,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService,
         activatedRoute: ActivatedRoute
@@ -65,6 +67,22 @@ export class GroupsComponent extends Page implements OnDestroy {
             content: `Are you sure you want to apply for ${group.name}?`,
             callback: this.onLeave.bind(this, groupId)
         });
+    }
+
+    toggleBar (group: UserCpGroup): void {
+        if (group.isBarActive) {
+            this._httpService.put(`usercp/groups/${group.groupId}/hide`)
+                .subscribe(() => {
+                    const grp = this._data.groups.find(item => item.groupId === group.groupId);
+                    grp.isBarActive = false;
+                }, this._notificationService.failureNotification.bind(this._notificationService));
+        } else {
+            this._httpService.put(`usercp/groups/${group.groupId}/show`)
+                .subscribe(() => {
+                    const grp = this._data.groups.find(item => item.groupId === group.groupId);
+                    grp.isBarActive = true;
+                }, this._notificationService.failureNotification.bind(this._notificationService));
+        }
     }
 
     get nonMemberPublicGroups (): Array<UserCpGroup> {

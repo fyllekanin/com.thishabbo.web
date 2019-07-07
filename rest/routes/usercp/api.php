@@ -9,6 +9,9 @@ Route::delete('groups/{groupId}', 'Usercp\GroupsController@leaveGroup');
 Route::post('groups/apply', 'Usercp\GroupsController@applyForGroup');
 Route::put('groups/displaygroup', 'Usercp\GroupsController@updateDisplayGroup');
 
+Route::put('groups/{groupId}/show', 'Usercp\GroupsController@showUserBar');
+Route::put('groups/{groupId}/hide', 'Usercp\GroupsController@hideUserBar');
+
 Route::get('signature', 'Usercp\ProfileSettingsController@getSignature');
 Route::put('signature', 'Usercp\ProfileSettingsController@updateSignature');
 

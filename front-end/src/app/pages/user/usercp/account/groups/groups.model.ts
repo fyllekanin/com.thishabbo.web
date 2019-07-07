@@ -1,4 +1,4 @@
-import { primitive, ClassHelper, arrayOf, objectOf } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
 
 export class UserCpGroup {
     @primitive()
@@ -13,8 +13,10 @@ export class UserCpGroup {
     haveApplied: boolean;
     @primitive()
     isPublic: boolean;
+    @primitive()
+    isBarActive: boolean;
 
-    constructor(source: Partial<UserCpGroup>) {
+    constructor (source: Partial<UserCpGroup>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -25,7 +27,7 @@ export class UserCpGroupsPage {
     @objectOf(UserCpGroup)
     displayGroup: UserCpGroup;
 
-    constructor(source: Partial<UserCpGroupsPage>) {
+    constructor (source: Partial<UserCpGroupsPage>) {
         ClassHelper.assign(this, source);
     }
 }

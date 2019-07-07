@@ -4,7 +4,8 @@
         <div class="grid-x grid-margin-x">
             <div class="cell small-12">
                 <strong>Display Group</strong> <span
-                    tooltip="This will be your primary group and&#xa;use that groups default colour." class="checkbox-info">
+                    tooltip="This will be your primary group and&#xa;use that groups default colour."
+                    class="checkbox-info">
                         <em class="fas fa-question-circle"></em>
                     </span>
                 <br/> <br/>
@@ -24,6 +25,10 @@
                     <strong>Status: </strong>
                     <span *ngIf="group.isMember">Is member <span class="apply" *ngIf="group.isPublic"
                                                                  (click)="leave(group.groupId)">(Leave)</span></span>
+                </div>
+                <div>
+                    <strong>Type: </strong> <span class="apply"
+                                                  (click)="toggleBar(group)">{{group.isBarActive ? 'Hide Bar' : 'Show Bar'}}</span>
                 </div>
             </div>
         </div>

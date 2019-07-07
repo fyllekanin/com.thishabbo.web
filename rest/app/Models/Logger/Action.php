@@ -1567,5 +1567,19 @@ class Action {
         'data' => [],
         'log' => 'log_user'
     ];
+
+    const SHOWED_USER_BAR = [
+        'id' => 186,
+        'description' => 'User showed userbar',
+        'data' => [],
+        'log' => 'log_user'
+    ];
+
+    const HIDDEN_USER_BAR = [
+        'id' => 187,
+        'description' => 'User hiden userbar',
+        'data' => [],
+        'log' => 'log_user'
+    ];
 }
 
