@@ -50,7 +50,7 @@ class SearchControllerImpl {
 
     private function getUsersResult($request, $page) {
         $usersSql = User::where('nickname', 'LIKE', Value::getFilterValue($request, $request->input('text')));
-        $usersSql = $this->applyFilters($request, $usersSql);
+        $usersSql = $this->applyFilters($request, $usersSql, 'users');
 
         return (object)[
             'total' => DataHelper::getPage($usersSql->count('userId')),
@@ -72,7 +72,7 @@ class SearchControllerImpl {
             ->leftJoin('threads', 'threads.threadId', '=', 'posts.threadId')
             ->whereIn('threads.categoryId', $categoryIds)
             ->select(['posts.*', 'threads.categoryId']);
-        $postsSql = $this->applyFilters($request, $postsSql);
+        $postsSql = $this->applyFilters($request, $postsSql, 'posts');
 
         return (object)[
             'total' => DataHelper::getPage($postsSql->count('postId')),
@@ -93,7 +93,7 @@ class SearchControllerImpl {
     private function getThreadsResult($request, $page, $user) {
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
         $threadsSql = Thread::where('title', 'LIKE', Value::getFilterValue($request, $request->input('text')))->whereIn('categoryId', $categoryIds);
-        $threadsSql = $this->applyFilters($request, $threadsSql);
+        $threadsSql = $this->applyFilters($request, $threadsSql, 'threads');
 
         return (object)[
             'total' => DataHelper::getPage($threadsSql->count('threadId')),
@@ -109,23 +109,23 @@ class SearchControllerImpl {
         ];
     }
 
-    private function applyFilters($request, $sqlObj) {
+    private function applyFilters($request, $sqlObj, $table) {
         if ($request->input('byUser')) {
             $userIds = User::withNicknameLike($request->input('byUser'))->pluck('userId');
             if ($userIds) {
-                $sqlObj->whereIn('userId', $userIds);
+                $sqlObj->whereIn($table . '.userId', $userIds);
             }
         }
 
         if ($request->input('from')) {
-            $sqlObj->where('createdAt', '>', strtotime($request->input('from')));
+            $sqlObj->where($table . '.createdAt', '>', strtotime($request->input('from')));
         }
 
         if ($request->input('to')) {
-            $sqlObj->where('createdAt', '<', strtotime($request->input('to')));
+            $sqlObj->where($table . '.createdAt', '<', strtotime($request->input('to')));
         }
 
-        $sqlObj->orderBy('createdAt', $request->input('order') ? $request->input('order') : 'DESC');
+        $sqlObj->orderBy($table . '.createdAt', $request->input('order') ? $request->input('order') : 'DESC');
         return $sqlObj;
     }
 }

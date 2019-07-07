@@ -1560,5 +1560,12 @@ class Action {
         ],
         'log' => 'log_user'
     ];
+
+    const BOUGHT_SUBSCRIPTION = [
+        'id' => 185,
+        'description' => 'User bought a subscription',
+        'data' => [],
+        'log' => 'log_user'
+    ];
 }
 

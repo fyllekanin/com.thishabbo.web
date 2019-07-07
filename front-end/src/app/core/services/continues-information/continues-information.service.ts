@@ -106,11 +106,10 @@ export class ContinuesInformationService implements Resolve<void> {
             clearInterval(this._timer);
             if (this._lastNotificationCheck < 1) {
                 this.doRequest();
-            } else {
-                this._timer = setInterval(() => {
-                    this.doRequest();
-                }, this._currentInterval);
             }
+            this._timer = setInterval(() => {
+                this.doRequest();
+            }, this._currentInterval);
         });
     }
 

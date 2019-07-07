@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\EloquentModels\Shop\LootBox;
+use App\EloquentModels\Shop\Subscription;
 use App\Helpers\DataHelper;
 use App\Helpers\ShopHelper;
 use App\Http\Impl\ShopControllerImpl;
@@ -51,6 +52,25 @@ class ShopController extends Controller {
             'page' => $page,
             'items' => $data->items
         ]);
+    }
+
+    public function buySubscription(Request $request, $subscriptionId) {
+        $user = $request->get('auth');
+        $oneMonth = 2592000;
+
+        $subscription = Subscription::find($subscriptionId);
+        Condition::precondition(!$subscription, 404, 'No subscription with that ID');
+        Condition::precondition(!$this->creditsService->haveEnoughCredits($user->userId, $subscription->credits),
+            400, 'You do not have enough credits for this subscription!');
+
+        $this->creditsService->takeCredits($user->userId, $subscription->credits);
+        $this->myImpl->giveUserSubscription($user, (object)[
+            'subscriptionId' => $subscription->subscriptionId,
+            'subscriptionTime' => $oneMonth
+        ]);
+
+        Logger::user($user->userId, $request->ip(), Action::BOUGHT_SUBSCRIPTION, [], $subscription->subscriptionId);
+        return response()->json();
     }
 
     public function openLootBox(Request $request, $lootBoxId) {
