@@ -34,12 +34,22 @@ class ShopHelper {
         $items = self::getLootBoxItems($lootBox);
         $percentageList = [];
         foreach ($items as $item) {
-            for ($i = 0; $i < $item->rarity; $i++) {
-                $percentageList[] = $item->shopItemId;
+            for ($i = 0; $i < $item['rarity']; $i++) {
+                $percentageList[] = $item['shopItemId'];
             }
         }
         shuffle($percentageList);
         $key = array_rand($percentageList);
-        return $percentageList[$key];
+        $shopItem = ShopItem::find($percentageList[$key]);
+        if (!$shopItem) {
+            $itemIds = Value::objectJsonProperty($lootBox, 'items', []);
+            $itemIds = Iterables::filter($itemIds, function ($itemId) use ($shopItem) {
+                return $itemId != $shopItem->shopItemId;
+            });
+            $lootBox->items = json_encode($itemIds);
+            $lootBox->save();
+            return self::getLootBoxItem($lootBox);
+        }
+        return $shopItem;
     }
 }

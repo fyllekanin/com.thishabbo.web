@@ -8,6 +8,7 @@ use App\EloquentModels\Shop\UserSubscription;
 use App\EloquentModels\User\UserItem;
 use App\Helpers\ConfigHelper;
 use App\Helpers\ShopHelper;
+use App\Models\Shop\ShopItemData;
 
 class ShopControllerImpl {
 
@@ -68,5 +69,58 @@ class ShopControllerImpl {
             'items' => $lootBoxes,
             'total' => LootBox::count()
         ];
+    }
+
+    public function getRefundedAmount($shopItem, $lootBox) {
+        if (!$shopItem) {
+            return $lootBox->credits;
+        }
+
+        return ($lootBox->credits / 100) * $shopItem->rarity;
+    }
+
+    public function doUserOwnItem($user, $shopItem) {
+        return UserItem::where('userId', $user->userId)
+                ->where('type', $shopItem->type)
+                ->where('itemId', $shopItem->shopItemId)
+                ->count() > 0;
+    }
+
+    public function giveUserItem($user, $shopItem) {
+        $types = ConfigHelper::getTypesConfig();
+        switch ($shopItem->type) {
+            case $types->badge:
+            case $types->nameIcon:
+            case $types->nameEffect:
+                $item = new UserItem([
+                    'type' => $shopItem->type,
+                    'userId' => $user->userId,
+                    'itemId' => $shopItem->shopItemId
+                ]);
+                $item->save();
+                break;
+            case $types->subscription:
+                $data = new ShopItemData($shopItem->data);
+                $this->giveUserSubscription($user, $data);
+                break;
+        }
+    }
+
+    private function giveUserSubscription($user, $data) {
+        $subscription = UserSubscription::where('subscriptionId', $data->subscriptionId)
+            ->where('userId', $user->userId)->first();
+
+        if ($subscription) {
+            $subscription->expiresAt = $subscription->expiresAt < time() ?
+                (time() + $data->subscriptionTime) : ($subscription->expiresAt + $data->subscriptionTime);
+            $subscription->save();
+        } else {
+            $newSubscription = new UserSubscription([
+                'subscriptionId' => $data->subscriptionId,
+                'userId' => $user->userId,
+                'expiresAt' => time() + $data->subscriptionTime
+            ]);
+            $newSubscription->save();
+        }
     }
 }

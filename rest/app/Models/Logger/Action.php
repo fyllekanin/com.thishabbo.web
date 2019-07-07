@@ -1550,5 +1550,15 @@ class Action {
         'data' => [],
         'log' => 'log_sitecp'
     ];
+
+    const OPENED_LOOT_BOX = [
+        'id' => 184,
+        'description' => 'User opened loot box',
+        'data' => [
+            'isWin' => 'Boolean',
+            'shopItemId' => 'Item ID'
+        ],
+        'log' => 'log_user'
+    ];
 }
 

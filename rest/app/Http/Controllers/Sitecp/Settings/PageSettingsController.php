@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Sitecp\Settings;
 
-use App\EloquentModels\Forum\Category;
 use App\EloquentModels\Page;
 use App\Helpers\ConfigHelper;
 use App\Helpers\PermissionHelper;
@@ -36,9 +35,7 @@ class PageSettingsController extends Controller {
         $categoryIds = json_decode(SettingsHelper::getSettingValue($this->settingKeys->homePageThreads));
         return response()->json([
             'categoryIds' => is_array($categoryIds) ? $categoryIds : [],
-            'categories' => Category::whereIn('categoryId', $this->forumService->getAccessibleCategories($user->userId))
-                ->orderBy('title', 'ASC')
-                ->get(['categoryId', 'title'])
+            'categories' => $this->forumService->getCategoryTree($user, [], -1)
         ]);
     }
 

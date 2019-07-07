@@ -2,7 +2,7 @@
     <div class="bulletin-board" *ngFor="let activity of activities" [ngSwitch]="activity.type">
         <div *ngSwitchCase="40">
             <em class="fas fa-comment"></em>
-            <strong>{{activity.user.nickname}}</strong> have posted in
+            <strong>{{activity.user.nickname}}</strong> has posted in
             <strong><a
                     [routerLink]="['/forum/thread/' + activity.thread.threadId + '/page/' + activity.thread.page]">{{activity.thread.title}}</a></strong>
         </div>

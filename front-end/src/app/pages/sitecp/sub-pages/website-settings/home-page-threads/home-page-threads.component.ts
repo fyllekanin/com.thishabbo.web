@@ -17,6 +17,8 @@ import {
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
+import { ArrayHelper } from 'shared/helpers/array.helper';
+import { CategoryLeaf } from '../../forum/category/category.model';
 
 @Component({
     selector: 'app-sitecp-website-settings-home-page-threads',
@@ -29,12 +31,12 @@ export class HomePageThreadsComponent extends Page implements OnDestroy {
     items: Array<SelectItem> = [];
     value: SelectItem = null;
     tabs: Array<TitleTab> = [
-        new TitleTab({ title: 'Save', value: HomePageThreadsAction.SAVE }),
-        new TitleTab({ title: 'Add Item', value: HomePageThreadsAction.ADD }),
-        new TitleTab({ title: 'Back', link: '/sitecp/website-settings' })
+        new TitleTab({title: 'Save', value: HomePageThreadsAction.SAVE}),
+        new TitleTab({title: 'Add Item', value: HomePageThreadsAction.ADD}),
+        new TitleTab({title: 'Back', link: '/sitecp/website-settings'})
     ];
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService,
         elementRef: ElementRef,
@@ -52,12 +54,12 @@ export class HomePageThreadsComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy() {
+    ngOnDestroy () {
         super.destroy();
     }
 
-    onAction(action: Action): void {
-        switch (action.value) {
+    onAction (action: number): void {
+        switch (action) {
             case HomePageThreadsAction.SAVE:
                 this.onSave();
                 break;
@@ -67,34 +69,34 @@ export class HomePageThreadsComponent extends Page implements OnDestroy {
         }
     }
 
-    onRemove(action: Action): void {
+    onRemove (action: Action): void {
         const categoryId = Number(action.rowId);
         this._data.categoryIds = this._data.categoryIds.filter(id => id !== categoryId);
         this.setItems();
         this.createOrUpdateTable();
     }
 
-    private onAdd(): void {
+    private onAdd (): void {
         this._data.categoryIds.push(this.value.value);
         this.value = null;
         this.setItems();
         this.createOrUpdateTable();
     }
 
-    private onSave(): void {
-        this._httpService.put('sitecp/content/home-page-threads', { data: this._data.categoryIds })
+    private onSave (): void {
+        this._httpService.put('sitecp/content/home-page-threads', {data: this._data.categoryIds})
             .subscribe(() => {
                 this._notificationService.sendInfoNotification('Categories set!');
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private onData(data: { data: HomePageThreadsPage }): void {
+    private onData (data: { data: HomePageThreadsPage }): void {
         this._data = data.data;
         this.setItems();
         this.createOrUpdateTable();
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -106,30 +108,45 @@ export class HomePageThreadsComponent extends Page implements OnDestroy {
         });
     }
 
-    private setItems(): void {
-        this.items = this._data.categories.filter(item => this._data.categoryIds.indexOf(item.categoryId) === -1)
+    private setItems (): void {
+        this._data.categories.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'displayOrder'));
+        const items = this.flat(this._data.categories, '');
+        this.items = items.filter(item => this._data.categoryIds.indexOf(item.categoryId) === -1)
             .map(item => ({
                 label: item.title,
                 value: item.categoryId
             }));
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         return this._data.categories.filter(category => this._data.categoryIds.indexOf(category.categoryId) > -1)
             .map(category => new TableRow({
                 id: category.categoryId.toString(),
                 cells: [
-                    new TableCell({ title: category.title })
+                    new TableCell({title: category.title})
                 ],
                 actions: [
-                    new TableAction({ title: 'Remove' })
+                    new TableAction({title: 'Remove'})
                 ]
             }));
     }
 
-    private getTableHeaders(): Array<TableHeader> {
+    private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'Category' })
+            new TableHeader({title: 'Category'})
         ];
+    }
+
+    private flat (array: Array<CategoryLeaf>, prefix = '', shouldAppend = true) {
+        let result = [];
+        array.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'displayOrder'));
+        array.forEach((item: CategoryLeaf) => {
+            item.title = `${prefix} ${item.title}`;
+            result.push(item);
+            if (Array.isArray(item.children)) {
+                result = result.concat(this.flat(item.children, shouldAppend ? `${prefix}--` : ''));
+            }
+        });
+        return result;
     }
 }

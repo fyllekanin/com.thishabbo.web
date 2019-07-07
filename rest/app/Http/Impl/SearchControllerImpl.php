@@ -67,8 +67,11 @@ class SearchControllerImpl {
     }
 
     private function getPostsResult($request, $page, $user) {
-        $threadIds = $this->forumService->getAccessibleThreads($user->userId);
-        $postsSql = Post::where('content', 'LIKE', Value::getFilterValue($request, $request->input('text')))->whereIn('threadId', $threadIds);
+        $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
+        $postsSql = Post::where('content', 'LIKE', Value::getFilterValue($request, $request->input('text')))
+            ->leftJoin('threads', 'threads.threadId', '=', 'posts.threadId')
+            ->whereIn('threads.categoryId', $categoryIds)
+            ->select(['posts.*', 'threads.categoryId']);
         $postsSql = $this->applyFilters($request, $postsSql);
 
         return (object)[

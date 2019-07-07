@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { InnerDialogComponent } from 'shared/app-views/dialog/dialog.model';
-import { ShopLootBox } from '../../../shop.model';
+import { LootBoxResponse, ShopLootBox } from '../../../shop.model';
 import { TableCell, TableConfig, TableHeader, TableRow } from 'shared/components/table/table.model';
 import { ShopHelper } from 'shared/helpers/shop.helper';
 import { SHOP_ITEM_TYPES } from 'shared/constants/shop.constants';
 import { ArrayHelper } from 'shared/helpers/array.helper';
+import { HttpService } from 'core/services/http/http.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 
 @Component({
     selector: 'app-shop-loot-box-details',
@@ -13,8 +15,16 @@ import { ArrayHelper } from 'shared/helpers/array.helper';
 })
 export class LootBoxDetailsComponent extends InnerDialogComponent {
     box = new ShopLootBox(null);
-
     tableConfig: TableConfig;
+
+    response: LootBoxResponse;
+
+    constructor (
+        private _httpService: HttpService,
+        private _notificationService: NotificationService
+    ) {
+        super();
+    }
 
     getData () {
         // Empty
@@ -23,6 +33,14 @@ export class LootBoxDetailsComponent extends InnerDialogComponent {
     setData (data: ShopLootBox) {
         this.box = data;
         this.createTableConfig();
+    }
+
+    open (): void {
+        this._httpService.post(`shop/loot-boxes/open/${this.box.lootBoxId}`, null)
+            .subscribe(res => {
+                this.response = new LootBoxResponse(res);
+                this._notificationService.sendInfoNotification('Loot box opened!');
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private createTableConfig (): void {

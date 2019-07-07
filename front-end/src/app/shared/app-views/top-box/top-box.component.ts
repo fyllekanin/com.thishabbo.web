@@ -106,11 +106,6 @@ export class TopBoxComponent {
         return Math.floor((currentXp / XP_PER_LEVEL) * 100);
     }
 
-    get xpLeft (): number {
-        const currentXp = this._user.xp - (this.level * XP_PER_LEVEL);
-        return XP_PER_LEVEL - currentXp;
-    }
-
     private setUser (): void {
         this._user = this._authService.isLoggedIn() ? this._authService.authUser : null;
     }

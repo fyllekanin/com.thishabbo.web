@@ -2,6 +2,19 @@ import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.
 import { LOOT_BOXES, SHOP_ITEM_RARITIES } from 'shared/constants/shop.constants';
 import { ShopItemData } from '../sitecp/sub-pages/shop/items/items.model';
 
+export class LootBoxResponse {
+    @primitive()
+    isRefund: boolean;
+    @primitive()
+    amount: number;
+    @primitive()
+    shopItemId: number;
+
+    constructor (source: Partial<LootBoxResponse>) {
+        ClassHelper.assign(this, source);
+    }
+}
+
 export class ShopLootBoxItem {
     @primitive()
     shopItemId: number;
