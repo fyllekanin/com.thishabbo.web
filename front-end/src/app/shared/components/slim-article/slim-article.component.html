@@ -5,7 +5,7 @@
         </div>
     </div>
 </div>
-<div class="container">
+<div class="container truncate">
     <a class="title" [routerLink]="[threadLink]"><em class="fas fa-comment"></em> {{article.title}}</a>
     <div class="tags">
         <div *ngFor="let tag of article.tags" class="tag" [ngClass]="tag">{{prettify(tag)}}</div>
