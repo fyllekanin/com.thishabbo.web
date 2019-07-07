@@ -383,7 +383,7 @@ class AccountController extends Controller {
 
         Condition::precondition($barColor->isAvailable && !UserHelper::hasSubscriptionFeature($user->userId, ConfigHelper::getSubscriptionOptions()->canHaveCustomBar),
             400, 'You can not have a custom bar');
-        Condition::precondition($barColor->isAvailable && !Value::validateHexColors($barColor->color),
+        Condition::precondition($barColor->isAvailable && is_array($barColor->color) && !Value::validateHexColors($barColor->color),
             400, 'One or more bar colors are invalid');
         Condition::precondition($namePosition->isAvailable && !UserHelper::hasSubscriptionFeature($user->userId, ConfigHelper::getSubscriptionOptions()->canMoveNamePosition),
             400, 'You can not choose name position');
@@ -395,7 +395,7 @@ class AccountController extends Controller {
         $userData = UserHelper::getUserDataOrCreate($user->userId);
         $userData->postBit = $this->convertPostBitOptions($data->information);
         $userData->namePosition = $namePosition->position;
-        $userData->barColor = json_encode($barColor->color);
+        $userData->barColor = $barColor->isAvailable && is_array($barColor->color) ? json_encode($barColor->color) : 0;
         $userData->activeBadges = json_encode($badgeIds);
         $userData->save();
 
