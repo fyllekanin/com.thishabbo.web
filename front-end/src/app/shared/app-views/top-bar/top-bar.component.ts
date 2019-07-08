@@ -31,10 +31,12 @@ export class TopBarComponent {
         private _routerStateService: RouterStateService,
         private _continuesInformationService: ContinuesInformationService,
         private _notificationService: NotificationService,
+        private _routerStateService: RouterStateService,
         breadcrumbService: BreadcrumbService
     ) {
         breadcrumbService.onBreadcrumb.subscribe(breadcrumb => {
             this._breadcrumb = breadcrumb;
+            this._routerStateService.updateCurrentPage(this._breadcrumb.current);
         });
         this._continuesInformationService.onNotifications.subscribe(this.onNotifications.bind(this));
     }
@@ -58,7 +60,7 @@ export class TopBarComponent {
             .subscribe(() => {
                 this._continuesInformationService.removeNotification(notificationId);
                 this._notifications = this._notifications.filter(notification => notification.notificationId !== notificationId);
-                this._routerStateService.updateTitle(this._notifications.length);
+                this._routerStateService.updateNotificationAmount(this._notifications.length);
             });
     }
 
@@ -123,7 +125,7 @@ export class TopBarComponent {
     }
 
     private updateTitle (): void {
-        this._routerStateService.updateTitle(this._notifications.length + this._messages.length);
+        this._routerStateService.updateNotificationAmount(this._notifications.length + this._messages.length);
     }
 
     private isMessage (notification: NotificationModel<any>): boolean {

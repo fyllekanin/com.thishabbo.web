@@ -26,13 +26,13 @@ describe('RouterStateService', () => {
         service = TestBed.get(RouterStateService);
     });
 
-    describe('updateTitle', () => {
+    describe('updateNotificationAmount', () => {
         it('should set title to default if notification count is 0', () => {
             // Given
             const notificationAmount = 0;
 
             // When
-            service.updateTitle(notificationAmount);
+            service.updateNotificationAmount(notificationAmount);
 
             // Then
             expect(document.title).toEqual('TH');
@@ -42,7 +42,7 @@ describe('RouterStateService', () => {
             const notificationAmount = 5;
 
             // When
-            service.updateTitle(notificationAmount);
+            service.updateNotificationAmount(notificationAmount);
 
             // Then
             expect(document.title).toEqual('(5) TH');

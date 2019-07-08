@@ -4,6 +4,8 @@ import { DialogService } from 'core/services/dialog/dialog.service';
 
 @Injectable()
 export class RouterStateService {
+    private _notificationAmount = 0;
+    private _currentPage = '';
     private _urls: Array<string> = [];
     private readonly _defaultTitle = 'TH';
 
@@ -17,12 +19,14 @@ export class RouterStateService {
         });
     }
 
-    updateTitle (amountOfNotifications: number): void {
-        if (amountOfNotifications > 0) {
-            document.title = `(${amountOfNotifications}) ${this._defaultTitle}`;
-        } else {
-            document.title = this._defaultTitle;
-        }
+    updateNotificationAmount (amountOfNotifications: number): void {
+        this._notificationAmount = amountOfNotifications;
+        this.setTitle();
+    }
+
+    updateCurrentPage (page: string): void {
+        this._currentPage = page;
+        this.setTitle();
     }
 
     pushUrl (url: string): void {
@@ -33,5 +37,14 @@ export class RouterStateService {
         const previous = this._urls[this._urls.length - 2];
         this._urls = [];
         return previous;
+    }
+
+    private setTitle (): void {
+        const prefix = this._notificationAmount > 0 ?
+            `(${this._notificationAmount}) ` : '';
+        const postfix = this._currentPage ?
+            `- ${this._currentPage}` : '';
+
+        document.title = prefix + `${this._defaultTitle} ${postfix}`;
     }
 }
