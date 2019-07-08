@@ -159,6 +159,8 @@ export class StaffPermissions {
     canManageBanOnSight: boolean;
     @primitive()
     canSeeListeners: boolean;
+    @primitive()
+    canAlwaysSeeConnectionInformation: boolean;
 
     constructor (source?: Partial<StaffPermissions>) {
         ClassHelper.assign(this, source);

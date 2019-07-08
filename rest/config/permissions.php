@@ -75,7 +75,8 @@ return [
         'canEditRadioInfo' => 1024,
         'canSeeDoNotHire' => 2048,
         'canManageBanOnSight' => 4096,
-        'canSeeListeners' => 8192
+        'canSeeListeners' => 8192,
+        'canAlwaysSeeConnectionInformation' => 16384
     ],
     'POST_BIT_OPTIONS' => [
         'hideJoinDate' => 1,

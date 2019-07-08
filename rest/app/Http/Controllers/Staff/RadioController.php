@@ -65,10 +65,21 @@ class RadioController extends Controller {
     /**
      * Get request for radio connection information resource
      *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getConnectionInformation() {
-        return response()->json(SettingsHelper::getRadioConnectionInformation());
+    public function getConnectionInformation(Request $request) {
+        $user = $request->get('auth');
+        $settingKeys = ConfigHelper::getKeyConfig();
+        $radio = new RadioSettings(SettingsHelper::getSettingValue($settingKeys->radio));
+        $nextDjId = $this->getNextDjId();
+        $info = SettingsHelper::getRadioConnectionInformation();
+
+        $isDj = $user->userId == $nextDjId || $user->userId == $radio->userId;
+        $response = PermissionHelper::haveStaffPermission($user->userId, ConfigHelper::getStaffConfig()->canAlwaysSeeConnectionInformation) || $isDj
+            ? $info : null;
+        return response()->json($response);
     }
 
     /**
@@ -351,5 +362,22 @@ class RadioController extends Controller {
         ]);
 
         return response()->json();
+    }
+
+    private function getNextDjId() {
+        $day = date('N');
+        $hour = date('G') + 1;
+
+        if ($hour > 23) {
+            $hour -= 24;
+            $day += 1;
+        }
+
+        if ($day > 7) {
+            $day -= 7;
+        }
+
+        $nextSlot = Timetable::radio()->where('day', $day)->where('hour', $hour)->first();
+        return $nextSlot ? $nextSlot->user->userId : null;
     }
 }

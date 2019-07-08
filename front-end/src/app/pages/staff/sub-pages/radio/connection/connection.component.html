@@ -1,106 +1,118 @@
-<app-title [title]="'Connection Information'"></app-title>
-<app-content>
-    <div class="grid-container">
-        <div class="grid-x grid-margin-x">
-            <div class="cell small-3 breadcrum">
-                <strong>Server Type</strong>
-            </div>
-            <div class="cell small-9 breadcrum">
-                {{serverType}}
-            </div>
+<div *ngIf="canAccess">
+    <app-title [title]="'Connection Information'"></app-title>
+    <app-content>
+        <div class="grid-container">
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-3 breadcrum">
+                    <strong>Server Type</strong>
+                </div>
+                <div class="cell small-9 breadcrum">
+                    {{serverType}}
+                </div>
 
-            <div class="cell small-3 breadcrum">
-                <strong>Bitrate</strong>
-            </div>
-            <div class="cell small-9 breadcrum">
-                128kbps, 44100Hz
-            </div>
+                <div class="cell small-3 breadcrum">
+                    <strong>Bitrate</strong>
+                </div>
+                <div class="cell small-9 breadcrum">
+                    128kbps, 44100Hz
+                </div>
 
-            <div class="cell small-3 breadcrum">
-                <strong>IP</strong>
-            </div>
-            <div name="info-ip" class="cell small-9 breadcrum">
-                {{ip}}
-            </div>
+                <div class="cell small-3 breadcrum">
+                    <strong>IP</strong>
+                </div>
+                <div name="info-ip" class="cell small-9 breadcrum">
+                    {{ip}}
+                </div>
 
-            <div class="cell small-3 breadcrum">
-                <strong>Port</strong>
-            </div>
-            <div name="info-port" class="cell small-9 breadcrum">
-                {{port}}
-            </div>
+                <div class="cell small-3 breadcrum">
+                    <strong>Port</strong>
+                </div>
+                <div name="info-port" class="cell small-9 breadcrum">
+                    {{port}}
+                </div>
 
-            <div class="cell small-3 breadcrum">
-                <strong>Password</strong>
-            </div>
-            <div name="info-password" class="cell small-9 breadcrum">
-                {{password}}
-            </div>
+                <div class="cell small-3 breadcrum">
+                    <strong>Password</strong>
+                </div>
+                <div name="info-password" class="cell small-9 breadcrum">
+                    {{password}}
+                </div>
 
-            <div class="cell small-3 breadcrum">
-                <strong>Station Name</strong>
-            </div>
-            <div class="cell small-9 breadcrum">
-                Your stream name
-            </div>
+                <div class="cell small-3 breadcrum">
+                    <strong>Station Name</strong>
+                </div>
+                <div class="cell small-9 breadcrum">
+                    Your stream name
+                </div>
 
-            <div class="cell small-3 breadcrum">
-                <strong>Genre</strong>
-            </div>
-            <div class="cell small-9 breadcrum">
-                {{nickname}}
+                <div class="cell small-3 breadcrum">
+                    <strong>Genre</strong>
+                </div>
+                <div class="cell small-9 breadcrum">
+                    {{nickname}}
+                </div>
             </div>
         </div>
-    </div>
-</app-content>
+    </app-content>
 
-<app-title [title]="'Sam Broadcaster'"></app-title>
-<app-content>
-    <div class="grid-container">
-        <div>Here's a step By step guide on how to add your encoders to Sam Broadcaster.</div>
-        <details>
-            <summary>Click here for hidden content.</summary>
-            <br>
-            <strong>Step 1 »</strong> Click "Window" on the title area of Sam Broadcaster and then click on
-            "Encoders".<br>
-            <strong>Step 2 »</strong> Whnen the window pops up, click on the Plus Button.<br>
-            <strong>Step 3 »</strong> Quality: High Quality | Format: 128 kb/s, 44.1kHz, Stereo.<br>
-            <strong>Step 4 »</strong> Click on Server Details and enter the information shown above.<br>
-            <strong>Step 5 »</strong> Click Ok.<br>
-            <br>
-            <em><strong>Please Note:</strong> Your stream genre needs to be your Site Username.</em><br>
-            <br>
-            <div class="align-center">
-                <img src="https://i.imgur.com/OduAx9k.png">
-                <img src="https://i.imgur.com/t0P5rDe.png">
-            </div>
-        </details>
-    </div>
-</app-content>
+    <app-title [title]="'Sam Broadcaster'"></app-title>
+    <app-content>
+        <div class="grid-container">
+            <div>Here's a step By step guide on how to add your encoders to Sam Broadcaster.</div>
+            <details>
+                <summary>Click here for hidden content.</summary>
+                <br>
+                <strong>Step 1 »</strong> Click "Window" on the title area of Sam Broadcaster and then click on
+                "Encoders".<br>
+                <strong>Step 2 »</strong> Whnen the window pops up, click on the Plus Button.<br>
+                <strong>Step 3 »</strong> Quality: High Quality | Format: 128 kb/s, 44.1kHz, Stereo.<br>
+                <strong>Step 4 »</strong> Click on Server Details and enter the information shown above.<br>
+                <strong>Step 5 »</strong> Click Ok.<br>
+                <br>
+                <em><strong>Please Note:</strong> Your stream genre needs to be your Site Username.</em><br>
+                <br>
+                <div class="align-center">
+                    <img src="https://i.imgur.com/OduAx9k.png">
+                    <img src="https://i.imgur.com/t0P5rDe.png">
+                </div>
+            </details>
+        </div>
+    </app-content>
 
-<app-title [title]="'Audio Hijack'"></app-title>
-<app-content>
-    <div class="grid-container">
-        <div>Here's a step By step guide on how to add your encoders to Audio Hijack.</div>
-        <details>
-            <summary>Click here for hidden content.</summary>
-            <br>
-            <strong>Step 1 »</strong> Click "Source" and select the application you will use to play music from i.e.
-            Spotify or Itunes.<br>
-            <strong>Step 2 »</strong> Click "Info" and fill in your information.<br>
-            <strong>Step 3 »</strong> Click "Quality" set it to Bitrate 128 Kbps, Sample Rate 44.100 Khz and
-            Stero.<br>
-            <strong>Step 4 »</strong> Click "Window" and select "Show Server".<br>
-            <strong>Step 5 »</strong> Enter the information shown above.<br>
-            <strong>Step 6 »</strong> Check the box next to the encoder and then you're good to DJ!.<br>
-            <br>
-            <em><strong>Please Note:</strong> You MUST have your Habbo name verified on the site and your stream
-                genre need to be your Site Username.</em><br>
-            <br>
-            <div class="align-center">
-                <img src="https://i.imgur.com/eGkQ276.png">
-                <img src="https://i.imgur.com/2Bx6Agu.png">
-            </div>
-        </details>
-    </div>
-</app-content>
+    <app-title [title]="'Audio Hijack'"></app-title>
+    <app-content>
+        <div class="grid-container">
+            <div>Here's a step By step guide on how to add your encoders to Audio Hijack.</div>
+            <details>
+                <summary>Click here for hidden content.</summary>
+                <br>
+                <strong>Step 1 »</strong> Click "Source" and select the application you will use to play music from i.e.
+                Spotify or Itunes.<br>
+                <strong>Step 2 »</strong> Click "Info" and fill in your information.<br>
+                <strong>Step 3 »</strong> Click "Quality" set it to Bitrate 128 Kbps, Sample Rate 44.100 Khz and
+                Stero.<br>
+                <strong>Step 4 »</strong> Click "Window" and select "Show Server".<br>
+                <strong>Step 5 »</strong> Enter the information shown above.<br>
+                <strong>Step 6 »</strong> Check the box next to the encoder and then you're good to DJ!.<br>
+                <br>
+                <em><strong>Please Note:</strong> You MUST have your Habbo name verified on the site and your stream
+                    genre need to be your Site Username.</em><br>
+                <br>
+                <div class="align-center">
+                    <img src="https://i.imgur.com/eGkQ276.png">
+                    <img src="https://i.imgur.com/2Bx6Agu.png">
+                </div>
+            </details>
+        </div>
+    </app-content>
+</div>
+<div *ngIf="!canAccess">
+    <app-title [title]="'Connection Information'"></app-title>
+    <app-content>
+        You are only able to see this page when you are either the current DJ or <br/>
+        the DJ for the upcoming hour!
+        <br/>
+        <br/>
+        If you need this information because of something else, get in contact with your manager to get it!
+    </app-content>
+</div>

@@ -13,9 +13,9 @@ import { StringHelper } from 'shared/helpers/string.helper';
     templateUrl: 'connection.component.html'
 })
 export class ConnectionComponent extends Page implements OnDestroy {
-    private _connectionModel: ConnectionModel = new ConnectionModel();
+    private _connectionModel: ConnectionModel;
 
-    constructor(
+    constructor (
         private _authService: AuthService,
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute,
@@ -32,31 +32,35 @@ export class ConnectionComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    get port(): number {
+    get canAccess (): boolean {
+        return Boolean(this._connectionModel.ip);
+    }
+
+    get port (): number {
         return this._connectionModel.port;
     }
 
-    get ip(): string {
+    get ip (): string {
         return StringHelper.removeURL(this._connectionModel.ip);
     }
 
-    get password(): string {
+    get password (): string {
         return this._connectionModel.password;
     }
 
-    get serverType(): string {
+    get serverType (): string {
         return StringHelper.prettifyString(this._connectionModel.serverType);
     }
 
-    get nickname(): string {
+    get nickname (): string {
         return this._authService.authUser.nickname;
     }
 
-    private onData(data: { data: ConnectionModel }): void {
+    private onData (data: { data: ConnectionModel }): void {
         this._connectionModel = data.data;
     }
 }
