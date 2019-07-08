@@ -21,15 +21,17 @@ class NotificationService {
             case Type::getType(Type::QUOTE):
             case Type::getType(Type::LIKE_POST):
                 return $this->isPostNotificationValid($contentId, $user);
+                break;
             case Type::getType(Type::THREAD_SUBSCRIPTION):
             case Type::getType(Type::CATEGORY_SUBSCRIPTION):
                 return $this->isThreadNotificationValid($contentId, $user);
+                break;
             default:
                 return true;
         }
     }
 
-    private function isThreadNotificationValid($threadId, $user) {
+    public function isThreadNotificationValid($threadId, $user) {
         $thread = Thread::where('threadId', $threadId)->first();
         if (!$thread) {
             return false;
@@ -38,7 +40,7 @@ class NotificationService {
         return $this->canUserAccessThread($thread, $user);
     }
 
-    private function isPostNotificationValid($postId, $user) {
+    public function isPostNotificationValid($postId, $user) {
         $post = Post::where('postId', $postId)->with('thread')->first();
         if (!$post || !$post->thread || $post->thread->isDeleted) {
             return false;
