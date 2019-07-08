@@ -3,7 +3,7 @@
     <app-content>
         <div class="grid-x align-center">
             <div class="cell small-4 medium-2" *ngFor="let user of group.users">
-                <img appUserProfile appLazyLoad [float]="'left'"
+                <img appUserProfile appLazyLoad
                      [image]="'/rest/resources/images/users/' + user.userId + '.gif'"/>
                 <div class="user-info">
                     <div>
