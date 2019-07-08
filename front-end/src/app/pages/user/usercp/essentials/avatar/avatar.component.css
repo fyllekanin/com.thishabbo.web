@@ -8,18 +8,3 @@
     width: 10rem;
     height: 10rem !important;
 }
-
-.nickname {
-    font-size: 15px;
-    margin: 0 0 5px 0;
-}
-
-.nickname-top-inside {
-    font-size: 15px;
-    margin: 5px 0 0 0;
-}
-
-.nickname-bottom-inside {
-    font-size: 15px;
-    margin: 5px 0 0 0;
-}
