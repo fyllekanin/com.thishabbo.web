@@ -169,9 +169,9 @@ class UserController extends Controller {
         Condition::precondition(!UserHelper::canManageUser($user, $userId),
             400, 'You do not have high enough immunity!');
 
-        $this->basicUserConditionCollection($current, $newUser);
         $shouldCheckPassword = isset($newUser->password) && strlen($newUser->password) > 0 && isset($newUser->repassword) &&
             PermissionHelper::haveSitecpPermission($user->userId, ConfigHelper::getSitecpConfig()->canEditUserAdvanced);
+        $this->basicUserConditionCollection($current, $newUser, $shouldCheckPassword);
 
         $beforeHabbo = $current->habbo;
         $beforeNickname = $current->nickname;
@@ -204,8 +204,9 @@ class UserController extends Controller {
      *
      * @param $user
      * @param $newUser
+     * @param $shouldCheckPassword
      */
-    private function basicUserConditionCollection($user, $newUser) {
+    private function basicUserConditionCollection($user, $newUser, $shouldCheckPassword) {
         if (!PermissionHelper::haveSitecpPermission($user->userId, ConfigHelper::getSitecpConfig()->canEditUserBasic)) {
             return;
         }
@@ -216,8 +217,6 @@ class UserController extends Controller {
         Condition::precondition(!isset($newUser->nickname) || ($user->nickname != $newUser->nickname && !$this->authService->isNicknameValid($newUser->nickname)),
             400, 'Nickname is not valid!');
 
-        $shouldCheckPassword = isset($newUser->password) && strlen($newUser->password) > 0 && isset($newUser->repassword) &&
-            PermissionHelper::haveSitecpPermission($user->userId, ConfigHelper::getSitecpConfig()->canEditUserAdvanced);
         Condition::precondition($shouldCheckPassword && !$this->authService->isPasswordValid($newUser->password),
             400, 'Password not valid');
         Condition::precondition($shouldCheckPassword && !$this->authService->isRePasswordValid($newUser->repassword, $newUser->password),
