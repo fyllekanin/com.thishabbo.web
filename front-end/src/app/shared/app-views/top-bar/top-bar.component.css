@@ -160,14 +160,14 @@ input {
     pointer-events: none;
 }
 
-.notif-count {
-    background-color: #6d6d6d;
-    color: #FFF;
+.notification-counter {
+    background-color: #cb6363;
+    color: #fff;
     font-size: 8px;
-    font-weight: bold;
+    font-weight: 700;
     position: absolute;
-    padding: .5px 3px .5px 3px;
+    padding: .5px 3px;
     border-radius: 2px;
     top: 3px;
-    left: -7px;
+    left: -10px;
 }

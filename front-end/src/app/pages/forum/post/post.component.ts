@@ -123,6 +123,12 @@ ${this._postModel.content}[/quotepost]\n\r`);
         }
     }
 
+    getMoreLikerNames (): string {
+        return this.moreLikerNames.reduce((prev, curr) => {
+            return prev + (prev.length === 0 ? curr.nickname : `, ${curr.nickname}`);
+        }, '');
+    }
+
     @Input()
     set postModel (postModel: PostModel) {
         this._postModel = postModel || new PostModel();

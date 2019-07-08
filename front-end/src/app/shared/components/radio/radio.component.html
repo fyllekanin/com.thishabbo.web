@@ -13,8 +13,8 @@
                     {{djSays}}
                 </div>
                 <div class="dj-position stats">
-                    <div class="likes float-right"><em class="fas fa-heart"></em> {{likes}}</div>
-                    <div class="listeners float-right"><em class="fas fa-users"></em> {{listeners}}</div>
+                    <div class="likes float-right"><em class="fas fa-heart"></em> {{likes | number: '1.'}}</div>
+                    <div class="listeners float-right"><em class="fas fa-users"></em> {{listeners | number: '1.'}}</div>
                 </div>
                 <div class="dj-position song"><em class="fas fa-headphones"></em>
                     {{song}}

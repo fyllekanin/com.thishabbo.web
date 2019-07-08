@@ -149,7 +149,7 @@
 }
 
 .says {
-    width: 64%;
+    width: 60%;
     height: 28px;
     display: inline-block;
     float: left;
@@ -159,7 +159,7 @@
 }
 
 .stats {
-    width: 35.4%;
+    width: 39.4%;
     display: inline-block;
     margin-left: 1px;
 }

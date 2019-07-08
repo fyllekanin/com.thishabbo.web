@@ -226,7 +226,7 @@ class RadioController extends Controller {
         $radioRequests = RadioRequest::twoHours()->orderBy('requestId', 'DESC')->getQuery()->get();
         foreach ($radioRequests as $radioRequest) {
             if (!$canSeeRequestIp) {
-                unset($radioRequest['ip']);
+                unset($radioRequest->ip);
             }
             $radioRequest->nickname = BBcodeUtil::arrowsToEntry($radioRequest->nickname);
             $radioRequest->content = BBcodeUtil::arrowsToEntry($radioRequest->content);

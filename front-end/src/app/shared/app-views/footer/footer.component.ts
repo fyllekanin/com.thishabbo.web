@@ -41,4 +41,8 @@ export class FooterComponent {
         this._router.navigateByUrl(`user/profile/${nickname}`);
     }
 
+    clearUserCache (): void {
+        localStorage.clear();
+        location.reload();
+    }
 }

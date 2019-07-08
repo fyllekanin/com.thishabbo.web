@@ -26,7 +26,7 @@
             </div>
             <div class="cell small-5 medium-offset-1 medium-3" *ngIf="loggedIn">
                 <div class="notification dropdown">
-                    <div class="notif-count" *ngIf="notifications.length">{{ notifications.length }}</div>
+                    <div class="notification-counter" *ngIf="notifications.length">{{ notifications.length }}</div>
                     <em class="fa fa-bell" [ngClass]="notifications.length ? 'new' : ''"></em>
                     <div class="dropdown-content notification-size">
                         <div class="notification-top">
@@ -75,7 +75,7 @@
                     </div>
                 </div>
                 <div class="notification dropdown">
-                    <div class="notif-count" *ngIf="messages.length">{{ messages.length }}</div>
+                    <div class="notification-counter" *ngIf="messages.length">{{ messages.length }}</div>
                     <em class="fa fa-comment" [ngClass]="messages.length ? 'new' : ''"></em>
                     <div class="dropdown-content notification-size">
                         <div class="notification-top">

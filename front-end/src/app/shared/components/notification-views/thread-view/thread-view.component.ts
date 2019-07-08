@@ -55,12 +55,14 @@ export class ThreadViewComponent implements NotificationView {
         return this._notification.createdAt;
     }
 
-    @HostListener('click')
-    click (): void {
+    @HostListener('click', ['$event.target'])
+    click (event): void {
         this.onClick.next(this._notification.notificationId);
 
-        const thread = this._notification.item.thread;
-        const postId = this._notification.item.thread.postId;
-        this._router.navigateByUrl(`/forum/thread/${thread.threadId}/page/${thread.page}?scrollTo=post-${postId}`);
+        if (event && event.className.indexOf('readOnly') === -1) {
+            const thread = this._notification.item.thread;
+            const postId = this._notification.item.thread.postId;
+            this._router.navigateByUrl(`/forum/thread/${thread.threadId}/page/${thread.page}?scrollTo=post-${postId}`);
+        }
     }
 }

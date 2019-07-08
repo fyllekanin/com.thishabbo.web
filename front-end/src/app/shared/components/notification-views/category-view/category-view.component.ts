@@ -41,9 +41,11 @@ export class CategoryViewComponent implements NotificationView {
         return this._notification.createdAt;
     }
 
-    @HostListener('click')
-    click (): void {
+    @HostListener('click', ['$event.target'])
+    click (event): void {
         this.onClick.next(this._notification.notificationId);
-        this._router.navigateByUrl(`/forum/thread/${this._notification.item.thread.threadId}/page/1`);
+        if (event && event.className.indexOf('readOnly') === -1) {
+            this._router.navigateByUrl(`/forum/thread/${this._notification.item.thread.threadId}/page/1`);
+        }
     }
 }
