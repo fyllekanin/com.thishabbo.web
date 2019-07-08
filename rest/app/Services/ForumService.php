@@ -174,7 +174,7 @@ class ForumService {
      * @return object with data and total
      */
     public function getLatestPosts($categoryIds, $ignoredThreadIds, $ignoredCategoryIds, $amount, $skip = 0) {
-        $threadsSql = Thread::select('title', 'categoryId', 'threadId', 'lastPostId')
+        $threadsSql = Thread::select('title', 'categoryId', 'threadId', 'lastPostId', 'posts')
             ->with(['prefix', 'latestPost'])
             ->isApproved()
             ->whereIn('categoryId', $categoryIds)
