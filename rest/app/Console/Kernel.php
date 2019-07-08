@@ -4,6 +4,10 @@ namespace App\Console;
 
 use App\Console\Commands\ForceDeadlock;
 use App\Console\Commands\RadioStats;
+use App\EloquentModels\Log\RadioStatsLog;
+use App\Helpers\ConfigHelper;
+use App\Helpers\SettingsHelper;
+use App\Models\Radio\RadioSettings;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -29,6 +33,14 @@ class Kernel extends ConsoleKernel {
 
         $schedule->call('\App\Console\Jobs\ScanBadges@init')->twiceDaily();
 
+        $schedule->call(function () {
+            $radio = new RadioSettings(SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->radio));
+            RadioStatsLog::create([
+                'userId' => $radio->userId,
+                'listeners' => $radio->listeners,
+                'song' => $radio->song
+            ]);
+        })->everyFiveMinutes();
     }
 
     /**

@@ -72,12 +72,14 @@ class FollowersController extends Controller {
     }
 
     /**
+     * @param Request $request
      * @param $page
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getFollowers($page) {
-        $followersSql = Follower::isApproved();
+    public function getFollowers(Request $request, $page) {
+        $user = $request->get('auth');
+        $followersSql = Follower::isApproved()->where('targetId', $user->userId);
         $total = DataHelper::getPage($followersSql->count('followerId'));
 
         return response()->json([
@@ -90,7 +92,7 @@ class FollowersController extends Controller {
                     'createdAt' => $item->createdAt->timestamp
                 ];
             }),
-            'awaiting' => Follower::where('isApproved', false)->get()->map(function ($item) {
+            'awaiting' => Follower::where('isApproved', false)->where('targetId', $user->userId)->get()->map(function ($item) {
                 return [
                     'followerId' => $item->followerId,
                     'user' => UserHelper::getSlimUser($item->userId),

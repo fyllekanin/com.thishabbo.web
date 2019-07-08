@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Impl\Auth\AuthControllerImpl;
 use App\Logger;
 use App\Models\Logger\Action;
+use App\Models\User\CustomUserFields;
 use App\Services\AuthService;
 use App\Services\BotService;
 use App\Services\HabboService;
@@ -171,7 +172,7 @@ class AuthController extends Controller {
             return response()->json(['status' => 'success']);
         }
 
-        Token::where('accessToken', $accessToken)->where('ip', $request->ip())->delete();
+        Token::where('accessToken', $accessToken)->delete();
         return response()->json(['status' => 'success']);
     }
 
@@ -313,6 +314,8 @@ class AuthController extends Controller {
     }
 
     private function getAuthUser($user, $accessToken, $refreshToken) {
+        $userData = UserHelper::getUserDataOrCreate($user->userId);
+        $customFields = new CustomUserFields($userData->customFields);
         return [
             'sitecpPermissions' => $this->myImpl->buildSitecpPermissions($user),
             'staffPermissions' => $this->myImpl->buildStaffPermissions($user),
@@ -326,7 +329,8 @@ class AuthController extends Controller {
             'gdpr' => $user->gdpr,
             'homePage' => UserHelper::getUserDataOrCreate($user->userId)->homePage,
             'credits' => UserHelper::getUserDataOrCreate($user->userId)->credits,
-            'xp' => UserHelper::getUserDataOrCreate($user->userId)->xp
+            'xp' => UserHelper::getUserDataOrCreate($user->userId)->xp,
+            'tabs' => $customFields->tabs
         ];
     }
 }

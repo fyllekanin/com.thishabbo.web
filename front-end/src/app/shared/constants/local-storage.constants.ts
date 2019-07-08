@@ -12,7 +12,6 @@ export const LOCAL_STORAGE = {
     EDITOR_MODE: 'is-editor-source-mode',
     IGNORE_SIGNATURES: 'ignore-signatures',
     FIXED_MENU: 'fixed-menu',
-    TABS: 'tabs',
     VOLUME: 'volume',
     FORUM_TOOLS: 'forum-tools',
     MINIMALISTIC: 'minimalistic',

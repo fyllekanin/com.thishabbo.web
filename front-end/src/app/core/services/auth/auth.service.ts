@@ -11,6 +11,7 @@ import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.
 import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { NotificationService } from '../notification/notification.service';
+import { TabModel } from 'shared/app-views/header/tabs/tabs.model';
 
 @Injectable()
 export class AuthService {
@@ -107,6 +108,14 @@ export class AuthService {
 
     get authUser (): AuthUser {
         return this._user;
+    }
+
+    get tabs (): Array<TabModel> {
+        return this._user.tabs;
+    }
+
+    set tabs (tabs: Array<TabModel>) {
+        this._user.tabs = tabs;
     }
 
     getAuthUser (): AuthUser {

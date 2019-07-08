@@ -22,8 +22,6 @@ export class ContinuesInformationService implements Resolve<void> {
     private _slowInterval = (1000 * 60) * 5;
     private _currentInterval = this._fastInterval;
 
-    private _onTabsUpdatedSubject: Subject<void> = new Subject();
-
     constructor (
         private _httpService: HttpService,
         private _ngZone: NgZone,
@@ -59,16 +57,8 @@ export class ContinuesInformationService implements Resolve<void> {
         this._notifications = this._notifications.filter(notification => ids.indexOf(notification.notificationId) === -1);
     }
 
-    tabsUpdated (): void {
-        this._onTabsUpdatedSubject.next();
-    }
-
     deviceSettingsUpdated (): void {
         this._onDeviceSettingsUpdated.next();
-    }
-
-    get onTabsUpdated (): Observable<void> {
-        return this._onTabsUpdatedSubject.asObservable();
     }
 
     get onNotifications (): Observable<Array<NotificationModel<any>>> {

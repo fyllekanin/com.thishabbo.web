@@ -1579,7 +1579,21 @@ class Action {
 
     const HIDDEN_USER_BAR = [
         'id' => 187,
-        'description' => 'User hiden userbar',
+        'description' => 'User hidden userbar',
+        'data' => [],
+        'log' => 'log_user'
+    ];
+
+    const DELETED_TAB = [
+        'id' => 188,
+        'description' => 'User deleted one of their tabs',
+        'data' => [],
+        'log' => 'log_user'
+    ];
+
+    const ADDED_TAB = [
+        'id' => 189,
+        'description' => 'User added one of their tabs',
         'data' => [],
         'log' => 'log_user'
     ];

@@ -1,5 +1,6 @@
 import { arrayOf, ClassHelper, objectOf, primitive, primitiveOf } from 'shared/helpers/class.helper';
 import { UserHelper } from 'shared/helpers/user.helper';
+import { TabModel } from 'shared/app-views/header/tabs/tabs.model';
 
 export class UserCustomFields {
     @primitive()
@@ -253,6 +254,8 @@ export class AuthUser {
     credits = 0;
     @primitiveOf(Number)
     xp = 0;
+    @arrayOf(TabModel)
+    tabs: Array<TabModel> = [];
 
     constructor (source: Partial<AuthUser>) {
         ClassHelper.assign(this, source);

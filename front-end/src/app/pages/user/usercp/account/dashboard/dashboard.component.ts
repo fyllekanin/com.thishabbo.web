@@ -6,7 +6,6 @@ import { USERCP_BREADCRUM_ITEM } from '../../usercp.constants';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { StatsBoxModel } from 'shared/app-views/stats-boxes/stats-boxes.model';
 import { TitleTab, TitleTopBorder } from 'shared/app-views/title/title.model';
-import { TabModel } from 'shared/app-views/header/tabs/tabs.model';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import {
@@ -20,13 +19,14 @@ import {
 import { UserCpDashboardModel } from './dashboard.model';
 import { ActivatedRoute } from '@angular/router';
 import { TimeHelper } from 'shared/helpers/time.helper';
+import { AuthService } from 'core/services/auth/auth.service';
+import { HttpService } from 'core/services/http/http.service';
 
 @Component({
     selector: 'app-user-usercp-dashboard',
     templateUrl: 'dashboard.component.html'
 })
 export class DashboardComponent extends Page implements OnDestroy {
-    private _tabs: Array<TabModel> = [];
     private _data: UserCpDashboardModel = new UserCpDashboardModel();
     tabsTableConfig: TableConfig;
     subscriptionsTableConfig: TableConfig;
@@ -45,6 +45,8 @@ export class DashboardComponent extends Page implements OnDestroy {
     constructor (
         private _continuesInformation: ContinuesInformationService,
         private _notificationService: NotificationService,
+        private _authService: AuthService,
+        private _httpService: HttpService,
         activatedRoute: ActivatedRoute,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService
@@ -57,13 +59,6 @@ export class DashboardComponent extends Page implements OnDestroy {
                 USERCP_BREADCRUM_ITEM
             ]
         });
-
-        try {
-            this._tabs = JSON.parse(localStorage.getItem(LOCAL_STORAGE.TABS))
-                .map(item => new TabModel(item));
-        } catch (e) {
-            this._tabs = [];
-        }
         this.createOrUpdateTabsTable();
         this.createOrUpdateSubscriptionsTable();
 
@@ -87,10 +82,12 @@ export class DashboardComponent extends Page implements OnDestroy {
     }
 
     onAction (action: Action): void {
-        this._tabs = this._tabs.filter(item => item.label.toLowerCase() !== action.rowId.toLowerCase());
-        localStorage.setItem(LOCAL_STORAGE.TABS, JSON.stringify(this._tabs));
-        this._continuesInformation.tabsUpdated();
-        this.createOrUpdateTabsTable();
+        this._httpService.delete(`usercp/tab/${action.rowId}`).subscribe(() => {
+            this._authService.tabs = this._authService.tabs
+                .filter(item => item.tabId !== action.rowId);
+            this._notificationService.sendInfoNotification('Tab deleted!');
+            this.createOrUpdateTabsTable();
+        }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     ngOnDestroy (): void {
@@ -182,8 +179,8 @@ export class DashboardComponent extends Page implements OnDestroy {
     }
 
     private getTabsTableRows (): Array<TableRow> {
-        return this._tabs.map(tab => new TableRow({
-            id: tab.label,
+        return this._authService.tabs.map(tab => new TableRow({
+            id: tab.tabId,
             cells: [
                 new TableCell({title: tab.label}),
                 new TableCell({title: tab.url})

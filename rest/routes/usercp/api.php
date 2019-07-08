@@ -64,3 +64,6 @@ Route::delete('followers/deny/{followerId}', 'Usercp\FollowersController@denyFol
 Route::delete('followers/remove/{followerId}', 'Usercp\FollowersController@removeFollower');
 
 Route::get('notifications/page/{page}', 'Usercp\AccountController@getNotifications');
+
+Route::post('tab', 'Usercp\SettingsController@createTab');
+Route::delete('tab/{tabId}', 'Usercp\SettingsController@deleteTab');

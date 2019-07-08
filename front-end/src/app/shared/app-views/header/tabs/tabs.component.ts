@@ -5,8 +5,8 @@ import { TabComponent } from 'shared/app-views/header/tabs/tab/tab.component';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
-import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
-import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
+import { AuthService } from 'core/services/auth/auth.service';
+import { HttpService } from 'core/services/http/http.service';
 
 @Component({
     selector: 'app-header-tabs',
@@ -14,19 +14,17 @@ import { ContinuesInformationService } from 'core/services/continues-information
     styleUrls: ['tabs.component.css']
 })
 export class TabsComponent {
-    private _tabs: Array<TabModel> = [];
 
-    constructor(
+    constructor (
         private _dialogService: DialogService,
         private _componentResolver: ComponentFactoryResolver,
         private _notificationService: NotificationService,
-        continuesInformationService: ContinuesInformationService
+        private _authService: AuthService,
+        private _httpService: HttpService
     ) {
-        this.updateTabs();
-        continuesInformationService.onTabsUpdated.subscribe(this.updateTabs.bind(this));
     }
 
-    onCreateNew(): void {
+    onCreateNew (): void {
         this._dialogService.openDialog({
             title: 'Creating Tab',
             component: this._componentResolver.resolveComponentFactory(TabComponent),
@@ -40,11 +38,11 @@ export class TabsComponent {
         });
     }
 
-    get tabs(): Array<TabModel> {
-        return this._tabs;
+    get tabs (): Array<TabModel> {
+        return this._authService.tabs;
     }
 
-    onSaveTab(tab: TabModel): void {
+    onSaveTab (tab: TabModel): void {
         if (!tab.label) {
             this.printError('The Label needs to be set!');
             return;
@@ -55,43 +53,31 @@ export class TabsComponent {
             return;
         }
 
-        const labelExists = this._tabs
+        const labelExists = this._authService.tabs
             .some(item => item.label.toLowerCase() === tab.label.toLowerCase());
         if (labelExists) {
             this.printError('Label already exist');
         }
 
-        const urlExists = this._tabs
+        const urlExists = this._authService.tabs
             .some(item => item.url.toLowerCase() === tab.url.toLowerCase());
         if (urlExists) {
             this.printError('The URL already exists!');
             return;
         }
 
-        this._dialogService.closeDialog();
-        this._tabs.push(tab);
-        this.updateLocalstorage();
+        this._httpService.post('usercp/tab', {tab: tab}).subscribe(() => {
+            this._dialogService.closeDialog();
+            this._authService.tabs.push(tab);
+        }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private printError(message: string): void {
+    private printError (message: string): void {
         this._notificationService.sendNotification(new NotificationMessage({
             title: 'Error',
             message: message,
             type: NotificationType.ERROR
         }));
         return;
-    }
-
-    private updateLocalstorage(): void {
-        localStorage.setItem(LOCAL_STORAGE.TABS, JSON.stringify(this._tabs));
-    }
-
-    private updateTabs(): void {
-        try {
-            this._tabs = JSON.parse(localStorage.getItem(LOCAL_STORAGE.TABS))
-                .map(item => new TabModel(item));
-        } catch (e) {
-            this._tabs = [];
-        }
     }
 }

@@ -20,7 +20,7 @@ export class HeaderComponent {
     isMenuFixed: boolean;
     isMinimalistic: boolean;
 
-    constructor(
+    constructor (
         private _router: Router,
         private _notificationService: NotificationService,
         private _authService: AuthService,
@@ -37,13 +37,13 @@ export class HeaderComponent {
         });
     }
 
-    onKeyUp(event): void {
+    onKeyUp (event): void {
         if (event.keyCode === 13) {
             this.goToSearch();
         }
     }
 
-    goToSearch(): void {
+    goToSearch (): void {
         if (!this.text) {
             this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
@@ -71,7 +71,7 @@ export class HeaderComponent {
                 degree = degree >= 360 ? 0 : degree + 1;
             }, 5);
         }).then(() => {
-            const queryParameters = { queryParams: { text: this.text } };
+            const queryParameters = {queryParams: {text: this.text}};
             this.text = '';
             this._router.navigateByUrl(this._router.createUrlTree(
                 ['/home/search/threads/page/1'],
@@ -80,23 +80,27 @@ export class HeaderComponent {
         });
     }
 
-    goToAdvancedSearch(): void {
+    goToAdvancedSearch (): void {
         this._router.navigateByUrl('/home/search/threads/page/1');
     }
 
-    get radioStats(): RadioModel {
+    get radioStats (): RadioModel {
         return this._info ? this._info.radio : null;
     }
 
-    get eventStats(): EventsModel {
+    get eventStats (): EventsModel {
         return this._info ? this._info.events : null;
     }
 
-    get activities(): Array<Activity> {
+    get activities (): Array<Activity> {
         return this._info ? this._info.activities : [];
     }
 
-    get homePage(): string {
+    get isLoggedIn (): boolean {
+        return this._authService.isLoggedIn();
+    }
+
+    get homePage (): string {
         return this._authService.isLoggedIn() && this._authService.authUser.homePage ?
             this._authService.authUser.homePage : '/home';
     }

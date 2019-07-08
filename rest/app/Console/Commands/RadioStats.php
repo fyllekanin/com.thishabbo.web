@@ -23,7 +23,6 @@ class RadioStats extends Command {
     }
 
     public function handle() {
-
         $radio = new RadioSettings(SettingsHelper::getSettingValue($this->settingKeys->radio));
         $statsData = $this->getStatsData($radio);
 
