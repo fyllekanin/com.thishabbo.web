@@ -57,4 +57,9 @@ class Type {
         'type' => 10,
         'description' => 'When a user have liked a post'
     ];
+
+    const LIKE_DJ = [
+        'type' => 11,
+        'description' => 'When a user have liked the DJ'
+    ];
 }

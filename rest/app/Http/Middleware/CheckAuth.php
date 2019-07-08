@@ -18,13 +18,14 @@ class CheckAuth {
      */
     public function handle($request, Closure $next) {
         $user = $request->get('auth');
-        $token = Token::where('userId', $user->userId)->where('ip', $request->ip())->first();
+        $token = Token::where('userId', $user->userId)
+            ->first();
 
         /** No token or invalid */
         if (!$token) {
             throw new HttpException(401);
         }
-        
+
         return $next($request);
     }
 }

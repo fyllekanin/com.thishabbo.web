@@ -1,0 +1,10 @@
+<em class="fas fa-times readOnly"></em>
+
+<div class="picture" [style.background-image]="'url(' + imagePath + ')'"></div>
+<div class="description">
+    New Like! <br/>
+    {{user.nickname}} likes you on the radio!
+    <div class="time">
+        <em class="fas fa-clock"></em> {{getTime()}}
+    </div>
+</div>

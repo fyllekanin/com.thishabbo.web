@@ -7,6 +7,7 @@ use App\Factories\Notification\Views\BadgeView;
 use App\Factories\Notification\Views\CategoryView;
 use App\Factories\Notification\Views\FollowerView;
 use App\Factories\Notification\Views\InfractionView;
+use App\Factories\Notification\Views\LikeDjView;
 use App\Factories\Notification\Views\ThreadView;
 use App\Factories\Notification\Views\VisitorMessageView;
 use App\Models\Notification\Type;
@@ -17,11 +18,10 @@ class NotificationFactory {
 
     /**
      * @param $notification
-     * @param $user
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      *
      * @return BadgeView|CategoryView|FollowerView|InfractionView|ThreadView|VisitorMessageView|null
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     *
      */
     public static function ofType($notification) {
         $item = null;
@@ -48,9 +48,22 @@ class NotificationFactory {
             case Type::getType(Type::VISITOR_MESSAGE):
                 $item = new VisitorMessageView($notification);
                 break;
+            case Type::getType(Type::LIKE_DJ):
+                $item = new LikeDjView($notification);
+                break;
         }
 
         return $item;
+    }
+
+    public static function newLikeDj($userId, $senderId) {
+        DB::table('notifications')->insert([
+            'userId' => $userId,
+            'senderId' => $senderId,
+            'type' => Type::getType(Type::LIKE_DJ),
+            'contentId' => 0,
+            'createdAt' => time()
+        ]);
     }
 
     public static function newLikePost($userId, $senderId, $contentId) {

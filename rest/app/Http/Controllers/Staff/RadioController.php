@@ -7,6 +7,7 @@ use App\EloquentModels\Log\LogUser;
 use App\EloquentModels\Staff\RadioRequest;
 use App\EloquentModels\Staff\Timetable;
 use App\EloquentModels\User\User;
+use App\Factories\Notification\NotificationFactory;
 use App\Helpers\ConfigHelper;
 use App\Helpers\DataHelper;
 use App\Helpers\PermissionHelper;
@@ -190,6 +191,8 @@ class RadioController extends Controller {
         $djUser->likes++;
         $djUser->save();
 
+
+        NotificationFactory::newLikeDj($user->userId, $djUser->userId);
         Logger::user($user->userId, $request->ip(), Action::LIKED_DJ, [], $djUser->userId);
         return response()->json([
             'isTimeout' => false

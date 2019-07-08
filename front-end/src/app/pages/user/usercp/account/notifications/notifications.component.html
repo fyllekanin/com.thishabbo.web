@@ -24,6 +24,8 @@
         <app-top-bar-visitor-message-view *ngSwitchCase="9"
                                           [notification]="notification"
                                           (onClick)="onRead(notification)"></app-top-bar-visitor-message-view>
+        <app-top-bar-like-dj-view *ngSwitchCase="11" [notification]="notification"
+                                  (onClick)="onRead(notification)"></app-top-bar-like-dj-view>
     </div>
 </app-content>
 

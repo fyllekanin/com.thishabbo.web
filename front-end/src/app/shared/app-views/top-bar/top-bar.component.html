@@ -70,6 +70,11 @@
                                                              (onClick)="notificationClick($event)"></app-top-bar-infraction-view>
                                 <app-top-bar-follower-view *ngSwitchCase="8" [notification]="notification"
                                                            (onClick)="notificationClick($event)"></app-top-bar-follower-view>
+                                <app-top-bar-visitor-message-view *ngSwitchCase="9"
+                                                                  [notification]="notification"
+                                                                  (onClick)="notificationClick($event)"></app-top-bar-visitor-message-view>
+                                <app-top-bar-like-dj-view *ngSwitchCase="11" [notification]="notification"
+                                                          (onClick)="notificationClick($event)"></app-top-bar-like-dj-view>
                             </div>
                         </div>
                     </div>

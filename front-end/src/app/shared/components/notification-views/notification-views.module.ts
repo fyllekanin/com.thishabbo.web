@@ -10,6 +10,7 @@ import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
 import { UserProfileModule } from 'shared/directives/user-profile.module';
 import { VisitorMessageViewComponent } from 'shared/components/notification-views/visitor-message-view/visitor-message-view.component';
+import { LikeDjViewComponent } from 'shared/components/notification-views/like-dj-view/like-dj-view.component';
 
 @NgModule({
     imports: [
@@ -25,7 +26,8 @@ import { VisitorMessageViewComponent } from 'shared/components/notification-view
         ThreadViewComponent,
         InfractionViewComponent,
         FollowerViewComponent,
-        VisitorMessageViewComponent
+        VisitorMessageViewComponent,
+        LikeDjViewComponent
     ],
     exports: [
         BadgeViewComponent,
@@ -33,7 +35,8 @@ import { VisitorMessageViewComponent } from 'shared/components/notification-view
         ThreadViewComponent,
         InfractionViewComponent,
         FollowerViewComponent,
-        VisitorMessageViewComponent
+        VisitorMessageViewComponent,
+        LikeDjViewComponent
     ]
 })
 export class NotificationViewsModule {

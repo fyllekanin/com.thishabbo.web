@@ -21,8 +21,7 @@ class CheckUser {
      */
     public function handle($request, Closure $next) {
         $accessToken = RequestUtil::getAccessToken($request);
-        $token = Token::where('ip', $request->ip())
-            ->where('accessToken', $accessToken)
+        $token = Token::where('accessToken', $accessToken)
             ->first();
 
         if ($token && $request->getPathInfo() != $this->refreshRoute && $token->expiresAt < time()) {

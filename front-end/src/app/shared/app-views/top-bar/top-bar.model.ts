@@ -5,6 +5,7 @@ import { ThreadView } from 'shared/components/notification-views/thread-view/thr
 import { InfractionView } from 'shared/components/notification-views/infraction-view/infraction-view.model';
 import { FollowerView } from 'shared/components/notification-views/follower-view/follower-view.model';
 import { VisitorMessageView } from 'shared/components/notification-views/visitor-message-view/visitor-message-view.model';
+import { LikeDjView } from 'shared/components/notification-views/like-dj-view/like-dj-view.model';
 
 export enum NotificationTypes {
     MENTION = 1,
@@ -16,7 +17,8 @@ export enum NotificationTypes {
     INFRACTION_DELETED = 7,
     FOLLOWED = 8,
     VISITOR_MESSAGE = 9,
-    LIKE_POST = 10
+    LIKE_POST = 10,
+    LIKE_DJ = 11
 }
 
 export class NotificationModel<T> {
@@ -52,6 +54,9 @@ export class NotificationModel<T> {
                 break;
             case NotificationTypes.FOLLOWED:
                 this._item = new FollowerView(source.item);
+                break;
+            case NotificationTypes.LIKE_DJ:
+                this._item = new LikeDjView(source.item);
                 break;
             case NotificationTypes.VISITOR_MESSAGE:
                 this._item = new VisitorMessageView(source.item);

@@ -128,7 +128,6 @@ class AuthController extends Controller {
         Condition::precondition(!$accessToken, 400);
 
         $token = Token::where('accessToken', $accessToken)
-            ->where('ip', $request->ip())
             ->where('refreshToken', $refreshToken)
             ->first();
 

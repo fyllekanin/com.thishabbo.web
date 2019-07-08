@@ -24,9 +24,9 @@ class NotificationService {
             case Type::getType(Type::THREAD_SUBSCRIPTION):
             case Type::getType(Type::CATEGORY_SUBSCRIPTION):
                 return $this->isThreadNotificationValid($contentId, $user);
+            default:
+                return true;
         }
-
-        return true;
     }
 
     private function isThreadNotificationValid($threadId, $user) {

@@ -53,7 +53,8 @@ export class SitecpComponent extends Page implements OnDestroy, OnInit {
                     }),
                     new SideMenuItem({
                         title: 'Server Logs',
-                        link: '/sitecp/server-logs'
+                        link: '/sitecp/server-logs',
+                        isApplicable: this._authService.sitecpPermissions.canReadServerLogs
                     }),
                     new SideMenuItem({
                         title: 'Website Settings',
@@ -194,7 +195,7 @@ export class SitecpComponent extends Page implements OnDestroy, OnInit {
                         title: 'View Banned Users',
                         link: '/sitecp/moderation/bans/page/1',
                         isApplicable: this._authService.sitecpPermissions.canBanUser
-                    }),
+                    })
                 ]
             }),
             new SideMenuBlock({
