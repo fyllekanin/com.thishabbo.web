@@ -9,6 +9,8 @@ export const LOG_TYPES = {
 };
 
 export class LogItem {
+    @primitive()
+    logId: number;
     @objectOf(SlimUser)
     user: SlimUser;
     @primitive()

@@ -34,6 +34,7 @@ import { ReasonModule } from 'shared/components/reason/reason.module';
 import { SelectModule } from 'shared/components/form/select/select.module';
 import { LogsComponent } from './logs/logs.component';
 import { LogsService } from './services/logs.service';
+import { LogDetailsComponent } from './logs/log-details/log-details.component';
 
 @NgModule({
     imports: [
@@ -60,7 +61,8 @@ import { LogsService } from './services/logs.service';
         InfractionLevelComponent,
         InfractionsComponent,
         BansComponent,
-        LogsComponent
+        LogsComponent,
+        LogDetailsComponent
     ],
     providers: [
         ThreadsModerationResolver,
@@ -76,8 +78,12 @@ import { LogsService } from './services/logs.service';
         BansPageService,
         LogsService
     ],
+    entryComponents: [
+        LogDetailsComponent
+    ],
     exports: [
         RouterModule
     ]
 })
-export class ModerationModule {}
+export class ModerationModule {
+}

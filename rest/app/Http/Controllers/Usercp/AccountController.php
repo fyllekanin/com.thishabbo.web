@@ -205,10 +205,14 @@ class AccountController extends Controller {
             'Nickname is not valid');
 
         $userWithNickname = User::withNickname($nickname)->first();
+        $stolenFromOld = null;
+        $stolenFromNew = null;
         if ($userWithNickname) {
             Condition::precondition($userWithNickname->lastActivity > (time() - ($oneMonth * 4)), 400,
                 'Nickname is already taken and user is not inactive');
-            $userWithNickname->nickname = $this->generateString();
+            $stolenFromOld = $userWithNickname->nickname;
+            $stolenFromNew = $this->generateString();
+            $userWithNickname->nickname = $stolenFromNew;
             $userWithNickname->save();
         }
 
@@ -220,7 +224,9 @@ class AccountController extends Controller {
 
         Logger::user($user->userId, $request->ip(), Action::CHANGED_NICKNAME, [
             'old' => $oldNickname,
-            'new' => $nickname
+            'new' => $nickname,
+            'stolenFromOld' => $stolenFromOld,
+            'stolenFromNew' => $stolenFromNew
         ]);
 
         return response()->json();

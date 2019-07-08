@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Sitecp;
 
-use App\EloquentModels\Log\LogSitecp;
 use App\EloquentModels\Log\LogMod;
+use App\EloquentModels\Log\LogSitecp;
 use App\EloquentModels\Log\LogStaff;
 use App\EloquentModels\Log\LogUser;
 use App\EloquentModels\User\User;
@@ -97,6 +97,7 @@ class LogsController extends Controller {
             }
 
             return (object)[
+                'logId' => $item->logId,
                 'user' => UserHelper::getSlimUser($item->userId),
                 'action' => Action::getActionFromId($item->action)['description'],
                 'data' => $data,

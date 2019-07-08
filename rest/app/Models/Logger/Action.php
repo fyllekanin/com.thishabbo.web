@@ -1145,7 +1145,9 @@ class Action {
         'description' => 'User changed nickname',
         'data' => [
             'old' => 'Old nickname',
-            'new' => 'New nickname'
+            'new' => 'New nickname',
+            'stolenFromOld' => 'User that had the nickname before',
+            'stolenFromNew' => 'Users new nickname'
         ],
         'log' => 'log_user'
     ];

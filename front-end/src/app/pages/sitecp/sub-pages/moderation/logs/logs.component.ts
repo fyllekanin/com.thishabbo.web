@@ -1,13 +1,15 @@
-import { Component, ElementRef, OnDestroy } from '@angular/core';
+import { Component, ComponentFactoryResolver, ElementRef, OnDestroy } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { SITECP_BREADCRUMB_ITEM } from '../../../sitecp.constants';
 import { LOG_TYPES, LogPage } from './logs.model';
 import {
+    Action,
     FilterConfig,
     FilterConfigItem,
     FilterConfigType,
+    TableAction,
     TableCell,
     TableConfig,
     TableHeader,
@@ -19,6 +21,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 import { QueryParameters } from 'core/services/http/http.model';
 import { HttpService } from 'core/services/http/http.service';
+import { DialogService } from 'core/services/dialog/dialog.service';
+import { LogDetailsComponent } from './log-details/log-details.component';
+import { DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
 
 @Component({
     selector: 'app-sitecp-moderation-logs',
@@ -34,9 +39,11 @@ export class LogsComponent extends Page implements OnDestroy {
     pagination: PaginationModel;
     options: Array<{ value: string, label: string }> = [];
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _router: Router,
+        private _dialogService: DialogService,
+        private _componentResolver: ComponentFactoryResolver,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService,
         activatedRoute: ActivatedRoute
@@ -55,15 +62,15 @@ export class LogsComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy() {
+    ngOnDestroy () {
         super.destroy();
     }
 
-    onTypeChange(): void {
+    onTypeChange (): void {
         this._router.navigateByUrl(`/sitecp/moderation/logs/${this.logType}/page/1`);
     }
 
-    onFilter(filter: QueryParameters): void {
+    onFilter (filter: QueryParameters): void {
         clearTimeout(this._filterTimer);
         this._filter = filter;
 
@@ -75,7 +82,19 @@ export class LogsComponent extends Page implements OnDestroy {
         }, 200);
     }
 
-    private onData(data: { data: LogPage }): void {
+    onAction (action: Action): void {
+        const item = this._data.items.find(item => item.logId === Number(action.rowId));
+        this._dialogService.openDialog({
+            title: `${item.user.nickname} ${item.action} - Details`,
+            component: this._componentResolver.resolveComponentFactory(LogDetailsComponent),
+            data: item,
+            buttons: [
+                new DialogCloseButton('Close')
+            ]
+        });
+    }
+
+    private onData (data: { data: LogPage }): void {
         this._data = data.data;
         this.createOrUpdateTable();
 
@@ -87,7 +106,7 @@ export class LogsComponent extends Page implements OnDestroy {
         });
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -115,28 +134,21 @@ export class LogsComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         return this._data.items.map(item => new TableRow({
+            id: String(item.logId),
             cells: [
                 new TableCell({title: item.user.nickname}),
                 new TableCell({title: item.action}),
                 new TableCell({title: TimeHelper.getTime(item.createdAt)})
             ],
-            isExpandable: Boolean(item.data),
-            dataTitle: 'Extra data in the log:',
-            data: Boolean(item.data) ? this.getDataHTML(item.data) : ''
+            actions: [
+                new TableAction({title: 'View Details'})
+            ]
         }));
     }
 
-    private getDataHTML(data: object): string {
-        let html = '';
-        Object.keys(data).forEach(key => {
-            html += `<strong>${key}:</strong> ${data[key]} <br />`;
-        });
-        return html;
-    }
-
-    private getTableHeaders(): Array<TableHeader> {
+    private getTableHeaders (): Array<TableHeader> {
         return [
             new TableHeader({title: 'User'}),
             new TableHeader({title: 'Action'}),
