@@ -16,6 +16,7 @@ use App\Helpers\ForumHelper;
 use App\Helpers\SettingsHelper;
 use App\Helpers\UserHelper;
 use App\Http\Impl\PageControllerImpl;
+use App\Models\User\CustomUserFields;
 use App\Utils\BBcodeUtil;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
@@ -46,7 +47,11 @@ class PageController extends Controller {
                 'name' => $item->group->name,
                 'color' => $item->color,
                 'users' => $item->group->userGroup()->get()->map(function ($relation) {
-                    return UserHelper::getSlimUser($relation->userId);
+                    $userData = UserHelper::getUserDataOrCreate($relation->userId);
+                    $customFields = new CustomUserFields($userData->customFields);
+                    $user = UserHelper::getSlimUser($relation->userId);
+                    $user->role = $customFields->role;
+                    return $user;
                 })
             ];
         }));

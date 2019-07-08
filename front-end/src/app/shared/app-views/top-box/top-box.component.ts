@@ -43,6 +43,7 @@ export class TopBoxComponent {
 
     goToProfile (): void {
         this._router.navigateByUrl(`/user/profile/${this._authService.authUser.nickname}`);
+        this.showMenu = false;
     }
 
     closeMenu (): void {

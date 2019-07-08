@@ -4,10 +4,15 @@
         <div class="grid-x align-center">
             <div class="cell small-4 medium-2" *ngFor="let user of group.users">
                 <img appUserProfile appLazyLoad [float]="'left'"
-                     [image]="'/rest/resources/images/users/' + user.userId + '.gif'" />
-                <span class="user-info">
-                    <app-user-link [user]="user"></app-user-link>
-                </span>
+                     [image]="'/rest/resources/images/users/' + user.userId + '.gif'"/>
+                <div class="user-info">
+                    <div>
+                        <app-user-link [user]="user"></app-user-link>
+                    </div>
+                    <div class="extra-info">
+                        {{user.role}}
+                    </div>
+                </div>
             </div>
         </div>
     </app-content>

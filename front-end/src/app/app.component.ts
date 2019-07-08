@@ -75,10 +75,10 @@ export class AppComponent extends Page implements OnInit, OnDestroy {
                     if (AppComponent.isScrollToSet()) {
                         this.tryToScrollToElement();
                     } else if (!AppComponent.isScrollOff()) {
-                        document.getElementsByTagName('app-header')[0].scrollIntoView({behavior: 'smooth'});
+                        document.getElementsByTagName('body')[0].scrollIntoView({behavior: 'smooth'});
                     }
                 } catch (e) {
-                    document.getElementsByTagName('app-header')[0].scrollIntoView({behavior: 'smooth'});
+                    document.getElementsByTagName('body')[0].scrollIntoView({behavior: 'smooth'});
                 }
             }
         });
@@ -101,7 +101,7 @@ export class AppComponent extends Page implements OnInit, OnDestroy {
     }
 
     goToTop (): void {
-        document.getElementsByTagName('app-header')[0].scrollIntoView({behavior: 'smooth'});
+        document.getElementsByTagName('body')[0].scrollIntoView({behavior: 'smooth'});
     }
 
     private addCustomListeners (): void {

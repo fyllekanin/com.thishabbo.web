@@ -39,7 +39,7 @@ class Post extends DeletableModel {
 
     public function getLikersAttribute() {
         return $this->likes()->get()->map(function ($like) {
-            return $like->user;
+            return UserHelper::getSlimUser($like->user->userId);
         });
     }
 

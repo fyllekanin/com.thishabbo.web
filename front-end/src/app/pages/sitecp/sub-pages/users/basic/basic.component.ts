@@ -8,6 +8,7 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 import { SITECP_BREADCRUMB_ITEM, USER_LIST_BREADCRUMB_ITEM } from '../../../sitecp.constants';
 import { AuthService } from 'core/services/auth/auth.service';
 import { UserService } from '../services/user.service';
+import { UserCustomFields } from 'core/services/auth/auth.model';
 
 @Component({
     selector: 'app-sitecp-users-user',
@@ -44,7 +45,7 @@ export class BasicComponent extends Page implements OnDestroy {
     }
 
     onSave (): void {
-        this._service.save(this._basicPage.user);
+        this._service.save(this._basicPage);
     }
 
     get title (): string {
@@ -53,6 +54,10 @@ export class BasicComponent extends Page implements OnDestroy {
 
     get user (): BasicModel {
         return this._basicPage.user;
+    }
+
+    get customFields (): UserCustomFields {
+        return this._basicPage.customFields;
     }
 
     get canDoBasic (): boolean {

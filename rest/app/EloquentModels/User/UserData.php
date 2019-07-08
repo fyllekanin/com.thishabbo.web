@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property mixed xp
  * @property false|string activeBadges
  * @property mixed barColor
+ * @property mixed customFields
  */
 class UserData extends UnixTimeModel {
     protected $table = 'userdata';
@@ -43,7 +44,8 @@ class UserData extends UnixTimeModel {
         'iconId',
         'iconPosition',
         'xp',
-        'effectId'
+        'effectId',
+        'customFields'
     ];
 
     public function user() {

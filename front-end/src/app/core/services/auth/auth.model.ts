@@ -1,6 +1,15 @@
 import { arrayOf, ClassHelper, objectOf, primitive, primitiveOf } from 'shared/helpers/class.helper';
 import { UserHelper } from 'shared/helpers/user.helper';
 
+export class UserCustomFields {
+    @primitive()
+    role: string;
+
+    constructor (source: Partial<UserCustomFields>) {
+        ClassHelper.assign(this, source);
+    }
+}
+
 export class DisplayGroup {
     @primitive()
     groupId: number;

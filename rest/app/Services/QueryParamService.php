@@ -6,7 +6,9 @@ class QueryParamService {
 
     /**
      * Gets the correct DB column for the sorted by query parameter
+     *
      * @param $sortedBy
+     *
      * @return string
      */
     public function getSortedBy($sortedBy) {
@@ -19,7 +21,7 @@ class QueryParamService {
                 return 'posts';
             case 'LAST_POST_TIME':
             default:
-                return 'updatedAt';
+                return 'lastPostId';
         }
     }
 
@@ -28,6 +30,7 @@ class QueryParamService {
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      *
      * @param $fromThe
+     *
      * @return integer the timestamp equal to the offset
      */
     public function getFromThe($fromThe) {

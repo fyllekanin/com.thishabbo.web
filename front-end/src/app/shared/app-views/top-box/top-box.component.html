@@ -2,8 +2,10 @@
 <div class="menu" [ngClass]="menuClasses">
     <span class="close" (click)="closeMenu()"><em class="fas fa-times"></em> Close</span>
     <div class="user" *ngIf="isLoggedIn">
-        <img class="avatar" [style.backgroundImage]="'url(' + avatar + ')'"/>
-        <span class="mobile-nickname">{{username}}</span>
+        <div (click)="goToProfile()">
+            <img class="avatar" [style.backgroundImage]="'url(' + avatar + ')'"/>
+            <span class="mobile-nickname">{{username}}</span>
+        </div>
         <div class="quick-links">
             <a *ngIf="isSitecp" [routerLink]="['/sitecp/dashboard']" (click)="closeMenu()">SiteCP</a>
             <a *ngIf="isStaff" [routerLink]="['/staff/dashboard']" (click)="closeMenu()">StaffCP</a>

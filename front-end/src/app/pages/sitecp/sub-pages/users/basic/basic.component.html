@@ -2,19 +2,28 @@
 <app-content>
     <div class="grid-container full">
         <div class="grid-x grid-margin-x">
-            <div class="cell small-6" *ngIf="canDoBasic">
+            <div class="cell small-12 medium-6" *ngIf="canDoBasic">
                 <label>nickname</label>
                 <input type="text" [(ngModel)]="user.nickname"/>
             </div>
-            <div class="cell small-6" *ngIf="canDoBasic">
+            <div class="cell small-12 medium-6" *ngIf="canDoBasic">
                 <label>Habbo</label>
                 <input type="text" [(ngModel)]="user.habbo"/>
             </div>
-            <div class="cell small-6" *ngIf="canDoAdvanced">
+            <div class="cell small-12" *ngIf="canDoBasic">
+                <label>
+                    Role
+                    <span tooltip="Displayed on staff list, more specified role field" class="checkbox-info">
+                        <em class="fas fa-question-circle"></em>
+                    </span>
+                </label>
+                <input name="custom-field-role" type="text" [(ngModel)]="customFields.role"/>
+            </div>
+            <div class="cell small-12 medium-6" *ngIf="canDoAdvanced">
                 <label>Password <em>(Leave empty to not change)</em></label>
                 <input type="password" [(ngModel)]="user.password"/>
             </div>
-            <div class="cell small-6" *ngIf="canDoAdvanced">
+            <div class="cell small-12 medium-6" *ngIf="canDoAdvanced">
                 <label>Retype-Password <em>(Leave empty to not change)</em></label>
                 <input type="password" [(ngModel)]="user.repassword"/>
             </div>

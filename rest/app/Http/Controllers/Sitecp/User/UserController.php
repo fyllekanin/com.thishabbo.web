@@ -13,6 +13,7 @@ use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
+use App\Models\User\CustomUserFields;
 use App\Services\AuthService;
 use App\Utils\Condition;
 use App\Utils\Iterables;
@@ -137,11 +138,15 @@ class UserController extends Controller {
         Condition::precondition(!UserHelper::canManageUser($user, $userId),
             400, 'You can not edit this user');
 
+        $customFields = new CustomUserFields(UserHelper::getUserDataOrCreate($userId)->customFields);
         return response()->json([
             'user' => [
                 'userId' => $current->userId,
                 'nickname' => $current->nickname,
                 'habbo' => $current->habbo
+            ],
+            'customFields' => [
+                'role' => $customFields->role
             ]
         ]);
     }
@@ -157,13 +162,15 @@ class UserController extends Controller {
     public function updateUserBasic(Request $request, $userId) {
         $user = $request->get('auth');
         $current = User::find($userId);
+        $userData = UserHelper::getUserDataOrCreate($userId);
         $newUser = (object)$request->input('user');
+        $role = $request->input('role');
 
         Condition::precondition(!UserHelper::canManageUser($user, $userId),
             400, 'You do not have high enough immunity!');
 
         $this->basicUserConditionCollection($current, $newUser);
-        $shouldCheckPassword = isset($newUser->password) && strlen($newUser->password) > 0 &&
+        $shouldCheckPassword = isset($newUser->password) && strlen($newUser->password) > 0 && isset($newUser->repassword) &&
             PermissionHelper::haveSitecpPermission($user->userId, ConfigHelper::getSitecpConfig()->canEditUserAdvanced);
         Condition::precondition($shouldCheckPassword && !$this->authService->isPasswordValid($newUser->password),
             400, 'Password not valid');
@@ -180,6 +187,11 @@ class UserController extends Controller {
         if (PermissionHelper::haveSitecpPermission($user->userId, ConfigHelper::getSitecpConfig()->canEditUserBasic)) {
             $current->nickname = $newUser->nickname;
             $current->habbo = $newUser->habbo;
+
+            $customFields = new CustomUserFields($userData->customFields);
+            $customFields->role = isset($role) && !empty($role) ? $role : null;
+            $userData->customFields = json_encode($customFields);
+            $userData->save();
         }
         $current->save();
 

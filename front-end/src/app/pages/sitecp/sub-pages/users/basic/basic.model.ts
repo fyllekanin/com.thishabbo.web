@@ -1,5 +1,5 @@
-import { ClassHelper, objectOf } from 'shared/helpers/class.helper';
-import { primitive } from 'shared/helpers/class.helper';
+import { ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
+import { UserCustomFields } from 'core/services/auth/auth.model';
 
 export class BasicModel {
     @primitive()
@@ -17,7 +17,7 @@ export class BasicModel {
     @primitive()
     updatedAt: number;
 
-    constructor(source: Partial<BasicModel>) {
+    constructor (source: Partial<BasicModel>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -25,8 +25,10 @@ export class BasicModel {
 export class BasicPage {
     @objectOf(BasicModel)
     user: BasicModel;
+    @objectOf(UserCustomFields)
+    customFields: UserCustomFields;
 
-    constructor(source?: Partial<BasicPage>) {
+    constructor (source?: Partial<BasicPage>) {
         ClassHelper.assign(this, source);
     }
 }
