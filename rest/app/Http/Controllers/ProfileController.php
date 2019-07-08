@@ -251,26 +251,29 @@ class ProfileController extends Controller {
      */
     private function getSlots($userId) {
         $radioSlots = Timetable::isActive()
-            ->where('day', '>=', date('N'))
             ->where('userId', $userId)
-            ->orderBy('day', 'ASC')
+            ->where(function($query) {
+                $query->where(function($query) {
+                    $query->where('day', date('N'))->where('hour', '>', date('G'));
+                })->orWhere(function($query) {
+                    $query->where('day', '>', date('N'));
+                });
+            })->orderBy('day', 'ASC')
             ->orderBy('hour', 'ASC')
             ->radio()->get();
 
+
         $eventsSlots = Timetable::isActive()
-            ->where('day', '>=', date('N'))
             ->where('userId', $userId)
-            ->orderBy('day', 'ASC')
+            ->where(function($query) {
+                $query->where(function($query) {
+                    $query->where('day', date('N'))->where('hour', '>', date('G'));
+                })->orWhere(function($query) {
+                    $query->where('day', '>', date('N'));
+                });
+            })->orderBy('day', 'ASC')
             ->orderBy('hour', 'ASC')
             ->events()->get();
-
-        $eventsSlots->filter(function ($slot) {
-            return $slot->day > date('N') || ($slot->day == date('N') && $slot->hour > date('G'));
-        });
-
-        $radioSlots->filter(function ($slot) {
-            return $slot->day > date('N') || ($slot->day == date('N') && $slot->hour > date('G'));
-        });
 
         return [
             'events' => $eventsSlots,
