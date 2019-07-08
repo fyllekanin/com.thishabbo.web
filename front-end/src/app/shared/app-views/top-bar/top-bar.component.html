@@ -73,8 +73,10 @@
                                 <app-top-bar-visitor-message-view *ngSwitchCase="9"
                                                                   [notification]="notification"
                                                                   (onClick)="notificationClick($event)"></app-top-bar-visitor-message-view>
-                                <app-top-bar-like-dj-view *ngSwitchCase="11" [notification]="notification"
-                                                          (onClick)="notificationClick($event)"></app-top-bar-like-dj-view>
+                                <app-top-bar-user-view *ngSwitchCase="11" [notification]="notification"
+                                                       (onClick)="notificationClick($event)"></app-top-bar-user-view>
+                                <app-top-bar-user-view *ngSwitchCase="12" [notification]="notification"
+                                                       (onClick)="notificationClick($event)"></app-top-bar-user-view>
                             </div>
                         </div>
                     </div>

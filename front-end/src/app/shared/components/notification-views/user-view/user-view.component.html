@@ -2,8 +2,14 @@
 
 <div class="picture" [style.background-image]="'url(' + imagePath + ')'"></div>
 <div class="description">
-    New Like! <br/>
-    {{user.nickname}} likes you on the radio!
+    <div *ngIf="isDjLike">
+        New Like! <br/>
+        {{user.nickname}} likes you on the radio!
+    </div>
+    <div *ngIf="isRadioRequest">
+        New request! <br/>
+        {{user.nickname}} sent a request!
+    </div>
     <div class="time">
         <em class="fas fa-clock"></em> {{getTime()}}
     </div>

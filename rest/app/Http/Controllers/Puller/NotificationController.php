@@ -35,7 +35,8 @@ class NotificationController extends Controller {
             Type::getType(Type::QUOTE),
             Type::getType(Type::THREAD_SUBSCRIPTION),
             Type::getType(Type::LIKE_POST),
-            Type::getType(Type::LIKE_DJ)
+            Type::getType(Type::LIKE_DJ),
+            Type::getType(Type::RADIO_REQUEST)
         ];
 
         DB::table('notifications')

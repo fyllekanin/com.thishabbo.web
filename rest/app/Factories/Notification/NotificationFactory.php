@@ -7,8 +7,8 @@ use App\Factories\Notification\Views\BadgeView;
 use App\Factories\Notification\Views\CategoryView;
 use App\Factories\Notification\Views\FollowerView;
 use App\Factories\Notification\Views\InfractionView;
-use App\Factories\Notification\Views\LikeDjView;
 use App\Factories\Notification\Views\ThreadView;
+use App\Factories\Notification\Views\UserView;
 use App\Factories\Notification\Views\VisitorMessageView;
 use App\Models\Notification\Type;
 use App\Utils\Iterables;
@@ -49,11 +49,22 @@ class NotificationFactory {
                 $item = new VisitorMessageView($notification);
                 break;
             case Type::getType(Type::LIKE_DJ):
-                $item = new LikeDjView($notification);
+            case Type::getType(Type::RADIO_REQUEST):
+                $item = new UserView($notification);
                 break;
         }
 
         return $item;
+    }
+
+    public static function newRadioRequest($userId, $senderId) {
+        DB::table('notifications')->insert([
+            'userId' => $userId,
+            'senderId' => $senderId,
+            'type' => Type::getType(Type::RADIO_REQUEST),
+            'contentId' => 0,
+            'createdAt' => time()
+        ]);
     }
 
     public static function newLikeDj($userId, $senderId) {

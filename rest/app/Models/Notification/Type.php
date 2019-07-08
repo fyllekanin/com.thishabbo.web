@@ -62,4 +62,9 @@ class Type {
         'type' => 11,
         'description' => 'When a user have liked the DJ'
     ];
+
+    const RADIO_REQUEST = [
+        'type' => 12,
+        'description' => 'When a user requested to the radio'
+    ];
 }

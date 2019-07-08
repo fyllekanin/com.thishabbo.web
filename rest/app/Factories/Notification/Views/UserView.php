@@ -4,7 +4,7 @@ namespace App\Factories\Notification\Views;
 
 use App\Helpers\UserHelper;
 
-class LikeDjView {
+class UserView {
     public $user;
 
     /**
