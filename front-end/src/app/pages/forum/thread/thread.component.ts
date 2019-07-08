@@ -37,6 +37,7 @@ import { StatsBoxModel } from 'shared/app-views/stats-boxes/stats-boxes.model';
 export class ThreadComponent extends Page implements OnDestroy {
     private _threadPage: ThreadPage = new ThreadPage();
     private _isToolsVisible = false;
+    private _multiquoted: Array<PostModel> = new Array<PostModel>();
 
     @ViewChild('editor', {static: false}) editor: EditorComponent;
 
@@ -127,9 +128,24 @@ export class ThreadComponent extends Page implements OnDestroy {
 
     onQuotePost (content: string): void {
         const editorValue = this.editor.getEditorValue();
-        this.editor.content = editorValue.length > 0 ? `${editorValue}${content}` : content;
+
+        let multiquoteString = '';
+        this._multiquoted.forEach(post => {
+            multiquoteString += `[quotepost=${post.postId}]Originally Posted by [b]${post.user.nickname}[/b]
+${post.content}[/quotepost]\n\r`;
+        });
+        this.editor.content = editorValue.length > 0 ?
+            `${editorValue}${multiquoteString}${content}` : `${multiquoteString}${content}`;
         this.onKeyUp(this.editor.getEditorValue());
         this.scrollToEditor();
+    }
+
+    onMultiQuotePost (post: PostModel): void {
+        this._multiquoted.push(post);
+    }
+
+    onUnMultiQuotePost(post: PostModel): void {
+        this._multiquoted.splice(this._multiquoted.indexOf(post));
     }
 
     getPostTitle (post: PostModel, index: number): string {

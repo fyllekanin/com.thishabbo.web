@@ -34,11 +34,15 @@ export class PostComponent extends Page implements OnDestroy {
     private _postModel: PostModel = new PostModel();
     private _forumPermission: ForumPermissions = new ForumPermissions();
     private _isInEditMode = false;
+    private _multiquoted = false;
 
     @ViewChild('editor', { static: false }) editor: EditorComponent;
     @Input() canPost: boolean;
     @Output() onUpdatePost: EventEmitter<PostModel> = new EventEmitter();
     @Output() onQuotePost: EventEmitter<string> = new EventEmitter();
+    @Output() onMultiQuotePost: EventEmitter<PostModel> = new EventEmitter();
+    @Output() onUnMultiQuotePost: EventEmitter<PostModel> = new EventEmitter();
+
 
     editorButtons: Array<EditorAction> = [
         new EditorAction({ title: 'Save', value: PostActions.SAVE, saveCallback: this.onSave.bind(this) }),
@@ -97,6 +101,16 @@ export class PostComponent extends Page implements OnDestroy {
     quotePost(): void {
         this.onQuotePost.emit(`[quotepost=${this._postModel.postId}]Originally Posted by [b]${this.user.nickname}[/b]
 ${this._postModel.content}[/quotepost]\n\r`);
+    }
+
+    multiQuotePost(): void {
+        this.onMultiQuotePost.emit(this._postModel);
+        this._multiquoted = true;
+    }
+
+    unMultiQuotePost(): void {
+        this.onUnMultiQuotePost.emit(this._postModel);
+        this._multiquoted = false;
     }
 
     onButtonClick(button: EditorAction): void {
@@ -176,6 +190,10 @@ ${this._postModel.content}[/quotepost]\n\r`);
 
     get postId(): number {
         return this._postModel.postId;
+    }
+
+    get multiquoted(): boolean {
+        return this._multiquoted;
     }
 
     private onReport(message: string): void {
