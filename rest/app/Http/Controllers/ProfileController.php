@@ -223,7 +223,7 @@ class ProfileController extends Controller {
      * @throws \Illuminate\Validation\ValidationException
      */
     public function createReportVisitorMessage(Request $request, ForumService $forumService,
-                                               ForumValidatorService $validatorService, $visitorMessageId) {
+                                               ForumValidatorService $validatorService, PointsService $pointsService, $visitorMessageId) {
         $user = $request->get('auth');
         $visitorMessage = VisitorMessage::find($visitorMessageId);
         $message = $request->input('message');
@@ -233,7 +233,7 @@ class ProfileController extends Controller {
 
         $threadSkeleton = VisitorMessageReportView::of($user, $visitorMessage, $message);
         $reportCategories = Category::isReportCategory()->get();
-        $threadController = new ThreadCrudController($forumService, $validatorService);
+        $threadController = new ThreadCrudController($forumService, $validatorService, $pointsService);
 
         foreach ($reportCategories as $category) {
             $threadSkeleton->categoryId = $category->categoryId;
