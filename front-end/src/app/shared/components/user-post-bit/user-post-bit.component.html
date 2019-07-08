@@ -1,4 +1,4 @@
-<div class="nickname" *ngIf="isTopOutside">
+<div class="nickname nickname-top-outside" *ngIf="isTopOutside">
     <app-user-link [user]="user"></app-user-link>
 </div>
 <div class="avatar">
@@ -11,7 +11,7 @@
         <app-user-link [user]="user"></app-user-link>
     </div>
 </div>
-<div class="nickname" *ngIf="isBottomOutside">
+<div class="nickname nickname-bottom-outside" *ngIf="isBottomOutside">
     <app-user-link [user]="user"></app-user-link>
 </div>
 <div class="default" *ngIf="!useAvatarImage">
