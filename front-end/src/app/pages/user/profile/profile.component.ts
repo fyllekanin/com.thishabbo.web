@@ -25,6 +25,7 @@ import { EditorComponent } from 'shared/components/editor/editor.component';
 import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
 import { UserHelper } from 'shared/helpers/user.helper';
+import { TimetableModel } from 'app/pages/staff/sub-pages/shared/timetable/timetable.model';
 
 @Component({
     selector: 'app-user-profile',
@@ -91,9 +92,16 @@ export class ProfileComponent extends Page implements OnDestroy {
             .filter(item => item.visitorMessageId !== visitorMessage.visitorMessageId);
     }
 
-    timestampToDate (timestamp: number): string {
-        const date = new Date(timestamp * 1000);
-        return `${TimeHelper.getDay(date.getDay() + 1).label} @ ${date.getHours()}:00`;
+    getSlotText (slot: TimetableModel) {
+        if (!slot) {
+            return null;
+        }
+
+        const convertedHour = slot.hour + TimeHelper.getTimeOffsetInHours();
+        const day = TimeHelper.getConvertedDay(convertedHour, slot.day);
+        const hour = TimeHelper.getHours().find(item => item.number === TimeHelper.getConvertedHour(convertedHour));
+
+        return `${TimeHelper.getDay(day).label} @ ${hour.label} ${slot.event ? '- ' + slot.event.name : ''}`;
     }
 
 

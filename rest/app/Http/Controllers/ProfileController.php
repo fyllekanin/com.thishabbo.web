@@ -250,8 +250,31 @@ class ProfileController extends Controller {
      * @return array
      */
     private function getSlots($userId) {
-        $eventsSlots = Timetable::where('userId', $userId)->isActive()->events()->get();
-        $radioSlots = Timetable::where('userId', $userId)->isActive()->radio()->get();
+        $radioSlots = Timetable::isActive()
+            ->where('userId', $userId)
+            ->where(function($query) {
+                $query->where(function($query) {
+                    $query->where('day', date('N'))->where('hour', '>', date('G'));
+                })->orWhere(function($query) {
+                    $query->where('day', '>', date('N'));
+                });
+            })->orderBy('day', 'ASC')
+            ->orderBy('hour', 'ASC')
+            ->radio()->get();
+
+
+        $eventsSlots = Timetable::isActive()
+            ->where('userId', $userId)
+            ->where(function($query) {
+                $query->where(function($query) {
+                    $query->where('day', date('N'))->where('hour', '>', date('G'));
+                })->orWhere(function($query) {
+                    $query->where('day', '>', date('N'));
+                });
+            })->orderBy('day', 'ASC')
+            ->orderBy('hour', 'ASC')
+            ->events()->get();
+
         return [
             'events' => $eventsSlots,
             'radio' => $radioSlots

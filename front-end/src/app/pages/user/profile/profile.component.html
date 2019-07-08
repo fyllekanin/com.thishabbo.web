@@ -165,7 +165,7 @@
                 <app-content>
                     <div class="symbol-content-wrapper" *ngFor="let slot of slots.radio">
                         <div class="content-symbol"><em class="fa fa-microphone"></em></div>
-                        <div class="content-text">{{ timestampToDate(slot.timestamp) }}</div>
+                        <div class="content-text">{{ getSlotText(slot) }}</div>
                     </div>
                 </app-content>
 
@@ -173,7 +173,7 @@
                 <app-content>
                     <div class="symbol-content-wrapper" *ngFor="let slot of slots.events">
                         <div class="content-symbol"><em class="fa fa-gamepad"></em></div>
-                        <div class="content-text">{{ timestampToDate(slot.timestamp) }} - {{ slot.event.name }}</div>
+                        <div class="content-text">{{ getSlotText(slot) }}</div>
                     </div>
                 </app-content>
 
