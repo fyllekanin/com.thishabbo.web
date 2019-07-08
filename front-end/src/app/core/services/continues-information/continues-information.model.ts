@@ -35,6 +35,8 @@ export class ActiveUser {
     userId: number;
     @primitive()
     nickname: string;
+    @primitive()
+    avatarUpdatedAt: number;
 
     constructor (source: Partial<ActiveUser>) {
         ClassHelper.assign(this, source);

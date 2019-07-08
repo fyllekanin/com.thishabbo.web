@@ -162,6 +162,9 @@ class StreamController extends Controller {
      * @return mixed
      */
     private function getActiveUsers() {
-        return User::orderBy('lastActivity', 'DESC')->take(28)->get(['nickname', 'userId']);
+        return User::orderBy('lastActivity', 'DESC')
+            ->leftJoin('userdata', 'userdata.userId', '=', 'users.userId')
+            ->take(28)
+            ->get(['users.nickname', 'users.userId', 'userdata.avatarUpdatedAt']);
     }
 }

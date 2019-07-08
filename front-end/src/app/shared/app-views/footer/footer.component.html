@@ -6,7 +6,7 @@
                 <div class="active-user" *ngFor="let activeUser of activeUsers"
                      [attr.tooltip]="activeUser.nickname"
                      (click)="goToProfile(activeUser.nickname)"
-                     [style]="getAvatarUrl(activeUser.userId) | safeStyle"></div>
+                     [style]="getAvatarUrl(activeUser) | safeStyle"></div>
             </div>
             <div class="cell small-6 medium-2">
                 <label><em class="fa fa-user"></em> Member of the Month</label>

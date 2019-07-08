@@ -33,8 +33,9 @@ export class FooterComponent {
         return this._info ? this._info.footer.month : null;
     }
 
-    getAvatarUrl (id: number): string {
-        return `background-image: url('/rest/resources/images/users/${id}.gif')`;
+    getAvatarUrl (activeUser: ActiveUser): string {
+        return `background-image: url('/rest/resources/images/users/` +
+            `{activeUser.userId}.gif?${activeUser.avatarUpdatedAt}')`;
     }
 
     goToProfile (nickname: string) {
