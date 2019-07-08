@@ -41,6 +41,8 @@
                         <div class="dropdown nickname-wrapper">
                             Hello, <span class="nickname" (click)="goToProfile()">{{nickname}}</span>
                             <div class="dropdown-content">
+                                <a (click)="goToProfile()">View My Profile</a>
+                                <div class="divider"></div>
                                 <a *ngIf="isSitecp" [routerLink]="['/sitecp/dashboard']">SiteCP</a>
                                 <a *ngIf="isStaff" [routerLink]="['/staff/dashboard']">StaffCP</a>
                                 <a [routerLink]="['/user/usercp']">UserCP</a>
