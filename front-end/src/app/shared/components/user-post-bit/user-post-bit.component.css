@@ -10,12 +10,6 @@
     width: 100%;
 }
 
-.nickname {
-    text-align: center;
-    font-size: 0.9rem;
-    width: 100%;
-}
-
 .avatar {
     position: relative;
     text-align: center;
@@ -35,7 +29,7 @@
 }
 
 .userbars {
-    margin: 0.5rem 0;
+    margin: 0.15rem 0;
 }
 
 .post-bit {
@@ -46,12 +40,28 @@
     text-align: left;
 }
 
+.nickname {
+    text-align: center;
+    width: 100%;
+    font-size: 15px;
+}
+
+.nickname-top-outside {
+    margin: 0px 0 5px 0;
+}
+
+.nickname-bottom-outside {
+    margin: 3px 0 1px 0;
+}
+
 .nickname-top-inside {
     position: absolute;
     top: 0;
+    margin: 5px 0 0 0;
 }
 
 .nickname-bottom-inside {
     position: absolute;
     bottom: 0;
+    margin: 0 0 3px 0;
 }
