@@ -15,6 +15,18 @@ import { NotificationService } from 'core/services/notification/notification.ser
     styleUrls: ['job.component.css']
 })
 export class JobComponent extends Page implements OnDestroy {
+    private _jobs: Array<{ checked: boolean, label: string }> = [
+        {checked: false, label: 'Decide for me!'},
+        {checked: false, label: 'Events Host'},
+        {checked: false, label: 'Radio DJ'},
+        {checked: false, label: 'Audio Producer'},
+        {checked: false, label: 'Builder'},
+        {checked: false, label: 'Graphics Artist'},
+        {checked: false, label: 'Media Journalist'},
+        {checked: false, label: 'Quest/Tutorial Report'},
+        {checked: false, label: 'Developer'},
+        {checked: false, label: 'Web Designer'}
+    ];
     notLoggedIn: InfoBoxModel = {
         type: INFO_BOX_TYPE.INFO,
         title: 'You need to be logged in',
@@ -42,14 +54,21 @@ export class JobComponent extends Page implements OnDestroy {
         return this._authService.isLoggedIn();
     }
 
+    get jobs (): Array<{ checked: boolean, label: string }> {
+        return this._jobs;
+    }
+
     ngOnDestroy () {
         super.destroy();
     }
 
     onApply (): void {
+        this.data.job = this._jobs.filter(job => job.checked)
+            .map(job => job.label).join(', ');
         this._httpService.post('form/job', {data: this.data})
             .subscribe(() => {
                 this._notificationService.sendInfoNotification('Application posted!');
+                this._jobs.forEach(job => job.checked = false);
                 this.data = new JobModel();
             }, error => {
                 this._notificationService.failureNotification(error);
