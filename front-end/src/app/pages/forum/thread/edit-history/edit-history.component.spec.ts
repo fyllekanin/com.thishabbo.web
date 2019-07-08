@@ -17,7 +17,7 @@ describe('EditHistoryComponent', () => {
             declarations: [
                 EditHistoryComponent
             ],
-            schemas: [ NO_ERRORS_SCHEMA ]
+            schemas: [NO_ERRORS_SCHEMA]
         });
         component = TestBed.createComponent(EditHistoryComponent).componentInstance;
     });
@@ -53,12 +53,12 @@ describe('EditHistoryComponent', () => {
         // Given
         component.setData([
             new PostHistoryModel({
-                createdAt: 123,
-                user: new User({ nickname: 'Tovven' })
+                createdAt: 1558624980,
+                user: new User({nickname: 'Tovven'})
             }),
             new PostHistoryModel({
-                createdAt: 456,
-                user: new User({ nickname: 'Test' })
+                createdAt: 1558624980,
+                user: new User({nickname: 'Test'})
             })
         ]);
 
