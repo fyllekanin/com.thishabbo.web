@@ -69,8 +69,8 @@
                 <div *ngIf="accolades.length > 0">
                     <app-title [title]="'Accolades'"></app-title>
                     <app-content>
-                        <div *ngFor="let accolade of accolades">
-                            <span [style.color]="accolade.color"><em [ngClass]="accolade.icon"></em> {{accolade.role}}
+                        <div class="gray-content-wrapper" *ngFor="let accolade of accolades">
+                            <span class="accolade-role" [style.color]="accolade.color"><em [ngClass]="accolade.icon"></em> {{accolade.role}}
                                 »</span>
                             {{accolade.getStartLabel()}} - {{accolade.getEndLabel()}}
                         </div>
@@ -163,15 +163,17 @@
                 </app-content>
                 <app-title [title]="'Radio Slots'"></app-title>
                 <app-content>
-                    <div class="radio-slot" *ngFor="let slot of slots.radio">
-                        {{ timestampToDate(slot.timestamp) }}
+                    <div class="symbol-content-wrapper" *ngFor="let slot of slots.radio">
+                        <div class="content-symbol"><em class="fa fa-microphone"></em></div>
+                        <div class="content-text">{{ timestampToDate(slot.timestamp) }}</div>
                     </div>
                 </app-content>
 
                 <app-title [title]="'Events Slots'"></app-title>
                 <app-content>
-                    <div class="event-slot" *ngFor="let slot of slots.events">
-                        {{ timestampToDate(slot.timestamp) }} - {{ slot.event.name }}
+                    <div class="symbol-content-wrapper" *ngFor="let slot of slots.events">
+                        <div class="content-symbol"><em class="fa fa-gamepad"></em></div>
+                        <div class="content-text">{{ timestampToDate(slot.timestamp) }} - {{ slot.event.name }}</div>
                     </div>
                 </app-content>
 
@@ -196,17 +198,17 @@
                 <div *ngIf="relations.love || relations.like || relations.hate">
                     <app-title [title]="'Relations'"></app-title>
                     <app-content>
-                        <div class="gray-content-wrapper" *ngIf="relations.love">
-                            <img src="/assets/images/heart.png" class="relationImg"/>
-                            <app-user-link [user]="relations.love"></app-user-link>
+                        <div class="symbol-content-wrapper" *ngIf="relations.love">
+                            <div class="content-symbol"><em class="fas fa-heart"></em></div>
+                            <div class="content-text"><app-user-link [user]="relations.love"></app-user-link></div>
                         </div>
-                        <div class="gray-content-wrapper" *ngIf="relations.like">
-                            <img src="/assets/images/smile.png" class="relationImg"/>
-                            <app-user-link [user]="relations.like"></app-user-link>
+                        <div class="symbol-content-wrapper" *ngIf="relations.like">
+                            <div class="content-symbol"><em class="fas fa-smile"></em></div>
+                            <div class="content-text"><app-user-link [user]="relations.like"></app-user-link></div>
                         </div>
-                        <div class="gray-content-wrapper" *ngIf="relations.hate">
-                            <img src="/assets/images/skull.png" class="relationImg"/>
-                            <app-user-link [user]="relations.hate"></app-user-link>
+                        <div class="symbol-content-wrapper" *ngIf="relations.hate">
+                            <div class="content-symbol"><em class="fas fa-skull"></em></div>
+                            <div class="content-text"><app-user-link [user]="relations.hate"></app-user-link></div>
                         </div>
                     </app-content>
                 </div>
