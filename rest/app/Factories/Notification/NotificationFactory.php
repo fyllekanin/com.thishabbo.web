@@ -23,19 +23,20 @@ class NotificationFactory {
      *
      * @return BadgeView|CategoryView|FollowerView|InfractionView|ThreadView|VisitorMessageView|null
      */
-    public static function ofType($notification, $user) {
+    public static function ofType($notification) {
         $item = null;
         switch ($notification->type) {
             case Type::getType(Type::BADGE):
                 $item = new BadgeView($notification);
                 break;
             case Type::getType(Type::CATEGORY_SUBSCRIPTION):
-                $item = new CategoryView($notification, $user);
+                $item = new CategoryView($notification);
                 break;
             case Type::getType(Type::MENTION):
             case Type::getType(Type::QUOTE):
             case Type::getType(Type::THREAD_SUBSCRIPTION):
-                $item = new ThreadView($notification, $user);
+            case Type::getType(Type::LIKE_POST):
+                $item = new ThreadView($notification);
                 break;
             case Type::getType(Type::INFRACTION_GIVEN):
             case Type::getType(Type::INFRACTION_DELETED):
@@ -50,6 +51,16 @@ class NotificationFactory {
         }
 
         return $item;
+    }
+
+    public static function newLikePost($userId, $senderId, $contentId) {
+        DB::table('notifications')->insert([
+            'userId' => $userId,
+            'senderId' => $senderId,
+            'type' => Type::getType(Type::LIKE_POST),
+            'contentId' => $contentId,
+            'createdAt' => time()
+        ]);
     }
 
     public static function newInfractionGiven($userId, $senderId, $contentId) {
@@ -90,7 +101,7 @@ class NotificationFactory {
                     $receiverIds[] = $userId;
                 });
         }
-        
+
         $receiverIds = Iterables::filter($receiverIds, function ($userId) use ($visitorMessage) {
             return $userId != $visitorMessage->userId;
         });

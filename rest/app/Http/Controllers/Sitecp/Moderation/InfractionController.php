@@ -108,10 +108,12 @@ class InfractionController extends Controller {
     /**
      * @param Request $request
      *
+     * @param ThreadCrudController $threadCrudController
+     *
      * @return JsonResponse
      * @throws ValidationException
      */
-    public function createInfraction(Request $request) {
+    public function createInfraction(Request $request, ThreadCrudController $threadCrudController) {
         $user = $request->get('auth');
         $data = (object)$request->input('infraction');
         $this->validateInfraction($data);
@@ -128,7 +130,7 @@ class InfractionController extends Controller {
         $infraction->save();
 
         if (isset($infractionLevel->categoryId) && $infractionLevel->categoryId > 0 && $this->botAccountExists()) {
-            $this->createInfractionThread($infractionLevel, $infraction);
+            $this->createInfractionThread($threadCrudController, $infractionLevel, $infraction);
         } else {
             NotificationFactory::newInfractionGiven($data->userId, $user->userId, $infraction->infractionId);
         }

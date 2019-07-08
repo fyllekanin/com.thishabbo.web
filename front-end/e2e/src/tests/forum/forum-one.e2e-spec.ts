@@ -30,7 +30,7 @@ describe('Forum #1', () => {
 
         InputUtil.fillInput(NewThreadPage.getThreadTitleElement(), 'New Tests');
         InputUtil.fillEditor(NewThreadPage.getThreadEditor(), 'We are now having newly written E2E tests!');
-        NavigationUtil.clickTab('Save');
+        NavigationUtil.clickTab('Create');
 
         NavigationUtil.clickUserNavigation('UserCP');
         browser.executeScript('window.scrollTo(0, document.body.scrollHeight)');

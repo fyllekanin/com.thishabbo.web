@@ -70,10 +70,10 @@ class AccountController extends Controller {
         $total = DataHelper::getPage($notificationsSql->count('notificationId'));
         $notifications = $notificationsSql->take($this->perPage)->skip(DataHelper::getOffset($page))->get()->toArray();
 
-        $items = array_map(function ($notification) use ($user) {
-            return new NotificationView($notification, $user);
+        $items = array_map(function ($notification) {
+            return new NotificationView($notification);
         }, Iterables::filter($notifications, function ($notification) use ($user, $notificationService) {
-            return $notificationService->isNotificationValid($notification->contentId, $notification->type);
+            return $notificationService->isNotificationValid($notification->contentId, $notification->type, $user);
         }));
 
         return response()->json([

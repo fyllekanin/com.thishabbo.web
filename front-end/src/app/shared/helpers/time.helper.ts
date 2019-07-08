@@ -88,7 +88,7 @@ export class TimeHelper {
     }
 
     static getTimeOffsetInHours (): number {
-        return this.getTimeOffset() / 60;
+        return Math.floor(this.getTimeOffset() / 60);
     }
 
     static getHours (): Array<Hour> {
@@ -110,6 +110,9 @@ export class TimeHelper {
      */
     static getLongDate (time: number): string {
         const date = new Date(time * 1000);
+        if (date.getFullYear() === 1970) {
+            return 'Never';
+        }
 
         const day = date.getDate();
         const year = date.getFullYear();
@@ -124,6 +127,9 @@ export class TimeHelper {
      */
     static getLongDateWithTime (time: number): string {
         const date = new Date(time * 1000);
+        if (date.getFullYear() === 1970) {
+            return 'Never';
+        }
 
         const timeOfDay = this.getTimeIncludingTimeOfDay(date);
         return `${TimeHelper.getLongDate(time)} - ${timeOfDay}`;

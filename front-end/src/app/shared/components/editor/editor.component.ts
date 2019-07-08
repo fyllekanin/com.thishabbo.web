@@ -29,6 +29,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
     private _content: string;
     private _emojis: Array<BBcodeModel> = [];
     private _haveLoaded = false;
+    private _keyUpTimer;
 
     @ViewChild('editor', {static: false}) editorEle;
     @Input() title = 'Editor';
@@ -123,18 +124,21 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
             return;
         }
         this._editorInstance.keybind('keyup', e => {
-            this.onKeyUp.emit(this.getEditorValue());
-            if (e.altKey && e.keyCode === 83) {
-                e.preventDefault();
-                const callbacks = this._editorActions.filter(button => button.saveCallback);
-                if (callbacks.length > 0) {
-                    callbacks.forEach(button => {
-                        button.saveCallback();
-                    });
-                } else {
-                    this.onSave.emit();
+            clearTimeout(this._keyUpTimer);
+            setTimeout(() => {
+                this.onKeyUp.emit(this.getEditorValue());
+                if (e.altKey && e.keyCode === 83) {
+                    e.preventDefault();
+                    const callbacks = this._editorActions.filter(button => button.saveCallback);
+                    if (callbacks.length > 0) {
+                        callbacks.forEach(button => {
+                            button.saveCallback();
+                        });
+                    } else {
+                        this.onSave.emit();
+                    }
                 }
-            }
+            }, 200);
         });
     }
 }

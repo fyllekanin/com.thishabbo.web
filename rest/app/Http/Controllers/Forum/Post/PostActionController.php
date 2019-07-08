@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Forum\Post;
 
 use App\EloquentModels\Forum\Post;
 use App\EloquentModels\Forum\PostLike;
+use App\Factories\Notification\NotificationFactory;
 use App\Helpers\ConfigHelper;
 use App\Helpers\PermissionHelper;
 use App\Http\Controllers\Controller;
@@ -62,6 +63,7 @@ class PostActionController extends Controller {
             'userId' => $user->userId
         ]);
 
+        NotificationFactory::newLikePost($post->userId, $user->userId, $post->postId);
         Logger::user($user->userId, $request->ip(), Action::LIKED_POST, [
             'thread' => $post->thread->title,
             'threadId' => $post->threadId,

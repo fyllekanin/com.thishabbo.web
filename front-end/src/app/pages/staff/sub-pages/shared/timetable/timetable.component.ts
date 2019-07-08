@@ -149,9 +149,9 @@ export class TimetableComponent extends Page implements OnDestroy {
             booking: {
                 day: convertedDay,
                 hour: convertedHour,
-                nickname: res.nickname,
-                eventId: res.eventId,
-                link: res.link
+                nickname: res ? res.nickname : null,
+                eventId: res ? res.eventId : null,
+                link: res ? res.link : null
             }
         })
             .subscribe(response => {

@@ -37,7 +37,7 @@ import { StatsBoxModel } from 'shared/app-views/stats-boxes/stats-boxes.model';
 export class ThreadComponent extends Page implements OnDestroy {
     private _threadPage: ThreadPage = new ThreadPage();
     private _isToolsVisible = false;
-    private _multiquoted: Array<PostModel> = new Array<PostModel>();
+    private _multiQuotedPosts: Array<PostModel> = new Array<PostModel>();
 
     @ViewChild('editor', {static: false}) editor: EditorComponent;
 
@@ -96,7 +96,11 @@ export class ThreadComponent extends Page implements OnDestroy {
                 break;
             case ThreadActions.POST_CLOSE:
             case ThreadActions.POST_OPEN:
-                this.doPost(true);
+                this._dialogService.confirm({
+                    title: 'Are you sure?',
+                    content: `Are you sure you wanna ${this._threadPage.isOpen ? 'close' : 'open'} this thread also?`,
+                    callback: () => this.doPost(true)
+                });
                 break;
             case ThreadActions.POST:
                 this.doPost(false);
@@ -129,23 +133,22 @@ export class ThreadComponent extends Page implements OnDestroy {
     onQuotePost (content: string): void {
         const editorValue = this.editor.getEditorValue();
 
-        let multiquoteString = '';
-        this._multiquoted.forEach(post => {
-            multiquoteString += `[quotepost=${post.postId}]Originally Posted by [b]${post.user.nickname}[/b]
-${post.content}[/quotepost]\n\r`;
-        });
+        const quotes = this._multiQuotedPosts.reduce((prev, curr) => {
+            return prev + `[quotepost=${curr.postId}]Originally Posted by [b]${curr.user.nickname}[/b]
+${curr.content}[/quotepost]\n\r`;
+        }, '');
         this.editor.content = editorValue.length > 0 ?
-            `${editorValue}${multiquoteString}${content}` : `${multiquoteString}${content}`;
+            `${editorValue}${quotes}${content}` : `${quotes}${content}`;
         this.onKeyUp(this.editor.getEditorValue());
         this.scrollToEditor();
     }
 
     onMultiQuotePost (post: PostModel): void {
-        this._multiquoted.push(post);
-    }
-
-    onUnMultiQuotePost(post: PostModel): void {
-        this._multiquoted.splice(this._multiquoted.indexOf(post));
+        if (this._multiQuotedPosts.findIndex(item => item.postId === post.postId) > -1) {
+            this._multiQuotedPosts = this._multiQuotedPosts.filter(item => item.postId !== post.postId);
+        } else {
+            this._multiQuotedPosts.push(post);
+        }
     }
 
     getPostTitle (post: PostModel, index: number): string {
@@ -232,6 +235,7 @@ ${post.content}[/quotepost]\n\r`;
     }
 
     private doPost (toggleThread: boolean): void {
+
         const threadId = this._threadPage ? this._threadPage.threadId : 0;
         const content = this.editor ? this.editor.getEditorValue() : '';
 
