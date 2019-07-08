@@ -15,7 +15,6 @@ export class ThreadViewComponent implements NotificationView {
 
     @Output()
     onClick = new EventEmitter<number>();
-    isAvatarFailing = false;
 
     constructor (private _router: Router) {
     }

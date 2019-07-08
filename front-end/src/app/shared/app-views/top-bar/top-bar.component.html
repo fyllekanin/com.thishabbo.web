@@ -28,7 +28,7 @@
                 <div class="notification dropdown">
                     <div class="notification-counter" *ngIf="notifications.length">{{ notifications.length }}</div>
                     <em class="fa fa-bell" [ngClass]="notifications.length ? 'new' : ''"></em>
-                    <div class="dropdown-content notification-size">
+                    <div class="dropdown-content notification-size" style="display: block;">
                         <div class="notification-top">
                             <strong>Notifications</strong>
                             <div class="pull-right">

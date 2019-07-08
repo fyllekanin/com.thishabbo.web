@@ -1,9 +1,6 @@
 <em class="fas fa-times readOnly"></em>
 
-<img *ngIf="!isAvatarFailing" class="picture" [src]="imagePath" (error)="isAvatarFailing = true;"/>
-<div class="picture fallback" *ngIf="isAvatarFailing">
-    <em class="fa fa-user"></em>
-</div>
+<div class="picture" [style.background-image]="'url(' + imagePath + ')'"></div>
 <div class="description">
     {{user.nickname}} just posted a thread in: <br/>
     <strong>{{categoryTitle}}!</strong>
