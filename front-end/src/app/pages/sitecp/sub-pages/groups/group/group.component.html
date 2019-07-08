@@ -303,13 +303,6 @@
                 </div>
                 <div>
                     <label class="checkbox-container">
-                        Access to view IP on Radio Requests
-                        <input type="checkbox" [(ngModel)]="staffPermissions.canSeeIpOnRequests">
-                        <span class="checkmark"></span>
-                    </label>
-                </div>
-                <div>
-                    <label class="checkbox-container">
                         Access to override DJ Says without being on air
                         <input type="checkbox" [(ngModel)]="staffPermissions.canOverrideDjSays">
                         <span class="checkmark"></span>
@@ -329,19 +322,6 @@
                         <span class="checkmark"></span>
                     </label>
                 </div>
-                <div>
-                    <label class="checkbox-container">
-                        Access to manage Current Listeners
-                        <span tooltip="Tick this to grant access to view IP & relative user information."
-                              class="checkbox-info">
-                                <em class="fas fa-question-circle"></em>
-                            </span>
-                        <input type="checkbox" [(ngModel)]="staffPermissions.canSeeListeners">
-                        <span class="checkmark"></span>
-                    </label>
-                </div>
-            </div>
-            <div class="cell small-6">
                 <label>Events</label>
                 <div>
                     <label class="checkbox-container">
@@ -364,6 +344,8 @@
                         <span class="checkmark"></span>
                     </label>
                 </div>
+            </div>
+            <div class="cell small-6">
                 <label>Management Events & Radio</label>
                 <div>
                     <label class="checkbox-container">
@@ -390,6 +372,25 @@
                     <label class="checkbox-container">
                         Access to Add & Remove Event Types
                         <input type="checkbox" [(ngModel)]="staffPermissions.canManageEvents">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <label>Administration Events & Radio</label>
+                <div>
+                    <label class="checkbox-container">
+                        Access to manage Current Listeners
+                        <span tooltip="Tick this to grant access to view IP & relative user information."
+                              class="checkbox-info">
+                                <em class="fas fa-question-circle"></em>
+                            </span>
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canSeeListeners">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to view IP on Radio Requests
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canSeeIpOnRequests">
                         <span class="checkmark"></span>
                     </label>
                 </div>
