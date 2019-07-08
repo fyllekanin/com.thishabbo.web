@@ -100,10 +100,10 @@ class NotificationController extends Controller {
             ->where('userId', $user->userId)
             ->get()->toArray();
 
-        return array_map(function ($notification) use ($user) {
-            return new NotificationView($notification, $user);
+        return array_map(function ($notification) {
+            return new NotificationView($notification);
         }, Iterables::filter($notifications, function ($notification) use ($user) {
-            return $this->notificationService->isNotificationValid($notification->contentId, $notification->type);
+            return $this->notificationService->isNotificationValid($notification->contentId, $notification->type, $user);
         }));
     }
 }

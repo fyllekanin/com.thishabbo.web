@@ -6,7 +6,7 @@ use App\EloquentModels\User\VisitorMessage;
 use App\Helpers\DataHelper;
 use App\Helpers\UserHelper;
 
-class VisitorMessageView {
+class VisitorMessageView extends AbstractView {
     public $user;
     public $page;
     public $host;

@@ -15,7 +15,8 @@ export enum NotificationTypes {
     INFRACTION_GIVE = 6,
     INFRACTION_DELETED = 7,
     FOLLOWED = 8,
-    VISITOR_MESSAGE = 9
+    VISITOR_MESSAGE = 9,
+    LIKE_POST = 10
 }
 
 export class NotificationModel<T> {
@@ -30,7 +31,7 @@ export class NotificationModel<T> {
     @primitive()
     isRead: boolean;
 
-    constructor(source: Partial<NotificationModel<any>>) {
+    constructor (source: Partial<NotificationModel<any>>) {
         ClassHelper.assign(this, source);
         switch (this.type) {
             case NotificationTypes.BADGE:
@@ -42,6 +43,7 @@ export class NotificationModel<T> {
             case NotificationTypes.QUOTE:
             case NotificationTypes.MENTION:
             case NotificationTypes.THREAD_SUBSCRIPTION:
+            case NotificationTypes.LIKE_POST:
                 this._item = new ThreadView(source.item);
                 break;
             case NotificationTypes.INFRACTION_GIVE:
@@ -57,11 +59,11 @@ export class NotificationModel<T> {
         }
     }
 
-    get item(): T {
+    get item (): T {
         return this._item;
     }
 
-    set item(_value) {
+    set item (_value) {
         // Intentionally Empty
     }
 }
