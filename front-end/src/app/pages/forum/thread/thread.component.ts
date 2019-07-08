@@ -157,7 +157,7 @@ ${curr.content}[/quotepost]\n\r`;
         if (!post.isApproved) {
             title += ' | unapproved';
         }
-        return `#${(this._threadPage.page * 10) + (index + 1)} - ${title}`;
+        return `#${(this._threadPage.page > 1 ? this._threadPage.page * 10 : 0) + (index + 1)} - ${title}`;
     }
 
     onTabClick (action: number): void {
