@@ -1,0 +1,1 @@
+{"topic":"Small error in reporting VM","type":"Bug","body":"Didn't pass points service to ThreadCrudController"}

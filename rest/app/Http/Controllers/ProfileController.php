@@ -233,7 +233,7 @@ class ProfileController extends Controller {
 
         $threadSkeleton = VisitorMessageReportView::of($user, $visitorMessage, $message);
         $reportCategories = Category::isReportCategory()->get();
-        $threadController = new ThreadCrudController($forumService, $validatorService);
+        $threadController = new ThreadCrudController($forumService, $validatorService, $pointsService);
 
         foreach ($reportCategories as $category) {
             $threadSkeleton->categoryId = $category->categoryId;
