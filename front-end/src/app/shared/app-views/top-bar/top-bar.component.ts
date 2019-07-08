@@ -31,7 +31,6 @@ export class TopBarComponent {
         private _routerStateService: RouterStateService,
         private _continuesInformationService: ContinuesInformationService,
         private _notificationService: NotificationService,
-        private _routerStateService: RouterStateService,
         breadcrumbService: BreadcrumbService
     ) {
         breadcrumbService.onBreadcrumb.subscribe(breadcrumb => {
