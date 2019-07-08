@@ -1,0 +1,1 @@
+{"topic":"Fixed bug with 'TH' link on mobile nav","type":"Bug","body":"The 'TH' link was leading to access denied page instead of custom homepage. Fixed this."}

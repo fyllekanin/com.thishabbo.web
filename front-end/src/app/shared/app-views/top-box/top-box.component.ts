@@ -107,6 +107,11 @@ export class TopBoxComponent {
         return Math.floor((currentXp / XP_PER_LEVEL) * 100);
     }
 
+    get homePage(): string {
+        return this.isLoggedIn && this._authService.authUser.homePage ?
+            this._authService.authUser.homePage : 'home';
+    }
+
     private setUser (): void {
         this._user = this._authService.isLoggedIn() ? this._authService.authUser : null;
     }
