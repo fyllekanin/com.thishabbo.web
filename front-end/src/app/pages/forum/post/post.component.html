@@ -47,6 +47,10 @@
                 <div *ngIf="canPost" (click)="quotePost()" tooltip="Quote">
                     <em class="fa fa-quote-right"></em>
                 </div>
+                <div *ngIf="canPost" tooltip="Multi Quote">
+                    <em (click)="unMultiQuotePost()" *ngIf="multiquoted" class="fas fa-comment-alt"></em>
+                    <em (click)="multiQuotePost()" *ngIf="!multiquoted" class="far fa-comment-alt"></em>
+                </div>
             </div>
         </div>
     </div>
