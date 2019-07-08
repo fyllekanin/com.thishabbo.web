@@ -29,7 +29,7 @@ export class PostModel {
         ClassHelper.assign(this, source);
         this.parsedContent = (this.parsedContent || '')
             .replace(new RegExp(/(([^\]>"=])https?:\/\/(www\.)?[a-zA-Z0-9]+\.[a-zA-Z]+[^\s\]<\[]+)/g), match => {
-                return `<a href="${trim(match)}" target="_blank">${match}</a>a>`;
+                return `<a href="${match.trim()}" target="_blank">${match}</a>a>`;
             });
     }
 }
