@@ -93,7 +93,7 @@ export class ProfileComponent extends Page implements OnDestroy {
     }
 
     getSlotText (slot: TimetableModel) {
-        if(!slot) {
+        if (!slot) {
             return null;
         }
 
