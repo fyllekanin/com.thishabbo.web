@@ -88,7 +88,7 @@ export class TimeHelper {
     }
 
     static getTimeOffsetInHours (): number {
-        return this.getTimeOffset() / 60;
+        return Math.floor(this.getTimeOffset() / 60);
     }
 
     static getHours (): Array<Hour> {

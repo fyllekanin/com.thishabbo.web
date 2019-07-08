@@ -96,7 +96,11 @@ export class ThreadComponent extends Page implements OnDestroy {
                 break;
             case ThreadActions.POST_CLOSE:
             case ThreadActions.POST_OPEN:
-                this.doPost(true);
+                this._dialogService.confirm({
+                    title: 'Are you sure?',
+                    content: `Are you sure you wanna ${this._threadPage.isOpen ? 'close' : 'open'} this thread also?`,
+                    callback: () => this.doPost(true)
+                });
                 break;
             case ThreadActions.POST:
                 this.doPost(false);
@@ -231,6 +235,7 @@ ${curr.content}[/quotepost]\n\r`;
     }
 
     private doPost (toggleThread: boolean): void {
+
         const threadId = this._threadPage ? this._threadPage.threadId : 0;
         const content = this.editor ? this.editor.getEditorValue() : '';
 
