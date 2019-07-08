@@ -101,7 +101,6 @@ class NotificationController extends Controller {
             ->where('createdAt', '>=', $createdAfter)
             ->where('readAt', '<', 1)
             ->where('userId', $user->userId)
-            ->orderBy('createdAt', 'ASC')
             ->get()
             ->toArray();
 

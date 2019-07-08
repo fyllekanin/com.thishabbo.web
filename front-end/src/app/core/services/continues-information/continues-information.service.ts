@@ -6,6 +6,7 @@ import { UserService } from 'core/services/user/user.service';
 import { AuthService } from 'core/services/auth/auth.service';
 import { ContinuesInformationModel, PING_TYPES } from 'core/services/continues-information/continues-information.model';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+import { ArrayHelper } from 'shared/helpers/array.helper';
 
 @Injectable()
 export class ContinuesInformationService implements Resolve<void> {
@@ -149,6 +150,7 @@ export class ContinuesInformationService implements Resolve<void> {
         this._notifications = this._notifications.filter(notification => newNotificationIds.indexOf(notification.notificationId) > -1);
         this._notifications = this._notifications.concat(newNotifications);
 
+        this._notifications.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'notificationId'));
         this._notificationsSubject.next(this._notifications);
         this._lastNotificationCheck = Math.floor(new Date().getTime() / 1000);
     }
