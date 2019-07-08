@@ -8,14 +8,10 @@ export class UserHelper {
             color: ${colors && colors.length > 0 ? colors[0] : '#999999'};`;
 
         if (colors && colors.length > 1) {
-            let current = 0;
-            const stops = 1 / colors.length;
-            style += 'background: -webkit-gradient(linear, left top, right top,';
-
-            while (current < 1) {
-                style += `color-stop(${current}, ${colors[current / stops]})${current + stops === 1 ? '' : ','}`;
-                current += stops;
-            }
+            const stops = (Math.floor(100 / colors.length) / 100);
+            style += colors.reduce((prev, curr, index) => {
+                return prev + `color-stop(${stops * (index + 1)}, ${curr})${(index + 1) === colors.length ? '' : ','}`;
+            }, 'background: -webkit-gradient(linear, left top, right top,');
             style += '); -webkit-background-clip: text; -webkit-text-fill-color: transparent;';
         }
 
@@ -29,14 +25,12 @@ export class UserHelper {
             background: url(/assets/images/bargradient.png), ${colors && colors.length > 0 ? colors[0] : '#c1c1c1'};`;
 
         if (colors && colors.length > 1) {
-            let current = 0;
-            const stops = 1 / colors.length;
-            style += 'background: url(/assets/images/bargradient.png), -webkit-gradient(linear, left top, right top,';
+            const stops = (Math.floor(100 / colors.length) / 100);
+            style += colors.reduce((prev, curr, index) => {
+                return prev + `color-stop(${stops * (index + 1)}, ${curr})${(index + 1) === colors.length ? '' : ','}`;
+            }, 'background: url(/assets/images/bargradient.png), -webkit-gradient(linear, left top, right top,');
+            style += '); -webkit-background-clip: text; -webkit-text-fill-color: transparent;';
 
-            while (current < 1) {
-                style += `color-stop(${current}, ${colors[current / stops]})${current + stops === 1 ? '' : ','}`;
-                current += stops;
-            }
             style += ');';
         }
 
