@@ -72,7 +72,7 @@ export class ProfileVisitorMessage {
     @primitive()
     visitorMessageId: number;
     @objectOf(SlimUser)
-    user: SlimUser;
+    user = new SlimUser();
     @primitive()
     content: string;
     @primitive()
