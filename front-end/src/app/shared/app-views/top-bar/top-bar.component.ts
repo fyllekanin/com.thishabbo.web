@@ -7,7 +7,6 @@ import { Component } from '@angular/core';
 import { NotificationModel, NotificationTypes } from 'shared/app-views/top-bar/top-bar.model';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 import { RouterStateService } from 'core/services/router/router-state.service';
-import { ArrayHelper } from 'shared/helpers/array.helper';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 
@@ -118,7 +117,6 @@ export class TopBarComponent {
     }
 
     private onNotifications (notifications: Array<NotificationModel<any>>): void {
-        notifications.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'createdAt'));
         this._notifications = notifications.filter(this.isNotification);
         this._messages = notifications.filter(this.isMessage);
         this.updateTitle();

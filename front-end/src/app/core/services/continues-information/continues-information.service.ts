@@ -3,7 +3,6 @@ import { HttpService } from 'core/services/http/http.service';
 import { Injectable, NgZone } from '@angular/core';
 import { NotificationModel } from 'shared/app-views/top-bar/top-bar.model';
 import { UserService } from 'core/services/user/user.service';
-import { ArrayHelper } from 'shared/helpers/array.helper';
 import { AuthService } from 'core/services/auth/auth.service';
 import { ContinuesInformationModel, PING_TYPES } from 'core/services/continues-information/continues-information.model';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
@@ -145,11 +144,10 @@ export class ContinuesInformationService implements Resolve<void> {
 
     private onNotificationData (res: Array<any>): void {
         const newNotifications = res.map(item => new NotificationModel(item));
-        const newNotificationIds = newNotifications.map(noti => noti.notificationId);
+        const newNotificationIds = newNotifications.map(notification => notification.notificationId);
 
-        this._notifications = this._notifications.filter(noti => newNotificationIds.indexOf(noti.notificationId) > -1);
+        this._notifications = this._notifications.filter(notification => newNotificationIds.indexOf(notification.notificationId) > -1);
         this._notifications = this._notifications.concat(newNotifications);
-        this._notifications.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'notificationId'));
 
         this._notificationsSubject.next(this._notifications);
         this._lastNotificationCheck = Math.floor(new Date().getTime() / 1000);
