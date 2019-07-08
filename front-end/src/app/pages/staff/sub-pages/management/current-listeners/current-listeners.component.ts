@@ -43,10 +43,16 @@ export class CurrentListenersComponent extends Page implements OnDestroy {
             rows: this._data.map(item => new TableRow({
                 cells: [
                     new TableCell({title: item.user ? item.user.nickname : 'Unknown'}),
-                    new TableCell({title: `${item.time / 3600} hours`})
+                    new TableCell({title: this.getListeningTime(item.time)})
                 ]
             }))
         });
+    }
+
+    private getListeningTime (time: number): string {
+        const hours = `${Math.floor(time / 3600)}`;
+        const minutes = `${Math.floor(time / 60)}`;
+        return `${hours} hours and ${minutes} min(s)`;
     }
 
     private getTableHeaders (): Array<TableHeader> {
