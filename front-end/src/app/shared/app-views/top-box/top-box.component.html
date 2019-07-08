@@ -13,7 +13,7 @@
         </div>
     </div>
     <div class="menu-item" *ngFor="let item of routes">
-        <a *ngIf="!item.isLogout" [routerLink]="[item.url]" (click)="closeMenu()"><em [ngClass]="item.icon"></em>
+        <a *ngIf="!item.isLogout" [routerLink]="[(item.isHomePage ? homePage : item.url)]" (click)="closeMenu()"><em [ngClass]="item.icon"></em>
             {{item.label}}</a>
         <a *ngIf="item.isLogout" (click)="closeMenu(); logout()"><em [ngClass]="item.icon"></em> {{item.label}}</a>
         <em *ngIf="item.haveChildren" class="fas expand"
