@@ -37,8 +37,12 @@ export class RadioService {
             this._notificationService.sendErrorNotification('You need to be logged in when liking a DJ');
             return;
         }
-        this._httpService.post('radio/like', null).subscribe(() => {
-            this._notificationService.sendInfoNotification('You liked the DJ!');
+        this._httpService.post('radio/like', null).subscribe((res: { isTimeout: boolean, timeLeft: number }) => {
+            if (!res.isTimeout) {
+                this._notificationService.sendInfoNotification('You liked the DJ!');
+            } else {
+                this._notificationService.sendErrorNotification(`You need to wait ${Math.floor(res.timeLeft / 60)} min(s) to like!`);
+            }
         }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 

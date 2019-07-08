@@ -83,11 +83,11 @@ export class LogsComponent extends Page implements OnDestroy {
     }
 
     onAction (action: Action): void {
-        const item = this._data.items.find(item => item.logId === Number(action.rowId));
+        const logItem = this._data.items.find(item => item.logId === Number(action.rowId));
         this._dialogService.openDialog({
-            title: `${item.user.nickname} ${item.action} - Details`,
+            title: `${logItem.user.nickname} ${logItem.action} - Details`,
             component: this._componentResolver.resolveComponentFactory(LogDetailsComponent),
-            data: item,
+            data: logItem,
             buttons: [
                 new DialogCloseButton('Close')
             ]

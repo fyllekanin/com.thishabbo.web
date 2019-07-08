@@ -17,7 +17,7 @@ export class LogDetailsComponent extends InnerDialogComponent {
         this._data = data;
     }
 
-    get data (): Object {
+    get data (): object {
         return this._data.data;
     }
 

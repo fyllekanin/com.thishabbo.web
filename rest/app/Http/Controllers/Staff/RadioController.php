@@ -176,17 +176,24 @@ class RadioController extends Controller {
         Condition::precondition(!$djUser, 404, 'The current DJ could not be found');
         Condition::precondition($user->userId == 0, 400, 'You need to be logged in to like a DJ');
         Condition::precondition($user->userId == $djUser->userId, 400, 'You can not like yourself');
-        $haveLikedWithInLimit = LogUser::where('userId', $user->userId)
-                ->where('action', Action::getAction(Action::LIKED_DJ))
-                ->where('createdAt', '>', $nowMinus30Min)
-                ->count('logId') > 0;
-        Condition::precondition($haveLikedWithInLimit, 400, 'You are trying to like the DJ too fast!');
+        $lastLike = LogUser::where('userId', $user->userId)
+            ->where('action', Action::getAction(Action::LIKED_DJ))
+            ->orderBy('createdAt', 'DESC')
+            ->first();
+        if ($lastLike && $lastLike->createdAt->timestamp > $nowMinus30Min) {
+            return response()->json([
+                'isTimeout' => true,
+                'timeLeft' => $lastLike->createdAt->timestamp - $nowMinus30Min
+            ]);
+        }
 
         $djUser->likes++;
         $djUser->save();
 
         Logger::user($user->userId, $request->ip(), Action::LIKED_DJ, [], $djUser->userId);
-        return response()->json();
+        return response()->json([
+            'isTimeout' => false
+        ]);
     }
 
     /**

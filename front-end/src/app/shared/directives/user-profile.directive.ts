@@ -27,7 +27,7 @@ export class UserProfileDirective {
 
     @Input()
     set info (info: IUserProfile) {
-        this._info = info;
+        this._info = info || {};
         this.setImage();
     }
 
