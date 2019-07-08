@@ -108,7 +108,8 @@ export class TopBoxComponent {
     }
 
     get homePage(): string {
-        return this.isLoggedIn ? this._authService.authUser.homePage || 'home' : 'home';
+        return this.isLoggedIn && this._authService.authUser.homePage ?
+            this._authService.authUser.homePage : 'home';
     }
 
     private setUser (): void {
