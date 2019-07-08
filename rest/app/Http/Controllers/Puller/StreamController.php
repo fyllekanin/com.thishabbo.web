@@ -58,7 +58,7 @@ class StreamController extends Controller {
         return response()->json([
             'radio' => $this->getRadioStats(),
             'events' => $this->getEventsStats(),
-            'unreadNotifications' => $this->getAmountOfUnreadNotifications($user->userId),
+            'unreadNotifications' => $this->getAmountOfUnreadNotifications($user),
             'siteMessages' => $siteMessages,
             'activities' => $activities,
             'footer' => [
@@ -128,18 +128,18 @@ class StreamController extends Controller {
     }
 
     /**
-     * @param $userId
+     * @param $user
      *
      * @return int
      */
-    private function getAmountOfUnreadNotifications($userId) {
+    private function getAmountOfUnreadNotifications($user) {
         return DB::table('notifications')
             ->where('readAt', '<', 1)
-            ->where('userId', $userId)
+            ->where('userId', $user->userId)
             ->get(['contentId', 'type'])
-            ->filter(function ($notification) use ($userId) {
+            ->filter(function ($notification) use ($user) {
                 return $this->notificationService
-                    ->isNotificationValid($notification->contentId, $notification->type);
+                    ->isNotificationValid($notification->contentId, $notification->type, $user);
             })->count('notificationId');
     }
 

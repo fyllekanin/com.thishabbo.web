@@ -159,3 +159,15 @@ input {
     cursor: default;
     pointer-events: none;
 }
+
+.notification-counter {
+    background-color: #cb6363;
+    color: #fff;
+    font-size: 8px;
+    font-weight: 700;
+    position: absolute;
+    padding: .5px 3px;
+    border-radius: 2px;
+    top: 3px;
+    left: -10px;
+}

@@ -50,10 +50,13 @@ export class VisitorMessageViewComponent implements NotificationView {
         return this._notification.item.user;
     }
 
-    @HostListener('click')
-    click (): void {
+    @HostListener('click', ['$event.target'])
+    click (event): void {
         this.onClick.next(this._notification.notificationId);
-        this._router.navigateByUrl(`/user/profile/${this.host.nickname}/page/${this._notification.item.page}?` +
-            `visitorMessageId=${this._notification.item.subjectId}&scrollTo=vmId-${this._notification.item.subjectId}`);
+
+        if (event && event.className.indexOf('readOnly') === -1) {
+            this._router.navigateByUrl(`/user/profile/${this.host.nickname}/page/${this._notification.item.page}?` +
+                `visitorMessageId=${this._notification.item.subjectId}&scrollTo=vmId-${this._notification.item.subjectId}`);
+        }
     }
 }

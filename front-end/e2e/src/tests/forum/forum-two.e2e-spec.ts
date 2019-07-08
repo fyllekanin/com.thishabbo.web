@@ -33,7 +33,7 @@ describe('Forum #2', () => {
         CommonUtil.clickCheckbox('Free');
 
         InputUtil.fillEditor(NewThreadPage.getThreadEditor(), 'This is a quest article! Now follow the guide and get the badge!');
-        NavigationUtil.clickTab('Save');
+        NavigationUtil.clickTab('Create');
 
         expect(NewThreadPage.getTag('Available').isPresent()).toBeTruthy();
         expect(NewThreadPage.getTag('Free').isPresent()).toBeTruthy();

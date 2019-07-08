@@ -30,7 +30,7 @@ class BBcodeController extends Controller {
             'name' => $bbcode->name,
             'example' => Value::objectProperty($bbcode, 'example', null),
             'pattern' => $bbcode->pattern,
-            'replace' => Value::objectProperty($bbcode, 'reeplace', null),
+            'replace' => Value::objectProperty($bbcode, 'replace', null),
             'content' => Value::objectProperty($bbcode, 'content', null),
             'isEmoji' => $bbcode->isEmoji
         ]);

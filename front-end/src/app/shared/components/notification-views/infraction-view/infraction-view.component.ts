@@ -36,7 +36,7 @@ export class InfractionViewComponent implements NotificationView {
         return this._notification.createdAt;
     }
 
-    @HostListener('click')
+    @HostListener('click', ['$event.target'])
     click (): void {
         this.onClick.next(this._notification.notificationId);
     }

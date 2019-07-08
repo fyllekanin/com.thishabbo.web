@@ -41,9 +41,11 @@ export class FollowerViewComponent implements NotificationView {
         return this._notification.item.isApproved;
     }
 
-    @HostListener('click')
-    click (): void {
+    @HostListener('click', ['$event.target'])
+    click (event): void {
         this.onClick.next(this._notification.notificationId);
-        this._router.navigateByUrl(`/user/profile/${this.user.nickname}`);
+        if (event && event.className.indexOf('readOnly') === -1) {
+            this._router.navigateByUrl(`/user/profile/${this.user.nickname}`);
+        }
     }
 }

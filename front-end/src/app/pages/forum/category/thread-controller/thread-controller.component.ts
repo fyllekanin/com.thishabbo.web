@@ -25,7 +25,7 @@ import { FORUM_BREADCRUM_ITEM } from '../../forum.constants';
 })
 
 export class ThreadControllerComponent extends Page implements OnDestroy {
-    private _threadSkeleton: ThreadSkeleton = new ThreadSkeleton();
+    private _data: ThreadSkeleton = new ThreadSkeleton();
 
     @ViewChild('editor', {static: true}) editor: EditorComponent;
     @ViewChild('file', {static: false}) fileInput;
@@ -42,7 +42,7 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
         activatedRoute: ActivatedRoute
     ) {
         super(elementRef);
-        this.addSubscription(activatedRoute.data, this.onSkeleton.bind(this));
+        this.addSubscription(activatedRoute.data, this.onData.bind(this));
     }
 
     ngOnDestroy (): void {
@@ -50,7 +50,7 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
     }
 
     removeAnswer (answerId: string): void {
-        this._threadSkeleton.poll.answers = this._threadSkeleton.poll.answers
+        this._data.poll.answers = this._data.poll.answers
             .filter(answer => answer.id !== answerId);
     }
 
@@ -58,9 +58,9 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
         switch (action) {
             case ThreadControllerActions.BACK:
                 if (this.isNew) {
-                    this._router.navigateByUrl(`/forum/category/${this._threadSkeleton.categoryId}/page/1`);
+                    this._router.navigateByUrl(`/forum/category/${this._data.categoryId}/page/1`);
                 } else {
-                    this._router.navigateByUrl(`/forum/thread/${this._threadSkeleton.threadId}/page/1`);
+                    this._router.navigateByUrl(`/forum/thread/${this._data.threadId}/page/1`);
                 }
                 break;
             case ThreadControllerActions.SAVE:
@@ -76,15 +76,15 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
     }
 
     haveTag (tag: string): boolean {
-        return this._threadSkeleton.tags.indexOf(tag) > -1;
+        return this._data.tags.indexOf(tag) > -1;
     }
 
     toggleTag ($event, tag: string): void {
         $event.preventDefault();
         if (this.haveTag(tag)) {
-            this._threadSkeleton.tags = this._threadSkeleton.tags.filter(t => t !== tag);
+            this._data.tags = this._data.tags.filter(t => t !== tag);
         } else {
-            this._threadSkeleton.tags.push(tag);
+            this._data.tags.push(tag);
         }
     }
 
@@ -93,32 +93,32 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
             title: this.thread.title,
             content: content,
             type: AutoSave.THREAD,
-            contentId: this._threadSkeleton.categoryId
+            contentId: this._data.categoryId
         });
     }
 
     onPollToggle (): void {
-        this._threadSkeleton.poll = !this._threadSkeleton.poll ? new ThreadPoll({isNew: true}) : null;
-        if (this._threadSkeleton.poll) {
+        this._data.poll = !this._data.poll ? new ThreadPoll({isNew: true}) : null;
+        if (this._data.poll) {
             this.addThreadAnswer();
             this.addThreadAnswer();
         }
     }
 
     addThreadAnswer (): void {
-        this._threadSkeleton.poll.answers.push(new ThreadAnswer());
+        this._data.poll.answers.push(new ThreadAnswer());
     }
 
     saveThread (): void {
-        this._threadSkeleton.content = this.editor.getEditorValue();
+        this._data.content = this.editor.getEditorValue();
         const form = new FormData();
-        if (this._threadSkeleton.template !== CategoryTemplates.DEFAULT && this.fileInput.nativeElement.files) {
+        if (this._data.template !== CategoryTemplates.DEFAULT && this.fileInput.nativeElement.files) {
             const file = this.fileInput.nativeElement.files[0];
             form.append('thumbnail', file);
         }
-        form.append('thread', JSON.stringify(this._threadSkeleton));
+        form.append('thread', JSON.stringify(this._data));
         if (!this.isNew) {
-            this._httpClient.post(`rest/api/forum/thread/update/${this._threadSkeleton.threadId}`, form)
+            this._httpClient.post(`rest/api/forum/thread/update/${this._data.threadId}`, form)
                 .subscribe(res => {
                     this.onSuccessUpdate(res);
                 }, error => {
@@ -135,71 +135,71 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
     }
 
     get thread (): ThreadSkeleton {
-        return this._threadSkeleton;
+        return this._data;
     }
 
     get pageTitle (): string {
         return !this.isNew ?
-            `Edit Thread: ${this._threadSkeleton.title}` :
-            `Creating New Thread: ${this._threadSkeleton.title}`;
+            `Edit Thread: ${this._data.title}` :
+            `Creating New Thread: ${this._data.title}`;
     }
 
     get badge (): string {
-        return this._threadSkeleton.badge;
+        return this._data.badge;
     }
 
     set badge (value: string) {
-        this._threadSkeleton.badge = value;
+        this._data.badge = value;
     }
 
     get isNew (): boolean {
-        return !Boolean(this._threadSkeleton && this._threadSkeleton.createdAt);
+        return !Boolean(this._data && this._data.createdAt);
     }
 
     get shouldHaveThumbnail (): boolean {
-        return CategoryTemplates.DEFAULT !== this._threadSkeleton.template;
+        return CategoryTemplates.DEFAULT !== this._data.template;
     }
 
     get isQuestTemplate (): boolean {
-        return CategoryTemplates.QUEST === this._threadSkeleton.template;
+        return CategoryTemplates.QUEST === this._data.template;
     }
 
     get badgeUrl (): string {
-        return this._threadSkeleton.badge ? `https://habboo-a.akamaihd.net/c_images/album1584/${this._threadSkeleton.badge}.gif` : '';
+        return this._data.badge ? `https://habboo-a.akamaihd.net/c_images/album1584/${this._data.badge}.gif` : '';
     }
 
     get canHavePoll (): boolean {
-        return this._threadSkeleton.canHavePoll;
+        return this._data.canHavePoll;
     }
 
     get badeHaveError (): boolean {
-        return Boolean(this._threadSkeleton.badge && this._threadSkeleton.badge.match(new RegExp(/[^A-Za-z0-9]+/)));
+        return Boolean(this._data.badge && this._data.badge.match(new RegExp(/[^A-Za-z0-9]+/)));
     }
 
     private onOpenAutoSave (): void {
-        const autoSave = AutoSaveHelper.get(AutoSave.THREAD, this._threadSkeleton.categoryId);
+        const autoSave = AutoSaveHelper.get(AutoSave.THREAD, this._data.categoryId);
         this.thread.title = autoSave.title;
         this.editor.content = autoSave.content;
-        AutoSaveHelper.remove(AutoSave.THREAD, this._threadSkeleton.categoryId);
+        AutoSaveHelper.remove(AutoSave.THREAD, this._data.categoryId);
         this.tabs = this.tabs.filter(button => button.value !== ThreadControllerActions.AUTO_SAVE);
     }
 
-    private onSkeleton (data: { data: ThreadSkeleton }): void {
-        this._threadSkeleton = data.data;
+    private onData (data: { data: ThreadSkeleton }): void {
+        this._data = data.data;
         this.setPrefix();
         this.setBreadcrumb();
 
         this.tabs = [
-            new TitleTab({title: 'Save', value: ThreadControllerActions.SAVE}),
+            new TitleTab({title: data.data.createdAt ? 'Save' : 'Create', value: ThreadControllerActions.SAVE}),
             new TitleTab({title: 'Back', value: ThreadControllerActions.BACK}),
             new TitleTab({title: 'Toggle Poll', value: ThreadControllerActions.TOGGLE_POLL})
         ];
 
-        if (this._threadSkeleton.poll || !this._threadSkeleton.canHavePoll) {
+        if (this._data.poll || !this._data.canHavePoll) {
             this.tabs = this.tabs.filter(button => button.value !== ThreadControllerActions.TOGGLE_POLL);
         }
 
-        if (AutoSaveHelper.exists(AutoSave.THREAD, this._threadSkeleton.categoryId)) {
+        if (AutoSaveHelper.exists(AutoSave.THREAD, this._data.categoryId)) {
             this.tabs.push(new TitleTab({
                 title: 'Open Auto-Save',
                 value: ThreadControllerActions.AUTO_SAVE
@@ -209,14 +209,14 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
 
     private setBreadcrumb (): void {
         const threadCrumb = this.isNew ? [] : [new BreadcrumbItem({
-            title: this._threadSkeleton.title,
-            url: `/forum/thread/${this._threadSkeleton.threadId}/page/1`
+            title: this._data.title,
+            url: `/forum/thread/${this._data.threadId}/page/1`
         })];
 
-        this._threadSkeleton.parents.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'displayOrder'));
+        this._data.parents.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'displayOrder'));
         this._breadcrumbService.breadcrumb = new Breadcrumb({
-            current: this._threadSkeleton.threadId > 0 ? 'Editing' : 'New',
-            items: [FORUM_BREADCRUM_ITEM].concat(this._threadSkeleton.parents.map(parent => new BreadcrumbItem({
+            current: this._data.threadId > 0 ? 'Editing' : 'New',
+            items: [FORUM_BREADCRUM_ITEM].concat(this._data.parents.map(parent => new BreadcrumbItem({
                 title: parent.title,
                 url: `/forum/category/${parent.categoryId}/page/1`
             })).concat(threadCrumb))
@@ -224,14 +224,14 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
     }
 
     private setPrefix (): void {
-        this._threadSkeleton.prefixId =
-            this._threadSkeleton.prefixes.findIndex(prefix => prefix.prefixId === this._threadSkeleton.prefixId) > -1 ?
-                this._threadSkeleton.prefixId : 0;
+        this._data.prefixId =
+            this._data.prefixes.findIndex(prefix => prefix.prefixId === this._data.prefixId) > -1 ?
+                this._data.prefixId : 0;
     }
 
     private onSuccessUpdate (res): void {
-        this._threadSkeleton = new ThreadSkeleton(res);
-        AutoSaveHelper.remove(AutoSave.THREAD, this._threadSkeleton.categoryId);
+        this._data = new ThreadSkeleton(res);
+        AutoSaveHelper.remove(AutoSave.THREAD, this._data.categoryId);
         this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success!',
             message: 'Thread is updated!'
@@ -239,8 +239,8 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
     }
 
     private onSuccessCreate (data: { threadId: number }): void {
-        AutoSaveHelper.remove(AutoSave.THREAD, this._threadSkeleton.categoryId);
-        if (this._threadSkeleton.contentApproval) {
+        AutoSaveHelper.remove(AutoSave.THREAD, this._data.categoryId);
+        if (this._data.contentApproval) {
             this._dialogService.openDialog({
                 title: 'You thread is currently awaiting approval!',
                 content: `Your thread is placed under the category of "unapproved" threads,
@@ -249,7 +249,7 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
                     new DialogButton({
                         title: 'Ok', callback: () => {
                             this._dialogService.closeDialog();
-                            this._router.navigateByUrl(`/forum/category/${this._threadSkeleton.categoryId}/page/1`);
+                            this._router.navigateByUrl(`/forum/category/${this._data.categoryId}/page/1`);
                         }
                     })
                 ]

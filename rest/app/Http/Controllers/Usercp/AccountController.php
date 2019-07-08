@@ -70,10 +70,10 @@ class AccountController extends Controller {
         $total = DataHelper::getPage($notificationsSql->count('notificationId'));
         $notifications = $notificationsSql->take($this->perPage)->skip(DataHelper::getOffset($page))->get()->toArray();
 
-        $items = array_map(function ($notification) use ($user) {
-            return new NotificationView($notification, $user);
+        $items = array_map(function ($notification) {
+            return new NotificationView($notification);
         }, Iterables::filter($notifications, function ($notification) use ($user, $notificationService) {
-            return $notificationService->isNotificationValid($notification->contentId, $notification->type);
+            return $notificationService->isNotificationValid($notification->contentId, $notification->type, $user);
         }));
 
         return response()->json([
@@ -390,7 +390,7 @@ class AccountController extends Controller {
         $position = Iterables::find((array)ConfigHelper::getNamePositionOptions(), function ($position) use ($namePosition) {
             return $position == $namePosition->position;
         });
-        Condition::precondition($namePosition->isAvailable && $position != null, 400, 'Not a valid position');
+        Condition::precondition($namePosition->isAvailable && !is_numeric($position), 400, 'Not a valid position');
 
         $userData = UserHelper::getUserDataOrCreate($user->userId);
         $userData->postBit = $this->convertPostBitOptions($data->information);

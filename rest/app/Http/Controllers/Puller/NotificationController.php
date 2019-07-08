@@ -33,7 +33,8 @@ class NotificationController extends Controller {
             Type::getType(Type::INFRACTION_GIVEN),
             Type::getType(Type::MENTION),
             Type::getType(Type::QUOTE),
-            Type::getType(Type::THREAD_SUBSCRIPTION)
+            Type::getType(Type::THREAD_SUBSCRIPTION),
+            Type::getType(Type::LIKE_POST)
         ];
 
         DB::table('notifications')
@@ -98,12 +99,13 @@ class NotificationController extends Controller {
             ->where('createdAt', '>=', $createdAfter)
             ->where('readAt', '<', 1)
             ->where('userId', $user->userId)
+            ->orderBy('createdAt', 'ASC')
             ->get()->toArray();
 
-        return array_map(function ($notification) use ($user) {
-            return new NotificationView($notification, $user);
+        return array_map(function ($notification) {
+            return new NotificationView($notification);
         }, Iterables::filter($notifications, function ($notification) use ($user) {
-            return $this->notificationService->isNotificationValid($notification->contentId, $notification->type);
+            return $this->notificationService->isNotificationValid($notification->contentId, $notification->type, $user);
         }));
     }
 }

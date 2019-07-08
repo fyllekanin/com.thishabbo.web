@@ -52,4 +52,9 @@ class Type {
         'type' => 9,
         'description' => 'When a user have posted a new visitor message'
     ];
+
+    const LIKE_POST = [
+        'type' => 10,
+        'description' => 'When a user have liked a post'
+    ];
 }

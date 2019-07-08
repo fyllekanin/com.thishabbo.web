@@ -1,3 +1,8 @@
+:host {
+    position: relative;
+    display: block;
+}
+
 .picture {
     -webkit-box-shadow: rgba(0, 0, 0, .1) 0 3px 5px;
     box-shadow: rgba(0, 0, 0, .1) 0 3px 5px;
@@ -28,4 +33,12 @@
 .time {
     bottom: 0;
     left: 0;
+}
+
+.readOnly {
+    position: absolute;
+    padding: 10px;
+    top: -5px;
+    right: -5px;
+    z-index: 4;
 }
