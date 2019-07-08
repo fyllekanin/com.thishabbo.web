@@ -197,15 +197,15 @@
                     <app-title [title]="'Relations'"></app-title>
                     <app-content>
                         <div class="gray-content-wrapper" *ngIf="relations.love">
-                            <img src="/assets/images/heart.png"/>
+                            <img src="/assets/images/heart.png" class="relationImg"/>
                             <app-user-link [user]="relations.love"></app-user-link>
                         </div>
                         <div class="gray-content-wrapper" *ngIf="relations.like">
-                            <img src="/assets/images/smile.png"/>
+                            <img src="/assets/images/smile.png" class="relationImg"/>
                             <app-user-link [user]="relations.like"></app-user-link>
                         </div>
                         <div class="gray-content-wrapper" *ngIf="relations.hate">
-                            <img src="/assets/images/skull.png"/>
+                            <img src="/assets/images/skull.png" class="relationImg"/>
                             <app-user-link [user]="relations.hate"></app-user-link>
                         </div>
                     </app-content>
