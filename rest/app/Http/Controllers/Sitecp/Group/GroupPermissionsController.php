@@ -54,10 +54,22 @@ class GroupPermissionsController extends Controller {
         $permissions = [
             (object)['name' => 'Can access', 'value' => $this->forumPermissions->canRead],
             (object)['name' => 'Can post', 'value' => $this->forumPermissions->canPost],
+            (object)['name' => 'Can post in others threads', 'value' => $this->forumPermissions->canPostInOthersThreads],
             (object)['name' => 'Can create threads', 'value' => $this->forumPermissions->canCreateThreads],
             (object)['name' => 'Can view threads', 'value' => $this->forumPermissions->canViewThreadContent],
             (object)['name' => 'Can view others threads', 'value' => $this->forumPermissions->canViewOthersThreads],
-            (object)['name' => 'Can open/close own thread', 'value' => $this->forumPermissions->canOpenCloseOwnThread]
+            (object)['name' => 'Can open/close own thread', 'value' => $this->forumPermissions->canOpenCloseOwnThread],
+
+            (object)['name' => 'Can edit others threads/posts', 'value' => $this->forumPermissions->canEditOthersPosts],
+            (object)['name' => 'Can move threads', 'value' => $this->forumPermissions->canMoveThreads],
+            (object)['name' => 'Can open/close threads', 'value' => $this->forumPermissions->canCloseOpenThread],
+            (object)['name' => 'Can approve/unapprove threads', 'value' => $this->forumPermissions->canApproveThreads],
+            (object)['name' => 'Can approve/unapprove posts', 'value' => $this->forumPermissions->canApprovePosts],
+            (object)['name' => 'Can merge posts', 'value' => $this->forumPermissions->canMergePosts],
+            (object)['name' => 'Can change owner', 'value' => $this->forumPermissions->canChangeOwner],
+            (object)['name' => 'Can sticky threads', 'value' => $this->forumPermissions->canStickyThread],
+            (object)['name' => 'Can delete threads/posts', 'value' => $this->forumPermissions->canDeletePosts],
+            (object)['name' => 'Can manage polls', 'value' => $this->forumPermissions->canManagePolls],
         ];
 
         $permission = ForumPermission::where('categoryId', $categoryId)->where('groupId', $groupId)->value('permissions');

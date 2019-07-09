@@ -57,7 +57,7 @@ class NotifyThreadSubscribers implements ShouldQueue {
                 'userId' => $userId,
                 'senderId' => $this->userId,
                 'type' => $subscribeType,
-                'contentId' => $this->threadId,
+                'contentId' => $this->postId,
                 'createdAt' => time()
             ];
         }

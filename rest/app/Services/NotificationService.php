@@ -20,8 +20,8 @@ class NotificationService {
             case Type::getType(Type::MENTION):
             case Type::getType(Type::QUOTE):
             case Type::getType(Type::LIKE_POST):
-                return $this->isPostNotificationValid($contentId, $user);
             case Type::getType(Type::THREAD_SUBSCRIPTION):
+                return $this->isPostNotificationValid($contentId, $user);
             case Type::getType(Type::CATEGORY_SUBSCRIPTION):
                 return $this->isThreadNotificationValid($contentId, $user);
             default:
