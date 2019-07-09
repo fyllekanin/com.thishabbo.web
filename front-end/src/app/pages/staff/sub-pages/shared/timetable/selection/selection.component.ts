@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { InnerDialogComponent } from 'shared/app-views/dialog/dialog.model';
 import { EventType } from '../../../events/types/types.model';
-import { TimetableModel } from '../timetable.model';
+import { TimetableModel } from 'shared/models/timetable.model';
 
 @Component({
     selector: 'app-staff-radio-timetable-selection',

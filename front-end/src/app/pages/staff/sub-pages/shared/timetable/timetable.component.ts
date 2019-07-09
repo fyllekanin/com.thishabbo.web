@@ -17,7 +17,7 @@ import {
     STAFFCP_RADIO_BREADCRUM_ITEM
 } from '../../../staff.constants';
 import { SelectionComponent } from './selection/selection.component';
-import { TimetablePage, TimetableModel } from 'shared/models/timetable.model';
+import { TimetableModel, TimetablePage } from 'shared/models/timetable.model';
 import { TimetableHelper } from 'shared/helpers/timetable.helper';
 
 @Component({
@@ -72,7 +72,8 @@ export class TimetableComponent extends Page implements OnDestroy {
         const timetable = this.getTimetableByHour(hour);
         const linkIcon = this._type === 'events' ? (timetable.link ? '<i class="far fa-thumbs-up"></i>' :
             '<i class="far fa-thumbs-down"></i>') : '';
-        return `${timetable.user.nickname}<br /> (${this.getEventName(timetable)}) ${linkIcon}`;
+        const postFix = this.isEvents() ? `<br /> (${this.getEventName(timetable)}) ${linkIcon}` : '';
+        return `${timetable.user.nickname}${postFix}`;
     }
 
     clickHour (hour: number): void {

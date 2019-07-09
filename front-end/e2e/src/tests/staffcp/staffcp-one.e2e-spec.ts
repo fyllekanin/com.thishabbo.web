@@ -30,6 +30,7 @@ describe('StaffCP #1', () => {
 
         browser.sleep(1000);
         CommonUtil.click(StaffCpPage.getTimetableElement('12PM - Tovven'));
+        NavigationUtil.clickButton('Unbook');
         NavigationUtil.clickButton('Yes');
         expect(StaffCpPage.getTimetableElement('12PM - Book').isPresent()).toBeTruthy();
     });
@@ -45,6 +46,7 @@ describe('StaffCP #1', () => {
 
         browser.sleep(1000);
         CommonUtil.click(StaffCpPage.getTimetableElement('12PM - Tovven (Dangerzone)'));
+        NavigationUtil.clickButton('Unbook');
         NavigationUtil.clickButton('Yes');
 
         browser.sleep(1000);
