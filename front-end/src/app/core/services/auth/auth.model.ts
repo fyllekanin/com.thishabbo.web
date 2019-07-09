@@ -64,6 +64,8 @@ export class SlimUser {
     userId: number;
     @primitive()
     nickname: string;
+    @primitive()
+    habbo: string;
     @arrayOf(String)
     nameColor: Array<string> = [];
     @primitive()

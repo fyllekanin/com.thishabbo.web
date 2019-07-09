@@ -25,7 +25,7 @@ import { EditorComponent } from 'shared/components/editor/editor.component';
 import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
 import { UserHelper } from 'shared/helpers/user.helper';
-import { TimetableModel } from 'app/pages/staff/sub-pages/shared/timetable/timetable.model';
+import { TimetableModel } from 'shared/models/timetable.model';
 
 @Component({
     selector: 'app-user-profile',

@@ -9,7 +9,6 @@ import { eventsRoutes } from './events.routes';
 import { TableModule } from 'shared/components/table/table.module';
 import { PaginationModule } from 'shared/app-views/pagination/pagination.module';
 import { TimetableModule } from '../shared/timetable/timetable.module';
-import { TimetableResolver } from '../shared/timetable/timetable.resolver';
 import { TypesReolver } from './services/types.resolver';
 import { TypeComponent } from './types/type/type.component';
 import { TypesComponent } from './types/types.component';
@@ -20,6 +19,7 @@ import { BanOnSightComponent } from './ban-on-sight/ban-on-sight.component';
 import { BanOnSightResolver } from './services/ban-on-sight.resolver';
 import { SayResolver } from './services/say.resolver';
 import { SayComponent } from './say/say.component';
+import { TimetableResolver } from 'shared/services/timetable.resolver';
 
 @NgModule({
     imports: [

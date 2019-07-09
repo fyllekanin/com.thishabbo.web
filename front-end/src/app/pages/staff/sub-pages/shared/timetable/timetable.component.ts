@@ -16,8 +16,9 @@ import {
     STAFFCP_EVENTS_BREADCRUM_ITEM,
     STAFFCP_RADIO_BREADCRUM_ITEM
 } from '../../../staff.constants';
-import { TimetableModel, TimetablePage } from './timetable.model';
 import { SelectionComponent } from './selection/selection.component';
+import { TimetablePage, TimetableModel } from 'shared/models/timetable.model';
+import { TimetableHelper } from 'shared/helpers/timetable.helper';
 
 @Component({
     selector: 'app-staff-timetable',
@@ -71,7 +72,7 @@ export class TimetableComponent extends Page implements OnDestroy {
         const timetable = this.getTimetableByHour(hour);
         const linkIcon = this._type === 'events' ? (timetable.link ? '<i class="far fa-thumbs-up"></i>' :
             '<i class="far fa-thumbs-down"></i>') : '';
-        return `${timetable.user.nickname}<br /> ${this.getEventName(timetable)} ${linkIcon}`;
+        return `${timetable.user.nickname}<br /> (${this.getEventName(timetable)}) ${linkIcon}`;
     }
 
     clickHour (hour: number): void {
@@ -84,13 +85,7 @@ export class TimetableComponent extends Page implements OnDestroy {
     }
 
     isCurrentSlot (hour: number): boolean {
-        const selectedDay = this.getCurrentDay();
-        const date = new Date();
-        if (date.getDay() !== selectedDay) {
-            return false;
-        }
-
-        return hour === date.getHours();
+        return TimetableHelper.isCurrentSlot(this.getCurrentDay(), hour);
     }
 
     get timezones (): Array<string> {
@@ -98,10 +93,7 @@ export class TimetableComponent extends Page implements OnDestroy {
     }
 
     private getEventName (timetable: TimetableModel): string {
-        if (!timetable.isPerm) {
-            return this.isEvents() ? `(${timetable.event ? timetable.event.name : 'unknown'})` : '';
-        }
-        return `(${timetable.name})`;
+        return TimetableHelper.getEventName(timetable, this.isEvents());
     }
 
     private book (hour: number): void {
@@ -216,19 +208,12 @@ export class TimetableComponent extends Page implements OnDestroy {
     }
 
     private getTimetableByHour (hour: number): TimetableModel {
-        const currentDay = this.getCurrentDay();
-        return this._data.timetable
-            .filter(timetable => timetable.day === currentDay)
-            .find(timetable => timetable.hour === hour);
+        return TimetableHelper.getSlot(this._data.timetable, this.getCurrentDay(), hour);
     }
 
     private onData (data: { data: TimetablePage }): void {
         this._data = data.data;
-        this._data.timetable.forEach(booking => {
-            const convertedHour = booking.hour + TimeHelper.getTimeOffsetInHours();
-            booking.day = TimeHelper.getConvertedDay(convertedHour, booking.day);
-            booking.hour = TimeHelper.getConvertedHour(convertedHour);
-        });
+        this._data.timetable = TimetableHelper.correctTimeones(this._data.timetable);
         const offset = TimeHelper.getTimeOffsetInHours();
         this._data.timezones.forEach((region, index) => {
             const newIndex = TimeHelper.getConvertedHour(index + offset);

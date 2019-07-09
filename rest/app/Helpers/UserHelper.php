@@ -35,7 +35,7 @@ class UserHelper {
         $slimUser = User::where('users.userId', $userId)
             ->leftJoin('groups', 'groups.groupId', '=', 'users.displayGroupId')
             ->leftJoin('userdata', 'userdata.userId', '=', 'users.userId')
-            ->select('users.userId', 'users.nickname', 'users.createdAt',
+            ->select('users.userId', 'users.nickname', 'users.habbo', 'users.createdAt',
                 'users.displayGroupId', 'users.posts', 'users.likes', 'userdata.avatarUpdatedAt',
                 'userdata.nameColor AS customColor', 'groups.nameColor AS groupColor',
                 'userdata.iconId', 'userdata.iconPosition', 'userdata.effectId')->first();
@@ -80,6 +80,7 @@ class UserHelper {
         $user->userId = $userId;
         $user->nickname = $userObj->nickname;
         $user->userBars = self::getUserBars($userId);
+        $user->habbo = $userObj->habbo;
         $user->createdAt = $postBit->hideJoinDate ? null : $userObj->createdAt->timestamp;
         $user->posts = $postBit->hidePostCount ? null : $userObj->posts;
         $user->likes = $postBit->hideLikesCount ? null : $userObj->likes;

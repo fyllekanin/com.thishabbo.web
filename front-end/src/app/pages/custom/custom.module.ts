@@ -20,6 +20,9 @@ import { ContactComponent } from './contact/contact.component';
 import { JobComponent } from './job/job.component';
 import { InfoBoxModule } from 'shared/app-views/info-box/info-box.module';
 import { ReportBugComponent } from './report-bug/report-bug.component';
+import { TimetableComponent } from './timetable/timetable.component';
+import { TimetableResolver } from 'shared/services/timetable.resolver';
+import { UserLinkModule } from 'shared/components/user/user-link.module';
 
 @NgModule({
     imports: [
@@ -34,7 +37,8 @@ import { ReportBugComponent } from './report-bug/report-bug.component';
         SafeHtmlModule,
         SlimArticleModule,
         PaginationModule,
-        InfoBoxModule
+        InfoBoxModule,
+        UserLinkModule
     ],
     declarations: [
         CustomPageComponent,
@@ -42,11 +46,13 @@ import { ReportBugComponent } from './report-bug/report-bug.component';
         BadgeArticlesComponent,
         ContactComponent,
         JobComponent,
-        ReportBugComponent
+        ReportBugComponent,
+        TimetableComponent
     ],
     providers: [
         CustomPageResolver,
-        BadgeArticlesResolver
+        BadgeArticlesResolver,
+        TimetableResolver
     ],
     exports: [
         RouterModule
