@@ -122,15 +122,15 @@ export class ProfileAccolade {
 
     getStartLabel (): string {
         const date = new Date(this.start * 1000);
-        return `${TimeHelper.FULL_MONTHS[date.getMonth()]} ${date.getFullYear()}`;
+        return `${TimeHelper.ABBR_MONTHS[date.getMonth()]} ${date.getFullYear()}`;
     }
 
     getEndLabel (): string {
         if (!this.end) {
-            return 'Present';
+            return '';
         }
         const date = new Date(this.end * 1000);
-        return `${TimeHelper.FULL_MONTHS[date.getMonth()]} ${date.getFullYear()}`;
+        return `- ${TimeHelper.ABBR_MONTHS[date.getMonth()]} ${date.getFullYear()}`;
     }
 }
 
