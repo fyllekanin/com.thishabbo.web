@@ -4,8 +4,8 @@ import { TimeHelper } from './time.helper';
 export class TimetableHelper {
 
     static getSlot (timetable: Array<TimetableModel>, day: number, hour: number): TimetableModel {
-        return timetable.filter(timetable => timetable.day === day)
-            .find(timetable => timetable.hour === hour);
+        return timetable.filter(slot => slot.day === day)
+            .find(slot => slot.hour === hour);
     }
 
     static correctTimeones (timetable: Array<TimetableModel>): Array<TimetableModel> {
@@ -32,6 +32,4 @@ export class TimetableHelper {
 
         return hour === date.getHours();
     }
-
-
 }
