@@ -33,7 +33,7 @@
 .closed, .unapproved, .sticky {
     position: relative;
     top: -0.3rem;
-    margin-left: 0.5rem;
+    margin-right: 0.5rem;
     padding: 0.3rem 0.5rem;
     background-color: rgb(216, 106, 106);
     color: #fff;
