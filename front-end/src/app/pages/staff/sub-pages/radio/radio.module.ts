@@ -6,7 +6,6 @@ import { ContentModule } from 'shared/app-views/content/content.module';
 import { TitleModule } from 'shared/app-views/title/title.module';
 import { PageModule } from 'shared/page/page.module';
 import { TimetableModule } from '../shared/timetable/timetable.module';
-import { TimetableResolver } from '../shared/timetable/timetable.resolver';
 import { radioRoutes } from './radio.routes';
 import { RequestsComponent } from './requests/requests.component';
 import { RequestsResolver } from './services/requests.resolver';
@@ -21,6 +20,7 @@ import { PaginationModule } from 'shared/app-views/pagination/pagination.module'
 import { DjSaysComponent } from './dj-says/dj-says.component';
 import { DjSaysResolver } from './services/dj-says.resolver';
 import { BookingLogModule } from '../shared/booking-log/booking-log.module';
+import { TimetableResolver } from 'shared/services/timetable.resolver';
 
 @NgModule({
     imports: [

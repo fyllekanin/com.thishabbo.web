@@ -13,7 +13,6 @@ Route::get('/ping', 'PageController@getPing');
 
 Route::prefix('radio')->group(function () use ($permissions) {
     Route::group(['middleware' => PermissionHelper::getStaffMiddleware($permissions->canRadio)], function () use ($permissions) {
-        Route::get('/timetable', 'Staff\RadioController@getTimetable');
         Route::post('/timetable', 'Staff\RadioController@createBooking');
         Route::delete('/timetable/{timetableId}', 'Staff\RadioController@deleteBooking');
 
@@ -48,7 +47,6 @@ Route::prefix('radio')->group(function () use ($permissions) {
 
 Route::prefix('events')->group(function () use ($permissions) {
     Route::group(['middleware' => PermissionHelper::getStaffMiddleware($permissions->canEvent)], function () use ($permissions) {
-        Route::get('/timetable', 'Staff\EventsController@getTimetable');
         Route::post('/timetable', 'Staff\EventsController@createBooking');
 
         Route::delete('/timetable/{timetableId}', 'Staff\EventsController@deleteBooking');

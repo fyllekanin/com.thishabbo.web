@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { PageComponent } from 'shared/page/page.component';
 import { TimetableComponent } from '../shared/timetable/timetable.component';
-import { TimetableResolver } from '../shared/timetable/timetable.resolver';
 import { TypesReolver } from './services/types.resolver';
 import { TypesComponent } from './types/types.component';
 import { BookingLogComponent } from '../shared/booking-log/booking-log.component';
@@ -12,6 +11,7 @@ import { BanOnSightComponent } from './ban-on-sight/ban-on-sight.component';
 import { BanOnSightResolver } from './services/ban-on-sight.resolver';
 import { SayComponent } from './say/say.component';
 import { SayResolver } from './services/say.resolver';
+import { TimetableResolver } from 'shared/services/timetable.resolver';
 
 export const eventsRoutes: Routes = [
     {
