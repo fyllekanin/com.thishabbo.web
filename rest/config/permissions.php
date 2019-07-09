@@ -26,7 +26,8 @@ return [
         'canManageShop' => 2097152,
         'canPassPrivate' => 4194304,
         'canRemoveEssentials' => 8388608,
-        'canModerateVisitorMessage' => 16777216
+        'canModerateVisitorMessage' => 16777216,
+        'canViewStatistics' => 33554432
     ],
     'FORUM' => [
         'canRead' => 1,

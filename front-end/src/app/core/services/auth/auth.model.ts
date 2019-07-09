@@ -229,6 +229,8 @@ export class SitecpPermissions {
     canReadServerLogs: boolean;
     @primitive()
     canManageSubscriptions: boolean;
+    @primitive()
+    canViewStatistics: boolean;
 
     constructor (source?: Partial<SitecpPermissions>) {
         ClassHelper.assign(this, source);

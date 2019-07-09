@@ -275,6 +275,16 @@
                         <span class="checkmark"></span>
                     </label>
                 </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to statistics?
+                        <span tooltip="Tick this to grant access to view statistics." class="checkbox-info">
+                            <em class="fas fa-question-circle"></em>
+                        </span>
+                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canViewStatistics">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
             </div>
         </div>
     </div>

@@ -14,10 +14,10 @@ Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions
     Route::get('server-logs/{fileName}', 'Sitecp\LogsController@getServerLog');
 });
 
-Route::prefix('statistics')->group(function () {
-    Route::get('/users/{year}/{month}', 'Sitecp\Statistics\UserStatisticsController@getUsersLoggedIn');
-    Route::get('/posts/{year}/{month}', 'Sitecp\Statistics\ForumStatisticsController@getPosts');
-    Route::get('/threads/{year}/{month}', 'Sitecp\Statistics\ForumStatisticsController@getThreads');
+Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canViewStatistics)], function () {
+    Route::get('/statistics/users/{year}/{month}', 'Sitecp\Statistics\UserStatisticsController@getUsersLoggedIn');
+    Route::get('/statistics/posts/{year}/{month}', 'Sitecp\Statistics\ForumStatisticsController@getPosts');
+    Route::get('/statistics/threads/{year}/{month}', 'Sitecp\Statistics\ForumStatisticsController@getThreads');
 });
 
 Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canSeeLogs)], function () {

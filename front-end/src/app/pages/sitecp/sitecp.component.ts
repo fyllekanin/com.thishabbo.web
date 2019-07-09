@@ -203,15 +203,18 @@ export class SitecpComponent extends Page implements OnDestroy, OnInit {
                 items: [
                     new SideMenuItem({
                         title: 'View Logged In',
-                        link: `/sitecp/statistics/users/${new Date().getFullYear()}/${new Date().getMonth() + 1}`
+                        link: `/sitecp/statistics/users/${new Date().getFullYear()}/${new Date().getMonth() + 1}`,
+                        isApplicable: this._authService.sitecpPermissions.canViewStatistics
                     }),
                     new SideMenuItem({
                         title: 'View Posts',
-                        link: `/sitecp/statistics/posts/${new Date().getFullYear()}/${new Date().getMonth() + 1}`
+                        link: `/sitecp/statistics/posts/${new Date().getFullYear()}/${new Date().getMonth() + 1}`,
+                        isApplicable: this._authService.sitecpPermissions.canViewStatistics
                     }),
                     new SideMenuItem({
                         title: 'View Threads',
-                        link: `/sitecp/statistics/threads/${new Date().getFullYear()}/${new Date().getMonth() + 1}`
+                        link: `/sitecp/statistics/threads/${new Date().getFullYear()}/${new Date().getMonth() + 1}`,
+                        isApplicable: this._authService.sitecpPermissions.canViewStatistics
                     })
                 ]
             })
