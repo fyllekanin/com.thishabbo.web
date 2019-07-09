@@ -18,7 +18,7 @@ import {
     TableRow
 } from 'shared/components/table/table.model';
 import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
-import { CONFIGURABLE_ITEMS } from 'shared/constants/shop.constants';
+import { CONFIGURABLE_ITEMS, SHOP_ITEM_TYPES } from 'shared/constants/shop.constants';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { QueryParameters } from 'core/services/http/http.model';
 import { ItemsListService } from '../../services/items-list.service';
@@ -78,6 +78,9 @@ export class ItemsListComponent extends Page implements OnDestroy {
         switch (action.value) {
             case ShopItemListAction.EDIT:
                 this._router.navigateByUrl(`/sitecp/shop/items/${action.rowId}`);
+                break;
+            case ShopItemListAction.ITEM_USERS:
+                this._router.navigateByUrl(`/sitecp/shop/items/${action.rowId}/users`);
                 break;
             case ShopItemListAction.DELETE:
                 this._dialogService.confirm({
@@ -145,18 +148,39 @@ export class ItemsListComponent extends Page implements OnDestroy {
     }
 
     private getTableRows (): Array<TableRow> {
-        return this._data.items.map(item => new TableRow({
-            id: String(item.shopItemId),
-            cells: [
-                new TableCell({title: item.getResource(), innerHTML: true}),
-                new TableCell({title: item.title}),
-                new TableCell({title: ShopHelper.getTypeName(item.type)}),
-                new TableCell({title: ShopHelper.getRarityName(item.rarity)})
-            ],
-            actions: [
-                new TableAction({title: 'Edit', value: ShopItemListAction.EDIT}),
-                new TableAction({title: 'Delete', value: ShopItemListAction.DELETE})
-            ]
-        }));
+        return this._data.items.map(item => {
+            const actions = [
+                {
+                    title: 'Edit',
+                    value: ShopItemListAction.EDIT,
+                    condition: true
+                },
+                {
+                    title: 'Manage Users',
+                    value: ShopItemListAction.ITEM_USERS,
+                    condition: [
+                        SHOP_ITEM_TYPES.nameIcon.value,
+                        SHOP_ITEM_TYPES.nameEffect.value
+                    ].indexOf(item.type) > -1
+                },
+                {
+                    title: 'Delete',
+                    value: ShopItemListAction.DELETE,
+                    condition: true
+                }
+            ];
+
+            return new TableRow({
+                id: String(item.shopItemId),
+                cells: [
+                    new TableCell({title: item.getResource(), innerHTML: true}),
+                    new TableCell({title: item.title}),
+                    new TableCell({title: ShopHelper.getTypeName(item.type)}),
+                    new TableCell({title: ShopHelper.getRarityName(item.rarity)})
+                ],
+                actions: actions.filter(action => action.condition)
+                    .map(action => new TableAction(action))
+            });
+        });
     }
 }

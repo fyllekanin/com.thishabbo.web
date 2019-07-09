@@ -6,6 +6,11 @@ use App\EloquentModels\Models\UnixTimeModel;
 use App\Helpers\ConfigHelper;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * @property mixed userItemId
+ * @property mixed userId
+ * @property mixed createdAt
+ */
 class UserItem extends UnixTimeModel {
     private $itemTypes;
 

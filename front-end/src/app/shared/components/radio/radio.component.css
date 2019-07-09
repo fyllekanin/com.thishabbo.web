@@ -21,7 +21,7 @@
 
 .event-name {
     background: #f7f7f7;
-    padding: 3.9px;
+    padding: 5px;
     margin-bottom: 1px;
     font-size: 11px;
 }
@@ -125,15 +125,15 @@
 
 .blue-button {
     cursor: pointer;
-    background: #139bfb url(/assets/images/bargradient.png) !important;
+    background: #139bfb url(/assets/images/bargradient.png);
 }
 
 .green-button {
-    background: #79b554 url(/assets/images/bargradient.png) !important;
+    background: #79b554 url(/assets/images/bargradient.png);
 }
 
 .red-button {
-    background: #c37070 url(/assets/images/bargradient.png) !important;
+    background: #c37070 url(/assets/images/bargradient.png);
 }
 
 .song {

@@ -1609,4 +1609,23 @@ class Action {
         ],
         'log' => 'log_staff'
     ];
+
+    const GAVE_USER_ITEM = [
+        'id' => 191,
+        'description' => 'User gave another user an item',
+        'data' => [
+            'receiverId' => 'User ID of the receiver'
+        ],
+        'log' => 'log_sitecp'
+    ];
+
+    const DELETED_USER_ITEM = [
+        'id' => 192,
+        'description' => 'User deleted another user an item',
+        'data' => [
+            'shopItemId' => 'ID of shop item',
+            'userId' => 'ID of user that lost the item'
+        ],
+        'log' => 'log_sitecp'
+    ];
 }

@@ -12,6 +12,8 @@ import { LootBoxesListComponent } from './loot-boxes/loot-boxes-list/loot-boxes-
 import { LootBoxesListService } from './services/loot-boxes-list.service';
 import { LootBoxComponent } from './loot-boxes/loot-box/loot-box.component';
 import { LootBoxService } from './services/loot-box.service';
+import { ItemUsersComponent } from './items/item-users/item-users.component';
+import { ItemUsersResolver } from './services/item-users.resolver';
 
 export const shopRoutes: Routes = [
     {
@@ -34,6 +36,13 @@ export const shopRoutes: Routes = [
                 component: ItemComponent,
                 resolve: {
                     data: ItemService
+                }
+            },
+            {
+                path: 'items/:itemId/users',
+                component: ItemUsersComponent,
+                resolve: {
+                    data: ItemUsersResolver
                 }
             },
             {

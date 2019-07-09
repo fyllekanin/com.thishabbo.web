@@ -1,0 +1,15 @@
+<app-title [title]="'Manage users for item'" [tabs]="tabs" (onTabClick)="onAdd()"></app-title>
+<app-content>
+    <div class="grid-container fluid">
+        <div class="grid-x">
+            <div class="cell small-12">
+                <em>New users to get the item, write their name and click add</em>
+            </div>
+            <div class="cell small-12">
+                <input [(ngModel)]="nickname" type="text" placeholder="New User"/>
+            </div>
+        </div>
+    </div>
+</app-content>
+
+<app-table [config]="tableConfig" (onAction)="onAction($event)"></app-table>

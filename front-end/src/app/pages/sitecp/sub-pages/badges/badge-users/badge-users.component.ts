@@ -29,7 +29,8 @@ export class BadgeUsersComponent extends Page implements OnDestroy {
     tableConfig: TableConfig;
     nickname: string;
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Add'})
+        new TitleTab({title: 'Add'}),
+        new TitleTab({title: 'Back', link: BADGE_LIST_BREADCRUMB_ITEM.url})
     ];
 
     constructor (

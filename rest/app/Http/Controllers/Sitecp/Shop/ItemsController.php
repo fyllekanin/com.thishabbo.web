@@ -6,7 +6,9 @@ use App\EloquentModels\Badge;
 use App\EloquentModels\Shop\ShopItem;
 use App\EloquentModels\Shop\Subscription;
 use App\EloquentModels\User\User;
+use App\EloquentModels\User\UserItem;
 use App\Helpers\DataHelper;
+use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Impl\Sitecp\Shop\ItemsControllerImpl;
 use App\Logger;
@@ -22,6 +24,71 @@ class ItemsController extends Controller {
     public function __construct(ItemsControllerImpl $impl) {
         parent::__construct();
         $this->myImpl = $impl;
+    }
+
+    public function deleteUserItem(Request $request, $userItemId) {
+        $user = $request->get('auth');
+        $userItem = UserItem::find($userItemId);
+        Condition::precondition(!$userItem, 404, 'No user item with that ID');
+
+        $userData = UserHelper::getUserDataOrCreate($userItem->userId);
+        $userData->iconId = $userData->iconId == $userItem->itemId ? null : $userData->iconId;
+        $userData->effectId = $userData->effectId == $userItem->itemId ? null : $userData->effectId;
+        $userData->save();
+
+        $logData = [
+            'shopItemId' => $userItem->itemId,
+            'userId' => $userItem->userId
+        ];
+        $userItem->delete();
+
+        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_USER_ITEM, $logData);
+        return response()->json();
+    }
+
+    public function createUserItem(Request $request, $itemId) {
+        $user = $request->get('auth');
+        $nickname = $request->input('nickname');
+        $shopItem = ShopItem::find($itemId);
+        Condition::precondition(!$shopItem, 404, 'No shop item with that ID');
+        Condition::precondition(!$this->myImpl->canItemTypeByGiven($shopItem->type), 400,
+            'This item can not be given from here!');
+
+        $receiver = User::withNickname($nickname)->first();
+        Condition::precondition(!$receiver, 404, 'No user with that nickname');
+
+        $userItem = new UserItem([
+            'type' => $shopItem->type,
+            'userId' => $receiver->userId,
+            'itemId' => $shopItem->shopItemId,
+        ]);
+        $userItem->save();
+
+        Logger::sitecp($user->userId, $request->ip(), Action::GAVE_USER_ITEM, [
+            'receiverId' => $receiver->userId
+        ], $shopItem->shopItemId);
+        return response()->json([
+            'userItemId' => $userItem->userItemId,
+            'user' => UserHelper::getSlimUser($userItem->userId),
+            'createdAt' => $userItem->createdAt->timestamp
+        ]);
+    }
+
+    public function getItemUsers($itemId) {
+        $shopItem = ShopItem::find($itemId);
+        Condition::precondition(!$shopItem, 404, 'No shop item with that ID');
+        $userItems = UserItem::where('itemId', $itemId)->get();
+
+        return response()->json([
+            'itemId' => $shopItem->shopItemId,
+            'items' => $userItems->map(function ($userItem) {
+                return [
+                    'userItemId' => $userItem->userItemId,
+                    'user' => UserHelper::getSlimUser($userItem->userId),
+                    'createdAt' => $userItem->createdAt->timestamp
+                ];
+            })
+        ]);
     }
 
     public function getBadges(Request $request, $page) {

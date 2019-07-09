@@ -16,5 +16,6 @@ export class ShopListPage {
 
 export enum ShopItemListAction {
     EDIT,
-    DELETE
+    DELETE,
+    ITEM_USERS
 }

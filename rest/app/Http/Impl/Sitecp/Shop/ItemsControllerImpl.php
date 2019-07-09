@@ -13,9 +13,13 @@ use Illuminate\Http\Request;
 
 class ItemsControllerImpl {
 
-    public function giveCreatorItem($item) {
+    public function canItemTypeByGiven($type) {
         $types = ConfigHelper::getTypesConfig();
-        if (!in_array($item->type, [$types->nameIcon, $types->nameEffect])) {
+        return in_array($type, [$types->nameIcon, $types->nameEffect]);
+    }
+
+    public function giveCreatorItem($item) {
+        if (!$this->canItemTypeByGiven($item->type)) {
             return;
         }
 

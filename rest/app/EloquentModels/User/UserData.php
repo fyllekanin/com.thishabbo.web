@@ -24,6 +24,8 @@ use Illuminate\Database\Eloquent\Builder;
  * @property false|string activeBadges
  * @property mixed barColor
  * @property mixed customFields
+ * @property mixed effectId
+ * @property mixed iconId
  */
 class UserData extends UnixTimeModel {
     protected $table = 'userdata';
