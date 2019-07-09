@@ -70,48 +70,13 @@
                     <app-title [title]="'Accolades'"></app-title>
                     <app-content>
                         <div class="gray-content-wrapper" *ngFor="let accolade of accolades">
-                            <span class="accolade-role" [style.color]="accolade.color"><em [ngClass]="accolade.icon"></em> {{accolade.role}}
+                            <span class="accolade-role" [style.color]="accolade.color"><em
+                                    [ngClass]="accolade.icon"></em> {{accolade.role}}
                                 »</span>
-                            {{accolade.getStartLabel()}} - {{accolade.getEndLabel()}}
+                            {{accolade.getStartLabel()}}{{accolade.end ? accolade.getEndLabel() : ''}}
                         </div>
                     </app-content>
                 </div>
-
-                <!--<app-title [title]="'All Time Stats'"></app-title>
-                <app-content>
-                    <div class="gray-content-wrapper"><em class="fas fa-trophy gold-trophy"></em><strong> Best
-                        Season:</strong> 3rd
-                        (Season
-                        11)
-                    </div>
-                    <div class="gray-content-wrapper"><em class="fas fa-trophy gold-trophy"></em><strong> Participated
-                        in:</strong>
-                        8 Seasons
-                    </div>
-                    <div class="gray-content-wrapper"><em class="fas fa-trophy gold-trophy"></em><strong> Most
-                        Events:</strong> 20
-                        (Season
-                        11)
-                    </div>
-                    <div class="gray-content-wrapper"><em class="fas fa-trophy gold-trophy"></em><strong> Most Radio
-                        Slots:</strong>
-                        20
-                        (Season 8)
-                    </div>
-                    <div class="gray-content-wrapper"><em class="fas fa-trophy gold-trophy"></em><strong> Most Radio
-                        Slots:</strong>
-                        20
-                        (Season 8)
-                    </div>
-                    <div class="gray-content-wrapper"><em class="fas fa-trophy gold-trophy"></em><strong> Most Posts in
-                        Season:</strong> 9
-                        (203)
-                    </div>
-                    <div class="gray-content-wrapper"><em class="fas fa-trophy gold-trophy"></em><strong> Most Threads
-                        in Season:</strong> 3
-                        (23)
-                    </div>
-                </app-content>-->
             </div>
             <div class="cell small-12 medium-6">
                 <app-editor #editor [title]="'Visitor Messages'" [slim]="true" [buttons]="sendButton"
@@ -200,15 +165,21 @@
                     <app-content>
                         <div class="symbol-content-wrapper" *ngIf="relations.love">
                             <div class="content-symbol"><em class="fas fa-heart"></em></div>
-                            <div class="content-text"><app-user-link [user]="relations.love"></app-user-link></div>
+                            <div class="content-text">
+                                <app-user-link [user]="relations.love"></app-user-link>
+                            </div>
                         </div>
                         <div class="symbol-content-wrapper" *ngIf="relations.like">
                             <div class="content-symbol"><em class="fas fa-smile"></em></div>
-                            <div class="content-text"><app-user-link [user]="relations.like"></app-user-link></div>
+                            <div class="content-text">
+                                <app-user-link [user]="relations.like"></app-user-link>
+                            </div>
                         </div>
                         <div class="symbol-content-wrapper" *ngIf="relations.hate">
                             <div class="content-symbol"><em class="fas fa-skull"></em></div>
-                            <div class="content-text"><app-user-link [user]="relations.hate"></app-user-link></div>
+                            <div class="content-text">
+                                <app-user-link [user]="relations.hate"></app-user-link>
+                            </div>
                         </div>
                     </app-content>
                 </div>

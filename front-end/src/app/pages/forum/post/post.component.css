@@ -65,6 +65,10 @@
     .post-avatar {
         width: 100%;
     }
+
+    .post-content-container {
+        width: 98%;
+    }
 }
 
 .post-badge {

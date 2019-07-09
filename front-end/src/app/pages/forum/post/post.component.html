@@ -14,10 +14,12 @@
             <div [style.display]="!isInEditMode ? 'block' : 'none'" class="post-content"
                  [innerHTML]="parsedContent | safeHtml"></div>
             <div class="post-likers" *ngIf="haveLikers">
-                <span *ngFor="let item of visibleLikers; let first = first;"><span
-                        *ngIf="!first">, </span><app-user-link [user]="item"></app-user-link> </span>
+                <span *ngFor="let item of visibleLikers; let first = first;">
+                    <span *ngIf="!first">, </span>
+                    <app-user-link [user]="item"></app-user-link>
+                </span>
                 <span *ngIf="moreLikerNames.length" [attr.tooltip]="getMoreLikerNames()">
-                    and {{moreLikerNames.length}} more like this post!
+                   &nbsp;and {{moreLikerNames.length}} more like this post!
                 </span>
                 <span *ngIf="!moreLikerNames.length">
                     like this post!

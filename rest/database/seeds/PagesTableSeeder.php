@@ -95,7 +95,7 @@ Firstly, ThisHabbo takes absolutely no responsibility of things which happen on 
 
 [sitecp]Last modified: 04-29-2018[/sitecp]',
                     'isDeleted' => 0,
-                    'isSystem' => 0,
+                    'isSystem' => 1,
                     'canEdit' => 1,
                     'createdAt' => 1551197660,
                     'updatedAt' => 1551197660,

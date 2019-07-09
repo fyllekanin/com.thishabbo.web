@@ -19,7 +19,7 @@
                 </app-content>
             </div>
 
-            <div *ngIf="haveForumStats">
+            <div *ngIf="haveForumStats && !isForumStatsHidden">
                 <app-title [title]="'Forum Stats'" [top]="latestPostersTop" [tabs]="statTabs"
                            (onTabClick)="onStatsTabClick($event)"></app-title>
                 <app-content>

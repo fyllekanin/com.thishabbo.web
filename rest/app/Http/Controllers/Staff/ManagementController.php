@@ -327,7 +327,9 @@ class ManagementController extends Controller {
         $total = DataHelper::getPage(Timetable::isPerm()->count('timetableId'));
 
         return response()->json([
-            'permShows' => $permShows->map(function ($item) {
+            'permShows' => $permShows->filter(function ($item) {
+                return $item->permShow;
+            })->map(function ($item) {
                 return $item->permShow;
             }),
             'total' => $total,

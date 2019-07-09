@@ -15,5 +15,6 @@ export const LOCAL_STORAGE = {
     VOLUME: 'volume',
     FORUM_TOOLS: 'forum-tools',
     MINIMALISTIC: 'minimalistic',
-    MINI_PROFILE_DISABLED: 'mini-profile-disabled'
+    MINI_PROFILE_DISABLED: 'mini-profile-disabled',
+    HIDE_FORUM_STATS: 'hide-forum-stats'
 };

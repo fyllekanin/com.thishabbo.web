@@ -77,7 +77,7 @@ class PermissionController extends Controller {
                 $this->updateCategoryAndChildrenForumPermissions($categoryId, $groupToBeUpdated->groupId, $permissions, $isAuthOnly);
             }
 
-            Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_FORUM_PERMISSIONS, ['wasCascade' => $cascade]);
+            Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_FORUM_PERMISSIONS, ['wasCascade' => $cascade], $categoryId);
         }
         return response()->json();
     }

@@ -21,7 +21,7 @@
                             [checkbox]="first ? pagination.page > 1 : (forumPermissions.canDeletePosts || forumPermissions.canApprovePosts)"
                             [title]="getPostTitle(post, index)"
                             [subTitle]="first ? subTitle : null"
-                            [tabs]="first && pagination.page === 1 ? tabs : null"
+                            [tabs]="first ? tabs : null"
                             (onTabClick)="onTabClick($event)"
                             (onCheckboxChange)="post.isSelected = !post.isSelected">
                     </app-title>

@@ -35,7 +35,7 @@ export class FooterComponent {
 
     getAvatarUrl (activeUser: ActiveUser): string {
         return `background-image: url('/rest/resources/images/users/` +
-            `{activeUser.userId}.gif?${activeUser.avatarUpdatedAt}')`;
+            `${activeUser.userId}.gif?${activeUser.avatarUpdatedAt}')`;
     }
 
     goToProfile (nickname: string) {

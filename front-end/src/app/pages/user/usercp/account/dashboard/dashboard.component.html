@@ -76,6 +76,18 @@
             </span>
         </label>
     </div>
+
+    <div>
+        <label class="checkbox-container">
+            Hide Forum Stats
+            <input type="checkbox" [(ngModel)]="hideForumStats">
+            <span class="checkmark"></span>
+            <span tooltip="Hide the forum stats on the forum page"
+                  class="checkbox-info">
+                <em class="fas fa-question-circle"></em>
+            </span>
+        </label>
+    </div>
 </app-content>
 
 <app-table [config]="tabsTableConfig" (onAction)="onAction($event)"></app-table>

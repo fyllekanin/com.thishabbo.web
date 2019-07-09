@@ -180,7 +180,9 @@ export class TimetableComponent extends Page implements OnDestroy {
     }
 
     private unbook (timetable: TimetableModel): void {
-        if (timetable.user.userId !== this._authService.authUser.userId && !this._authService.staffPermissions.canBookRadioForOthers) {
+        const permission = this.isEvents() ? this._authService.staffPermissions.canBookEventForOthers :
+            this._authService.staffPermissions.canBookRadioForOthers;
+        if (timetable.user.userId !== this._authService.authUser.userId && !permission) {
             this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
                 message: 'You do not have permission to unbook someone elses slot'

@@ -192,7 +192,7 @@ class RadioController extends Controller {
         $djUser->save();
 
 
-        NotificationFactory::newLikeDj($user->userId, $djUser->userId);
+        NotificationFactory::newLikeDj($djUser->userId, $user->userId);
         Logger::user($user->userId, $request->ip(), Action::LIKED_DJ, [], $djUser->userId);
         return response()->json([
             'isTimeout' => false

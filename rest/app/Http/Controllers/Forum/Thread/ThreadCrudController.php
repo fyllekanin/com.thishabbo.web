@@ -20,7 +20,6 @@ use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Jobs\NotifyCategorySubscribers;
 use App\Jobs\NotifyMentionsInPost;
-use App\Jobs\NotifyThreadSubscribers;
 use App\Logger;
 use App\Models\Logger\Action;
 use App\Services\ForumService;
@@ -360,7 +359,6 @@ class ThreadCrudController extends Controller {
         }
 
         NotifyMentionsInPost::dispatch($threadSkeleton->content, $post->postId, $user->userId);
-        NotifyThreadSubscribers::dispatch($category->categoryId, $thread->userId, $thread->threadId);
 
         if ($category->template !== $this->categoryTemplates->DEFAULT && !$skipValidation) {
             $this->uploadFileAndCreateTemplateData($threadSkeleton, $thumbnail, $thread->threadId, $request->hasFile('thumbnail'));
