@@ -110,7 +110,7 @@ export class ThreadActionExecutor {
             case ThreadActions.DELETE_POSTS:
                 selectedIds = this._threadPage.threadPosts.filter(post => post.isSelected)
                     .map(post => post.postId);
-                if (selectedIds.length !== 1) {
+                if (selectedIds.length < 1) {
                     this._notificationService.sendErrorNotification('You need to select at least one post to delete');
                     return;
                 }
