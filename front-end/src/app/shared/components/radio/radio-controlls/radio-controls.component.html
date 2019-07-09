@@ -1,5 +1,5 @@
 <audio #player [src]="url" preload="none"></audio>
-<div class="generic-radio-button generic-green-button" (click)="toggleAudio()">
+<div class="generic-radio-button generic-green-button" (click)="toggleAudio()" [attr.tooltip]="isPlaying ? 'Pause Radio' : 'Play Radio'">
     <em class="fas fa-play" *ngIf="!isPlaying"></em>
     <em class="fas fa-pause" *ngIf="isPlaying"></em>
 </div>
@@ -10,9 +10,9 @@
     <em class="fas fa-heart icon-position"></em>
 </div>
 <div class="generic-radio-button listen-button"><em class="fas fa-headphones"></em> {{listeners}}</div>
-<div class="slider">
-    <input type="range" [value]="volume" (input)="onVolumeChange($event)" [disabled]="!isPlaying"/>
-</div>
-<div class="generic-radio-button generic-pink-button desktop-button"><em class="fas fa-sync-alt"></em></div>
-<div class="generic-radio-button generic-pink-button mobile-button" (click)="openInfo()"><em class="fas fa-info"></em>
+    <div class="slider">
+        <input type="range" [value]="volume" (input)="onVolumeChange($event)" [disabled]="!isPlaying"/>
+    </div>
+    <div class="generic-radio-button generic-pink-button desktop-button"><em class="fas fa-sync-alt"></em></div>
+    <div class="generic-radio-button generic-pink-button mobile-button" (click)="openInfo()"><em class="fas fa-info"></em>
 </div>

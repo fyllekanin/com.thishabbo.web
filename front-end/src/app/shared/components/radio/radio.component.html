@@ -21,9 +21,9 @@
                 </div>
             </div>
             <div>
-                <button class="radio-button blue-button" (click)="openRequest()"><em
+                <button class="radio-button blue-button" (click)="openRequest()" tooltip="Send a Request"><em
                         class="fas fa-comment icon-position"></em></button>
-                <button [disabled]="radioOffline" class="radio-button red-button" (click)="likeDj()"><em
+                <button [disabled]="radioOffline" class="radio-button red-button" (click)="likeDj()" tooltip="Like the DJ"><em
                         class="fas fa-heart icon-position"></em></button>
             </div>
         </div>
@@ -32,9 +32,9 @@
     <div class="events-box" *ngIf="!isMinimalistic">
         <div class="event-info">
             <div class="event-buttons">
-                <button [disabled]="!eventsLink" class="events-box-button green-button" (click)="visitEvent()"><em
+                <button [disabled]="!eventsLink" class="events-box-button green-button" (click)="visitEvent()" tooltip="Visit the Event"><em
                         class="fas fa-arrow-up icon-position-events"></em></button>
-                <button [disabled]="noEvent" class="events-box-button red-button" (click)="likeHost()"><em
+                <button [disabled]="noEvent" class="events-box-button red-button" (click)="likeHost()" tooltip="Like the Host"><em
                         class="fas fa-heart icon-position-events"></em></button>
             </div>
             <div class="inner-box">
