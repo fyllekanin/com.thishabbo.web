@@ -5,10 +5,11 @@
         <div class="album-art" [style.background]="'url(' + albumArt + ')' | safeStyle"></div>
         <div class="radio-info">
             <div class="inner-box-radio">
-                <div class="dj-position current">
+                <div class="dj-position current truncate">
                     <em class="fas fa-user"></em> <strong> {{nickname}}</strong>
                 </div>
-                <div class="dj-position next-dj"><em class="fas fa-arrow-right"></em> <strong> {{nextDj}}</strong></div>
+                <div class="dj-position next-dj truncate"><em class="fas fa-arrow-right"></em>
+                    <strong> {{nextDj}}</strong></div>
                 <div class="dj-position says"><em class="fas fa-comment"></em>
                     {{djSays}}
                 </div>
@@ -23,7 +24,8 @@
             <div>
                 <button class="radio-button blue-button" (click)="openRequest()" tooltip="Send a Request"><em
                         class="fas fa-comment icon-position"></em></button>
-                <button [disabled]="radioOffline" class="radio-button red-button" (click)="likeDj()" tooltip="Like the DJ"><em
+                <button [disabled]="radioOffline" class="radio-button red-button" (click)="likeDj()"
+                        tooltip="Like the DJ"><em
                         class="fas fa-heart icon-position"></em></button>
             </div>
         </div>
@@ -32,16 +34,19 @@
     <div class="events-box" *ngIf="!isMinimalistic">
         <div class="event-info">
             <div class="event-buttons">
-                <button [disabled]="!eventsLink" class="events-box-button green-button" (click)="visitEvent()" tooltip="Visit the Event"><em
+                <button [disabled]="!eventsLink" class="events-box-button green-button" (click)="visitEvent()"
+                        tooltip="Visit the Event"><em
                         class="fas fa-arrow-up icon-position-events"></em></button>
-                <button [disabled]="noEvent" class="events-box-button red-button" (click)="likeHost()" tooltip="Like the Host"><em
+                <button [disabled]="noEvent" class="events-box-button red-button" (click)="likeHost()"
+                        tooltip="Like the Host"><em
                         class="fas fa-heart icon-position-events"></em></button>
             </div>
             <div class="inner-box">
-                <div class="event-name"><em class="fas fa-user"></em> <strong> {{currentHost}}</strong><br/>
+                <div class="event-name truncate"><em class="fas fa-user"></em> <strong> {{currentHost}}</strong><br/>
                     <em class="fas fa-users"></em> {{currentEvent}}
                 </div>
-                <div class="event-name"><em class="fas fa-arrow-right"></em> <strong> {{nextHost}}</strong><br/>
+                <div class="event-name truncate"><em class="fas fa-arrow-right"></em>
+                    <strong> {{nextHost}}</strong><br/>
                     <em class="fas fa-arrow-right"></em> {{nextEvent}}
                 </div>
             </div>
