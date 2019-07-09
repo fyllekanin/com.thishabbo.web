@@ -363,6 +363,48 @@ class EventsController extends Controller {
         return response()->json();
     }
 
+    public function updateBooking(Request $request, $timetableId) {
+        $user = $request->get('auth');
+        $data = (object)$request->input('data');
+
+        $slot = Timetable::find($timetableId);
+        Condition::precondition(!$slot, 404, 'No slot with that ID');
+        $event = Event::find($data->eventId);
+        Condition::precondition(!$event, 404, 'Selected event do not exist');
+
+        $bookingForUser = User::withNickname(Value::objectProperty($data, 'nickname', ''))->first();
+        Condition::precondition(isset($data->nickname) && !empty($data->nickname) && !$bookingForUser,
+            404, 'No user with that nickname');
+
+        $link = '';
+        if (isset($data->link) && !empty($data->link)) {
+            $link = $data->link;
+            Condition::precondition(!preg_match(ConfigHelper::getRegex()->HABBO_ROOM, $link), 400, 'The room link is not valid');
+        }
+
+        $userIdBefore = $slot->userId;
+        $eventIdBefore = $slot->eventId;
+
+        $slot->userId = $bookingForUser ? $bookingForUser->userId : $user->userId;
+        $slot->eventId = $event->eventId;
+        $slot->link = $link;
+        $slot->save();
+
+        Logger::staff($user->userId, $request->ip(), Action::EDITED_TIMETABLE_SLOT, [
+            'userIdBefore' => $userIdBefore,
+            'userIdAfter' => $slot->userId,
+            'eventIdBefore' => $eventIdBefore,
+            'eventIdAfter' => $slot->eventId
+        ], $slot->timetableId);;
+        return response()->json([
+            'timetableId' => $slot->timetableId,
+            'createdAt' => time(),
+            'user' => UserHelper::getUser($slot->userId),
+            'event' => $event,
+            'link' => $slot->link
+        ]);
+    }
+
     /**
      * Post request to create a booking.
      *
@@ -408,9 +450,7 @@ class EventsController extends Controller {
         ]);
         $timetable->save();
 
-        Logger::staff($user->userId, $request->ip(), Action::BOOKED_EVENT_SLOT, [
-            'timetableId' => $timetable->timetableId
-        ]);;
+        Logger::staff($user->userId, $request->ip(), Action::BOOKED_EVENT_SLOT, [], $timetable->timetableId);;
         return response()->json([
             'timetableId' => $timetable->timetableId,
             'createdAt' => time(),
