@@ -58,8 +58,10 @@ export class TopBarComponent {
         this._httpService.put(`puller/notifications/read/${notificationId}`)
             .subscribe(() => {
                 this._continuesInformationService.removeNotification(notificationId);
-                this._notifications = this._notifications.filter(notification => notification.notificationId !== notificationId);
-                this._messages = this._notifications.filter(notification => notification.notificationId !== notificationId);
+                this._notifications = this._notifications.filter(this.isNotification)
+                    .filter(notification => notification.notificationId !== notificationId);
+                this._messages = this._notifications.filter(this.isMessage)
+                    .filter(notification => notification.notificationId !== notificationId);
                 this._routerStateService.updateNotificationAmount(this._notifications.length);
             });
     }
