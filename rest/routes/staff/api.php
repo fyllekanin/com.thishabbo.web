@@ -12,10 +12,14 @@ Route::get('dashboard/{start}', 'Staff\StaffController@getDashboardStats');
 Route::get('/ping', 'PageController@getPing');
 
 Route::prefix('radio')->group(function () use ($permissions) {
-    Route::group(['middleware' => PermissionHelper::getStaffMiddleware($permissions->canRadio)], function () {
+    Route::group(['middleware' => PermissionHelper::getStaffMiddleware($permissions->canRadio)], function () use ($permissions) {
         Route::get('/timetable', 'Staff\RadioController@getTimetable');
         Route::post('/timetable', 'Staff\RadioController@createBooking');
         Route::delete('/timetable/{timetableId}', 'Staff\RadioController@deleteBooking');
+
+        Route::group(['middleware' => PermissionHelper::getStaffMiddleware($permissions->canBookRadioForOthers)], function () {
+            Route::put('/timetable/{timetableId}', 'Staff\RadioController@updateBooking');
+        });
 
         Route::get('/requests', 'Staff\RadioController@getRequests');
         Route::get('/connection', 'Staff\RadioController@getConnectionInformation');
@@ -43,10 +47,16 @@ Route::prefix('radio')->group(function () use ($permissions) {
 });
 
 Route::prefix('events')->group(function () use ($permissions) {
-    Route::group(['middleware' => PermissionHelper::getStaffMiddleware($permissions->canEvent)], function () {
+    Route::group(['middleware' => PermissionHelper::getStaffMiddleware($permissions->canEvent)], function () use ($permissions) {
         Route::get('/timetable', 'Staff\EventsController@getTimetable');
         Route::post('/timetable', 'Staff\EventsController@createBooking');
+
         Route::delete('/timetable/{timetableId}', 'Staff\EventsController@deleteBooking');
+
+        Route::group(['middleware' => PermissionHelper::getStaffMiddleware($permissions->canBookEventForOthers)], function () {
+            Route::put('/timetable/{timetableId}', 'Staff\EventsController@updateBooking');
+        });
+
         Route::get('/ban-on-sight', 'Staff\EventsController@getBanOnSightList');
     });
     Route::group(['middleware' => PermissionHelper::getStaffMiddleware($permissions->canManageEvents)], function () {

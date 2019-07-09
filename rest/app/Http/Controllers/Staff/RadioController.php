@@ -298,6 +298,35 @@ class RadioController extends Controller {
         return response()->json();
     }
 
+    public function updateBooking(Request $request, $timetableId) {
+        $user = $request->get('auth');
+        $data = (object)$request->input('data');
+
+        $slot = Timetable::find($timetableId);
+        Condition::precondition(!$slot, 404, 'No slot with that ID');
+
+        $bookingForUser = User::withNickname(Value::objectProperty($data, 'nickname', ''))->first();
+        Condition::precondition(isset($data->nickname) && !empty($data->nickname) && !$bookingForUser,
+            404, 'No user with that nickname');
+
+        $userIdBefore = $slot->userId;
+
+        $slot->userId = $bookingForUser ? $bookingForUser->userId : $user->userId;
+        $slot->save();
+
+        Logger::staff($user->userId, $request->ip(), Action::EDITED_TIMETABLE_SLOT, [
+            'userIdBefore' => $userIdBefore,
+            'userIdAfter' => $slot->userId,
+            'eventIdBefore' => null,
+            'eventIdAfter' => null
+        ], $slot->timetableId);;
+        return response()->json([
+            'timetableId' => $slot->timetableId,
+            'createdAt' => time(),
+            'user' => UserHelper::getUser($slot->userId)
+        ]);
+    }
+
     /**
      * Post request for creating a booking
      *

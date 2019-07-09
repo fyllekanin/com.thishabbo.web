@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { InnerDialogComponent } from 'shared/app-views/dialog/dialog.model';
 import { EventType } from '../../../events/types/types.model';
+import { TimetableModel } from '../timetable.model';
 
 @Component({
     selector: 'app-staff-radio-timetable-selection',
@@ -8,7 +9,13 @@ import { EventType } from '../../../events/types/types.model';
     styleUrls: ['selection.component.css']
 })
 export class SelectionComponent extends InnerDialogComponent {
-    private _data: { events: Array<EventType>, canBookRadioForOther: boolean, canBookEventForOther: boolean, isEvents: boolean } = null;
+    private _data: {
+        events: Array<EventType>,
+        canBookRadioForOther: boolean,
+        canBookEventForOther: boolean,
+        isEvents: boolean,
+        slot: TimetableModel
+    } = null;
 
     nickname: string;
     eventId: number;
@@ -24,6 +31,11 @@ export class SelectionComponent extends InnerDialogComponent {
 
     setData (data) {
         this._data = data;
+        if (this._data.slot) {
+            this.nickname = this._data.slot.user.nickname;
+            this.eventId = this._data.isEvents ? this._data.slot.event.eventId : null;
+            this.link = this._data.isEvents ? this._data.slot.link : null;
+        }
     }
 
     get canBookForOther (): boolean {

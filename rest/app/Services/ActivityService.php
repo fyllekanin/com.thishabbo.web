@@ -45,7 +45,7 @@ class ActivityService {
             }
 
             $item->data = isset($item->data) && !empty($item->data) ? (object)json_decode($item->data) : new \stdClass();
-            if ($this->isItemValid($item, $categoryIds)) {
+            if ($this->isItemValid($item, $categoryIds, $userId)) {
                 $activities[] = $this->convertItem($userId, $item);
             }
             $lastItemId = $item->logId;
@@ -60,17 +60,21 @@ class ActivityService {
      *
      * @return bool
      */
-    private function isItemValid($item, $categoryIds) {
+    private function isItemValid($item, $categoryIds, $userId) {
         if (!$this->isThreadRelatedAction($item) && !$this->isPostRelatedAction($item)) {
             return true;
         }
 
         $itemExists = false;
         if ($this->isThreadRelatedAction($item)) {
-            $itemExists = Thread::where('threadId', $item->contentId)->count() > 0;
+            $thread = Thread::where('threadId', $item->contentId)->first();
+            $itemExists = $thread->userId == $userId ||
+                PermissionHelper::haveForumPermission($userId, ConfigHelper::getForumPermissions()->canViewOthersThreads, $thread->categoryId);
         }
         if ($this->isPostRelatedAction($item)) {
-            $itemExists = Post::where('postId', $item->contentId)->count() > 0;
+            $post = Post::with('thread')->where('postId', $item->contentId)->first();
+            $itemExists = $post->threadId->userId == $userId ||
+                PermissionHelper::haveForumPermission($userId, ConfigHelper::getForumPermissions()->canViewOthersThreads, $post->thread->categoryId);
         }
         return in_array($item->data->categoryId, $categoryIds) && $itemExists;
     }

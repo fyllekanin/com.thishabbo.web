@@ -76,10 +76,16 @@ export class TimetableComponent extends Page implements OnDestroy {
 
     clickHour (hour: number): void {
         const timetable = this.getTimetableByHour(hour);
-        if (timetable) {
-            this.unbook(timetable);
-        } else {
+        if (!timetable) {
             this.book(hour);
+            return;
+        }
+
+        if ((this.isEvents() && this._authService.staffPermissions.canBookEventForOthers) ||
+            (!this.isEvents() && this._authService.staffPermissions.canBookRadioForOthers)) {
+            this.editBooking(timetable);
+        } else {
+            this.unbook(timetable);
         }
     }
 
@@ -102,6 +108,43 @@ export class TimetableComponent extends Page implements OnDestroy {
             return this.isEvents() ? `(${timetable.event ? timetable.event.name : 'unknown'})` : '';
         }
         return `(${timetable.name})`;
+    }
+
+    private editBooking (timetableModel: TimetableModel): void {
+        this._dialogService.openDialog({
+            title: `Edit slot: ${TimeHelper.getHours()[timetableModel.hour].label}`,
+            buttons: [
+                new DialogCloseButton('Close'),
+                new DialogButton({
+                    title: 'Unbook',
+                    callback: () => {
+                        this.unbook(timetableModel);
+                    }
+                }),
+                new DialogButton({
+                    title: 'Save',
+                    callback: (res: { nickname: string, eventId: number, link: string }) => {
+                        this._httpService.put(`staff/${this._type}/timetable/${timetableModel.timetableId}`, {
+                            data: {
+                                nickname: res ? res.nickname : null,
+                                eventId: res ? res.eventId : null,
+                                link: res ? res.link : null
+                            }
+                        }).subscribe(response => {
+                            this.onSuccessEdit(timetableModel, new TimetableModel(response));
+                        }, this._notificationService.failureNotification.bind(this._notificationService));
+                    }
+                })
+            ],
+            component: this._componentFactory.resolveComponentFactory(SelectionComponent),
+            data: {
+                events: this._data.events,
+                canBookRadioForOther: this.canBookRadioForOther(),
+                canBookEventForOther: this.canBookEventForOther(),
+                isEvents: this.isEvents(),
+                slot: timetableModel
+            }
+        });
     }
 
     private book (hour: number): void {
@@ -161,11 +204,17 @@ export class TimetableComponent extends Page implements OnDestroy {
             });
     }
 
+    private onSuccessEdit (timetableModel: TimetableModel, item: TimetableModel): void {
+        this._notificationService.sendInfoNotification('Slot edited!');
+        const timetableItem = this._data.timetable.find(slot => slot.timetableId === timetableModel.timetableId);
+        timetableItem.link = item.link;
+        timetableItem.event = item.event;
+        timetableItem.user = item.user;
+        this._dialogService.closeDialog();
+    }
+
     private onSuccessBooking (day, hour, item): void {
-        this._notificationService.sendNotification(new NotificationMessage({
-            title: 'Success',
-            message: 'Slot booked'
-        }));
+        this._notificationService.sendInfoNotification('Slot booked');
         this._data.timetable.push(new TimetableModel({
             timetableId: item.timetableId,
             day: day,
