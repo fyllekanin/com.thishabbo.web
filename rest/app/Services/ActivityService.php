@@ -73,7 +73,7 @@ class ActivityService {
         }
         if ($this->isPostRelatedAction($item)) {
             $post = Post::with('thread')->where('postId', $item->contentId)->first();
-            $itemExists = $post->threadId->userId == $userId ||
+            $itemExists = $post->thread->userId == $userId ||
                 PermissionHelper::haveForumPermission($userId, ConfigHelper::getForumPermissions()->canViewOthersThreads, $post->thread->categoryId);
         }
         return in_array($item->data->categoryId, $categoryIds) && $itemExists;
