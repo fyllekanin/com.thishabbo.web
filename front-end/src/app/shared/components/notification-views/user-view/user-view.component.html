@@ -8,7 +8,7 @@
     </div>
     <div *ngIf="isRadioRequest">
         New request! <br/>
-        {{user.nickname}} sent a request!
+        {{user ? user.nickname : 'anonymous'}} sent a request!
     </div>
     <div class="time">
         <em class="fas fa-clock"></em> {{getTime()}}
