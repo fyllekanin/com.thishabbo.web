@@ -331,7 +331,7 @@ class EventsController extends Controller {
     public function getTimetable() {
         return response()->json([
             'timetable' => Timetable::events()->isActive()->get(),
-            'events' => Event::all(),
+            'events' => Event::orderBy('name', 'ASC')->get(),
             'timezones' => ConfigHelper::getTimetable()
         ]);
     }
