@@ -216,7 +216,7 @@ export class ThreadComponent extends Page implements OnDestroy {
     }
 
     get currentReadersTitle (): string {
-        return `${this._threadPage.currentReaders.length} Currently Viewing This Thread`
+        return `${this._threadPage.currentReaders.length} Currently Viewing This Thread`;
     }
 
     private doPost (toggleThread: boolean): void {
