@@ -1597,5 +1597,16 @@ class Action {
         'data' => [],
         'log' => 'log_user'
     ];
-}
 
+    const EDITED_TIMETABLE_SLOT = [
+        'id' => 190,
+        'description' => 'User edited timetable slot',
+        'data' => [
+            'userIdBefore' => 'Who had the slot before',
+            'userIdAfter' => 'Who have the slow now',
+            'eventIdBefore' => 'Event ID before',
+            'eventIdAfter' => 'Event ID after'
+        ],
+        'log' => 'log_staff'
+    ];
+}
