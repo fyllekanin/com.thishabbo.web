@@ -56,12 +56,12 @@ class AvatarHelper {
 
     public static function backupAvatarIfExists($currentAvatar) {
         if ($currentAvatar->avatarId == 0
-            || !File::exists(base_path('public/rest/resources/images/users/' . $currentAvatar->userId . '.gif'))) {
+            || !File::exists(base_path(SettingsHelper::getResourcesPath('images/users/' . $currentAvatar->userId . '.gif')))) {
             return;
         }
 
-        File::move(base_path('public/rest/resources/images/users/' . $currentAvatar->userId . '.gif'),
-            base_path('public/rest/resources/images/old-avatars/') . $currentAvatar->avatarId . '.gif');
+        File::move(base_path(SettingsHelper::getResourcesPath('images/users/' . $currentAvatar->userId . '.gif')),
+            base_path(SettingsHelper::getResourcesPath('images/old-avatars/' . $currentAvatar->avatarId . '.gif')));
     }
 
     private static function getMaxAvatarWidth($user) {
