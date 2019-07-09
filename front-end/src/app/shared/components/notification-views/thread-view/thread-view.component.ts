@@ -43,7 +43,7 @@ export class ThreadViewComponent implements NotificationView {
             case NotificationTypes.QUOTE:
                 return `quoted your post in the thread`;
             case NotificationTypes.THREAD_SUBSCRIPTION:
-                return `posted in one of your threads`;
+                return `posted in a thread you are subscribed to`;
             case NotificationTypes.LIKE_POST:
                 return `liked your post in the thread`;
         }
