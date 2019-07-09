@@ -38,6 +38,7 @@ export class DashboardComponent extends Page implements OnDestroy {
     showThreadTools: boolean;
     minimalisticHeader: boolean;
     disableMiniProfile: boolean;
+    hideForumStats: boolean;
     saveTab: Array<TitleTab> = [
         new TitleTab({title: 'Save'})
     ];
@@ -68,6 +69,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         this.showThreadTools = Boolean(localStorage.getItem(LOCAL_STORAGE.FORUM_TOOLS));
         this.minimalisticHeader = Boolean(localStorage.getItem(LOCAL_STORAGE.MINIMALISTIC));
         this.disableMiniProfile = Boolean(localStorage.getItem(LOCAL_STORAGE.MINI_PROFILE_DISABLED));
+        this.hideForumStats = Boolean(localStorage.getItem(LOCAL_STORAGE.HIDE_FORUM_STATS));
     }
 
     onSave (): void {
@@ -77,6 +79,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         this.updateThreadTools();
         this.updateMinimalisticHeader();
         this.updateDisabledMiniProfile();
+        this.updateHideForumStats();
         this._notificationService.sendInfoNotification('Device settings saved!');
         this._continuesInformation.deviceSettingsUpdated();
     }
@@ -99,6 +102,14 @@ export class DashboardComponent extends Page implements OnDestroy {
             localStorage.setItem(LOCAL_STORAGE.MINI_PROFILE_DISABLED, 'true');
         } else {
             localStorage.removeItem(LOCAL_STORAGE.MINI_PROFILE_DISABLED);
+        }
+    }
+
+    private updateHideForumStats (): void {
+        if (this.hideForumStats) {
+            localStorage.setItem(LOCAL_STORAGE.HIDE_FORUM_STATS, 'true');
+        } else {
+            localStorage.removeItem(LOCAL_STORAGE.HIDE_FORUM_STATS);
         }
     }
 

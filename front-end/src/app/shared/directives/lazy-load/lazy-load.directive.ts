@@ -11,36 +11,37 @@ export class LazyLoadDirective implements OnDestroy, AfterViewInit {
     private _scrollSubscription: Subscription;
 
     @HostBinding('style.background-image') backgroundUrl;
+    @HostBinding('style.display') display = 'inline-block';
 
-    constructor(
+    constructor (
         protected _elementRef: ElementRef
     ) {
     }
 
-    onScroll(event): void {
+    onScroll (event): void {
         event.stopPropagation();
 
         this.loadImage();
     }
 
-    ngAfterViewInit(): void {
+    ngAfterViewInit (): void {
         this.loadImage();
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         if (!this.haveLoadedImage() && this.isInsideViewport()) {
             this.setImage();
         }
     }
 
     @Input()
-    set image(url: string) {
+    set image (url: string) {
         this.subscribeToScroll();
         this._imageUrl = url;
         this.loadImage();
     }
 
-    protected setImage(): void {
+    protected setImage (): void {
         this.unsubscribeToScroll();
         this._loadedImage = this._imageUrl;
         if (this._elementRef.nativeElement.nodeName === 'IMG') {
@@ -50,27 +51,27 @@ export class LazyLoadDirective implements OnDestroy, AfterViewInit {
         }
     }
 
-    private loadImage(): void {
+    private loadImage (): void {
         if (!this.haveLoadedImage() && this.isInsideViewport()) {
             this.setImage();
         }
     }
 
-    private subscribeToScroll(): void {
+    private subscribeToScroll (): void {
         this._scrollSubscription = fromEvent(window, 'scroll').subscribe(this.onScroll.bind(this));
     }
 
-    private unsubscribeToScroll(): void {
+    private unsubscribeToScroll (): void {
         if (this._scrollSubscription) {
             this._scrollSubscription.unsubscribe();
         }
     }
 
-    private haveLoadedImage(): boolean {
+    private haveLoadedImage (): boolean {
         return this._imageUrl === this._loadedImage;
     }
 
-    private isInsideViewport(): boolean {
+    private isInsideViewport (): boolean {
         const rect = this._elementRef.nativeElement.getBoundingClientRect();
         const windowHeight = (window.innerHeight || document.documentElement.clientHeight);
         const windowWidth = (window.innerWidth || document.documentElement.clientWidth);

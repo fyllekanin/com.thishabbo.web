@@ -29,6 +29,7 @@ export class ForumHomeComponent extends Page implements OnInit, OnDestroy {
         new TitleTab({title: 'Read All', value: StatsActions.READ_ALL})
     ];
     toggleTab = new TitleTab({title: 'Toggle'});
+    isForumStatsHidden = false;
 
     constructor (
         private _router: Router,
@@ -43,6 +44,7 @@ export class ForumHomeComponent extends Page implements OnInit, OnDestroy {
         breadcrumbService.breadcrumb = new Breadcrumb({current: 'Forum'});
         this.addSubscription(activatedRoute.data, this.onPage.bind(this));
         this._contractedCategories = this.getContractedCategories();
+        this.isForumStatsHidden = Boolean(localStorage.getItem(LOCAL_STORAGE.HIDE_FORUM_STATS));
     }
 
     ngOnInit (): void {
@@ -84,6 +86,9 @@ export class ForumHomeComponent extends Page implements OnInit, OnDestroy {
     }
 
     updateForumStats (): void {
+        if (this.isForumStatsHidden) {
+            return;
+        }
         this._forumStats = new ForumStats();
         const todayMidnight = new Date().setHours(0, 0, 0, 0) / 1000;
         this._httpService.get(`page/forum/stats/${todayMidnight}`)
