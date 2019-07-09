@@ -77,7 +77,7 @@ class ItemsController extends Controller {
     public function getItemUsers($itemId) {
         $shopItem = ShopItem::find($itemId);
         Condition::precondition(!$shopItem, 404, 'No shop item with that ID');
-        $userItems = UserItem::where('itemId', $itemId)->get();
+        $userItems = UserItem::where('itemId', $itemId)->where('type', $shopItem->type)->get();
 
         return response()->json([
             'itemId' => $shopItem->shopItemId,
