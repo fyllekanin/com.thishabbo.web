@@ -234,6 +234,10 @@ ${curr.content}[/quotepost]\n\r`;
         return this._threadPage;
     }
 
+    get currentReadersTitle (): string {
+        return `${this._threadPage.currentReaders.length} Currently Viewing This Thread`
+    }
+
     private doPost (toggleThread: boolean): void {
 
         const threadId = this._threadPage ? this._threadPage.threadId : 0;
