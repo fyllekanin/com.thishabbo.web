@@ -6,3 +6,8 @@ table {
 thead {
     font-weight: bold;
 }
+
+.current-slot {
+    font-weight: bold;
+}
+

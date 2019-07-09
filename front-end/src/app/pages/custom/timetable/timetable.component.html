@@ -9,7 +9,7 @@
         </thead>
         <tr *ngFor="let hour of hours">
             <td>{{ hour.label }}</td>
-            <td *ngFor="let day of days">
+            <td *ngFor="let day of days" [ngClass]="{'current-slot': isCurrentSlot(day.number, hour.number)}">
                 <span *ngIf="isBooked(day.number, hour.number); else unbooked">
                     <span *ngIf="isEvents(); else radio"
                         [attr.tooltip]="getHabboName(day.number, hour.number)"

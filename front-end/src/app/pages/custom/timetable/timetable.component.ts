@@ -5,7 +5,8 @@ import { Page } from 'shared/page/page.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { TimeHelper, Day, Hour } from 'shared/helpers/time.helper';
 import { SlimUser } from 'core/services/auth/auth.model';
-import { TimetablePage, TimetableModel } from 'shared/models/timetable.model';
+import { TimetablePage } from 'shared/models/timetable.model';
+import { TimetableHelper } from 'shared/helpers/timetable.helper';
 
 @Component({
     selector: 'app-timetable',
@@ -34,27 +35,25 @@ export class TimetableComponent extends Page implements OnDestroy {
     }
 
     isBooked (day: number, hour: number): boolean {
-        return Boolean(this.getSlot(day, hour));
+        return Boolean(TimetableHelper.getSlot(this._data.timetable, day, hour));
     }
 
     getHabboName (day: number, hour: number): string {
-        const slot = this.getSlot(day, hour);
+        const slot = TimetableHelper.getSlot(this._data.timetable, day, hour);
         return slot.user.habbo;
     }
 
     getEventName (day: number, hour: number): string {
-        const slot = this.getSlot(day, hour);
-
-        if (!slot.isPerm) {
-            return this.isEvents() ? (slot.event ? slot.event.name : 'unknown') : '';
-        }
-
-        return `(${slot.name})`;
+        return TimetableHelper.getEventName(TimetableHelper.getSlot(this._data.timetable, day, hour), this.isEvents());
     }
 
     getUser (day: number, hour: number): SlimUser {
-        const slot = this.getSlot(day, hour);
+        const slot = TimetableHelper.getSlot(this._data.timetable, day, hour);
         return slot.user;
+    }
+
+    isCurrentSlot (day: number, hour: number): boolean {
+        return TimetableHelper.isCurrentSlot(day, hour);
     }
 
     get title (): string {
@@ -71,12 +70,6 @@ export class TimetableComponent extends Page implements OnDestroy {
 
     private isEvents (): boolean {
         return this._type === 'events';
-    }
-
-    private getSlot (day: number, hour: number): TimetableModel {
-        return this._data.timetable
-            .filter(timetable => timetable.day === day)
-            .find(timetable => timetable.hour === hour);
     }
 
     private onData (data: { data: TimetablePage }): void {
