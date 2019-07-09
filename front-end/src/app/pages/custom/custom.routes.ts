@@ -8,6 +8,8 @@ import { BadgeArticlesResolver } from './services/badge-articles.resolver';
 import { ContactComponent } from './contact/contact.component';
 import { JobComponent } from './job/job.component';
 import { ReportBugComponent } from './report-bug/report-bug.component';
+import { TimetableComponent } from './timetable/timetable.component';
+import { TimetableResolver } from 'shared/services/timetable.resolver';
 
 export const customRoutes: Routes = [
     {
@@ -39,6 +41,22 @@ export const customRoutes: Routes = [
                 component: BadgeArticlesComponent,
                 resolve: {
                     data: BadgeArticlesResolver
+                }
+            },
+            {
+                path: 'radio-timetable',
+                component: TimetableComponent,
+                data: { type: 'radio' },
+                resolve: {
+                    data: TimetableResolver,
+                }
+            },
+            {
+                path: 'events-timetable',
+                component: TimetableComponent,
+                data: { type: 'events' },
+                resolve: {
+                    data: TimetableResolver,
                 }
             },
             {

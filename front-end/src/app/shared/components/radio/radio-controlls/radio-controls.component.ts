@@ -23,7 +23,7 @@ export class RadioControlsComponent implements AfterViewInit {
         private _notificationService: NotificationService,
         continuesInformationService: ContinuesInformationService
     ) {
-        this.volume = Number(localStorage.getItem(LOCAL_STORAGE.VOLUME));
+        this.volume = Number(localStorage.getItem(LOCAL_STORAGE.VOLUME)) || 0.5;
         continuesInformationService.onContinuesInformation.subscribe(continuesInformation => {
             this._data = continuesInformation.radio;
             this._radioUrl = `${this._data.ip}:${this._data.port}/;stream.nsv`;
@@ -51,13 +51,14 @@ export class RadioControlsComponent implements AfterViewInit {
     toggleAudio (): void {
         this.isPlaying = !this.isPlaying;
         if (this.isPlaying) {
+            this.player.nativeElement.src = this.url;
             this.player.nativeElement.play().catch(() => {
                 this._notificationService.sendErrorNotification('The radio could not start');
                 this.isPlaying = false;
             });
         } else {
             this.player.nativeElement.pause();
-            this.player.nativeElement.currentTime = 0;
+            this.player.nativeElement.src = null;
         }
     }
 

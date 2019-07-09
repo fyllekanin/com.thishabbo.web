@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property mixed hour
  * @property mixed userId
  * @property mixed eventId
+ * @property mixed link
  */
 class Timetable extends DeletableModel {
 

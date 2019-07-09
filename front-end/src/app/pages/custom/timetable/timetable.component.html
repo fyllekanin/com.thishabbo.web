@@ -1,0 +1,25 @@
+<app-title [title]="title"></app-title>
+<app-content>
+    <table>
+        <thead>
+            <tr>
+                <td></td>
+                <td *ngFor="let day of days">{{ day.label }}</td>
+            </tr>
+        </thead>
+        <tr *ngFor="let hour of hours">
+            <td>{{ hour.label }}</td>
+            <td *ngFor="let day of days" [ngClass]="{'current-slot': isCurrentSlot(day.number, hour.number)}">
+                <span *ngIf="isBooked(day.number, hour.number); else unbooked">
+                    <span *ngIf="isEvents(); else radio"
+                        [attr.tooltip]="getHabboName(day.number, hour.number)"
+                        [innerHTML]="getEventName(day.number, hour.number)"></span>
+                    <ng-template #radio>
+                        <app-user-link [user]="getUser(day.number,hour.number)"></app-user-link>
+                    </ng-template>
+                </span>
+                <ng-template #unbooked> - </ng-template>
+            </td>
+        </tr>
+    </table>
+</app-content>

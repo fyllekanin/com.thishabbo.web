@@ -1,0 +1,13 @@
+table {
+    width: 100%;
+    text-align: center;
+}
+
+thead {
+    font-weight: bold;
+}
+
+.current-slot {
+    font-weight: bold;
+}
+

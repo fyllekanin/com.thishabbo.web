@@ -59,6 +59,7 @@ export class TopBarComponent {
             .subscribe(() => {
                 this._continuesInformationService.removeNotification(notificationId);
                 this._notifications = this._notifications.filter(notification => notification.notificationId !== notificationId);
+                this._messages = this._notifications.filter(notification => notification.notificationId !== notificationId);
                 this._routerStateService.updateNotificationAmount(this._notifications.length);
             });
     }

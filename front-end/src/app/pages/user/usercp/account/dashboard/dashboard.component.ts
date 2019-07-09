@@ -171,7 +171,7 @@ export class DashboardComponent extends Page implements OnDestroy {
             return;
         }
         this.tabsTableConfig = new TableConfig({
-            title: 'Device Tabs',
+            title: 'Tabs',
             headers: [new TableHeader({title: 'Label'}), new TableHeader({title: 'URL'})],
             rows: this.getTabsTableRows()
         });

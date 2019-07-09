@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { PageComponent } from 'shared/page/page.component';
 import { TimetableComponent } from '../shared/timetable/timetable.component';
-import { TimetableResolver } from '../shared/timetable/timetable.resolver';
 import { RequestsComponent } from './requests/requests.component';
 import { RequestsResolver } from './services/requests.resolver';
 import { ConnectionComponent } from './connection/connection.component';
@@ -15,6 +14,7 @@ import { BookingLogComponent } from '../shared/booking-log/booking-log.component
 import { BookingLogResolver } from '../shared/booking-log/booking-log.resolver';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 import { PING_TYPES } from 'core/services/continues-information/continues-information.model';
+import { TimetableResolver } from 'shared/services/timetable.resolver';
 
 
 export const radioRoutes: Routes = [
