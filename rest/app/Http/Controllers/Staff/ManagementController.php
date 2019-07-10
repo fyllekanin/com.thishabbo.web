@@ -206,7 +206,8 @@ class ManagementController extends Controller {
 
         $existing = Timetable::where('day', $booking->day)->where('hour', $booking->hour)->where('type', $booking->type)->isActive()->first();
         if ($existing) {
-            $existing->delete();
+            $existing->isDeleted = true;
+            $existing->save();
         }
 
         $link = '';
@@ -266,7 +267,8 @@ class ManagementController extends Controller {
 
         $existing = Timetable::where('day', $booking->day)->where('hour', $booking->hour)->where('type', $booking->type)->isActive()->first();
         if ($existing && $existing->timetableId != $slot->timetableId) {
-            $existing->delete();
+            $existing->isDeleted = true;
+            $existing->save();
         }
 
         $link = '';
@@ -326,13 +328,10 @@ class ManagementController extends Controller {
         $permShows = Timetable::isPerm()->take($this->perPage)->skip(DataHelper::getOffset($page))->get();
         $total = DataHelper::getPage(Timetable::isPerm()->count('timetableId'));
 
-        $shows = array_map(function ($show) {
-            return $show->permShow;
-        }, Iterables::filter($permShows->toArray(), function ($show) {
-            return $show->permShow;
-        }));
         return response()->json([
-            'permShows' => $shows,
+            'permShows' => $permShows->map(function ($show) {
+                return $show->permShow;
+            }),
             'total' => $total,
             'page' => $page
         ]);
