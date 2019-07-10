@@ -6,6 +6,7 @@ import { RadioService } from 'shared/components/radio/services/radio.service';
 import { RadioModel } from 'shared/components/radio/radio.model';
 import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
+import { SlimUser } from 'core/services/auth/auth.model';
 
 describe('RadioComponent', () => {
 
@@ -70,30 +71,32 @@ describe('RadioComponent', () => {
     describe('nickname', () => {
         it('should return the nickname if stats are set', () => {
             // Given
-            component.stats = new RadioModel({ nickname: 'test' });
+            component.stats = new RadioModel({
+                currentDj: new SlimUser({nickname: 'test'})
+            });
 
             // When
-            const result = component.nickname;
+            const result = component.currentDj.nickname;
 
             // Then
             expect(result).toEqual('test');
         });
-        it('should return "Loading..." when no stats are set', () => {
+        it('should return null when no stats are set', () => {
             // Given
             component.stats = null;
 
             // When
-            const result = component.nickname;
+            const result = component.currentDj.nickname;
 
             // Then
-            expect(result).toEqual('Loading...');
+            expect(result).toBeNull();
         });
     });
 
     describe('song', () => {
         it('should return the song if stats are set', () => {
             // Given
-            component.stats = new RadioModel({ song: 'test' });
+            component.stats = new RadioModel({song: 'test'});
 
             // When
             const result = component.song;
@@ -116,7 +119,7 @@ describe('RadioComponent', () => {
     describe('likes', () => {
         it('should return the likes if stats are set', () => {
             // Given
-            component.stats = new RadioModel({ likes: 25 });
+            component.stats = new RadioModel({likes: 25});
 
             // When
             const result = component.likes;
@@ -139,7 +142,7 @@ describe('RadioComponent', () => {
     describe('albumArt', () => {
         it('should return the the full URL if stats are set', () => {
             // Given
-            component.stats = new RadioModel({ albumArt: 'http://test.com/test.gif' });
+            component.stats = new RadioModel({albumArt: 'http://test.com/test.gif'});
 
             // When
             const result = component.albumArt;
