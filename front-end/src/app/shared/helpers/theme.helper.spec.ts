@@ -6,7 +6,7 @@ describe('ThemeHelper', () => {
         afterEach(() => {
             document.getElementById(ThemeHelper.THEME_STYLE_ID).remove();
         });
-        it('should create and apparend style element if none existent', () => {
+        it('should create and append style element if none existent', () => {
             // Given
             expect(document.getElementById(ThemeHelper.THEME_STYLE_ID)).toBeNull();
             const theme = '.test { color: #000000; }';
