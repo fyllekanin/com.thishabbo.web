@@ -10,10 +10,10 @@ import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 })
 export class UserLinkComponent {
     @Input() user = new SlimUser();
-    isMiniProfileDisabled = false;
+    @Input() isMiniProfileDisabled = false;
 
     constructor () {
-        this.isMiniProfileDisabled = Boolean(localStorage.getItem(LOCAL_STORAGE.MINI_PROFILE_DISABLED));
+        this.isMiniProfileDisabled = this.isMiniProfileDisabled || Boolean(localStorage.getItem(LOCAL_STORAGE.MINI_PROFILE_DISABLED));
     }
 
     get nameStyling (): string {
