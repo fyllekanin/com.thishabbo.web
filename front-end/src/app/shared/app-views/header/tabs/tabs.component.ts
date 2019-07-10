@@ -53,13 +53,13 @@ export class TabsComponent {
             return;
         }
 
-        const labelExists = this._authService.tabs
+        const labelExists = (this._authService.tabs || [])
             .some(item => item.label.toLowerCase() === tab.label.toLowerCase());
         if (labelExists) {
             this.printError('Label already exist');
         }
 
-        const urlExists = this._authService.tabs
+        const urlExists = (this._authService.tabs || [])
             .some(item => item.url.toLowerCase() === tab.url.toLowerCase());
         if (urlExists) {
             this.printError('The URL already exists!');

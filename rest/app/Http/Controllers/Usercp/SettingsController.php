@@ -25,7 +25,7 @@ class SettingsController extends Controller {
         $userData = UserHelper::getUserDataOrCreate($user->userId);
         $customFields = new CustomUserFields($userData->customFields);
 
-        $customFields->tabs = json_encode($request->input('tabs'));
+        $customFields->tabs = $request->input('tabs');
         $userData->customFields = json_encode($customFields);
         $userData->save();
 
