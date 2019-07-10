@@ -88,7 +88,7 @@ describe('RadioComponent', () => {
             component.stats = null;
 
             // When
-            const result = component.currentDj.nickname;
+            const result = component.currentDj;
 
             // Then
             expect(result).toBeNull();
