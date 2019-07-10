@@ -5,11 +5,14 @@ namespace App\Http\Impl;
 use App\EloquentModels\Forum\Post;
 use App\EloquentModels\Forum\Thread;
 use App\EloquentModels\User\User;
+use App\Helpers\ConfigHelper;
 use App\Helpers\DataHelper;
+use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Services\ForumService;
 use App\Utils\Condition;
+use App\Utils\Iterables;
 use App\Utils\Value;
 
 class SearchControllerImpl {
@@ -74,18 +77,24 @@ class SearchControllerImpl {
             ->select(['posts.*', 'threads.categoryId']);
         $postsSql = $this->applyFilters($request, $postsSql, 'posts');
 
+        $items = $postsSql->take(Controller::$perPageStatic)->offset(DataHelper::getOffset($page))->get()->map(function ($item) {
+            return (object)[
+                'id' => $item->postId,
+                'parentId' => $item->threadId,
+                'categoryId' => $item->thread->cateogryId,
+                'page' => DataHelper::getPage(Post::where('postId', '<', $item->postId)->where('threadId', $item->threadId)
+                    ->isApproved()->count('postId')),
+                'user' => UserHelper::getSlimUser($item->userId),
+                'title' => $item->thread->title,
+                'createdAt' => $item->createdAt->timestamp
+            ];
+        })->toArray();
+
         return (object)[
             'total' => DataHelper::getPage($postsSql->count('postId')),
-            'items' => $postsSql->take(Controller::$perPageStatic)->offset(DataHelper::getOffset($page))->get()->map(function ($item) {
-                return [
-                    'id' => $item->postId,
-                    'parentId' => $item->threadId,
-                    'page' => DataHelper::getPage(Post::where('postId', '<', $item->postId)->where('threadId', $item->threadId)
-                        ->isApproved()->count('postId')),
-                    'user' => UserHelper::getSlimUser($item->userId),
-                    'title' => $item->thread->title,
-                    'createdAt' => $item->createdAt->timestamp
-                ];
+            'items' => Iterables::filter($items, function ($item) use ($user) {
+                return $item->user->userId == $user->userId ||
+                    PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canViewOthersThreads, $item->categoryId);
             })
         ];
     }
@@ -95,16 +104,22 @@ class SearchControllerImpl {
         $threadsSql = Thread::where('title', 'LIKE', Value::getFilterValue($request, $request->input('text')))->whereIn('categoryId', $categoryIds);
         $threadsSql = $this->applyFilters($request, $threadsSql, 'threads');
 
+        $items = $threadsSql->take(Controller::$perPageStatic)->offset(DataHelper::getOffset($page))->get()->map(function ($item) {
+            return (object)[
+                'id' => $item->threadId,
+                'categoryId' => $item->categoryId,
+                'page' => 1,
+                'user' => UserHelper::getSlimUser($item->userId),
+                'title' => $item->title,
+                'createdAt' => $item->createdAt->timestamp
+            ];
+        })->toArray();
+
         return (object)[
             'total' => DataHelper::getPage($threadsSql->count('threadId')),
-            'items' => $threadsSql->take(Controller::$perPageStatic)->offset(DataHelper::getOffset($page))->get()->map(function ($item) {
-                return [
-                    'id' => $item->threadId,
-                    'page' => 1,
-                    'user' => UserHelper::getSlimUser($item->userId),
-                    'title' => $item->title,
-                    'createdAt' => $item->createdAt->timestamp
-                ];
+            'items' => Iterables::filter($items, function ($item) use ($user) {
+                return $item->user->userId == $user->userId ||
+                    PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canViewOthersThreads, $item->categoryId);
             })
         ];
     }

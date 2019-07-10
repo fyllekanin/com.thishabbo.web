@@ -2,7 +2,7 @@ import { SlimUser } from 'core/services/auth/auth.model';
 import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
 import { TimeHelper } from 'shared/helpers/time.helper';
 
-export const ACCOLADE_LABEL_MAP = new Map([
+export const ACCOLADE_LABEL_MAP = new Map<number, string>([
     [1, 'Award'],
     [2, 'Admin'],
     [3, 'Management'],
@@ -30,7 +30,7 @@ export class AccoladeItem {
 
     getStartLabel (): string {
         const date = new Date(this.start * 1000);
-        return `${TimeHelper.ABBR_MONTHS[date.getMonth()]} ${date.getFullYear()}`;
+        return `${TimeHelper.ABBR_MONTHS[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
     }
 
     getEndLabel (): string {
@@ -38,7 +38,7 @@ export class AccoladeItem {
             return '';
         }
         const date = new Date(this.end * 1000);
-        return `${TimeHelper.ABBR_MONTHS[date.getMonth()]} ${date.getFullYear()}`;
+        return `${TimeHelper.ABBR_MONTHS[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
     }
 }
 
