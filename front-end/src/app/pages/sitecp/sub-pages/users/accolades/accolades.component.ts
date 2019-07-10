@@ -88,6 +88,7 @@ export class AccoladesComponent extends Page implements OnDestroy {
                         this._service.onDeleteAccolade(this._data, Number(action.rowId)).subscribe(accoladeId => {
                             this._data.items = this._data.items.filter(item => item.accoladeId !== accoladeId);
                             this.createOrUpdateTable();
+                            this._dialogService.closeDialog();
                         });
                     }
                 });
