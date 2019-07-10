@@ -123,13 +123,11 @@ a {
 .left-icon {
     float: left;
     margin-right: 3px;
-    margin-top: 5px;
 }
 
 .right-icon {
     float: right;
     margin-left: 3px;
-    margin-top: 5px;
 }
 
 @media screen and (max-width: 1024px) {
