@@ -25,7 +25,6 @@ class CheckUser {
             ->first();
 
         if ($token && $request->getPathInfo() != $this->refreshRoute && $token->expiresAt < time()) {
-            Token::where('accessToken', $accessToken)->delete();
             throw new HttpException(419);
         }
 
