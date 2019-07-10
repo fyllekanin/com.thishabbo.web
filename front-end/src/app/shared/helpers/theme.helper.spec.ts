@@ -8,6 +8,10 @@ describe('ThemeHelper', () => {
         });
         it('should create and append style element if none existent', () => {
             // Given
+            const ele = document.getElementById(ThemeHelper.THEME_STYLE_ID);
+            if (ele) {
+                ele.remove();
+            }
             expect(document.getElementById(ThemeHelper.THEME_STYLE_ID)).toBeNull();
             const theme = '.test { color: #000000; }';
 
