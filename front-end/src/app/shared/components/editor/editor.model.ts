@@ -12,12 +12,12 @@ export class EditorAction {
     buttonColor?: ButtonColor;
     saveCallback?: () => {};
 
-    constructor(source: Partial<EditorAction>) {
+    constructor (source: Partial<EditorAction>) {
         ClassHelper.assign(this, source);
     }
 }
 
-export function getEditorSettings(emojis: Array<BBcodeModel>, isSlim: boolean, id: string) {
+export function getEditorSettings (emojis: Array<BBcodeModel>, isSlim: boolean, id: string) {
     return {
         id: id,
         debug: false,
@@ -37,7 +37,7 @@ export function getEditorSettings(emojis: Array<BBcodeModel>, isSlim: boolean, i
                     '<ul>{DATA}</ul>': '[ul]{DATA}[/ul]',
                     '<img src="{URL}" align="right">': '[imgr]{URL}[/imgr]',
                     '<img src="{URL}" align="left">': '[imgl]{URL}[/imgl]',
-                    '<details><summary>Spoiler</summary>{SELTEXT}</details>': '[spoiler]{SELTEXT}[/spoiler]',
+                    // '<details><summary>Spoiler</summary>{SELTEXT}</details>': '[spoiler]{SELTEXT}[/spoiler]',
                     '<div class="atitle">{SELTEXT}</div>': '[atitle]{SELTEXT}[/atitle]',
                     '<div class="quote">{SELTEXT}</div>': '[quote]{SELTEXT}[/quote]'
                 }

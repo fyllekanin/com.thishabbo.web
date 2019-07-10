@@ -22,7 +22,6 @@ WBBLANG['en'] = CURLANG = {
     quote: "Quote",
     offtop: "Offtop",
     code: "Code",
-    spoiler: "Spoiler",
     fontcolor: "Font color",
     fontsize: "Font size",
     fontfamily: "Font family",
@@ -2181,7 +2180,6 @@ var wbbdebug = false;
 
             $.each(this.options.btnlist, $.proxy(function (i, b) {
                 if (b != "|" && b != "-") {
-                    var find = true;
                     if (!this.options.allButtons[b] || !this.options.allButtons[b].transform) {
                         return true;
                     }
