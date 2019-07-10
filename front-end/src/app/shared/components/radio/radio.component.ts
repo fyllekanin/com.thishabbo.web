@@ -3,6 +3,7 @@ import { EventsModel, RadioModel } from 'shared/components/radio/radio.model';
 import { RadioService } from './services/radio.service';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
+import { SlimUser } from 'core/services/auth/auth.model';
 
 @Component({
     selector: 'app-radio',
@@ -54,36 +55,35 @@ export class RadioComponent {
     }
 
     get radioOffline (): boolean {
-        return !this._stats || !this._stats.nickname;
+        return !this._stats || !this._stats.currentDj;
     }
 
     get noEvent (): boolean {
-        return !this._eventStats || !this._eventStats.nickname;
-
+        return !this._eventStats || !this._eventStats.currentHost;
     }
 
-    get currentHost (): string {
-        return this._eventStats && this._eventStats.nickname ? this._eventStats.nickname : 'Not Booked';
+    get currentHost (): SlimUser {
+        return this._eventStats && this._eventStats.currentHost ? this._eventStats.currentHost : null;
     }
 
     get currentEvent (): string {
-        return this._eventStats && this._eventStats.event ? this._eventStats.event : '';
+        return this._eventStats && this._eventStats.event ? this._eventStats.event : 'Not Booked';
     }
 
-    get nextHost (): string {
-        return this._eventStats && this._eventStats.nextHost ? this._eventStats.nextHost : 'Not Booked';
+    get nextHost (): SlimUser {
+        return this._eventStats && this._eventStats.nextHost ? this._eventStats.nextHost : null;
     }
 
     get nextEvent (): string {
         return this._eventStats && this._eventStats.nextEvent ? this._eventStats.nextEvent : 'Not Booked';
     }
 
-    get nickname (): string {
-        return this._stats && this._stats.nickname ? this._stats.nickname : this.loading;
+    get currentDj (): SlimUser {
+        return this._stats && this._stats.currentDj ? this._stats.currentDj : null;
     }
 
-    get nextDj (): string {
-        return this._stats && this._stats.nextDj ? this._stats.nextDj : 'Not Booked';
+    get nextDj (): SlimUser {
+        return this._stats && this._stats.nextDj ? this._stats.nextDj : null;
     }
 
     get song (): string {

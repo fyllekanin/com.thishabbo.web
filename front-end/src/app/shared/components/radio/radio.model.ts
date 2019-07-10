@@ -1,12 +1,13 @@
-import { ClassHelper, primitive } from 'shared/helpers/class.helper';
+import { ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
+import { SlimUser } from 'core/services/auth/auth.model';
 
 export class EventsModel {
-    @primitive()
-    nickname: string;
+    @objectOf(SlimUser)
+    currentHost: SlimUser;
     @primitive()
     event: string;
-    @primitive()
-    nextHost: string;
+    @objectOf(SlimUser)
+    nextHost: SlimUser;
     @primitive()
     nextEvent: string;
     @primitive()
@@ -20,8 +21,8 @@ export class EventsModel {
 }
 
 export class RadioModel {
-    @primitive()
-    nickname: string;
+    @objectOf(SlimUser)
+    currentDj: SlimUser;
     @primitive()
     likes: number;
     @primitive()
@@ -38,8 +39,8 @@ export class RadioModel {
     ip: string;
     @primitive()
     port: string;
-    @primitive()
-    nextDj: string;
+    @objectOf(SlimUser)
+    nextDj: SlimUser;
 
     constructor (source: Partial<RadioModel>) {
         ClassHelper.assign(this, source);

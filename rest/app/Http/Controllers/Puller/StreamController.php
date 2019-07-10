@@ -93,9 +93,9 @@ class StreamController extends Controller {
         $next = Timetable::events()->with(['user', 'event'])->where('day', $this->getNextDay($day, $hour))->where('hour', $this->getNextHour($hour))->first();
 
         return [
-            'nickname' => $current ? $current->user->nickname : null,
+            'currentHost' => $current ? UserHelper::getSlimUser($current->user->userId) : null,
             'event' => $current ? $current->event->name : null,
-            'nextHost' => $next ? $next->user->nickname : null,
+            'nextHost' => $next ? UserHelper::getSlimUser($next->user->userId) : null,
             'nextEvent' => $next ? $next->event->name : null,
             'link' => $current ? $current->link : null
         ];
@@ -124,6 +124,9 @@ class StreamController extends Controller {
         $stats = new RadioSettings(SettingsHelper::getSettingValue($this->settingKeys->radio));
         $stats->adminPassword = null;
         $stats->password = null;
+
+        $stats->currentDj = UserHelper::getSlimUser($stats->userId);
+        $stats->nextDj = UserHelper::getSlimUser($stats->nextDjId);
         return $stats;
     }
 

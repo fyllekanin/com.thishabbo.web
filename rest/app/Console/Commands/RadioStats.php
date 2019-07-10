@@ -31,8 +31,7 @@ class RadioStats extends Command {
         }
 
         $user = $this->getCurrentDjUser((string)$statsData->servergenre);
-        $radio->nextDj = $this->getNextDj();
-        $radio->nickname = $user->nickname;
+        $radio->nextDjId = $this->getNextDj();
         $radio->likes = $user->likes;
         $radio->userId = $user->userId;
         $radio->listeners = (string)$statsData->currentlisteners;
@@ -55,7 +54,7 @@ class RadioStats extends Command {
         }
 
         $nextSlot = Timetable::radio()->where('day', $day)->where('hour', $hour)->first();
-        return $nextSlot ? $nextSlot->user->nickname : null;
+        return $nextSlot ? $nextSlot->user->userId : null;
     }
 
     private function getStatsData(RadioSettings $radio) {

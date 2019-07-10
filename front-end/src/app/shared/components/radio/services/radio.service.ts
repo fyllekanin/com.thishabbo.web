@@ -60,7 +60,7 @@ export class RadioService {
     openInfo (stats: RadioModel): void {
         this._dialogService.openDialog({
             title: 'Radio Info',
-            content: `<strong>Current DJ:</strong> <br /> ${stats.nickname} <br /><br />
+            content: `<strong>Current DJ:</strong> <br /> ${stats.currentDj.nickname} <br /><br />
                 <strong>Song:</strong> <br /> ${stats.song} <br /><br />
                 <strong>Listeners:</strong> <br /> ${stats.listeners}`,
             buttons: [

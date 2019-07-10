@@ -37,14 +37,13 @@ class RadioSettings {
     public $port = 8080;
     public $password = '';
     public $adminPassword = '';
-    public $nickname = '';
     public $likes = 0;
     public $userId = 0;
     public $listeners = 0;
     public $song = '';
     public $albumArt = '';
     public $djSays = '';
-    public $nextDj = '';
+    public $nextDjId = '';
     public $serverType = RadioServerTypes::SHOUT_CAST_V1;
 
     public function __construct($data) {

@@ -6,10 +6,15 @@
         <div class="radio-info">
             <div class="inner-box-radio">
                 <div class="dj-position current truncate">
-                    <em class="fas fa-user"></em> <strong> {{nickname}}</strong>
+                    <em class="fas fa-user"></em>
+                    <span *ngIf="currentDj"> <app-user-link [user]="currentDj"></app-user-link></span>
+                    <span *ngIf="!currentDj"> Not Booked</span>
                 </div>
-                <div class="dj-position next-dj truncate"><em class="fas fa-arrow-right"></em>
-                    <strong> {{nextDj}}</strong></div>
+                <div class="dj-position next-dj truncate">
+                    <em class="fas fa-arrow-right"></em>
+                    <span *ngIf="nextDj"> <app-user-link [user]="nextDj"></app-user-link></span>
+                    <span *ngIf="!nextDj"> Not Booked</span>
+                </div>
                 <div class="dj-position says"><em class="fas fa-comment"></em>
                     {{djSays}}
                 </div>
@@ -42,11 +47,16 @@
                         class="fas fa-heart icon-position-events"></em></button>
             </div>
             <div class="inner-box">
-                <div class="event-name truncate"><em class="fas fa-user"></em> <strong> {{currentHost}}</strong><br/>
+                <div class="event-name truncate"><em class="fas fa-user"></em>
+                    <span *ngIf="currentHost"> <app-user-link [user]="currentHost"></app-user-link></span>
+                    <span *ngIf="!currentHost"> Not Booked</span>
+                    <br/>
                     <em class="fas fa-users"></em> {{currentEvent}}
                 </div>
                 <div class="event-name truncate"><em class="fas fa-arrow-right"></em>
-                    <strong> {{nextHost}}</strong><br/>
+                    <span *ngIf="nextHost"> <app-user-link [user]="nextHost"></app-user-link></span>
+                    <span *ngIf="!nextHost"> Not Booked</span>
+                    <br/>
                     <em class="fas fa-arrow-right"></em> {{nextEvent}}
                 </div>
             </div>

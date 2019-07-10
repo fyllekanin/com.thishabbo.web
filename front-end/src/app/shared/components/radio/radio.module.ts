@@ -6,12 +6,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RadioService } from './services/radio.service';
 import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
+import { UserLinkModule } from 'shared/components/user/user-link.module';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
-        SafeStyleModule
+        SafeStyleModule,
+        UserLinkModule
     ],
     declarations: [
         RadioComponent,
@@ -29,4 +31,5 @@ import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
         RadioControlsComponent
     ]
 })
-export class RadioModule {}
+export class RadioModule {
+}
