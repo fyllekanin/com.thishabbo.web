@@ -141,6 +141,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     margin-top: -5px;
+    width: 100%;
 }
 
 .current {
@@ -156,12 +157,14 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    margin-top: -5px;
 }
 
 .stats {
     width: 41.4%;
     display: inline-block;
     margin-left: 1px;
+    margin-top: -5px;
 }
 
 .events-box-button, .radio-button {
