@@ -38,6 +38,6 @@ export class UserHelper {
     }
 
     static getYoutubeLink (id: string): string {
-        return `https://www.youtube.com/watch?v=${id}`;
+        return `https://www.youtube.com/embed/{id}`;
     }
 }
