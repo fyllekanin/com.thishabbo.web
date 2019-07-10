@@ -39,6 +39,7 @@ export class DashboardComponent extends Page implements OnDestroy {
     minimalisticHeader: boolean;
     disableMiniProfile: boolean;
     hideForumStats: boolean;
+    singleLatestRow: boolean;
     saveTab: Array<TitleTab> = [
         new TitleTab({title: 'Save'})
     ];
@@ -70,6 +71,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         this.minimalisticHeader = Boolean(localStorage.getItem(LOCAL_STORAGE.MINIMALISTIC));
         this.disableMiniProfile = Boolean(localStorage.getItem(LOCAL_STORAGE.MINI_PROFILE_DISABLED));
         this.hideForumStats = Boolean(localStorage.getItem(LOCAL_STORAGE.HIDE_FORUM_STATS));
+        this.singleLatestRow = Boolean(localStorage.getItem(LOCAL_STORAGE.SINGLE_LATEST_ROW));
     }
 
     onSave (): void {
@@ -80,6 +82,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         this.updateMinimalisticHeader();
         this.updateDisabledMiniProfile();
         this.updateHideForumStats();
+        this.updateSingleLatestRow();
         this._notificationService.sendInfoNotification('Device settings saved!');
         this._continuesInformation.deviceSettingsUpdated();
     }
@@ -95,6 +98,14 @@ export class DashboardComponent extends Page implements OnDestroy {
 
     ngOnDestroy (): void {
         super.destroy();
+    }
+
+    private updateSingleLatestRow (): void {
+        if (this.singleLatestRow) {
+            localStorage.setItem(LOCAL_STORAGE.SINGLE_LATEST_ROW, 'true');
+        } else {
+            localStorage.removeItem(LOCAL_STORAGE.SINGLE_LATEST_ROW);
+        }
     }
 
     private updateDisabledMiniProfile (): void {

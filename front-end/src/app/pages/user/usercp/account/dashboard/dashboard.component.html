@@ -88,6 +88,18 @@
             </span>
         </label>
     </div>
+
+    <div>
+        <label class="checkbox-container">
+            Use single rows for latest posts & threads?
+            <input type="checkbox" [(ngModel)]="singleLatestRow">
+            <span class="checkmark"></span>
+            <span tooltip="Checking this will make latest posts & threads one row each instead of double row"
+                  class="checkbox-info">
+                <em class="fas fa-question-circle"></em>
+            </span>
+        </label>
+    </div>
 </app-content>
 
 <app-table [config]="tabsTableConfig" (onAction)="onAction($event)"></app-table>

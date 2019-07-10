@@ -7,6 +7,7 @@ import { ForumLatestPost } from '../forum.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { FORUM_BREADCRUM_ITEM } from '../forum.constants';
+import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 
 @Component({
     selector: 'app-forum-latest-posts',
@@ -17,6 +18,7 @@ export class LatestPostsComponent extends Page implements OnDestroy {
     private _data: LatestPostsPage;
 
     pagination: PaginationModel;
+    isSingleRow = false;
 
     constructor (
         elementRef: ElementRef,
@@ -25,6 +27,7 @@ export class LatestPostsComponent extends Page implements OnDestroy {
     ) {
         super(elementRef);
         this.addSubscription(activatedRoute.data, this.onPage.bind(this));
+        this.isSingleRow = Boolean(localStorage.getItem(LOCAL_STORAGE.SINGLE_LATEST_ROW));
         breadcrumbService.breadcrumb = new Breadcrumb({
             current: 'Latest Posts',
             items: [
