@@ -55,6 +55,7 @@ class RadioSettings {
             $this->adminPassword = $data->adminPassword;
             $this->likes = $data->likes;
             $this->userId = $data->userId;
+            $this->nextDjId = $data->nextDjId;
             $this->listeners = $data->listeners;
             $this->song = $data->song;
             $this->albumArt = $data->albumArt;
