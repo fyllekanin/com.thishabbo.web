@@ -299,7 +299,16 @@ class ThreadCrudController extends Controller {
                 ->append('tags')
                 ->append('roomLink');
         }
+
         $thread->readers = ThreadRead::where('threadId', $thread->threadId)->take(20)->orderBy('updatedAt', 'DESC')
+            ->get(['userId', 'updatedAt'])->map(function ($read) {
+                return [
+                    'user' => UserHelper::getSlimUser($read->userId),
+                    'time' => $read->updatedAt->timestamp
+                ];
+            });
+
+        $thread->currentReaders = ThreadRead::where('threadId', $thread->threadId)->where('updatedAt', '>', time() - 600)
             ->get(['userId', 'updatedAt'])->map(function ($read) {
                 return [
                     'user' => UserHelper::getSlimUser($read->userId),

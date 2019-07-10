@@ -149,7 +149,7 @@ export class PermShowsListComponent extends Page implements OnDestroy {
         this.pagination = new PaginationModel({
             page: this._permShowsListPage.page,
             total: this._permShowsListPage.total,
-            url: '/sitecp/groups/page/:page'
+            url: '/staff/management/permanent-shows/page/:page'
         });
     }
 }
