@@ -2206,7 +2206,7 @@ var wbbdebug = false;
                                     r[k] = am[i + 1];
                                 }, this));
                                 var nhtml = html;
-                                nhtml = nhtml.replace(/\{(.*?)(\[.*?\])\}/g, "{$1}");
+                                nhtml = nhtml.replace(/\{(.*?)(\[.*?\])\}/gmi, "{$1}");
                                 nhtml = this.strf(nhtml, r);
                                 bbdata = bbdata.replace(am[0], nhtml);
                             }
