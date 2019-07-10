@@ -53,14 +53,12 @@ class RadioSettings {
             $this->port = $data->port;
             $this->password = $data->password;
             $this->adminPassword = $data->adminPassword;
-            $this->nickname = $data->nickname;
             $this->likes = $data->likes;
             $this->userId = $data->userId;
             $this->listeners = $data->listeners;
             $this->song = $data->song;
             $this->albumArt = $data->albumArt;
             $this->djSays = $data->djSays;
-            $this->nextDj = $data->nextDj;
             $this->serverType = $data->serverType;
         } catch (\Exception $exception) {
 
@@ -73,14 +71,13 @@ class RadioSettings {
             'port' => $this->port,
             'password' => $this->password,
             'adminPassword' => $this->adminPassword,
-            'nickname' => $this->nickname,
             'likes' => $this->likes,
             'userId' => $this->userId,
             'listeners' => $this->listeners,
             'song' => $this->song,
             'albumArt' => $this->albumArt,
             'djSays' => $this->djSays,
-            'nextDj' => $this->nextDj,
+            'nextDjId' => $this->nextDjId,
             'serverType' => $this->serverType
         ];
     }
