@@ -58,6 +58,8 @@ class ActivityService {
      * @param $item
      * @param $categoryIds
      *
+     * @param $userId
+     *
      * @return bool
      */
     private function isItemValid($item, $categoryIds, $userId) {
@@ -93,7 +95,8 @@ class ActivityService {
             Action::STARTED_FASTEST_TYPE_GAME,
             Action::STARTED_SNAKE_GAME,
             Action::WON_ROULETTE,
-            Action::LOST_ROULETTE
+            Action::LOST_ROULETTE,
+            Action::LIKED_HOST
         ]);
     }
 
