@@ -7,7 +7,8 @@
                 <img appUserProfile appLazyLoad [float]="'left'"
                      [image]="'/rest/resources/images/users/' + item.user.userId + '.gif'"/>
                 <div class="latest-thread-info truncate">
-                    <a [routerLink]="['/forum', 'thread', item.threadId, 'page', 1]">
+                    <a [routerLink]="['/forum', 'thread', item.threadId, 'page', 1]"
+                       [ngClass]="item.isRead ? '' : 'bold'">
                         <span *ngIf="item.text" [style]="item.style | safeStyle">{{item.text}} »</span> {{item.title}}
                     </a>
                     <br/>

@@ -16,6 +16,8 @@ export class LatestThread {
     user: SlimUser;
     @time()
     createdAt: string;
+    @primitive()
+    isRead: boolean;
 
     constructor (source: Partial<LatestThread>) {
         ClassHelper.assign(this, source);

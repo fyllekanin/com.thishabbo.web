@@ -7,6 +7,7 @@ use App\EloquentModels\Forum\IgnoredCategory;
 use App\EloquentModels\Forum\IgnoredThread;
 use App\EloquentModels\Forum\Post;
 use App\EloquentModels\Forum\Thread;
+use App\EloquentModels\Forum\ThreadRead;
 use App\EloquentModels\Log\LogUser;
 use App\Helpers\ConfigHelper;
 use App\Helpers\DataHelper;
@@ -65,6 +66,11 @@ class PostCrudController extends Controller {
         $latestPosts = $this->forumService->getLatestPosts($categoryIds, $ignoredThreadIds,
             $ignoredCategoryIds, $perPage, DataHelper::getOffset($page, $perPage));
         $total = DataHelper::getPage($latestPosts->total, $perPage);
+
+        foreach ($latestPosts->data as $post) {
+            $post->isRead = ThreadRead::where('userId', $user->userId)->where('threadId', $post->threadId)
+                    ->where('updatedAt', '>', $post->createdAt)->count() > 0;
+        }
 
         return response()->json([
             'page' => $page,

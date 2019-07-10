@@ -20,6 +20,8 @@ export class ForumLatestPost {
     user: SlimUser;
     @time()
     createdAt: string;
+    @primitive()
+    isRead: boolean;
 
     constructor (source: Partial<ForumLatestPost>) {
         ClassHelper.assign(this, source);

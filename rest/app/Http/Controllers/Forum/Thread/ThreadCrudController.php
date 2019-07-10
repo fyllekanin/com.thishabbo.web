@@ -106,7 +106,7 @@ class ThreadCrudController extends Controller {
         return response()->json([
             'page' => $page,
             'total' => $total,
-            'items' => $threadSql->take($perPage)->skip(DataHelper::getOffset($page, $perPage))->get()->map(function ($thread) {
+            'items' => $threadSql->take($perPage)->skip(DataHelper::getOffset($page, $perPage))->get()->map(function ($thread) use ($user) {
                 return [
                     'categoryId' => $thread->categoryId,
                     'style' => isset($thread->prefix) ? $thread->prefix->style : '',
@@ -114,6 +114,7 @@ class ThreadCrudController extends Controller {
                     'threadId' => $thread->threadId,
                     'title' => $thread->title,
                     'user' => UserHelper::getSlimUser($thread->userId),
+                    'isRead' => ThreadRead::where('userId', $user->userId)->where('threadId', $thread->threadId)->count() > 0,
                     'createdAt' => $thread->createdAt->timestamp
                 ];
             })
