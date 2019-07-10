@@ -20,6 +20,8 @@ class AddTableHeadBB extends Migration
             'content' => '$1',
             'isEmoji' => 0,
             'isSystem' => 1,
+            'createdAt' => time(),
+            'updatedAt' => time()
         ]);
     }
 
