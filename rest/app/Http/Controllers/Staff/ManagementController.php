@@ -328,7 +328,7 @@ class ManagementController extends Controller {
 
         $shows = array_map(function ($show) {
             return $show->permShow;
-        }, Iterables::filter($permShows, function ($show) {
+        }, Iterables::filter($permShows->toArray(), function ($show) {
             return $show->permShow;
         }));
         return response()->json([
