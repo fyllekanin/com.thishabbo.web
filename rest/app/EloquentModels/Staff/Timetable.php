@@ -77,7 +77,8 @@ class Timetable extends DeletableModel {
     }
 
     public function scopeIsPerm(Builder $query) {
-        return $query->where('isPerm', '>', 0);
+        return $query->where('isPerm', '>', 0)
+            ->has('timetableData');
     }
 
     public function scopeEvents(Builder $query) {
