@@ -61,6 +61,9 @@
                     <span *ngFor="let currentReader of thread.currentReaders; let index = index;">
                         <app-user-link [user]="currentReader.user" [attr.tooltip]="currentReader.timeAgo"></app-user-link>
                     </span>
+                    <span *ngIf="thread.currentReaders.length === 0">
+                        No current readers!
+                    </span>
                 </app-content>
                 <app-title [title]="'Last 20 users to read this thread'"></app-title>
                 <app-content>
