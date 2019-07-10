@@ -7,13 +7,15 @@ import { RouterModule } from '@angular/router';
 import { TabsComponent } from 'shared/app-views/header/tabs/tabs.component';
 import { TabComponent } from 'shared/app-views/header/tabs/tab/tab.component';
 import { ActivitiesComponent } from 'shared/app-views/header/activities/activities.component';
+import { UserLinkModule } from 'shared/components/user/user-link.module';
 
 @NgModule({
     imports: [
         RouterModule,
         FormsModule,
         CommonModule,
-        RadioModule
+        RadioModule,
+        UserLinkModule
     ],
     declarations: [
         HeaderComponent,
