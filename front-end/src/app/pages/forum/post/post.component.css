@@ -1,6 +1,7 @@
 .post-content {
     width: 99.1%;
     margin: 5px 0 0 10px;
+    word-break: break-all;
 }
 
 .signature {
