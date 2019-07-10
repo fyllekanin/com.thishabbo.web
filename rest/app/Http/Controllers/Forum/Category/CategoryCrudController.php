@@ -116,7 +116,13 @@ class CategoryCrudController extends Controller {
         $sortOrder = isset($sortOrderQuery) && !empty($sortOrderQuery) ? $sortOrderQuery : 'desc';
         $threadSql = Thread::where('categoryId', $categoryId)
             ->nonStickied()
-            ->isApproved($forumPermissions->canApproveThreads)
+            ->where(function ($query) use ($user, $forumPermissions) {
+                if ($forumPermissions->canApproveThreads) {
+                    $query->where('isApproved', '>=', 0);
+                } else {
+                    $query->where('userId', $user->userId)->orWhere('isApproved', 1);
+                }
+            })
             ->orderBy($sortedBy, $sortOrder);
 
         if ($fromThe > -1) {

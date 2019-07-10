@@ -266,9 +266,10 @@ class ThreadCrudController extends Controller {
             'You can not view others thread content');
 
         $canAccessCategory = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canRead, $thread->categoryId);
-        $cantAccessUnapproved = !$thread->isApproved && !PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canApproveThreads, $thread->categoryId);
+        $cantAccessUnapproved = !$thread->isApproved &&
+            !PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canApproveThreads, $thread->categoryId);
         Condition::precondition(!$canAccessCategory, 403, 'No permissions to access this category');
-        Condition::precondition($cantAccessUnapproved, 400, 'You cant access a unapproved thread');
+        Condition::precondition($user->userId != $thread->userId && $cantAccessUnapproved, 400, 'You cant access a unapproved thread');
 
         $permissions = $this->forumService->getForumPermissionsForUserInCategory($user->userId, $thread->categoryId);
 
