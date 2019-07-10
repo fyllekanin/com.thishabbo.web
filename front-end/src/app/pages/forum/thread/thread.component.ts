@@ -234,6 +234,10 @@ ${curr.content}[/quotepost]\n\r`;
         return this._threadPage;
     }
 
+    get currentReadersTitle (): string {
+        return `${this._threadPage.currentReaders.length} Currently Viewing This Thread`;
+    }
+
     private doPost (toggleThread: boolean): void {
 
         const threadId = this._threadPage ? this._threadPage.threadId : 0;
@@ -297,7 +301,6 @@ ${curr.content}[/quotepost]\n\r`;
         this._threadPage = data.data;
         this._threadPage.parents.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'displayOrder'));
         this._threadPage.threadPosts.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'postId'));
-
         this.pagination = new PaginationModel({
             total: this._threadPage.total,
             page: this._threadPage.page,
