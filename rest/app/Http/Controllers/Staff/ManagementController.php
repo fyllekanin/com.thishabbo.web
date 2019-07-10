@@ -326,12 +326,13 @@ class ManagementController extends Controller {
         $permShows = Timetable::isPerm()->take($this->perPage)->skip(DataHelper::getOffset($page))->get();
         $total = DataHelper::getPage(Timetable::isPerm()->count('timetableId'));
 
+        $shows = array_map(function ($show) {
+            return $show->permShow;
+        }, Iterables::filter($permShows, function ($show) {
+            return $show->permShow;
+        }));
         return response()->json([
-            'permShows' => $permShows->filter(function ($item) {
-                return $item->permShow;
-            })->map(function ($item) {
-                return $item->permShow;
-            }),
+            'permShows' => $shows,
             'total' => $total,
             'page' => $page
         ]);
