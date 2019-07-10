@@ -12,6 +12,7 @@ import { NotificationMessage, NotificationType } from 'shared/app-views/global-n
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { NotificationService } from '../notification/notification.service';
 import { TabModel } from 'shared/app-views/header/tabs/tabs.model';
+import { ThemeHelper } from 'shared/helpers/theme.helper';
 
 @Injectable()
 export class AuthService {
@@ -130,9 +131,10 @@ export class AuthService {
         }
     }
 
-    private doLogin (res: AuthUser, stay: boolean): void {
-        this._user = new AuthUser(res);
-        this.storeAuthUser(res);
+    private doLogin (res: { user: AuthUser, theme: string }, stay: boolean): void {
+        ThemeHelper.applyTheme(res.theme);
+        this._user = new AuthUser(res.user);
+        this.storeAuthUser(res.user);
         this._onUserChangeSubject.next();
 
         if (!this._user.gdpr) {

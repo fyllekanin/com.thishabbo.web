@@ -219,7 +219,11 @@ class AuthController extends Controller {
         $this->updateOrSetUserToken($user->userId, $accessToken, $refreshToken, $expiresAt, $request);
 
         Logger::login($user->userId, $request->ip(), true);
-        return response()->json($this->getAuthUser($user, $accessToken, $refreshToken));
+        $user = $this->getAuthUser($user, $accessToken, $refreshToken);
+        return response()->json([
+            'user' => $user,
+            'theme' => $this->myImpl->getTheme($user)
+        ]);
     }
 
     public function getInitialLoad(Request $request) {
@@ -317,7 +321,7 @@ class AuthController extends Controller {
     private function getAuthUser($user, $accessToken, $refreshToken) {
         $userData = UserHelper::getUserDataOrCreate($user->userId);
         $customFields = new CustomUserFields($userData->customFields);
-        return [
+        return (object)[
             'sitecpPermissions' => $this->myImpl->buildSitecpPermissions($user),
             'staffPermissions' => $this->myImpl->buildStaffPermissions($user),
             'oauth' => [
@@ -331,7 +335,8 @@ class AuthController extends Controller {
             'homePage' => UserHelper::getUserDataOrCreate($user->userId)->homePage,
             'credits' => UserHelper::getUserDataOrCreate($user->userId)->credits,
             'xp' => UserHelper::getUserDataOrCreate($user->userId)->xp,
-            'tabs' => $customFields->tabs
+            'tabs' => $customFields->tabs,
+            'theme' => $user->theme
         ];
     }
 }
