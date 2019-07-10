@@ -79,10 +79,12 @@ export class PostComponent extends Page implements OnDestroy {
     }
 
     likePost (): void {
+        console.log(this._authService.authUser.nameColor);
         this._service.likePost(this._postModel.postId).subscribe(() => {
             this._postModel.likers.push(new User({
                 userId: this._authService.authUser.userId,
-                nickname: this._authService.authUser.nickname
+                nickname: this._authService.authUser.nickname,
+                nameColor: this._authService.authUser.nameColor
             }));
         });
     }

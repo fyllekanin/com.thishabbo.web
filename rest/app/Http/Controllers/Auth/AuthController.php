@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\EloquentModels\User\Ban;
 use App\EloquentModels\User\Token;
 use App\EloquentModels\User\User;
+use App\EloquentModels\Group\Group;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Impl\Auth\AuthControllerImpl;
@@ -319,6 +320,7 @@ class AuthController extends Controller {
     }
 
     private function getAuthUser($user, $accessToken, $refreshToken) {
+        $groupColor = Group::where('groupId', $user->displayGroupId)->value('nameColor');
         $userData = UserHelper::getUserDataOrCreate($user->userId);
         $customFields = new CustomUserFields($userData->customFields);
         return (object)[
@@ -336,7 +338,8 @@ class AuthController extends Controller {
             'credits' => UserHelper::getUserDataOrCreate($user->userId)->credits,
             'xp' => UserHelper::getUserDataOrCreate($user->userId)->xp,
             'tabs' => $customFields->tabs,
-            'theme' => $user->theme
+            'theme' => $user->theme,
+            'nameColor' => $user->nameColor ? json_decode($user->nameColor) : json_decode($groupColor)
         ];
     }
 }

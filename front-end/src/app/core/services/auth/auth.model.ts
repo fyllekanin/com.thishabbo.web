@@ -260,6 +260,8 @@ export class AuthUser {
     xp = 0;
     @arrayOf(TabModel)
     tabs: Array<TabModel> = [];
+    @arrayOf(String)
+    nameColor: Array<string> = [];
 
     constructor (source: Partial<AuthUser>) {
         ClassHelper.assign(this, source);
