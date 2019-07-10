@@ -123,13 +123,15 @@ describe('AuthService', () => {
         it('should set the user and navigate to home if no error', (done) => {
             // Given
             const loginResponse = {
-                userId: 1,
-                nickname: 'Tovven',
-                gdpr: 1,
-                oauth: {
-                    accessToken: 'ba63-c261-41e3-5d5f-cf3b-3175-2af0-8a69-7393-e8d6-d484-09b4',
-                    refreshToken: '1bf2-7936-01e5-ac63-526e-f5f6-0568-fa8c-09cb-cc85-177f-1b58',
-                    expiresIn: 5400
+                user: {
+                    userId: 1,
+                    nickname: 'Tovven',
+                    gdpr: 1,
+                    oauth: {
+                        accessToken: 'ba63-c261-41e3-5d5f-cf3b-3175-2af0-8a69-7393-e8d6-d484-09b4',
+                        refreshToken: '1bf2-7936-01e5-ac63-526e-f5f6-0568-fa8c-09cb-cc85-177f-1b58',
+                        expiresIn: 5400
+                    }
                 }
             };
             spyOn(httpServiceMock, 'post').and.returnValue(of(loginResponse));
