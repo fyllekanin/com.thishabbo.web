@@ -16,11 +16,12 @@ import {
     TableHeader,
     TableRow
 } from 'shared/components/table/table.model';
-import { UserCpDashboardModel } from './dashboard.model';
+import { TabsActionModel, UserCpDashboardModel } from './dashboard.model';
 import { ActivatedRoute } from '@angular/router';
 import { TimeHelper } from 'shared/helpers/time.helper';
 import { AuthService } from 'core/services/auth/auth.service';
 import { HttpService } from 'core/services/http/http.service';
+import { ArrayHelper } from 'shared/helpers/array.helper';
 
 @Component({
     selector: 'app-user-usercp-dashboard',
@@ -88,12 +89,34 @@ export class DashboardComponent extends Page implements OnDestroy {
     }
 
     onAction (action: Action): void {
-        this._httpService.delete(`usercp/tab/${action.rowId}`).subscribe(() => {
-            this._authService.tabs = this._authService.tabs
-                .filter(item => item.tabId !== action.rowId);
-            this._notificationService.sendInfoNotification('Tab deleted!');
-            this.createOrUpdateTabsTable();
-        }, this._notificationService.failureNotification.bind(this._notificationService));
+        switch (action.value) {
+            case TabsActionModel.REMOVE:
+                this._httpService.delete(`usercp/tab/${action.rowId}`).subscribe(() => {
+                    this._authService.tabs = this._authService.tabs
+                        .filter(item => item.tabId !== action.rowId);
+                    this._notificationService.sendInfoNotification('Tab deleted!');
+                    this.createOrUpdateTabsTable();
+                }, this._notificationService.failureNotification.bind(this._notificationService));
+                break;
+            case TabsActionModel.MOVE_DOWN:
+                const downIndex = this._authService.tabs.findIndex(tab => tab.tabId === action.rowId);
+                this._authService.tabs = ArrayHelper.move(this._authService.tabs, downIndex, downIndex + 1);
+                this._httpService.put('usercp/tabs', {tabs: this._authService.tabs})
+                    .subscribe(() => {
+                        this.createOrUpdateTabsTable();
+                        this._notificationService.sendInfoNotification('Tab order updated');
+                    }, this._notificationService.failureNotification.bind(this._notificationService));
+                break;
+            case TabsActionModel.MOVE_UP:
+                const upIndex = this._authService.tabs.findIndex(tab => tab.tabId === action.rowId);
+                this._authService.tabs = ArrayHelper.move(this._authService.tabs, upIndex, upIndex - 1);
+                this._httpService.put('usercp/tabs', {tabs: this._authService.tabs})
+                    .subscribe(() => {
+                        this.createOrUpdateTabsTable();
+                        this._notificationService.sendInfoNotification('Tab order updated');
+                    }, this._notificationService.failureNotification.bind(this._notificationService));
+                break;
+        }
     }
 
     ngOnDestroy (): void {
@@ -201,16 +224,25 @@ export class DashboardComponent extends Page implements OnDestroy {
     }
 
     private getTabsTableRows (): Array<TableRow> {
-        return this._authService.tabs.map(tab => new TableRow({
-            id: tab.tabId,
-            cells: [
-                new TableCell({title: tab.label}),
-                new TableCell({title: tab.url})
-            ],
-            actions: [
-                new TableAction({title: 'Remove'})
-            ]
-        }));
+        return this._authService.tabs.map((tab, index) => {
+            const actions = [
+                {title: 'Move Up', value: TabsActionModel.MOVE_UP, condition: index > 0},
+                {
+                    title: 'Mode Down',
+                    value: TabsActionModel.MOVE_DOWN,
+                    condition: index < (this._authService.tabs.length - 1)
+                },
+                {title: 'Remove', value: TabsActionModel.REMOVE, condition: true}
+            ];
+            return new TableRow({
+                id: tab.tabId,
+                cells: [
+                    new TableCell({title: tab.label}),
+                    new TableCell({title: tab.url})
+                ],
+                actions: actions.filter(action => action.condition).map(action => new TableAction(action))
+            });
+        });
     }
 
     private onData (data: { data: UserCpDashboardModel }) {

@@ -27,3 +27,9 @@ export class UserCpDashboardModel {
         ClassHelper.assign(this, source);
     }
 }
+
+export enum TabsActionModel {
+    MOVE_UP,
+    MOVE_DOWN,
+    REMOVE
+}

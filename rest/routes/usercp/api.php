@@ -67,3 +67,4 @@ Route::get('notifications/page/{page}', 'Usercp\AccountController@getNotificatio
 
 Route::post('tab', 'Usercp\SettingsController@createTab');
 Route::delete('tab/{tabId}', 'Usercp\SettingsController@deleteTab');
+Route::put('tabs', 'Usercp\SettingsController@updateTabs');

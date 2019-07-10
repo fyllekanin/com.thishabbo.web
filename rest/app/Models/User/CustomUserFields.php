@@ -13,7 +13,7 @@ class CustomUserFields {
         try {
             $data = json_decode($data);
             $this->role = $data->role;
-            $this->tabs = $data->tabs;
+            $this->tabs = json_decode($data->tabs);
         } catch (\Exception $exception) {
             $this->tabs = [];
         }

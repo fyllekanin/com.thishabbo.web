@@ -1628,4 +1628,11 @@ class Action {
         ],
         'log' => 'log_sitecp'
     ];
+
+    const UPDATED_TABS = [
+        'id' => 193,
+        'description' => 'User updated their tabs',
+        'data' => [],
+        'log' => 'log_user'
+    ];
 }

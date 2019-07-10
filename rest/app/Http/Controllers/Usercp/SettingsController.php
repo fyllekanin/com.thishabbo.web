@@ -20,6 +20,19 @@ class SettingsController extends Controller {
         parent::__construct();
     }
 
+    public function updateTabs(Request $request) {
+        $user = $request->get('auth');
+        $userData = UserHelper::getUserDataOrCreate($user->userId);
+        $customFields = new CustomUserFields($userData->customFields);
+
+        $customFields->tabs = json_encode($request->input('tabs'));
+        $userData->customFields = json_encode($customFields);
+        $userData->save();
+
+        Logger::user($user->userId, $request->ip(), Action::UPDATED_TABS);
+        return response()->json();
+    }
+
     public function deleteTab(Request $request, $tabId) {
         $user = $request->get('auth');
         $userData = UserHelper::getUserDataOrCreate($user->userId);
