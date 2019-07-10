@@ -41,9 +41,9 @@ class AvatarHelper {
 
         self::backupAvatarIfExists($currentAvatar);
 
-        $image = Image::make(base_path('public/rest/resources/images/old-avatars/' . $currentAvatar->avatarId . '.gif'))
+        $image = Image::make(SettingsHelper::getResourcesPath('images/old-avatars/' . $currentAvatar->avatarId . '.gif'))
             ->resize($maxAvSize->width, $maxAvSize->height)
-            ->save(base_path('public/rest/resources/images/users/' . $userId . '.gif'));
+            ->save(SettingsHelper::getResourcesPath('images/users/' . $userId . '.gif'));
 
         $newAvatar = new Avatar([
             'userId' => $userId,

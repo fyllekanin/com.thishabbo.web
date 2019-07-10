@@ -216,15 +216,15 @@ class ProfileSettingsController extends Controller {
         Condition::precondition($avatar->userId != $user->userId, 400,
             'This is not your old avatar');
 
-        $size = getimagesize(base_path('public/rest/resources/images/old-avatars/') . $avatar->avatarId . '.gif');
+        $size = getimagesize(SettingsHelper::getResourcesPath('images/old-avatars/' . $avatar->avatarId . '.gif'));
 
         Condition::precondition($size[0] > $avatarSize->width || $size[1] > $avatarSize->height, 400,
             'The avatar size is bigger then the size you can have');
 
         AvatarHelper::backupAvatarIfExists(AvatarHelper::getCurrentAvatar($user->userId));
 
-        File::copy(base_path('public/rest/resources/images/old-avatars/') . $avatar->avatarId . '.gif',
-            base_path('public/rest/resources/images/users/' . $user->userId . '.gif'));
+        File::copy(SettingsHelper::getResourcesPath('images/old-avatars/' . $avatar->avatarId . '.gif'),
+            SettingsHelper::getResourcesPath('images/users/' . $user->userId . '.gif'));
 
         $avatar->updatedAt = time();
         $avatar->save();
