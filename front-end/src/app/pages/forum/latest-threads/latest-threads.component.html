@@ -3,7 +3,8 @@
 <app-content>
     <div class="grid-container full">
         <div class="grid-x grid-margin-x">
-            <div class="cell small-12 medium-6 latest-thread-page" *ngFor="let item of items">
+            <div class="cell small-12 latest-thread-page" *ngFor="let item of items"
+                 [ngClass]="!isSingleRow ? 'medium-6' : ''">
                 <img appUserProfile appLazyLoad [float]="'left'"
                      [image]="'/rest/resources/images/users/' + item.user.userId + '.gif'"/>
                 <div class="latest-thread-info truncate">
