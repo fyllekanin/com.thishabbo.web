@@ -26,10 +26,10 @@ import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
     templateUrl: './permshows-list.component.html'
 })
 export class PermShowsListComponent extends Page implements OnDestroy {
-    private _permShowsListPage: PermShowsListPage = new PermShowsListPage();
+    private _data: PermShowsListPage = new PermShowsListPage();
     private _actions: Array<TableAction> = [
-        new TableAction({ title: 'Edit', value: PermShowActions.EDIT_PERM_SHOW }),
-        new TableAction({ title: 'Delete', value: PermShowActions.DELETE_PERM_SHOW })
+        new TableAction({title: 'Edit', value: PermShowActions.EDIT_PERM_SHOW}),
+        new TableAction({title: 'Delete', value: PermShowActions.DELETE_PERM_SHOW})
     ];
 
     tabs: Array<TitleTab> = [new TitleTab({
@@ -39,7 +39,7 @@ export class PermShowsListComponent extends Page implements OnDestroy {
     tableConfig: TableConfig;
     pagination: PaginationModel;
 
-    constructor(
+    constructor (
         private _dialogService: DialogService,
         private _notificationService: NotificationService,
         private _httpService: HttpService,
@@ -49,7 +49,7 @@ export class PermShowsListComponent extends Page implements OnDestroy {
         activatedRoute: ActivatedRoute
     ) {
         super(elementRef);
-        this.addSubscription(activatedRoute.data, this.onPage.bind(this));
+        this.addSubscription(activatedRoute.data, this.onData.bind(this));
         breadcrumbService.breadcrumb = new Breadcrumb({
             current: 'Manage perm shows',
             items: [
@@ -59,7 +59,7 @@ export class PermShowsListComponent extends Page implements OnDestroy {
         });
     }
 
-    onAction(action: Action): void {
+    onAction (action: Action): void {
         switch (action.value) {
             case PermShowActions.DELETE_PERM_SHOW:
                 this.delete(Number(action.rowId));
@@ -70,11 +70,11 @@ export class PermShowsListComponent extends Page implements OnDestroy {
         }
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -86,32 +86,32 @@ export class PermShowsListComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableHeaders(): Array<TableHeader> {
+    private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'DJ' }),
-            new TableHeader({ title: 'Name' }),
-            new TableHeader({ title: 'Day & Hour' }),
-            new TableHeader({ title: 'Type' })
+            new TableHeader({title: 'DJ'}),
+            new TableHeader({title: 'Name'}),
+            new TableHeader({title: 'Day & Hour'}),
+            new TableHeader({title: 'Type'})
         ];
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         const actions = [].concat(this._actions);
-        return this._permShowsListPage.permShows.map(item => {
+        return this._data.permShows.map(item => {
             return new TableRow({
                 id: String(item.timetableId),
                 cells: [
-                    new TableCell({ title: item.nickname }),
-                    new TableCell({ title: item.name }),
-                    new TableCell({ title: `${TimeHelper.getDay(item.day).label} - ${TimeHelper.getHours()[item.hour].label}` }),
-                    new TableCell({ title: item.type === 0 ? 'Radio' : 'Events' })
+                    new TableCell({title: item.nickname}),
+                    new TableCell({title: item.name}),
+                    new TableCell({title: `${TimeHelper.getDay(item.day).label} - ${TimeHelper.getHours()[item.hour].label}`}),
+                    new TableCell({title: item.type === 0 ? 'Radio' : 'Events'})
                 ],
                 actions: actions
             });
         });
     }
 
-    private delete(rowId: number): void {
+    private delete (rowId: number): void {
         this._dialogService.confirm({
             title: `Delete Permanent Show`,
             content: `Are you sure that you want to delete this? If they are just missing their slot,
@@ -120,14 +120,14 @@ export class PermShowsListComponent extends Page implements OnDestroy {
         });
     }
 
-    private onDelete(permShowId: number): void {
+    private onDelete (permShowId: number): void {
         this._httpService.delete(`staff/management/permanent-shows/${permShowId}`)
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Permanent Show has been deleted!'
                 }));
-                this._permShowsListPage.permShows = this._permShowsListPage.permShows.filter(item => permShowId !== item.timetableId);
+                this._data.permShows = this._data.permShows.filter(item => permShowId !== item.timetableId);
                 this.createOrUpdateTable();
             }, error => {
                 this._notificationService.failureNotification(error);
@@ -137,9 +137,9 @@ export class PermShowsListComponent extends Page implements OnDestroy {
     }
 
 
-    private onPage(data: { data: PermShowsListPage }): void {
-        this._permShowsListPage = data.data;
-        this._permShowsListPage.permShows.forEach(item => {
+    private onData (data: { data: PermShowsListPage }): void {
+        this._data = data.data;
+        this._data.permShows.forEach(item => {
             const convertedHour = item.hour + TimeHelper.getTimeOffsetInHours();
             item.hour = TimeHelper.getConvertedHour(convertedHour);
             item.day = TimeHelper.getConvertedDay(convertedHour, item.day);
@@ -147,8 +147,8 @@ export class PermShowsListComponent extends Page implements OnDestroy {
         this.createOrUpdateTable();
 
         this.pagination = new PaginationModel({
-            page: this._permShowsListPage.page,
-            total: this._permShowsListPage.total,
+            page: this._data.page,
+            total: this._data.total,
             url: '/staff/management/permanent-shows/page/:page'
         });
     }

@@ -21,7 +21,7 @@ import { Day, Hour, TimeHelper } from 'shared/helpers/time.helper';
     templateUrl: './permshow.component.html'
 })
 export class PermShowComponent extends Page implements OnDestroy {
-    private _permShow: PermShow = new PermShow();
+    private _data: PermShow = new PermShow();
     tabs: Array<TitleTab> = [];
     days: Array<Day> = TimeHelper.DAYS;
     hours: Array<Hour> = TimeHelper.getHours();
@@ -36,7 +36,7 @@ export class PermShowComponent extends Page implements OnDestroy {
         activatedRoute: ActivatedRoute
     ) {
         super(elementRef);
-        this.addSubscription(activatedRoute.data, this.onPage.bind(this));
+        this.addSubscription(activatedRoute.data, this.onData.bind(this));
         breadcrumbService.breadcrumb = new Breadcrumb({
             current: 'Permanent Show',
             items: [
@@ -66,22 +66,24 @@ export class PermShowComponent extends Page implements OnDestroy {
     }
 
     private save (): void {
-        const convertedHour = TimeHelper.getConvertedHour(this._permShow.hour - TimeHelper.getTimeOffsetInHours());
-        const convertedDay = TimeHelper.getConvertedDay(convertedHour, this._permShow.day);
+        const offsetInHours = this._data.hour + (new Date().getTimezoneOffset() / 60);
+        const convertedHour = TimeHelper.getConvertedHour(offsetInHours);
+        const convertedDay = TimeHelper.getConvertedDay(offsetInHours, this._data.day);
+
         const booking = {
             day: convertedDay,
             hour: convertedHour,
-            nickname: this._permShow.nickname,
-            timetableId: this._permShow.timetableId,
-            name: this._permShow.name,
-            description: this._permShow.description,
-            createdAt: this._permShow.createdAt,
-            type: this._permShow.type,
-            link: this._permShow.link
+            nickname: this._data.nickname,
+            timetableId: this._data.timetableId,
+            name: this._data.name,
+            description: this._data.description,
+            createdAt: this._data.createdAt,
+            type: this._data.type,
+            link: this._data.link
         };
 
-        if (this._permShow.createdAt) {
-            this._httpService.put(`staff/management/permanent-shows/${this._permShow.timetableId}`,
+        if (this._data.createdAt) {
+            this._httpService.put(`staff/management/permanent-shows/${this._data.timetableId}`,
                 {booking: booking})
                 .subscribe(() => {
                         this.onSuccessUpdate();
@@ -105,7 +107,7 @@ export class PermShowComponent extends Page implements OnDestroy {
             title: `Delete Permanent Show`,
             content: `Are you sure that you want to delete this perm show? If they are missing this week,
              you can just unbook it and it'll automatically book next week!`,
-            callback: this.onDelete.bind(this, this._permShow.timetableId)
+            callback: this.onDelete.bind(this, this._data.timetableId)
         });
     }
 
@@ -114,13 +116,13 @@ export class PermShowComponent extends Page implements OnDestroy {
     }
 
     get title (): string {
-        return this._permShow.createdAt ?
-            `Editing Permanent Show: ${this._permShow.name}` :
-            `Creating Permanent Show: ${this._permShow.name}`;
+        return this._data.createdAt ?
+            `Editing Permanent Show: ${this._data.name}` :
+            `Creating Permanent Show: ${this._data.name}`;
     }
 
     get perm (): PermShow {
-        return this._permShow;
+        return this._data;
     }
 
     private onDelete (permShowId: number): void {
@@ -143,7 +145,7 @@ export class PermShowComponent extends Page implements OnDestroy {
             title: 'Success',
             message: 'Permanent show created!'
         }));
-        this._permShow.createdAt = new Date().getTime() / 1000;
+        this._data.createdAt = new Date().getTime() / 1000;
         this.setTabs();
     }
 
@@ -154,10 +156,10 @@ export class PermShowComponent extends Page implements OnDestroy {
         }));
     }
 
-    private onPage (data: { data: PermShow }): void {
-        this._permShow = data.data;
-        this._permShow.hour = TimeHelper.getConvertedHour(this._permShow.hour + TimeHelper.getTimeOffsetInHours());
-        this._permShow.day = TimeHelper.getConvertedDay(this._permShow.hour, this._permShow.day);
+    private onData (data: { data: PermShow }): void {
+        this._data = data.data;
+        this._data.hour = TimeHelper.getConvertedHour(this._data.hour + TimeHelper.getTimeOffsetInHours());
+        this._data.day = TimeHelper.getConvertedDay(this._data.hour, this._data.day);
 
         this.setTabs();
     }
@@ -166,7 +168,7 @@ export class PermShowComponent extends Page implements OnDestroy {
         const tabs = [
             {title: 'Save', value: PermShowActions.SAVE, condition: true},
             {title: 'Back', value: PermShowActions.BACK, condition: true},
-            {title: 'Delete', value: PermShowActions.DELETE, condition: this._permShow.createdAt}
+            {title: 'Delete', value: PermShowActions.DELETE, condition: this._data.createdAt}
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));
