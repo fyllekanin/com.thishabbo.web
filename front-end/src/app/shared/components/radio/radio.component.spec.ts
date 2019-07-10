@@ -7,6 +7,7 @@ import { RadioModel } from 'shared/components/radio/radio.model';
 import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 import { SlimUser } from 'core/services/auth/auth.model';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('RadioComponent', () => {
 
@@ -22,6 +23,7 @@ describe('RadioComponent', () => {
             declarations: [
                 RadioComponent
             ],
+            schemas: [NO_ERRORS_SCHEMA],
             providers: [
                 {
                     provide: RadioService, useValue: {
