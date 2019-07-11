@@ -4,7 +4,7 @@ import { NotificationService } from 'core/services/notification/notification.ser
 import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { catchError, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { User } from 'core/services/auth/auth.model';
+import { SlimUser } from 'core/services/auth/auth.model';
 
 @Injectable()
 export class PostService {
@@ -24,25 +24,25 @@ export class PostService {
             }), catchError(this._notificationService.failureNotification.bind(this._notificationService)));
     }
 
-    likePost(postId: number): Observable<Array<User>> {
+    likePost(postId: number): Observable<Array<SlimUser>> {
         return this._httpService.post(`forum/thread/like/post/${postId}`, null)
             .pipe(map(data => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'You liked the post!'
                 }));
-                return data.map(liker => new User(liker));
+                return data.map(liker => new SlimUser(liker));
             }), catchError(this._notificationService.failureNotification.bind(this._notificationService)));
     }
 
-    unlikePost(postId: number): Observable<Array<User>> {
+    unlikePost(postId: number): Observable<Array<SlimUser>> {
         return this._httpService.delete(`forum/thread/unlike/post/${postId}`, null)
             .pipe(map(data => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'You unliked the post!'
                 }));
-                return data.map(liker => new User(liker));
+                return data.map(liker => new SlimUser(liker));
             }), catchError(this._notificationService.failureNotification.bind(this._notificationService)));
     }
 }

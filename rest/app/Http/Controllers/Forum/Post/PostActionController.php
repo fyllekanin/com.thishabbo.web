@@ -73,7 +73,7 @@ class PostActionController extends Controller {
 
         $likerIds = PostLike::where('postId', $postId)->orderBy('createdAt', 'DESC')->pluck('userId');
         $likers = $likerIds->map(function ($liker) {
-            return UserHelper::getUser($liker);
+            return UserHelper::getSlimUser($liker);
         });
         return response()->json($likers);
     }
@@ -114,7 +114,7 @@ class PostActionController extends Controller {
 
         $likerIds = PostLike::where('postId', $postId)->orderBy('createdAt', 'DESC')->pluck('userId');
         $likers = $likerIds->map(function ($liker) {
-            return UserHelper::getUser($liker);
+            return UserHelper::getSlimUser($liker);
         });
         return response()->json($likers);
     }
