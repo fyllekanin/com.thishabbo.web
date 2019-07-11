@@ -19,7 +19,8 @@ export enum NotificationTypes {
     VISITOR_MESSAGE = 9,
     LIKE_POST = 10,
     LIKE_DJ = 11,
-    RADIO_REQUEST = 12
+    RADIO_REQUEST = 12,
+    LIKE_HOST = 13
 }
 
 export class NotificationModel<T> {
@@ -57,6 +58,7 @@ export class NotificationModel<T> {
                 this._item = new FollowerView(source.item);
                 break;
             case NotificationTypes.LIKE_DJ:
+            case NotificationTypes.LIKE_HOST:
             case NotificationTypes.RADIO_REQUEST:
                 this._item = new UserView(source.item);
                 break;

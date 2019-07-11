@@ -6,6 +6,10 @@
         New Like! <br/>
         {{user.nickname}} likes you on the radio!
     </div>
+    <div *ngIf="isHostLike">
+        New Like! <br/>
+        {{user.nickname}} likes you hosting!
+    </div>
     <div *ngIf="isRadioRequest">
         New request! <br/>
         {{user ? user.nickname : 'anonymous'}} sent a request!

@@ -67,4 +67,9 @@ class Type {
         'type' => 12,
         'description' => 'When a user requested to the radio'
     ];
+
+    const LIKE_HOST = [
+        'type' => 13,
+        'description' => 'When a user requested to the radio'
+    ];
 }

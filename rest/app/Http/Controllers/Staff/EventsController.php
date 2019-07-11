@@ -7,6 +7,7 @@ use App\EloquentModels\Log\LogUser;
 use App\EloquentModels\Staff\Event;
 use App\EloquentModels\Staff\Timetable;
 use App\EloquentModels\User\User;
+use App\Factories\Notification\NotificationFactory;
 use App\Helpers\ConfigHelper;
 use App\Helpers\DataHelper;
 use App\Helpers\PermissionHelper;
@@ -73,6 +74,7 @@ class EventsController extends Controller {
         $eventUser->likes++;
         $eventUser->save();
 
+        NotificationFactory::newLikeHost($eventUser->userId, $user->userId);
         Logger::user($user->userId, $request->ip(), Action::LIKED_HOST, [], $current->user->userId);
         return response()->json();
     }

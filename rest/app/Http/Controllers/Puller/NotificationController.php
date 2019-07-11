@@ -90,7 +90,6 @@ class NotificationController extends Controller {
      * Get request for fetching unread notification
      *
      * @param Request $request
-     * @param         $createdAfter
      *
      * @return array NotificationView
      */

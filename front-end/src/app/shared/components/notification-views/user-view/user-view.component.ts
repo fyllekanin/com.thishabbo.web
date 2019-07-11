@@ -40,6 +40,10 @@ export class UserViewComponent implements NotificationView {
         return this._notification.type === NotificationTypes.LIKE_DJ;
     }
 
+    get isHostLike (): boolean {
+        return this._notification.type === NotificationTypes.LIKE_HOST;
+    }
+
     get isRadioRequest (): boolean {
         return this._notification.type === NotificationTypes.RADIO_REQUEST;
     }
@@ -50,6 +54,7 @@ export class UserViewComponent implements NotificationView {
         if (event && event.className.indexOf('readOnly') === -1) {
             switch (this._notification.type) {
                 case NotificationTypes.LIKE_DJ:
+                case NotificationTypes.LIKE_HOST:
                     this._router.navigateByUrl(`/user/profile/${this.user.nickname}`);
                     break;
                 case NotificationTypes.RADIO_REQUEST:

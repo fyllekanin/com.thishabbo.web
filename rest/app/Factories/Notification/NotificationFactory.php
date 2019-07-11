@@ -49,6 +49,7 @@ class NotificationFactory {
                 $item = new VisitorMessageView($notification);
                 break;
             case Type::getType(Type::LIKE_DJ):
+            case Type::getType(Type::LIKE_HOST):
             case Type::getType(Type::RADIO_REQUEST):
                 $item = new UserView($notification);
                 break;
@@ -62,6 +63,16 @@ class NotificationFactory {
             'userId' => $userId,
             'senderId' => $senderId,
             'type' => Type::getType(Type::RADIO_REQUEST),
+            'contentId' => 0,
+            'createdAt' => time()
+        ]);
+    }
+
+    public static function newLikeHost($userId, $senderId) {
+        DB::table('notifications')->insert([
+            'userId' => $userId,
+            'senderId' => $senderId,
+            'type' => Type::getType(Type::LIKE_HOST),
             'contentId' => 0,
             'createdAt' => time()
         ]);

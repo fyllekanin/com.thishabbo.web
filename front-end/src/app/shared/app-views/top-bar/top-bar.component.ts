@@ -146,7 +146,8 @@ export class TopBarComponent {
             NotificationTypes.THREAD_SUBSCRIPTION,
             NotificationTypes.LIKE_POST,
             NotificationTypes.RADIO_REQUEST,
-            NotificationTypes.LIKE_DJ
+            NotificationTypes.LIKE_DJ,
+            NotificationTypes.LIKE_HOST
         ].indexOf(notification.type) > -1;
     }
 }
