@@ -41,6 +41,8 @@ class Kernel extends ConsoleKernel {
                 'song' => $radio->song
             ]);
         })->everyFiveMinutes();
+
+        $schedule->call('\App\Console\Jobs\ClearDJSays@init')->hourlyAt(01);
     }
 
     /**
