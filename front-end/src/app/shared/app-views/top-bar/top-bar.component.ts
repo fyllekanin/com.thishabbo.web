@@ -60,7 +60,7 @@ export class TopBarComponent {
                 this._continuesInformationService.removeNotification(notificationId);
                 this._notifications = this._notifications.filter(this.isNotification)
                     .filter(notification => notification.notificationId !== notificationId);
-                this._messages = this._notifications.filter(this.isMessage)
+                this._messages = this._messages.filter(this.isMessage)
                     .filter(notification => notification.notificationId !== notificationId);
                 this._routerStateService.updateNotificationAmount(this._notifications.length);
             });
@@ -145,7 +145,8 @@ export class TopBarComponent {
             NotificationTypes.QUOTE,
             NotificationTypes.THREAD_SUBSCRIPTION,
             NotificationTypes.LIKE_POST,
-            NotificationTypes.RADIO_REQUEST
+            NotificationTypes.RADIO_REQUEST,
+            NotificationTypes.LIKE_DJ
         ].indexOf(notification.type) > -1;
     }
 }
