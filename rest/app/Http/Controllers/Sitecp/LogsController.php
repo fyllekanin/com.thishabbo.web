@@ -96,19 +96,13 @@ class LogsController extends Controller {
             } catch (Exception $e) {
                 // Left empty intentionally
             }
-
-            $action = Action::getActionFromId($item->action);
-            $content = '';
-            if ($action && isset($action['contentId']) && $action['contentId']) {
-                $content = DB::table($action['contentTable'])->where($action['contentId'], $item->contentId)->value($action['contentSelect']);
-            }
-
+            
             return (object)[
                 'logId' => $item->logId,
                 'user' => UserHelper::getSlimUser($item->userId),
                 'action' => Action::getActionFromId($item->action)['description'],
                 'data' => $data,
-                'content' => $content,
+                'content' => $this->getContentFromLog($item),
                 'createdAt' => $item->createdAt->timestamp
             ];
         });
@@ -121,5 +115,13 @@ class LogsController extends Controller {
             'page' => $page,
             'items' => $items
         ]);
+    }
+
+    private function getContentFromLog($item) {
+        $action = Action::getActionFromId($item->action);
+        if ($action && isset($action['contentId']) && $action['contentId']) {
+            return DB::table($action['contentTable'])->where($action['contentId'], $item->contentId)->value($action['contentSelect']);
+        }
+        return '';
     }
 }

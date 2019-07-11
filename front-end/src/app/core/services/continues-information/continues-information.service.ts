@@ -19,7 +19,7 @@ export class ContinuesInformationService implements Resolve<void> {
 
     private _timer;
     private _fastInterval = 1000 * 5;
-    private _slowInterval = (1000 * 60) * 5;
+    private _slowInterval = (1000 * 60);
     private _currentInterval = this._fastInterval;
 
     constructor (
@@ -94,9 +94,7 @@ export class ContinuesInformationService implements Resolve<void> {
     private updateInterval (): void {
         this._ngZone.runOutsideAngular(() => {
             clearInterval(this._timer);
-            if (this._lastNotificationCheck < 1) {
-                this.doRequest();
-            }
+            this.doRequest();
             this._timer = setInterval(() => {
                 this.doRequest();
             }, this._currentInterval);
