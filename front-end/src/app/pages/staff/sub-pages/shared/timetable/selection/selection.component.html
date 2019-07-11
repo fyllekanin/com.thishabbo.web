@@ -1,4 +1,4 @@
-<label><strong>User</strong> <em> (Leave empty for yourself)</em></label>
+<label *ngIf="canBookForOther"><strong>User</strong> <em> (Leave empty for yourself)</em></label>
 <input type="text" placeholder="Search for Nickname..." [(ngModel)]="nickname" *ngIf="canBookForOther"/>
 <div *ngIf="canSelectEvent" class="event-type">
     <strong>Select event</strong>
