@@ -66,7 +66,7 @@ By default our code uses "root" as username and no password. If you got a differ
 you will have to change it.
 
 After this you will have to use your xampp or whatever web server you got, and point your http://localhost
-to (using the example) C:/users/{user}/Desktop/repos/com.thishabbo.web/rest/public
+to (using the example) C:/users/{user}/Desktop/repos/com.thishabbo.web/rest
 
 And finally, you need the global angular CLI, so run "npm install -g @angular/cli"
 
@@ -100,7 +100,7 @@ Look in the scripts/run_tests.sh file to see how they are ran
 If you have passed all the previous steps, what you have to do when you want to run
 the application is the following.
 
-1) Set the "localhost" of your webserver to the root of the project in the rest/public catalog
+1) Set the "localhost" of your webserver to the root of the project in the rest catalog
 2) Start the webserver
 2.1) This will be the host for the back-end stuff (the REST API)
 3) Open front-end and run the following command "npm run start"
