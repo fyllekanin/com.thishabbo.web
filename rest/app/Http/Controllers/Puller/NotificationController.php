@@ -94,11 +94,10 @@ class NotificationController extends Controller {
      *
      * @return array NotificationView
      */
-    public function getUnreadNotifications(Request $request, $createdAfter) {
+    public function getUnreadNotifications(Request $request) {
         $user = $request->get('auth');
 
         $notifications = DB::table('notifications')
-            ->where('createdAt', '>=', $createdAfter)
             ->where('readAt', '<', 1)
             ->where('userId', $user->userId)
             ->get()

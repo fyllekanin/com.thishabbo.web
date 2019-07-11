@@ -50,7 +50,7 @@ Route::group(['middleware' => ['maintenance']], function () {
     Route::get('/page/forum/latest-posts/page/{page}', 'Forum\Post\PostCrudController@getLatestPosts');
     Route::get('/page/forum/latest-threads/page/{page}', 'Forum\Thread\ThreadCrudController@getLatestThreads');
 
-    Route::get('puller/notifications/unread/{createdAfter}', 'Puller\NotificationController@getUnreadNotifications');
+    Route::get('puller/notifications/unread', 'Puller\NotificationController@getUnreadNotifications');
 
     Route::get('radio/timetable', 'Staff\RadioController@getTimetable');
     Route::get('events/timetable', 'Staff\EventsController@getTimetable');
