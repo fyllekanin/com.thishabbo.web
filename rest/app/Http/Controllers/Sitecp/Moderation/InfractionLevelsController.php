@@ -90,7 +90,7 @@ class InfractionLevelsController extends Controller {
 
         Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_INFRACTION_LEVEL, [
             'infractionLevelId' => $infractionLevel->infractionLevelId
-        ]);
+        ], $infractionLevel->infractionLevelId);
         return $this->getInfractionLevel($request, $infractionLevel->infractionLevelId);
     }
 
@@ -111,7 +111,7 @@ class InfractionLevelsController extends Controller {
 
         Logger::sitecp($user->userId, $request->ip(), Action::DELETED_INFRACTION_LEVEL, [
             'infractionLevelId' => $infractionLevel->infractionLevelId
-        ]);
+        ], $infractionLevel->infractionLevelId);
         return response()->json();
     }
 
@@ -136,7 +136,7 @@ class InfractionLevelsController extends Controller {
 
         Logger::sitecp($user->userId, $request->ip(), Action::CREATED_INFRACTION_LEVEL, [
             'infractionLevelId' => $infractionLevel->infractionLevelId
-        ]);
+        ], $infractionLevel->infractionLevelId);
         return $this->getInfractionLevel($request, $infractionLevel->infractionLevelId);
     }
 

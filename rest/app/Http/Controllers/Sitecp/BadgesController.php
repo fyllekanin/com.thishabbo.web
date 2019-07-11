@@ -82,7 +82,7 @@ class BadgesController extends Controller {
         $badge->isDeleted = 1;
         $badge->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_BADGE, ['badge' => $badge->name]);
+        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_BADGE, ['badge' => $badge->name], $badge->badgeId);
 
         return response()->json();
     }
@@ -120,7 +120,7 @@ class BadgesController extends Controller {
         $destination = SettingsHelper::getResourcesPath('images/badges');
         $badgeImage->move($destination, $fileName);
 
-        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_BADGE, ['badge' => $badge->name]);
+        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_BADGE, ['badge' => $badge->name], $badge->badgeId);
 
         return $this->getBadge($badge->badgeId);
     }

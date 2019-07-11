@@ -83,7 +83,7 @@ class AutoBanController extends Controller {
 
         Logger::sitecp($user->userId, $request->ip(), Action::CREATED_AUTO_BAN, [
             'title' => $autoBan->title
-        ]);
+        ], $autoBan->autoBanId);
         return $this->getAutoBan($newAutoBan->autoBanId);
     }
 
@@ -108,7 +108,7 @@ class AutoBanController extends Controller {
 
         Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_AUTO_BAN, [
             'title' => $autoBan->title
-        ]);
+        ], $autoBan->autoBanId);
         return $this->getAutoBan($autoBan->autoBanId);
     }
 
@@ -128,7 +128,7 @@ class AutoBanController extends Controller {
 
         Logger::sitecp($user->userId, $request->ip(), Action::DELETED_AUTO_BAN, [
             'title' => $autoBan->title
-        ]);
+        ], $autoBan->autoBanId);
         return response()->json();
     }
 

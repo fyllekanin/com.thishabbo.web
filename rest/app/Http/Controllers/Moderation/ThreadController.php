@@ -174,7 +174,7 @@ class ThreadController extends Controller {
         $thread->isOpen = false;
         $thread->save();
 
-        Logger::mod($user->userId, $request->ip(), Action::CLOSED_THREAD, ['thread' => $thread->title]);
+        Logger::mod($user->userId, $request->ip(), Action::CLOSED_THREAD, ['thread' => $thread->title], $thread->threadId);
         return response()->json();
     }
 
@@ -198,7 +198,7 @@ class ThreadController extends Controller {
         $thread->isOpen = true;
         $thread->save();
 
-        Logger::mod($user->userId, $request->ip(), Action::OPEN_THREAD, ['thread' => $thread->title]);
+        Logger::mod($user->userId, $request->ip(), Action::OPEN_THREAD, ['thread' => $thread->title], $thread->threadId);
         return response()->json();
     }
 
@@ -220,7 +220,7 @@ class ThreadController extends Controller {
         $thread->isSticky = true;
         $thread->save();
 
-        Logger::mod($user->userId, $request->ip(), Action::STICKIED_THREAD, ['thread' => $thread->title]);
+        Logger::mod($user->userId, $request->ip(), Action::STICKIED_THREAD, [], $thread->threadId);
         return response()->json();
     }
 
@@ -242,7 +242,7 @@ class ThreadController extends Controller {
         $thread->isSticky = 0;
         $thread->save();
 
-        Logger::mod($user->userId, $request->ip(), Action::UNSTICKIED_THREAD, ['thread' => $thread->title]);
+        Logger::mod($user->userId, $request->ip(), Action::UNSTICKIED_THREAD, [], $thread->threadId);
         return response()->json();
     }
 
@@ -274,7 +274,7 @@ class ThreadController extends Controller {
         }
 
         $this->forumService->updateLastPostIdOnCategory($thread->categoryId);
-        Logger::mod($user->userId, $request->ip(), Action::UNAPPROVED_THREAD, ['thread' => $thread->title]);
+        Logger::mod($user->userId, $request->ip(), Action::UNAPPROVED_THREAD, [], $thread->threadId);
         return response()->json();
     }
 
@@ -306,7 +306,7 @@ class ThreadController extends Controller {
         }
 
         $this->forumService->updateLastPostIdOnCategory($thread->categoryId);
-        Logger::mod($user->userId, $request->ip(), Action::APPROVED_THREAD, ['thread' => $thread->title]);
+        Logger::mod($user->userId, $request->ip(), Action::APPROVED_THREAD, [], $thread->threadId);
         return response()->json();
     }
 
@@ -341,7 +341,7 @@ class ThreadController extends Controller {
         $thread->save();
 
         $this->forumService->updateLastPostIdOnCategory($thread->categoryId);
-        Logger::mod($user->userId, $request->ip(), Action::DELETED_THREAD, ['thread' => $thread->title]);
+        Logger::mod($user->userId, $request->ip(), Action::DELETED_THREAD, [], $thread->threadId);
         return response()->json();
     }
 }

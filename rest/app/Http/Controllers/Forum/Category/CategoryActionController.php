@@ -72,7 +72,7 @@ class CategoryActionController extends Controller {
             $ignore->save();
         }
 
-        Logger::user($user->userId, $request->ip(), Action::IGNORED_CATEGORY, ['categoryId' => $categoryId]);
+        Logger::user($user->userId, $request->ip(), Action::IGNORED_CATEGORY, ['categoryId' => $categoryId], $categoryId);
         return response()->json();
     }
 
@@ -89,7 +89,7 @@ class CategoryActionController extends Controller {
 
         $item->delete();
 
-        Logger::user($user->userId, $request->ip(), Action::UNIGNORED_CATEGORY, ['categoryId' => $categoryId]);
+        Logger::user($user->userId, $request->ip(), Action::UNIGNORED_CATEGORY, ['categoryId' => $categoryId], $categoryId);
         return response()->json();
     }
 
@@ -115,7 +115,7 @@ class CategoryActionController extends Controller {
         ]);
         $subscription->save();
 
-        Logger::user($user->userId, $request->ip(), Action::SUBSCRIBE_CATEGORY, ['categoryId' => $category->categoryId]);
+        Logger::user($user->userId, $request->ip(), Action::SUBSCRIBE_CATEGORY, ['categoryId' => $category->categoryId], $category->categoryId);
         return response()->json();
     }
 
@@ -135,7 +135,7 @@ class CategoryActionController extends Controller {
 
         CategorySubscription::where('userId', $user->userId)->where('categoryId', $category->categoryId)->delete();
 
-        Logger::user($user->userId, $request->ip(), Action::UNSUBSCRIBE_CATEGORY, ['categoryId' => $category->categoryId]);
+        Logger::user($user->userId, $request->ip(), Action::UNSUBSCRIBE_CATEGORY, ['categoryId' => $category->categoryId], $category->categoryId);
         return response()->json();
     }
 }

@@ -65,7 +65,8 @@ class ItemsController extends Controller {
         $userItem->save();
 
         Logger::sitecp($user->userId, $request->ip(), Action::GAVE_USER_ITEM, [
-            'receiverId' => $receiver->userId
+            'receiverId' => $receiver->userId,
+            'shopItemId' => $shopItem->shopItemId
         ], $shopItem->shopItemId);
         return response()->json([
             'userItemId' => $userItem->userItemId,
@@ -116,7 +117,7 @@ class ItemsController extends Controller {
         $item->isDeleted = 1;
         $item->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_SHOP_ITEM);
+        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_SHOP_ITEM, [], $item->shopItemId);
         return response()->json();
     }
 
@@ -136,7 +137,7 @@ class ItemsController extends Controller {
         $item->data = json_encode($data->data);
         $item->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_SHOP_ITEM);
+        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_SHOP_ITEM, [], $item->shopItemId);
         return $this->getItem($shopItemId);
     }
 
@@ -170,7 +171,7 @@ class ItemsController extends Controller {
         if ($item->createdBy > 0) {
             $this->myImpl->giveCreatorItem($item);
         }
-        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_SHOP_ITEM);
+        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_SHOP_ITEM, [], $item->shopItemId);
         return $this->getItem($item->shopItemId);
     }
 

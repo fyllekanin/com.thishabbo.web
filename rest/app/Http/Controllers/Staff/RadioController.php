@@ -156,7 +156,7 @@ class RadioController extends Controller {
             'Something went wrong');
         curl_close($curl);
 
-        Logger::staff($user->userId, $request->ip(), Action::KICKED_DJ_OFF, ['dj' => $radio->nickname]);
+        Logger::staff($user->userId, $request->ip(), Action::KICKED_DJ_OFF, [], $radio->userId);
         return response()->json();
     }
 

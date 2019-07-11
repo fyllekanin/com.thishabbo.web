@@ -109,7 +109,7 @@ class GroupsController extends Controller {
         UserGroup::where('groupId', $groupId)->delete();
         User::where('displayGroupId', $groupId)->update(['displayGroupId' => 0]);
 
-        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_GROUP, ['group' => $group->name]);
+        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_GROUP, ['group' => $group->name], $group->groupId);
         GroupUpdated::dispatch($groupId);
         return response()->json();
     }
@@ -154,7 +154,7 @@ class GroupsController extends Controller {
         ]);
         $group->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_GROUP, ['group' => $group->name]);
+        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_GROUP, ['group' => $group->name], $group->groupId);
         return $this->getGroup($request, $group->groupId);
     }
 
@@ -205,7 +205,7 @@ class GroupsController extends Controller {
 
         GroupUpdated::dispatch($groupId);
 
-        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_GROUP, ['group' => $group->name]);
+        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_GROUP, ['group' => $group->name], $group->groupId);
         return $this->getGroup($request, $groupId);
     }
 

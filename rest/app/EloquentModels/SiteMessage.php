@@ -5,6 +5,9 @@ namespace App\EloquentModels;
 use App\EloquentModels\Models\DeletableModel;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * @property mixed siteMessageId
+ */
 class SiteMessage extends DeletableModel {
     protected $table = 'site_messages';
     protected $primaryKey = 'siteMessageId';

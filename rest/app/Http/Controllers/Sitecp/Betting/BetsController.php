@@ -44,7 +44,7 @@ class BetsController extends Controller {
 
         Logger::sitecp($user->userId, $request->ip(), Action::SUSPENDED_BET, [
             'bet' => $bet->name
-        ]);
+        ], $bet->betId);
         return response()->json();
     }
 
@@ -65,7 +65,7 @@ class BetsController extends Controller {
 
         Logger::sitecp($user->userId, $request->ip(), Action::UNSUSPENDED_BET, [
             'bet' => $bet->name
-        ]);
+        ], $bet->betId);
         return response()->json();
     }
 
@@ -94,7 +94,7 @@ class BetsController extends Controller {
         Logger::sitecp($user->userId, $request->ip(), Action::SET_BET_RESULT, [
             'bet' => $bet->name,
             'result' => $result
-        ]);
+        ], $bet->betId);
         return response()->json($bet);
     }
 
@@ -168,7 +168,7 @@ class BetsController extends Controller {
         ]);
         $newBet->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_BET, ['bet' => $bet->name]);
+        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_BET, ['bet' => $bet->name], $bet->betId);
         return $this->getBet($newBet->betId);
     }
 
@@ -194,7 +194,7 @@ class BetsController extends Controller {
         $bet->displayOrder = $newBet->displayOrder;
         $bet->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_BET, ['bet' => $bet->name]);;
+        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_BET, ['bet' => $bet->name], $bet->betId);;
         return $this->getBet($newBet->betId);
     }
 
@@ -215,7 +215,7 @@ class BetsController extends Controller {
 
         $this->deleteUserBets($betId);
 
-        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_BET, ['bet' => $bet->name]);
+        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_BET, ['bet' => $bet->name], $bet->betId);
         return response()->json();
     }
 
