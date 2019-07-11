@@ -130,7 +130,7 @@ export class ProfileAccolade {
             return '';
         }
         const date = new Date(this.end * 1000);
-        return `- ${TimeHelper.ABBR_MONTHS[date.getMonth()]} ${date.getFullYear()}`;
+        return ` - ${TimeHelper.ABBR_MONTHS[date.getMonth()]} ${date.getFullYear()}`;
     }
 }
 
