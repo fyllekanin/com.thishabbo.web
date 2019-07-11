@@ -13,9 +13,9 @@ export class ContinuesInformationService implements Resolve<void> {
     private _onContinuesInformationSubject: Subject<ContinuesInformationModel> = new Subject();
     private _onDeviceSettingsUpdated: Subject<void> = new Subject();
 
-    private _lastNotificationCheck = 0;
     private _notificationsSubject: Subject<Array<NotificationModel<any>>> = new Subject();
     private _notifications: Array<NotificationModel<any>> = [];
+    private _readNotifications: Array<number> = [];
 
     private _timer;
     private _fastInterval = 1000 * 5;
@@ -36,7 +36,6 @@ export class ContinuesInformationService implements Resolve<void> {
             if (!this._authService.isLoggedIn()) {
                 this._notifications = [];
                 this._notificationsSubject.next(this._notifications);
-                this._lastNotificationCheck = 0;
             }
         });
     }
@@ -50,10 +49,12 @@ export class ContinuesInformationService implements Resolve<void> {
     }
 
     removeNotification (notificationId: number): void {
+        this._readNotifications.push(notificationId);
         this._notifications = this._notifications.filter(item => item.notificationId !== notificationId);
     }
 
     removeNotificationIds (ids: Array<number>): void {
+        this._readNotifications = this._readNotifications.concat(ids);
         this._notifications = this._notifications.filter(notification => ids.indexOf(notification.notificationId) === -1);
     }
 
@@ -94,9 +95,7 @@ export class ContinuesInformationService implements Resolve<void> {
     private updateInterval (): void {
         this._ngZone.runOutsideAngular(() => {
             clearInterval(this._timer);
-            if (this._lastNotificationCheck < 1) {
-                this.doRequest();
-            }
+            this.doRequest();
             this._timer = setInterval(() => {
                 this.doRequest();
             }, this._currentInterval);
@@ -107,7 +106,7 @@ export class ContinuesInformationService implements Resolve<void> {
         if (!this._authService.isLoggedIn()) {
             return;
         }
-        this._httpService.get(`puller/notifications/unread/${this._lastNotificationCheck}`)
+        this._httpService.get(`puller/notifications/unread`)
             .subscribe(this.onNotificationData.bind(this));
     }
 
@@ -118,7 +117,6 @@ export class ContinuesInformationService implements Resolve<void> {
             this._onContinuesInformationSubject.next(data);
 
             if (this._notifications.length < data.unreadNotifications) {
-                this._lastNotificationCheck = 0;
                 this._notifications = [];
                 this.fetchNotifications();
             }
@@ -134,15 +132,21 @@ export class ContinuesInformationService implements Resolve<void> {
     }
 
     private onNotificationData (res: Array<any>): void {
-        const newNotifications = res.map(item => new NotificationModel(item));
-        const newNotificationIds = newNotifications.map(notification => notification.notificationId);
+        this._notifications = res.map(item => new NotificationModel(item));
 
-        this._notifications = this._notifications.filter(notification => newNotificationIds.indexOf(notification.notificationId) > -1);
-        this._notifications = this._notifications.concat(newNotifications);
-
+        const notificationIds = [];
+        this._notifications = this._notifications
+            .filter(notification => this._readNotifications.indexOf(notification.notificationId) === -1)
+            .filter(notification => {
+                if (notificationIds.indexOf(notification.notificationId) === -1) {
+                    notificationIds.push(notification.notificationId);
+                    return true;
+                }
+                return false;
+            });
         this._notifications.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'notificationId'));
+
         this._notificationsSubject.next(this._notifications);
-        this._lastNotificationCheck = Math.floor(new Date().getTime() / 1000);
     }
 
     private isFastInterval () {

@@ -68,7 +68,7 @@ class CategoryController extends Controller {
         ]);
         $newBetCategory->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_BETTING_CATEGORY, ['category' => $newBetCategory->name]);
+        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_BETTING_CATEGORY, ['category' => $newBetCategory->name], $newBetCategory->betCategoryId);
         return $this->getBetCategory($newBetCategory->betCategoryId);
     }
 
@@ -93,7 +93,7 @@ class CategoryController extends Controller {
         $betCategory->displayOrder = $newBetCategory->displayOrder;
         $betCategory->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_BETTING_CATEGORY, ['category' => $betCategory->name]);
+        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_BETTING_CATEGORY, ['category' => $betCategory->name], $betCategory->betCategoryId);
         return $this->getBetCategory($betCategory->betCategoryId);
     }
 
@@ -117,7 +117,7 @@ class CategoryController extends Controller {
             'betCategoryId' => 0
         ]);
 
-        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_BETTING_CATEGORY, ['category' => $betCategory->name]);
+        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_BETTING_CATEGORY, ['category' => $betCategory->name], $betCategory->betCategoryId);
         return response()->json();
     }
 

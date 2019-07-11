@@ -53,7 +53,7 @@ class ThreadActionController extends Controller {
         ]);
         $ignore->save();
 
-        Logger::user($user->userId, $request->ip(), Action::IGNORED_THREAD, ['threadId' => $threadId]);
+        Logger::user($user->userId, $request->ip(), Action::IGNORED_THREAD, ['threadId' => $threadId], $threadId);
         return response()->json();
     }
 
@@ -70,7 +70,7 @@ class ThreadActionController extends Controller {
 
         $item->delete();
 
-        Logger::user($user->userId, $request->ip(), Action::UNIGNORED_THREAD, ['threadId' => $threadId]);
+        Logger::user($user->userId, $request->ip(), Action::UNIGNORED_THREAD, ['threadId' => $threadId], $threadId);
         return response()->json();
     }
 

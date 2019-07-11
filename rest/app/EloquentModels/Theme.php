@@ -6,6 +6,7 @@ use App\EloquentModels\Models\DeletableModel;
 
 /**
  * @property mixed title
+ * @property mixed themeId
  */
 class Theme extends DeletableModel {
     protected $table = 'themes';

@@ -57,7 +57,7 @@ class ThemeController extends Controller {
         ]);
         $theme->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_THEME, ['theme' => $theme->title]);
+        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_THEME, ['theme' => $theme->title], $theme->themeId);
         return response()->json();
     }
 
@@ -82,7 +82,7 @@ class ThemeController extends Controller {
         $theme->css = $newTheme->css;
         $theme->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_THEME, ['theme' => $theme->title]);
+        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_THEME, ['theme' => $theme->title], $theme->themeId);
         return response()->json();
     }
 
@@ -100,7 +100,7 @@ class ThemeController extends Controller {
         $theme->isDeleted = true;
         $theme->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_THEME, ['theme' => $theme->title]);
+        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_THEME, ['theme' => $theme->title], $theme->themeId);
         return response()->json();
     }
 
@@ -119,7 +119,7 @@ class ThemeController extends Controller {
         $theme->isDefault = true;
         $theme->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::MADE_THEME_DEFAULT, ['theme' => $theme->title]);
+        Logger::sitecp($user->userId, $request->ip(), Action::MADE_THEME_DEFAULT, ['theme' => $theme->title], $theme->themeId);
         return response()->json();
     }
 

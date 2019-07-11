@@ -14,6 +14,7 @@ use App\Models\Logger\Action;
 use App\Utils\BBcodeUtil;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Mockery\Exception;
 
@@ -95,12 +96,13 @@ class LogsController extends Controller {
             } catch (Exception $e) {
                 // Left empty intentionally
             }
-
+            
             return (object)[
                 'logId' => $item->logId,
                 'user' => UserHelper::getSlimUser($item->userId),
                 'action' => Action::getActionFromId($item->action)['description'],
                 'data' => $data,
+                'content' => $this->getContentFromLog($item),
                 'createdAt' => $item->createdAt->timestamp
             ];
         });
@@ -113,5 +115,13 @@ class LogsController extends Controller {
             'page' => $page,
             'items' => $items
         ]);
+    }
+
+    private function getContentFromLog($item) {
+        $action = Action::getActionFromId($item->action);
+        if ($action && isset($action['contentId']) && $action['contentId']) {
+            return DB::table($action['contentTable'])->where($action['contentId'], $item->contentId)->value($action['contentSelect']);
+        }
+        return '';
     }
 }

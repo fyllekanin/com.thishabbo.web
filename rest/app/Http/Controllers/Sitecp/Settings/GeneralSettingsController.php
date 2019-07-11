@@ -80,9 +80,7 @@ class GeneralSettingsController extends Controller {
         ]);
         $siteMessage->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_SITE_MESSAGE, [
-            'siteMessageId' => []
-        ]);
+        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_SITE_MESSAGE, [], $siteMessage->siteMessageId);
         return response()->json();
     }
 
@@ -111,9 +109,7 @@ class GeneralSettingsController extends Controller {
         $siteMessage->type = $data->type;
         $siteMessage->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_SITE_MESSAGE, [
-            'siteMessageId' => []
-        ]);
+        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_SITE_MESSAGE, [], $siteMessage->siteMessageId);
         return response()->json();
     }
 
@@ -130,9 +126,7 @@ class GeneralSettingsController extends Controller {
         $siteMessage->isDeleted = true;
         $siteMessage->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_SITE_MESSAGE, [
-            'siteMessageId' => []
-        ]);
+        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_SITE_MESSAGE, [], $siteMessage->siteMessageId);
         return response()->json();
     }
 

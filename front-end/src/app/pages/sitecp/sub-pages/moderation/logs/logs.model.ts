@@ -19,9 +19,14 @@ export class LogItem {
     createdAt: number;
     @objectOf(Object)
     data: object;
+    @primitive()
+    content: string;
 
     constructor (source: Partial<LogItem>) {
         ClassHelper.assign(this, source);
+        if (!this.user) {
+            this.user = new SlimUser({nickname: 'Unknown'});
+        }
     }
 }
 

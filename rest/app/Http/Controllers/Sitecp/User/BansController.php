@@ -92,7 +92,7 @@ class BansController extends Controller {
         $ban->liftReason = $liftData->reason;
         $ban->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::UNBANNED_USER, ['name' => $current->nickname]);
+        Logger::sitecp($user->userId, $request->ip(), Action::UNBANNED_USER, ['name' => $current->nickname], $current->userId);
         return response()->json($this->mapBan($ban));
     }
 

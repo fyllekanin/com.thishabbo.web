@@ -56,9 +56,10 @@ class PermissionController extends Controller {
             PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId,
                 'You do not have access to this category');
 
-            $permission = ForumPermission::where('categoryId', $categoryId)->where('groupId', $groupToBeUpdated->groupId);
+            $permission = ForumPermission::where('categoryId', $categoryId)->where('groupId', $groupToBeUpdated->groupId)->first();
+            $permissionsBefore = null;
 
-            if ($permission->count('categoryId') == 0) {
+            if (!$permission) {
                 $perm = new ForumPermission([
                     'categoryId' => $categoryId,
                     'groupId' => $groupToBeUpdated->groupId,
@@ -67,17 +68,20 @@ class PermissionController extends Controller {
                 ]);
                 $perm->save();
             } else {
-                $permission->update([
-                    'permissions' => $permissions,
-                    'isAuthOnly' => $isAuthOnly,
-                    'updatedAt' => time()
-                ]);
+                $permissionsBefore = $this->buildForumPermissions($permission);
+                $permission->permissions = $permissions;
+                $permission->isAuthOnly = $isAuthOnly;
+                $permission->save();
             }
             if ($cascade) {
                 $this->updateCategoryAndChildrenForumPermissions($categoryId, $groupToBeUpdated->groupId, $permissions, $isAuthOnly);
             }
 
-            Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_FORUM_PERMISSIONS, ['wasCascade' => $cascade], $categoryId);
+            Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_FORUM_PERMISSIONS, [
+                'wasCascade' => $cascade,
+                'permissionsBefore' => $permissionsBefore,
+                'permissionsAfter' => $this->buildForumPermissions((object)['permissions' => $permissions])
+            ], $categoryId);
         }
         return response()->json();
     }

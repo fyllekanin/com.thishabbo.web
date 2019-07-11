@@ -65,7 +65,7 @@ class GroupsController extends Controller {
 
         $groupRequest->save();
 
-        Logger::user($user->userId, $request->ip(), Action::APPLIED_FOR_GROUP, ['name' => $group->name]);
+        Logger::user($user->userId, $request->ip(), Action::APPLIED_FOR_GROUP, ['name' => $group->name], $group->groupId);
         return response()->json();
     }
 
@@ -92,7 +92,7 @@ class GroupsController extends Controller {
 
         UserUpdated::dispatch($user->userId, ConfigHelper::getUserUpdateTypes()->CLEAR_GROUP);
 
-        Logger::user($user->userId, $request->ip(), Action::LEFT_GROUP, ['name' => $group->name]);
+        Logger::user($user->userId, $request->ip(), Action::LEFT_GROUP, ['name' => $group->name], $group->groupId);
         return response()->json();
     }
 

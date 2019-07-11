@@ -120,7 +120,7 @@ class ThreadPollController extends Controller {
 
         ThreadPollAnswer::where('threadPollId', $threadPoll->threadPollId)->update(['isDeleted' => true]);
 
-        Logger::mod($user->userId, $request->ip(), Action::DELETED_POLL, ['poll' => $threadPoll->question]);
+        Logger::mod($user->userId, $request->ip(), Action::DELETED_POLL, ['poll' => $threadPoll->question], $threadPoll->threadPollId);
         return response()->json();
     }
 }

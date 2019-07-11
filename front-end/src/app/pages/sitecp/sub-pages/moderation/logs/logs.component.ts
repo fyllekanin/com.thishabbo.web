@@ -140,6 +140,7 @@ export class LogsComponent extends Page implements OnDestroy {
             cells: [
                 new TableCell({title: item.user.nickname}),
                 new TableCell({title: item.action}),
+                new TableCell({title: item.content}),
                 new TableCell({title: TimeHelper.getTime(item.createdAt)})
             ],
             actions: [
@@ -152,6 +153,7 @@ export class LogsComponent extends Page implements OnDestroy {
         return [
             new TableHeader({title: 'User'}),
             new TableHeader({title: 'Action'}),
+            new TableHeader({title: 'Content'}),
             new TableHeader({title: 'When'})
         ];
     }

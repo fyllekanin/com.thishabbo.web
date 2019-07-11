@@ -89,7 +89,7 @@ class PrefixController extends Controller {
         ]);
         $prefix->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_PREFIX, ['prefix' => $prefix->text]);
+        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_PREFIX, ['prefix' => $prefix->text], $prefix->prefixId);
         return $this->getPrefix($request, $prefix->prefixId);
     }
 
@@ -124,7 +124,7 @@ class PrefixController extends Controller {
         $existing->categoryIds = implode(',', $categoryIds);
         $existing->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_PREFIX, ['prefix' => $prefix->text]);
+        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_PREFIX, ['prefix' => $prefix->text], $prefix->prefixId);
         return $this->getPrefix($request, $prefixId);
     }
 
@@ -145,7 +145,7 @@ class PrefixController extends Controller {
         $prefix->isDeleted = true;
         $prefix->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_PREFIX, ['prefix' => $prefix->text]);
+        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_PREFIX, ['prefix' => $prefix->text], $prefix->prefixId);
         return response()->json();
     }
 

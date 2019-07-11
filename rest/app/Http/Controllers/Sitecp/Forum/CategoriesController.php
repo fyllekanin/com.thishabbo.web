@@ -89,7 +89,7 @@ class CategoriesController extends Controller {
         $category->save();
 
         $this->createForumPermissions($category);
-        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_CATEGORY, ['category' => $category->title]);
+        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_CATEGORY, ['category' => $category->title], $category->categoryId);
 
         return $this->getCategory($request, $category->categoryId);
     }
@@ -114,7 +114,7 @@ class CategoriesController extends Controller {
         Category::where('parentId', $categoryId)->update(['parentId' => -1]);
 
         $this->forumService->updateLastPostIdOnCategory($category->parentId);
-        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_CATEGORY, ['category' => $category->title]);
+        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_CATEGORY, ['category' => $category->title], $category->categoryId);
         return response()->json();
     }
 
@@ -175,7 +175,7 @@ class CategoriesController extends Controller {
         Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_CATEGORY, [
             'category' => $newCategory->title,
             'isCascade' => $isCascade
-        ]);
+        ], $newCategory->categoryId);
         return $this->getCategory($request, $categoryId);
     }
 

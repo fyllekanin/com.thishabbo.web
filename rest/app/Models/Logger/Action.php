@@ -49,7 +49,10 @@ class Action {
         'data' => [
             'profit' => 'Amount user won'
         ],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const LOST_ROULETTE = [
@@ -58,7 +61,10 @@ class Action {
         'data' => [
             'amount' => 'Amount that user lost'
         ],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const PLACED_BET = [
@@ -68,7 +74,10 @@ class Action {
             'bet' => 'Name on bet',
             'amount' => 'Amount that was betted'
         ],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const REGISTERED = [
@@ -77,28 +86,40 @@ class Action {
         'data' => [
             'name' => 'Name of user that registered'
         ],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UPDATED_SOCIAL_NETWORKS = [
         'id' => 5,
         'description' => 'User updated social networks',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UPDATED_AVATAR = [
         'id' => 6,
         'description' => 'User updated a avatar',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UPDATED_SIGNATURE = [
         'id' => 7,
         'description' => 'User updated a signature',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const APPLIED_FOR_GROUP = [
@@ -107,7 +128,10 @@ class Action {
         'data' => [
             'name' => 'Name of group'
         ],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => 'groupId',
+        'contentTable' => 'groups',
+        'contentSelect' => 'name'
     ];
 
     const LEFT_GROUP = [
@@ -116,14 +140,20 @@ class Action {
         'data' => [
             'name' => 'Name of group'
         ],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => 'groupId',
+        'contentTable' => 'groups',
+        'contentSelect' => 'name'
     ];
 
     const UPDATED_IGNORED_NOTIFICATIONS = [
         'id' => 10,
         'description' => 'User updated their ignored notifications',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UPDATED_HOMEPAGE = [
@@ -132,21 +162,30 @@ class Action {
         'data' => [
             'homepage' => 'Homepage that was set'
         ],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UPDATED_PASSWORD = [
         'id' => 12,
         'description' => 'User updated a password',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UPDATED_POSTBIT = [
         'id' => 14,
         'description' => 'User updated their a postbit',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const REQUESTED_THC_FOR_USER = [
@@ -155,7 +194,10 @@ class Action {
         'data' => [
             'name' => 'User the request was for'
         ],
-        'log' => 'log_staff'
+        'log' => 'log_staff',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UPDATED_DJ_SAYS = [
@@ -164,39 +206,52 @@ class Action {
         'data' => [
             'says' => 'Updated the says to'
         ],
-        'log' => 'log_staff'
+        'log' => 'log_staff',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const KICKED_DJ_OFF = [
         'id' => 17,
         'description' => 'Kicked a current DJ off air',
-        'data' => [
-            'dj' => 'DJ that was on air'
-        ],
-        'log' => 'log_staff'
+        'data' => [],
+        'log' => 'log_staff',
+        'contentId' => 'userId',
+        'contentTable' => 'users',
+        'contentSelect' => 'nickname'
     ];
 
     const LIKED_DJ = [
         'id' => 18,
         'description' => 'Liked the current DJ',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => 'userId',
+        'contentTable' => 'users',
+        'contentSelect' => 'nickname'
     ];
 
     const DID_RADIO_REQUEST = [
         'id' => 19,
         'description' => 'Sent a request to current DJ',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UNBOOKED_RADIO_SLOT = [
         'id' => 20,
         'description' => 'User unbooked a slot',
         'data' => [
-            'timetableId' => 'Day the slot was on'
+            'timetableId' => 'ID of timetable that was unbooked'
         ],
-        'log' => 'log_staff'
+        'log' => 'log_staff',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const BOOKED_RADIO_SLOT = [
@@ -205,7 +260,10 @@ class Action {
         'data' => [
             'timetableId' => 'timetableId'
         ],
-        'log' => 'log_staff'
+        'log' => 'log_staff',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const BOOKED_PERM_SLOT = [
@@ -214,7 +272,10 @@ class Action {
         'data' => [
             'timetableId' => 'ID of booking'
         ],
-        'log' => 'log_staff'
+        'log' => 'log_staff',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const EDITED_PERM_SLOT = [
@@ -223,7 +284,10 @@ class Action {
         'data' => [
             'show' => 'Name of the perm show'
         ],
-        'log' => 'log_staff'
+        'log' => 'log_staff',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const DELETED_PERM_SLOT = [
@@ -232,7 +296,10 @@ class Action {
         'data' => [
             'timetableId' => 'ID of booking'
         ],
-        'log' => 'log_staff'
+        'log' => 'log_staff',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const CREATED_EVENT_TYPE = [
@@ -241,7 +308,10 @@ class Action {
         'data' => [
             'event' => 'Name of event'
         ],
-        'log' => 'log_staff'
+        'log' => 'log_staff',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UPDATED_EVENT_TYPE = [
@@ -250,7 +320,10 @@ class Action {
         'data' => [
             'event' => 'Name of event'
         ],
-        'log' => 'log_staff'
+        'log' => 'log_staff',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const DELETED_EVENT_TYPE = [
@@ -259,7 +332,10 @@ class Action {
         'data' => [
             'event' => 'Name of event'
         ],
-        'log' => 'log_staff'
+        'log' => 'log_staff',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UNBOOKED_EVENT_SLOT = [
@@ -268,7 +344,10 @@ class Action {
         'data' => [
             'timetableId' => 'ID of slot that got unbooked'
         ],
-        'log' => 'log_staff'
+        'log' => 'log_staff',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const BOOKED_EVENT_SLOT = [
@@ -279,7 +358,10 @@ class Action {
             'hour' => 'Hour the slot was on',
             'name' => 'User that have the slot'
         ],
-        'log' => 'log_staff'
+        'log' => 'log_staff',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const DELETED_POST = [
@@ -288,7 +370,10 @@ class Action {
         'data' => [
             'thread' => 'Name of thread'
         ],
-        'log' => 'log_mod'
+        'log' => 'log_mod',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const APPROVED_POST = [
@@ -297,7 +382,10 @@ class Action {
         'data' => [
             'thread' => 'Name of thread'
         ],
-        'log' => 'log_mod'
+        'log' => 'log_mod',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UNAPPROVED_POST = [
@@ -306,52 +394,60 @@ class Action {
         'data' => [
             'thread' => 'Name of thread'
         ],
-        'log' => 'log_mod'
+        'log' => 'log_mod',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const STICKIED_THREAD = [
         'id' => 33,
         'description' => 'User stickied a thread',
-        'data' => [
-            'thread' => 'Name of thread'
-        ],
-        'log' => 'log_mod'
+        'data' => [],
+        'log' => 'log_mod',
+        'contentId' => 'threadId',
+        'contentTable' => 'threads',
+        'contentSelect' => 'title'
     ];
 
     const UNSTICKIED_THREAD = [
         'id' => 34,
         'description' => 'User unstickied a thread',
-        'data' => [
-            'thread' => 'Name of thread'
-        ],
-        'log' => 'log_mod'
+        'data' => [],
+        'log' => 'log_mod',
+        'contentId' => 'threadId',
+        'contentTable' => 'threads',
+        'contentSelect' => 'title'
     ];
 
     const APPROVED_THREAD = [
         'id' => 35,
         'description' => 'User approved a thread',
-        'data' => [
-            'thread' => 'Name of thread'
-        ],
-        'log' => 'log_mod'
+        'data' => [],
+        'log' => 'log_mod',
+        'contentId' => 'threadId',
+        'contentTable' => 'threads',
+        'contentSelect' => 'title'
     ];
 
     const UNAPPROVED_THREAD = [
         'id' => 36,
         'description' => 'User unapproved a thread',
-        'data' => [
-            'thread' => 'Name of thread'
-        ],
-        'log' => 'log_mod'
+        'data' => [],
+        'log' => 'log_mod',
+        'contentId' => 'threadId',
+        'contentTable' => 'threads',
+        'contentSelect' => 'title'
     ];
 
     const DELETED_THREAD = [
         'id' => 37,
         'description' => 'User deleted a thread',
-        'data' => [
-            'thread' => 'Name of thread'
-        ],
-        'log' => 'log_mod'
+        'data' => [],
+        'log' => 'log_mod',
+        'contentId' => 'threadId',
+        'contentTable' => 'threads',
+        'contentSelect' => 'title'
     ];
 
     const UPDATED_THREAD = [
@@ -359,9 +455,14 @@ class Action {
         'description' => 'User updated a thread',
         'data' => [
             'thread' => 'Name of thread',
-            'postId' => 'ID of post for the thread'
+            'postId' => 'ID of post for the thread',
+            'newContent' => 'New content',
+            'oldContent' => 'Old content'
         ],
-        'log' => 'log_mod'
+        'log' => 'log_mod',
+        'contentId' => 'threadId',
+        'contentTable' => 'threads',
+        'contentSelect' => 'title'
     ];
 
     const UPDATED_POST = [
@@ -373,7 +474,10 @@ class Action {
             'oldContent' => 'Content before update',
             'newContent' => 'Content after update'
         ],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const CREATED_POST = [
@@ -384,7 +488,10 @@ class Action {
             'threadId' => 'Id of thread',
             'categoryId' => 'Id of category'
         ],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const LIKED_POST = [
@@ -395,21 +502,30 @@ class Action {
             'threadId' => 'Id of thread',
             'categoryId' => 'Id of category'
         ],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UNLIKED_POST = [
         'id' => 42,
         'description' => 'User unliked a post',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const STARTED_SNAKE_GAME = [
         'id' => 43,
         'description' => 'User started snake a game',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const FINISHED_SNAKE_GAME = [
@@ -418,14 +534,20 @@ class Action {
         'data' => [
             'score' => 'Score the user got in the game'
         ],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const STARTED_FASTEST_TYPE_GAME = [
         'id' => 45,
         'description' => 'User started a fastest type game',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const FINISHED_FASTEST_TYPE_GAME = [
@@ -434,28 +556,40 @@ class Action {
         'data' => [
             'score' => 'Score the user got in the game'
         ],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const TURNED_ON_MAINTENANCE = [
         'id' => 47,
         'description' => 'User turned on maintenance mode',
         'data' => [],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const TURNED_OFF_MAINTENANCE = [
         'id' => 48,
         'description' => 'User turned off maintenance mode',
         'data' => [],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UPDATED_WELCOME_BOT = [
         'id' => 49,
         'description' => 'User updated the welcome bot',
         'data' => [],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const CREATED_PREFIX = [
@@ -464,7 +598,10 @@ class Action {
         'data' => [
             'prefix' => 'Name of prefix'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'prefixId',
+        'contentTable' => 'prefixes',
+        'contentSelect' => 'text'
     ];
 
     const UPDATED_PREFIX = [
@@ -473,7 +610,10 @@ class Action {
         'data' => [
             'prefix' => 'Name of prefix'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'prefixId',
+        'contentTable' => 'prefixes',
+        'contentSelect' => 'text'
     ];
 
     const DELETED_PREFIX = [
@@ -482,14 +622,20 @@ class Action {
         'data' => [
             'prefix' => 'Name of prefix'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'prefixId',
+        'contentTable' => 'prefixes',
+        'contentSelect' => 'text'
     ];
 
     const UPDATED_GROUP_LIST = [
         'id' => 53,
         'description' => 'User updated a group list',
         'data' => [],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const APPROVED_GROUP_APPLICATION = [
@@ -499,7 +645,10 @@ class Action {
             'group' => 'Name of group',
             'name' => 'Name of user that got approved'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const DENIED_GROUP_APPLICATION = [
@@ -509,7 +658,10 @@ class Action {
             'group' => 'Name of group',
             'name' => 'Name of user that got approved'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const DELETED_GROUP = [
@@ -518,7 +670,10 @@ class Action {
         'data' => [
             'group' => 'Name of group'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'groupId',
+        'contentTable' => 'groups',
+        'contentSelect' => 'name'
     ];
 
     const CREATED_GROUP = [
@@ -527,7 +682,10 @@ class Action {
         'data' => [
             'group' => 'Name of group'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'groupId',
+        'contentTable' => 'groups',
+        'contentSelect' => 'name'
     ];
 
     const UPDATED_GROUP = [
@@ -536,7 +694,10 @@ class Action {
         'data' => [
             'group' => 'Name of group'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'groupId',
+        'contentTable' => 'groups',
+        'contentSelect' => 'name'
     ];
 
     const CREATED_BBCODE = [
@@ -545,7 +706,10 @@ class Action {
         'data' => [
             'bbcode' => 'name of bbcode'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'bbcodeId',
+        'contentTable' => 'bbcodes',
+        'contentSelect' => 'name'
     ];
 
     const UPDATED_BBCODE = [
@@ -554,7 +718,10 @@ class Action {
         'data' => [
             'bbcode' => 'name of bbcode'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'bbcodeId',
+        'contentTable' => 'bbcodes',
+        'contentSelect' => 'name'
     ];
 
     const DELETED_BBCODE = [
@@ -563,14 +730,20 @@ class Action {
         'data' => [
             'bbcode' => 'name of bbcode'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'bbcodeId',
+        'contentTable' => 'bbcodes',
+        'contentSelect' => 'name'
     ];
 
     const UPDATED_NOTICES_ORDER = [
         'id' => 62,
         'description' => 'User updated order of a notice',
         'data' => [],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const DELETED_NOTICE = [
@@ -579,7 +752,10 @@ class Action {
         'data' => [
             'notice' => 'Title of notice'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const CREATED_NOTICE = [
@@ -588,7 +764,10 @@ class Action {
         'data' => [
             'notice' => 'Title of notice'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UPDATED_USERS_WITH_BADGE = [
@@ -597,7 +776,10 @@ class Action {
         'data' => [
             'badge' => 'Name of badge'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const DELETED_BADGE = [
@@ -606,7 +788,10 @@ class Action {
         'data' => [
             'badge' => 'Name of badge'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'badgeId',
+        'contentTable' => 'badges',
+        'contentSelect' => 'name'
     ];
 
     const CREATED_BADGE = [
@@ -615,7 +800,10 @@ class Action {
         'data' => [
             'badge' => 'Name of badge'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'badgeId',
+        'contentTable' => 'badges',
+        'contentSelect' => 'name'
     ];
 
     const UPDATED_BADGE = [
@@ -624,14 +812,20 @@ class Action {
         'data' => [
             'badge' => 'Name of badge'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'badgeId',
+        'contentTable' => 'badges',
+        'contentSelect' => 'name'
     ];
 
     const MANAGED_THC_REQUESTS = [
         'id' => 70,
         'description' => 'Dealt with a THC requests',
         'data' => [],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UPDATED_USERS_GROUPS = [
@@ -641,7 +835,10 @@ class Action {
             'before' => 'Usergroup ids before update',
             'after' => 'Usergroup ids after update'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'userId',
+        'contentTable' => 'users',
+        'contentSelect' => 'nickname'
     ];
 
     const UPDATED_USERS_BASIC_SETTINGS = [
@@ -653,14 +850,20 @@ class Action {
             'beforeHabbo' => 'Habbo before change',
             'afterHabbo' => 'Habbo after change'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'userId',
+        'contentTable' => 'users',
+        'contentSelect' => 'nickname'
     ];
 
     const BANNED_USER = [
         'id' => 73,
         'description' => 'Banned a user',
         'data' => [],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'userId',
+        'contentTable' => 'users',
+        'contentSelect' => 'nickname'
     ];
 
     const UNBANNED_USER = [
@@ -669,23 +872,34 @@ class Action {
         'data' => [
             'name' => 'Name of user'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'userId',
+        'contentTable' => 'users',
+        'contentSelect' => 'nickname'
     ];
 
     const UPDATED_FORUM_PERMISSIONS = [
         'id' => 75,
         'description' => 'Updated forum permission on group',
         'data' => [
-            'wasCascade' => 'If it was cascading permissions'
+            'wasCascade' => 'If it was cascading permissions',
+            'permissionsBefore' => 'Forum perms before update',
+            'permissionsAfter' => 'Forum perms after update'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'categoryId',
+        'contentTable' => 'categories',
+        'contentSelect' => 'title'
     ];
 
     const UPDATED_CATEGORIES_ORDER = [
         'id' => 76,
         'description' => 'Updated display order of a categories',
         'data' => [],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const CREATED_CATEGORY = [
@@ -694,7 +908,10 @@ class Action {
         'data' => [
             'category' => 'Title of category'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'categoryId',
+        'contentTable' => 'categories',
+        'contentSelect' => 'title'
     ];
 
     const UPDATED_CATEGORY = [
@@ -704,7 +921,10 @@ class Action {
             'category' => 'Title of category',
             'isCascade' => 'If the update was cascading for options'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'categoryId',
+        'contentTable' => 'categories',
+        'contentSelect' => 'title'
     ];
 
     const DELETED_CATEGORY = [
@@ -713,7 +933,10 @@ class Action {
         'data' => [
             'category' => 'Title of category'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'categoryId',
+        'contentTable' => 'categories',
+        'contentSelect' => 'title'
     ];
 
     const CREATED_BETTING_CATEGORY = [
@@ -722,7 +945,10 @@ class Action {
         'data' => [
             'category' => 'Title of category'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'categoryId',
+        'contentTable' => 'bet_categories',
+        'contentSelect' => 'name'
     ];
 
     const UPDATED_BETTING_CATEGORY = [
@@ -731,7 +957,10 @@ class Action {
         'data' => [
             'category' => 'Title of category'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'categoryId',
+        'contentTable' => 'bet_categories',
+        'contentSelect' => 'name'
     ];
 
     const DELETED_BETTING_CATEGORY = [
@@ -740,7 +969,10 @@ class Action {
         'data' => [
             'category' => 'Title of category'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'categoryId',
+        'contentTable' => 'bet_categories',
+        'contentSelect' => 'name'
     ];
 
     const SET_BET_RESULT = [
@@ -750,7 +982,10 @@ class Action {
             'bet' => 'Name of bet',
             'result' => 'Win or lose'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'betId',
+        'contentTable' => 'bets',
+        'contentSelect' => 'name'
     ];
 
     const CREATED_BET = [
@@ -759,7 +994,10 @@ class Action {
         'data' => [
             'bet' => 'Name of bet'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'betId',
+        'contentTable' => 'bets',
+        'contentSelect' => 'name'
     ];
 
     const DELETED_BET = [
@@ -768,7 +1006,10 @@ class Action {
         'data' => [
             'bet' => 'Name of bet'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'betId',
+        'contentTable' => 'bets',
+        'contentSelect' => 'name'
     ];
 
     const UPDATED_BET = [
@@ -777,7 +1018,10 @@ class Action {
         'data' => [
             'bet' => 'Name of bet'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'betId',
+        'contentTable' => 'bets',
+        'contentSelect' => 'name'
     ];
 
     const CREATED_THREAD = [
@@ -788,7 +1032,10 @@ class Action {
             'threadId' => 'Id of thread',
             'categoryId' => 'Id of category'
         ],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => 'threadId',
+        'contentTable' => 'threads',
+        'contentSelect' => 'title'
     ];
 
     const UPDATED_DISPLAY_GROUP = [
@@ -797,21 +1044,30 @@ class Action {
         'data' => [
             'group' => 'Name of group'
         ],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const REPORTED_A_POST = [
         'id' => 90,
         'description' => 'User reported a post',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const VOTED_ON_POLL = [
         'id' => 91,
         'description' => 'User voted on a poll',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const DELETED_POLL = [
@@ -820,7 +1076,10 @@ class Action {
         'data' => [
             'poll' => 'Question of poll'
         ],
-        'log' => 'log_mod'
+        'log' => 'log_mod',
+        'contentId' => 'threadPollId',
+        'contentTable' => 'thread_polls',
+        'contentSelect' => 'question'
     ];
 
     const CLOSED_THREAD = [
@@ -829,7 +1088,10 @@ class Action {
         'data' => [
             'thread' => 'Title of thread'
         ],
-        'log' => 'log_mod'
+        'log' => 'log_mod',
+        'contentId' => 'threadId',
+        'contentTable' => 'threads',
+        'contentSelect' => 'title'
     ];
 
     const OPEN_THREAD = [
@@ -838,7 +1100,10 @@ class Action {
         'data' => [
             'thread' => 'Title of thread'
         ],
-        'log' => 'log_mod'
+        'log' => 'log_mod',
+        'contentId' => 'threadId',
+        'contentTable' => 'threads',
+        'contentSelect' => 'title'
     ];
 
     const SUBSCRIBE_CATEGORY = [
@@ -847,7 +1112,10 @@ class Action {
         'data' => [
             'categoryId' => 'Id of category'
         ],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => 'categoryId',
+        'contentTable' => 'categories',
+        'contentSelect' => 'title'
     ];
 
     const UNSUBSCRIBE_CATEGORY = [
@@ -856,7 +1124,10 @@ class Action {
         'data' => [
             'categoryId' => 'Id of category'
         ],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => 'categoryId',
+        'contentTable' => 'categories',
+        'contentSelect' => 'title'
     ];
 
     const CHANGE_THREAD_OWNER = [
@@ -867,7 +1138,10 @@ class Action {
             'originalOwner' => 'Id of original owner',
             'newOwner' => 'Id of new owner'
         ],
-        'log' => 'log_mod'
+        'log' => 'log_mod',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const MERGE_POSTS = [
@@ -876,14 +1150,20 @@ class Action {
         'data' => [
             'postIds' => 'Ids of posts'
         ],
-        'log' => 'log_mod'
+        'log' => 'log_mod',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UPDATED_COVER = [
         'id' => 99,
         'description' => 'User updated cover',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const IGNORED_CATEGORY = [
@@ -892,7 +1172,10 @@ class Action {
         'data' => [
             'categoryId' => 'ID of category that the user ignored'
         ],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => 'categoryId',
+        'contentTable' => 'categories',
+        'contentSelect' => 'title'
     ];
 
     const UNIGNORED_CATEGORY = [
@@ -901,7 +1184,10 @@ class Action {
         'data' => [
             'categoryId' => 'ID of category that the user unignored'
         ],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => 'categoryId',
+        'contentTable' => 'categories',
+        'contentSelect' => 'title'
     ];
 
     const IGNORED_THREAD = [
@@ -910,7 +1196,10 @@ class Action {
         'data' => [
             'threadId' => 'ID of thread that the user ignored'
         ],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => 'threadId',
+        'contentTable' => 'threads',
+        'contentSelect' => 'title'
     ];
 
     const UNIGNORED_THREAD = [
@@ -919,7 +1208,10 @@ class Action {
         'data' => [
             'threadId' => 'ID of thread that the user unignored'
         ],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => 'threadId',
+        'contentTable' => 'threads',
+        'contentSelect' => 'title'
     ];
     const MOVE_THREADS = [
         'id' => 104,
@@ -929,7 +1221,10 @@ class Action {
             'sourceId' => 'Category moved from',
             'destinationId' => 'Category moved to'
         ],
-        'log' => 'log_mod'
+        'log' => 'log_mod',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const MERGED_USERS = [
@@ -939,7 +1234,10 @@ class Action {
             'sourceUser' => 'Source user',
             'destinationUser' => 'Destination user'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UPDATED_CONNECTION_INFORMATION = [
@@ -949,7 +1247,10 @@ class Action {
             'oldInformation' => 'Old information.',
             'newInformation' => 'New information.'
         ],
-        'log' => 'log_staff'
+        'log' => 'log_staff',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const CREATED_AUTO_BAN = [
@@ -958,7 +1259,10 @@ class Action {
         'data' => [
             'title' => 'Title of automatic ban'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'autoBanId',
+        'contentTable' => 'auto_bans',
+        'contentSelect' => 'title'
     ];
 
     const DELETED_AUTO_BAN = [
@@ -967,7 +1271,10 @@ class Action {
         'data' => [
             'title' => 'Title of automatic ban'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'autoBanId',
+        'contentTable' => 'auto_bans',
+        'contentSelect' => 'title'
     ];
 
     const UPDATED_AUTO_BAN = [
@@ -976,21 +1283,30 @@ class Action {
         'data' => [
             'title' => 'Title of automatic ban'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'autoBanId',
+        'contentTable' => 'auto_bans',
+        'contentSelect' => 'title'
     ];
 
     const UPDATED_STAFF_OF_THE_WEEK = [
         'id' => 110,
         'description' => 'Updated the staff of the week',
         'data' => [],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UPDATED_MEMBER_OF_THE_MONTH = [
         'id' => 111,
         'description' => 'Updated the member of the month',
         'data' => [],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const DELETED_INFRACTION_LEVEL = [
@@ -999,7 +1315,10 @@ class Action {
         'data' => [
             'infractionLevelId' => 'Id of infraction level'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'infractionLevelId',
+        'contentTable' => 'infraction_levels',
+        'contentSelect' => 'title'
     ];
 
     const CREATED_INFRACTION_LEVEL = [
@@ -1008,7 +1327,10 @@ class Action {
         'data' => [
             'infractionLevelId' => 'Id of infraction level'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'infractionLevelId',
+        'contentTable' => 'infraction_levels',
+        'contentSelect' => 'title'
     ];
 
     const UPDATED_INFRACTION_LEVEL = [
@@ -1017,7 +1339,10 @@ class Action {
         'data' => [
             'infractionLevelId' => 'Id of infraction level'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'infractionLevelId',
+        'contentTable' => 'infraction_levels',
+        'contentSelect' => 'title'
     ];
 
     const CREATED_INFRACTION = [
@@ -1027,7 +1352,10 @@ class Action {
             'userId' => 'Id of user infracted',
             'reason' => 'Reason for infraction'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const CREATED_DO_NOT_HIRE = [
@@ -1036,7 +1364,10 @@ class Action {
         'data' => [
             'nickname' => 'Name of the user.'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UPDATED_DO_NOT_HIRE = [
@@ -1045,7 +1376,10 @@ class Action {
         'data' => [
             'nickname' => 'Name of the user.'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const DELETED_DO_NOT_HIRE = [
@@ -1054,7 +1388,10 @@ class Action {
         'data' => [
             'nickname' => 'Name of the user.'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const DELETED_INFRACTION = [
@@ -1063,7 +1400,10 @@ class Action {
         'data' => [
             'infractionId' => 'Id of infraction'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const CREATED_BAN_ON_SIGHT = [
@@ -1072,7 +1412,10 @@ class Action {
         'data' => [
             'name' => 'Name of the user'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UPDATED_BAN_ON_SIGHT = [
@@ -1081,7 +1424,10 @@ class Action {
         'data' => [
             'name' => 'Name of the user'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const DELETED_BAN_ON_SIGHT = [
@@ -1090,7 +1436,10 @@ class Action {
         'data' => [
             'name' => 'Name of the user'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UPDATED_NAVIGATION = [
@@ -1100,7 +1449,10 @@ class Action {
             'oldNavigation' => 'Json formatted old navigation',
             'newNavigation' => 'Json formatted new navigation'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UPDATED_HABBO = [
@@ -1110,16 +1462,20 @@ class Action {
             'from' => 'had habbo name',
             'to' => 'new habbo name'
         ],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const CREATED_SITE_MESSAGE = [
         'id' => 128,
         'description' => 'Created a site message',
-        'data' => [
-            'siteMessageId' => 'Id of the site message'
-        ],
-        'log' => 'log_sitecp'
+        'data' => [],
+        'log' => 'log_sitecp',
+        'contentId' => 'siteMessageId',
+        'contentTable' => 'site_messages',
+        'contentSelect' => 'title'
     ];
 
     const UPDATED_SITE_MESSAGE = [
@@ -1128,7 +1484,10 @@ class Action {
         'data' => [
             'siteMessageId' => 'Id of the site message'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'siteMessageId',
+        'contentTable' => 'site_messages',
+        'contentSelect' => 'title'
     ];
 
     const DELETED_SITE_MESSAGE = [
@@ -1137,7 +1496,10 @@ class Action {
         'data' => [
             'siteMessageId' => 'Id of the site message'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'siteMessageId',
+        'contentTable' => 'site_messages',
+        'contentSelect' => 'title'
     ];
 
     const CHANGED_NICKNAME = [
@@ -1149,7 +1511,10 @@ class Action {
             'stolenFromOld' => 'User that had the nickname before',
             'stolenFromNew' => 'Users new nickname'
         ],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const CREATED_PAGE = [
@@ -1158,7 +1523,10 @@ class Action {
         'data' => [
             'title' => 'Title of page'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UPDATED_PAGE = [
@@ -1167,7 +1535,10 @@ class Action {
         'data' => [
             'title' => 'Title of page'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const DELETED_PAGE = [
@@ -1176,7 +1547,10 @@ class Action {
         'data' => [
             'title' => 'Title of page'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const SUSPENDED_BET = [
@@ -1185,7 +1559,10 @@ class Action {
         'data' => [
             'bet' => 'Title bet'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'betId',
+        'contentTable' => 'bets',
+        'contentSelect' => 'name'
     ];
 
     const UNSUSPENDED_BET = [
@@ -1194,7 +1571,10 @@ class Action {
         'data' => [
             'bet' => 'Title bet'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'betId',
+        'contentTable' => 'bets',
+        'contentSelect' => 'name'
     ];
 
     const CREATED_THEME = [
@@ -1203,7 +1583,10 @@ class Action {
         'data' => [
             'theme' => 'Title of theme'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UPDATED_THEME = [
@@ -1212,7 +1595,10 @@ class Action {
         'data' => [
             'theme' => 'Title of theme'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const DELETED_THEME = [
@@ -1221,7 +1607,10 @@ class Action {
         'data' => [
             'theme' => 'Title of theme'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const MADE_THEME_DEFAULT = [
@@ -1230,14 +1619,20 @@ class Action {
         'data' => [
             'theme' => 'Title of theme'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const CLEARED_THEME_DEFAULT = [
         'id' => 141,
         'description' => 'Cleared default theme',
         'data' => [],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const SELECTED_THEME = [
@@ -1246,28 +1641,40 @@ class Action {
         'data' => [
             'theme' => 'Title of the theme'
         ],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const CREATED_VOUCHER_CODE = [
         'id' => 143,
         'description' => 'Created a voucher code',
         'data' => [],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const DELETED_VOUCHER_CODE = [
         'id' => 144,
         'description' => 'Deleted a voucher code',
         'data' => [],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const CLAIMED_VOUCHER_CODE = [
         'id' => 145,
         'description' => 'Claimed a voucher code',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const CHANGE_POST_OWNER = [
@@ -1278,28 +1685,40 @@ class Action {
             'originalOwner' => 'Id of original owner',
             'newOwner' => 'Id of new owner'
         ],
-        'log' => 'log_mod'
+        'log' => 'log_mod',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const FOLLOWED = [
         'id' => 147,
         'description' => 'Followed a user',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UNFOLLOWED = [
         'id' => 148,
         'description' => 'Followed a user',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UPDATED_PROFILE = [
         'id' => 149,
         'description' => 'User updated profile a setting',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const APPROVED_FOLLOWER = [
@@ -1308,7 +1727,10 @@ class Action {
         'data' => [
             'user' => 'Nickname of user that got denied'
         ],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const DENIED_FOLLOWER = [
@@ -1317,7 +1739,10 @@ class Action {
         'data' => [
             'user' => 'Nickname of user that got denied'
         ],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const REMOVED_FOLLOWER = [
@@ -1326,63 +1751,90 @@ class Action {
         'data' => [
             'user' => 'Nickname of user that got removed!'
         ],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const DELETED_AVATAR = [
         'id' => 153,
         'description' => 'Deleted a avatar',
         'data' => [],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'userId',
+        'contentTable' => 'users',
+        'contentSelect' => 'nickname'
     ];
 
     const DELETED_COVER_PHOTO = [
         'id' => 154,
         'description' => 'Deleted a cover photo',
         'data' => [],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'userId',
+        'contentTable' => 'users',
+        'contentSelect' => 'nickname'
     ];
 
     const DELETED_SIGNATURE = [
         'id' => 155,
         'description' => 'Deleted a signature',
         'data' => [],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'userId',
+        'contentTable' => 'users',
+        'contentSelect' => 'nickname'
     ];
 
     const CREATED_VISITOR_MESSAGE = [
         'id' => 156,
         'description' => 'Created a visitor message',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const CREATED_VISITOR_MESSAGE_LIKE = [
         'id' => 157,
         'description' => 'Created a visitor message like',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const DELETED_VISITOR_MESSAGE_LIKE = [
         'id' => 158,
         'description' => 'Deleted a visitor message like',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const REPORTED_VISITOR_MESSAGE = [
         'id' => 159,
         'description' => 'Reported a visitor message',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const DELETED_VISITOR_MESSAGE = [
         'id' => 160,
         'description' => 'Deleted a visitor message',
         'data' => [],
-        'log' => 'log_mod'
+        'log' => 'log_mod',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const SEARCHED = [
@@ -1391,7 +1843,10 @@ class Action {
         'data' => [
             'text' => 'Search text'
         ],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const CREATED_ACCOLADE = [
@@ -1400,7 +1855,10 @@ class Action {
         'data' => [
             'accoladeId' => 'ID of accolade'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UPDATED_ACCOLADE = [
@@ -1409,7 +1867,10 @@ class Action {
         'data' => [
             'accoladeId' => 'ID of accolade'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const DELETED_ACCOLADE = [
@@ -1418,42 +1879,60 @@ class Action {
         'data' => [
             'accoladeId' => 'ID of accolade'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UPDATED_HOME_PAGE_THREADS = [
         'id' => 166,
         'description' => 'Updated a category id to fetch threads from',
         'data' => [],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const LIKED_HOST = [
         'id' => 167,
         'description' => 'Liked the current host',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const CREATED_SUBSCRIPTION = [
         'id' => 168,
         'description' => 'Created a subscription',
         'data' => [],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'subscriptionId',
+        'contentTable' => 'subscriptions',
+        'contentSelect' => 'title'
     ];
 
     const UPDATED_SUBSCRIPTION = [
         'id' => 169,
         'description' => 'Updated a subscription',
         'data' => [],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'subscriptionId',
+        'contentTable' => 'subscriptions',
+        'contentSelect' => 'title'
     ];
 
     const DELETED_SUBSCRIPTION = [
         'id' => 170,
         'description' => 'Deleted a subscription',
         'data' => [],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'subscriptionId',
+        'contentTable' => 'subscriptions',
+        'contentSelect' => 'title'
     ];
 
     const CREATED_USER_SUBSCRIPTION = [
@@ -1462,7 +1941,10 @@ class Action {
         'data' => [
             'subscriptionId' => 'ID of subscription'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'userId',
+        'contentTable' => 'users',
+        'contentSelect' => 'nickname'
     ];
 
     const UPDATED_USER_SUBSCRIPTION = [
@@ -1471,7 +1953,10 @@ class Action {
         'data' => [
             'subscriptionId' => 'ID of subscription'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'userId',
+        'contentTable' => 'users',
+        'contentSelect' => 'nickname'
     ];
 
     const DELETED_USER_SUBSCRIPTION = [
@@ -1480,77 +1965,110 @@ class Action {
         'data' => [
             'subscriptionId' => 'ID of subscription'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => 'userId',
+        'contentTable' => 'users',
+        'contentSelect' => 'nickname'
     ];
 
     const UPDATED_NAME_COLORS = [
         'id' => 174,
         'description' => 'User updated name colors',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const CREATED_APPLICATION = [
         'id' => 175,
         'description' => 'User created job application',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const CREATED_CONTACT = [
         'id' => 176,
         'description' => 'User contacted',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const CREATED_SHOP_ITEM = [
         'id' => 177,
         'description' => 'User created shop item',
         'data' => [],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UPDATED_SHOP_ITEM = [
         'id' => 178,
         'description' => 'User updated shop item',
         'data' => [],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const DELETED_SHOP_ITEM = [
         'id' => 179,
         'description' => 'User deleted shop item',
         'data' => [],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const READ_ALL_CATEGORIES = [
         'id' => 180,
         'description' => 'User read all categories',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const CREATED_LOOT_BOX = [
         'id' => 181,
         'description' => 'User created loot box',
         'data' => [],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UPDATED_LOOT_BOX = [
         'id' => 182,
         'description' => 'User updated loot box',
         'data' => [],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const DELETED_LOOT_BOX = [
         'id' => 183,
         'description' => 'User deleted loot box',
         'data' => [],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const OPENED_LOOT_BOX = [
@@ -1560,42 +2078,60 @@ class Action {
             'isWin' => 'Boolean',
             'shopItemId' => 'Item ID'
         ],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const BOUGHT_SUBSCRIPTION = [
         'id' => 185,
         'description' => 'User bought a subscription',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const SHOWED_USER_BAR = [
         'id' => 186,
         'description' => 'User showed userbar',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const HIDDEN_USER_BAR = [
         'id' => 187,
         'description' => 'User hidden userbar',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const DELETED_TAB = [
         'id' => 188,
         'description' => 'User deleted one of their tabs',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const ADDED_TAB = [
         'id' => 189,
         'description' => 'User added one of their tabs',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const EDITED_TIMETABLE_SLOT = [
@@ -1607,16 +2143,23 @@ class Action {
             'eventIdBefore' => 'Event ID before',
             'eventIdAfter' => 'Event ID after'
         ],
-        'log' => 'log_staff'
+        'log' => 'log_staff',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const GAVE_USER_ITEM = [
         'id' => 191,
         'description' => 'User gave another user an item',
         'data' => [
-            'receiverId' => 'User ID of the receiver'
+            'receiverId' => 'User ID of the receiver',
+            'shopItemId' => 'Shop item ID of the item'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const DELETED_USER_ITEM = [
@@ -1626,13 +2169,19 @@ class Action {
             'shopItemId' => 'ID of shop item',
             'userId' => 'ID of user that lost the item'
         ],
-        'log' => 'log_sitecp'
+        'log' => 'log_sitecp',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 
     const UPDATED_TABS = [
         'id' => 193,
         'description' => 'User updated their tabs',
         'data' => [],
-        'log' => 'log_user'
+        'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
     ];
 }
