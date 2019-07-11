@@ -11,6 +11,11 @@ class ConfigHelper {
     private static $SETTINGS = 'settings';
     private static $ARCADE = 'arcade';
     private static $SHOP = 'shop';
+    private static $APP = 'app';
+
+    public static function getVersion() {
+        return Config::get(self::$APP . '.version');
+    }
 
     public static function getForumPermissions() {
         return (object)Config::get(self::$PERMISSIONS . '.FORUM');

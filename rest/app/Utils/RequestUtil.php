@@ -11,7 +11,12 @@ class RequestUtil {
         }
         return $parts[1];
     }
+
     public static function getRefreshToken ($request) {
         return $request->header('RefreshAuthorization');
+    }
+
+    public static function getVersion($request) {
+        return $request->header('ClientVersion');
     }
 }
