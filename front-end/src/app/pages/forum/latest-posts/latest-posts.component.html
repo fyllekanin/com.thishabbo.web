@@ -5,8 +5,8 @@
         <div class="grid-x grid-margin-x">
             <div class="cell small-12 latest-post-page" *ngFor="let item of items"
                  [ngClass]="!isSingleRow ? 'medium-6' : ''">
-                <img appUserProfile appLazyLoad [float]="'left'"
-                     [image]="'/rest/resources/images/users/' + item.user.userId + '.gif'"/>
+                <div appUserProfile appLazyLoad [float]="'left'"
+                     [image]="'url(/rest/resources/images/users/' + item.user.userId + '.gif)'"></div>
                 <div class="latest-post-info truncate">
                     <a [routerLink]="['/forum', 'thread', item.threadId, 'page', item.page]"
                        [queryParams]="{ scrollTo: 'post-' + item.postId}" [ngClass]="item.isRead ? '' : 'bold'">
