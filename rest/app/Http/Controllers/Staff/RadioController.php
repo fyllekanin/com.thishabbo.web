@@ -144,7 +144,7 @@ class RadioController extends Controller {
         $settingKeys = ConfigHelper::getKeyConfig();
         $radio = new RadioSettings(SettingsHelper::getSettingValue($settingKeys->radio));
 
-        $url = 'http://' . $radio->ip . ':' . $radio->port . '/sitecp.cgi?mode=kicksrc';
+        $url = 'http://' . $radio->ip . ':' . $radio->port . '/admin.cgi?mode=kicksrc';
         $curl = DataHelper::getBasicCurl($url);
         curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         curl_setopt($curl, CURLOPT_HEADER, false);
