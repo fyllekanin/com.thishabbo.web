@@ -10,7 +10,6 @@ use App\EloquentModels\Forum\Prefix;
 use App\EloquentModels\Forum\TemplateData;
 use App\EloquentModels\Forum\Thread;
 use App\EloquentModels\Forum\ThreadPoll;
-use App\EloquentModels\Forum\ThreadPollAnswer;
 use App\EloquentModels\Forum\ThreadRead;
 use App\EloquentModels\Forum\ThreadSubscription;
 use App\Helpers\ConfigHelper;
@@ -239,7 +238,7 @@ class ThreadCrudController extends Controller {
 
         $thread->prefixes = Prefix::availableForCategory($thread->categoryId)->get(['prefixId', 'text']);
         $thread->forumPermissions = $this->forumService->getForumPermissionsForUserInCategory($user->userId, $categoryId);
-        $thread->poll = $this->getThreadPoll($thread->threadId, $user->userId);
+        $thread->poll = $this->forumService->getThreadPoll($thread->threadId, $user->userId);
         $thread->canHavePoll = $category->options & ConfigHelper::getForumOptionsConfig()->threadsCanHavePolls;
 
         return response()->json($thread);
@@ -292,7 +291,7 @@ class ThreadCrudController extends Controller {
         $thread->forumPermissions = $permissions;
         $thread->isSubscribed = ThreadSubscription::where('userId', $user->userId)->where('threadId', $threadId)->count('threadId') > 0;
         $thread->append('categoryIsOpen');
-        $thread->poll = $this->getThreadPoll($thread->threadId, $user->userId);
+        $thread->poll = $this->forumService->getThreadPoll($thread->threadId, $user->userId);
         $thread->isIgnored = IgnoredThread::where('userId', $user->userId)->where('threadId', $thread->threadId)->count('threadId') > 0;
         $thread->template = $thread->category->template;
 
@@ -400,31 +399,6 @@ class ThreadCrudController extends Controller {
             'threadId' => $thread->threadId,
             'categoryId' => $thread->categoryId
         ], $thread->threadId);
-    }
-
-    /**
-     * @param $threadId
-     * @param $userId
-     *
-     * @return array|null
-     */
-    private function getThreadPoll($threadId, $userId) {
-        $threadPoll = ThreadPoll::where('threadId', $threadId)->first();
-        if (!$threadPoll) {
-            return null;
-        }
-
-        $answers = json_decode($threadPoll->options);
-        foreach ($answers as $answer) {
-            $answer->answers = ThreadPollAnswer::where('threadPollId', $threadPoll->threadPollId)
-                ->where('answer', $answer->id)->count('threadPollId');
-        }
-        return [
-            'question' => $threadPoll->question,
-            'answers' => $answers,
-            'haveVoted' => ThreadPollAnswer::where('threadPollId', $threadPoll->threadPollId)
-                    ->where('userId', $userId)->count('threadPollId') > 0
-        ];
     }
 
     /**
