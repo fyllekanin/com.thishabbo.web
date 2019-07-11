@@ -40,5 +40,5 @@ export interface DialogConfig {
     buttons: Array<DialogButton | DialogCloseButton>;
     component?: ComponentFactory<any>;
     data?: any;
-    forced: boolean;
+    forced?: boolean;
 }
