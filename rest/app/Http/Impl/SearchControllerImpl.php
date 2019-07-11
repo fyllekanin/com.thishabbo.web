@@ -77,6 +77,7 @@ class SearchControllerImpl {
             ->select(['posts.*', 'threads.categoryId']);
         $postsSql = $this->applyFilters($request, $postsSql, 'posts');
 
+        $total = DataHelper::getPage($postsSql->count('postId'));
         $items = $postsSql->take(Controller::$perPageStatic)->offset(DataHelper::getOffset($page))->get()->map(function ($item) {
             return (object)[
                 'id' => $item->postId,
@@ -91,7 +92,7 @@ class SearchControllerImpl {
         })->toArray();
 
         return (object)[
-            'total' => DataHelper::getPage($postsSql->count('postId')),
+            'total' => $total,
             'items' => Iterables::filter($items, function ($item) use ($user) {
                 return $item->user->userId == $user->userId ||
                     PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canViewOthersThreads, $item->categoryId);
@@ -104,6 +105,7 @@ class SearchControllerImpl {
         $threadsSql = Thread::where('title', 'LIKE', Value::getFilterValue($request, $request->input('text')))->whereIn('categoryId', $categoryIds);
         $threadsSql = $this->applyFilters($request, $threadsSql, 'threads');
 
+        $total = DataHelper::getPage($threadsSql->count('threadId'));
         $items = $threadsSql->take(Controller::$perPageStatic)->offset(DataHelper::getOffset($page))->get()->map(function ($item) {
             return (object)[
                 'id' => $item->threadId,
@@ -116,7 +118,7 @@ class SearchControllerImpl {
         })->toArray();
 
         return (object)[
-            'total' => DataHelper::getPage($threadsSql->count('threadId')),
+            'total' => $total,
             'items' => Iterables::filter($items, function ($item) use ($user) {
                 return $item->user->userId == $user->userId ||
                     PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canViewOthersThreads, $item->categoryId);
