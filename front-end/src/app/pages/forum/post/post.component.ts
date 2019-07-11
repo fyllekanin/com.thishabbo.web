@@ -15,7 +15,7 @@ import {
     ViewChild,
     ViewEncapsulation
 } from '@angular/core';
-import { User } from 'core/services/auth/auth.model';
+import { User, SlimUser } from 'core/services/auth/auth.model';
 import { PostService } from '../services/post.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { ReportComponent } from './report/report.component';
@@ -150,11 +150,11 @@ ${this._postModel.content}[/quotepost]\n\r`);
         return this.user.signature;
     }
 
-    get visibleLikers (): Array<User> {
+    get visibleLikers (): Array<SlimUser> {
         return this._postModel.likers.slice(0, 4);
     }
 
-    get moreLikerNames (): Array<User> {
+    get moreLikerNames (): Array<SlimUser> {
         return this._postModel.likers.slice(4, this._postModel.likers.length);
     }
 
