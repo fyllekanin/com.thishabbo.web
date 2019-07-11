@@ -27,6 +27,7 @@
 .message {
     padding: 5px 5px 10px 5px;
     min-height: 55px;
+    word-break: break-word;
 }
 
 .controls em {
