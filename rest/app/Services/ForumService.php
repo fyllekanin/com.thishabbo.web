@@ -18,6 +18,12 @@ use App\Utils\Iterables;
 use App\Utils\Value;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * Class ForumService
+ *
+ * @package App\Services
+ * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+ */
 class ForumService {
 
     public function getThreadPoll($threadId, $userId) {
