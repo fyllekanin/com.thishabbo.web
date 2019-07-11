@@ -320,7 +320,6 @@ class AuthController extends Controller {
     }
 
     private function getAuthUser($user, $accessToken, $refreshToken) {
-        $groupColor = Group::where('groupId', $user->displayGroupId)->value('nameColor');
         $userData = UserHelper::getUserDataOrCreate($user->userId);
         $customFields = new CustomUserFields($userData->customFields);
         return (object)[
@@ -338,8 +337,7 @@ class AuthController extends Controller {
             'credits' => UserHelper::getUserDataOrCreate($user->userId)->credits,
             'xp' => UserHelper::getUserDataOrCreate($user->userId)->xp,
             'tabs' => $customFields->tabs,
-            'theme' => $user->theme,
-            'nameColor' => $user->nameColor ? json_decode($user->nameColor) : json_decode($groupColor)
+            'theme' => $user->theme
         ];
     }
 }
