@@ -27,7 +27,8 @@ return [
         'canPassPrivate' => 4194304,
         'canRemoveEssentials' => 8388608,
         'canModerateVisitorMessage' => 16777216,
-        'canViewStatistics' => 33554432
+        'canViewStatistics' => 33554432,
+        'canEditUsersGroups' => 67108864
     ],
     'FORUM' => [
         'canRead' => 1,

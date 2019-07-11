@@ -154,7 +154,7 @@ export class UsersListComponent extends Page implements OnDestroy {
             {
                 title: 'Edit User Groups',
                 value: UserListAction.EDIT_USER_GROUPS,
-                condition: sitecpPermissions.canEditUserAdvanced
+                condition: sitecpPermissions.canEditUsersGroups
             },
             {
                 title: 'Manage Subscriptions',

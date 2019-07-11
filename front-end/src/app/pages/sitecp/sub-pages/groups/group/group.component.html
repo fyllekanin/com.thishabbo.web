@@ -140,7 +140,7 @@
                 </div>
                 <div>
                     <label class="checkbox-container">
-                        Access to moderate User Unformation
+                        Access to moderate User Information
                         <span tooltip="Tick this to grant access to remove Avatar, Cover Photo, Signature."
                               class="checkbox-info">
                             <em class="fas fa-question-circle"></em>
@@ -151,7 +151,7 @@
                 </div>
                 <div>
                     <label class="checkbox-container">
-                        Access to moderate Visitor Mesages
+                        Access to moderate Visitor Messages
                         <input type="checkbox" [(ngModel)]="sitecpPermissions.canModerateVisitorMessage">
                         <span class="checkmark"></span>
                     </label>
@@ -196,11 +196,22 @@
                 <div>
                     <label class="checkbox-container">
                         Access to advanced editing of a User
-                        <span tooltip="Ticking this will grant access to editing Password, Usergroups, Display Groups & Accolades."
+                        <span tooltip="Ticking this will grant access to editing Password & Accolades."
                               class="checkbox-info">
                             <em class="fas fa-question-circle"></em>
                         </span>
                         <input type="checkbox" [(ngModel)]="sitecpPermissions.canEditUserAdvanced">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to editing a users groups & display group
+                        <span tooltip="Ticking this will grant access to editing Usergroups & Display Groups"
+                              class="checkbox-info">
+                            <em class="fas fa-question-circle"></em>
+                        </span>
+                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canEditUsersGroups">
                         <span class="checkmark"></span>
                     </label>
                 </div>

@@ -231,6 +231,7 @@ export class SitecpComponent extends Page implements OnDestroy, OnInit {
             this._authService.sitecpPermissions.canBanUser ||
             this._authService.sitecpPermissions.canRemoveEssentials ||
             this._authService.sitecpPermissions.canDoInfractions ||
-            this._authService.sitecpPermissions.canManageSubscriptions;
+            this._authService.sitecpPermissions.canManageSubscriptions ||
+            this._authService.sitecpPermissions.canEditUsersGroups;
     }
 }

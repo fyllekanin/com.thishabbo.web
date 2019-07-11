@@ -231,6 +231,8 @@ export class SitecpPermissions {
     canManageSubscriptions: boolean;
     @primitive()
     canViewStatistics: boolean;
+    @primitive()
+    canEditUsersGroups: boolean;
 
     constructor (source?: Partial<SitecpPermissions>) {
         ClassHelper.assign(this, source);

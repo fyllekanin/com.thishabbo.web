@@ -105,7 +105,8 @@ Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions
 });
 
 Route::group(['middleware' => PermissionHelper::getSitecpMiddleware([$permissions->canEditUserBasic, $permissions->canEditUserAdvanced,
-    $permissions->canBanUser, $permissions->canRemoveEssentials, $permissions->canDoInfractions, $permissions->canManageSubscriptions])], function () use ($permissions) {
+    $permissions->canBanUser, $permissions->canRemoveEssentials, $permissions->canDoInfractions,
+    $permissions->canManageSubscriptions, $permissions->canEditUsersGroups])], function () use ($permissions) {
 
     Route::get('/users/list/page/{page}', 'Sitecp\User\UserController@getUsers');
     Route::get('/users/{userId}/history/page/{page}', 'Sitecp\User\UserHistoryController@getHistory');
@@ -135,10 +136,12 @@ Route::group(['middleware' => PermissionHelper::getSitecpMiddleware([$permission
         Route::put('/users/{userId}/basic', 'Sitecp\User\UserController@updateUserBasic');
     });
 
-    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canEditUserAdvanced)], function () {
+    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canEditUsersGroups)], function () {
         Route::get('/users/{userId}/groups', 'Sitecp\User\UserGroupsController@getUserGroups');
         Route::put('/users/{userId}/groups', 'Sitecp\User\UserGroupsController@updateUserGroups');
+    });
 
+    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canEditUserAdvanced)], function () {
         Route::get('/users/{userId}/accolades', 'Sitecp\User\AccoladesController@getAccoladePage');
         Route::post('/users/{userId}/accolades', 'Sitecp\User\AccoladesController@createAccolade');
         Route::put('/users/{userId}/accolades/{accoladeId}', 'Sitecp\User\AccoladesController@updateAccolade');
