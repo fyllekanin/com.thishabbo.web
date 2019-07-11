@@ -6,6 +6,8 @@ use App\EloquentModels\Forum\Category;
 use App\EloquentModels\Forum\CategoryRead;
 use App\EloquentModels\Forum\Post;
 use App\EloquentModels\Forum\Thread;
+use App\EloquentModels\Forum\ThreadPoll;
+use App\EloquentModels\Forum\ThreadPollAnswer;
 use App\EloquentModels\Forum\ThreadRead;
 use App\Helpers\ConfigHelper;
 use App\Helpers\DataHelper;
@@ -17,6 +19,25 @@ use App\Utils\Value;
 use Illuminate\Support\Facades\Cache;
 
 class ForumService {
+
+    public function getThreadPoll($threadId, $userId) {
+        $threadPoll = ThreadPoll::where('threadId', $threadId)->first();
+        if (!$threadPoll) {
+            return null;
+        }
+
+        $answers = json_decode($threadPoll->options);
+        foreach ($answers as $answer) {
+            $answer->answers = ThreadPollAnswer::where('threadPollId', $threadPoll->threadPollId)
+                ->where('answer', $answer->id)->count('threadPollId');
+        }
+        return [
+            'question' => $threadPoll->question,
+            'answers' => $answers,
+            'haveVoted' => ThreadPollAnswer::where('threadPollId', $threadPoll->threadPollId)
+                    ->where('userId', $userId)->count('threadPollId') > 0
+        ];
+    }
 
     public function updateLastPostIdOnCategory($categoryId) {
         $category = Category::find($categoryId);
