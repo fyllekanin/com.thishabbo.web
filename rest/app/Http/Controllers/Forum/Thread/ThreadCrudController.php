@@ -142,7 +142,6 @@ class ThreadCrudController extends Controller {
      * @param         $threadId
      *
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function updateThread(Request $request, $threadId) {
         $user = $request->get('auth');
@@ -267,7 +266,7 @@ class ThreadCrudController extends Controller {
             'You can not view others thread content');
 
         $canAccessCategory = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canRead, $thread->categoryId)
-            && (ForumHelper::isCategoryAuthOnly($thread->categoryId) ? $user->userId > 0 : false);
+            && (ForumHelper::isCategoryAuthOnly($thread->categoryId) ? $user->userId > 0 : true);
         $cantAccessUnapproved = !$thread->isApproved &&
             !PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canApproveThreads, $thread->categoryId);
         Condition::precondition(!$canAccessCategory, 403, 'No permissions to access this category');
