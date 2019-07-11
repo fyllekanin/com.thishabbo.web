@@ -31,6 +31,7 @@ export interface DialogConfirm {
     title: string;
     content: string;
     callback: () => void;
+    forced?: boolean;
 }
 
 export interface DialogConfig {
@@ -39,4 +40,5 @@ export interface DialogConfig {
     buttons: Array<DialogButton | DialogCloseButton>;
     component?: ComponentFactory<any>;
     data?: any;
+    forced: boolean;
 }

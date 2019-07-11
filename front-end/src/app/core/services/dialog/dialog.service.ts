@@ -19,6 +19,7 @@ export class DialogService {
         this.openDialog({
             title: config.title,
             content: config.content,
+            forced: config.forced,
             buttons: [
                 new DialogCloseButton('Close'),
                 new DialogButton({title: 'Yes', callback: config.callback})

@@ -38,13 +38,13 @@ export class DialogComponent {
         const isInsideWrapper = event.path
             .some(item => item.classList && item.classList.contains('dialog-wrapper'));
         if (!isInsideWrapper) {
-            this.onCloseDialog();
+            this.onCloseDialog(true);
         }
     }
 
     onButton (button: DialogButton | DialogCloseButton): void {
         if (button instanceof DialogCloseButton) {
-            this.onCloseDialog();
+            this.onCloseDialog(true);
             return;
         }
         const arg = this._componentRef && this._componentRef.instance ? this._componentRef.instance.getData() : null;
@@ -67,7 +67,10 @@ export class DialogComponent {
         return this._buttons;
     }
 
-    private onCloseDialog (): void {
+    private onCloseDialog (isForced = false): void {
+        if (this._config.forced && !isForced) {
+            return;
+        }
         this.show = false;
         setTimeout(() => this.isVisible = false, 200);
     }

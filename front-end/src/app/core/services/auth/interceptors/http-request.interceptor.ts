@@ -76,6 +76,7 @@ export class HttpRequestInterceptor implements HttpInterceptor {
                             this._dialogService.confirm({
                                 title: 'New version detected',
                                 content: 'There is a new version available, click reload to load the new version',
+                                forced: true,
                                 callback: () => {
                                     this._dialogService.closeDialog();
                                     location.reload(true);
