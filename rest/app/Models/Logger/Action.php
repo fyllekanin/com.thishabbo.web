@@ -692,7 +692,11 @@ class Action {
         'id' => 58,
         'description' => 'User updated a group',
         'data' => [
-            'group' => 'Name of group'
+            'group' => 'Name of group',
+            'sitecpPermissionsBefore' => 'Sitecp permissions before editing',
+            'sitecpPermissionsAfter' => 'Sitecp permissions after editing',
+            'staffcpPermissionsBefore' => 'Staffcp permissions before editing',
+            'staffcpPermissionsAfter' => 'Staffcp permissions after editing',
         ],
         'log' => 'log_sitecp',
         'contentId' => 'groupId',

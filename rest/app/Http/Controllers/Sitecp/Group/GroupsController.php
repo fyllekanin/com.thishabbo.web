@@ -205,7 +205,13 @@ class GroupsController extends Controller {
 
         GroupUpdated::dispatch($groupId);
 
-        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_GROUP, ['group' => $group->name], $group->groupId);
+        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_GROUP, [
+            'group' => $group->name,
+            'sitecpPermissionsBefore' => $this->buildSitecpPermissions($group),
+            'sitecpPermissionsAfter' => $this->buildSitecpPermissions($newGroup),
+            'staffcpPermissionsBefore' => $this->buildStaffPermissions($group),
+            'staffcpPermissionsAfter' => $this->buildStaffPermissions($newGroup)
+        ], $group->groupId);
         return $this->getGroup($request, $groupId);
     }
 
