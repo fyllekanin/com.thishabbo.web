@@ -68,7 +68,7 @@ export class DialogComponent {
     }
 
     private onCloseDialog (isForced = false): void {
-        if (this._config.forced && !isForced) {
+        if (this._config && this._config.forced && !isForced) {
             return;
         }
         this.show = false;
