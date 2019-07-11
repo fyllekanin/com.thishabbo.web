@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Cache;
  * Class ForumService
  *
  * @package App\Services
- * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class ForumService {
 
