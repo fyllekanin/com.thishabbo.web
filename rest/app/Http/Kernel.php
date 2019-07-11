@@ -11,6 +11,7 @@ use App\Http\Middleware\CheckSpam;
 use App\Http\Middleware\CheckStaffPermission;
 use App\Http\Middleware\CheckToken;
 use App\Http\Middleware\CheckUser;
+use App\Http\Middleware\CheckVersion;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustProxies;
@@ -67,6 +68,7 @@ class Kernel extends HttpKernel {
         'habbo_verify.check' => CheckHabboVerified::class,
         'user.check' => CheckUser::class,
         'auth.check' => CheckAuth::class,
-        'gdpr.check' => CheckGdpr::class
+        'gdpr.check' => CheckGdpr::class,
+        'version.check' => CheckVersion::class
     ];
 }

@@ -21,8 +21,6 @@ class RouteServiceProvider extends ServiceProvider {
      * @return void
      */
     public function boot() {
-        //
-
         parent::boot();
     }
 
@@ -56,7 +54,7 @@ class RouteServiceProvider extends ServiceProvider {
      */
     protected function mapApiRoutes() {
         Route::prefix('api')
-            ->middleware(['api', 'user.check'])
+            ->middleware(['api', 'version.check', 'user.check'])
             ->namespace($this->namespace)
             ->group(base_path('routes/api.php'));
     }
@@ -70,7 +68,7 @@ class RouteServiceProvider extends ServiceProvider {
      */
     protected function mapApiSitecpRoutes() {
         Route::prefix('api/sitecp')
-            ->middleware(['api', 'user.check', 'auth.check', 'gdpr.check', 'maintenance'])
+            ->middleware(['api', 'version.check', 'user.check', 'auth.check', 'gdpr.check', 'maintenance'])
             ->namespace($this->namespace)
             ->group(base_path('routes/sitecp/api.php'));
     }
@@ -84,14 +82,14 @@ class RouteServiceProvider extends ServiceProvider {
      */
     protected function mapApiForumRoutes() {
         Route::prefix('api/forum')
-            ->middleware(['api', 'user.check', 'maintenance', 'habbo_verify.check', 'gdpr.check'])
+            ->middleware(['api', 'version.check', 'user.check', 'maintenance', 'habbo_verify.check', 'gdpr.check'])
             ->namespace($this->namespace)
             ->group(base_path('routes/forum/api.php'));
     }
 
     protected function mapApiShopRoutes() {
         Route::prefix('api/shop')
-            ->middleware(['api', 'user.check', 'auth.check', 'maintenance', 'habbo_verify.check', 'gdpr.check'])
+            ->middleware(['api', 'version.check', 'user.check', 'auth.check', 'maintenance', 'habbo_verify.check', 'gdpr.check'])
             ->namespace($this->namespace)
             ->group(base_path('routes/shop/api.php'));
     }
@@ -105,7 +103,7 @@ class RouteServiceProvider extends ServiceProvider {
      */
     protected function mapApiStaffRoutes() {
         Route::prefix('api/staff')
-            ->middleware(['api', 'user.check', 'auth.check', 'maintenance', 'gdpr.check'])
+            ->middleware(['api', 'version.check', 'user.check', 'auth.check', 'maintenance', 'gdpr.check'])
             ->namespace($this->namespace)
             ->group(base_path('routes/staff/api.php'));
     }
@@ -119,7 +117,7 @@ class RouteServiceProvider extends ServiceProvider {
      */
     protected function mapApiUsercpRoutes() {
         Route::prefix('api/usercp')
-            ->middleware(['api', 'user.check', 'auth.check', 'maintenance', 'gdpr.check'])
+            ->middleware(['api', 'version.check', 'user.check', 'auth.check', 'maintenance', 'gdpr.check'])
             ->namespace($this->namespace)
             ->group(base_path('routes/usercp/api.php'));
     }
@@ -133,7 +131,7 @@ class RouteServiceProvider extends ServiceProvider {
      */
     protected function mapApiArcadeRoutes() {
         Route::prefix('api/arcade')
-            ->middleware(['api', 'user.check', 'maintenance', 'gdpr.check'])
+            ->middleware(['api', 'version.check', 'user.check', 'maintenance', 'gdpr.check'])
             ->namespace($this->namespace)
             ->group(base_path('routes/arcade/api.php'));
     }

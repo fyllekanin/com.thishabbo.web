@@ -18,9 +18,10 @@ import { BehaviorSubject, Observable, throwError as observableThrowError } from 
 import { catchError, filter, finalize, switchMap, take } from 'rxjs/operators';
 import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { UserService } from 'core/services/user/user.service';
+import { DialogService } from 'core/services/dialog/dialog.service';
 
 @Injectable()
-export class AuthenticationInterceptor implements HttpInterceptor {
+export class HttpRequestInterceptor implements HttpInterceptor {
     private readonly GET_METHOD = 'GET';
     private isRefreshingToken = false;
     private tokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
@@ -29,7 +30,9 @@ export class AuthenticationInterceptor implements HttpInterceptor {
         private _authService: AuthService,
         private _router: Router,
         private _notificationService: NotificationService,
-        private _userService: UserService) {
+        private _userService: UserService,
+        private _dialogService: DialogService
+    ) {
     }
 
     intercept (req: HttpRequest<any>, next: HttpHandler):
@@ -69,6 +72,16 @@ export class AuthenticationInterceptor implements HttpInterceptor {
                             }));
                             this._router.navigateByUrl('/page/missing');
                             return observableThrowError(error);
+                        case 418:
+                            this._dialogService.confirm({
+                                title: 'New version detected',
+                                content: 'There is a new version available, click reload to load the new version',
+                                callback: () => {
+                                    this._dialogService.closeDialog();
+                                    location.reload(true);
+                                }
+                            });
+                            return observableThrowError(error);
                         case 500:
                             return observableThrowError(error);
                         case 503:
@@ -91,7 +104,12 @@ export class AuthenticationInterceptor implements HttpInterceptor {
     }
 
     private addToken (req: HttpRequest<any>, token: string): HttpRequest<any> {
-        return req.clone({setHeaders: {Authorization: `Bearer ${token}`}});
+        return req.clone({
+            setHeaders: {
+                Authorization: `Bearer ${token}`,
+                ClientVersion: window['version']
+            }
+        });
     }
 
     private handle419Error (req: HttpRequest<any>, next: HttpHandler) {
