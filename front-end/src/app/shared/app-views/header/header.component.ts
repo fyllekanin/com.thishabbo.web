@@ -1,13 +1,9 @@
 import { AuthService } from 'core/services/auth/auth.service';
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { EventsModel, RadioModel } from 'shared/components/radio/radio.model';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { Activity, ContinuesInformationModel } from 'core/services/continues-information/continues-information.model';
-import { Router } from '@angular/router';
-import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
-
 @Component({
     selector: 'app-header',
     templateUrl: 'header.component.html',

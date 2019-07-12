@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { HttpService } from 'core/services/http/http.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { NotificationModel, NotificationTypes } from 'shared/app-views/top-bar/top-bar.model';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 import { RouterStateService } from 'core/services/router/router-state.service';
@@ -20,6 +20,7 @@ export class TopBarComponent {
     private _notifications: Array<NotificationModel<any>> = [];
     private _messages: Array<NotificationModel<any>> = [];
 
+    isMobile = false;
     loginName = '';
     password = '';
 
@@ -86,6 +87,11 @@ export class TopBarComponent {
                     message: 'All messages marked as read!'
                 }));
             });
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize(event) {
+        this.isMobile = event.target.innerWidth <= 600;
     }
 
     get loggedIn (): boolean {

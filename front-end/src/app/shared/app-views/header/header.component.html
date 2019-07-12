@@ -24,7 +24,7 @@
     <div class="grid-container">
         <div class="grid-x grid-margin-x">
             <div class="cell medium-9 tabs">
-                <div class="inner-search-bar">
+                <div class="inner-search-bar" *ngIf="!isMobile">
                     <app-search-bar></app-search-bar>
                 </div>
             </div>

@@ -240,13 +240,3 @@
 .children {
     padding: 0.5rem 0;
 }
-
-.mobile-breadcrumb {
-    display: none;
-}
-
-@media screen and (max-width: 600px) {
-    .mobile-breadcrumb {
-        display: block;
-    }
-}

@@ -17,21 +17,6 @@
     text-overflow: ellipsis;
 }
 
-.mobile-search {
-    display: none;
-}
-
-@media screen and (max-width: 600px) {
-    .breadcrumb {
-        display: none;
-    }
-
-    .mobile-search {
-        margin-top:2px;
-        display: block;
-    }
-}
-
 .notification {
     float: right;
     padding: 10px 7px 10px 0;

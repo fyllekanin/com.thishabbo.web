@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthUser } from 'core/services/auth/auth.model';
 import { AuthService } from 'core/services/auth/auth.service';
@@ -16,6 +16,7 @@ export class TopBoxComponent {
     private _user: AuthUser;
     private _navigation: Array<MainItem> = [];
 
+    isMobile: boolean = false;
     isFixed: boolean;
     showMenu: boolean;
 
@@ -53,6 +54,12 @@ export class TopBoxComponent {
             return item;
         });
     }
+
+    @HostListener('window:resize', ['$event'])
+    onResize(event) {
+        this.isMobile = event.target.innerWidth <= 600;
+    }
+
 
     get credits (): number {
         return this._authService.authUser.credits;
