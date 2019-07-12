@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { NotificationType, NotificationMessage } from '../global-notification/global-notification.model';
@@ -63,5 +63,4 @@ export class SearchBarComponent {
             this.goToSearch();
         }
     }
-
 }
