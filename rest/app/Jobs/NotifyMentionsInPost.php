@@ -2,9 +2,7 @@
 
 namespace App\Jobs;
 
-use App\EloquentModels\Group\Group;
 use App\EloquentModels\User\User;
-use App\EloquentModels\User\UserGroup;
 use App\Helpers\ConfigHelper;
 use App\Models\Notification\Type;
 use App\Utils\Iterables;
@@ -18,11 +16,9 @@ use Illuminate\Support\Facades\DB;
 /**
  * Class NotifyMentionsInPost
  *
- * Purpose of this job is to send notifications to all users or groups which were mentioned
+ * Purpose of this job is to send notifications to all users  which were mentioned
  * in the provided post/thread.
  *
- * If a user is getting a notification from a mention they should not receive a notification from
- * the group as well.
  *
  * @package App\Jobs
  */
@@ -31,7 +27,6 @@ class NotifyMentionsInPost implements ShouldQueue {
     private $mentionRegex = '/\[mention]@(.*?)\[\/mention\]/si';
 
     private $mentionTypeUser = 'user';
-    private $mentionTypeGroup = 'group';
 
     private $ignoredNotificationTypes;
     private $content;
@@ -61,7 +56,6 @@ class NotifyMentionsInPost implements ShouldQueue {
         $quotedPostIds = $this->getQuotedUserIds($this->content);
         $content = preg_replace($this->quoteRegex, '', $this->content);
         $mentionedIds = $this->getMentionedIds($content, $this->mentionTypeUser);
-        $mentionedIds = $this->addTaggedGroupMembers($content, $mentionedIds);
 
         $quotedPosts = DB::table('posts')->select('userId')->whereIn('postId', $quotedPostIds)->get()->toArray();
         $quotedUserIds = array_map(function ($post) {
@@ -131,32 +125,6 @@ class NotifyMentionsInPost implements ShouldQueue {
         if ($mentionType == $this->mentionTypeUser && preg_match_all($this->mentionRegex, $content, $matches)) {
             return User::whereIn('nickname', str_replace('_', ' ', $matches[1]))->pluck('userId');
         }
-
-        if ($mentionType == $this->mentionTypeGroup && preg_match_all($this->mentionRegex, $content, $matches)) {
-            return Group::whereIn('name', str_replace('_', ' ', $matches[1]))->pluck('groupId');
-        }
-
         return [];
-    }
-
-    private function addTaggedGroupMembers($content, $mentionedIds) {
-        $groupIds = $this->getMentionedIds($content, $this->mentionTypeGroup);
-        $groupOptions = ConfigHelper::getGroupOptionsConfig();
-
-        foreach ($groupIds as $groupId) {
-            $group = Group::find($groupId);
-            if (!$group || !($group->options & $groupOptions->canBeTagged)) {
-                continue;
-            }
-
-            $groupMembers = UserGroup::where('groupId', $groupId)->select('userId')->get()->toArray();
-            $groupMemberIds = array_map(function ($groupMember) {
-                return $groupMember['userId'];
-            }, Iterables::filter($groupMembers, function ($groupMember) use ($mentionedIds) {
-                return !in_array($groupMember['userId'], $mentionedIds);
-            }));
-            $mentionedIds = array_merge($mentionedIds, $groupMemberIds);
-        }
-        return $mentionedIds;
     }
 }

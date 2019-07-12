@@ -72,17 +72,19 @@ class ActivityService {
         $itemIsValid = false;
         if ($this->isThreadRelatedAction($item)) {
             $thread = Thread::where('threadId', $item->contentId)->first();
-            $itemIsValid = ($thread->userId == $userId ||
-                    PermissionHelper::haveForumPermission($userId, ConfigHelper::getForumPermissions()->canViewOthersThreads, $thread->categoryId))
-                && !in_array($thread->threaId, $ignoredThreadIds);
+            $itemIsValid = $this->isThreadItemValid($thread, $userId, $ignoredThreadIds);
         }
         if ($this->isPostRelatedAction($item)) {
             $post = Post::with('thread')->where('postId', $item->contentId)->first();
-            $itemIsValid = ($post->thread->userId == $userId ||
-                    PermissionHelper::haveForumPermission($userId, ConfigHelper::getForumPermissions()->canViewOthersThreads, $post->thread->categoryId))
-                && !in_array($post->threadId, $ignoredThreadIds);
+            $itemIsValid = $this->isThreadItemValid($post->thread, $userId, $ignoredThreadIds);
         }
         return in_array($item->data->categoryId, $categoryIds) && $itemIsValid;
+    }
+
+    private function isThreadItemValid($thread, $userId, $ignoredThreadIds) {
+        return ($thread->userId == $userId ||
+                PermissionHelper::haveForumPermission($userId, ConfigHelper::getForumPermissions()->canViewOthersThreads, $thread->categoryId))
+            && !in_array($thread->threadId, $ignoredThreadIds);
     }
 
     /**

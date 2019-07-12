@@ -59,7 +59,7 @@ class StreamController extends Controller {
         $ignoredCategoryIds = array_merge(IgnoredCategory::where('userId', $user->userId)->pluck('categoryId')->toArray(),
             $this->forumService->getCategoriesUserCantSeeOthersThreadsIn($user->userId));
         $categoryIds = [];
-        $ignoredThreadIds = IgnoredThread::where('userId', $user->userId)->pluck('threadId');
+        $ignoredThreadIds = IgnoredThread::where('userId', $user->userId)->pluck('threadId')->toArray();
         foreach ($this->forumService->getAccessibleCategories($user->userId) as $categoryId) {
             if (!in_array($categoryId, $ignoredCategoryIds)) {
                 $categoryIds[] = $categoryId;

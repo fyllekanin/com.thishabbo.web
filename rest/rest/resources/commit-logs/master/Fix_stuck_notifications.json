@@ -1,0 +1,1 @@
+{"topic":"Fix stuck notifications","type":"Refactor / Improvement","body":"Removed group notification for now, it made the notification system get stuck"}
