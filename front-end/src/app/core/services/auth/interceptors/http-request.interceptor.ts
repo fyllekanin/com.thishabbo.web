@@ -74,8 +74,9 @@ export class HttpRequestInterceptor implements HttpInterceptor {
                             return observableThrowError(error);
                         case 418:
                             this._dialogService.confirm({
-                                title: 'New version detected',
-                                content: 'There is a new version available, click reload to load the new version',
+                                title: `New version detected, ${window['version']} -> ${error.error.message}`,
+                                content: `There is a new version available, click reload to load the new version.<br/>
+                                If interested in what's new, scroll down and look on versions!`,
                                 forced: true,
                                 callback: () => {
                                     this._dialogService.closeDialog();

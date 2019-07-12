@@ -1,0 +1,30 @@
+<div class="grid-container content-margin">
+    <div class="grid-x grid-margin-x">
+        <div class="cell small-9">
+            <div *ngFor="let version of versions">
+                <app-title [title]="version.version"></app-title>
+                <app-content>
+                    <div *ngFor="let change of version.changes">
+                        <strong>{{change.topic}} - {{change.type}}</strong> <br />
+                        {{change.body}}
+                        <hr />
+                    </div>
+                </app-content>
+            </div>
+
+            <app-pagination [paginationModel]="pagination"></app-pagination>
+        </div>
+        <div class="cell small-12 medium-3">
+            <app-title [title]="'Information'"></app-title>
+            <app-content>
+                This is a page where you can see all our releases and what they contain. This is suppose to
+                be an automated system for users to look at when they wanna know what's new since they last visited
+                the site.
+                <br />
+                <br />
+                Missing version numbers means there have been a release without any changes, this will still
+                step the version number. These are filtered out from this list.
+            </app-content>
+        </div>
+    </div>
+</div>

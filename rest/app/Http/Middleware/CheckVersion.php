@@ -19,9 +19,9 @@ class CheckVersion {
      */
     public function handle($request, Closure $next) {
 
-        if (ConfigHelper::getVersion() != RequestUtil::getVersion($request)) {
-            throw new HttpException(418);
-        }
+       /* if (ConfigHelper::getVersion() != RequestUtil::getVersion($request)) {
+            throw new HttpException(418, ConfigHelper::getVersion());
+        }*/
 
         return $next($request);
     }

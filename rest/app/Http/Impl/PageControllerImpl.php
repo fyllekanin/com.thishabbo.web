@@ -7,8 +7,20 @@ use App\Helpers\ConfigHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\SettingsHelper;
 use App\Utils\Iterables;
+use Illuminate\Support\Facades\File;
 
 class PageControllerImpl {
+
+    public function getCommitLogChanges($folder) {
+        $fileNames = Iterables::filter(scandir(SettingsHelper::getResourcesPath('commit-logs/' . $folder)), function($fileName) {
+            return preg_match('/(.*?).json/', $fileName);
+        });
+
+        return array_map(function($fileName) use ($folder) {
+            $file = File::get(SettingsHelper::getResourcesPath('commit-logs/' . $folder . '/' . $fileName));
+            return json_decode($file);
+        }, $fileNames);
+    }
 
     public function getStaffSpotlight() {
         $value = SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->staffOfTheWeek);

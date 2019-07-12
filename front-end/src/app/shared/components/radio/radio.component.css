@@ -166,7 +166,6 @@
     width: 88%;
     display: inline-block;
     overflow: hidden;
-
 }
 
 .says-text span {
@@ -185,7 +184,7 @@
         transform: translate(0, 0);
     }
     100% {
-        transform: translate(-200%, 0);
+        transform: translate(-300%, 0);
     }
 }
 .stats {
