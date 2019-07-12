@@ -153,6 +153,7 @@ describe('AuthService', () => {
 
             // When
             authService.login('nickname', 'password', false, () => {
+                expect(httpServiceMock.post).toHaveBeenCalled();
                 done();
             });
         });

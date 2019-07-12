@@ -1,6 +1,6 @@
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { TestBed } from '@angular/core/testing';
-import { DialogConfig, DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
+import { DialogButton, DialogCloseButton, DialogConfig } from 'shared/app-views/dialog/dialog.model';
 import { Subject } from 'rxjs';
 import { DialogComponent } from 'shared/app-views/dialog/dialog.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -11,14 +11,19 @@ describe('DialogComponent', () => {
         private _onConfig: Subject<any> = new Subject();
         private _onClose: Subject<any> = new Subject();
 
-        close() { this._onClose.next(); }
-        open(config: DialogConfig) { this._onConfig.next(config); }
+        close () {
+            this._onClose.next();
+        }
 
-        get onDialogClose() {
+        open (config: DialogConfig) {
+            this._onConfig.next(config);
+        }
+
+        get onDialogClose () {
             return this._onClose.asObservable();
         }
 
-        get onDialogConfig() {
+        get onDialogConfig () {
             return this._onConfig.asObservable();
         }
     }
@@ -35,29 +40,34 @@ describe('DialogComponent', () => {
                 DialogComponent
             ],
             providers: [
-                { provide: DialogService, useValue: service }
+                {provide: DialogService, useValue: service}
             ],
-            schemas: [ NO_ERRORS_SCHEMA ]
+            schemas: [NO_ERRORS_SCHEMA]
         });
 
         component = TestBed.createComponent(DialogComponent).componentInstance;
     });
 
-    it('onButton should call the callback on the button', (done) => {
+    it('onButton should call the callback on the button', () => {
         // Given
         const button = new DialogButton({
             title: 'something',
-            callback: () => done()
+            callback: () => {
+            }
         });
+        spyOn(button, 'callback');
 
         // When
         component.onButton(button);
+
+        // Then
+        expect(button.callback).toHaveBeenCalled();
     });
 
     describe('title', () => {
         it('should return title from config', () => {
             // Given
-            service.open({ title: 'test', content: 'no', buttons: [] });
+            service.open({title: 'test', content: 'no', buttons: []});
             // When
             const result = component.title;
 
@@ -76,7 +86,7 @@ describe('DialogComponent', () => {
     describe('content', () => {
         it('should return content from config', () => {
             // Given
-            service.open({ title: 'test', content: 'no', buttons: [] });
+            service.open({title: 'test', content: 'no', buttons: []});
             // When
             const result = component.content;
 
@@ -95,9 +105,11 @@ describe('DialogComponent', () => {
     describe('buttons', () => {
         it('should return buttons from config', () => {
             // Given
-            service.open({ title: 'test', content: 'no', buttons: [
-                new DialogButton({ title: 'test' })
-            ] });
+            service.open({
+                title: 'test', content: 'no', buttons: [
+                    new DialogButton({title: 'test'})
+                ]
+            });
             // When
             const result = component.buttons;
 
@@ -113,10 +125,12 @@ describe('DialogComponent', () => {
         });
         it('should sort them to put DialogCloseButton to the left always', () => {
             // Given
-            service.open({ title: 'test', content: '', buttons: [
-                new DialogCloseButton('Close'),
-                new DialogButton({ title: 'test' })
-            ]});
+            service.open({
+                title: 'test', content: '', buttons: [
+                    new DialogCloseButton('Close'),
+                    new DialogButton({title: 'test'})
+                ]
+            });
 
             // When
             const result = component.buttons;
