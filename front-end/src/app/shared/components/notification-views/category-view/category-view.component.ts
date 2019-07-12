@@ -1,5 +1,8 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import { NotificationView } from 'shared/components/notification-views/notification-views.model';
+import {
+    NotificationView,
+    shouldPerformClickOnNotification
+} from 'shared/components/notification-views/notification-views.model';
 import { NotificationModel } from 'shared/app-views/top-bar/top-bar.model';
 import { CategoryView } from 'app/shared/components/notification-views/category-view/category-view.model';
 import { Router } from '@angular/router';
@@ -43,7 +46,7 @@ export class CategoryViewComponent implements NotificationView {
     @HostListener('click', ['$event.target'])
     click (event): void {
         this.onClick.next(this._notification.notificationId);
-        if (event && event.className.indexOf('readOnly') === -1) {
+        if (shouldPerformClickOnNotification(event)) {
             this._router.navigateByUrl(`/forum/thread/${this._notification.item.thread.threadId}/page/1`);
         }
     }

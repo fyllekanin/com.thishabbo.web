@@ -1,4 +1,4 @@
-.user-link {
+:host {
     display: inline-block;
     position: relative;
     overflow: visible;
