@@ -16,7 +16,7 @@ export class TopBoxComponent {
     private _user: AuthUser;
     private _navigation: Array<MainItem> = [];
 
-    isMobile: boolean = false;
+    isMobile = false;
     isFixed: boolean;
     showMenu: boolean;
 
