@@ -144,7 +144,7 @@ export class ContinuesInformationService implements Resolve<void> {
                 }
                 return false;
             });
-        this._notifications.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'notificationId'));
+        this._notifications.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'notificationId'));
 
         this._notificationsSubject.next(this._notifications);
     }
