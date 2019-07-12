@@ -1,5 +1,5 @@
 import { AuthService } from 'core/services/auth/auth.service';
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { EventsModel, RadioModel } from 'shared/components/radio/radio.model';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
@@ -12,6 +12,7 @@ import { Activity, ContinuesInformationModel } from 'core/services/continues-inf
 export class HeaderComponent {
     private _info: ContinuesInformationModel;
 
+    isMobile = false;
     isMenuFixed: boolean;
     isMinimalistic: boolean;
 
@@ -29,6 +30,12 @@ export class HeaderComponent {
             this.isMinimalistic = Boolean(localStorage.getItem(LOCAL_STORAGE.MINIMALISTIC));
         });
     }
+
+    @HostListener('window:resize', ['$event'])
+    onResize(event) {
+        this.isMobile = event.target.innerWidth <= 600;
+    }
+
 
     get radioStats (): RadioModel {
         return this._info ? this._info.radio : null;
