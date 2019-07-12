@@ -204,20 +204,22 @@ class EventsController extends Controller {
             ->take($this->perPage)
             ->skip(DataHelper::getOffset($page))
             ->get()->map(function ($log) {
-                $booking = Timetable::where('timetableId', json_decode($log->data)->timetableId)
-                    ->withoutGlobalScope('nonHardDeleted')->first();
-                return [
+                $booking = isset($log->getData()->timetableId) ? Timetable::where('timetableId', json_decode($log->data)->timetableId)
+                    ->withoutGlobalScope('nonHardDeleted')->first() : null;
+                return $booking ? [
                     'user' => UserHelper::getUser($log->userId),
                     'affected' => UserHelper::getUser($booking->userId),
                     'day' => $booking->day,
                     'hour' => $booking->hour,
                     'action' => $log->action,
                     'updatedAt' => $log->updatedAt->timestamp
-                ];
+                ] : null;
             });
 
         return response()->json([
-            'items' => $items,
+            'items' => Iterables::filter($items, function($item) {
+                return $item != null;
+            }),
             'page' => $page,
             'total' => $total
         ]);
@@ -452,7 +454,9 @@ class EventsController extends Controller {
         ]);
         $timetable->save();
 
-        Logger::staff($user->userId, $request->ip(), Action::BOOKED_EVENT_SLOT, [], $timetable->timetableId);;
+        Logger::staff($user->userId, $request->ip(), Action::BOOKED_EVENT_SLOT, [
+            'timetableId' => $timetable->timetableId
+        ]);;
         return response()->json([
             'timetableId' => $timetable->timetableId,
             'createdAt' => time(),

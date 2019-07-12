@@ -263,7 +263,7 @@ export class TimetableComponent extends Page implements OnDestroy {
 
     private onData (data: { data: TimetablePage }): void {
         this._data = data.data;
-        this._data.timetable = TimetableHelper.correctTimeones(this._data.timetable);
+
         const offset = TimeHelper.getTimeOffsetInHours();
         this._data.timezones.forEach((region, index) => {
             const newIndex = TimeHelper.getConvertedHour(index + offset);

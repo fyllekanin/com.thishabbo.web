@@ -3,8 +3,7 @@ export class UserHelper {
         if (!colors || colors.length === 0) {
             return 'color: #999999';
         }
-        let style = `
-            font-weight: bold;
+        let style = `font-weight: bold;\
             color: ${colors && colors.length > 0 ? colors[0] : '#999999'} !important;`;
 
         if (colors && colors.length > 1) {
@@ -19,9 +18,8 @@ export class UserHelper {
     }
 
     static getBarColor (colors: Array<string>): string {
-        let style = `
-            font-weight: bold;
-            color: #ffffff;
+        let style = `font-weight: bold;\
+            color: #ffffff;\
             background: url(/assets/images/bargradient.png), ${colors && colors.length > 0 ? colors[0] : '#c1c1c1'};`;
 
         if (colors && colors.length > 1) {
@@ -29,9 +27,7 @@ export class UserHelper {
             style += colors.reduce((prev, curr, index) => {
                 return prev + `color-stop(${stops * (index + 1)}, ${curr})${(index + 1) === colors.length ? '' : ','}`;
             }, 'background: url(/assets/images/bargradient.png), -webkit-gradient(linear, left top, right top,');
-            style += '); -webkit-background-clip: text; -webkit-text-fill-color: transparent;';
-
-            style += ');';
+            style += '); -webkit-background-clip: text; -webkit-text-fill-color: transparent;);';
         }
 
         return style;
