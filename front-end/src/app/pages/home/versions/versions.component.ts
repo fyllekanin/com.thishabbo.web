@@ -15,7 +15,7 @@ export class VersionsComponent extends Page implements OnDestroy {
 
     pagination: PaginationModel;
 
-    constructor(
+    constructor (
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService,
         activatedRoute: ActivatedRoute
@@ -31,11 +31,11 @@ export class VersionsComponent extends Page implements OnDestroy {
         super.destroy();
     }
 
-    get versions(): Array<VersionItem> {
+    get versions (): Array<VersionItem> {
         return this._data.items;
     }
 
-    private onData(data: { data:VersionsPage }): void {
+    private onData (data: { data: VersionsPage }): void {
         this._data = data.data;
 
         this.pagination = new PaginationModel({
@@ -45,3 +45,4 @@ export class VersionsComponent extends Page implements OnDestroy {
         });
     }
 }
+
