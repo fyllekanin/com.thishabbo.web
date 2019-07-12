@@ -33,22 +33,24 @@ class RadioController extends Controller {
     public function getBookingLog($page) {
         $bookAction = Action::getAction(Action::BOOKED_RADIO_SLOT);
         $unbookAction = Action::getAction(Action::UNBOOKED_RADIO_SLOT);
+        $editedAction = Action::getAction(Action::EDITED_RADIO_TIMETABLE_SLOT);
         $bookedPermAction = Action::getAction(Action::BOOKED_PERM_SLOT);
         $deletedPermAction = Action::getAction(Action::DELETED_PERM_SLOT);
 
-        $logSql = LogStaff::whereIn('action', [$bookAction, $unbookAction, $bookedPermAction, $deletedPermAction]);
+        $logSql = LogStaff::whereIn('action', [$bookAction, $unbookAction, $bookedPermAction, $deletedPermAction, $editedAction]);
 
         $total = DataHelper::getPage($logSql->count('logId'));
         $items = $logSql->orderBy('logId', 'DESC')
             ->take($this->perPage)
             ->skip(DataHelper::getOffset($page))
-            ->get()->map(function ($log) {
+            ->get()->map(function ($log) use ($editedAction) {
 
-                $booking = Timetable::where('timetableId', json_decode($log->data)->timetableId)
+                $booking = Timetable::where('timetableId', $log->getData()->timetableId)
                     ->withoutGlobalScope('nonHardDeleted')->first();
                 return [
-                    'user' => UserHelper::getUser($log->userId),
-                    'affected' => UserHelper::getUser($booking->userId),
+                    'user' => UserHelper::getSlimUser($log->userId),
+                    'affected' => $log->action == $editedAction ?
+                        UserHelper::getSlimUser($log->getData()->userIdBefore) : UserHelper::getSlimUser($booking->userId),
                     'day' => $booking->day,
                     'hour' => $booking->hour,
                     'action' => $log->action,
@@ -314,11 +316,12 @@ class RadioController extends Controller {
         $slot->userId = $bookingForUser ? $bookingForUser->userId : $user->userId;
         $slot->save();
 
-        Logger::staff($user->userId, $request->ip(), Action::EDITED_TIMETABLE_SLOT, [
+        Logger::staff($user->userId, $request->ip(), Action::EDITED_RADIO_TIMETABLE_SLOT, [
             'userIdBefore' => $userIdBefore,
             'userIdAfter' => $slot->userId,
             'eventIdBefore' => null,
-            'eventIdAfter' => null
+            'eventIdAfter' => null,
+            'timetableId' => $slot->timetableId
         ], $slot->timetableId);;
         return response()->json([
             'timetableId' => $slot->timetableId,

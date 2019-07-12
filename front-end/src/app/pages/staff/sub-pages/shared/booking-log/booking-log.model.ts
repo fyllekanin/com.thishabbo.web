@@ -1,11 +1,11 @@
 import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
-import { User } from 'core/services/auth/auth.model';
+import { SlimUser } from 'core/services/auth/auth.model';
 
 export class BookingItem {
-    @objectOf(User)
-    user: User;
-    @objectOf(User)
-    affected: User;
+    @objectOf(SlimUser)
+    user: SlimUser;
+    @objectOf(SlimUser)
+    affected: SlimUser;
     @primitive()
     day: number;
     @primitive()
@@ -15,7 +15,7 @@ export class BookingItem {
     @primitive()
     updatedAt: number;
 
-    constructor(source: Partial<BookingItem>) {
+    constructor (source: Partial<BookingItem>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -28,7 +28,7 @@ export class BookingLogModel {
     @primitive()
     total: number;
 
-    constructor(source?: Partial<BookingLogModel>) {
+    constructor (source?: Partial<BookingLogModel>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -39,5 +39,7 @@ export enum BookingActions {
     BOOKED_RADIO = 21,
     BOOKED_EVENTS = 29,
     CREATED_PERM = 22,
-    DELETED_PERM = 24
+    DELETED_PERM = 24,
+    EDITED_EVENTS = 194,
+    EDITED_RADIO = 195
 }

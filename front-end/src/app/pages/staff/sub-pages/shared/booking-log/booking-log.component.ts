@@ -99,6 +99,9 @@ export class BookingLogComponent extends Page implements OnDestroy {
                 return 'Created perm show';
             case BookingActions.DELETED_PERM:
                 return 'Deleted perm show';
+            case BookingActions.EDITED_EVENTS:
+            case BookingActions.EDITED_RADIO:
+                return 'Edited';
             default:
                 return 'Unknown';
         }
