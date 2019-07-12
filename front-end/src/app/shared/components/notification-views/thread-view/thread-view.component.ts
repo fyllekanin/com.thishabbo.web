@@ -61,7 +61,6 @@ export class ThreadViewComponent implements NotificationView {
     click (event): void {
         this.onClick.next(this._notification.notificationId);
 
-        debugger;
         if (shouldPerformClickOnNotification(event)) {
             const thread = this._notification.item.thread;
             const postId = this._notification.item.thread.postId;
