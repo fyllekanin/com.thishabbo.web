@@ -214,7 +214,7 @@ class EventsController extends Controller {
                     'action' => $log->action,
                     'updatedAt' => $log->updatedAt->timestamp
                 ] : null;
-            });
+            })->toArray();
 
         return response()->json([
             'items' => Iterables::filter($items, function($item) {
