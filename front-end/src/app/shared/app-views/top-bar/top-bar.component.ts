@@ -1,8 +1,6 @@
 import { AuthService } from 'core/services/auth/auth.service';
 import { Router } from '@angular/router';
 import { HttpService } from 'core/services/http/http.service';
-import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
-import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Component, HostListener } from '@angular/core';
 import { NotificationModel, NotificationTypes } from 'shared/app-views/top-bar/top-bar.model';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
