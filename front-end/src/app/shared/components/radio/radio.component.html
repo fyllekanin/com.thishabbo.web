@@ -17,8 +17,13 @@
                                                               [isMiniProfileDisabled]="true"></app-user-link></span>
                     <span *ngIf="!nextDj"> Not Booked</span>
                 </div>
-                <div class="dj-position says"><em class="fas fa-comment"></em>
-                    {{djSays}}
+                <div class="dj-position says">
+                    <div class="says-icon">
+                        <em class="fas fa-comment"></em>
+                    </div>
+                    <div class="says-text">
+                        <span>{{djSays}}</span>
+                    </div>
                 </div>
                 <div class="dj-position stats">
                     <div class="likes float-right"><em class="fas fa-heart"></em> {{likes | number: '1.'}}</div>
