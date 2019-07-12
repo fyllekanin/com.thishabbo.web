@@ -26,6 +26,8 @@ import { GroupListResolver } from './services/group-list.resolver';
 import { UserLinkModule } from 'shared/components/user/user-link.module';
 import { SlimArticleModule } from 'shared/components/slim-article/slim-article.module';
 import { BadgesModule } from 'shared/components/badges/badges.module';
+import { VersionsComponent } from './versions/versions.component';
+import { VersionsResolver } from './services/versions.resolver';
 
 @NgModule({
     imports: [
@@ -53,12 +55,14 @@ import { BadgesModule } from 'shared/components/badges/badges.module';
         MediaArticlesComponent,
         StaffSpotlightComponent,
         SearchComponent,
-        GroupListComponent
+        GroupListComponent,
+        VersionsComponent
     ],
     providers: [
         HomeDefaultResolver,
         SearchResolver,
-        GroupListResolver
+        GroupListResolver,
+        VersionsResolver
     ],
     exports: [
         RouterModule

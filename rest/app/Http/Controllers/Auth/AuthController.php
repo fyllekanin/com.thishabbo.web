@@ -229,13 +229,14 @@ class AuthController extends Controller {
 
     public function getInitialLoad(Request $request) {
         $accessToken = RequestUtil::getAccessToken($request);
+        $user = $request->get('auth');
         $token = Token::where('accessToken', $accessToken)
             ->first();
 
         return response()->json([
             'user' => $token ? $this->getAuthUser($token->user, $token->accessToken, $token->refreshToken) : null,
             'navigation' => $this->myImpl->getNavigation(),
-            'theme' => $this->myImpl->getTheme($token->user)
+            'theme' => $this->myImpl->getTheme($user)
         ]);
     }
 

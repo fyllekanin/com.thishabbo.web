@@ -32,7 +32,7 @@ class Iterables {
         return array_values(array_filter($list, $callback));
     }
 
-    public static function sortByProperty ($list, $property) {
+    public static function sortByPropertyAsc ($list, $property) {
 
         if (count($list) < 1) {
             return $list;
@@ -52,6 +52,36 @@ class Iterables {
                 return 1;
             } else if ($bItem->$property > $aItem->$property) {
                 return -1;
+            }
+            return 0;
+        };
+
+        $isObj = gettype($list[0]) === 'object';
+        usort($list, $isObj ? $obj : $arr);
+
+        return $list;
+    }
+
+    public static function sortByPropertyDesc ($list, $property) {
+
+        if (count($list) < 1) {
+            return $list;
+        }
+
+        $arr = function ($aItem, $bItem) use ($property) {
+            if ($aItem[$property] > $bItem[$property]) {
+                return -1;
+            } else if ($bItem[$property] > $aItem[$property]) {
+                return 1;
+            }
+            return 0;
+        };
+
+        $obj = function ($aItem, $bItem) use ($property) {
+            if ($aItem->$property > $bItem->$property) {
+                return -1;
+            } else if ($bItem->$property > $aItem->$property) {
+                return 1;
             }
             return 0;
         };

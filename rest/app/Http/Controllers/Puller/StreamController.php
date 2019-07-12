@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Puller;
 
+use App\EloquentModels\Forum\IgnoredCategory;
+use App\EloquentModels\Forum\IgnoredThread;
 use App\EloquentModels\SiteMessage;
 use App\EloquentModels\Staff\Timetable;
 use App\EloquentModels\User\User;
@@ -53,7 +55,17 @@ class StreamController extends Controller {
         $user = $request->get('auth');
         $activeUsers = $this->getActiveUsers();
         $siteMessages = $this->getSiteMessages();
-        $activities = $this->activityService->getLatestActivities($this->forumService->getAccessibleCategories($user->userId));
+
+        $ignoredCategoryIds = array_merge(IgnoredCategory::where('userId', $user->userId)->pluck('categoryId')->toArray(),
+            $this->forumService->getCategoriesUserCantSeeOthersThreadsIn($user->userId));
+        $categoryIds = [];
+        $ignoredThreadIds = IgnoredThread::where('userId', $user->userId)->pluck('threadId');
+        foreach ($this->forumService->getAccessibleCategories($user->userId) as $categoryId) {
+            if (!in_array($categoryId, $ignoredCategoryIds)) {
+                $categoryIds[] = $categoryId;
+            }
+        }
+        $activities = $this->activityService->getLatestActivities($categoryIds, $ignoredThreadIds);
 
         return response()->json([
             'radio' => $this->getRadioStats(),

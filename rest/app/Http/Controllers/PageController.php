@@ -18,6 +18,7 @@ use App\Helpers\UserHelper;
 use App\Http\Impl\PageControllerImpl;
 use App\Models\User\CustomUserFields;
 use App\Utils\BBcodeUtil;
+use App\Utils\Iterables;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -36,6 +37,35 @@ class PageController extends Controller {
         parent::__construct();
         $this->myImpl = $impl;
         $this->categoryTemplates = ConfigHelper::getCategoryTemplatesConfig();
+    }
+
+    public function getVersions($page) {
+        $folderNames = Iterables::filter(scandir(SettingsHelper::getResourcesPath('commit-logs')), function($folder) {
+            return preg_match('/[0-9]+.[0-9]+.[0-9]+/', $folder);
+        });
+        usort($folderNames, 'version_compare');
+        $folderNames = array_reverse($folderNames);
+
+        $versions = array_map(function($folder) {
+
+            return (object) [
+                'version' => $folder,
+                'changes' => $this->myImpl->getCommitLogChanges($folder)
+            ];
+        }, $folderNames);
+        $versions = Iterables::filter($versions, function($version) {
+            return count($version->changes) > 0;
+        });
+
+        $total = DataHelper::getPage(count($versions));
+        $offset = DataHelper::getOffset($page);
+        $items = array_slice($versions, $offset, $this->perPage);
+
+        return response()->json([
+            'total' => $total,
+            'page' => $page,
+            'items' => $items
+        ]);
     }
 
     /**
