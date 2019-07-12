@@ -58,4 +58,10 @@ export class SearchBarComponent {
         this._router.navigateByUrl('/home/search/threads/page/1');
     }
 
+    onKeyUp (event): void {
+        if (event.keyCode === 13) {
+            this.goToSearch();
+        }
+    }
+
 }

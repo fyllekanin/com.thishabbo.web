@@ -34,12 +34,6 @@ export class HeaderComponent {
         });
     }
 
-    onKeyUp (event): void {
-        if (event.keyCode === 13) {
-            this.goToSearch();
-        }
-    }
-
     get radioStats (): RadioModel {
         return this._info ? this._info.radio : null;
     }
