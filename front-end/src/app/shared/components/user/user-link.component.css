@@ -19,7 +19,7 @@
     display: none;
 }
 
-.user-link:hover .mini-profile {
+:host:hover .mini-profile {
     display: block;
 }
 
@@ -131,7 +131,7 @@ a {
 }
 
 @media screen and (max-width: 1024px) {
-    .user-link:hover .mini-profile {
+    :host:hover .mini-profile {
         display: none;
     }
 }

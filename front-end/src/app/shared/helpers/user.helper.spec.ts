@@ -48,7 +48,8 @@ describe('UserHelper', () => {
             // Then
             expect(style).toContain('#ffffff');
             expect(style).toContain('#000000');
-            expect(style).toContain('color-stop');});
+            expect(style).toContain('color-stop');
+        });
     });
 
     describe('getNameColor', () => {
