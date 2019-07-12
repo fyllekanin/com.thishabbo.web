@@ -76,4 +76,8 @@ a {
     .icon {
         display: none;
     }
+
+    .title {
+        max-width: 100%;
+    }
 }
