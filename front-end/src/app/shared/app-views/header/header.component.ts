@@ -1,5 +1,5 @@
 import { AuthService } from 'core/services/auth/auth.service';
-import { Component, HostListener } from '@angular/core';
+import { Component } from '@angular/core';
 import { EventsModel, RadioModel } from 'shared/components/radio/radio.model';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';

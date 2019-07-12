@@ -1,7 +1,7 @@
-<div class="nickname nickname-top-outside" *ngIf="isTopOutside">
+<div class="nickname nickname-top-outside" *ngIf="isTopOutside || isMobile">
     <app-user-link [user]="user"></app-user-link>
 </div>
-<div class="avatar">
+<div class="avatar" *ngIf="!isMobile">
     <div class="nickname nickname-top-inside" *ngIf="isTopInside">
         <app-user-link [user]="user"></app-user-link>
     </div>
@@ -14,7 +14,7 @@
 <div class="nickname nickname-bottom-outside" *ngIf="isBottomOutside">
     <app-user-link [user]="user"></app-user-link>
 </div>
-<div class="default" *ngIf="!useAvatarImage">
+<div class="default" *ngIf="!useAvatarImage && !isMobile">
     <em class="fa fa-user"></em>
 </div>
 <div class="userbars">
