@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\EloquentModels\User\Ban;
 use App\EloquentModels\User\Token;
 use App\EloquentModels\User\User;
+use App\EloquentModels\Group\Group;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Impl\Auth\AuthControllerImpl;
