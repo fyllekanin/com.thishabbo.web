@@ -37,6 +37,7 @@ import { StatsBoxModel } from 'shared/app-views/stats-boxes/stats-boxes.model';
 export class ThreadComponent extends Page implements OnDestroy {
     private _threadPage: ThreadPage = new ThreadPage();
     private _isToolsVisible = false;
+    private isMiniProfileDisabled = false;
     private _multiQuotedPosts: Array<PostModel> = new Array<PostModel>();
 
     @ViewChild('editor', {static: false}) editor: EditorComponent;
@@ -62,6 +63,7 @@ export class ThreadComponent extends Page implements OnDestroy {
     ) {
         super(_elementRef);
         this._isToolsVisible = Boolean(localStorage.getItem(LOCAL_STORAGE.FORUM_TOOLS));
+        this.isMiniProfileDisabled = this.isMiniProfileDisabled || Boolean(localStorage.getItem(LOCAL_STORAGE.MINI_PROFILE_DISABLED));
         this.addSubscription(this._activatedRoute.data, this.onData.bind(this));
     }
 
