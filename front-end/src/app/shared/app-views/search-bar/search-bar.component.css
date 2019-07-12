@@ -1,0 +1,30 @@
+.search-button {
+    padding: 7px !important;
+    margin: 0 2px 0 3px !important;
+}
+
+
+.input-group {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    font-size: 10px !important;
+    -ms-flex-wrap: wrap;
+    -ms-flex-align: stretch;
+    align-items: stretch;
+    width: 100%;
+}
+
+input, optgroup, select, textarea {
+    border: 0;
+    background: #fbfbfb;
+    color: gray;
+    display: block;
+    height: 30px;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    width: 100%;
+    outline: 0;
+    border-radius: 2px;
+    padding: 6px;
+    margin-right: -6px;
+}

@@ -1,0 +1,12 @@
+<div class="input-group">
+    <input type="text" class="form-control" placeholder="Looking for something?"
+        (keyup)="onKeyUp($event)" [(ngModel)]="text">
+    <div class="generic-radio-button generic-blue-button search-button" (click)="goToSearch()"
+        tooltip="Search">
+        <em class="fas fa-search ng-star-inserted"></em>
+    </div>
+    <div class="generic-radio-button generic-red-button search-button"
+        (click)="goToAdvancedSearch()" tooltip="Advanced Search">
+        <em class="fas fa-search-plus ng-star-inserted"></em>
+    </div>
+</div>

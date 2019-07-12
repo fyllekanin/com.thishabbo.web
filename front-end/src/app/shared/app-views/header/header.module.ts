@@ -8,6 +8,7 @@ import { TabsComponent } from 'shared/app-views/header/tabs/tabs.component';
 import { TabComponent } from 'shared/app-views/header/tabs/tab/tab.component';
 import { ActivitiesComponent } from 'shared/app-views/header/activities/activities.component';
 import { UserLinkModule } from 'shared/components/user/user-link.module';
+import { SearchBarModule } from '../search-bar/search-bar.module';
 
 @NgModule({
     imports: [
@@ -15,7 +16,8 @@ import { UserLinkModule } from 'shared/components/user/user-link.module';
         FormsModule,
         CommonModule,
         RadioModule,
-        UserLinkModule
+        UserLinkModule,
+        SearchBarModule
     ],
     declarations: [
         HeaderComponent,

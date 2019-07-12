@@ -1,0 +1,5 @@
+<a [routerLink]="homePage">ThisHabbo VX</a> &#187;
+<a *ngFor="let item of breadcrumbItems" [routerLink]="[item.url]">
+    {{item.title}} &#187;
+</a>
+<span [innerHTML]="current | safeHtml"></span>

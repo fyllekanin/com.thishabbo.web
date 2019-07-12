@@ -1,7 +1,7 @@
 import { AuthService } from 'core/services/auth/auth.service';
 import { Router } from '@angular/router';
 import { HttpService } from 'core/services/http/http.service';
-import { Breadcrumb, BreadcrumbItem } from 'core/services/breadcrum/breadcrum.model';
+import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Component } from '@angular/core';
 import { NotificationModel, NotificationTypes } from 'shared/app-views/top-bar/top-bar.model';
@@ -19,7 +19,6 @@ import { NotificationMessage } from 'shared/app-views/global-notification/global
 export class TopBarComponent {
     private _notifications: Array<NotificationModel<any>> = [];
     private _messages: Array<NotificationModel<any>> = [];
-    private _breadcrumb: Breadcrumb;
 
     loginName = '';
     password = '';
@@ -31,12 +30,7 @@ export class TopBarComponent {
         private _routerStateService: RouterStateService,
         private _continuesInformationService: ContinuesInformationService,
         private _notificationService: NotificationService,
-        breadcrumbService: BreadcrumbService
     ) {
-        breadcrumbService.onBreadcrumb.subscribe(breadcrumb => {
-            this._breadcrumb = breadcrumb;
-            this._routerStateService.updateCurrentPage(this._breadcrumb.current);
-        });
         this._continuesInformationService.onNotifications.subscribe(this.onNotifications.bind(this));
     }
 
@@ -94,12 +88,6 @@ export class TopBarComponent {
             });
     }
 
-    get homePage (): Array<string> {
-        const homePage = this._authService.isLoggedIn() && this._authService.authUser.homePage ?
-            this._authService.authUser.homePage : '/home';
-        return [homePage];
-    }
-
     get loggedIn (): boolean {
         return this._authService.isLoggedIn();
     }
@@ -110,14 +98,6 @@ export class TopBarComponent {
 
     get messages (): Array<NotificationModel<any>> {
         return this._messages;
-    }
-
-    get breadcrumbItems (): Array<BreadcrumbItem> {
-        return this._breadcrumb ? this._breadcrumb.items : [];
-    }
-
-    get current (): string {
-        return this._breadcrumb ? this._breadcrumb.current : '';
     }
 
     private onNotifications (notifications: Array<NotificationModel<any>>): void {

@@ -97,3 +97,9 @@ a {
     box-shadow: inset 0 1px 2px rgba(197, 197, 197, 0.09);
     margin-bottom: 2px;
 }
+
+@media screen and (max-width: 600px) {
+    .icon {
+        display: none;
+    }
+}

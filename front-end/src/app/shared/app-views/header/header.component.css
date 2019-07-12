@@ -2,17 +2,6 @@
     width: 100%;
 }
 
-.input-group {
-    position: relative;
-    display: -ms-flexbox;
-    display: flex;
-    font-size: 10px !important;
-    -ms-flex-wrap: wrap;
-    -ms-flex-align: stretch;
-    align-items: stretch;
-    width: 100%;
-}
-
 .big-header {
     width: 100%;
     max-width: 100%;
@@ -39,11 +28,6 @@
     margin-top: 10px;
     width: 30%;
     float: left;
-}
-
-.search-button {
-    padding: 7px !important;
-    margin: 0 2px 0 3px !important;
 }
 
 .align-center {
