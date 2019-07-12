@@ -5,7 +5,7 @@ export class UserHelper {
         }
         let style = `
             font-weight: bold;
-            color: ${colors && colors.length > 0 ? colors[0] : '#999999'};`;
+            color: ${colors && colors.length > 0 ? colors[0] : '#999999'} !important;`;
 
         if (colors && colors.length > 1) {
             const stops = (Math.floor(100 / colors.length) / 100);
