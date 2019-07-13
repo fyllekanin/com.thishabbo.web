@@ -1,9 +1,7 @@
 import { AuthService } from 'core/services/auth/auth.service';
 import { Router } from '@angular/router';
 import { HttpService } from 'core/services/http/http.service';
-import { Breadcrumb, BreadcrumbItem } from 'core/services/breadcrum/breadcrum.model';
-import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { NotificationModel, NotificationTypes } from 'shared/app-views/top-bar/top-bar.model';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 import { RouterStateService } from 'core/services/router/router-state.service';
@@ -19,8 +17,8 @@ import { NotificationMessage } from 'shared/app-views/global-notification/global
 export class TopBarComponent {
     private _notifications: Array<NotificationModel<any>> = [];
     private _messages: Array<NotificationModel<any>> = [];
-    private _breadcrumb: Breadcrumb;
 
+    isMobile = false;
     loginName = '';
     password = '';
 
@@ -31,12 +29,7 @@ export class TopBarComponent {
         private _routerStateService: RouterStateService,
         private _continuesInformationService: ContinuesInformationService,
         private _notificationService: NotificationService,
-        breadcrumbService: BreadcrumbService
     ) {
-        breadcrumbService.onBreadcrumb.subscribe(breadcrumb => {
-            this._breadcrumb = breadcrumb;
-            this._routerStateService.updateCurrentPage(this._breadcrumb.current);
-        });
         this._continuesInformationService.onNotifications.subscribe(this.onNotifications.bind(this));
     }
 
@@ -94,10 +87,9 @@ export class TopBarComponent {
             });
     }
 
-    get homePage (): Array<string> {
-        const homePage = this._authService.isLoggedIn() && this._authService.authUser.homePage ?
-            this._authService.authUser.homePage : '/home';
-        return [homePage];
+    @HostListener('window:resize', ['$event'])
+    onResize(event) {
+        this.isMobile = event.target.innerWidth <= 600;
     }
 
     get loggedIn (): boolean {
@@ -110,14 +102,6 @@ export class TopBarComponent {
 
     get messages (): Array<NotificationModel<any>> {
         return this._messages;
-    }
-
-    get breadcrumbItems (): Array<BreadcrumbItem> {
-        return this._breadcrumb ? this._breadcrumb.items : [];
-    }
-
-    get current (): string {
-        return this._breadcrumb ? this._breadcrumb.current : '';
     }
 
     private onNotifications (notifications: Array<NotificationModel<any>>): void {

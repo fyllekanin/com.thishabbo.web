@@ -9,6 +9,8 @@ import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
 import { UserProfileModule } from 'shared/directives/user-profile.module';
 import { ContinuesInformationModule } from 'core/services/continues-information/continues-information.module';
 import { NotificationViewsModule } from 'shared/components/notification-views/notification-views.module';
+import { BreadcrumbModule } from '../breadcrumb/breadcrumb.module';
+import { SearchBarModule } from '../search-bar/search-bar.module';
 
 @NgModule({
     imports: [
@@ -21,7 +23,9 @@ import { NotificationViewsModule } from 'shared/components/notification-views/no
         SafeHtmlModule,
         SafeStyleModule,
         UserProfileModule,
-        NotificationViewsModule
+        NotificationViewsModule,
+        BreadcrumbModule,
+        SearchBarModule
     ],
     declarations: [
         TopBarComponent

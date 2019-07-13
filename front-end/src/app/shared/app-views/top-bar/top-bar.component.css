@@ -43,11 +43,6 @@ em::after {
     border-left: .3em solid transparent;
 }
 
-a {
-    color: #cc6363;
-    font-weight: bold;
-}
-
 .notification-top {
     border-bottom: 1px solid #eaeaea;
     color: #4a4848;

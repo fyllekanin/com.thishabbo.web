@@ -112,7 +112,11 @@ a:hover {
 
 select {
     float: right;
-    width: 153px;
+    width: 135px;
+    margin-top: 4px;
+    margin-right: 4px;
+    height: 28px;
     border-bottom: none;
     box-shadow: none;
 }
+

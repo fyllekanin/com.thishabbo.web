@@ -1,12 +1,13 @@
 <div class="wrapper">
     <div class="grid-container">
         <div class="grid-x grid-margin-x">
-            <div class="cell small-7 medium-8 breadcrumb">
-                <a [routerLink]="homePage">ThisHabbo VX</a> &#187;
-                <a *ngFor="let item of breadcrumbItems" [routerLink]="[item.url]">
-                    {{item.title}} &#187;
-                </a>
-                <span [innerHTML]="current | safeHtml"></span>
+            <div class="cell small-7 medium-8">
+                <div *ngIf="!isMobile" class="breadcrumb">
+                    <app-breadcrumb></app-breadcrumb>
+                </div>
+                <div *ngIf="isMobile" class="mobile-search">
+                    <app-search-bar></app-search-bar>
+                </div>
             </div>
             <div class="cell small-4 medium-4 login-pc" *ngIf="!loggedIn">
                 <div class="login-wrapper">

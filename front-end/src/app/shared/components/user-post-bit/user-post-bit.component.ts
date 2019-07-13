@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, HostListener } from '@angular/core';
 import { User, UserBadge } from 'core/services/auth/auth.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
 import { StringHelper } from 'shared/helpers/string.helper';
@@ -20,6 +20,7 @@ export class UserPostBitComponent {
     previewAvatar: string;
 
     useAvatarImage = true;
+    isMobile = false;
 
     onAvatarError (): void {
         this.useAvatarImage = false;
@@ -35,6 +36,11 @@ export class UserPostBitComponent {
 
     getBarColors (): string {
         return UserHelper.getBarColor(this.user.barColor);
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize(event) {
+        this.isMobile = event.target.innerWidth <= 600;
     }
 
     get isTopOutside () {

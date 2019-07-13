@@ -71,3 +71,13 @@ a {
     color: #5f9cfc;
     display: inline-block;
 }
+
+@media screen and (max-width: 600px) {
+    .icon {
+        display: none;
+    }
+
+    .title {
+        max-width: 100%;
+    }
+}
