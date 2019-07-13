@@ -1,6 +1,7 @@
 import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
 import { EventType } from 'app/pages/staff/sub-pages/events/types/types.model';
 import { SlimUser } from 'core/services/auth/auth.model';
+import { TimetableHelper } from 'shared/helpers/timetable.helper';
 
 export class TimetableModel {
     @primitive()
@@ -41,5 +42,6 @@ export class TimetablePage {
 
     constructor (source?: Partial<TimetablePage>) {
         ClassHelper.assign(this, source);
+        this.timetable = this.timetable.map(TimetableHelper.mapBookingWithTime);
     }
 }

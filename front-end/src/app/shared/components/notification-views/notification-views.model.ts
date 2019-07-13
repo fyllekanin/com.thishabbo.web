@@ -7,3 +7,7 @@ export interface NotificationView {
 
     getTime(): string;
 }
+
+export function shouldPerformClickOnNotification(event) {
+    return event && event.className.indexOf('readOnly') === -1 && event.nodeName !== 'A' && event.nodeName !== 'app-user-link';
+}

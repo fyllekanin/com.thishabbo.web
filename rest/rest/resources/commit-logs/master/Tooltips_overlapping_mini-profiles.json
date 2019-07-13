@@ -1,0 +1,1 @@
+{"topic":"Tooltips overlapping mini-profiles","type":"Bug","body":"Tooltips will move to the bottom if they have mini-profiles activated and to the top if they don't."}

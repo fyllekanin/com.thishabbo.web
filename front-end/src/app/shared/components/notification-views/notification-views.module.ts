@@ -11,6 +11,7 @@ import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
 import { UserProfileModule } from 'shared/directives/user-profile.module';
 import { VisitorMessageViewComponent } from 'shared/components/notification-views/visitor-message-view/visitor-message-view.component';
 import { UserViewComponent } from 'shared/components/notification-views/user-view/user-view.component';
+import { UserLinkModule } from 'shared/components/user/user-link.module';
 
 @NgModule({
     imports: [
@@ -18,7 +19,8 @@ import { UserViewComponent } from 'shared/components/notification-views/user-vie
         SafeHtmlModule,
         SafeStyleModule,
         UserProfileModule,
-        RouterModule
+        RouterModule,
+        UserLinkModule
     ],
     declarations: [
         BadgeViewComponent,

@@ -1,5 +1,8 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import { NotificationView } from 'shared/components/notification-views/notification-views.model';
+import {
+    NotificationView,
+    shouldPerformClickOnNotification
+} from 'shared/components/notification-views/notification-views.model';
 import { NotificationModel } from 'shared/app-views/top-bar/top-bar.model';
 import { FollowerView } from 'app/shared/components/notification-views/follower-view/follower-view.model';
 import { SlimUser } from 'core/services/auth/auth.model';
@@ -43,7 +46,7 @@ export class FollowerViewComponent implements NotificationView {
     @HostListener('click', ['$event.target'])
     click (event): void {
         this.onClick.next(this._notification.notificationId);
-        if (event && event.className.indexOf('readOnly') === -1) {
+        if (shouldPerformClickOnNotification(event)) {
             this._router.navigateByUrl(`/user/profile/${this.user.nickname}`);
         }
     }

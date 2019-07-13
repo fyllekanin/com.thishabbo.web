@@ -74,11 +74,6 @@ export class TimetableComponent extends Page implements OnDestroy {
 
     private onData (data: { data: TimetablePage }): void {
         this._data = data.data;
-        this._data.timetable.forEach(booking => {
-            const convertedHour = booking.hour + TimeHelper.getTimeOffsetInHours();
-            booking.day = TimeHelper.getConvertedDay(convertedHour, booking.day);
-            booking.hour = TimeHelper.getConvertedHour(convertedHour);
-        });
     }
 
 }

@@ -1,5 +1,8 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import { NotificationView } from 'shared/components/notification-views/notification-views.model';
+import {
+    NotificationView,
+    shouldPerformClickOnNotification
+} from 'shared/components/notification-views/notification-views.model';
 import { NotificationModel, NotificationTypes } from 'shared/app-views/top-bar/top-bar.model';
 import { SlimUser } from 'core/services/auth/auth.model';
 import { Router } from '@angular/router';
@@ -48,10 +51,14 @@ export class UserViewComponent implements NotificationView {
         return this._notification.type === NotificationTypes.RADIO_REQUEST;
     }
 
+    get isReferral (): boolean {
+        return this._notification.type === NotificationTypes.REFERRAL;
+    }
+
     @HostListener('click', ['$event.target'])
     click (event): void {
         this.onClick.next(this._notification.notificationId);
-        if (event && event.className.indexOf('readOnly') === -1) {
+        if (shouldPerformClickOnNotification(event)) {
             switch (this._notification.type) {
                 case NotificationTypes.LIKE_DJ:
                 case NotificationTypes.LIKE_HOST:

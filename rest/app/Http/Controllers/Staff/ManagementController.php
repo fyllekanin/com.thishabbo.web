@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Staff;
 
+use App\EloquentModels\Staff\Event;
 use App\EloquentModels\Staff\Timetable;
 use App\EloquentModels\Staff\TimetableData;
 use App\EloquentModels\User\Login;
@@ -19,6 +20,7 @@ use App\Utils\Condition;
 use App\Utils\Iterables;
 use App\Utils\Value;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ManagementController extends Controller {
     private $settingKeys;
@@ -26,6 +28,30 @@ class ManagementController extends Controller {
     public function __construct() {
         parent::__construct();
         $this->settingKeys = ConfigHelper::getKeyConfig();
+    }
+
+    public function getEventStats(Request $request) {
+        $region = $request->input('region');
+        $hours = [];
+
+        if ($region) {
+            foreach (ConfigHelper::getTimetable() as $key => $value) {
+                if ($value == $region) {
+                    $hours[] = $key;
+                }
+            }
+        }
+
+        $statsSql = Event::select('events.name', 'events.eventId', DB::raw('COUNT(timetable.timetableId) as amount'))
+            ->leftJoin('timetable', 'timetable.eventId', '=', 'events.eventId')
+            ->groupBy('events.name', 'events.eventId')
+            ->orderBy('amount', 'DESC');
+
+        if (count($hours) > 0) {
+            $statsSql->whereIn('timetable.hour', $hours);
+        }
+
+        return response()->json($statsSql->get());
     }
 
     /**

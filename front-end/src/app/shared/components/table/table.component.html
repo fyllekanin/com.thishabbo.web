@@ -54,7 +54,7 @@
                         </span>
                     </span>
                 </td>
-                <td class="action">
+                <td class="action" *ngIf="haveActions">
                     <div *ngIf="row.actions.length > 0">
                         <em class="fas fa-ellipsis-v" tabindex="1"></em>
                         <div class="actions">

@@ -215,6 +215,15 @@ var wbbdebug = false;
                                         param: "SRC",
                                         title: CURLANG.modal_imgsrc_text,
                                         validation: '^http(s)?://.*?\.(jpg|png|gif|jpeg)$'
+                                    },
+                                    {
+                                        param: "WIDTH",
+                                        title: 'Width'
+                                    }
+                                    ,
+                                    {
+                                        param: "HEIGHT",
+                                        title: 'Height'
                                     }
                                 ]
                             }

@@ -354,9 +354,7 @@ class Action {
         'id' => 29,
         'description' => 'User booked a slot',
         'data' => [
-            'day' => 'Day the slot was on',
-            'hour' => 'Hour the slot was on',
-            'name' => 'User that have the slot'
+            'timetableId' => 'ID of slot that got unbooked'
         ],
         'log' => 'log_staff',
         'contentId' => null,

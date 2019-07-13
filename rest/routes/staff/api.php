@@ -57,21 +57,27 @@ Route::prefix('events')->group(function () use ($permissions) {
 
         Route::get('/ban-on-sight', 'Staff\EventsController@getBanOnSightList');
     });
+
     Route::group(['middleware' => PermissionHelper::getStaffMiddleware($permissions->canManageEvents)], function () {
         Route::get('/types/page/{page}', 'Staff\EventsController@getEventTypes');
         Route::post('/types', 'Staff\EventsController@createEventType');
         Route::put('/types/{eventId}', 'Staff\EventsController@updateEventType');
         Route::delete('/types/{eventId}', 'Staff\EventsController@deleteEventType');
     });
+
     Route::group(['middleware' => PermissionHelper::getStaffMiddleware($permissions->canSeeBookingLogs)], function () {
         Route::get('/booking/page/{page}', 'Staff\EventsController@getBookingLog');
     });
 
+    Route::group(['middleware' => PermissionHelper::getStaffMiddleware($permissions->canSeeEventStats)], function () {
+        Route::get('/stats', 'Staff\ManagementController@getEventStats');
+    });
+
     Route::group(['middleware' => PermissionHelper::getStaffMiddleware($permissions->canManageBanOnSight)], function () {
         Route::get('/ban-on-sight/{entryId}', 'Staff\EventsController@getBanOnSight');
-        Route::delete('/ban-on-sight/{entryid}', 'Staff\EventsController@deleteBanOnSight');
+        Route::delete('/ban-on-sight/{entryId}', 'Staff\EventsController@deleteBanOnSight');
         Route::post('/ban-on-sight', 'Staff\EventsController@createBanOnSight');
-        Route::put('/ban-on-sight/{entryid}', 'Staff\EventsController@updateBanOnSight');
+        Route::put('/ban-on-sight/{entryId}', 'Staff\EventsController@updateBanOnSight');
     });
 });
 

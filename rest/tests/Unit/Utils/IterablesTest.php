@@ -71,7 +71,7 @@ class IterablesTest extends TestCase {
         $items = [$item2, $item1];
 
         // When
-        $result = Iterables::sortByProperty($items, 'id');
+        $result = Iterables::sortByPropertyAsc($items, 'id');
 
         // Then
         $this->assertEquals($item1, $result[0]);
@@ -84,7 +84,7 @@ class IterablesTest extends TestCase {
         $items = [$item2, $item1];
 
         // When
-        $result = Iterables::sortByProperty($items, 'id');
+        $result = Iterables::sortByPropertyAsc($items, 'id');
 
         // Then
         $this->assertEquals($item1, $result[0]);

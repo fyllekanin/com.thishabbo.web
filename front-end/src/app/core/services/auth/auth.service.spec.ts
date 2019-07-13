@@ -11,7 +11,6 @@ import { DialogService } from 'core/services/dialog/dialog.service';
 import { AuthUser, OAuth } from 'core/services/auth/auth.model';
 import { Router } from '@angular/router';
 
-
 describe('AuthService', () => {
 
     class HttpServiceMock {
@@ -154,6 +153,7 @@ describe('AuthService', () => {
 
             // When
             authService.login('nickname', 'password', false, () => {
+                expect(httpServiceMock.post).toHaveBeenCalled();
                 done();
             });
         });
