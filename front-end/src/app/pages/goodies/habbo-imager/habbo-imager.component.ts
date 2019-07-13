@@ -24,6 +24,7 @@ export class HabboImagerComponent extends Page implements OnDestroy, OnInit {
 
     topBorderRed = TitleTopBorder.RED;
     directions: Array<{ src: string, value: string }> = [];
+    headDirections: Array<{ src: string, value: string }> = [];
     emotions: Array<{ label: string, value: string }> = [];
     items: Array<{ label: string, value: string }> = [];
     sizes: Array<{ label: string, value: string }> = [];
@@ -78,12 +79,7 @@ export class HabboImagerComponent extends Page implements OnDestroy, OnInit {
     }
 
     ngOnInit (): void {
-        this.directions = Object.keys(habboDirections).map(key => {
-            return {
-                src: this._basicUrl.replace('{habbo}', this.habbo) + `&direction=${habboDirections[key]}`,
-                value: habboDirections[key]
-            };
-        });
+        this.setDirections();
         this.emotions = Object.keys(habboEmotions).map(key => {
             return {
                 label: StringHelper.firstCharUpperCase(key),
@@ -147,6 +143,7 @@ export class HabboImagerComponent extends Page implements OnDestroy, OnInit {
             return prev + (value ? `&${curr}=${value}` : '');
         }, this.url);
 
+        this.setDirections();
         this.directLink = this.url;
         this.bbcode = `[IMG]${this.url}[/IMG]`;
         this.html = `<img src="${this.url}" />`;
@@ -160,5 +157,20 @@ export class HabboImagerComponent extends Page implements OnDestroy, OnInit {
     updateHeadDirection (direction: string): void {
         this.headDirection = direction;
         this.urlBuilder();
+    }
+
+    private setDirections (): void {
+        this.directions = Object.keys(habboDirections).map(key => {
+            return {
+                src: this._basicUrl.replace('{habbo}', this.habbo) + `&direction=${habboDirections[key]}`,
+                value: habboDirections[key]
+            };
+        });
+        this.headDirections = Object.keys(habboDirections).map(key => {
+            return {
+                src: this._basicUrl.replace('{habbo}', this.habbo) + `&head_direction=${habboDirections[key]}`,
+                value: habboDirections[key]
+            };
+        });
     }
 }

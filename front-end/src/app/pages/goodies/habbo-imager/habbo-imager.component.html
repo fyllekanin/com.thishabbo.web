@@ -95,7 +95,7 @@
                 </div>
 
                 <div><strong>Head Directions</strong></div>
-                <div class="body-direction" *ngFor="let direction of directions">
+                <div class="body-direction" *ngFor="let direction of headDirections">
                     <img [src]="direction.src" (click)="updateHeadDirection(direction.value)"/>
                 </div>
             </app-content>
