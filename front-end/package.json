@@ -1,6 +1,6 @@
 {
   "name": "rabbit-network-forum",
-  "version": "1.18.3",
+  "version": "1.18.4",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --live-reload --proxy-config proxy.conf.json",
