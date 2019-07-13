@@ -1,10 +1,11 @@
-import { Component, Input, HostListener } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { User, UserBadge } from 'core/services/auth/auth.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
 import { StringHelper } from 'shared/helpers/string.helper';
 import { NAME_POSITIONS } from 'shared/constants/name-positions.constants';
 import { AvatarModel } from '../../../pages/user/usercp/essentials/avatar/avatar.model';
 import { UserHelper } from 'shared/helpers/user.helper';
+import { ThemeHelper } from 'shared/helpers/theme.helper';
 
 @Component({
     selector: 'app-user-post-bit',
@@ -20,11 +21,6 @@ export class UserPostBitComponent {
     previewAvatar: string;
 
     useAvatarImage = true;
-    isMobile = false;
-
-    ngOnInit () {
-        this.isMobile = window.innerWidth <= 600;
-    }
 
     onAvatarError (): void {
         this.useAvatarImage = false;
@@ -40,11 +36,6 @@ export class UserPostBitComponent {
 
     getBarColors (): string {
         return UserHelper.getBarColor(this.user.barColor);
-    }
-
-    @HostListener('window:resize', ['$event'])
-    onResize(event) {
-        this.isMobile = event.target.innerWidth <= 600;
     }
 
     get isTopOutside () {
@@ -83,5 +74,9 @@ export class UserPostBitComponent {
 
     get height (): string {
         return this.avatarSize.height ? `${this.avatarSize.height}px` : 'auto';
+    }
+
+    get isMobile (): boolean {
+        return ThemeHelper.isMobile();
     }
 }
