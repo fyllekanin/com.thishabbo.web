@@ -2,11 +2,11 @@
     <div class="grid-container">
         <div class="grid-x grid-margin-x">
             <div class="cell small-7 medium-8">
-                <div *ngIf="isMobile" class="mobile-search">
-                    <app-search-bar></app-search-bar>
-                </div>
                 <div *ngIf="!isMobile" class="breadcrumb">
                     <app-breadcrumb></app-breadcrumb>
+                </div>
+                <div *ngIf="isMobile" class="mobile-search">
+                    <app-search-bar></app-search-bar>
                 </div>
             </div>
             <div class="cell small-4 medium-4 login-pc" *ngIf="!loggedIn">
