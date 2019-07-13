@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthUser } from 'core/services/auth/auth.model';
 import { AuthService } from 'core/services/auth/auth.service';
@@ -6,6 +6,7 @@ import { ContinuesInformationService } from 'core/services/continues-information
 import { MainItem } from 'shared/app-views/navigation/navigation.model';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { XP_PER_LEVEL } from 'shared/constants/user.constants';
+import { ThemeHelper } from 'shared/helpers/theme.helper';
 
 @Component({
     selector: 'app-top-box',
@@ -18,8 +19,6 @@ export class TopBoxComponent {
 
     menuClasses = '';
     routes: Array<MainItem> = [];
-
-    isMobile = false;
     isFixed: boolean;
     showMenu: boolean;
 
@@ -68,13 +67,6 @@ export class TopBoxComponent {
         this.showMenu = !this.showMenu;
         this.updateMenuClasses();
     }
-
-    @HostListener('window:resize', ['$event'])
-    onResize (event) {
-        this.isMobile = event.target.innerWidth <= 600;
-    }
-
-
     get credits (): number {
         return this._authService.authUser.credits;
     }
@@ -115,6 +107,10 @@ export class TopBoxComponent {
     get homePage (): string {
         return this.isLoggedIn && this._authService.authUser.homePage ?
             this._authService.authUser.homePage : 'home';
+    }
+
+    get isMobile (): boolean {
+        return ThemeHelper.isMobile();
     }
 
     private setUser (): void {

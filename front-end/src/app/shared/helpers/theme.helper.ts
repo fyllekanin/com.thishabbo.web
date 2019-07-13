@@ -18,6 +18,10 @@ export class ThemeHelper {
         element.appendChild(document.createTextNode(theme));
     }
 
+    static isMobile (): boolean {
+        return window.innerWidth < 600;
+    }
+
     private static isElementAdded(): boolean {
         return Boolean(document.getElementById(ThemeHelper.THEME_STYLE_ID));
     }

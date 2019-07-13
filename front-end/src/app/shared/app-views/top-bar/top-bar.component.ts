@@ -1,12 +1,13 @@
 import { AuthService } from 'core/services/auth/auth.service';
 import { Router } from '@angular/router';
 import { HttpService } from 'core/services/http/http.service';
-import { Component, HostListener } from '@angular/core';
+import { Component } from '@angular/core';
 import { NotificationModel, NotificationTypes } from 'shared/app-views/top-bar/top-bar.model';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 import { RouterStateService } from 'core/services/router/router-state.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
+import { ThemeHelper } from 'shared/helpers/theme.helper';
 
 @Component({
     selector: 'app-top-bar',
@@ -18,7 +19,6 @@ export class TopBarComponent {
     private _notifications: Array<NotificationModel<any>> = [];
     private _messages: Array<NotificationModel<any>> = [];
 
-    isMobile = false;
     loginName = '';
     password = '';
 
@@ -87,11 +87,6 @@ export class TopBarComponent {
             });
     }
 
-    @HostListener('window:resize', ['$event'])
-    onResize(event) {
-        this.isMobile = event.target.innerWidth <= 600;
-    }
-
     get loggedIn (): boolean {
         return this._authService.isLoggedIn();
     }
@@ -102,6 +97,10 @@ export class TopBarComponent {
 
     get messages (): Array<NotificationModel<any>> {
         return this._messages;
+    }
+
+    get isMobile (): boolean {
+        return ThemeHelper.isMobile();
     }
 
     private onNotifications (notifications: Array<NotificationModel<any>>): void {

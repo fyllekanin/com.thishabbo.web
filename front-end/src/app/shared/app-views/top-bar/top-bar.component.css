@@ -166,3 +166,8 @@ input {
     top: 3px;
     left: -10px;
 }
+
+.mobile-search {
+    margin-top: 3px;
+    margin-left: 3px;
+}
