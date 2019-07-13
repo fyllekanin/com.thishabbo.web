@@ -35,7 +35,7 @@
     float: right;
     background: white;
     color: #7d7d7d;
-    margin: 34px -429px 0 0;
+    margin: 33px -429px 0 0;
     font-size: 13px;
     height: 89px;
     padding: 1px;
@@ -187,6 +187,7 @@
         transform: translate(-300%, 0);
     }
 }
+
 .stats {
     width: 41.4%;
     display: inline-block;
