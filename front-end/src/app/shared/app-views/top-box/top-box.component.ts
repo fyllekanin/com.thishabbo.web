@@ -16,6 +16,9 @@ export class TopBoxComponent {
     private _user: AuthUser;
     private _navigation: Array<MainItem> = [];
 
+    menuClasses = '';
+    routes: Array<MainItem> = [];
+
     isMobile = false;
     isFixed: boolean;
     showMenu: boolean;
@@ -35,7 +38,9 @@ export class TopBoxComponent {
 
         continuesInformationService.onDeviceSettingsUpdated.subscribe(() => {
             this.isFixed = Boolean(localStorage.getItem(LOCAL_STORAGE.FIXED_MENU));
+            this.updateMenuClasses();
         });
+        this.updateMenuClasses();
     }
 
     logout (): void {
@@ -45,6 +50,7 @@ export class TopBoxComponent {
     goToProfile (): void {
         this._router.navigateByUrl(`/user/profile/${this._authService.authUser.nickname}`);
         this.showMenu = false;
+        this.updateMenuClasses();
     }
 
     closeMenu (): void {
@@ -53,32 +59,17 @@ export class TopBoxComponent {
             item.isExpanded = false;
             return item;
         });
+        this.updateMenuClasses();
     }
 
     @HostListener('window:resize', ['$event'])
-    onResize(event) {
+    onResize (event) {
         this.isMobile = event.target.innerWidth <= 600;
     }
 
 
     get credits (): number {
         return this._authService.authUser.credits;
-    }
-
-    get menuClasses (): string {
-        const classes = [];
-        if (this.showMenu) {
-            classes.push('menu-show');
-        }
-        if (this.isFixed) {
-            classes.push('fixed-menu-margin');
-        }
-        return classes.join(' ');
-    }
-
-    get routes (): Array<MainItem> {
-        return this._navigation
-            .filter(item => item.loginRequired ? this._authService.isLoggedIn() : true);
     }
 
     get avatar (): string {
@@ -114,12 +105,25 @@ export class TopBoxComponent {
         return Math.floor((currentXp / XP_PER_LEVEL) * 100);
     }
 
-    get homePage(): string {
+    get homePage (): string {
         return this.isLoggedIn && this._authService.authUser.homePage ?
             this._authService.authUser.homePage : 'home';
     }
 
     private setUser (): void {
         this._user = this._authService.isLoggedIn() ? this._authService.authUser : null;
+        this.routes = this._navigation
+            .filter(item => item.loginRequired ? this._user : true);
+    }
+
+    private updateMenuClasses (): void {
+        const classes = [];
+        if (this.showMenu) {
+            classes.push('menu-show');
+        }
+        if (this.isFixed) {
+            classes.push('fixed-menu-margin');
+        }
+        this.menuClasses = classes.join(' ');
     }
 }

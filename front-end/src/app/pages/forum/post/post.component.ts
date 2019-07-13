@@ -15,7 +15,7 @@ import {
     ViewChild,
     ViewEncapsulation
 } from '@angular/core';
-import { User, SlimUser } from 'core/services/auth/auth.model';
+import { SlimUser, User } from 'core/services/auth/auth.model';
 import { PostService } from '../services/post.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { ReportComponent } from './report/report.component';
@@ -43,6 +43,8 @@ export class PostComponent extends Page implements OnDestroy {
     @Output() onMultiQuotePost: EventEmitter<PostModel> = new EventEmitter();
 
 
+    visibleLikers: Array<SlimUser> = [];
+    moreLikerNames: Array<SlimUser> = [];
     editorButtons: Array<EditorAction> = [
         new EditorAction({title: 'Save', value: PostActions.SAVE, saveCallback: this.onSave.bind(this)}),
         new EditorAction({title: 'Back', value: PostActions.BACK})
@@ -130,6 +132,7 @@ ${this._postModel.content}[/quotepost]\n\r`);
     @Input()
     set postModel (postModel: PostModel) {
         this._postModel = postModel || new PostModel();
+        this.setLikers();
     }
 
     @Input()
@@ -148,14 +151,6 @@ ${this._postModel.content}[/quotepost]\n\r`);
 
     get signature (): string {
         return this.user.signature;
-    }
-
-    get visibleLikers (): Array<SlimUser> {
-        return this._postModel.likers.slice(0, 4);
-    }
-
-    get moreLikerNames (): Array<SlimUser> {
-        return this._postModel.likers.slice(4, this._postModel.likers.length);
     }
 
     get haveLikers (): boolean {
@@ -197,6 +192,11 @@ ${this._postModel.content}[/quotepost]\n\r`);
 
     get isMultiQuoted (): boolean {
         return this._isMultiQuoted;
+    }
+
+    private setLikers (): void {
+        this.visibleLikers = this._postModel.likers.slice(0, 4);
+        this.moreLikerNames = this._postModel.likers.slice(4, this._postModel.likers.length);
     }
 
     private onReport (message: string): void {

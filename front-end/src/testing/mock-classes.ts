@@ -14,6 +14,7 @@ export class BreadcrumbServiceMock {
 
     set breadcrumb (val) {
         this.current = val;
+        this.breadcrumbSubject.next(val);
     }
 
     get breadcrumb () {
