@@ -1,0 +1,1 @@
+{"topic":"Fix log pagination","type":"Bug","body":"The pagination did not take query params into consideration in resolver"}

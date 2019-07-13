@@ -8,13 +8,20 @@ import { LogPage } from '../logs/logs.model';
 @Injectable()
 export class LogsService implements Resolve<LogPage> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
-    resolve(route: ActivatedRouteSnapshot): Observable<LogPage> {
+    resolve (route: ActivatedRouteSnapshot): Observable<LogPage> {
         const type = route.params['type'];
         const pageNr = route.params['page'];
 
-        return this._httpService.get(`sitecp/logs/${type}/page/${pageNr}`)
+        const action = route.queryParams['action'];
+        const user = route.queryParams['user'];
+
+        return this._httpService.get(`sitecp/logs/${type}/page/${pageNr}`, {
+            action: action,
+            user: user
+        })
             .pipe(map(res => new LogPage(res)));
     }
 }
