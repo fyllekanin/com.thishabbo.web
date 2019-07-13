@@ -11,23 +11,22 @@ export class EditHistoryComponent implements InnerDialogComponent {
     private _data: Array<PostHistoryModel> = [];
 
     historyTimestamp = -1;
+    edits: Array<{ label: string, timestamp: number }> = [];
 
-    getData() {}
+    getData () {
+    }
 
-    setData(history: Array<PostHistoryModel>) {
+    setData (history: Array<PostHistoryModel>) {
         this._data = history;
-    }
-
-    get edit(): PostHistoryModel {
-        return this._data.find(item => item.createdAt === Number(this.historyTimestamp));
-    }
-
-    get edits(): Array<{ label: string, timestamp: number }> {
-        return this._data.map(item => {
+        this.edits = this._data.map(item => {
             return {
                 label: `${TimeHelper.getLongDateWithTime(item.createdAt)} - ${item.user.nickname}`,
                 timestamp: item.createdAt
             };
         });
+    }
+
+    get edit (): PostHistoryModel {
+        return this._data.find(item => item.createdAt === Number(this.historyTimestamp));
     }
 }

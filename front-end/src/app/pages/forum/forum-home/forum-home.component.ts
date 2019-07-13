@@ -11,6 +11,7 @@ import { HttpService } from 'core/services/http/http.service';
 import { SlimUser } from 'core/services/auth/auth.model';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { AuthService } from 'core/services/auth/auth.service';
+import { ArrayHelper } from 'shared/helpers/array.helper';
 
 @Component({
     selector: 'app-forum-home',
@@ -76,15 +77,6 @@ export class ForumHomeComponent extends Page implements OnInit, OnDestroy {
         this._router.navigateByUrl(url);
     }
 
-    sortCategories (a: SlimCategory, b: SlimCategory): number {
-        if (a.displayOrder > b.displayOrder) {
-            return 1;
-        } else if (a.displayOrder < b.displayOrder) {
-            return -1;
-        }
-        return 0;
-    }
-
     updateForumStats (): void {
         if (this.isForumStatsHidden) {
             return;
@@ -109,7 +101,7 @@ export class ForumHomeComponent extends Page implements OnInit, OnDestroy {
     }
 
     get categories (): Array<SlimCategory> {
-        return this._forumHomePage.sort(this.sortCategories);
+        return this._forumHomePage;
     }
 
     get latestPosts (): Array<ForumLatestPost> {
@@ -146,6 +138,7 @@ export class ForumHomeComponent extends Page implements OnInit, OnDestroy {
 
     private onPage (data: { data: Array<SlimCategory> }): void {
         this._forumHomePage = data.data;
+        this._forumHomePage.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'displayOrder'));
     }
 
     private updateContractedCategories (): void {
@@ -161,7 +154,7 @@ export class ForumHomeComponent extends Page implements OnInit, OnDestroy {
         this._httpService.put('forum/category/read-all').subscribe(() => {
             this._forumHomePage = this._forumHomePage.map(category => {
                 category.haveRead = true;
-                category.childs.forEach(child => child.haveRead = true);
+                category.children.forEach(child => child.haveRead = true);
                 return category;
             });
             this._notificationService.sendInfoNotification('You marked all current posts read!');

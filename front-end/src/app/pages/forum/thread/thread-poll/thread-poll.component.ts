@@ -17,6 +17,7 @@ export class ThreadPollComponent implements OnInit {
 
     answerId: string;
     tabs: Array<TitleTab> = [];
+    answers: Array<{ label: string, percentage: number, votes: number }> = [];
 
     constructor (
         private _httpService: HttpService,
@@ -51,6 +52,7 @@ export class ThreadPollComponent implements OnInit {
     @Input()
     set poll (poll: ThreadPoll) {
         this._poll = poll;
+        this.setAnswers();
     }
 
     @Input()
@@ -70,11 +72,11 @@ export class ThreadPollComponent implements OnInit {
         return this._poll.answers;
     }
 
-    get answers (): Array<{ label: string, percentage: number, votes: number }> {
+    private setAnswers (): void {
         const total = this._poll.answers.reduce((prev, curr) => {
             return prev + curr.answers;
         }, 0);
-        return this._poll.answers.map(answer => {
+        this.answers = this._poll.answers.map(answer => {
             return {
                 label: answer.label,
                 percentage: answer.answers / total * 100,

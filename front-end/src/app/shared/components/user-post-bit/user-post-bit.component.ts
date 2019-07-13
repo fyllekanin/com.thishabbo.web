@@ -1,4 +1,4 @@
-import { Component, Input, HostListener } from '@angular/core';
+import { Component, HostListener, Input } from '@angular/core';
 import { User, UserBadge } from 'core/services/auth/auth.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
 import { StringHelper } from 'shared/helpers/string.helper';
@@ -12,8 +12,7 @@ import { UserHelper } from 'shared/helpers/user.helper';
     styleUrls: ['user-post-bit.component.css']
 })
 export class UserPostBitComponent {
-    @Input()
-    user = new User();
+    private _user = new User();
     @Input()
     avatarSize = new AvatarModel(null);
     @Input()
@@ -21,6 +20,7 @@ export class UserPostBitComponent {
 
     useAvatarImage = true;
     isMobile = false;
+    socials: Array<{ label: string, value: string }> = [];
 
     onAvatarError (): void {
         this.useAvatarImage = false;
@@ -35,42 +35,42 @@ export class UserPostBitComponent {
     }
 
     getBarColors (): string {
-        return UserHelper.getBarColor(this.user.barColor);
+        return UserHelper.getBarColor(this._user.barColor);
     }
 
     @HostListener('window:resize', ['$event'])
-    onResize(event) {
+    onResize (event) {
         this.isMobile = event.target.innerWidth <= 600;
     }
 
+    @Input()
+    set user (user: User) {
+        this._user = user;
+        this.setSocials();
+    }
+
+    get user (): User {
+        return this._user;
+    }
+
     get isTopOutside () {
-        return this.user.namePosition === NAME_POSITIONS.TOP_OUTSIDE;
+        return this._user.namePosition === NAME_POSITIONS.TOP_OUTSIDE;
     }
 
     get isTopInside () {
-        return this.user.namePosition === NAME_POSITIONS.TOP_INSIDE;
+        return this._user.namePosition === NAME_POSITIONS.TOP_INSIDE;
     }
 
     get isBottomOutside () {
-        return this.user.namePosition === NAME_POSITIONS.BOTTOM_OUTSIDE;
+        return this._user.namePosition === NAME_POSITIONS.BOTTOM_OUTSIDE;
     }
 
     get isBottomInside () {
-        return this.user.namePosition === NAME_POSITIONS.BOTTOM_INSIDE;
+        return this._user.namePosition === NAME_POSITIONS.BOTTOM_INSIDE;
     }
 
     get userAvatarUrl (): string {
-        return this.previewAvatar || `/rest/resources/images/users/${this.user.userId}.gif?${this.user.avatarUpdatedAt}`;
-    }
-
-    get socials (): Array<{ label: string, value: string }> {
-        return !this.user.social ?
-            [] : Object.keys(this.user.social).map(key => {
-                return {
-                    label: StringHelper.firstCharUpperCase(key),
-                    value: this.user.social[key]
-                };
-            }).filter(item => item.value);
+        return this.previewAvatar || `/rest/resources/images/users/${this._user.userId}.gif?${this._user.avatarUpdatedAt}`;
     }
 
     get width (): string {
@@ -79,5 +79,15 @@ export class UserPostBitComponent {
 
     get height (): string {
         return this.avatarSize.height ? `${this.avatarSize.height}px` : 'auto';
+    }
+
+    private setSocials (): void {
+        this.socials = !this._user.social ?
+            [] : Object.keys(this._user.social).map(key => {
+                return {
+                    label: StringHelper.firstCharUpperCase(key),
+                    value: this._user.social[key]
+                };
+            }).filter(item => item.value);
     }
 }

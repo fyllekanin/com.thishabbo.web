@@ -6,7 +6,7 @@
                            (onTabClick)="toggleCategory(category)" (onTitleClick)="onTitleClick(category)">
                 </app-title>
                 <app-content [isContracted]="isCategoryContracted(category)">
-                    <app-forum-slim-category *ngFor="let child of category.childs.sort(sortCategories)"
+                    <app-forum-slim-category *ngFor="let child of category.children"
                                              [category]="child"></app-forum-slim-category>
                 </app-content>
             </div>
