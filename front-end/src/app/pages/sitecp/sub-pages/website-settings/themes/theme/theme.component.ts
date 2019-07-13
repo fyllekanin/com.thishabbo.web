@@ -54,7 +54,7 @@ export class ThemeComponent extends Page implements OnDestroy {
             case ThemeActions.SAVE:
                 this.onSave();
                 break;
-            case ThemeActions.DEFAULT:
+            case ThemeActions.DELETE:
                 this.onDelete();
                 break;
             case ThemeActions.BACK:
