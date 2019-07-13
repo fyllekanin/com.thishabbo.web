@@ -196,19 +196,21 @@ class EventsController extends Controller {
     public function getBookingLog($page) {
         $bookAction = Action::getAction(Action::BOOKED_EVENT_SLOT);
         $unbookAction = Action::getAction(Action::UNBOOKED_EVENT_SLOT);
+        $editedAction = Action::getAction(Action::EDITED_EVENTS_TIMETABLE_SLOT);
 
-        $logSql = LogStaff::whereIn('action', [$bookAction, $unbookAction]);
+        $logSql = LogStaff::whereIn('action', [$bookAction, $unbookAction, $editedAction]);
 
         $total = DataHelper::getPage($logSql->count('logId'));
         $items = $logSql->orderBy('logId', 'DESC')
             ->take($this->perPage)
             ->skip(DataHelper::getOffset($page))
-            ->get()->map(function ($log) {
-                $booking = isset($log->getData()->timetableId) ? Timetable::where('timetableId', json_decode($log->data)->timetableId)
+            ->get()->map(function ($log) use ($editedAction) {
+                $booking = isset($log->getData()->timetableId) ? Timetable::where('timetableId', $log->getData()->timetableId)
                     ->withoutGlobalScope('nonHardDeleted')->first() : null;
                 return $booking ? [
-                    'user' => UserHelper::getUser($log->userId),
-                    'affected' => UserHelper::getUser($booking->userId),
+                    'user' => UserHelper::getSlimUser($log->userId),
+                    'affected' => $log->action == $editedAction ?
+                        UserHelper::getSlimUser($log->getData()->userIdBefore) : UserHelper::getSlimUser($booking->userId),
                     'day' => $booking->day,
                     'hour' => $booking->hour,
                     'action' => $log->action,
@@ -217,7 +219,7 @@ class EventsController extends Controller {
             })->toArray();
 
         return response()->json([
-            'items' => Iterables::filter($items, function($item) {
+            'items' => Iterables::filter($items, function ($item) {
                 return $item != null;
             }),
             'page' => $page,
@@ -394,11 +396,12 @@ class EventsController extends Controller {
         $slot->link = $link;
         $slot->save();
 
-        Logger::staff($user->userId, $request->ip(), Action::EDITED_TIMETABLE_SLOT, [
+        Logger::staff($user->userId, $request->ip(), Action::EDITED_EVENTS_TIMETABLE_SLOT, [
             'userIdBefore' => $userIdBefore,
             'userIdAfter' => $slot->userId,
             'eventIdBefore' => $eventIdBefore,
-            'eventIdAfter' => $slot->eventId
+            'eventIdAfter' => $slot->eventId,
+            'timetableId' => $slot->timetableId
         ], $slot->timetableId);;
         return response()->json([
             'timetableId' => $slot->timetableId,

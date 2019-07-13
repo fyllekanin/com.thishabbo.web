@@ -2136,6 +2136,7 @@ class Action {
         'contentSelect' => null
     ];
 
+    /** @deprecated */
     const EDITED_TIMETABLE_SLOT = [
         'id' => 190,
         'description' => 'User edited timetable slot',
@@ -2182,6 +2183,38 @@ class Action {
         'description' => 'User updated their tabs',
         'data' => [],
         'log' => 'log_user',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
+    ];
+
+    const EDITED_EVENTS_TIMETABLE_SLOT = [
+        'id' => 194,
+        'description' => 'User edited events timetable slot',
+        'data' => [
+            'userIdBefore' => 'Who had the slot before',
+            'userIdAfter' => 'Who have the slow now',
+            'eventIdBefore' => 'Event ID before',
+            'eventIdAfter' => 'Event ID after',
+            'timetableId' => 'ID of timetable slot'
+        ],
+        'log' => 'log_staff',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
+    ];
+
+    const EDITED_RADIO_TIMETABLE_SLOT = [
+        'id' => 195,
+        'description' => 'User edited radio timetable slot',
+        'data' => [
+            'userIdBefore' => 'Who had the slot before',
+            'userIdAfter' => 'Who have the slow now',
+            'eventIdBefore' => 'Event ID before',
+            'eventIdAfter' => 'Event ID after',
+            'timetableId' => 'ID of timetable slot'
+        ],
+        'log' => 'log_staff',
         'contentId' => null,
         'contentTable' => null,
         'contentSelect' => null
