@@ -42,7 +42,8 @@ class Kernel extends ConsoleKernel {
             ]);
         })->everyFiveMinutes();
 
-        $schedule->call('\App\Console\Jobs\ClearDJSays@init')->hourlyAt(01);
+        $schedule->call('\App\Console\Jobs\ClearDJSays@init')->hourly();
+        $schedule->call('\App\Console\Jobs\ClearTimetable@init')->dailyAt('07:00');
     }
 
     /**
