@@ -23,7 +23,7 @@ export class JobComponent extends Page implements OnDestroy {
         {checked: false, label: 'Builder'},
         {checked: false, label: 'Graphics Artist'},
         {checked: false, label: 'Media Journalist'},
-        {checked: false, label: 'Quest/Tutorial Report'},
+        {checked: false, label: 'Quest/Tutorial Reporter'},
         {checked: false, label: 'Developer'},
         {checked: false, label: 'Web Designer'}
     ];
