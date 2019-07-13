@@ -72,11 +72,11 @@ class ActivityService {
         $itemIsValid = false;
         if ($this->isThreadRelatedAction($item)) {
             $thread = Thread::where('threadId', $item->contentId)->first();
-            $itemIsValid = $this->isThreadItemValid($thread, $userId, $ignoredThreadIds);
+            $itemIsValid = $thread && $this->isThreadItemValid($thread, $userId, $ignoredThreadIds);
         }
         if ($this->isPostRelatedAction($item)) {
             $post = Post::with('thread')->where('postId', $item->contentId)->first();
-            $itemIsValid = $this->isThreadItemValid($post->thread, $userId, $ignoredThreadIds);
+            $itemIsValid = $post && $this->isThreadItemValid($post->thread, $userId, $ignoredThreadIds);
         }
         return in_array($item->data->categoryId, $categoryIds) && $itemIsValid;
     }
