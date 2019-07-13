@@ -21,7 +21,9 @@ export class BreadcrumbComponent {
     ) {
         breadcrumbService.onBreadcrumb.subscribe(breadcrumb => {
             this._breadcrumb = breadcrumb;
-            routerStateService.updateCurrentPage(this._breadcrumb.current);
+
+            const current = this._breadcrumb ? this._breadcrumb.current : '';
+            routerStateService.updateCurrentPage(current);
         });
     }
 
