@@ -10,6 +10,8 @@ export class Theme {
     @primitive()
     css: string;
     @primitive()
+    users: number;
+    @primitive()
     createdAt: number;
     @primitive()
     updatedAt: number;

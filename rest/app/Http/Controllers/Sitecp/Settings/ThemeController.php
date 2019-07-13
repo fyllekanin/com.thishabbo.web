@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Sitecp\Settings;
 
 use App\EloquentModels\Theme;
+use App\EloquentModels\User\User;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
@@ -16,6 +17,7 @@ class ThemeController extends Controller {
         return response()->json(Theme::orderBy('title', 'ASC')->get()->map(function ($item) {
             return [
                 'themeId' => $item->themeId,
+                'users' => User::where('theme', $item->themeId)->count(),
                 'title' => $item->title,
                 'isDefault' => $item->isDefault,
                 'createdAt' => $item->createdAt->timestamp,
