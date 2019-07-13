@@ -77,7 +77,7 @@ export class ThemeComponent extends Page implements OnDestroy {
                 .subscribe(() => {
                     this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
-                        message: 'Theme is created!'
+                        message: 'Theme has been updated!'
                     }));
                 }, this._notificationService.failureNotification.bind(this._notificationService));
         } else {
