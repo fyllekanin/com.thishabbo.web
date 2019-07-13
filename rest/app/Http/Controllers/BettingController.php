@@ -52,6 +52,9 @@ class BettingController extends Controller {
         Condition::precondition($amount <= 0, 400, 'Needs to be a positive number!');
         Condition::precondition(!$this->creditsService->haveEnoughCredits($user->userId, $amount), 400, 'Not enough credits!');
 
+        $minimumBet = floor($this->creditsService->getUserCredits($user->userId) / 10);
+        Condition::precondition($amount < $minimumBet, 400, 'You need to bet at least ' . $minimumBet . ' THC');
+
         $numbers = [];
         for ($i = 0; $i < 500; $i++) {
             if ($i % 10 == 0) {

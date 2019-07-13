@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { habboDirections, habboEmotions, habboItems, habboSizes } from './habbo-imager.model';
 import { StringHelper } from 'shared/helpers/string.helper';
@@ -11,7 +11,7 @@ import { TitleTopBorder } from 'shared/app-views/title/title.model';
     templateUrl: 'habbo-imager.component.html',
     styleUrls: ['habbo-imager.component.css']
 })
-export class HabboImagerComponent extends Page implements OnDestroy {
+export class HabboImagerComponent extends Page implements OnDestroy, OnInit {
     private _basicUrl = 'https://www.habbo.com/habbo-imaging/avatarimage?user={habbo}';
 
     private _queryArray = [
@@ -23,6 +23,10 @@ export class HabboImagerComponent extends Page implements OnDestroy {
     ];
 
     topBorderRed = TitleTopBorder.RED;
+    directions: Array<{ src: string, value: string }> = [];
+    emotions: Array<{ label: string, value: string }> = [];
+    items: Array<{ label: string, value: string }> = [];
+    sizes: Array<{ label: string, value: string }> = [];
     // Results
     directLink = 'nothing now';
     bbcode = 'nothing now';
@@ -59,10 +63,10 @@ export class HabboImagerComponent extends Page implements OnDestroy {
         drinking: {
             value: false,
             query: 'drk'
-        },
+        }
     };
 
-    constructor(
+    constructor (
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService
     ) {
@@ -73,14 +77,41 @@ export class HabboImagerComponent extends Page implements OnDestroy {
         this.urlBuilder();
     }
 
-    ngOnDestroy(): void {
+    ngOnInit (): void {
+        this.directions = Object.keys(habboDirections).map(key => {
+            return {
+                src: this._basicUrl.replace('{habbo}', this.habbo) + `&direction=${habboDirections[key]}`,
+                value: habboDirections[key]
+            };
+        });
+        this.emotions = Object.keys(habboEmotions).map(key => {
+            return {
+                label: StringHelper.firstCharUpperCase(key),
+                value: habboEmotions[key]
+            };
+        });
+        this.sizes = Object.keys(habboSizes).map(key => {
+            return {
+                label: StringHelper.prettifyString(key),
+                value: habboSizes[key]
+            };
+        });
+        this.items = Object.keys(habboItems).map(key => {
+            return {
+                label: StringHelper.prettifyString(key),
+                value: habboItems[key]
+            };
+        });
+    }
+
+    ngOnDestroy (): void {
         super.destroy();
     }
 
     /**
      * Build complete URL with expression etc, called on change
      */
-    urlBuilder(): void {
+    urlBuilder (): void {
         this.url = this._basicUrl
             .replace('{habbo}', this.habbo);
 
@@ -121,59 +152,13 @@ export class HabboImagerComponent extends Page implements OnDestroy {
         this.html = `<img src="${this.url}" />`;
     }
 
-    updateBodyDirection(direction: string): void {
+    updateBodyDirection (direction: string): void {
         this.bodyDirection = direction;
         this.urlBuilder();
     }
 
-    updateHeadDirection(direction: string): void {
+    updateHeadDirection (direction: string): void {
         this.headDirection = direction;
         this.urlBuilder();
-    }
-
-    get items(): Array<{ label: string, value: string }> {
-        return Object.keys(habboItems).map(key => {
-            return {
-                label: StringHelper.prettifyString(key),
-                value: habboItems[key]
-            };
-        });
-    }
-
-    get sizes(): Array<{ label: string, value: string }> {
-        return Object.keys(habboSizes).map(key => {
-            return {
-                label: StringHelper.prettifyString(key),
-                value: habboSizes[key]
-            };
-        });
-    }
-
-    get bodyDirections(): Array<{ src: string, value: string }> {
-        return Object.keys(habboDirections).map(key => {
-            return {
-                src: this._basicUrl.replace('{habbo}', this.habbo) + `&direction=${habboDirections[key]}`,
-                value: habboDirections[key]
-            };
-        });
-    }
-
-    get headDirections(): Array<{ src: string, value: string }> {
-        return Object.keys(habboDirections).map(key => {
-            return {
-                src: this._basicUrl.replace('{habbo}', this.habbo) +
-                    `&headonly=1&head_direction=${habboDirections[key]}`,
-                value: habboDirections[key]
-            };
-        });
-    }
-
-    get emotions(): Array<{ label: string, value: string }> {
-        return Object.keys(habboEmotions).map(key => {
-            return {
-                label: StringHelper.firstCharUpperCase(key),
-                value: habboEmotions[key]
-            };
-        });
     }
 }

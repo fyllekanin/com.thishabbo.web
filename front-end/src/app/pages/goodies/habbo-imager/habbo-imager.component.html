@@ -90,12 +90,12 @@
                        [top]="topBorderRed"></app-title>
             <app-content>
                 <div><strong>Body Directions</strong></div>
-                <div class="body-direction" *ngFor="let direction of bodyDirections">
+                <div class="body-direction" *ngFor="let direction of directions">
                     <img [src]="direction.src" (click)="updateBodyDirection(direction.value)"/>
                 </div>
 
                 <div><strong>Head Directions</strong></div>
-                <div class="body-direction" *ngFor="let direction of headDirections">
+                <div class="body-direction" *ngFor="let direction of directions">
                     <img [src]="direction.src" (click)="updateHeadDirection(direction.value)"/>
                 </div>
             </app-content>

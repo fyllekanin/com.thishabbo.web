@@ -12,6 +12,7 @@ import { NotificationMessage, NotificationType } from 'shared/app-views/global-n
 import { TitleTopBorder } from 'shared/app-views/title/title.model';
 import { StatsBoxModel } from 'shared/app-views/stats-boxes/stats-boxes.model';
 import { ARCADE_BREADCRUM_ITEM } from '../../arcade/arcade.constants';
+import { AuthService } from 'core/services/auth/auth.service';
 
 
 @Component({
@@ -34,6 +35,7 @@ export class RouletteComponent extends Page implements OnDestroy {
     constructor (
         private _notificationService: NotificationService,
         private _httpService: HttpService,
+        private _authService: AuthService,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService,
         activatedRoute: ActivatedRoute
@@ -96,6 +98,10 @@ export class RouletteComponent extends Page implements OnDestroy {
                 this.isSpinning = false;
                 this._notificationService.failureNotification(err);
             });
+    }
+
+    get minimumBet (): number {
+        return Math.floor(this._authService.authUser.credits / 10);
     }
 
     get numbers (): Array<RouletteNumber> {
