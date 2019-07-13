@@ -7,8 +7,8 @@ describe('TimetableHelper', () => {
     it('getSlot should find slot on correct day', () => {
         // Given
         const timetable = [
-            new TimetableModel({ timetableId: 1, day: 1, hour: 5 }),
-            new TimetableModel({ timetableId: 2, day: 2, hour: 5 })
+            new TimetableModel({timetableId: 1, day: 1, hour: 5}),
+            new TimetableModel({timetableId: 2, day: 2, hour: 5})
         ];
 
         // When
@@ -30,7 +30,7 @@ describe('TimetableHelper', () => {
             const result = TimetableHelper.getEventName(slot, false);
 
             // Then
-            expect(result).toEqual('(Slot Name)');
+            expect(result).toEqual('Slot Name');
         });
         it('should return empty string if not perm and not events', () => {
             // Given

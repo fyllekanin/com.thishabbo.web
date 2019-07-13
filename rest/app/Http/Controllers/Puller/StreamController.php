@@ -104,13 +104,26 @@ class StreamController extends Controller {
         $current = Timetable::events()->with(['user', 'event'])->where('day', $day)->where('hour', $hour)->first();
         $next = Timetable::events()->with(['user', 'event'])->where('day', $this->getNextDay($day, $hour))->where('hour', $this->getNextHour($hour))->first();
 
+        $currentEvent = $this->getEventName($current);
+        $nextEvent = $this->getEventName($next);
         return [
             'currentHost' => $current ? UserHelper::getSlimUser($current->user->userId) : null,
-            'event' => $current ? $current->event->name : null,
+            'event' => $currentEvent,
             'nextHost' => $next ? UserHelper::getSlimUser($next->user->userId) : null,
-            'nextEvent' => $next ? $next->event->name : null,
+            'nextEvent' => $nextEvent,
             'link' => $current ? $current->link : null
         ];
+    }
+
+    private function getEventName($slot) {
+        if (!$slot) {
+            return null;
+        }
+
+        if ($slot->isPerm) {
+            return $slot->timetableData->name;
+        }
+        return $slot->event->name;
     }
 
     private function getNextDay($day, $hour) {

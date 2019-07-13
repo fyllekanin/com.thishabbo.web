@@ -78,7 +78,8 @@ return [
         'canSeeDoNotHire' => 2048,
         'canManageBanOnSight' => 4096,
         'canSeeListeners' => 8192,
-        'canAlwaysSeeConnectionInformation' => 16384
+        'canAlwaysSeeConnectionInformation' => 16384,
+        'canSeeEventStats' => 32768
     ],
     'POST_BIT_OPTIONS' => [
         'hideJoinDate' => 1,
