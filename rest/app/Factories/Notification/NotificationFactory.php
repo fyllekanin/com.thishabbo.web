@@ -51,11 +51,22 @@ class NotificationFactory {
             case Type::getType(Type::LIKE_DJ):
             case Type::getType(Type::LIKE_HOST):
             case Type::getType(Type::RADIO_REQUEST):
+            case Type::getType(Type::REFERRAL):
                 $item = new UserView($notification);
                 break;
         }
 
         return $item;
+    }
+
+    public static function newReferral($userId, $senderId) {
+        DB::table('notifications')->insert([
+            'userId' => $userId,
+            'senderId' => $senderId,
+            'type' => Type::getType(Type::REFERRAL),
+            'contentId' => 0,
+            'createdAt' => time()
+        ]);
     }
 
     public static function newRadioRequest($userId, $senderId) {

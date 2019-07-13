@@ -70,12 +70,21 @@
                                 </label>
                             </div>
                         </div>
+                        <div class="cell small-4">
+                            <div>
+                                <label class="checkbox-container" (click)="toggleTag($event, 'PAID')">
+                                    Paid
+                                    <input type="checkbox" [checked]="haveTag('PAID')">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="cell small-4" *ngIf="isQuestTemplate">
                 Preview: <br/>
-                <img *ngIf="badge" appLazyLoad [image]="badgeUrl" />
+                <img *ngIf="badge" appLazyLoad [image]="badgeUrl"/>
             </div>
         </div>
     </div>

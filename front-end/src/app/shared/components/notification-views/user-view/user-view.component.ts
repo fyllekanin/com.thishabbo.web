@@ -51,6 +51,10 @@ export class UserViewComponent implements NotificationView {
         return this._notification.type === NotificationTypes.RADIO_REQUEST;
     }
 
+    get isReferral (): boolean {
+        return this._notification.type === NotificationTypes.REFERRAL;
+    }
+
     @HostListener('click', ['$event.target'])
     click (event): void {
         this.onClick.next(this._notification.notificationId);

@@ -20,7 +20,8 @@ export enum NotificationTypes {
     LIKE_POST = 10,
     LIKE_DJ = 11,
     RADIO_REQUEST = 12,
-    LIKE_HOST = 13
+    LIKE_HOST = 13,
+    REFERRAL = 14
 }
 
 export class NotificationModel<T> {

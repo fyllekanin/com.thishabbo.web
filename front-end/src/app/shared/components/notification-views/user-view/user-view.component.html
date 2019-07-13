@@ -4,15 +4,23 @@
 <div class="description">
     <div *ngIf="isDjLike">
         New Like! <br/>
-        <app-user-link [user]="user" [isMiniProfileDisabled]="true"></app-user-link> likes you on the radio!
+        <app-user-link [user]="user" [isMiniProfileDisabled]="true"></app-user-link>
+        likes you on the radio!
     </div>
     <div *ngIf="isHostLike">
         New Like! <br/>
-        <app-user-link [user]="user" [isMiniProfileDisabled]="true"></app-user-link> likes you hosting!
+        <app-user-link [user]="user" [isMiniProfileDisabled]="true"></app-user-link>
+        likes you hosting!
     </div>
     <div *ngIf="isRadioRequest">
         New request! <br/>
-        <app-user-link [user]="user" [isMiniProfileDisabled]="true"></app-user-link> sent a request!
+        <app-user-link [user]="user" [isMiniProfileDisabled]="true"></app-user-link>
+        sent a request!
+    </div>
+    <div *ngIf="isReferral">
+        New referral! <br/>
+        <app-user-link [user]="user" [isMiniProfileDisabled]="true"></app-user-link>
+        referred you when joining!
     </div>
     <div class="time">
         <em class="fas fa-clock"></em> {{getTime()}}

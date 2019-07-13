@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\EloquentModels\User\Ban;
 use App\EloquentModels\User\Token;
 use App\EloquentModels\User\User;
-use App\EloquentModels\Group\Group;
+use App\Factories\Notification\NotificationFactory;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Impl\Auth\AuthControllerImpl;
@@ -89,9 +89,9 @@ class AuthController extends Controller {
 
         $referralId = 0;
         if (isset($data->referredBy) && !empty($data->referredBy)) {
-            $user = User::withNickname($data->referredBy)->first();
-            if ($user) {
-                $referralId = $user->userId;
+            $referredBy = User::withNickname($data->referredBy)->first();
+            if ($referredBy) {
+                $referralId = $referredBy->userId;
             }
         }
 
@@ -107,6 +107,10 @@ class AuthController extends Controller {
             'updatedAt' => time()
         ]);
         $user->save();
+
+        if ($user->referralId > 0) {
+            NotificationFactory::newReferral($user->referralId, $user->userId);
+        }
 
         $userData = UserHelper::getUserDataOrCreate($user->userId);
         $userData->save();
