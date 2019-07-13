@@ -63,7 +63,7 @@ export class ThreadComponent extends Page implements OnDestroy {
     ) {
         super(_elementRef);
         this._isToolsVisible = Boolean(localStorage.getItem(LOCAL_STORAGE.FORUM_TOOLS));
-        this.isMiniProfileDisabled = this.isMiniProfileDisabled || Boolean(localStorage.getItem(LOCAL_STORAGE.MINI_PROFILE_DISABLED));
+        this.isMiniProfileDisabled = Boolean(localStorage.getItem(LOCAL_STORAGE.MINI_PROFILE_DISABLED));
         this.addSubscription(this._activatedRoute.data, this.onData.bind(this));
     }
 
