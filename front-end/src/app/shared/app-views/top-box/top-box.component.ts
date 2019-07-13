@@ -15,7 +15,7 @@ import { XP_PER_LEVEL } from 'shared/constants/user.constants';
 export class TopBoxComponent {
     private _user: AuthUser;
     private _navigation: Array<MainItem> = [];
-    
+
     menuClasses = '';
     routes: Array<MainItem> = [];
 
