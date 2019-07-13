@@ -1,0 +1,1 @@
+{"topic":"Fix listening time","type":"Bug","body":"Listening time did not remove the time from calculating the hours"}
