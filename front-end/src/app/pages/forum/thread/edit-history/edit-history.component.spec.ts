@@ -37,7 +37,10 @@ describe('EditHistoryComponent', () => {
             // Given
             component.historyTimestamp = 123;
             component.setData([new PostHistoryModel({
-                createdAt: 123
+                createdAt: 123,
+                user: new User({
+                    nickname: 'test'
+                })
             })]);
 
             // When

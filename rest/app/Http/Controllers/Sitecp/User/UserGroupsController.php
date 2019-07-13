@@ -56,11 +56,13 @@ class UserGroupsController extends Controller {
 
         Condition::precondition($displayGroupId > 0 && !in_array($displayGroupId, $groupIds), 400, 'Display group is not one of the possible groups');
 
+        $hiddenBars = UserGroup::where('userId', $userId)->where('isBarActive', 0)->pluck('groupId')->toArray();
         UserGroup::where('userId', $userId)->whereNotIn('groupId', $highImmunityGroupIds)->delete();
         foreach ($groupIds as $groupId) {
             $userGroup = new UserGroup([
                 'userId' => $userId,
-                'groupId' => $groupId
+                'groupId' => $groupId,
+                'isBarActive' => !in_array($groupId, $hiddenBars)
             ]);
             $userGroup->save();
         }

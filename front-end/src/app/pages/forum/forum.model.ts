@@ -1,5 +1,6 @@
 import { arrayOf, ClassHelper, objectOf, primitive, time } from 'shared/helpers/class.helper';
 import { SlimUser } from 'core/services/auth/auth.model';
+import { ArrayHelper } from 'shared/helpers/array.helper';
 
 export class ForumLatestPost {
     @primitive()
@@ -161,7 +162,7 @@ export class SlimCategory {
     @objectOf(SlimPost)
     lastPost: SlimPost;
     @arrayOf(SlimCategory)
-    childs: Array<SlimCategory> = [];
+    children: Array<SlimCategory> = [];
     @primitive()
     displayOrder: number;
     @primitive()
@@ -171,6 +172,7 @@ export class SlimCategory {
 
     constructor (source?: Partial<SlimCategory>) {
         ClassHelper.assign(this, source);
+        this.children.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'displayOrder'));
     }
 }
 
