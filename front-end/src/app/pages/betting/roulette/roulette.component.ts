@@ -2,7 +2,6 @@ import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
-import { BETTING_HUB } from '../betting.constants';
 import { Roulette, RouletteModel, RouletteNumber } from './roulette.model';
 import { NumberHelper } from 'shared/helpers/number.helper';
 import { HttpService } from 'core/services/http/http.service';
@@ -12,6 +11,7 @@ import { NotificationService } from 'core/services/notification/notification.ser
 import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
 import { TitleTopBorder } from 'shared/app-views/title/title.model';
 import { StatsBoxModel } from 'shared/app-views/stats-boxes/stats-boxes.model';
+import { ARCADE_BREADCRUM_ITEM } from '../../arcade/arcade.constants';
 
 
 @Component({
@@ -23,15 +23,15 @@ export class RouletteComponent extends Page implements OnDestroy {
     private _data: RouletteModel = new RouletteModel();
     private _numbers: Array<RouletteNumber> = [];
 
-    @ViewChild('wrapper', { static: true }) wrapper;
-    @ViewChild('wheel', { static: true }) wheel;
+    @ViewChild('wrapper', {static: true}) wrapper;
+    @ViewChild('wheel', {static: true}) wheel;
     amount: number;
     betBorder = TitleTopBorder.BLUE;
     rouletteBorder = TitleTopBorder.RED;
     isSpinning = false;
     stats: Array<StatsBoxModel> = [];
 
-    constructor(
+    constructor (
         private _notificationService: NotificationService,
         private _httpService: HttpService,
         elementRef: ElementRef,
@@ -44,16 +44,16 @@ export class RouletteComponent extends Page implements OnDestroy {
         breadcrumbService.breadcrumb = new Breadcrumb({
             current: 'Roulette',
             items: [
-                BETTING_HUB
+                ARCADE_BREADCRUM_ITEM
             ]
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    spin(color: string): void {
+    spin (color: string): void {
         if (this.isSpinning) {
             this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Oops!',
@@ -63,7 +63,7 @@ export class RouletteComponent extends Page implements OnDestroy {
             return;
         }
         this.isSpinning = true;
-        this._httpService.post('betting/roulette', { color: color, amount: this.amount })
+        this._httpService.post('betting/roulette', {color: color, amount: this.amount})
             .subscribe(res => {
                 this.setMiddle(50);
 
@@ -98,20 +98,20 @@ export class RouletteComponent extends Page implements OnDestroy {
             });
     }
 
-    get numbers(): Array<RouletteNumber> {
+    get numbers (): Array<RouletteNumber> {
         return this._numbers;
     }
 
-    private onData(data: { data: RouletteModel }): void {
+    private onData (data: { data: RouletteModel }): void {
         this._data = data.data;
         this.updateStats();
     }
 
-    private updateStats(): void {
+    private updateStats (): void {
         this.stats = getBettingStats(this._data.stats);
     }
 
-    private getInitial(): Array<RouletteNumber> {
+    private getInitial (): Array<RouletteNumber> {
         const numbers = [];
         for (let i = 0; i < 500; i++) {
             if (i % 10 === 0) {
@@ -130,7 +130,7 @@ export class RouletteComponent extends Page implements OnDestroy {
         return numbers;
     }
 
-    private setMiddle(number: number): void {
+    private setMiddle (number: number): void {
         const add = (this.wheel.nativeElement.offsetWidth / 2 - 25);
         this.wrapper.nativeElement.style.marginLeft = `-${number * 50 - add}px`;
     }
