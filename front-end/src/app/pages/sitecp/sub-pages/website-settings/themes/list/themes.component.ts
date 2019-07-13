@@ -160,6 +160,7 @@ export class ThemesComponent extends Page implements OnDestroy {
             id: item.themeId.toString(),
             cells: [
                 new TableCell({title: item.title}),
+                new TableCell({title: String(item.users)}),
                 new TableCell({title: item.isDefault ? 'Yes' : 'No'}),
                 new TableCell({title: TimeHelper.getLongDateWithTime(item.updatedAt)})
             ],
@@ -170,6 +171,7 @@ export class ThemesComponent extends Page implements OnDestroy {
     private getTableHeaders (): Array<TableHeader> {
         return [
             new TableHeader({title: 'Title'}),
+            new TableHeader({title: 'Users'}),
             new TableHeader({title: 'Is Default'}),
             new TableHeader({title: 'Last Modified'})
         ];

@@ -6,6 +6,8 @@ import { SearchComponent } from './search/search.component';
 import { SearchResolver } from './services/search.resolver';
 import { GroupListComponent } from './group-list/group-list.component';
 import { GroupListResolver } from './services/group-list.resolver';
+import { VersionsComponent } from './versions/versions.component';
+import { VersionsResolver } from './services/versions.resolver';
 
 export const homeRoutes: Routes = [
     {
@@ -36,6 +38,13 @@ export const homeRoutes: Routes = [
                 component: GroupListComponent,
                 resolve: {
                     data: GroupListResolver
+                }
+            },
+            {
+                path: 'versions/page/:page',
+                component: VersionsComponent,
+                resolve: {
+                    data: VersionsResolver
                 }
             }
         ]

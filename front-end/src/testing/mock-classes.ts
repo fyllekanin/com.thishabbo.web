@@ -5,37 +5,43 @@ import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 
 export class BreadcrumbServiceMock {
 
+    breadcrumbSubject = new Subject();
     current: Breadcrumb;
 
-    set breadcrumb(val) {
-        this.current = val;
+    get onBreadcrumb () {
+        return this.breadcrumbSubject.asObservable();
     }
 
-    get breadcrumb() {
+    set breadcrumb (val) {
+        this.current = val;
+        this.breadcrumbSubject.next(val);
+    }
+
+    get breadcrumb () {
         return this.current;
     }
 
-    static get() {
-        return { provide: BreadcrumbService, useValue: new BreadcrumbServiceMock() };
+    static get () {
+        return {provide: BreadcrumbService, useValue: new BreadcrumbServiceMock()};
     }
 }
 
 export class ActivatedRouteMock {
     private _subject = new Subject();
 
-    setData(data) {
-        this._subject.next({ data: data });
+    setData (data) {
+        this._subject.next({data: data});
     }
 
-    get data() {
+    get data () {
         return this._subject.asObservable();
     }
 
-    get provider() {
-        return { provide: ActivatedRoute, useValue: this };
+    get provider () {
+        return {provide: ActivatedRoute, useValue: this};
     }
 
-    static get() {
-        return { provide: ActivatedRoute, useValue: new ActivatedRouteMock() };
+    static get () {
+        return {provide: ActivatedRoute, useValue: new ActivatedRouteMock()};
     }
 }

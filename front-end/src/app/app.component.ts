@@ -12,17 +12,17 @@ import { AuthService } from 'core/services/auth/auth.service';
     template: `
         <div class="loader" [ngClass]="!isLoading ? 'not-loading' : ''"
              [ngStyle]="{'width': loadingProgress + '%'}"></div>
-        <div class="request-wrapper" [ngClass]="requestInProgress ? 'request-wrapper-show' : ''">
-            <div class="request" [ngClass]="requestInProgress ? 'request-show' : ''">
-                Loading....
-            </div>
-        </div>
         <app-dialog></app-dialog>
         <app-global-notification></app-global-notification>
         <app-top-bar></app-top-bar>
         <app-top-box></app-top-box>
         <app-header></app-header>
-        <div class="grid-container content-margin">
+        <div class="grid-container content-margin position-relative">
+            <div class="request-wrapper" [ngClass]="requestInProgress ? 'request-wrapper-show' : ''">
+                <div class="request" [ngClass]="requestInProgress ? 'request-show' : ''">
+                    Loading....
+                </div>
+            </div>
             <app-site-messages></app-site-messages>
             <div class="grid-x">
                 <div class="cell small-12" [@fadeAnimation]="o.isActivated ? o.activatedRoute : ''"

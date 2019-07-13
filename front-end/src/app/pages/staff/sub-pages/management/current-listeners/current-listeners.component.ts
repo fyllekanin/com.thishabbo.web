@@ -50,8 +50,9 @@ export class CurrentListenersComponent extends Page implements OnDestroy {
     }
 
     private getListeningTime (time: number): string {
-        const hours = `${Math.floor(time / 3600)}`;
-        const minutes = `${Math.floor(time / 60)}`;
+        const hours = Math.floor(time / 3600);
+        const timeForMinutes = time - (hours * 3600);
+        const minutes = Math.floor(timeForMinutes / 60);
         return `${hours} hours and ${minutes} min(s)`;
     }
 

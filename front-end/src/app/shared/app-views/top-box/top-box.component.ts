@@ -16,7 +16,9 @@ import { ThemeHelper } from 'shared/helpers/theme.helper';
 export class TopBoxComponent {
     private _user: AuthUser;
     private _navigation: Array<MainItem> = [];
-
+  
+    menuClasses = '';
+    routes: Array<MainItem> = [];
     isFixed: boolean;
     showMenu: boolean;
 
@@ -35,7 +37,9 @@ export class TopBoxComponent {
 
         continuesInformationService.onDeviceSettingsUpdated.subscribe(() => {
             this.isFixed = Boolean(localStorage.getItem(LOCAL_STORAGE.FIXED_MENU));
+            this.updateMenuClasses();
         });
+        this.updateMenuClasses();
     }
 
     logout (): void {
@@ -45,6 +49,7 @@ export class TopBoxComponent {
     goToProfile (): void {
         this._router.navigateByUrl(`/user/profile/${this._authService.authUser.nickname}`);
         this.showMenu = false;
+        this.updateMenuClasses();
     }
 
     closeMenu (): void {
@@ -53,26 +58,11 @@ export class TopBoxComponent {
             item.isExpanded = false;
             return item;
         });
+        this.updateMenuClasses();
     }
 
     get credits (): number {
         return this._authService.authUser.credits;
-    }
-
-    get menuClasses (): string {
-        const classes = [];
-        if (this.showMenu) {
-            classes.push('menu-show');
-        }
-        if (this.isFixed) {
-            classes.push('fixed-menu-margin');
-        }
-        return classes.join(' ');
-    }
-
-    get routes (): Array<MainItem> {
-        return this._navigation
-            .filter(item => item.loginRequired ? this._authService.isLoggedIn() : true);
     }
 
     get avatar (): string {
@@ -119,5 +109,18 @@ export class TopBoxComponent {
 
     private setUser (): void {
         this._user = this._authService.isLoggedIn() ? this._authService.authUser : null;
+        this.routes = this._navigation
+            .filter(item => item.loginRequired ? this._user : true);
+    }
+
+    private updateMenuClasses (): void {
+        const classes = [];
+        if (this.showMenu) {
+            classes.push('menu-show');
+        }
+        if (this.isFixed) {
+            classes.push('fixed-menu-margin');
+        }
+        this.menuClasses = classes.join(' ');
     }
 }

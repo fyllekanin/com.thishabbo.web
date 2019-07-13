@@ -1,0 +1,1 @@
+{"topic":"Old users crashes fetching of user","type":"Bug","body":"When fetching a slim or full user object and converting it will crash the code on old users because they do not have a habbo set"}

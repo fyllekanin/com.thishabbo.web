@@ -8,20 +8,18 @@ export class TimetableHelper {
             .find(slot => slot.hour === hour);
     }
 
-    static correctTimeones (timetable: Array<TimetableModel>): Array<TimetableModel> {
-        return timetable.map(booking => {
-            const convertedHour = booking.hour + TimeHelper.getTimeOffsetInHours();
-            booking.day = TimeHelper.getConvertedDay(convertedHour, booking.day);
-            booking.hour = TimeHelper.getConvertedHour(convertedHour);
-            return booking;
-        });
+    static mapBookingWithTime (item: TimetableModel): TimetableModel {
+        const convertedHour = item.hour + TimeHelper.getTimeOffsetInHours();
+        item.day = TimeHelper.getConvertedDay(convertedHour, item.day);
+        item.hour = TimeHelper.getConvertedHour(convertedHour);
+        return item;
     }
 
     static getEventName (timetable: TimetableModel, isEvents: boolean): string {
         if (!timetable.isPerm) {
             return isEvents ? `${timetable.event ? timetable.event.name : 'unknown'}` : '';
         }
-        return `(${timetable.name})`;
+        return `${timetable.name}`;
     }
 
     static isCurrentSlot (day: number, hour: number) {

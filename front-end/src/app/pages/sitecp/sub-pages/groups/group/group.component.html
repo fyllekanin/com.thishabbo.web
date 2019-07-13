@@ -396,14 +396,25 @@
                         <span class="checkmark"></span>
                     </label>
                 </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to Events stats
+                        <span tooltip="Thick this to grant access to Events stats "
+                              class="checkbox-info">
+                            <em class="fas fa-question-circle"></em>
+                        </span>
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canSeeEventStats">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
                 <label>Administration Events & Radio</label>
                 <div>
                     <label class="checkbox-container">
                         Access to manage Current Listeners
                         <span tooltip="Tick this to grant access to view IP & relative user information."
                               class="checkbox-info">
-                                <em class="fas fa-question-circle"></em>
-                            </span>
+                            <em class="fas fa-question-circle"></em>
+                        </span>
                         <input type="checkbox" [(ngModel)]="staffPermissions.canSeeListeners">
                         <span class="checkmark"></span>
                     </label>

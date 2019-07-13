@@ -1,5 +1,5 @@
 import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
-import { User } from 'core/services/auth/auth.model';
+import { User, SlimUser } from 'core/services/auth/auth.model';
 
 export class PostModel {
     @primitive()
@@ -19,7 +19,7 @@ export class PostModel {
     @primitive()
     updatedAt: number;
     @arrayOf(User)
-    likers: Array<User> = [];
+    likers: Array<SlimUser> = [];
     @primitive()
     isApproved: boolean;
     @primitive()

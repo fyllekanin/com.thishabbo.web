@@ -43,3 +43,8 @@
     right: -5px;
     z-index: 4;
 }
+
+:host >>> a {
+    padding: 0;
+    float: none;
+}

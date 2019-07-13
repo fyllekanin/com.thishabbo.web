@@ -61,7 +61,8 @@
                     <span *ngFor="let currentReader of thread.currentReaders; let first = first;">
                         <span *ngIf="!first">, </span>
                         <app-user-link [user]="currentReader.user"
-                                       [attr.tooltip]="currentReader.timeAgo"></app-user-link>
+                                       [attr.tooltip]="currentReader.timeAgo"
+                                       [attr.tooltip-position]="isMiniProfileDisabled ? 'top' : 'bottom'"></app-user-link>
                     </span>
                     <span *ngIf="thread.currentReaders.length === 0">
                         No current readers!
@@ -70,7 +71,7 @@
                 <app-title [title]="'Last 20 users to read this thread'"></app-title>
                 <app-content>
                     <span *ngFor="let reader of thread.readers; let index = index;">{{index > 0 ? ', ' : ''}}
-                        <app-user-link [user]="reader.user" [attr.tooltip]="reader.timeAgo"></app-user-link>
+                        <app-user-link [user]="reader.user" [attr.tooltip]="reader.timeAgo" [attr.tooltip-position]="isMiniProfileDisabled ? 'top' : 'bottom'"></app-user-link>
                     </span>
                 </app-content>
             </div>

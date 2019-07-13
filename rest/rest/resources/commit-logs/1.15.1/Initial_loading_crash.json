@@ -1,0 +1,1 @@
+{"topic":"Initial loading crash","type":"Bug","body":"When not logged in the initial loading request crashes and gives the user no navigation"}

@@ -72,4 +72,9 @@ class Type {
         'type' => 13,
         'description' => 'When a user requested to the radio'
     ];
+
+    const REFERRAL = [
+        'type' => 14,
+        'description' => 'When a user referred another user'
+    ];
 }

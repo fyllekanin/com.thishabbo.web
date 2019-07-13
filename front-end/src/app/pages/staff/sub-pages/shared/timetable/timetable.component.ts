@@ -70,9 +70,9 @@ export class TimetableComponent extends Page implements OnDestroy {
 
     getNickname (hour: number): string {
         const timetable = this.getTimetableByHour(hour);
-        const linkIcon = this._type === 'events' ? (timetable.link ? '<i class="far fa-thumbs-up"></i>' :
+        const linkIcon = this.isEvents() ? (timetable.link ? '<i class="far fa-thumbs-up"></i>' :
             '<i class="far fa-thumbs-down"></i>') : '';
-        const postFix = this.isEvents() ? `<br /> (${this.getEventName(timetable)}) ${linkIcon}` : '';
+        const postFix = `<br /> (${this.getEventName(timetable)}) ${linkIcon}`;
         return `${timetable.user.nickname}${postFix}`;
     }
 
@@ -263,7 +263,7 @@ export class TimetableComponent extends Page implements OnDestroy {
 
     private onData (data: { data: TimetablePage }): void {
         this._data = data.data;
-        this._data.timetable = TimetableHelper.correctTimeones(this._data.timetable);
+
         const offset = TimeHelper.getTimeOffsetInHours();
         this._data.timezones.forEach((region, index) => {
             const newIndex = TimeHelper.getConvertedHour(index + offset);

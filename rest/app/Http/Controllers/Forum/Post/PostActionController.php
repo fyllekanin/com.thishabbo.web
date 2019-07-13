@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Forum\Post;
 
 use App\EloquentModels\Forum\Post;
 use App\EloquentModels\Forum\PostLike;
+use App\Helpers\UserHelper;
 use App\Factories\Notification\NotificationFactory;
 use App\Helpers\ConfigHelper;
 use App\Helpers\PermissionHelper;
@@ -69,7 +70,12 @@ class PostActionController extends Controller {
             'threadId' => $post->threadId,
             'categoryId' => $post->thread->categoryId
         ], $post->postId);
-        return response()->json();
+
+        $likerIds = PostLike::where('postId', $postId)->orderBy('createdAt', 'DESC')->pluck('userId');
+        $likers = $likerIds->map(function ($liker) {
+            return UserHelper::getSlimUser($liker);
+        });
+        return response()->json($likers);
     }
 
     /**
@@ -105,6 +111,11 @@ class PostActionController extends Controller {
             ->delete();
 
         Logger::user($user->userId, $request->ip(), Action::UNLIKED_POST);
-        return response()->json();
+
+        $likerIds = PostLike::where('postId', $postId)->orderBy('createdAt', 'DESC')->pluck('userId');
+        $likers = $likerIds->map(function ($liker) {
+            return UserHelper::getSlimUser($liker);
+        });
+        return response()->json($likers);
     }
 }

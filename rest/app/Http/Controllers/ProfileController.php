@@ -133,7 +133,7 @@ class ProfileController extends Controller {
             'user' => UserHelper::getSlimUser($profile->userId),
             'followers' => $this->getFollowers($profile->userId, $user),
             'youtube' => $profile->profile ? $profile->profile->youtube : null,
-            'activities' => $activityService->getLatestActivities($forumService->getAccessibleCategories($user->userId), $profile->userId),
+            'activities' => $activityService->getLatestActivities($forumService->getAccessibleCategories($user->userId), [], $profile->userId),
             'stats' => [
                 'userId' => $profile->userId,
                 'posts' => $profile->posts,
@@ -252,10 +252,10 @@ class ProfileController extends Controller {
     private function getSlots($userId) {
         $radioSlots = Timetable::isActive()
             ->where('userId', $userId)
-            ->where(function($query) {
-                $query->where(function($query) {
+            ->where(function ($query) {
+                $query->where(function ($query) {
                     $query->where('day', date('N'))->where('hour', '>', date('G'));
-                })->orWhere(function($query) {
+                })->orWhere(function ($query) {
                     $query->where('day', '>', date('N'));
                 });
             })->orderBy('day', 'ASC')
@@ -265,10 +265,10 @@ class ProfileController extends Controller {
 
         $eventsSlots = Timetable::isActive()
             ->where('userId', $userId)
-            ->where(function($query) {
-                $query->where(function($query) {
+            ->where(function ($query) {
+                $query->where(function ($query) {
                     $query->where('day', date('N'))->where('hour', '>', date('G'));
-                })->orWhere(function($query) {
+                })->orWhere(function ($query) {
                     $query->where('day', '>', date('N'));
                 });
             })->orderBy('day', 'ASC')

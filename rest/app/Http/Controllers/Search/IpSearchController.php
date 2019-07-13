@@ -25,6 +25,6 @@ class IpSearchController extends Controller {
                 ->toArray());
         }
 
-        return response()->json(Iterables::unique(Iterables::sortByProperty($items, 'nickname'), 'userId'));
+        return response()->json(Iterables::unique(Iterables::sortByPropertyAsc($items, 'nickname'), 'userId'));
     }
 }

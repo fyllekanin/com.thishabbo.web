@@ -15,13 +15,15 @@ export class BreadcrumbComponent {
     private _breadcrumb: Breadcrumb;
 
     constructor (
-        private _routerStateService: RouterStateService,
         private _authService: AuthService,
-        breadcrumbService: BreadcrumbService,
+        routerStateService: RouterStateService,
+        breadcrumbService: BreadcrumbService
     ) {
         breadcrumbService.onBreadcrumb.subscribe(breadcrumb => {
             this._breadcrumb = breadcrumb;
-            this._routerStateService.updateCurrentPage(this._breadcrumb.current);
+
+            const current = this._breadcrumb ? this._breadcrumb.current : '';
+            routerStateService.updateCurrentPage(current);
         });
     }
 

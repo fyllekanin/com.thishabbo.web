@@ -80,7 +80,7 @@ class UserHelper {
         $user->userId = $userId;
         $user->nickname = $userObj->nickname;
         $user->userBars = self::getUserBars($userId);
-        $user->habbo = $userObj->habbo;
+        $user->habbo = Value::objectProperty($userObj, 'habbo', '');
         $user->createdAt = $postBit->hideJoinDate ? null : $userObj->createdAt->timestamp;
         $user->posts = $postBit->hidePostCount ? null : $userObj->posts;
         $user->likes = $postBit->hideLikesCount ? null : $userObj->likes;

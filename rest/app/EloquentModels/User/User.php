@@ -6,11 +6,11 @@ use App\Helpers\PermissionHelper;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Helpers\UserHelper;
 
 /**
  * @property mixed nickname
  * @property mixed userId
+ * @property mixed referralId
  * @method static withNickname($love)
  *
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)

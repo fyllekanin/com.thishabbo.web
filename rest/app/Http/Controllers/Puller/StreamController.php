@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Puller;
 
+use App\EloquentModels\Forum\IgnoredCategory;
+use App\EloquentModels\Forum\IgnoredThread;
 use App\EloquentModels\SiteMessage;
 use App\EloquentModels\Staff\Timetable;
 use App\EloquentModels\User\User;
@@ -53,7 +55,17 @@ class StreamController extends Controller {
         $user = $request->get('auth');
         $activeUsers = $this->getActiveUsers();
         $siteMessages = $this->getSiteMessages();
-        $activities = $this->activityService->getLatestActivities($this->forumService->getAccessibleCategories($user->userId));
+
+        $ignoredCategoryIds = array_merge(IgnoredCategory::where('userId', $user->userId)->pluck('categoryId')->toArray(),
+            $this->forumService->getCategoriesUserCantSeeOthersThreadsIn($user->userId));
+        $categoryIds = [];
+        $ignoredThreadIds = IgnoredThread::where('userId', $user->userId)->pluck('threadId')->toArray();
+        foreach ($this->forumService->getAccessibleCategories($user->userId) as $categoryId) {
+            if (!in_array($categoryId, $ignoredCategoryIds)) {
+                $categoryIds[] = $categoryId;
+            }
+        }
+        $activities = $this->activityService->getLatestActivities($categoryIds, $ignoredThreadIds);
 
         return response()->json([
             'radio' => $this->getRadioStats(),
@@ -92,13 +104,26 @@ class StreamController extends Controller {
         $current = Timetable::events()->with(['user', 'event'])->where('day', $day)->where('hour', $hour)->first();
         $next = Timetable::events()->with(['user', 'event'])->where('day', $this->getNextDay($day, $hour))->where('hour', $this->getNextHour($hour))->first();
 
+        $currentEvent = $this->getEventName($current);
+        $nextEvent = $this->getEventName($next);
         return [
             'currentHost' => $current ? UserHelper::getSlimUser($current->user->userId) : null,
-            'event' => $current ? $current->event->name : null,
+            'event' => $currentEvent,
             'nextHost' => $next ? UserHelper::getSlimUser($next->user->userId) : null,
-            'nextEvent' => $next ? $next->event->name : null,
+            'nextEvent' => $nextEvent,
             'link' => $current ? $current->link : null
         ];
+    }
+
+    private function getEventName($slot) {
+        if (!$slot) {
+            return null;
+        }
+
+        if ($slot->isPerm) {
+            return $slot->timetableData->name;
+        }
+        return $slot->event->name;
     }
 
     private function getNextDay($day, $hour) {
