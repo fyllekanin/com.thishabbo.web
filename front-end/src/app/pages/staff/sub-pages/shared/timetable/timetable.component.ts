@@ -72,7 +72,8 @@ export class TimetableComponent extends Page implements OnDestroy {
         const timetable = this.getTimetableByHour(hour);
         const linkIcon = this.isEvents() ? (timetable.link ? '<i class="far fa-thumbs-up"></i>' :
             '<i class="far fa-thumbs-down"></i>') : '';
-        const postFix = `<br /> (${this.getEventName(timetable)}) ${linkIcon}`;
+        const name = this.getEventName(timetable);
+        const postFix = `<br /> ${name ? '(' + name + ')' : ''} ${linkIcon}`;
         return `${timetable.user.nickname}${postFix}`;
     }
 
