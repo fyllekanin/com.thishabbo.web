@@ -12,6 +12,8 @@ import { IUserProfile } from 'shared/directives/user-profile.directive';
 export class SlimCategoryComponent extends Page implements OnDestroy {
     private _slimCategory = new SlimCategory();
 
+    lastPostInfo: IUserProfile;
+
     constructor (
         elementRef: ElementRef
     ) {
@@ -25,6 +27,8 @@ export class SlimCategoryComponent extends Page implements OnDestroy {
     @Input()
     set category (category: SlimCategory) {
         this._slimCategory = category || new SlimCategory();
+        this.lastPostInfo = this.lastPost ?
+            {userId: this.lastPost.user.userId, avatarUpdatedAt: this.lastPost.user.avatarUpdatedAt} : null;
     }
 
     get categoryId (): number {
@@ -51,12 +55,8 @@ export class SlimCategoryComponent extends Page implements OnDestroy {
         return this._slimCategory.lastPost;
     }
 
-    get lastPostInfo (): IUserProfile {
-        return {userId: this.lastPost.user.userId, avatarUpdatedAt: this.lastPost.user.avatarUpdatedAt};
-    }
-
     get children (): Array<SlimCategory> {
-        return this._slimCategory.childs;
+        return this._slimCategory.children;
     }
 
     get icon (): string {

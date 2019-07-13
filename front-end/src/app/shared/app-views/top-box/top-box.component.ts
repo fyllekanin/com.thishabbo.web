@@ -31,6 +31,8 @@ export class TopBoxComponent {
         const navigation = localStorage.getItem(LOCAL_STORAGE.NAVIGATION);
         this._navigation = (navigation ? JSON.parse(localStorage.getItem(LOCAL_STORAGE.NAVIGATION)) : [])
             .map(item => new MainItem(item));
+        this.routes = this._navigation
+            .filter(item => item.loginRequired ? this._user : true);
 
         this._authService.onUserChange.subscribe(this.setUser.bind(this));
         this.isFixed = Boolean(localStorage.getItem(LOCAL_STORAGE.FIXED_MENU));
@@ -60,7 +62,11 @@ export class TopBoxComponent {
         });
         this.updateMenuClasses();
     }
-
+  
+    toggleMenu (): void {
+        this.showMenu = !this.showMenu;
+        this.updateMenuClasses();
+    }
     get credits (): number {
         return this._authService.authUser.credits;
     }

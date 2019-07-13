@@ -140,7 +140,7 @@ ${this._postModel.content}[/quotepost]\n\r`);
         this._forumPermission = forumPermissions || new ForumPermissions();
     }
 
-    get canInfractUser (): boolean {
+    get canGiveInfraction (): boolean {
         return this._authService.sitecpPermissions.canDoInfractions &&
             this._postModel.user.userId !== this._authService.authUser.userId;
     }

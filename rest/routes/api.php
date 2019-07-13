@@ -75,7 +75,7 @@ Route::group(['middleware' => ['maintenance']], function () {
         Route::post('form/contact', 'FormController@createContact');
         Route::post('form/bug', 'FormController@createBugReport');
 
-        Route::prefix('betting')->group(function () {
+        /*Route::prefix('betting')->group(function () {
             Route::get('/dashboard', 'BettingController@getDashboardPage');
             Route::get('/stats', 'BettingController@getBettingStats');
             Route::post('/bet/{betId}', 'BettingController@createPlaceBet');
@@ -86,6 +86,6 @@ Route::group(['middleware' => ['maintenance']], function () {
                 Route::get('active', 'BettingController@getMyActiveBets');
                 Route::get('history/page/{page}', 'BettingController@getHistoryPage');
             });
-        });
+        });*/
     });
 });

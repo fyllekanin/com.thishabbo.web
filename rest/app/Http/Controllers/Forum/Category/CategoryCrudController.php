@@ -240,7 +240,7 @@ class CategoryCrudController extends Controller {
         $categories = [];
 
         foreach ($categorySql->get() as $mainCategory) {
-            $mainCategory->childs = $this->getSlimChildCategories($mainCategory->categoryId, $userId);
+            $mainCategory->children = $this->getSlimChildCategories($mainCategory->categoryId, $userId);
             $categories[] = $mainCategory;
         }
 
@@ -258,15 +258,15 @@ class CategoryCrudController extends Controller {
      */
     private function getSlimChildCategories($categoryId, $userId) {
         $categoryIds = $this->forumService->getAccessibleCategories($userId);
-        $children = Category::nonHidden()
+        $childCategories = Category::nonHidden()
             ->withParent($categoryId)
             ->whereIn('categoryId', $categoryIds)
             ->orderBy('displayOrder', 'ASC')
             ->select('categoryId', 'description', 'displayOrder', 'link', 'title', 'lastPostId', 'icon', 'updatedAt')
             ->get();
-        $childs = [];
+        $children = [];
 
-        foreach ($children as $child) {
+        foreach ($childCategories as $child) {
             if (PermissionHelper::haveForumPermission($userId, ConfigHelper::getForumPermissions()->canViewOthersThreads, $child->categoryId)) {
                 $child->lastPost = $this->forumService->getSlimPost($child->lastPostId);
                 $child->haveRead = $this->forumService->haveReadCategory($child, $userId);
@@ -282,16 +282,16 @@ class CategoryCrudController extends Controller {
                     ->first();
                 $child->lastPost = $last ? $this->forumService->getSlimPost($last->lastPostId) : null;
             }
-            $child->childs = Category::whereIn('categoryId', $categoryIds)
+            $child->children = Category::whereIn('categoryId', $categoryIds)
                 ->where('parentId', $child->categoryId)
                 ->select('categoryId', 'title', 'displayOrder')
                 ->orderBy('displayOrder', 'ASC')
                 ->getQuery()
                 ->get();
-            $childs[] = $child;
+            $children[] = $child;
         }
 
-        return $childs;
+        return $children;
     }
 
     /**
