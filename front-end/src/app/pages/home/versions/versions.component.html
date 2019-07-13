@@ -4,10 +4,13 @@
             <div *ngFor="let version of versions">
                 <app-title [title]="version.version"></app-title>
                 <app-content>
-                    <div *ngFor="let change of version.changes">
-                        <strong>{{change.topic}} - {{change.type}}</strong> <br />
-                        {{change.body}}
-                        <hr />
+                    <div *ngFor="let change of version.changes; let last = last">
+                        <div class="quote">
+                            <strong [ngClass]="change.class">{{change.type}}</strong> <br/>
+                            <u>{{change.topic}}</u> <br/> <br/>
+                            <pre>{{change.body}}</pre>
+                        </div>
+                        <hr *ngIf="!last"/>
                     </div>
                 </app-content>
             </div>
@@ -20,8 +23,8 @@
                 This is a page where you can see all our releases and what they contain. This is suppose to
                 be an automated system for users to look at when they wanna know what's new since they last visited
                 the site.
-                <br />
-                <br />
+                <br/>
+                <br/>
                 Missing version numbers means there have been a release without any changes, this will still
                 step the version number. These are filtered out from this list.
             </app-content>

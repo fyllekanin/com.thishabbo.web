@@ -23,11 +23,17 @@ class ClearTimetable {
         Timetable::where('day', '>=', 6)->where('day', '<=', 7)->where('isPerm', '<', 1)->update([
             'isDeleted' => 1
         ]);
+        Timetable::where('day', '>=', 6)->where('day', '<=', 7)->where('isPerm', '>', 0)->update([
+            'isActive' => 1
+        ]);
     }
 
     private function clearWeekDays() {
         Timetable::where('day', '>=', 1)->where('day', '<=', 5)->where('isPerm', '<', 1)->update([
             'isDeleted' => 1
+        ]);
+        Timetable::where('day', '>=', 1)->where('day', '<=', 5)->where('isPerm', '>', 0)->update([
+            'isActive' => 1
         ]);
     }
 }

@@ -8,7 +8,8 @@ import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 
 @Component({
     selector: 'app-home-versions',
-    templateUrl: 'versions.component.html'
+    templateUrl: 'versions.component.html',
+    styleUrls: ['versions.component.css']
 })
 export class VersionsComponent extends Page implements OnDestroy {
     private _data: VersionsPage;

@@ -12,6 +12,8 @@ import { BanOnSightResolver } from './services/ban-on-sight.resolver';
 import { SayComponent } from './say/say.component';
 import { SayResolver } from './services/say.resolver';
 import { TimetableResolver } from 'shared/services/timetable.resolver';
+import { EventStatsComponent } from './event-stats/event-stats.component';
+import { EventStatsResolver } from './services/event-stats.resolver';
 
 export const eventsRoutes: Routes = [
     {
@@ -21,7 +23,7 @@ export const eventsRoutes: Routes = [
             {
                 path: 'timetable/:day',
                 component: TimetableComponent,
-                data: { type: 'events' },
+                data: {type: 'events'},
                 resolve: {
                     data: TimetableResolver
                 }
@@ -29,7 +31,7 @@ export const eventsRoutes: Routes = [
             {
                 path: 'booking/page/:page',
                 component: BookingLogComponent,
-                data: { type: 'events' },
+                data: {type: 'events'},
                 resolve: {
                     data: BookingLogResolver
                 }
@@ -60,6 +62,14 @@ export const eventsRoutes: Routes = [
                 component: SayComponent,
                 resolve: {
                     data: SayResolver
+                }
+            },
+            {
+                path: 'stats',
+                component: EventStatsComponent,
+                runGuardsAndResolvers: 'paramsOrQueryParamsChange',
+                resolve: {
+                    data: EventStatsResolver
                 }
             }
         ]

@@ -20,6 +20,8 @@ import { BanOnSightResolver } from './services/ban-on-sight.resolver';
 import { SayResolver } from './services/say.resolver';
 import { SayComponent } from './say/say.component';
 import { TimetableResolver } from 'shared/services/timetable.resolver';
+import { EventStatsComponent } from './event-stats/event-stats.component';
+import { EventStatsResolver } from './services/event-stats.resolver';
 
 @NgModule({
     imports: [
@@ -39,14 +41,16 @@ import { TimetableResolver } from 'shared/services/timetable.resolver';
         TypeComponent,
         BanOnSightListComponent,
         BanOnSightComponent,
-        SayComponent
+        SayComponent,
+        EventStatsComponent
     ],
     providers: [
         TimetableResolver,
         TypesReolver,
         BanOnSightListResolver,
         BanOnSightResolver,
-        SayResolver
+        SayResolver,
+        EventStatsResolver
     ],
     entryComponents: [
         TypeComponent

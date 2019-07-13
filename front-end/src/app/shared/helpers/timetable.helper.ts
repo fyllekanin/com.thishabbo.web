@@ -19,7 +19,7 @@ export class TimetableHelper {
         if (!timetable.isPerm) {
             return isEvents ? `${timetable.event ? timetable.event.name : 'unknown'}` : '';
         }
-        return `(${timetable.name})`;
+        return `${timetable.name}`;
     }
 
     static isCurrentSlot (day: number, hour: number) {

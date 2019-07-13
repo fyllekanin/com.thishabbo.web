@@ -8,8 +8,14 @@ export class ChangeItem {
     @primitive()
     body: string;
 
+    class: string;
+
     constructor (source: Partial<ChangeItem>) {
         ClassHelper.assign(this, source);
+        this.class = this.type.replace(new RegExp(' ', 'g'), '-')
+            .replace('/', '')
+            .replace('--', '-')
+            .toLowerCase();
     }
 }
 

@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection ALL */
 
 namespace App\EloquentModels\Staff;
 
@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property mixed userId
  * @property mixed eventId
  * @property mixed link
+ * @property mixed day
  */
 class Timetable extends DeletableModel {
 
@@ -28,6 +29,10 @@ class Timetable extends DeletableModel {
 
     public function user() {
         return $this->hasOne('App\EloquentModels\User\User', 'userId', 'userId');
+    }
+
+    public function timetableData() {
+        return $this->hasOne('App\EloquentModels\Staff\TimetableData', 'timetableId');
     }
 
     public function getUserAttribute() {
@@ -47,10 +52,6 @@ class Timetable extends DeletableModel {
         $year = date('Y');
         $week = date('W');
         return strtotime((new DateTime())->setISODate($year, $week, $this->day)->format('Y-m-d')) + 3600 * $this->hour;
-    }
-
-    public function timetableData() {
-        return $this->hasOne('App\EloquentModels\Staff\TimetableData', 'timetableId');
     }
 
     public function getPermShowAttribute() {
