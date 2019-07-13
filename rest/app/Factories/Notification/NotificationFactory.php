@@ -140,6 +140,8 @@ class NotificationFactory {
     }
 
     public static function newVisitorMessage(VisitorMessage $visitorMessage) {
+        $receiverIds = array();
+        
         if ($visitorMessage->parentId > 0) {
             $receiverIds = VisitorMessage::where('parentId', $visitorMessage->parentId)->orWhere('visitorMessageId', $visitorMessage->parentId)->pluck('userId')->toArray();
         }
