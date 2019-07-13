@@ -37,11 +37,11 @@ import { StatsBoxModel } from 'shared/app-views/stats-boxes/stats-boxes.model';
 export class ThreadComponent extends Page implements OnDestroy {
     private _threadPage: ThreadPage = new ThreadPage();
     private _isToolsVisible = false;
-    private isMiniProfileDisabled = false;
     private _multiQuotedPosts: Array<PostModel> = new Array<PostModel>();
 
     @ViewChild('editor', {static: false}) editor: EditorComponent;
 
+    isMiniProfileDisabled = false;
     fixedTools: FixedTools;
     pagination: PaginationModel;
     editorButtons: Array<EditorAction> = [];

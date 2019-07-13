@@ -61,7 +61,8 @@
                     <span *ngFor="let currentReader of thread.currentReaders; let first = first;">
                         <span *ngIf="!first">, </span>
                         <app-user-link [user]="currentReader.user"
-                                       [attr.tooltip]="currentReader.timeAgo"></app-user-link>
+                                       [attr.tooltip]="currentReader.timeAgo"
+                                       [attr.tooltip-position]="isMiniProfileDisabled ? 'top' : 'bottom'"></app-user-link>
                     </span>
                     <span *ngIf="thread.currentReaders.length === 0">
                         No current readers!
