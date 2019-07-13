@@ -33,6 +33,10 @@ export class TopBarComponent {
         this._continuesInformationService.onNotifications.subscribe(this.onNotifications.bind(this));
     }
 
+    ngOnInit () {
+        this.isMobile = window.innerWidth <= 600;
+    }
+
     login (): void {
         this._authService.login(this.loginName, this.password, true, () => {
             this._router.navigateByUrl('/auth/login');

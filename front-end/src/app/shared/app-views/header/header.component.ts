@@ -31,6 +31,10 @@ export class HeaderComponent {
         });
     }
 
+    ngOnInit () {
+        this.isMobile = window.innerWidth <= 600;
+    }
+
     @HostListener('window:resize', ['$event'])
     onResize(event) {
         this.isMobile = event.target.innerWidth <= 600;

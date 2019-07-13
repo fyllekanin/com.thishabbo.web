@@ -22,6 +22,10 @@ export class UserPostBitComponent {
     useAvatarImage = true;
     isMobile = false;
 
+    ngOnInit () {
+        this.isMobile = window.innerWidth <= 600;
+    }
+
     onAvatarError (): void {
         this.useAvatarImage = false;
     }

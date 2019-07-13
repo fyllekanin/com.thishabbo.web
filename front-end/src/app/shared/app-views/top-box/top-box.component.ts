@@ -38,6 +38,10 @@ export class TopBoxComponent {
         });
     }
 
+    ngOnInit () {
+        this.isMobile = window.innerWidth <= 600;
+    }
+
     logout (): void {
         this._authService.logout(false);
     }
