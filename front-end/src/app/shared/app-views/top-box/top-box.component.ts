@@ -16,7 +16,7 @@ import { ThemeHelper } from 'shared/helpers/theme.helper';
 export class TopBoxComponent {
     private _user: AuthUser;
     private _navigation: Array<MainItem> = [];
-  
+
     menuClasses = '';
     routes: Array<MainItem> = [];
     isFixed: boolean;
@@ -62,7 +62,7 @@ export class TopBoxComponent {
         });
         this.updateMenuClasses();
     }
-  
+
     toggleMenu (): void {
         this.showMenu = !this.showMenu;
         this.updateMenuClasses();

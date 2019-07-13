@@ -79,7 +79,7 @@ export class UserPostBitComponent {
     get isMobile (): boolean {
         return ThemeHelper.isMobile();
     }
-      
+
     private setSocials (): void {
         this.socials = !this._user.social ?
             [] : Object.keys(this._user.social).map(key => {
