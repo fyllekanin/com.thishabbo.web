@@ -1,0 +1,1 @@
+{"topic":"Fix liker not showing when liking post","type":"Bug","body":"Likers were not updated when liking a post, this is now fixed"}

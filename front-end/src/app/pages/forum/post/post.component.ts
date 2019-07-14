@@ -84,6 +84,7 @@ export class PostComponent extends Page implements OnDestroy {
     likePost (): void {
         this._service.likePost(this._postModel.postId).subscribe(data => {
             this._postModel.likers = data;
+            this.setLikers();
         });
 
     }
@@ -91,6 +92,7 @@ export class PostComponent extends Page implements OnDestroy {
     unlikePost (): void {
         this._service.unlikePost(this._postModel.postId).subscribe(data => {
             this._postModel.likers = data;
+            this.setLikers();
         });
     }
 
