@@ -37,6 +37,10 @@ describe('RadioComponent', () => {
                         onDeviceSettingsUpdated: {
                             subscribe: () => {
                             }
+                        },
+                        onRadioPlayerToggle: {
+                            subscribe: () => {
+                            }
                         }
                     }
                 }
