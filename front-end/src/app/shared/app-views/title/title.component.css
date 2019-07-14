@@ -32,11 +32,11 @@
 }
 
 .sub-title {
-    font-size: 0.7rem;
-    font-weight: normal;
+    font-size: .7rem;
+    font-weight: 400;
     font-style: italic;
     float: left;
-    margin-top: 8px;
+    margin-top: 14px;
 }
 
 a {
