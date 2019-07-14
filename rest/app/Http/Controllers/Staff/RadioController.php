@@ -237,6 +237,22 @@ class RadioController extends Controller {
         return response()->json();
     }
 
+    public function deleteRequest(Request $request, $requestId) {
+        $user = $request->get('auth');
+        $radioRequest = RadioRequest::find($requestId);
+        Condition::precondition(!$radioRequest, 404, 'No request with that ID');
+
+        Condition::precondition(!$this->canUserDeleteRequests($user), 400, 'You are not able to delete the request');
+
+        $radioRequest->isDeleted = true;
+        $radioRequest->save();
+
+        Logger::staff($user->userId, $request->ip(), Action::DELETED_RADIO_REQUEST, [
+            'content' => $radioRequest->content
+        ]);
+        return response()->json();
+    }
+
     /**
      * Get an array of all requests which are made less then two hours ago.
      *
@@ -246,9 +262,9 @@ class RadioController extends Controller {
      */
     public function getRequests(Request $request) {
         $user = $request->get('auth');
-        $canSeeRequestIp = PermissionHelper::haveStaffPermission($user->userId, ConfigHelper::getStaffConfig()->canSeeIpOnRequests);
+        $canSeeRequestIp = PermissionHelper::haveStaffPermission($user->userId, ConfigHelper::getStaffConfig()->canSeeIpsAndDeleteRequests);
 
-        $radioRequests = RadioRequest::twoHours()->orderBy('requestId', 'DESC')->getQuery()->get();
+        $radioRequests = RadioRequest::twoHours()->orderBy('requestId', 'DESC')->where('isDeleted', false)->getQuery()->get();
         foreach ($radioRequests as $radioRequest) {
             if (!$canSeeRequestIp) {
                 unset($radioRequest->ip);
@@ -257,7 +273,10 @@ class RadioController extends Controller {
             $radioRequest->content = BBcodeUtil::arrowsToEntry($radioRequest->content);
         }
 
-        return response()->json($radioRequests);
+        return response()->json([
+            'canDeleteRequests' => $this->canUserDeleteRequests($user),
+            'items' => $radioRequests
+        ]);
     }
 
     /**
@@ -423,5 +442,13 @@ class RadioController extends Controller {
 
         $nextSlot = Timetable::radio()->where('day', $day)->where('hour', $hour)->first();
         return $nextSlot ? $nextSlot->user->userId : null;
+    }
+
+    private function canUserDeleteRequests($user) {
+        $radio = new RadioSettings(SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->radio));
+        $isCurrentDj = $user->userId == $radio->userId;
+        $canDelete = PermissionHelper::haveStaffPermission($user->userId, ConfigHelper::getStaffConfig()->canAlwaysSeeConnectionInformation);
+
+        return $isCurrentDj || $canDelete;
     }
 }

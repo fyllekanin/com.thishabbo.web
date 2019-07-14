@@ -2219,4 +2219,16 @@ class Action {
         'contentTable' => null,
         'contentSelect' => null
     ];
+
+    const DELETED_RADIO_REQUEST = [
+        'id' => 196,
+        'description' => 'User deleted a radio request',
+        'data' => [
+            'content' => 'Text in request'
+        ],
+        'log' => 'log_staff',
+        'contentId' => null,
+        'contentTable' => null,
+        'contentSelect' => null
+    ];
 }

@@ -69,7 +69,7 @@ return [
         'canBookRadioForOthers' => 4,
         'canBookEventForOthers' => 8,
         'canManageEvents' => 16,
-        'canSeeIpOnRequests' => 32,
+        'canSeeIpsAndDeleteRequests' => 32,
         'canManagePermShows' => 64,
         'canKickDjOffAir' => 128,
         'canOverrideDjSays' => 256,

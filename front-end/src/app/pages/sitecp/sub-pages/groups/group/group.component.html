@@ -421,8 +421,12 @@
                 </div>
                 <div>
                     <label class="checkbox-container">
-                        Access to view IP on Radio Requests
-                        <input type="checkbox" [(ngModel)]="staffPermissions.canSeeIpOnRequests">
+                        Access to view IP and delete Radio Requests
+                        <span tooltip="Can see IPs on requests AND delete radio requests when not current DJ"
+                              class="checkbox-info">
+                            <em class="fas fa-question-circle"></em>
+                        </span>
+                        <input type="checkbox" [(ngModel)]="staffPermissions.canSeeIpsAndDeleteRequests">
                         <span class="checkmark"></span>
                     </label>
                 </div>

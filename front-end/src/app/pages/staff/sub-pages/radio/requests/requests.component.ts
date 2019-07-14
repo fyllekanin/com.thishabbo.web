@@ -4,16 +4,20 @@ import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Page } from 'shared/page/page.model';
 import { STAFFCP_BREADCRUM_ITEM, STAFFCP_RADIO_BREADCRUM_ITEM } from '../../../staff.constants';
-import { RequestModel } from './requests.model';
+import { RequestModel, RequestsPage } from './requests.model';
 import { INFO_BOX_TYPE, InfoBoxModel } from 'shared/app-views/info-box/info-box.model';
+import { TitleTab } from 'shared/app-views/title/title.model';
+import { HttpService } from 'core/services/http/http.service';
+import { NotificationService } from 'core/services/notification/notification.service';
 
 @Component({
     selector: 'app-staff-radio-requests',
     templateUrl: 'requests.component.html'
 })
 export class RequestsComponent extends Page implements OnDestroy {
-    private _reqeusts: Array<RequestModel> = [];
+    private _data: RequestsPage = new RequestsPage(null);
 
+    tabs: Array<TitleTab> = [];
     infoModel: InfoBoxModel = {
         title: 'Hey!',
         type: INFO_BOX_TYPE.INFO,
@@ -21,6 +25,8 @@ export class RequestsComponent extends Page implements OnDestroy {
     };
 
     constructor (
+        private _httpService: HttpService,
+        private _notificationService: NotificationService,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService,
         activatedRoute: ActivatedRoute
@@ -45,11 +51,28 @@ export class RequestsComponent extends Page implements OnDestroy {
         return `Request ${ip}`;
     }
 
-    get requests (): Array<RequestModel> {
-        return this._reqeusts;
+    onDelete (item: RequestModel): void {
+        this._httpService.delete(`staff/radio/requests/${item.requestId}`)
+            .subscribe(() => {
+                this._notificationService.sendInfoNotification('Request deleted');
+                this._data.items = this._data.items.filter(request => request.requestId !== item.requestId);
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private onData (data: { data: Array<RequestModel> }): void {
-        this._reqeusts = data.data;
+    get requests (): Array<RequestModel> {
+        return this._data.items;
+    }
+
+    private onData (data: { data: RequestsPage }): void {
+        this._data = data.data;
+        this.setTabs();
+    }
+
+    private setTabs (): void {
+        if (this._data.canDeleteRequests) {
+            this.tabs = [
+                new TitleTab({title: 'Delete'})
+            ];
+        }
     }
 }

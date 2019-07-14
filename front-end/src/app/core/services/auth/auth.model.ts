@@ -145,7 +145,7 @@ export class StaffPermissions {
     @primitive()
     canManageEvents: boolean;
     @primitive()
-    canSeeIpOnRequests: boolean;
+    canSeeIpsAndDeleteRequests: boolean;
     @primitive()
     canKickDjOffAir: boolean;
     @primitive()

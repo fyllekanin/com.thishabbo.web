@@ -1,4 +1,4 @@
-import { ClassHelper, primitive, time } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, primitive, time } from 'shared/helpers/class.helper';
 
 export class RequestModel {
     @primitive()
@@ -13,6 +13,17 @@ export class RequestModel {
     createdAt: string;
 
     constructor (source: Partial<RequestModel>) {
+        ClassHelper.assign(this, source);
+    }
+}
+
+export class RequestsPage {
+    @primitive()
+    canDeleteRequests: boolean;
+    @arrayOf(RequestModel)
+    items: Array<RequestModel> = [];
+
+    constructor (source: Partial<RequestsPage>) {
         ClassHelper.assign(this, source);
     }
 }

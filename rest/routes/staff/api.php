@@ -21,6 +21,8 @@ Route::prefix('radio')->group(function () use ($permissions) {
         });
 
         Route::get('/requests', 'Staff\RadioController@getRequests');
+        Route::delete('/requests/{requestId}', 'Staff\RadioController@deleteRequest');
+
         Route::get('/connection', 'Staff\RadioController@getConnectionInformation');
 
         Route::get('/dj-says', 'Staff\RadioController@getDjSays');

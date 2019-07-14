@@ -6,7 +6,7 @@
 </div>
 <div *ngIf="requests.length > 0">
     <div *ngFor="let item of requests">
-        <app-title [title]="getTitle(item)"></app-title>
+        <app-title [title]="getTitle(item)" [tabs]="tabs" (onTabClick)="onDelete(item)"></app-title>
         <app-content>
             <div class="quotepost">
                 {{item.nickname}} - {{item.createdAt}}
