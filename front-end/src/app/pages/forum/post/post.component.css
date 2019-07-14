@@ -45,10 +45,11 @@
 .post-likers {
     background: #fbfbfb;
     border-radius: 2px;
-    box-shadow: inset 0 1px 2px rgba(197, 197, 197, 0.19);
+    box-shadow: inset 0 1px 2px rgba(197, 197, 197, .19);
     margin-top: 1rem;
     min-height: 2rem;
-    padding: 0.8rem;
+    margin-left: 10px;
+    padding: .8rem;
     text-align: center;
 }
 
