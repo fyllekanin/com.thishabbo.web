@@ -1,0 +1,1 @@
+{"topic":"Add more memory to node commands","type":"Refactor / Improvement","body":"Set a higher node memory limit to all node commands in package.json"}
