@@ -27,7 +27,7 @@ import { SlimThread } from '../forum.model';
 })
 
 export class CategoryComponent extends Page implements OnDestroy {
-    private _categoryPage: CategoryPage = new CategoryPage();
+    private _data: CategoryPage = new CategoryPage();
     private _selectedThreadIds: Array<number> = [];
     private _isToolsVisible = false;
     private _isStickiesVisible = true;
@@ -51,7 +51,7 @@ export class CategoryComponent extends Page implements OnDestroy {
     ) {
         super(elementRef);
         this._isToolsVisible = Boolean(localStorage.getItem(LOCAL_STORAGE.FORUM_TOOLS));
-        this.addSubscription(this._activatedRoute.data, this.onCategory.bind(this));
+        this.addSubscription(this._activatedRoute.data, this.onData.bind(this));
         this._isStickiesVisible = this.isStickiesContracted();
     }
 
@@ -69,15 +69,15 @@ export class CategoryComponent extends Page implements OnDestroy {
     }
 
     onSort (options: CategoryDisplayOptions): void {
-        this._router.navigateByUrl(`/forum/category/${this._categoryPage.categoryId}/page/1${this.getQueryParams(options)}`);
+        this._router.navigateByUrl(`/forum/category/${this._data.categoryId}/page/1${this.getQueryParams(options)}`);
     }
 
     onTabClick (value: number): void {
         switch (value) {
             case CategoryActions.SUBSCRIBE:
-                this._httpService.post(`forum/category/${this._categoryPage.categoryId}/subscribe`, {})
+                this._httpService.post(`forum/category/${this._data.categoryId}/subscribe`, {})
                     .subscribe(() => {
-                        this._categoryPage.isSubscribed = true;
+                        this._data.isSubscribed = true;
                         this.setTabs();
                         this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
@@ -86,9 +86,9 @@ export class CategoryComponent extends Page implements OnDestroy {
                     }, this._notificationService.failureNotification.bind(this._notificationService));
                 break;
             case CategoryActions.UNSUBSCRIBE:
-                this._httpService.delete(`forum/category/${this._categoryPage.categoryId}/unsubscribe`)
+                this._httpService.delete(`forum/category/${this._data.categoryId}/unsubscribe`)
                     .subscribe(() => {
-                        this._categoryPage.isSubscribed = false;
+                        this._data.isSubscribed = false;
                         this.setTabs();
                         this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
@@ -97,9 +97,9 @@ export class CategoryComponent extends Page implements OnDestroy {
                     }, this._notificationService.failureNotification.bind(this._notificationService));
                 break;
             case CategoryActions.IGNORE:
-                this._httpService.post(`forum/category/${this._categoryPage.categoryId}/ignore`, {})
+                this._httpService.post(`forum/category/${this._data.categoryId}/ignore`, {})
                     .subscribe(() => {
-                        this._categoryPage.isIgnored = true;
+                        this._data.isIgnored = true;
                         this.setTabs();
                         this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
@@ -108,9 +108,9 @@ export class CategoryComponent extends Page implements OnDestroy {
                     }, this._notificationService.failureNotification.bind(this._notificationService));
                 break;
             case CategoryActions.UNIGNORE:
-                this._httpService.delete(`forum/category/${this._categoryPage.categoryId}/ignore`)
+                this._httpService.delete(`forum/category/${this._data.categoryId}/ignore`)
                     .subscribe(() => {
-                        this._categoryPage.isIgnored = false;
+                        this._data.isIgnored = false;
                         this.setTabs();
                         this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
@@ -134,8 +134,8 @@ export class CategoryComponent extends Page implements OnDestroy {
                 this.onChangeOwner();
                 break;
             case ThreadActions.SELECT_ALL:
-                this._selectedThreadIds = this._categoryPage.threads.map(thread => thread.threadId).concat(
-                    this._categoryPage.stickyThreads.map(sticky => sticky.threadId));
+                this._selectedThreadIds = this._data.threads.map(thread => thread.threadId).concat(
+                    this._data.stickyThreads.map(sticky => sticky.threadId));
                 break;
         }
     }
@@ -157,15 +157,15 @@ export class CategoryComponent extends Page implements OnDestroy {
     }
 
     get categoryPage (): CategoryPage {
-        return this._categoryPage;
+        return this._data;
     }
 
     get haveSubCategories (): boolean {
-        return this._categoryPage.categories.length > 0;
+        return this._data.categories.length > 0;
     }
 
     get isMainParent (): boolean {
-        return this._categoryPage.parents.length === 0;
+        return this._data.parents.length === 0;
     }
 
     private getQueryParams (options: CategoryDisplayOptions): string {
@@ -181,8 +181,9 @@ export class CategoryComponent extends Page implements OnDestroy {
         return `?${sortedBy}&${sortOrder}&${fromThe}`;
     }
 
-    private onCategory (data: { data: CategoryPage }): void {
-        this._categoryPage = data.data;
+    private onData (data: { data: CategoryPage }): void {
+        this._data = data.data;
+        this._selectedThreadIds = [];
         this.setPagination();
         this.setTabs();
         this.setBreadcrumb();
@@ -196,13 +197,13 @@ export class CategoryComponent extends Page implements OnDestroy {
 
         const actions = [
             {
-                title: 'Create Thread', link: `/forum/category/${this._categoryPage.categoryId}/thread/new`,
-                condition: this._categoryPage.forumPermissions.canCreateThreads && this._categoryPage.isOpen
+                title: 'Create Thread', link: `/forum/category/${this._data.categoryId}/thread/new`,
+                condition: this._data.forumPermissions.canCreateThreads && this._data.isOpen
             },
-            {title: 'Subscribe', value: CategoryActions.SUBSCRIBE, condition: !this._categoryPage.isSubscribed},
-            {title: 'Unsubscribe', value: CategoryActions.UNSUBSCRIBE, condition: this._categoryPage.isSubscribed},
-            {title: 'Ignore', value: CategoryActions.IGNORE, condition: !this._categoryPage.isIgnored},
-            {title: 'Unignore', value: CategoryActions.UNIGNORE, condition: this._categoryPage.isIgnored}
+            {title: 'Subscribe', value: CategoryActions.SUBSCRIBE, condition: !this._data.isSubscribed},
+            {title: 'Unsubscribe', value: CategoryActions.UNSUBSCRIBE, condition: this._data.isSubscribed},
+            {title: 'Ignore', value: CategoryActions.IGNORE, condition: !this._data.isIgnored},
+            {title: 'Unignore', value: CategoryActions.UNIGNORE, condition: this._data.isIgnored}
         ];
 
         actions.push({
@@ -224,20 +225,20 @@ export class CategoryComponent extends Page implements OnDestroy {
             },
             {
                 title: 'Move Thread(s)', value: ThreadActions.MOVE_THREAD,
-                condition: this._categoryPage.forumPermissions.canMoveThreads
+                condition: this._data.forumPermissions.canMoveThreads
             },
             {
                 title: 'Change Owner', value: ThreadActions.CHANGE_THREAD_OWNER,
-                condition: this._categoryPage.forumPermissions.canChangeOwner
+                condition: this._data.forumPermissions.canChangeOwner
             }
         ];
     }
 
     private setBreadcrumb (): void {
-        this._categoryPage.parents.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'displayOrder'));
+        this._data.parents.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'displayOrder'));
         this._breadcrumbService.breadcrumb = new Breadcrumb({
-            current: this._categoryPage.title,
-            items: [FORUM_BREADCRUM_ITEM].concat(this._categoryPage.parents.map(parent => new BreadcrumbItem({
+            current: this._data.title,
+            items: [FORUM_BREADCRUM_ITEM].concat(this._data.parents.map(parent => new BreadcrumbItem({
                 title: parent.title,
                 url: `/forum/category/${parent.categoryId}/page/1`
             })))
@@ -246,9 +247,9 @@ export class CategoryComponent extends Page implements OnDestroy {
 
     private setPagination (): void {
         this.pagination = new PaginationModel({
-            total: this._categoryPage.total,
-            page: this._categoryPage.page,
-            url: `/forum/category/${this._categoryPage.categoryId}/page/:page${this.getQueryParams(this._categoryPage.displayOptions)}`
+            total: this._data.total,
+            page: this._data.page,
+            url: `/forum/category/${this._data.categoryId}/page/:page${this.getQueryParams(this._data.displayOptions)}`
         });
     }
 
@@ -311,7 +312,7 @@ export class CategoryComponent extends Page implements OnDestroy {
                                 title: 'Success',
                                 message: 'Thread owners changed!'
                             }));
-                            this._router.navigateByUrl(`/forum/category/${this._categoryPage.categoryId}/page/1`);
+                            this._router.navigateByUrl(`/forum/category/${this._data.categoryId}/page/1`);
                         }, this._notificationService.failureNotification.bind(this._notificationService));
                     }
                 })
@@ -321,21 +322,21 @@ export class CategoryComponent extends Page implements OnDestroy {
 
     private isStickiesContracted (): boolean {
         const contractedStickies = this.getContractedStickies();
-        return Boolean(contractedStickies.indexOf(String(this._categoryPage.categoryId)) > -1);
+        return Boolean(contractedStickies.indexOf(String(this._data.categoryId)) > -1);
     }
 
     private onContractStickies (): void {
         const contractedStickies = this.getContractedStickies();
-        if (contractedStickies.indexOf(String(this._categoryPage.categoryId)) === -1) {
-            contractedStickies.push(String(this._categoryPage.categoryId));
+        if (contractedStickies.indexOf(String(this._data.categoryId)) === -1) {
+            contractedStickies.push(String(this._data.categoryId));
         }
         localStorage.setItem(LOCAL_STORAGE.CONTRACTED_STICKIES, JSON.stringify(contractedStickies));
     }
 
     private onUnContractStickies (): void {
         let contractedStickies = this.getContractedStickies();
-        if (contractedStickies.indexOf(String(this._categoryPage.categoryId)) > -1) {
-            contractedStickies = contractedStickies.filter(item => item !== String(this._categoryPage.categoryId));
+        if (contractedStickies.indexOf(String(this._data.categoryId)) > -1) {
+            contractedStickies = contractedStickies.filter(item => item !== String(this._data.categoryId));
         }
         localStorage.setItem(LOCAL_STORAGE.CONTRACTED_STICKIES, JSON.stringify(contractedStickies));
     }

@@ -1,0 +1,1 @@
+{"topic":"Empty selected threads on new category","type":"Bug","body":"When switching category the selected thread Ids list never resetted and caused move threads to bug"}
