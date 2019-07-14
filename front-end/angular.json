@@ -98,6 +98,9 @@
             "assets": [
               "src/favicon.ico",
               "src/assets"
+            ],
+            "codeCoverageExclude": [
+              "/**/*route*.ts"
             ]
           }
         },
