@@ -84,7 +84,7 @@ class ActivityService {
     private function isThreadItemValid($thread, $userId, $ignoredThreadIds) {
         return ($thread->userId == $userId ||
                 PermissionHelper::haveForumPermission($userId, ConfigHelper::getForumPermissions()->canViewOthersThreads, $thread->categoryId))
-            && !in_array($thread->threadId, $ignoredThreadIds);
+            && !in_array($thread->threadId, $ignoredThreadIds) && $thread->isApproved;
     }
 
     /**

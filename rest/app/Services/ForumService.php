@@ -205,6 +205,7 @@ class ForumService {
             ->with(['prefix', 'latestPost'])
             ->isApproved()
             ->whereIn('categoryId', $categoryIds)
+            ->where('isApproved', true)
             ->whereNotIn('threadId', $ignoredThreadIds)
             ->whereNotIn('categoryId', $ignoredCategoryIds);
 

@@ -1,0 +1,1 @@
+{"topic":"Add thread isApproved checks","type":"Refactor / Improvement","body":"Threads that were not approved were shown all around the site, isApproved checks have now been added"}

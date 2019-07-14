@@ -1,0 +1,1 @@
+{"topic":"Thread read moved down","type":"Refactor / Improvement","body":"Move thread read down to not trigger before access checks are done"}
