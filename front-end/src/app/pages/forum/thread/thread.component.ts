@@ -38,7 +38,7 @@ export class ThreadComponent extends Page implements OnDestroy {
     private _threadPage: ThreadPage = new ThreadPage();
     private _isToolsVisible = false;
     private _multiQuotedPosts: Array<PostModel> = new Array<PostModel>();
-    private _quoteRegex = new RegExp('\\[quotepost(.*)quotepost\\]', 'gs');
+    private _quoteRegex = /\[quotepost([\s\S]*)quotepost\]/g;
 
     @ViewChild('editor', {static: false}) editor: EditorComponent;
 

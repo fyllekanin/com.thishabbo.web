@@ -1,0 +1,1 @@
+{"topic":"Fix firefox crashing","type":"Bug","body":"Firefox is crashing because of s modifier on regex which is not supprted until ECMA 2018"}

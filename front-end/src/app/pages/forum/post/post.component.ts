@@ -35,7 +35,7 @@ export class PostComponent extends Page implements OnDestroy {
     private _forumPermission: ForumPermissions = new ForumPermissions();
     private _isInEditMode = false;
     private _isMultiQuoted = false;
-    private _quoteRegex = new RegExp('\\[quotepost(.*)quotepost\\]', 'gs');
+    private _quoteRegex = /\[quotepost([\s\S]*)quotepost\]/g;
 
     @ViewChild('editor', {static: false}) editor: EditorComponent;
     @Input() canPost: boolean;
