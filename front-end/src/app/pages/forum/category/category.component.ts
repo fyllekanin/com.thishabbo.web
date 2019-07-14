@@ -287,6 +287,7 @@ export class CategoryComponent extends Page implements OnDestroy {
                                     title: 'Success',
                                     message: 'Threads are moved!'
                                 }));
+                                this._selectedThreadIds = [];
                                 this._dialogService.closeDialog();
                                 this._router.navigateByUrl(`/forum/category/${categoryId}/page/1`);
                             }, this._notificationService.failureNotification.bind(this._notificationService));
@@ -312,6 +313,7 @@ export class CategoryComponent extends Page implements OnDestroy {
                                 title: 'Success',
                                 message: 'Thread owners changed!'
                             }));
+                            this._selectedThreadIds = [];
                             this._router.navigateByUrl(`/forum/category/${this._data.categoryId}/page/1`);
                         }, this._notificationService.failureNotification.bind(this._notificationService));
                     }
