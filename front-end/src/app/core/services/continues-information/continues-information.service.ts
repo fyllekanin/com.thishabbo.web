@@ -12,6 +12,7 @@ import { ArrayHelper } from 'shared/helpers/array.helper';
 export class ContinuesInformationService implements Resolve<void> {
     private _onContinuesInformationSubject: Subject<ContinuesInformationModel> = new Subject();
     private _onDeviceSettingsUpdated: Subject<void> = new Subject();
+    private _onRadioToggling: Subject<boolean> = new Subject();
 
     private _notificationsSubject: Subject<Array<NotificationModel<any>>> = new Subject();
     private _notifications: Array<NotificationModel<any>> = [];
@@ -60,6 +61,14 @@ export class ContinuesInformationService implements Resolve<void> {
 
     deviceSettingsUpdated (): void {
         this._onDeviceSettingsUpdated.next();
+    }
+
+    radioPlayerToggle (isPlaying: boolean): void {
+        this._onRadioToggling.next(isPlaying);
+    }
+
+    get onRadioPlayerToggle (): Observable<boolean> {
+        return this._onRadioToggling.asObservable();
     }
 
     get onNotifications (): Observable<Array<NotificationModel<any>>> {

@@ -38,6 +38,7 @@ export class ThreadComponent extends Page implements OnDestroy {
     private _threadPage: ThreadPage = new ThreadPage();
     private _isToolsVisible = false;
     private _multiQuotedPosts: Array<PostModel> = new Array<PostModel>();
+    private _quoteRegex = new RegExp('\\[quotepost(.*)quotepost\\]', 'gs');
 
     @ViewChild('editor', {static: false}) editor: EditorComponent;
 
@@ -136,8 +137,9 @@ export class ThreadComponent extends Page implements OnDestroy {
         const editorValue = this.editor.getEditorValue();
 
         const quotes = this._multiQuotedPosts.reduce((prev, curr) => {
+            const postContent = curr.content.replace(this._quoteRegex, '');
             return prev + `[quotepost=${curr.postId}]Originally Posted by [b]${curr.user.nickname}[/b]
-${curr.content}[/quotepost]\n\r`;
+${postContent}[/quotepost]\n\r`;
         }, '');
         this.editor.content = editorValue.length > 0 ?
             `${editorValue}${quotes}${content}` : `${quotes}${content}`;
