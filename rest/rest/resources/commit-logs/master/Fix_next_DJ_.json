@@ -1,0 +1,1 @@
+{"topic":"Fix next DJ ","type":"Bug","body":"The next DJ never took into consideration if a slot was active or not, this is fixed"}

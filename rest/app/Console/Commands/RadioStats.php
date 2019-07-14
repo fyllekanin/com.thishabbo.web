@@ -53,7 +53,7 @@ class RadioStats extends Command {
             $day -= 7;
         }
 
-        $nextSlot = Timetable::radio()->where('day', $day)->where('hour', $hour)->first();
+        $nextSlot = Timetable::radio()->isActive()->where('day', $day)->where('hour', $hour)->first();
         return $nextSlot ? $nextSlot->user->userId : null;
     }
 
