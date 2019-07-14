@@ -91,7 +91,7 @@ return [
         23 => 'NA'
     ],
     'GITHUB' => [
-        'token' => '72f50ad550f560601a24f1862e065f710a7862e9',
+        'token' => 'f12c47a1a745b04ea2d7da500d407675265aaa16',
         'owner' => 'fyllekanin',
         'repository' => 'com.thishabbo.web'
     ],
