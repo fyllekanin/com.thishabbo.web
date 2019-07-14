@@ -1,0 +1,1 @@
+{"topic":"Remove nesting of quotes","type":"Refactor / Improvement","body":"When quoting a user it will remove all already quoted posts from the content"}

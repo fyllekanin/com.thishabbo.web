@@ -21,10 +21,10 @@ export class RadioControlsComponent implements AfterViewInit {
     constructor (
         private _radioService: RadioService,
         private _notificationService: NotificationService,
-        continuesInformationService: ContinuesInformationService
+        private _continuesInformationService: ContinuesInformationService
     ) {
         this.volume = Number(localStorage.getItem(LOCAL_STORAGE.VOLUME)) || 0.5;
-        continuesInformationService.onContinuesInformation.subscribe(continuesInformation => {
+        _continuesInformationService.onContinuesInformation.subscribe(continuesInformation => {
             this._data = continuesInformation.radio;
             this._radioUrl = `${this._data.ip}:${this._data.port}/;stream.nsv`;
         });
@@ -50,6 +50,7 @@ export class RadioControlsComponent implements AfterViewInit {
 
     toggleAudio (): void {
         this.isPlaying = !this.isPlaying;
+        this._continuesInformationService.radioPlayerToggle(this.isPlaying);
         if (this.isPlaying) {
             this.player.nativeElement.src = this.url;
             this.player.nativeElement.play().catch(() => {
@@ -71,7 +72,7 @@ export class RadioControlsComponent implements AfterViewInit {
     }
 
     openInfo (): void {
-        this._radioService.openInfo(this._data);
+        this._radioService.openInfo(this._data, this.isPlaying);
     }
 
     private setVolume (): void {

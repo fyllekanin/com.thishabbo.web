@@ -42,7 +42,7 @@ export class RequestsComponent extends Page implements OnDestroy {
 
     getTitle (item: RequestModel): string {
         const ip = item.ip ? ` (ip: ${item.ip})` : '';
-        return `Request made by: ${item.nickname} - ${item.createdAt} ${ip}`;
+        return `Request ${ip}`;
     }
 
     get requests (): Array<RequestModel> {

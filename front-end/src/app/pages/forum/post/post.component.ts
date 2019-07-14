@@ -35,6 +35,7 @@ export class PostComponent extends Page implements OnDestroy {
     private _forumPermission: ForumPermissions = new ForumPermissions();
     private _isInEditMode = false;
     private _isMultiQuoted = false;
+    private _quoteRegex = new RegExp('\\[quotepost(.*)quotepost\\]', 'gs');
 
     @ViewChild('editor', {static: false}) editor: EditorComponent;
     @Input() canPost: boolean;
@@ -98,8 +99,9 @@ export class PostComponent extends Page implements OnDestroy {
     }
 
     quotePost (): void {
+        const content = this._postModel.content.replace(this._quoteRegex, '');
         this.onQuotePost.emit(`[quotepost=${this._postModel.postId}]Originally Posted by [b]${this.user.nickname}[/b]
-${this._postModel.content}[/quotepost]\n\r`);
+${content}[/quotepost]\n\r`);
     }
 
     multiQuotePost (): void {

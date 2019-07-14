@@ -8,7 +8,12 @@
     <div *ngFor="let item of requests">
         <app-title [title]="getTitle(item)"></app-title>
         <app-content>
-            {{item.content}}
+            <div class="quotepost">
+                {{item.nickname}} - {{item.createdAt}}
+                <br/>
+                <br/>
+                {{item.content}}
+            </div>
         </app-content>
     </div>
 </div>

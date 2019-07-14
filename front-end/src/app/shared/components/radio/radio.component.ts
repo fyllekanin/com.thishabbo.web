@@ -13,7 +13,7 @@ import { SlimUser } from 'core/services/auth/auth.model';
 export class RadioComponent {
     private _stats: RadioModel;
     private _eventStats: EventsModel;
-    private readonly loading = 'Loading...';
+    private _isPlaying = false;
 
     isMinimalistic: boolean;
 
@@ -22,6 +22,9 @@ export class RadioComponent {
         continuesInformationService: ContinuesInformationService
     ) {
         this.isMinimalistic = Boolean(localStorage.getItem(LOCAL_STORAGE.MINIMALISTIC));
+        continuesInformationService.onRadioPlayerToggle.subscribe(isPlaying => {
+            this._isPlaying = isPlaying;
+        });
         continuesInformationService.onDeviceSettingsUpdated.subscribe(() => {
             this.isMinimalistic = Boolean(localStorage.getItem(LOCAL_STORAGE.MINIMALISTIC));
         });
@@ -87,7 +90,7 @@ export class RadioComponent {
     }
 
     get song (): string {
-        return this._stats && this._stats.song ? this._stats.song : this.loading;
+        return this._stats && this._stats.song && this._isPlaying ? this._stats.song : 'Tune in to see the song...';
     }
 
     get likes (): number {
