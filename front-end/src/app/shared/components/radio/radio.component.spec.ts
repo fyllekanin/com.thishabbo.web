@@ -100,8 +100,9 @@ describe('RadioComponent', () => {
     });
 
     describe('song', () => {
-        it('should return the song if stats are set', () => {
+        it('should return the song if stats are set and radio is playing', () => {
             // Given
+            component['_isPlaying'] = true;
             component.stats = new RadioModel({song: 'test'});
 
             // When
@@ -110,7 +111,18 @@ describe('RadioComponent', () => {
             // Then
             expect(result).toEqual('test');
         });
-        it('should return "Loading..." when no stats are set', () => {
+        it('should return string tell user to tune in if radio is not playing', () => {
+            // Given
+            component['_isPlaying'] = false;
+            component.stats = new RadioModel({song: 'test'});
+
+            // When
+            const result = component.song;
+
+            // Then
+            expect(result).toEqual('Tune in to see the song...');
+        });
+        it('should return "Tune in to see the song..." when no stats are set', () => {
             // Given
             component.stats = null;
 
@@ -118,7 +130,7 @@ describe('RadioComponent', () => {
             const result = component.song;
 
             // Then
-            expect(result).toEqual('Loading...');
+            expect(result).toEqual('Tune in to see the song...');
         });
     });
 

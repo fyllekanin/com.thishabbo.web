@@ -1,0 +1,1 @@
+{"topic":"Make logging system more robust","type":"Refactor / Improvement","body":"The logging system was not rebust enough and would crash when there was to much data"}
