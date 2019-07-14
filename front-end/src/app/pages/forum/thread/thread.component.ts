@@ -37,7 +37,7 @@ import { StatsBoxModel } from 'shared/app-views/stats-boxes/stats-boxes.model';
 export class ThreadComponent extends Page implements OnDestroy {
     private _threadPage: ThreadPage = new ThreadPage();
     private _isToolsVisible = false;
-    private _multiQuotedPosts: Array<PostModel> = new Array<PostModel>();
+    private _multiQuotedPosts: Array<PostModel> = [];
     private _quoteRegex = /\[quotepost([\s\S]*)quotepost\]/g;
 
     @ViewChild('editor', {static: false}) editor: EditorComponent;
@@ -66,6 +66,7 @@ export class ThreadComponent extends Page implements OnDestroy {
         this._isToolsVisible = Boolean(localStorage.getItem(LOCAL_STORAGE.FORUM_TOOLS));
         this.isMiniProfileDisabled = Boolean(localStorage.getItem(LOCAL_STORAGE.MINI_PROFILE_DISABLED));
         this.addSubscription(this._activatedRoute.data, this.onData.bind(this));
+        this._multiQuotedPosts = [];
     }
 
     prettify (str: string): string {
@@ -148,6 +149,7 @@ ${postContent}[/quotepost]\n\r`;
             `${editorValue}${quotes}${content}` : `${quotes}${content}`;
         this.onKeyUp(this.editor.getEditorValue());
         this.scrollToEditor();
+        this._multiQuotedPosts = [];
     }
 
     onMultiQuotePost (post: PostModel): void {
