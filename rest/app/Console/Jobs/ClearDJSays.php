@@ -11,7 +11,7 @@ class ClearDJSays {
     public function init() {
         $settingKeys = ConfigHelper::getKeyConfig();
         $radio = new RadioSettings(SettingsHelper::getSettingValue($settingKeys->radio));
-        $radio->djSays = '';
+        $radio->djSays = 'DJ says has not been set!';
         SettingsHelper::createOrUpdateSetting($settingKeys->radio, json_encode($radio));
     }
 }
