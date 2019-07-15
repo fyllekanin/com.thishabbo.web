@@ -102,7 +102,7 @@ export class RadioComponent {
     }
 
     get djSays (): string {
-        return this._stats ? this._stats.djSays : '';
+        return this._stats ? this._stats.djSays : 'No DJ says has been set!';
     }
 
     get albumArt (): string {
