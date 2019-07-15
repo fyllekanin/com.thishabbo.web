@@ -62,8 +62,10 @@ class StaffSpotlightController extends Controller {
             Condition::precondition(!isset($value) || empty($value), 400, $key . ' is missing');
         }
 
-        Condition::precondition(User::withNickname($information->member)->count('userId') == 0, 404, 'No member with that nickname');
-        Condition::precondition(User::withNickname($information->staff)->count('userId') == 0, 404, 'No staff with that nickname');
+        Condition::precondition(!empty($information->member) && User::withNickname($information->member)->count('userId') == 0,
+            404, 'No member with that nickname');
+        Condition::precondition(!empty($information->staff) && User::withNickname($information->staff)->count('userId') == 0,
+            404, 'No staff with that nickname');
 
         $newInformation = [
             'member' => $information->member,
@@ -107,10 +109,6 @@ class StaffSpotlightController extends Controller {
         $user = $request->get('auth');
         $information = (object)$request->input('information');
 
-        foreach ($information as $key => $value) {
-            Condition::precondition(!isset($value) || empty($value), 400, $key . ' is missing');
-        }
-
         $newInformation = [
             'globalManagement' => $information->globalManagement,
             'europeManagement' => $information->europeManagement,
@@ -130,6 +128,10 @@ class StaffSpotlightController extends Controller {
         ];
 
         foreach ($newInformation as $key => $value) {
+            if (empty($value)) {
+                $newInformation[$key] = null;
+                continue;
+            }
             $userExists = User::withNickname($value)->first();
 
             Condition::precondition(!$userExists, 404, 'No user with the name ' . $value);
