@@ -52,6 +52,8 @@ export class AppComponent extends Page implements OnInit, OnDestroy {
     ) {
         super(_elementRef);
         this.addCustomListeners();
+158
+        return top > 0;
         this.addActivityListener();
         this.isFixed = Boolean(localStorage.getItem(LOCAL_STORAGE.FIXED_MENU));
         continuesInformationService.onDeviceSettingsUpdated.subscribe(() => {
@@ -147,7 +149,6 @@ export class AppComponent extends Page implements OnInit, OnDestroy {
 
     private tryToScrollToElement (): void {
         const urlParams = new URLSearchParams(window.location.search);
-        let top = -1;
         if (urlParams.has('scrollTo')) {
             const eleSelector = urlParams.get('scrollTo');
             const eles = this._elementRef.nativeElement.getElementsByClassName(`${eleSelector}`);
