@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
-import { NavigationStart, ResolveEnd, Router, Scroll } from '@angular/router';
+import { NavigationStart, ResolveEnd, Router, NavigationEnd } from '@angular/router';
 import { Page } from 'shared/page/page.model';
 import { UserService } from 'core/services/user/user.service';
 import { fadeAnimation } from 'shared/animations/fade.animation';
@@ -65,7 +65,7 @@ export class AppComponent extends Page implements OnInit, OnDestroy {
             if (ev instanceof ResolveEnd) {
                 this.loadingProgress = 75;
             }
-            if (ev instanceof Scroll) {
+            if (ev instanceof NavigationEnd) {
                 this.loadingProgress = 100;
                 this.isLoading = false;
                 setTimeout(() => {
@@ -145,27 +145,16 @@ export class AppComponent extends Page implements OnInit, OnDestroy {
         return urlParams.has('skipScroll');
     }
 
-    private tryToScrollToElement (): void {
-        let count = 0;
-        const interval = setInterval(() => {
-            const result = this.scrollToElement();
-            if (count > 5 || result) {
-                clearInterval(interval);
-            }
-            count++;
-        }, 500);
-    }
-
-    private scrollToElement (): boolean {
+    private tryToScrollToElement (count = 0): void {
         const urlParams = new URLSearchParams(window.location.search);
-        let top = -1;
         if (urlParams.has('scrollTo')) {
             const eleSelector = urlParams.get('scrollTo');
             const eles = this._elementRef.nativeElement.getElementsByClassName(`${eleSelector}`);
-            top = eles.length > 0 ? eles[0]['ofnfsetTop'] : -1;
+            if (eles && eles.length > 0) {
+                eles[0].scrollIntoView({behavior: 'smooth'});
+            } else if (count < 5) {
+                setTimeout(this.tryToScrollToElement.bind(this, count++), 100);
+            }
         }
-
-        window.scrollTo({left: 0, top: top, behavior: 'smooth'});
-        return top > 0;
     }
 }
