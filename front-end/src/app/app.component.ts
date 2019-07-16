@@ -145,13 +145,15 @@ export class AppComponent extends Page implements OnInit, OnDestroy {
         return urlParams.has('skipScroll');
     }
 
-    private tryToScrollToElement (): void {
+    private tryToScrollToElement (count = 0): void {
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has('scrollTo')) {
             const eleSelector = urlParams.get('scrollTo');
             const eles = this._elementRef.nativeElement.getElementsByClassName(`${eleSelector}`);
             if (eles && eles.length > 0) {
                 eles[0].scrollIntoView({behavior: 'smooth'});
+            } else if (count < 5) {
+                setTimeout(this.tryToScrollToElement.bind(this, count++), 100);
             }
         }
     }
