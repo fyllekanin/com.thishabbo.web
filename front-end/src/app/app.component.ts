@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
-import { NavigationStart, ResolveEnd, Router, Scroll } from '@angular/router';
+import { NavigationStart, ResolveEnd, Router, NavigationEnd } from '@angular/router';
 import { Page } from 'shared/page/page.model';
 import { UserService } from 'core/services/user/user.service';
 import { fadeAnimation } from 'shared/animations/fade.animation';
@@ -65,7 +65,7 @@ export class AppComponent extends Page implements OnInit, OnDestroy {
             if (ev instanceof ResolveEnd) {
                 this.loadingProgress = 75;
             }
-            if (ev instanceof Scroll) {
+            if (ev instanceof NavigationEnd) {
                 this.loadingProgress = 100;
                 this.isLoading = false;
                 setTimeout(() => {
