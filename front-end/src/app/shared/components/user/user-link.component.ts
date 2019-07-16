@@ -17,6 +17,7 @@ export class UserLinkComponent {
         this.isMiniProfileDisabled = this.isMiniProfileDisabled || Boolean(localStorage.getItem(LOCAL_STORAGE.MINI_PROFILE_DISABLED));
     }
 
+    @Input()
     set user (user: SlimUser) {
         if (user) {
             this._user = user;
