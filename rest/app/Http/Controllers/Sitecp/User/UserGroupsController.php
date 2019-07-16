@@ -35,7 +35,7 @@ class UserGroupsController extends Controller {
 
         $myImmunity = User::getImmunity($user->userId);
         Condition::precondition(!UserHelper::canManageUser($user, $userId), 400, 'Not high enough immunity');
-        Condition::precondition(!$groupIds, 400, 'Group ids are missing');
+        Condition::precondition(!is_array($groupIds), 400, 'Group ids are missing');
 
         $currentGroups = $current->groups->map(function ($group) {
             return Group::where('groupId', $group->groupId)->first();
