@@ -146,26 +146,14 @@ export class AppComponent extends Page implements OnInit, OnDestroy {
     }
 
     private tryToScrollToElement (): void {
-        let count = 0;
-        const interval = setInterval(() => {
-            const result = this.scrollToElement();
-            if (count > 5 || result) {
-                clearInterval(interval);
-            }
-            count++;
-        }, 500);
-    }
-
-    private scrollToElement (): boolean {
         const urlParams = new URLSearchParams(window.location.search);
         let top = -1;
         if (urlParams.has('scrollTo')) {
             const eleSelector = urlParams.get('scrollTo');
             const eles = this._elementRef.nativeElement.getElementsByClassName(`${eleSelector}`);
-            top = eles.length > 0 ? eles[0]['offsetTop'] - 250 : -1;
+            if (eles && eles.length > 0) {
+                eles[0].scrollIntoView({behavior: 'smooth'});
+            }
         }
-
-        window.scrollTo({left: 0, top: top, behavior: 'smooth'});
-        return top > 0;
     }
 }
