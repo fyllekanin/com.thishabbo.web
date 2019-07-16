@@ -83,6 +83,9 @@ export class ThreadPage {
 
     constructor (source?: Partial<ThreadPage>) {
         ClassHelper.assign(this, source);
+        if (!this.user) {
+            this.user = new User();
+        }
     }
 }
 
