@@ -17,7 +17,6 @@ class ShopControllerImpl {
             ->take($take)
             ->skip($skip)
             ->whereRaw('(options & ' . ConfigHelper::getSubscriptionOptions()->isListed . ')')
-            ->where('credits', '>', 0)
             ->get()
             ->map(function ($subscription) use ($user) {
                 $userSubscription = UserSubscription::where('subscriptionId', $subscription->subscriptionId)

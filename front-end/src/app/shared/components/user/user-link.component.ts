@@ -9,11 +9,22 @@ import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
     styleUrls: ['user-link.component.css']
 })
 export class UserLinkComponent {
-    @Input() user = new SlimUser();
+    private _user: SlimUser = new SlimUser();
+
     @Input() isMiniProfileDisabled = false;
 
     constructor () {
         this.isMiniProfileDisabled = this.isMiniProfileDisabled || Boolean(localStorage.getItem(LOCAL_STORAGE.MINI_PROFILE_DISABLED));
+    }
+
+    set user (user: SlimUser) {
+        if (user) {
+            this._user = user;
+        }
+    }
+
+    get user (): SlimUser {
+        return this._user;
     }
 
     get nameStyling (): string {

@@ -1,0 +1,6 @@
+<button appButton (onClick)="buyWithCredits()">Credits</button>
+<div *ngIf="paypalConfig">
+    <hr/>
+
+    <ngx-paypal [config]="paypalConfig"></ngx-paypal>
+</div>

@@ -22,6 +22,8 @@ import { SubscriptionsResolver } from './services/subscriptions.resolver';
 import { LootBoxDetailsComponent } from './views/loot-box/loot-box-details/loot-box-details.component';
 import { ButtonModule } from 'shared/directives/button/button.module';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
+import { NgxPayPalModule } from 'ngx-paypal';
+import { SubscriptionPaymentComponent } from './views/subscription/subscription-payment/subscription-payment.component';
 
 @NgModule({
     imports: [
@@ -36,7 +38,9 @@ import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
         PaginationModule,
         SideMenuModule,
         ButtonModule,
-        SafeHtmlModule
+        SafeHtmlModule,
+        NgxPayPalModule,
+        ButtonModule
     ],
     declarations: [
         ShopComponent,
@@ -45,10 +49,12 @@ import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
         SubscriptionComponent,
         LootBoxesComponent,
         SubscriptionsComponent,
-        LootBoxDetailsComponent
+        LootBoxDetailsComponent,
+        SubscriptionPaymentComponent
     ],
     entryComponents: [
-        LootBoxDetailsComponent
+        LootBoxDetailsComponent,
+        SubscriptionPaymentComponent
     ],
     providers: [
         DashboardResolver,
