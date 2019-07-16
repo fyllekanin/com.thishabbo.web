@@ -162,7 +162,7 @@ export class AppComponent extends Page implements OnInit, OnDestroy {
         if (urlParams.has('scrollTo')) {
             const eleSelector = urlParams.get('scrollTo');
             const eles = this._elementRef.nativeElement.getElementsByClassName(`${eleSelector}`);
-            top = eles.length > 0 ? eles[0]['ofnfsetTop'] : -1;
+            top = eles.length > 0 ? eles[0]['offsetTop'] : -1;
         }
 
         window.scrollTo({left: 0, top: top, behavior: 'smooth'});
