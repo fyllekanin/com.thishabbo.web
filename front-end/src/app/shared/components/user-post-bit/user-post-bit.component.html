@@ -5,7 +5,7 @@
     <div class="nickname nickname-top-inside" *ngIf="isTopInside">
         <app-user-link [user]="user"></app-user-link>
     </div>
-    <img *ngIf="useAvatarImage" class="mobile-hidden" appLazyLoad [image]="userAvatarUrl"
+    <img *ngIf="useAvatarImage" class="mobile-hidden" [src]="userAvatarUrl"
          (error)="onAvatarError()" [style.width]="width" [style.height]="height"/>
     <div class="nickname nickname-bottom-inside" *ngIf="isBottomInside">
         <app-user-link [user]="user"></app-user-link>
