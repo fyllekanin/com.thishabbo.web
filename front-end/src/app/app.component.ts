@@ -52,8 +52,6 @@ export class AppComponent extends Page implements OnInit, OnDestroy {
     ) {
         super(_elementRef);
         this.addCustomListeners();
-158
-        return top > 0;
         this.addActivityListener();
         this.isFixed = Boolean(localStorage.getItem(LOCAL_STORAGE.FIXED_MENU));
         continuesInformationService.onDeviceSettingsUpdated.subscribe(() => {
