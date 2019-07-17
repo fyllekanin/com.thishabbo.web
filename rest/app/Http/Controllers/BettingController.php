@@ -48,6 +48,7 @@ class BettingController extends Controller {
         $color = $request->input('color');
         $amount = $request->input('amount');
 
+        Condition::precondition(true, 400, 'Disabled for now');
         Condition::precondition(!is_numeric($amount), 400, 'Needs to be a number!');
         Condition::precondition($amount <= 0, 400, 'Needs to be a positive number!');
         Condition::precondition(!$this->creditsService->haveEnoughCredits($user->userId, $amount), 400, 'Not enough credits!');
