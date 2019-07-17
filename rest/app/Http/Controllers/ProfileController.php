@@ -133,7 +133,7 @@ class ProfileController extends Controller {
             'user' => UserHelper::getSlimUser($profile->userId),
             'followers' => $this->getFollowers($profile->userId, $user),
             'youtube' => $profile->profile ? $profile->profile->youtube : null,
-            'activities' => $activityService->getLatestActivities($forumService->getAccessibleCategories($user->userId), [], $profile->userId),
+            'activities' => $activityService->getLatestActivities($user, $forumService->getAccessibleCategories($user->userId), [], $profile->userId),
             'stats' => [
                 'userId' => $profile->userId,
                 'posts' => $profile->posts,

@@ -48,17 +48,15 @@ class BettingController extends Controller {
         $color = $request->input('color');
         $amount = $request->input('amount');
 
-        Condition::precondition(true, 400, 'Disabled for now');
         Condition::precondition(!is_numeric($amount), 400, 'Needs to be a number!');
         Condition::precondition($amount <= 0, 400, 'Needs to be a positive number!');
         Condition::precondition(!$this->creditsService->haveEnoughCredits($user->userId, $amount), 400, 'Not enough credits!');
 
-        $minimumBet = floor($this->creditsService->getUserCredits($user->userId) / 10);
-        Condition::precondition($amount < $minimumBet, 400, 'You need to bet at least ' . $minimumBet . ' THC');
+        Condition::precondition($amount > 2500, 400, 'You can maximum bet 2,500 THC');
 
         $numbers = [];
         for ($i = 0; $i < 400; $i++) {
-            if ($i % 7 == 0) {
+            if ($i % 10 == 0) {
                 $numbers[] = [
                     'number' => 0,
                     'color' => 'green'
@@ -72,11 +70,11 @@ class BettingController extends Controller {
             $numbers[] = $rouletteNumber;
         }
 
-        shuffle($numbers);
-        $boxNumber = rand(0, 550);
+        dd(count($numbers));
+        $boxNumber = rand(0, 440);
         $winner = $numbers[$boxNumber];
         $isWin = $color == $winner['color'];
-        $profit = $color == 'green' ? $amount * 5 : $amount * 2;
+        $profit = $color == 'green' ? $amount * 3 : $amount;
 
         if ($isWin) {
             $this->creditsService->giveCredits($user->userId, $profit);
@@ -106,7 +104,6 @@ class BettingController extends Controller {
         $amount = $request->input('amount');
         $bet = Bet::find($betId);
 
-        Condition::precondition(!$bet, 404, 'The bet does not exist!');
         Condition::precondition(!is_numeric($amount), 400, 'Amount needs to be a number!');
         Condition::precondition(!$this->creditsService->haveEnoughCredits($user->userId, $amount), 400, 'You do not have enough credits!');
         Condition::precondition($bet->isSuspended, 400, 'The bet is currently suspended!');

@@ -58,7 +58,6 @@ class ShopController extends Controller {
         $user = $request->get('auth');
         $oneMonth = 2592000;
 
-        Condition::precondition(true, 400, 'Disabled for now');
         $subscription = Subscription::find($subscriptionId);
         Condition::precondition(!$subscription, 404, 'No subscription with that ID');
         Condition::precondition(!$this->creditsService->haveEnoughCredits($user->userId, $subscription->credits),
@@ -77,7 +76,6 @@ class ShopController extends Controller {
     public function openLootBox(Request $request, $lootBoxId) {
         $user = $request->get('auth');
         $lootBox = LootBox::find($lootBoxId);
-        Condition::precondition(true, 400, 'Disabled for now');
         Condition::precondition(!$lootBox, 404, 'No loot box with that ID');
         Condition::precondition(!$this->creditsService->haveEnoughCredits($user->userId, $lootBox->credits),
             400, 'You do not have enough credits for this box!');

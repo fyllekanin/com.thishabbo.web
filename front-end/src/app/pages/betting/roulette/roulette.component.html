@@ -15,7 +15,7 @@
     <div class="grid-container full">
         <div class="grid-x grid-margin-x grid-margin-y">
             <div class="cell small-12">
-                <label>Minimum bet: {{minimumBet}}</label>
+                <label>Maximum bet: 2,500</label>
                 <input type="number" [(ngModel)]="amount"/>
             </div>
             <div [ngClass]="isSpinning ? 'disabled' : ''" class="cell small-4 bet bet-black" (click)="spin('black')">

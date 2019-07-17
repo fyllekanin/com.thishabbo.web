@@ -14,14 +14,15 @@ use App\Utils\Value;
 class ActivityService {
 
     /**
+     * @param $user
      * @param $categoryIds
      * @param $ignoredThreadIds
      * @param $userId
      *
      * @return array
      */
-    public function getLatestActivities($categoryIds, $ignoredThreadIds, $userId = null) {
-        $supportedTypes = $this->getSupportedLogIds();
+    public function getLatestActivities($user, $categoryIds, $ignoredThreadIds, $userId = null) {
+        $supportedTypes = $this->getSupportedLogIds($user);
 
         $activities = [];
         $limit = 5;
@@ -88,22 +89,29 @@ class ActivityService {
     }
 
     /**
+     * @param $user
+     *
      * @return array
      */
-    private function getSupportedLogIds() {
-        return array_map(function ($action) {
-            return $action['id'];
-        }, [
+    private function getSupportedLogIds($user) {
+        $types = [
             Action::CREATED_POST,
             Action::CREATED_THREAD,
             Action::LIKED_POST,
             Action::LIKED_DJ,
-            Action::STARTED_FASTEST_TYPE_GAME,
-            Action::STARTED_SNAKE_GAME,
-            Action::WON_ROULETTE,
-            Action::LOST_ROULETTE,
             Action::LIKED_HOST
-        ]);
+        ];
+
+        if (!($user->ignoredNotifications & ConfigHelper::getIgnoredNotificationsConfig()->ROULETTE_ARCADE)) {
+            $types[] = Action::STARTED_FASTEST_TYPE_GAME;
+            $types[] = Action::STARTED_SNAKE_GAME;
+            $types[] = Action::WON_ROULETTE;
+            $types[] = Action::LOST_ROULETTE;
+        }
+
+        return array_map(function ($action) {
+            return $action['id'];
+        }, $types);
     }
 
     /**
