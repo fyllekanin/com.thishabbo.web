@@ -112,7 +112,7 @@ export class User extends SlimUser {
     @arrayOf(String)
     barColor: Array<string> = [];
     @arrayOf(Number)
-    badgeIds: Array<Number> = [];
+    badgeIds: Array<number> = [];
 
     constructor (source?: Partial<User>) {
         super(source);
