@@ -119,8 +119,8 @@ export class RouletteComponent extends Page implements OnDestroy {
 
     private getInitial (): Array<RouletteNumber> {
         const numbers = [];
-        for (let i = 0; i < 500; i++) {
-            if (i % 10 === 0) {
+        for (let i = 0; i < 400; i++) {
+            if (i % 7 === 0) {
                 numbers.push(new RouletteNumber({
                     number: 0,
                     color: 'green'
