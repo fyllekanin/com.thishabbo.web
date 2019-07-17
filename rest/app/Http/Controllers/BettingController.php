@@ -56,8 +56,8 @@ class BettingController extends Controller {
         Condition::precondition($amount < $minimumBet, 400, 'You need to bet at least ' . $minimumBet . ' THC');
 
         $numbers = [];
-        for ($i = 0; $i < 500; $i++) {
-            if ($i % 10 == 0) {
+        for ($i = 0; $i < 400; $i++) {
+            if ($i % 7 == 0) {
                 $numbers[] = [
                     'number' => 0,
                     'color' => 'green'
@@ -71,6 +71,7 @@ class BettingController extends Controller {
             $numbers[] = $rouletteNumber;
         }
 
+        shuffle($numbers);
         $boxNumber = rand(0, 550);
         $winner = $numbers[$boxNumber];
         $isWin = $color == $winner['color'];
