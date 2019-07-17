@@ -71,8 +71,8 @@ export class NameSettingsComponent extends Page implements OnDestroy {
         }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    onNameIconSelect (icon: ShopItem) {
-        this._data.iconId = icon.shopItemId;
+    onNameIconToggle (icon: ShopItem): void {
+        this._data.iconId = this._data.iconId === icon.shopItemId ? 0 : icon.shopItemId;
     }
 
     isCurrentIcon (icon: ShopItem): boolean {

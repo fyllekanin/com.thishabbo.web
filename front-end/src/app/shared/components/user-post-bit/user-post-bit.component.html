@@ -25,6 +25,9 @@
         {{userBar.name}}
     </div>
 </div>
+<div class="post-bit badges" *ngIf="user.badgeIds && user.badgeIds.length > 0">
+    <img *ngFor="let badgeId of user.badgeIds" [src]="'/rest/resources/images/badges/' + badgeId + '.gif'"/>
+</div>
 <div class="post-bit" *ngIf="user.createdAt">
     <div class="gray-content-wrapper">
         <strong>Joined:</strong>

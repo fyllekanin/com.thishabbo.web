@@ -73,3 +73,11 @@
 :host >>> .right-icon {
     margin-top: 5px;
 }
+
+.badges {
+    text-align: center;
+}
+
+.badges img {
+    margin: 0 5px;
+}

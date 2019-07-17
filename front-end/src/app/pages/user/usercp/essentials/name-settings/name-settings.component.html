@@ -18,7 +18,7 @@
                 <div *ngIf="availableNameIcons.length > 0">
                     <div class="cell small-4 medium-2" *ngFor="let nameIcon of availableNameIcons"
                          [ngClass]="isCurrentIcon(nameIcon) ? 'selected' : ''">
-                        <div class="container" (click)="onNameIconSelect(nameIcon)">
+                        <div class="container" (click)="onNameIconToggle(nameIcon)">
                             <img [src]="'/rest/resources/images/shop/' + nameIcon.shopItemId + '.gif'"/>
                             <div class="overlay"></div>
                         </div>
@@ -38,7 +38,7 @@
                             <span class="name-effect"
                                   [style.background]="nameEffectStyle(nameEffect)">{{ nameEffect.title }}</span>
                             <input type="checkbox" [checked]="effectId === nameEffect.shopItemId"
-                                   (change)="effectId = nameEffect.shopItemId">
+                                   (change)="effectId = $event.target.checked ? nameEffect.shopItemId : 0">
                             <span class="checkmark"></span>
                         </label>
                     </span>

@@ -84,6 +84,7 @@ class UserHelper {
         $user->createdAt = $postBit->hideJoinDate ? null : $userObj->createdAt->timestamp;
         $user->posts = $postBit->hidePostCount ? null : $userObj->posts;
         $user->likes = $postBit->hideLikesCount ? null : $userObj->likes;
+        $user->badgeIds = Value::objectJsonProperty($userdata, 'activeBadges', []);
 
         if (isset($userdata->nameColor)) {
             $user->nameColor = $userdata->nameColor;

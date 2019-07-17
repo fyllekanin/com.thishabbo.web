@@ -91,13 +91,21 @@ class ShopControllerImpl {
     public function giveUserItem($user, $shopItem) {
         $types = ConfigHelper::getTypesConfig();
         switch ($shopItem->type) {
-            case $types->badge:
             case $types->nameIcon:
             case $types->nameEffect:
                 $item = new UserItem([
                     'type' => $shopItem->type,
                     'userId' => $user->userId,
                     'itemId' => $shopItem->shopItemId
+                ]);
+                $item->save();
+                break;
+            case $types->badge:
+                $badgeId = json_decode($shopItem->data)->badgeId;
+                $item = new UserItem([
+                    'type' => $shopItem->type,
+                    'userId' => $user->userId,
+                    'itemId' => $badgeId
                 ]);
                 $item->save();
                 break;

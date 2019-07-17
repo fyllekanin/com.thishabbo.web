@@ -37,7 +37,8 @@ export class LootBoxDetailsComponent extends InnerDialogComponent {
 
     getResourceResponse (): string {
         const item = this.box.items.find(shopItem => shopItem.shopItemId === this.response.shopItemId);
-        return ShopHelper.getItemResource(item.shopItemId, item.type);
+        const itemId = item.type === SHOP_ITEM_TYPES.badge.value ? item.data.badgeId : item.shopItemId;
+        return ShopHelper.getItemResource(itemId, item.type);
     }
 
     getItemTitle (): string {
@@ -60,6 +61,9 @@ export class LootBoxDetailsComponent extends InnerDialogComponent {
             .subscribe(res => {
                 this.response = new LootBoxResponse(res);
                 this._notificationService.sendInfoNotification('Loot box opened!');
+                this.box.items.forEach(item => {
+                    item.owns = this.response.shopItemId === item.shopItemId || item.owns;
+                });
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
