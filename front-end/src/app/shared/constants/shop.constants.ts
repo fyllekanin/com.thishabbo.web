@@ -43,5 +43,9 @@ export const LOOT_BOXES = [
     {
         id: 6,
         asset: '/assets/images/shop/6.png'
+    },
+    {
+        id: 7,
+        asset: '/assets/images/shop/7.png'
     }
 ];
