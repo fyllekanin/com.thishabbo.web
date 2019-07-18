@@ -14,15 +14,14 @@ use App\Utils\Value;
 class ActivityService {
 
     /**
-     * @param $user
      * @param $categoryIds
      * @param $ignoredThreadIds
      * @param $userId
      *
      * @return array
      */
-    public function getLatestActivities($user, $categoryIds, $ignoredThreadIds, $userId = null) {
-        $supportedTypes = $this->getSupportedLogIds($user);
+    public function getLatestActivities($categoryIds, $ignoredThreadIds, $userId = null) {
+        $supportedTypes = $this->getSupportedLogIds();
 
         $activities = [];
         $limit = 5;
@@ -89,11 +88,9 @@ class ActivityService {
     }
 
     /**
-     * @param $user
-     *
      * @return array
      */
-    private function getSupportedLogIds($user) {
+    private function getSupportedLogIds() {
         $types = [
             Action::CREATED_POST,
             Action::CREATED_THREAD,
@@ -101,13 +98,6 @@ class ActivityService {
             Action::LIKED_DJ,
             Action::LIKED_HOST
         ];
-
-        if (!($user->ignoredNotifications & ConfigHelper::getIgnoredNotificationsConfig()->ROULETTE_ARCADE)) {
-            $types[] = Action::STARTED_FASTEST_TYPE_GAME;
-            $types[] = Action::STARTED_SNAKE_GAME;
-            $types[] = Action::WON_ROULETTE;
-            $types[] = Action::LOST_ROULETTE;
-        }
 
         return array_map(function ($action) {
             return $action['id'];

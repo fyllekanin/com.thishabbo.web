@@ -23,7 +23,7 @@ return [
         'QUOTE_NOTIFICATIONS' => 1,
         'MENTION_NOTIFICATIONS' => 2,
         'AUTO_SUBSCRIBE_THREAD' => 4,
-        'ROULETTE_ARCADE' => 8
+        'DEPRECATED_DO_NOT_USE' => 8
     ],
     'REGEX' => [
         'HABBO_ROOM' => '/(http(s)?:\/\/)?(www.)?habbo\.com\/(hotel\?)?room(=|\/)([0-9]+|(http(s)?:\/\/)?(www.)?habbo\.com\/hotel\?room=[0-9]+)?/si'

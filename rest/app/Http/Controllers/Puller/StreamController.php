@@ -65,7 +65,7 @@ class StreamController extends Controller {
                 $categoryIds[] = $categoryId;
             }
         }
-        $activities = $this->activityService->getLatestActivities($user, $categoryIds, $ignoredThreadIds);
+        $activities = $this->activityService->getLatestActivities($categoryIds, $ignoredThreadIds);
 
         return response()->json([
             'radio' => $this->getRadioStats(),

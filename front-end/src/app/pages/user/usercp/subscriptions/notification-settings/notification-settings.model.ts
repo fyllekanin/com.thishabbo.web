@@ -7,8 +7,6 @@ export class NotificationSettingsModel {
     MENTION_NOTIFICATIONS: boolean;
     @primitive()
     AUTO_SUBSCRIBE_THREAD: boolean;
-    @primitive()
-    ROULETTE_ARCADE: boolean;
 
     constructor (source: Partial<NotificationSettingsModel>) {
         ClassHelper.assign(this, source);
