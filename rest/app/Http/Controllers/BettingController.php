@@ -56,7 +56,7 @@ class BettingController extends Controller {
 
         $numbers = [];
         for ($i = 0; $i < 400; $i++) {
-            if ($i % 10 == 0) {
+            if ($i % 6 == 0) {
                 $numbers[] = [
                     'number' => 0,
                     'color' => 'green'
@@ -70,7 +70,7 @@ class BettingController extends Controller {
             $numbers[] = $rouletteNumber;
         }
 
-        $boxNumber = rand(0, 440);
+        $boxNumber = rand(0, 467);
         $winner = $numbers[$boxNumber];
         $isWin = $color == $winner['color'];
         $profit = $color == 'green' ? $amount * 3 : $amount;
