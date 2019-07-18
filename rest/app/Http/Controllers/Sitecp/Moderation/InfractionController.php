@@ -198,9 +198,7 @@ Below you can find information regarding the infraction or warning you have just
         $threadSkeleton->title = $infracted->nickname . " received an infraction";
         $threadSkeleton->categoryId = $infractionLevel->categoryId;
 
-        $botId = SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->botUserId);
-        $bot = UserHelper::getUserFromId($botId);
-        $threadCrudController->doThread($bot, null, $threadSkeleton, null, true);
+        $threadCrudController->doThread($infracted, null, $threadSkeleton, null, true);
     }
 
     private function botAccountExists() {
