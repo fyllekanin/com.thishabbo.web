@@ -70,7 +70,6 @@ class BettingController extends Controller {
             $numbers[] = $rouletteNumber;
         }
 
-        dd(count($numbers));
         $boxNumber = rand(0, 440);
         $winner = $numbers[$boxNumber];
         $isWin = $color == $winner['color'];
