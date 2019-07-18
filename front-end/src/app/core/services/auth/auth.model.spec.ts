@@ -5,7 +5,6 @@ import {
     SlimUser,
     StaffPermissions,
     User,
-    UserBadge,
     UserBar,
     UserSocial
 } from 'core/services/auth/auth.model';
@@ -100,13 +99,5 @@ describe('Auth Model', () => {
 
         // Then
         expect(result instanceof DisplayGroup).toBeTruthy();
-    });
-
-    it('UserBadge should be able to be constructed', () => {
-        // When
-        const result = new UserBadge({});
-
-        // Then
-        expect(result instanceof UserBadge).toBeTruthy();
     });
 });

@@ -44,21 +44,6 @@ export class UserSocial {
     }
 }
 
-export class UserBadge {
-    @primitive()
-    badgeId: number;
-    @primitive()
-    name: string;
-    @primitive()
-    description: string;
-    @primitive()
-    updatedAt: number;
-
-    constructor (source: Partial<UserBadge>) {
-        ClassHelper.assign(this, source);
-    }
-}
-
 export class SlimUser {
     @primitive()
     userId: number;
@@ -105,8 +90,6 @@ export class User extends SlimUser {
     displayGroup: DisplayGroup;
     @objectOf(UserSocial)
     social: UserSocial;
-    @arrayOf(UserBadge)
-    badges: Array<UserBadge> = [];
     @primitive()
     namePosition: number;
     @arrayOf(String)

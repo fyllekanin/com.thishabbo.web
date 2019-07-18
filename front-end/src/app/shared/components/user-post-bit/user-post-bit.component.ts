@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { User, UserBadge } from 'core/services/auth/auth.model';
+import { User } from 'core/services/auth/auth.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
 import { StringHelper } from 'shared/helpers/string.helper';
 import { NAME_POSITIONS } from 'shared/constants/name-positions.constants';
@@ -28,10 +28,6 @@ export class UserPostBitComponent {
 
     longDay (time: number): string {
         return TimeHelper.getLongDate(time);
-    }
-
-    badgeTooltip (badge: UserBadge): string {
-        return `${badge.name}: ${badge.description}`;
     }
 
     getBarColors (): string {
