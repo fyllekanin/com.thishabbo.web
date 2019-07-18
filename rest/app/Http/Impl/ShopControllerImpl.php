@@ -58,7 +58,8 @@ class ShopControllerImpl {
                     'credits' => $lootBox->credits,
                     'boxId' => $lootBox->boxId,
                     'items' => array_map(function ($item) use ($user) {
-                        $item['owns'] = UserItem::where('itemId', $item['shopItemId'])
+                        $itemId = $this->getItemId((object)$item);
+                        $item['owns'] = UserItem::where('itemId', $itemId)
                                 ->where('userId', $user->userId)
                                 ->where('type', $item['type'])
                                 ->count() > 0;
@@ -82,30 +83,25 @@ class ShopControllerImpl {
     }
 
     public function doUserOwnItem($user, $shopItem) {
+        $itemId = $this->getItemId($shopItem);
+
         return UserItem::where('userId', $user->userId)
                 ->where('type', $shopItem->type)
-                ->where('itemId', $shopItem->shopItemId)
+                ->where('itemId', $itemId)
                 ->count() > 0;
     }
 
     public function giveUserItem($user, $shopItem) {
         $types = ConfigHelper::getTypesConfig();
+        $itemId = $this->getItemId($shopItem);
         switch ($shopItem->type) {
             case $types->nameIcon:
             case $types->nameEffect:
-                $item = new UserItem([
-                    'type' => $shopItem->type,
-                    'userId' => $user->userId,
-                    'itemId' => $shopItem->shopItemId
-                ]);
-                $item->save();
-                break;
             case $types->badge:
-                $badgeId = json_decode($shopItem->data)->badgeId;
                 $item = new UserItem([
                     'type' => $shopItem->type,
                     'userId' => $user->userId,
-                    'itemId' => $badgeId
+                    'itemId' => $itemId
                 ]);
                 $item->save();
                 break;
@@ -131,6 +127,17 @@ class ShopControllerImpl {
                 'expiresAt' => time() + $data->subscriptionTime
             ]);
             $newSubscription->save();
+        }
+    }
+
+    private function getItemId($shopItem) {
+        $types = ConfigHelper::getTypesConfig();
+        switch ($shopItem->type) {
+            case $types->badge:
+                return (is_object($shopItem->data) ? $shopItem->data : json_decode($shopItem->data))->badgeId;
+                break;
+            default:
+                return $shopItem->shopItemId;
         }
     }
 }
