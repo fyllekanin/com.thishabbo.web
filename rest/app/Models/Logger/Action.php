@@ -823,7 +823,12 @@ class Action {
     const MANAGED_THC_REQUESTS = [
         'id' => 70,
         'description' => 'Dealt with a THC requests',
-        'data' => [],
+        'data' => [
+            'byUser' => 'User that requested THC',
+            'forUser' => 'User to get the THC',
+            'amount' => 'Amount that would be given',
+            'wasApproved' => 'Was the request approved'
+        ],
         'log' => 'log_sitecp',
         'contentId' => null,
         'contentTable' => null,

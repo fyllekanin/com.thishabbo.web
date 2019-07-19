@@ -1,0 +1,1 @@
+{"topic":"Fix tooltip on registration page","type":"Refactor / Improvement","body":"Tooltip was cutting off before, this change fixes it on Register page."}

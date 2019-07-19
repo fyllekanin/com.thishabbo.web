@@ -74,7 +74,14 @@ class SearchControllerImpl {
         $postsSql = Post::where('content', 'LIKE', Value::getFilterValue($request, $request->input('text')))
             ->leftJoin('threads', 'threads.threadId', '=', 'posts.threadId')
             ->whereIn('threads.categoryId', $categoryIds)
-            ->select(['posts.*', 'threads.categoryId']);
+            ->select([
+                'posts.postId',
+                'posts.threadId',
+                'posts.userId',
+                'posts.createdAt',
+                'threads.categoryId',
+                'threads.title'
+            ]);
         $postsSql = $this->applyFilters($request, $postsSql, 'posts');
 
         $total = DataHelper::getPage($postsSql->count('postId'));
@@ -82,11 +89,11 @@ class SearchControllerImpl {
             return (object)[
                 'id' => $item->postId,
                 'parentId' => $item->threadId,
-                'categoryId' => $item->thread->cateogryId,
+                'categoryId' => $item->thread->categoryId,
                 'page' => DataHelper::getPage(Post::where('postId', '<', $item->postId)->where('threadId', $item->threadId)
                     ->isApproved()->count('postId')),
                 'user' => UserHelper::getSlimUser($item->userId),
-                'title' => $item->thread->title,
+                'title' => $item->title,
                 'createdAt' => $item->createdAt->timestamp
             ];
         })->toArray();

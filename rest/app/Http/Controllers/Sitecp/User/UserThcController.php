@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Sitecp\User;
 
 use App\EloquentModels\Log\LogUser;
+use App\EloquentModels\User\User;
 use App\EloquentModels\RequestThc;
 use App\EloquentModels\User\VoucherCode;
 use App\Helpers\DataHelper;
@@ -65,9 +66,14 @@ class UserThcController extends Controller {
             }
             $requestThc->isDeleted = true;
             $requestThc->save();
+            
+            Logger::sitecp($user->userId, $request->ip(), Action::MANAGED_THC_REQUESTS, [
+                'byUser' => User::where('userId', $requestThc->requesterId)->value('nickname'),
+                'forUser' => User::where('userId', $requestThc->receiverId)->value('nickname'),
+                'amount' => $requestThc->amount,
+                'wasApproved' => $thcRequest['isApproved']
+            ], $requestThc->requestThcId);
         }
-
-        Logger::sitecp($user->userId, $request->ip(), Action::MANAGED_THC_REQUESTS);
         return response()->json();
     }
 

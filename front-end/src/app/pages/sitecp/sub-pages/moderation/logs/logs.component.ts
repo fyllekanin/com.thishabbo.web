@@ -109,29 +109,34 @@ export class LogsComponent extends Page implements OnDestroy {
     private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
+            this.tableConfig.filterConfigs = this.getTableFilters();
             return;
         }
         this.tableConfig = new TableConfig({
             title: `${StringHelper.firstCharUpperCase(this.logType)} log`,
             headers: this.getTableHeaders(),
             rows: this.getTableRows(),
-            filterConfigs: [
-                new FilterConfig({
-                    title: 'User',
-                    placeholder: 'Search for specific user...',
-                    key: 'user'
-                }),
-                new FilterConfig({
-                    title: 'Action',
-                    key: 'action',
-                    type: FilterConfigType.SELECT,
-                    items: this._data.actions.map(action => new FilterConfigItem({
-                        label: action.description,
-                        value: String(action.id)
-                    }))
-                })
-            ]
+            filterConfigs: this.getTableFilters()
         });
+    }
+
+    private getTableFilters(): Array<FilterConfig> {
+        return [
+            new FilterConfig({
+                title: 'User',
+                placeholder: 'Search for specific user...',
+                key: 'user'
+            }),
+            new FilterConfig({
+                title: 'Action',
+                key: 'action',
+                type: FilterConfigType.SELECT,
+                items: this._data.actions.map(action => new FilterConfigItem({
+                    label: action.description,
+                    value: String(action.id)
+                }))
+            })
+        ];
     }
 
     private getTableRows (): Array<TableRow> {
