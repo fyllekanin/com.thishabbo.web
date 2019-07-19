@@ -119,7 +119,7 @@ export class LogsComponent extends Page implements OnDestroy {
             filterConfigs: this.getTableFilters()
         });
     }
-    
+
     private getTableFilters(): Array<FilterConfig> {
         return [
             new FilterConfig({
@@ -136,7 +136,7 @@ export class LogsComponent extends Page implements OnDestroy {
                     value: String(action.id)
                 }))
             })
-        ];   
+        ];
     }
 
     private getTableRows (): Array<TableRow> {
