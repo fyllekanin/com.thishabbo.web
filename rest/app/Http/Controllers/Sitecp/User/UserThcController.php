@@ -70,7 +70,8 @@ class UserThcController extends Controller {
             Logger::sitecp($user->userId, $request->ip(), Action::MANAGED_THC_REQUESTS, [
                 'byUser' => User::where('userId', $requestThc->requesterId)->value('nickname'),
                 'forUser' => User::where('userId', $requestThc->receiverId)->value('nickname'),
-                'amount' => $requestThc->amount
+                'amount' => $requestThc->amount,
+                'wasApproved' => $thcRequest['isApproved']
             ], $requestThc->requestThcId);
         }
         return response()->json();
