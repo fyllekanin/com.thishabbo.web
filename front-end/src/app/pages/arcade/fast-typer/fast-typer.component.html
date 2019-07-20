@@ -1,6 +1,6 @@
 <div class="grid-container full">
     <div class="grid-x grid-margin-x">
-        <div class="cell small-8">
+        <div class="cell small-9">
             <app-title [title]="'Fastest Typer'"></app-title>
             <app-content>
                 <div class="game-content" [innerHTML]="gameContent | safeHtml"></div>
@@ -13,7 +13,7 @@
                 <div class="timer" *ngIf="countDownGoing"><h3>{{timer}}</h3></div>
             </app-content>
         </div>
-        <div class="cell small-4">
+        <div class="cell small-3">
             <app-title [title]="'Highscore'"></app-title>
             <app-content>
                 <div class="highscore-row" *ngFor="let highscore of highscoreList; let i = index;">

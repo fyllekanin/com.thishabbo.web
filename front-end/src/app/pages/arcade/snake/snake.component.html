@@ -1,6 +1,6 @@
 <div class="grid-container full">
     <div class="grid-x grid-margin-x">
-        <div class="cell small-7">
+        <div class="cell small-9">
             <app-title
                     [title]="'Snake - Score: ' + score"
                     [tabs]="tabs"
@@ -10,7 +10,7 @@
                 <canvas style="width: 100%;" #game></canvas>
             </app-content>
         </div>
-        <div class="cell small-5">
+        <div class="cell small-3">
             <app-title [title]="'Highscore'"></app-title>
             <app-content>
                 <div class="highscore-row" *ngFor="let highscore of highscoreList; let i = index;">
