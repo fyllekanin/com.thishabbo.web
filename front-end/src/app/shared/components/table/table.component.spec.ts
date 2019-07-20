@@ -6,6 +6,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Action, FilterConfig, TableAction, TableConfig, TableRow } from 'shared/components/table/table.model';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('TableComponent', () => {
 
@@ -16,16 +17,21 @@ describe('TableComponent', () => {
             imports: [
                 CommonModule,
                 FormsModule,
-                SafeHtmlModule
+                SafeHtmlModule,
+                RouterTestingModule
             ],
             declarations: [
                 TableComponent
             ],
             providers: [
-                { provide: Router, useValue: {
-                    navigateByUrl: () => {},
-                    createUrlTree: () => {}
-                }}
+                {
+                    provide: Router, useValue: {
+                        navigateByUrl: () => {
+                        },
+                        createUrlTree: () => {
+                        }
+                    }
+                }
             ],
             schemas: [NO_ERRORS_SCHEMA]
         });
