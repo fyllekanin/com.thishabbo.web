@@ -8,12 +8,12 @@ import { TreeDiagram } from 'shared/components/graph/tree-diagram/tree-diagram.m
 import { TitleTab } from 'shared/app-views/title/title.model';
 
 @Component({
-    selector: 'app-sitecp-groups-forum-permissions',
-    templateUrl: 'forum-permissions.component.html'
+    selector: 'app-sitecp-categories-groups',
+    templateUrl: 'group-tree.component.html'
 })
-export class ForumPermissionsComponent extends Page implements OnDestroy {
+export class GroupTreeComponent extends Page implements OnDestroy {
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Back', link: '/sitecp/groups/page/1'})
+        new TitleTab({title: 'Back', link: '/sitecp/forum/categories/page/1'})
     ];
     data: TreeDiagram;
 
@@ -38,7 +38,7 @@ export class ForumPermissionsComponent extends Page implements OnDestroy {
     }
 
     get title (): string {
-        return `${this.data.name}: Forum Permissions`;
+        return `${this.data.name}: Group Tree`;
     }
 
     private onData (data: { data: TreeDiagram }): void {

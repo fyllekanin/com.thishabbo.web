@@ -37,6 +37,7 @@ Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions
     Route::post('/categories', 'Sitecp\Forum\CategoriesController@createCategory');
     Route::put('/categories/{categoryId}', 'Sitecp\Forum\CategoriesController@updateCategory');
     Route::put('/categories/orders/update', 'Sitecp\Forum\CategoriesController@updateCategoryOrders');
+    Route::get('/categories/{categoryId}/groups', 'Sitecp\Forum\CategoriesController@getGroupTree');
     Route::get('/categories', 'Sitecp\Forum\CategoriesController@getCategories');
     Route::get('/categories/{categoryId}', 'Sitecp\Forum\CategoriesController@getCategory');
     Route::delete('/categories/{categoryId}', 'Sitecp\Forum\CategoriesController@deleteCategory');

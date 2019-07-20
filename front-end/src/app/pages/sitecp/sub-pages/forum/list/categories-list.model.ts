@@ -24,5 +24,6 @@ export enum CategoryListActions {
     DELETE_CATEGORY,
     EDIT_PERMISSIONS,
     SAVE_ORDER,
-    TOGGLE_CATEGORY
+    TOGGLE_CATEGORY,
+    GROUP_TREE
 }

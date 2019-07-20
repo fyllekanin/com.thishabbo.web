@@ -68,9 +68,14 @@ export class AvatarComponent extends Page implements OnDestroy {
         const form = new FormData();
         const file = this.avatarInput.nativeElement.files ? this.avatarInput.nativeElement.files[0] : null;
         form.append('avatar', file);
+        if (this.model.resizeForMe) {
+            form.append('resizeForMe', String(this.model.resizeForMe));
+        }
         this._service.save(form)
             .subscribe(res => {
                 this.onData({data: res});
+                this.preview = null;
+                this.user.avatarUpdatedAt = new Date().getTime() / 1000;
                 this._previewService.update();
             }, error => {
                 this._notificationService.sendNotification(new NotificationMessage({

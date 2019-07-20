@@ -8,15 +8,14 @@
         <option *ngFor="let item of tabs" [ngValue]="item">{{item.title}}</option>
     </select>
 
-    <span *ngFor="let item of tabs" class="tab desktop"(click)="tabClick(item)"
+    <span *ngFor="let item of tabs" class="tab desktop" (click)="tabClick(item)"
           [ngClass]="item.isActive ? 'active' : ''">
         {{item.title}}
     </span>
 
     <span *ngIf="tabs.length === 1" class="tab mobile" (click)="tabClick(tabs[0])">
-            {{ tabs[0].title }}
-        </span>
-
+        {{ tabs[0].title }}
+    </span>
 
     <div class="checkbox" *ngIf="checkbox">
         <label class="checkbox-container">

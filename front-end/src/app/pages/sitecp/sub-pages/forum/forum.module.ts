@@ -22,6 +22,9 @@ import { PrefixListResolver } from './services/prefix-list.resolver';
 import { PrefixService } from './services/prefix.resolver';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 import { SelectModule } from 'shared/components/form/select/select.module';
+import { GroupTreeResolver } from './services/group-tree.resolver';
+import { GroupTreeComponent } from './group-tree/group-tree.component';
+import { TreeDiagramModule } from 'shared/components/graph/tree-diagram/tree-diagram.module';
 
 @NgModule({
     imports: [
@@ -36,21 +39,24 @@ import { SelectModule } from 'shared/components/form/select/select.module';
         FixedToolsModule,
         ButtonModule,
         SafeHtmlModule,
-        SelectModule
+        SelectModule,
+        TreeDiagramModule
     ],
     declarations: [
         CategoriesListComponent,
         CategoryComponent,
         PermissionsComponent,
         PrefixListComponent,
-        PrefixComponent
+        PrefixComponent,
+        GroupTreeComponent
     ],
     providers: [
         CategoriesListResolver,
         CategoryResolver,
         PermissionsResolver,
         PrefixListResolver,
-        PrefixService
+        PrefixService,
+        GroupTreeResolver
     ],
     exports: [
         RouterModule

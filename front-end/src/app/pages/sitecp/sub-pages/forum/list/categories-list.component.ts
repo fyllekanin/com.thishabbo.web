@@ -36,6 +36,7 @@ export class CategoriesListComponent extends Page implements OnDestroy {
     });
     private _actions: Array<TableAction> = [
         new TableAction({title: 'Edit Category', value: CategoryListActions.EDIT_CATEGORY}),
+        new TableAction({title: 'Group Tree', value: CategoryListActions.GROUP_TREE}),
         new TableAction({title: 'Delete Category', value: CategoryListActions.DELETE_CATEGORY})
     ];
 
@@ -102,6 +103,9 @@ export class CategoriesListComponent extends Page implements OnDestroy {
                 break;
             case CategoryListActions.EDIT_CATEGORY:
                 this._router.navigateByUrl(`/sitecp/forum/categories/${action.rowId}`);
+                break;
+            case CategoryListActions.GROUP_TREE:
+                this._router.navigateByUrl(`/sitecp/forum/categories/${action.rowId}/groups`);
                 break;
             case CategoryListActions.DELETE_CATEGORY:
                 this._dialogService.confirm({

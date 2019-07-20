@@ -10,6 +10,8 @@ import { Routes } from '@angular/router';
 import { PrefixListComponent } from './prefixes/prefix-list/prefix-list.component';
 import { PrefixListResolver } from './services/prefix-list.resolver';
 import { PrefixService } from './services/prefix.resolver';
+import { GroupTreeComponent } from './group-tree/group-tree.component';
+import { GroupTreeResolver } from './services/group-tree.resolver';
 
 export const forumRoutes: Routes = [
     {
@@ -53,6 +55,13 @@ export const forumRoutes: Routes = [
                 component: PrefixComponent,
                 resolve: {
                     data: PrefixService
+                }
+            },
+            {
+                path: 'categories/:categoryId/groups',
+                component: GroupTreeComponent,
+                resolve: {
+                    data: GroupTreeResolver
                 }
             }
         ]

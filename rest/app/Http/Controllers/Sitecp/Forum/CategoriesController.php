@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Sitecp\Forum;
 
 use App\EloquentModels\Forum\Category;
 use App\EloquentModels\Forum\ForumPermission;
+use App\EloquentModels\Group\Group;
 use App\Helpers\ConfigHelper;
 use App\Helpers\ForumHelper;
 use App\Helpers\PermissionHelper;
@@ -12,6 +13,7 @@ use App\Logger;
 use App\Models\Logger\Action;
 use App\Services\ForumService;
 use App\Utils\Condition;
+use App\Utils\Iterables;
 use App\Utils\Value;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -22,6 +24,37 @@ class CategoriesController extends Controller {
     public function __construct(ForumService $forumService) {
         parent::__construct();
         $this->forumService = $forumService;
+    }
+
+    public function getGroupTree($categoryId) {
+        $category = Category::find($categoryId);
+        Condition::precondition(!$category, 404, 'No category with that ID');
+        $forumPermissions = ConfigHelper::getForumPermissions();
+        $groups = Group::orderBy('name', 'ASC')->get(['name', 'groupId']);
+
+        return response()->json([
+            'name' => $category->title,
+            'children' => [
+                ['name' => 'Can access', 'children' => $this->getGroupsWithPermission($groups, $forumPermissions->canRead, $category->categoryId)],
+                ['name' => 'Can post', 'children' => $this->getGroupsWithPermission($groups, $forumPermissions->canPost, $category->categoryId)],
+                ['name' => 'Can post in others threads', 'children' => $this->getGroupsWithPermission($groups, $forumPermissions->canPostInOthersThreads, $category->categoryId)],
+                ['name' => 'Can create threads', 'children' => $this->getGroupsWithPermission($groups, $forumPermissions->canCreateThreads, $category->categoryId)],
+                ['name' => 'Can view threads', 'children' => $this->getGroupsWithPermission($groups, $forumPermissions->canViewThreadContent, $category->categoryId)],
+                ['name' => 'Can view others threads', 'children' => $this->getGroupsWithPermission($groups, $forumPermissions->canViewOthersThreads, $category->categoryId)],
+                ['name' => 'Can open/close own thread', 'children' => $this->getGroupsWithPermission($groups, $forumPermissions->canOpenCloseOwnThread, $category->categoryId)],
+
+                ['name' => 'Can edit others threads/posts', 'children' => $this->getGroupsWithPermission($groups, $forumPermissions->canEditOthersPosts, $category->categoryId)],
+                ['name' => 'Can move threads', 'children' => $this->getGroupsWithPermission($groups, $forumPermissions->canMoveThreads, $category->categoryId)],
+                ['name' => 'Can open/close threads', 'children' => $this->getGroupsWithPermission($groups, $forumPermissions->canCloseOpenThread, $category->categoryId)],
+                ['name' => 'Can approve/unapprove threads', 'children' => $this->getGroupsWithPermission($groups, $forumPermissions->canApproveThreads, $category->categoryId)],
+                ['name' => 'Can approve/unapprove posts', 'children' => $this->getGroupsWithPermission($groups, $forumPermissions->canApprovePosts, $category->categoryId)],
+                ['name' => 'Can merge posts', 'children' => $this->getGroupsWithPermission($groups, $forumPermissions->canMergePosts, $category->categoryId)],
+                ['name' => 'Can change owner', 'children' => $this->getGroupsWithPermission($groups, $forumPermissions->canChangeOwner, $category->categoryId)],
+                ['name' => 'Can sticky threads', 'children' => $this->getGroupsWithPermission($groups, $forumPermissions->canStickyThread, $category->categoryId)],
+                ['name' => 'Can delete threads/posts', 'children' => $this->getGroupsWithPermission($groups, $forumPermissions->canDeletePosts, $category->categoryId)],
+                ['name' => 'Can manage polls', 'children' => $this->getGroupsWithPermission($groups, $forumPermissions->canManagePolls, $category->categoryId)],
+            ]
+        ]);
     }
 
     /**
@@ -281,5 +314,16 @@ class CategoriesController extends Controller {
             'template' => $category->template,
             'options' => $category->options
         ]);
+    }
+
+    private function getGroupsWithPermission($groups, $permission, $categoryId) {
+        return array_map(function ($group) {
+            return ['name' => $group['name'], 'children' => []];
+        }, Iterables::filter($groups->toArray(), function ($group) use ($categoryId, $permission) {
+            return ForumPermission::where('categoryId', $categoryId)
+                    ->where('groupId', $group['groupId'])
+                    ->whereRaw('(permissions & ' . $permission . ')')
+                    ->count('categoryId') > 0;
+        }));
     }
 }

@@ -118,5 +118,9 @@ select {
     height: 28px;
     border-bottom: none;
     box-shadow: none;
+
+    position: absolute;
+    top: 0;
+    right: 1px;
 }
 

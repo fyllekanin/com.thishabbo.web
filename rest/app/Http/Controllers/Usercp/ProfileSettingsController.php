@@ -20,6 +20,7 @@ use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Intervention\Image\Facades\Image;
 
 class ProfileSettingsController extends Controller {
 
@@ -179,19 +180,24 @@ class ProfileSettingsController extends Controller {
     public function updateAvatar(Request $request) {
         $user = $request->get('auth');
         $avatar = $request->file('avatar');
+        $resizeForMe = $request->input('resizeForMe');
         $avatarSize = AvatarHelper::getMaxAvatarSize($user->userId);
 
+        $dimensionValidation = $resizeForMe ? '' : '|dimensions:max_width=' . $avatarSize->width . ',max_height=' . $avatarSize->height;
         $request->validate([
-            'avatar' => 'required|mimes:jpg,jpeg,bmp,png,gif|dimensions:max_width=' . $avatarSize->width . ',max_height=' . $avatarSize->height,
+            'avatar' => 'required|mimes:jpg,jpeg,bmp,png,gif' . $dimensionValidation,
         ]);
 
         AvatarHelper::backupAvatarIfExists(AvatarHelper::getCurrentAvatar($user->userId));
 
-        $fileName = $user->userId . '.gif';
-        $destination = SettingsHelper::getResourcesPath('images/users');
-        $avatar->move($destination, $fileName);
+        $destination = SettingsHelper::getResourcesPath('images/users/' . $user->userId . '.gif');
+        $img = Image::make($avatar);
+        if ($resizeForMe) {
+            $img->resize($avatarSize->width, $avatarSize->height);
+        }
+        $img->save($destination);
 
-        $dimensions = getimagesize($destination . '/' . $fileName);
+        $dimensions = getimagesize($destination);
         $avatar = new Avatar([
             'userId' => $user->userId,
             'width' => $dimensions[0],

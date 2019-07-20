@@ -116,7 +116,7 @@ export class TimeHelper {
 
         const day = date.getDate();
         const year = date.getFullYear();
-        return `${TimeHelper.getDayWithSuffix(day)} ${this.FULL_MONTHS[date.getMonth()]} ${year}`;
+        return `${TimeHelper.getDayWithSuffix(day)} ${this.ABBR_MONTHS[date.getMonth()]} ${year}`;
     }
 
     /**
