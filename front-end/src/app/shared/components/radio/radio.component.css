@@ -5,7 +5,7 @@
 }
 
 .events-box {
-    margin: 131px 0 0 -16px;
+    margin: 131px 0 0 -15px;
     position: absolute;
 }
 
@@ -49,7 +49,7 @@
     float: right;
     background: white;
     color: #7d7d7d;
-    margin: 0 0 0 105px;
+    margin: 0 0 0 104px;
     font-size: 13px;
     height: 89px;
     padding: 1px;
