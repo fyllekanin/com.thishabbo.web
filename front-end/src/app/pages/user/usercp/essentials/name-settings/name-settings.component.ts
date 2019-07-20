@@ -125,7 +125,8 @@ export class NameSettingsComponent extends Page implements OnDestroy {
 
     set colors (colors: string) {
         this._data.colors = colors.split(',')
-            .map(item => item.trim());
+            .map(item => item.trim())
+            .filter(item => item);
     }
 
     private onData (data: { data: NameSettings }): void {
