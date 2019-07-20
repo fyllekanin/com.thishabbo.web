@@ -97,17 +97,29 @@ class FastTyperController extends Controller {
         $olderThenFiveMinutes = $game->createdAt->timestamp + (60 * 5) < time();
         Condition::precondition($olderThenFiveMinutes, 400, 'The game is to old, restart');
 
-        if (Game::where('gameType', $game->gameType)->where('score', '>', $result->score)->count() == 0) {
-            $creditsService->giveCredits($user->userId, 1000);
-        } else if (Game::where('gameType', $game->gameType)->where('score', '>', $result->score)->count() == 2) {
-            $creditsService->giveCredits($user->userId, 700);
-        } else if (Game::where('gameType', $game->gameType)->where('score', '>', $result->score)->count() == 9) {
-            $creditsService->giveCredits($user->userId, 500);
-        }
-
         $game->score = $this->getWordsPerMinute($paragraph->text, $result->startTime, $result->endTime);
         $game->isFinished = true;
         $game->save();
+
+        $peopleWithHigherScore = Game::where('gameType', $game->gameType)->where('score', '>', $game->score)->count();
+        switch ($peopleWithHigherScore) {
+            case 0:
+                $creditsService->giveCredits($user->userId, 1000);
+                break;
+            case 1:
+            case 2:
+                $creditsService->giveCredits($user->userId, 700);
+                break;
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+                $creditsService->giveCredits($user->userId, 500);
+                break;
+        }
 
         Logger::user($user->userId, $request->ip(), Action::FINISHED_FASTEST_TYPE_GAME, ['score' => $game->score]);
         return response()->json([

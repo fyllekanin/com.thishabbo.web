@@ -83,17 +83,29 @@ class SnakeController extends Controller {
         Condition::precondition($game->gameType != $this->gameTypes->snake, 404, 'Game do not exist');
         Condition::precondition($game->userId != $user->userId, 400, 'Not your game');
 
-        if (Game::where('gameType', $game->gameType)->where('score', '>', $result->score)->count() == 0) {
-            $creditsService->giveCredits($user->userId, 1000);
-        } else if (Game::where('gameType', $game->gameType)->where('score', '>', $result->score)->count() == 2) {
-            $creditsService->giveCredits($user->userId, 700);
-        } else if (Game::where('gameType', $game->gameType)->where('score', '>', $result->score)->count() == 9) {
-            $creditsService->giveCredits($user->userId, 500);
-        }
-
         $game->score = $result->score;
         $game->isFinished = true;
         $game->save();
+
+        $peopleWithHigherScore = Game::where('gameType', $game->gameType)->where('score', '>', $game->score)->count();
+        switch ($peopleWithHigherScore) {
+            case 0:
+                $creditsService->giveCredits($user->userId, 1000);
+                break;
+            case 1:
+            case 2:
+                $creditsService->giveCredits($user->userId, 700);
+                break;
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+                $creditsService->giveCredits($user->userId, 500);
+                break;
+        }
 
         Logger::user($user->userId, $request->ip(), Action::FINISHED_SNAKE_GAME, ['score' => $game->score]);
         return response()->json([
