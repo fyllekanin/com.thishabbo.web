@@ -46,6 +46,7 @@ class UserHelper {
 
         $slimUser->nameColor = $slimUser->customColor ? $slimUser->customColor : $slimUser->groupColor;
         $slimUser->nameColor = Value::objectJsonProperty($slimUser, 'nameColor', []);
+        unset($slimUser->groupColor);
 
         Cache::add('slim-user-' . $userId, $slimUser, 5);
 
@@ -170,7 +171,7 @@ class UserHelper {
         foreach ($postBitOptions as $key => $value) {
             $obj[$key] = $userdata->postBit & $value;
         }
-        
+
         return $obj;
     }
 

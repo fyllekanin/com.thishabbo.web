@@ -56,6 +56,7 @@ class FastTyperController extends Controller {
 
         Condition::precondition(!$creditsService->haveEnoughCredits($user->userId, ConfigHelper::getCostSettings()->arcade), 400,
             'You need at least ' . ConfigHelper::getCostSettings()->arcade . ' credits to play');
+        $creditsService->takeCredits($user->userOd, ConfigHelper::getCostSettings()->arcade);
 
         $paragraph = Paragraph::inRandomOrder()->first();
         $game = new Game([
@@ -77,9 +78,11 @@ class FastTyperController extends Controller {
      *
      * @param Request $request
      *
+     * @param CreditsService $creditsService
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createFastTyperScore(Request $request) {
+    public function createFastTyperScore(Request $request, CreditsService $creditsService) {
         $user = $request->get('auth');
         $result = (object)$request->input('result');
 
@@ -93,6 +96,14 @@ class FastTyperController extends Controller {
 
         $olderThenFiveMinutes = $game->createdAt->timestamp + (60 * 5) < time();
         Condition::precondition($olderThenFiveMinutes, 400, 'The game is to old, restart');
+
+        if (Game::where('gameType', $game->gameType)->where('score', '>', $result->score)->count() == 0) {
+            $creditsService->giveCredits($user->userId, 1000);
+        } else if (Game::where('gameType', $game->gameType)->where('score', '>', $result->score)->count() == 2) {
+            $creditsService->giveCredits($user->userId, 700);
+        } else if (Game::where('gameType', $game->gameType)->where('score', '>', $result->score)->count() == 9) {
+            $creditsService->giveCredits($user->userId, 500);
+        }
 
         $game->score = $this->getWordsPerMinute($paragraph->text, $result->startTime, $result->endTime);
         $game->isFinished = true;

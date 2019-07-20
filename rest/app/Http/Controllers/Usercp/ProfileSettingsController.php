@@ -333,7 +333,7 @@ class ProfileSettingsController extends Controller {
         $userData->iconId = $iconId;
         $userData->effectId = $effectId;
         $userData->iconPosition = $request->input('iconPosition');
-        $userData->nameColor = json_encode($colors);
+        $userData->nameColor = $colors && count($colors) > 0 ? json_encode($colors) : null;
         $userData->save();
 
         Logger::user($user->userId, $request->ip(), Action::UPDATED_NAME_COLORS);

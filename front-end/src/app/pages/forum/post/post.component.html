@@ -37,7 +37,7 @@
                 </div>
             </div>
             <div class="post-tools">
-                <div tooltip="See posts only by this user" (click)="filterPosts()">
+                <div tooltip="See posts by User" (click)="filterPosts()">
                     <em class="fas fa-comment-dots"></em>
                 </div>
                 <div *ngIf="canInteractWithPost && !haveLiked" (click)="likePost()" tooltip="Like">

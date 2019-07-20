@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property mixed customFields
  * @property mixed effectId
  * @property mixed iconId
+ * @property array|string|null iconPosition
  */
 class UserData extends UnixTimeModel {
     protected $table = 'userdata';

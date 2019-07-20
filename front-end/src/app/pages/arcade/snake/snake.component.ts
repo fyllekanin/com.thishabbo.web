@@ -17,6 +17,7 @@ import { NotificationMessage } from 'shared/app-views/global-notification/global
 })
 export class SnakeComponent extends Page implements AfterViewInit, OnDestroy {
     private _gameId: number;
+    private _gameSpeed = 100;
     private _highscore: Array<HighScoreModel> = [];
     private _onKeydownBackup;
     private _timerReference: NodeJS.Timer;
@@ -63,7 +64,7 @@ export class SnakeComponent extends Page implements AfterViewInit, OnDestroy {
             .subscribe(res => {
                 this._gameId = res.gameId;
                 this.tabs = [];
-                this._timerReference = setInterval(this.tick.bind(this), 100);
+                this.updateGameSpeed();
                 this._gameValues = new SnakeGameValues();
                 this._onKeydownBackup = window.onkeydown;
                 window.onkeydown = e => {
@@ -97,7 +98,12 @@ export class SnakeComponent extends Page implements AfterViewInit, OnDestroy {
         let head: Coordinates = this._gameValues.newHead;
         this._gameValues.checkDirection();
         head = this._gameValues.updateHead(head);
-        this._gameValues.checkCandy(head);
+        const gotCandy = this._gameValues.checkCandy(head);
+
+        if (gotCandy) {
+            this._gameSpeed -= this._gameSpeed < 51 ? 0 : 1;
+            this.updateGameSpeed();
+        }
 
         this.updateGameArea(head);
     }
@@ -161,5 +167,10 @@ export class SnakeComponent extends Page implements AfterViewInit, OnDestroy {
     private runSetup (): void {
         SnakeSettings.setCanvasSettings(this._canvas);
         SnakeSettings.scaleContext(this._context);
+    }
+
+    private updateGameSpeed (): void {
+        clearInterval(this._timerReference);
+        this._timerReference = setInterval(this.tick.bind(this), this._gameSpeed);
     }
 }

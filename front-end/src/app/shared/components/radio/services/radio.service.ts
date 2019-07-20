@@ -51,8 +51,12 @@ export class RadioService {
             this._notificationService.sendErrorNotification('You need to be logged in when liking a host');
             return;
         }
-        this._httpService.post('event/like', null).subscribe(() => {
-            this._notificationService.sendInfoNotification('You liked the Events Host!');
+        this._httpService.post('event/like', null).subscribe((res: { isTimeout: boolean, timeLeft: number }) => {
+            if (!res.isTimeout) {
+                this._notificationService.sendInfoNotification('You liked the Events Host!');
+            } else {
+                this._notificationService.sendErrorNotification(`You need to wait ${Math.ceil(res.timeLeft / 60)} min(s) to like!`);
+            }
         }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 

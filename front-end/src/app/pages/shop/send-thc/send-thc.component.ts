@@ -29,7 +29,7 @@ export class SendThcComponent extends Page implements OnDestroy {
     ) {
         super(elementRef);
         breadcrumbService.breadcrumb = new Breadcrumb({
-            current: 'Send Thc',
+            current: 'Send THC',
             items: [
                 SHOP_HUB
             ]

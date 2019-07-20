@@ -53,6 +53,7 @@ class SnakeController extends Controller {
 
         Condition::precondition(!$creditsService->haveEnoughCredits($user->userId, ConfigHelper::getCostSettings()->arcade), 400,
             'You need at least ' . ConfigHelper::getCostSettings()->arcade . ' credits to play');
+        $creditsService->takeCredits($user->userOd, ConfigHelper::getCostSettings()->arcade);
 
         $game = new Game([
             'userId' => $user->userId,
@@ -69,9 +70,11 @@ class SnakeController extends Controller {
      *
      * @param Request $request
      *
+     * @param CreditsService $creditsService
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createSnakeScore(Request $request) {
+    public function createSnakeScore(Request $request, CreditsService $creditsService) {
         $user = $request->get('auth');
         $result = (object)$request->input('result');
         $game = Game::find($result->gameId);
@@ -79,6 +82,14 @@ class SnakeController extends Controller {
         Condition::precondition(!$game, 404, 'Game do not exist');
         Condition::precondition($game->gameType != $this->gameTypes->snake, 404, 'Game do not exist');
         Condition::precondition($game->userId != $user->userId, 400, 'Not your game');
+
+        if (Game::where('gameType', $game->gameType)->where('score', '>', $result->score)->count() == 0) {
+            $creditsService->giveCredits($user->userId, 1000);
+        } else if (Game::where('gameType', $game->gameType)->where('score', '>', $result->score)->count() == 2) {
+            $creditsService->giveCredits($user->userId, 700);
+        } else if (Game::where('gameType', $game->gameType)->where('score', '>', $result->score)->count() == 9) {
+            $creditsService->giveCredits($user->userId, 500);
+        }
 
         $game->score = $result->score;
         $game->isFinished = true;

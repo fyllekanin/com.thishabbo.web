@@ -64,11 +64,13 @@ export class SnakeGameValues {
         return snakeObj;
     }
 
-    checkCandy (head: Coordinates): void {
+    checkCandy (head: Coordinates): boolean {
         if (this.candy && this.candy.x === head.x && this.candy.y === head.y) {
             this.candy = null;
             this.length += 2;
+            return true;
         }
+        return false;
     }
 
     checkDirection (): void {

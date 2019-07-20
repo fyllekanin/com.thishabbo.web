@@ -65,18 +65,25 @@ class EventsController extends Controller {
         Condition::precondition($user->userId == 0, 400, 'You need to be logged in to like a host!');
         Condition::precondition($user->userId == $current->user->userId, 400, 'You can not like yourself');
 
-        $haveLikedWithInLimit = LogUser::where('userId', $user->userId)
-                ->where('action', Action::getAction(Action::LIKED_HOST))
-                ->where('createdAt', '>', $nowMinus30Min)
-                ->count('logId') > 0;
-        Condition::precondition($haveLikedWithInLimit, 400, 'You are trying to like the Event Host too fast!');
+        $lastLike = LogUser::where('userId', $user->userId)
+            ->where('action', Action::getAction(Action::LIKED_HOST))
+            ->orderBy('createdAt', 'DESC')
+            ->first();
+        if ($lastLike && $lastLike->createdAt->timestamp > $nowMinus30Min) {
+            return response()->json([
+                'isTimeout' => true,
+                'timeLeft' => $lastLike->createdAt->timestamp - $nowMinus30Min
+            ]);
+        }
 
         $eventUser->likes++;
         $eventUser->save();
 
         NotificationFactory::newLikeHost($eventUser->userId, $user->userId);
         Logger::user($user->userId, $request->ip(), Action::LIKED_HOST, [], $current->user->userId);
-        return response()->json();
+        return response()->json([
+            'isTimeout' => false
+        ]);
     }
 
     /**
