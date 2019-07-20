@@ -72,13 +72,12 @@ class ThreadPollController extends Controller {
         $filter = $request->input('filter');
         $user = $request->get('auth');
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId, ConfigHelper::getForumPermissions()->canManagePolls);
-        $threadIds = Thread::whereIn('categoryId', $categoryIds)->pluck('threadId');
 
         $getPollsSql = ThreadPoll::join('threads', 'threads.threadId', '=', 'thread_polls.threadId')
-            ->whereIn('threads.threadId', $threadIds)
+            ->whereIn('threads.categoryId', $categoryIds)
             ->where('threads.title', 'LIKE', Value::getFilterValue($request, $filter))
             ->orderBy('threads.title', 'ASC')
-            ->select('threads.title', 'threads.threadId', 'thread_polls.*');
+            ->select('threads.title', 'threads.threadId', 'thread_polls.*', 'threads.categoryId');
 
         $total = DataHelper::getPage($getPollsSql->count('thread_polls.threadPollId'));
         $polls = $getPollsSql->take($this->perPage)->skip(DataHelper::getOffset($page))->get()->map(function ($poll) {
