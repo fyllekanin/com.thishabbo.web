@@ -153,7 +153,7 @@ export class CategoriesListComponent extends Page implements OnDestroy {
                     message: 'Category deleted!'
                 }));
 
-                const categories = this.flat(this._categories, '', false);
+                const categories = ArrayHelper.flatCategories(this._categories, '', false);
                 const parent = categories.find(category => {
                     const ids = category.children.map(child => child.categoryId);
                     return ids.indexOf(categoryId) > -1;
@@ -206,7 +206,7 @@ export class CategoriesListComponent extends Page implements OnDestroy {
             actions: actions
         });
 
-        const childRows = this.flat(item.children, '--').map(category => {
+        const childRows = ArrayHelper.flatCategories(item.children, '--').map(category => {
             return new TableRow({
                 id: category.categoryId,
                 cells: [
@@ -236,19 +236,6 @@ export class CategoriesListComponent extends Page implements OnDestroy {
             new TableHeader({title: 'Hidden', width: '5rem'}),
             new TableHeader({title: 'Display Order', width: '10rem'})
         ];
-    }
-
-    private flat (array: Array<ListCategory>, prefix = '', shouldAppend = true) {
-        let result = [];
-        array.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'displayOrder'));
-        array.forEach((item: ListCategory) => {
-            item.title = `${prefix} ${item.title}`;
-            result.push(item);
-            if (Array.isArray(item.children)) {
-                result = result.concat(this.flat(item.children, shouldAppend ? `${prefix}--` : ''));
-            }
-        });
-        return result;
     }
 
     private toggleCategory (categoryId: number): void {

@@ -42,6 +42,7 @@ import { TableModule } from 'shared/components/table/table.module';
 import { UserLinkModule } from 'shared/components/user/user-link.module';
 import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.module';
 import { UserPostBitModule } from 'shared/components/user-post-bit/user-post-bit.module';
+import { InfoBoxModule } from 'shared/app-views/info-box/info-box.module';
 
 @NgModule({
     imports: [
@@ -63,7 +64,8 @@ import { UserPostBitModule } from 'shared/components/user-post-bit/user-post-bit
         TableModule,
         UserLinkModule,
         StatsBoxesModule,
-        UserPostBitModule
+        UserPostBitModule,
+        InfoBoxModule
     ],
     declarations: [
         ForumHomeComponent,

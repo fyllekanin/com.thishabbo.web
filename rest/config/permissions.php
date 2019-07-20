@@ -85,6 +85,7 @@ return [
         'hideJoinDate' => 1,
         'hidePostCount' => 2,
         'hideLikesCount' => 4,
-        'hideSocials' => 8
+        'hideSocials' => 8,
+        'hideHabbo' => 16
     ]
 ];

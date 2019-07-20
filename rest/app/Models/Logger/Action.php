@@ -2236,4 +2236,17 @@ class Action {
         'contentTable' => null,
         'contentSelect' => null
     ];
+
+    const SENT_THC = [
+        'id' => 197,
+        'description' => 'User send another user THC',
+        'data' => [
+            'receiver' => 'User that received the THC',
+            'amount' => 'How much they received'
+        ],
+        'log' => 'log_user',
+        'contentId' => 'userId',
+        'contentTable' => 'users',
+        'contentSelect' => 'nickname'
+    ];
 }

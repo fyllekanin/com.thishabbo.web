@@ -58,6 +58,10 @@ export class ShopComponent extends Page implements OnInit, OnDestroy {
                     new SideMenuItem({
                         title: 'Subscriptions',
                         link: '/shop/subscriptions/page/1'
+                    }),
+                    new SideMenuItem({
+                        title: 'Send Thc',
+                        link: '/shop/send-thc'
                     })
                 ]
             })

@@ -14,6 +14,12 @@ use App\Models\Notification\Type;
 use App\Utils\Iterables;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Class NotificationFactory
+ *
+ * @package App\Factories\Notification
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ */
 class NotificationFactory {
 
     /**
@@ -52,11 +58,22 @@ class NotificationFactory {
             case Type::getType(Type::LIKE_HOST):
             case Type::getType(Type::RADIO_REQUEST):
             case Type::getType(Type::REFERRAL):
+            case Type::getType(Type::SENT_THC):
                 $item = new UserView($notification);
                 break;
         }
 
         return $item;
+    }
+
+    public static function newSentThc($userId, $senderId, $logId) {
+        DB::table('notifications')->insert([
+            'userId' => $userId,
+            'senderId' => $senderId,
+            'type' => Type::getType(Type::SENT_THC),
+            'contentId' => $logId,
+            'createdAt' => time()
+        ]);
     }
 
     public static function newReferral($userId, $senderId) {
@@ -141,7 +158,7 @@ class NotificationFactory {
 
     public static function newVisitorMessage(VisitorMessage $visitorMessage) {
         $receiverIds = array();
-        
+
         if ($visitorMessage->parentId > 0) {
             $receiverIds = VisitorMessage::where('parentId', $visitorMessage->parentId)->orWhere('visitorMessageId', $visitorMessage->parentId)->pluck('userId')->toArray();
         }

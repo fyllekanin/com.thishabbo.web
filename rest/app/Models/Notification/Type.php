@@ -77,4 +77,9 @@ class Type {
         'type' => 14,
         'description' => 'When a user referred another user'
     ];
+
+    const SENT_THC = [
+        'type' => 15,
+        'description' => 'When a user received THC'
+    ];
 }

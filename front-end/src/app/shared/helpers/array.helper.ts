@@ -31,6 +31,19 @@ export class ArrayHelper {
         return 0;
     }
 
+    static flatCategories (array: Array<any>, prefix = '', shouldAppend = true) {
+        let result = [];
+        array.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'displayOrder'));
+        array.forEach((item) => {
+            item.title = `${prefix} ${item.title}`;
+            result.push(item);
+            if (Array.isArray(item.children)) {
+                result = result.concat(this.flatCategories(item.children, shouldAppend ? `${prefix}--` : ''));
+            }
+        });
+        return result;
+    }
+
     static flat (array: Array<any>, prefix = '', shouldAppend = true) {
         let result = [];
         array.forEach(item => {

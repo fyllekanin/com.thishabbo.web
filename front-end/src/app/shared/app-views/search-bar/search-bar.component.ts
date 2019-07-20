@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { NotificationType, NotificationMessage } from '../global-notification/global-notification.model';
+import { NotificationMessage, NotificationType } from '../global-notification/global-notification.model';
+import { StringHelper } from 'shared/helpers/string.helper';
 
 @Component({
     selector: 'app-search-bar',
@@ -14,8 +15,9 @@ export class SearchBarComponent {
 
     constructor (
         private _router: Router,
-        private _notificationService: NotificationService,
-    ) {}
+        private _notificationService: NotificationService
+    ) {
+    }
 
     goToSearch (): void {
         if (!this.text) {
@@ -59,7 +61,7 @@ export class SearchBarComponent {
     }
 
     onKeyUp (event): void {
-        if (event.keyCode === 13) {
+        if (StringHelper.isKey(event, 'enter')) {
             this.goToSearch();
         }
     }

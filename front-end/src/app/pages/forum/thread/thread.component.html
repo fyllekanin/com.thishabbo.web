@@ -1,3 +1,4 @@
+<app-info-box *ngIf="!thread.isOpen" [model]="closedThread"></app-info-box>
 <div class="grid-container">
     <div class="grid-x grid-margin-x">
         <div class="cell small-12">
@@ -20,7 +21,6 @@
                             [checkboxValue]="post.isSelected"
                             [checkbox]="first ? pagination.page > 1 : (forumPermissions.canDeletePosts || forumPermissions.canApprovePosts)"
                             [title]="getPostTitle(post, index)"
-                            [subTitle]="first ? subTitle : null"
                             [tabs]="first ? tabs : null"
                             (onTabClick)="onTabClick($event)"
                             (onCheckboxChange)="post.isSelected = !post.isSelected">
@@ -71,7 +71,8 @@
                 <app-title [title]="'Last 20 users to read this thread'"></app-title>
                 <app-content>
                     <span *ngFor="let reader of thread.readers; let index = index;">{{index > 0 ? ', ' : ''}}
-                        <app-user-link [user]="reader.user" [attr.tooltip]="reader.timeAgo" [attr.tooltip-position]="isMiniProfileDisabled ? 'top' : 'bottom'"></app-user-link>
+                        <app-user-link [user]="reader.user" [attr.tooltip]="reader.timeAgo"
+                                       [attr.tooltip-position]="isMiniProfileDisabled ? 'top' : 'bottom'"></app-user-link>
                     </span>
                 </app-content>
             </div>

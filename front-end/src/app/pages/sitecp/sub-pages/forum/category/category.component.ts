@@ -133,19 +133,6 @@ export class CategoryComponent extends Page implements OnDestroy {
         this._router.navigateByUrl('/sitecp/forum/categories/page/1');
     }
 
-    private flat (array: Array<CategoryLeaf>, prefix = '', shouldAppend = true) {
-        let result = [];
-        array.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'displayOrder'));
-        (array || []).forEach((item: CategoryLeaf) => {
-            item.title = `${prefix} ${item.title}`;
-            result.push(item);
-            if (Array.isArray(item.children)) {
-                result = result.concat(this.flat(item.children, shouldAppend ? `${prefix}--` : ''));
-            }
-        });
-        return result;
-    }
-
     private onDelete (): void {
         this._httpService.delete(`sitecp/categories/${this._categoryPage.category.categoryId}`)
             .subscribe(() => {
@@ -185,7 +172,7 @@ export class CategoryComponent extends Page implements OnDestroy {
 
         this.setTabs();
         this.setSelectItems();
-        this.categories = this.flat(this._categoryPage.forumTree, '');
+        this.categories = ArrayHelper.flatCategories(this._categoryPage.forumTree, '');
 
         const selected = this.selectableCategories.find(item => item.value === this._categoryPage.category.parentId);
         this.selectedCategory = selected || this.selectableCategories[0];
@@ -195,7 +182,7 @@ export class CategoryComponent extends Page implements OnDestroy {
         this.selectableCategories = [{
             label: 'None',
             value: -1
-        }].concat(this.flat(this._categoryPage.forumTree, '').map(item => ({
+        }].concat(ArrayHelper.flatCategories(this._categoryPage.forumTree, '').map(item => ({
             label: item.title,
             value: item.categoryId
         })));

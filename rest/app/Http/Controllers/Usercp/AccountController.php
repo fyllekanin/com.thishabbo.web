@@ -494,7 +494,12 @@ class AccountController extends Controller {
      */
     private function buildPostBitOptions($user) {
         $userdata = UserHelper::getUserDataOrCreate($user->userId);
-        return UserHelper::getUserPostBit($userdata);
+        $postBit = UserHelper::getUserPostBit($userdata);
+
+        $badges = Value::objectJsonProperty($userdata, 'activeBadges', []);
+        $postBit['badges'] = Badge::whereIn('badgeId', $badges)->orderBy('updatedAt', 'ASC')->get(['badgeId', 'name', 'description', 'updatedAt']);
+
+        return $postBit;
     }
 
 

@@ -127,6 +127,10 @@ export class FilterConfig {
     isSelect (): boolean {
         return this.type === FilterConfigType.SELECT;
     }
+
+    get selectedValue (): FilterConfigItem {
+        return this.items.find(item => item.value === this.value);
+    }
 }
 
 export const FILTER_TYPE_CONFIG = new FilterConfig({

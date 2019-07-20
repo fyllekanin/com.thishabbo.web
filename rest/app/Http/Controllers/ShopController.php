@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\EloquentModels\Shop\LootBox;
 use App\EloquentModels\Shop\Subscription;
+use App\EloquentModels\User\User;
+use App\Factories\Notification\NotificationFactory;
 use App\Helpers\DataHelper;
 use App\Helpers\ShopHelper;
 use App\Http\Impl\ShopControllerImpl;
@@ -21,6 +23,29 @@ class ShopController extends Controller {
         parent::__construct();
         $this->myImpl = $impl;
         $this->creditsService = $creditsService;
+    }
+
+    public function sendThc(Request $request) {
+        $user = $request->get('auth');
+
+        $amount = $request->input('amount');
+        $nickname = $request->input('nickname');
+
+        $receiver = User::withNickname($nickname)->first();
+        Condition::precondition(!$receiver, 404, 'No user with that nickname');
+        Condition::precondition(!is_numeric($amount), 400, 'Amount need to be a number');
+        Condition::precondition($amount < 1, 400, 'You can not send 0 or less THC!');
+        Condition::precondition(!$this->creditsService->haveEnoughCredits($user->userId, $amount), 400, 'You do not have enough THC');
+
+        $this->creditsService->giveCredits($receiver->userId, $amount);
+        $this->creditsService->takeCredits($user->userId, $amount);
+
+        Logger::user($user->userId, $request->ip(), Action::SENT_THC, [
+            'receiver' => $receiver->nickname,
+            'amount' => $amount
+        ], $receiver->userId);
+        NotificationFactory::newSentThc($receiver->userId, $user->userId, $amount);
+        return response()->json();
     }
 
     public function getDashboard(Request $request) {

@@ -1,0 +1,1 @@
+{"topic":"Fix crashing moderator posts","type":"Bug","body":"Moderate posts included posts which got unapproved when unapproving the thread itself. Posts which are in a unapproved thread are now filtered out. It should not be allowd to approve a post in a unapproved thread"}

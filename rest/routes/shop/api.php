@@ -8,3 +8,5 @@ Route::get('/subscriptions/page/{page}', 'ShopController@getSubscriptions');
 
 Route::post('/loot-boxes/open/{lootBoxId}', 'ShopController@openLootBox');
 Route::post('/subscriptions/buy/{subscriptionId}', 'ShopController@buySubscription');
+
+Route::post('/send-thc', 'ShopController@sendThc');

@@ -1,0 +1,1 @@
+{"topic":"Min width tables","type":"Refactor / Improvement","body":"Make each column minimum width to at least 100px. This is instead of forcing the table to be fixed"}

@@ -72,17 +72,14 @@ class ForumController extends Controller {
         $posts = Post::withoutGlobalScope('nonHardDeleted')
             ->join('threads', 'threads.threadId', '=', 'posts.threadId')
             ->whereIn('threads.categoryId', $categoryIds)
+            ->where('threads.firstPostId', '!=', 'posts.postId')
+            ->where('threads.isApproved', 1)
             ->where('posts.isApproved', 0)
             ->select('posts.*', 'threads.title as threadTitle', 'threads.categoryId')
             ->orderBy('posts.updatedAt', 'DESC')
             ->get();
 
-        foreach ($posts as $key => $post) {
-            $isFirstPost = Thread::where('firstPostId', $post->postId)->count('threadId') > 0;
-            if ($isFirstPost) {
-                unset($posts[$key]);
-                continue;
-            }
+        foreach ($posts as $post) {
             $post->user = UserHelper::getUser($post->userId);
             $post->canApprove = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canApproveThreads, $post->categoryId);
             $post->canDelete = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canDeletePosts, $post->categoryId);

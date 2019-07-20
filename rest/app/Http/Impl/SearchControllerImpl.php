@@ -84,12 +84,16 @@ class SearchControllerImpl {
             ]);
         $postsSql = $this->applyFilters($request, $postsSql, 'posts');
 
+        if ($request->input('categoryId')) {
+            $postsSql->where('threads.categoryId', $request->input('categoryId'));
+        }
+
         $total = DataHelper::getPage($postsSql->count('postId'));
         $items = $postsSql->take(Controller::$perPageStatic)->offset(DataHelper::getOffset($page))->get()->map(function ($item) {
             return (object)[
                 'id' => $item->postId,
                 'parentId' => $item->threadId,
-                'categoryId' => $item->thread->categoryId,
+                'categoryId' => $item->categoryId,
                 'page' => DataHelper::getPage(Post::where('postId', '<', $item->postId)->where('threadId', $item->threadId)
                     ->isApproved()->count('postId')),
                 'user' => UserHelper::getSlimUser($item->userId),
@@ -111,6 +115,10 @@ class SearchControllerImpl {
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
         $threadsSql = Thread::where('title', 'LIKE', Value::getFilterValue($request, $request->input('text')))->whereIn('categoryId', $categoryIds);
         $threadsSql = $this->applyFilters($request, $threadsSql, 'threads');
+
+        if ($request->input('categoryId')) {
+            $threadsSql->where('categoryId', $request->input('categoryId'));
+        }
 
         $total = DataHelper::getPage($threadsSql->count('threadId'));
         $items = $threadsSql->take(Controller::$perPageStatic)->offset(DataHelper::getOffset($page))->get()->map(function ($item) {

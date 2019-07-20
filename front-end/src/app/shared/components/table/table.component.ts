@@ -3,13 +3,14 @@ import {
     Action,
     ColumnSize,
     FilterConfig,
+    FilterConfigItem,
     TableConfig,
     TableHeader,
     TableRow
 } from 'shared/components/table/table.model';
 import { Component, DoCheck, EventEmitter, Input, Output } from '@angular/core';
 import { QueryParameters } from 'core/services/http/http.model';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector: 'app-table',
@@ -29,7 +30,10 @@ export class TableComponent implements DoCheck {
     @Input() isContracted: boolean;
     @Input() skipUrlUpdate = false;
 
-    constructor (private _router: Router) {
+    constructor (
+        private _router: Router,
+        private _activatedRoute: ActivatedRoute
+    ) {
     }
 
     tabClick (val: string | number): void {
@@ -64,6 +68,7 @@ export class TableComponent implements DoCheck {
         if (this._columnSize !== this.getColumnSize()) {
             this._columnSize = this.getColumnSize();
         }
+        this.setFilterValues();
     }
 
     onRowSelect (row: TableRow): void {
@@ -75,10 +80,16 @@ export class TableComponent implements DoCheck {
         this.onRowToggle.emit(row);
     }
 
+    onSelectChange (config: FilterConfig, value: FilterConfigItem): void {
+        config.value = value ? value.value : null;
+        this.onFilterChange();
+    }
+
     @Input()
     set config (config: TableConfig) {
         this._config = config;
         this._columnSize = this.getColumnSize();
+        this.setFilterValues();
     }
 
     get isSlim (): boolean {
@@ -168,5 +179,14 @@ export class TableComponent implements DoCheck {
             queryParams: setParams,
             skipLocationChange: true
         }));
+    }
+
+    private setFilterValues (): void {
+        (this._config.filterConfigs || []).forEach(config => {
+            const value = this._activatedRoute.snapshot.queryParams[config.key];
+            if (value) {
+                config.value = value;
+            }
+        });
     }
 }

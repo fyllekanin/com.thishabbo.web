@@ -21,7 +21,8 @@ export enum NotificationTypes {
     LIKE_DJ = 11,
     RADIO_REQUEST = 12,
     LIKE_HOST = 13,
-    REFERRAL = 14
+    REFERRAL = 14,
+    SENT_THC = 15
 }
 
 export class NotificationModel<T> {
@@ -61,6 +62,7 @@ export class NotificationModel<T> {
             case NotificationTypes.LIKE_DJ:
             case NotificationTypes.LIKE_HOST:
             case NotificationTypes.RADIO_REQUEST:
+            case NotificationTypes.SENT_THC:
                 this._item = new UserView(source.item);
                 break;
             case NotificationTypes.VISITOR_MESSAGE:

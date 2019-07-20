@@ -8,6 +8,7 @@ import { RouterStateService } from 'core/services/router/router-state.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { ThemeHelper } from 'shared/helpers/theme.helper';
+import { StringHelper } from 'shared/helpers/string.helper';
 
 @Component({
     selector: 'app-top-bar',
@@ -28,7 +29,7 @@ export class TopBarComponent {
         private _httpService: HttpService,
         private _routerStateService: RouterStateService,
         private _continuesInformationService: ContinuesInformationService,
-        private _notificationService: NotificationService,
+        private _notificationService: NotificationService
     ) {
         this._continuesInformationService.onNotifications.subscribe(this.onNotifications.bind(this));
     }
@@ -42,7 +43,7 @@ export class TopBarComponent {
     }
 
     keyDownFunction (event): void {
-        if (event.keyCode === 13) {
+        if (StringHelper.isKey(event, 'enter')) {
             this.login();
         }
     }
@@ -130,7 +131,8 @@ export class TopBarComponent {
             NotificationTypes.LIKE_POST,
             NotificationTypes.RADIO_REQUEST,
             NotificationTypes.LIKE_DJ,
-            NotificationTypes.LIKE_HOST
+            NotificationTypes.LIKE_HOST,
+            NotificationTypes.SENT_THC
         ].indexOf(notification.type) > -1;
     }
 }

@@ -2,7 +2,7 @@
      [textContent]="textContent"
      (input)="filter = $event.target.textContent; checkIfEmpty();">
 </div>
-<div contenteditable="false" class="values" [ngClass]="isOpen ? 'open' : ''">
+<div #itemsList contenteditable="false" class="values" [ngClass]="isOpen ? 'open' : ''">
     <div class="item" *ngFor="let item of items" (click)="onValueChanged(item);">
         {{item.label}}
     </div>

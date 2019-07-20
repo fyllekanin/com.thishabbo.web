@@ -27,6 +27,7 @@ import { ThreadPostersComponent } from './thread-posters/thread-posters.componen
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { StringHelper } from 'shared/helpers/string.helper';
 import { StatsBoxModel } from 'shared/app-views/stats-boxes/stats-boxes.model';
+import { INFO_BOX_TYPE, InfoBoxModel } from 'shared/app-views/info-box/info-box.model';
 
 @Component({
     selector: 'app-forum-thread',
@@ -49,6 +50,11 @@ export class ThreadComponent extends Page implements OnDestroy {
 
     tabs: Array<TitleTab> = [];
     stats: Array<StatsBoxModel> = [];
+    closedThread: InfoBoxModel = {
+        type: INFO_BOX_TYPE.WARNING,
+        title: 'Thread Closed',
+        content: 'The thread is closed'
+    };
 
     constructor (
         private _dialogService: DialogService,
@@ -229,10 +235,6 @@ ${postContent}[/quotepost]\n\r`;
 
     get posts (): Array<PostModel> {
         return this._threadPage.threadPosts;
-    }
-
-    get subTitle (): string {
-        return this._threadPage.isOpen ? '' : 'Thread is closed, sorry!';
     }
 
     get forumPermissions (): ForumPermissions {

@@ -42,6 +42,14 @@ export const forumRoutes: Routes = [
                 runGuardsAndResolvers: 'always'
             },
             {
+                path: 'thread/:id/page/:page/:postedByUser',
+                resolve: {
+                    data: ThreadService
+                },
+                component: ThreadComponent,
+                runGuardsAndResolvers: 'always'
+            },
+            {
                 path: 'category/:categoryId/thread/:threadId',
                 resolve: {
                     data: ThreadControllerResolver

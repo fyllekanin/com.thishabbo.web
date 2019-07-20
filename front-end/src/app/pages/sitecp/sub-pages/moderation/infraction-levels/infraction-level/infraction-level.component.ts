@@ -8,7 +8,7 @@ import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { SelectItem } from 'shared/components/form/select/select.model';
-import { CategoryLeaf } from '../../../forum/category/category.model';
+import { ArrayHelper } from 'shared/helpers/array.helper';
 
 @Component({
     selector: 'app-sitecp-moderation-infraction-level',
@@ -131,7 +131,7 @@ export class InfractionLevelComponent extends Page implements OnDestroy {
     }
 
     private setSelectableItems (): void {
-        this.selectableCategories = this.flat(this._page.categories, '').map(item => {
+        this.selectableCategories = ArrayHelper.flat(this._page.categories, '').map(item => {
             return {
                 label: item.title,
                 value: item
@@ -139,17 +139,5 @@ export class InfractionLevelComponent extends Page implements OnDestroy {
         });
         this.selectedCategory = this.selectableCategories
             .find(item => item.value.categoryId === this._page.categoryId);
-    }
-
-    private flat (array: Array<CategoryLeaf>, prefix = '', shouldAppend = true) {
-        let result = [];
-        (array || []).forEach((item: CategoryLeaf) => {
-            item.title = `${prefix} ${item.title}`;
-            result.push(item);
-            if (Array.isArray(item.children)) {
-                result = result.concat(this.flat(item.children, shouldAppend ? `${prefix}--` : ''));
-            }
-        });
-        return result;
     }
 }

@@ -1,0 +1,1 @@
+{"topic":"Move thread closed text","type":"Refactor / Improvement","body":"The thread closed text in title is moved to a info box instead to not break the mobile view"}

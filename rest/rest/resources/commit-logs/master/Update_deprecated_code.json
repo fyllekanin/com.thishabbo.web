@@ -1,0 +1,1 @@
+{"topic":"Update deprecated code","type":"Refactor / Improvement","body":"The keyCode property on events is depracated and not promised to work on all devices. Updated to newer way of checking user input key"}

@@ -45,6 +45,8 @@ export class PostBitInformation {
     @primitive()
     hideLikesCount: boolean;
     @primitive()
+    hideHabbo: boolean;
+    @primitive()
     hideSocials: boolean;
     @arrayOf(SlimBadge)
     badges: Array<SlimBadge> = [];

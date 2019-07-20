@@ -1,0 +1,1 @@
+{"topic":"Fix radio like timeout","type":"Refactor / Improvement","body":"Radio like timeout would show 0 mins when below 60 seconds left. Changed math function to ceil so it will round up and still say 1min"}

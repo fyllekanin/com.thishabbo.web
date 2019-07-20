@@ -28,7 +28,7 @@ export class SnakeComponent extends Page implements AfterViewInit, OnDestroy {
     ];
 
     tabs: Array<TitleTab> = [];
-    @ViewChild('game', { static: true }) gameArea: ElementRef;
+    @ViewChild('game', {static: true}) gameArea: ElementRef;
 
     constructor (
         private _notificationService: NotificationService,
@@ -71,11 +71,11 @@ export class SnakeComponent extends Page implements AfterViewInit, OnDestroy {
                         return;
                     }
                     this._gameValues.newDirection = {
-                        37: -1,
-                        38: -2,
-                        39: 1,
-                        40: 2
-                    }[e.keyCode] || this._gameValues.newDirection;
+                        'ArrowLeft': -1,
+                        'ArrowUp': -2,
+                        'ArrowRight': 1,
+                        'ArrowDown': 2
+                    }[e.key] || this._gameValues.newDirection;
                     e.preventDefault();
                 };
             });

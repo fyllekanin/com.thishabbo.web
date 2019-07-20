@@ -12,12 +12,13 @@ use App\EloquentModels\Forum\Thread;
 use App\EloquentModels\Forum\ThreadPoll;
 use App\EloquentModels\Forum\ThreadRead;
 use App\EloquentModels\Forum\ThreadSubscription;
+use App\EloquentModels\User\User;
 use App\Helpers\ConfigHelper;
 use App\Helpers\DataHelper;
-use App\Helpers\ForumHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Impl\Forum\ThreadCrudControllerImpl;
 use App\Jobs\NotifyCategorySubscribers;
 use App\Jobs\NotifyMentionsInPost;
 use App\Logger;
@@ -36,6 +37,7 @@ class ThreadCrudController extends Controller {
     private $forumService;
     private $validatorService;
     private $pointsService;
+    private $myImpl;
 
     /**
      * ThreadController constructor.
@@ -44,13 +46,16 @@ class ThreadCrudController extends Controller {
      * @param ForumService $forumService
      * @param ForumValidatorService $validatorService
      * @param PointsService $pointsService
+     * @param ThreadCrudControllerImpl $impl
      */
-    public function __construct(ForumService $forumService, ForumValidatorService $validatorService, PointsService $pointsService) {
+    public function __construct(ForumService $forumService, ForumValidatorService $validatorService,
+                                PointsService $pointsService, ThreadCrudControllerImpl $impl) {
         parent::__construct();
         $this->categoryTemplates = ConfigHelper::getCategoryTemplatesConfig();
         $this->forumService = $forumService;
         $this->validatorService = $validatorService;
         $this->pointsService = $pointsService;
+        $this->myImpl = $impl;
     }
 
     /**
@@ -200,8 +205,7 @@ class ThreadCrudController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getThreadController(Request $request
-        , $categoryId, $threadId) {
+    public function getThreadController(Request $request, $categoryId, $threadId) {
         $user = $request->get('auth');
         $category = Category::find($categoryId);
 
@@ -251,11 +255,19 @@ class ThreadCrudController extends Controller {
      * @param         $threadId
      * @param int $page
      *
+     * @param null $postedByUser
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getThreadPage(Request $request, $threadId, $page = 1) {
+    public function getThreadPage(Request $request, $threadId, $page = 1, $postedByUser = null) {
         $user = $request->get('auth');
         $thread = Thread::find($threadId);
+        $postedBy = null;
+
+        if ($postedByUser) {
+            $postedBy = User::withNickname($postedByUser)->first();
+            Condition::precondition(!$postedBy, 404, 'No user to look for with that nickname');
+        }
 
         Condition::precondition(!$thread, 404, 'Thread does not exist');
         Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canViewThreadContent, $thread->categoryId), 403, 'You can not view thread content');
@@ -264,13 +276,7 @@ class ThreadCrudController extends Controller {
         Condition::precondition(!$isCreator && !PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canViewOthersThreads, $thread->categoryId), 403,
             'You can not view others thread content');
 
-        $canAccessCategory = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canRead, $thread->categoryId)
-            && (ForumHelper::isCategoryAuthOnly($thread->categoryId) ? $user->userId > 0 : true);
-        $cantAccessUnapproved = !$thread->isApproved &&
-            !PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canApproveThreads, $thread->categoryId);
-        Condition::precondition(!$canAccessCategory, 403, 'No permissions to access this category');
-        Condition::precondition($user->userId != $thread->userId && $cantAccessUnapproved, 400, 'You cant access a unapproved thread');
-
+        $this->myImpl->canUserAccessThread($user, $thread);
         $this->forumService->updateReadCategory($thread->categoryId, $user->userId);
         $this->forumService->updateReadThread($thread->threadId, $user->userId);
         $permissions = $this->forumService->getForumPermissionsForUserInCategory($user->userId, $thread->categoryId);
@@ -279,15 +285,21 @@ class ThreadCrudController extends Controller {
             $thread->posts += $thread->threadPosts()->where('isApproved', '<', 1)->count('threadId');
         }
 
-        $thread->load(['threadPosts' => function ($query) use ($permissions, $page) {
+        $thread->load(['threadPosts' => function ($query) use ($permissions, $page, $postedBy) {
+            if ($postedBy) {
+                $query->where('userId', $postedBy->userId);
+            }
             $query->isApproved($permissions->canApprovePosts)
                 ->skip(DataHelper::getOffset($page))
                 ->take($this->perPage);
         }]);
 
         $thread->page = $page;
+        $thread->total = $postedBy ?
+            $this->myImpl->getThreadPostTotalByUser($thread->threadId, $user->userId, $permissions->canApprovePosts) :
+            DataHelper::getPage($thread->posts);
+
         $thread->contentApproval = PermissionHelper::haveGroupOption($user->userId, ConfigHelper::getGroupOptionsConfig()->contentNeedApproval);
-        $thread->total = DataHelper::getPage($thread->posts);
         $thread->forumPermissions = $permissions;
         $thread->isSubscribed = ThreadSubscription::where('userId', $user->userId)->where('threadId', $threadId)->count('threadId') > 0;
         $thread->append('categoryIsOpen');
@@ -301,21 +313,8 @@ class ThreadCrudController extends Controller {
                 ->append('roomLink');
         }
 
-        $thread->readers = ThreadRead::where('threadId', $thread->threadId)->take(20)->orderBy('updatedAt', 'DESC')
-            ->get(['userId', 'updatedAt'])->map(function ($read) {
-                return [
-                    'user' => UserHelper::getSlimUser($read->userId),
-                    'time' => $read->updatedAt->timestamp
-                ];
-            });
-
-        $thread->currentReaders = ThreadRead::where('threadId', $thread->threadId)->where('updatedAt', '>', time() - 600)
-            ->get(['userId', 'updatedAt'])->map(function ($read) {
-                return [
-                    'user' => UserHelper::getSlimUser($read->userId),
-                    'time' => $read->updatedAt->timestamp
-                ];
-            });
+        $thread->readers = $this->myImpl->getThreadReaders($thread->threadId, 0);
+        $thread->currentReaders = $this->myImpl->getThreadReaders($thread->threadId, time() - 600);
 
         return response()->json($thread);
     }
@@ -328,7 +327,6 @@ class ThreadCrudController extends Controller {
      * @param bool $skipValidation
      *
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function doThread($user, $thumbnail, $threadSkeleton, $request, $skipValidation = false) {
         $category = Category::where('categoryId', $threadSkeleton->categoryId)->first(['template', 'options', 'isOpen']);

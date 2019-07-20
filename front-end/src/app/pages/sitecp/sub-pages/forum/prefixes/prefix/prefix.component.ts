@@ -7,6 +7,7 @@ import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
+import { ArrayHelper } from 'shared/helpers/array.helper';
 
 @Component({
     selector: 'app-sitecp-forum-prefix',
@@ -113,22 +114,10 @@ export class PrefixComponent extends Page implements OnDestroy {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private flat (array: Array<PrefixCategory>, prefix: string = '', shouldAppend: boolean = true) {
-        let result = [];
-        array.forEach((item: PrefixCategory) => {
-            item.title = `${prefix} ${item.title}`;
-            result.push(item);
-            if (Array.isArray(item.children)) {
-                result = result.concat(this.flat(item.children, shouldAppend ? `${prefix}--` : ''));
-            }
-        });
-        return result;
-    }
-
     private onData (data: { data: Prefix }): void {
         this._prefix = data.data;
         const categories = [new PrefixCategory({title: 'All', categoryId: -1})];
-        this._categories = categories.concat(this.flat(this._prefix.categories, '--'));
+        this._categories = categories.concat(ArrayHelper.flat(this._prefix.categories, '--'));
 
         const tabs = [
             {title: 'Save', value: PrefixActions.SAVE, condition: true},

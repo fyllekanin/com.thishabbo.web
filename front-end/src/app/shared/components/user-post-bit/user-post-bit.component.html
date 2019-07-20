@@ -25,7 +25,7 @@
         {{userBar.name}}
     </div>
 </div>
-<div class="post-bit" *ngIf="user.createdAt">
+<div class="post-bit" *ngIf="!user.postBitSettings.hideJoinDate">
     <div class="gray-content-wrapper">
         <strong>Joined:</strong>
         <div class="float-right">
@@ -33,7 +33,7 @@
         </div>
     </div>
 </div>
-<div class="post-bit" *ngIf="user.posts">
+<div class="post-bit" *ngIf="!user.postBitSettings.hidePostCount">
     <div class="gray-content-wrapper">
         <strong>Posts:</strong>
         <div class="float-right">
@@ -41,11 +41,19 @@
         </div>
     </div>
 </div>
-<div class="post-bit" *ngIf="user.likes">
+<div class="post-bit" *ngIf="!user.postBitSettings.hideLikesCount">
     <div class="gray-content-wrapper">
         <strong>Likes:</strong>
         <div class="float-right">
             {{user.likes | number: '1.'}}
+        </div>
+    </div>
+</div>
+<div class="post-bit" *ngIf="!user.postBitSettings.hideHabbo">
+    <div class="gray-content-wrapper">
+        <strong>Habbo:</strong>
+        <div class="float-right">
+            {{user.habbo}}
         </div>
     </div>
 </div>

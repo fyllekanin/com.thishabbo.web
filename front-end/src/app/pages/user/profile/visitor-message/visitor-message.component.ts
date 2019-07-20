@@ -7,6 +7,7 @@ import { NotificationService } from 'core/services/notification/notification.ser
 import { InfractionService } from 'shared/components/infraction/infraction.service';
 import { TitleTopBorder } from 'shared/app-views/title/title.model';
 import { Button } from 'shared/directives/button/button.model';
+import { StringHelper } from 'shared/helpers/string.helper';
 
 @Component({
     selector: 'app-user-profile-visitor-message',
@@ -19,7 +20,7 @@ export class VisitorMessageComponent implements AfterContentInit {
 
     @Input() hostId: number;
     @Output() onRemove: EventEmitter<void> = new EventEmitter();
-    @ViewChild('replies', { static: true }) repliesEle;
+    @ViewChild('replies', {static: true}) repliesEle;
     isRepliesOpen = false;
     redHeader = TitleTopBorder.RED;
     redButton = Button.RED;
@@ -151,7 +152,7 @@ export class VisitorMessageComponent implements AfterContentInit {
     }
 
     onCommentKeyUp (event): void {
-        if (event.keyCode === 13) {
+        if (StringHelper.isKey(event, 'enter')) {
             this.onComment();
         }
     }

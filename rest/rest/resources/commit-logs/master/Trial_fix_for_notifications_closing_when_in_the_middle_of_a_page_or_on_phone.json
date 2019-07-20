@@ -1,0 +1,1 @@
+{"topic":"Trial fix for notifications closing when in the middle of a page or on phone","type":"Refactor / Improvement","body":"When in the middle of a page which mobiles always are the notifications would close on click. This is a trial solution for this issue"}

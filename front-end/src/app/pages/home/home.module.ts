@@ -28,6 +28,7 @@ import { SlimArticleModule } from 'shared/components/slim-article/slim-article.m
 import { BadgesModule } from 'shared/components/badges/badges.module';
 import { VersionsComponent } from './versions/versions.component';
 import { VersionsResolver } from './services/versions.resolver';
+import { SelectModule } from 'shared/components/form/select/select.module';
 
 @NgModule({
     imports: [
@@ -47,7 +48,8 @@ import { VersionsResolver } from './services/versions.resolver';
         PaginationModule,
         UserLinkModule,
         SlimArticleModule,
-        BadgesModule
+        BadgesModule,
+        SelectModule
     ],
     declarations: [
         HomeDefaultComponent,

@@ -6,6 +6,7 @@ import { LootBoxesComponent } from './loot-boxes/loot-boxes.component';
 import { LootBoxesResolver } from './services/loot-boxes.resolver';
 import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
 import { SubscriptionsResolver } from './services/subscriptions.resolver';
+import { SendThcComponent } from './send-thc/send-thc.component';
 
 export const shopRoutes: Routes = [
     {
@@ -36,6 +37,10 @@ export const shopRoutes: Routes = [
                 resolve: {
                     data: SubscriptionsResolver
                 }
+            },
+            {
+                path: 'send-thc',
+                component: SendThcComponent
             }
         ]
     }

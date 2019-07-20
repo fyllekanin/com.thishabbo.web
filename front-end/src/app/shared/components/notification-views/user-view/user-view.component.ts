@@ -55,6 +55,14 @@ export class UserViewComponent implements NotificationView {
         return this._notification.type === NotificationTypes.REFERRAL;
     }
 
+    get isSentThc (): boolean {
+        return this._notification.type === NotificationTypes.SENT_THC;
+    }
+
+    get customData (): string {
+        return this._notification.item.customData;
+    }
+
     @HostListener('click', ['$event.target'])
     click (event): void {
         this.onClick.next(this._notification.notificationId);

@@ -18,7 +18,6 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { ArrayHelper } from 'shared/helpers/array.helper';
-import { CategoryLeaf } from '../../forum/category/category.model';
 
 @Component({
     selector: 'app-sitecp-website-settings-home-page-threads',
@@ -110,7 +109,7 @@ export class HomePageThreadsComponent extends Page implements OnDestroy {
 
     private setItems (): void {
         this._data.categories.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'displayOrder'));
-        const items = this.flat(this._data.categories, '');
+        const items = ArrayHelper.flatCategories(this._data.categories, '');
         this.items = items.filter(item => this._data.categoryIds.indexOf(item.categoryId) === -1)
             .map(item => ({
                 label: item.title,
@@ -135,18 +134,5 @@ export class HomePageThreadsComponent extends Page implements OnDestroy {
         return [
             new TableHeader({title: 'Category'})
         ];
-    }
-
-    private flat (array: Array<CategoryLeaf>, prefix = '', shouldAppend = true) {
-        let result = [];
-        array.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'displayOrder'));
-        array.forEach((item: CategoryLeaf) => {
-            item.title = `${prefix} ${item.title}`;
-            result.push(item);
-            if (Array.isArray(item.children)) {
-                result = result.concat(this.flat(item.children, shouldAppend ? `${prefix}--` : ''));
-            }
-        });
-        return result;
     }
 }

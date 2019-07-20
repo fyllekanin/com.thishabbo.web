@@ -22,6 +22,7 @@ import { ReportComponent } from './report/report.component';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
 import { InfractionService } from 'shared/components/infraction/infraction.service';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-forum-post',
@@ -57,6 +58,7 @@ export class PostComponent extends Page implements OnDestroy {
         private _dialogService: DialogService,
         private _componentFactory: ComponentFactoryResolver,
         private _infractionService: InfractionService,
+        private _router: Router,
         elementRef: ElementRef
     ) {
         super(elementRef);
@@ -64,6 +66,10 @@ export class PostComponent extends Page implements OnDestroy {
 
     ngOnDestroy (): void {
         super.destroy();
+    }
+
+    filterPosts (): void {
+        this._router.navigateByUrl(`/forum/thread/${this._postModel.threadId}/page/1/${this._postModel.user.nickname}`);
     }
 
     infract (): void {

@@ -48,6 +48,7 @@ Route::group(['middleware' => ['maintenance']], function () {
     Route::get('/page/forum/stats/{clientTodayMidnight}', 'Forum\Category\CategoryCrudController@getForumStats');
     Route::get('/page/category/{categoryId}/page/{page}', 'Forum\Category\CategoryCrudController@getCategoryPage');
     Route::get('/page/thread/{threadId}/page/{page}', 'Forum\Thread\ThreadCrudController@getThreadPage');
+    Route::get('/page/thread/{threadId}/page/{page}/{postedByUser}', 'Forum\Thread\ThreadCrudController@getThreadPage');
     Route::get('/page/forum/latest-posts/page/{page}', 'Forum\Post\PostCrudController@getLatestPosts');
     Route::get('/page/forum/latest-threads/page/{page}', 'Forum\Thread\ThreadCrudController@getLatestThreads');
 

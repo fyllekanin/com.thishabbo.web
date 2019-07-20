@@ -318,3 +318,8 @@ summary {
     font-weight: bold;
     margin: 5px auto !important;
 }
+
+table td {
+    min-width: 100px;
+    word-wrap: break-word;
+}

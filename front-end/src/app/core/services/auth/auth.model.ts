@@ -79,6 +79,21 @@ export class SlimUser {
     }
 }
 
+export class UserPostBitSettings {
+    @primitive()
+    hideJoinDate: boolean;
+    @primitive()
+    hidePostCount: boolean;
+    @primitive()
+    hideLikesCount: boolean;
+    @primitive()
+    hideHabbo: boolean;
+
+    constructor (source?: Partial<UserPostBitSettings>) {
+        ClassHelper.assign(this, source);
+    }
+}
+
 export class User extends SlimUser {
     @arrayOf(UserBar)
     userBars: Array<UserBar> = [];
@@ -96,6 +111,8 @@ export class User extends SlimUser {
     barColor: Array<string> = [];
     @arrayOf(Number)
     badgeIds: Array<number> = [];
+    @objectOf(UserPostBitSettings)
+    postBitSettings: UserPostBitSettings = new UserPostBitSettings();
 
     constructor (source?: Partial<User>) {
         super(source);

@@ -1,0 +1,1 @@
+{"topic":"Fix postbit information","type":"Refactor / Improvement","body":"Postbit information was hidden already on the system level, now its controlled on the front-end making the mini-profiles still having access to the information"}

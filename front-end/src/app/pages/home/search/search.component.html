@@ -49,6 +49,11 @@
                     <option [value]="'users'">Users</option>
                 </select>
             </div>
+            <div *ngIf="parameters.type !== 'users'">
+                <label>Category</label>
+                <app-form-select [value]="getSelectedCategory()" [items]="categorySelectItems"
+                                 (valueChange)="onCategoryChange($event)"></app-form-select>
+            </div>
             <div>
                 <label>Free Text:</label>
                 <input [(ngModel)]="parameters.text" (keyup)="onKeyUp($event)"/>

@@ -1,5 +1,6 @@
 import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
 import { SlimUser } from 'core/services/auth/auth.model';
+import { CategoryLeaf } from '../../sitecp/sub-pages/forum/category/category.model';
 
 export enum SearchTypes {
     THREADS = 'threads',
@@ -20,6 +21,8 @@ export class SearchParameters {
     to: Date;
     @primitive()
     order: string;
+    @primitive()
+    categoryId: number;
 
     constructor (source: Partial<SearchParameters>) {
         ClassHelper.assign(this, source);
@@ -40,6 +43,7 @@ export class SearchResult {
     @primitive()
     createdAt: number;
 
+
     constructor (source: Partial<SearchResult>) {
         ClassHelper.assign(this, source);
     }
@@ -54,6 +58,8 @@ export class SearchPage {
     items: Array<SearchResult> = [];
     @objectOf(SearchParameters)
     parameters: SearchParameters;
+    @arrayOf(CategoryLeaf)
+    categories: Array<CategoryLeaf> = [];
 
     constructor (source: Partial<SearchPage>) {
         ClassHelper.assign(this, source);

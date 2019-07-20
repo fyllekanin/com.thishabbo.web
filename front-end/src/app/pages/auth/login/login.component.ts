@@ -6,6 +6,7 @@ import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { LoginAction } from './login.model';
 import { Router } from '@angular/router';
+import { StringHelper } from 'shared/helpers/string.helper';
 
 @Component({
     selector: 'app-auth-login',
@@ -24,17 +25,17 @@ export class LoginComponent extends Page implements OnDestroy {
         new TitleTab({title: 'Forgotten Password', value: LoginAction.FORGOTTEN_PASSWORD})
     ];
 
-    constructor(
+    constructor (
         private _authService: AuthService,
         private _router: Router,
         breadcrumbService: BreadcrumbService,
         elementRef: ElementRef
     ) {
         super(elementRef);
-        breadcrumbService.breadcrumb = new Breadcrumb({ current: 'Login' });
+        breadcrumbService.breadcrumb = new Breadcrumb({current: 'Login'});
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
@@ -52,19 +53,19 @@ export class LoginComponent extends Page implements OnDestroy {
         }
     }
 
-    keyDownFunction(event): void {
-        if (event.keyCode === 13) {
+    keyDownFunction (event): void {
+        if (StringHelper.isKey(event, 'enter')) {
             this.doLogin();
         }
     }
 
-    doLogin(): void {
+    doLogin (): void {
         this._authService.login(this.loginName, this.password).add(() => {
             this.haveTriedAuthentication = true;
         });
     }
 
-    get showError(): boolean {
+    get showError (): boolean {
         return !this._authService.isLoggedIn() && this.haveTriedAuthentication;
     }
 }

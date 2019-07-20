@@ -48,6 +48,18 @@
                 </div>
                 <div>
                     <label class="checkbox-container">
+                        Hide Habbo
+                        <input type="checkbox" [(ngModel)]="postBitOptions.hideHabbo">
+                        <span class="checkmark"></span>
+
+                        <span tooltip="This will hide your habbo from&#xa;your postbit for all users."
+                              class="checkbox-info">
+                                <em class="fas fa-question-circle"></em>
+                        </span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
                         Hide Socials
                         <input type="checkbox" [(ngModel)]="postBitOptions.hideSocials">
                         <span class="checkmark"></span>

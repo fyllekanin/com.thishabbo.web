@@ -24,6 +24,7 @@ import { ButtonModule } from 'shared/directives/button/button.module';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 import { NgxPayPalModule } from 'ngx-paypal';
 import { SubscriptionPaymentComponent } from './views/subscription/subscription-payment/subscription-payment.component';
+import { SendThcComponent } from './send-thc/send-thc.component';
 
 @NgModule({
     imports: [
@@ -50,7 +51,8 @@ import { SubscriptionPaymentComponent } from './views/subscription/subscription-
         LootBoxesComponent,
         SubscriptionsComponent,
         LootBoxDetailsComponent,
-        SubscriptionPaymentComponent
+        SubscriptionPaymentComponent,
+        SendThcComponent
     ],
     entryComponents: [
         LootBoxDetailsComponent,

@@ -1,0 +1,16 @@
+<app-title [title]="'Send THC'" [tabs]="tabs" (onTabClick)="onSendThc()"></app-title>
+<app-content>
+    This page is used to send THC to another user. The THC you send on this page are non-refundable and you got no way
+    of
+    getting them back. So be sure that you type the correct nickname etc.
+    <br/>
+    <em>The process of refunding a incorrectly send amount of THC includes developers and is not a task we prefer
+        sitting with..</em>
+    <br/>
+    <br/>
+    <label>Amount of THC</label>
+    <input type="number" [(ngModel)]="amount">
+
+    <label>To User</label>
+    <input type="text" [(ngModel)]="nickname">
+</app-content>

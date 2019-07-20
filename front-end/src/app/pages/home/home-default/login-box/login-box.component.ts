@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from 'core/services/auth/auth.service';
 import { TitleTab, TitleTopBorder } from 'shared/app-views/title/title.model';
 import { INFO_BOX_TYPE, InfoBoxModel } from 'shared/app-views/info-box/info-box.model';
+import { StringHelper } from 'shared/helpers/string.helper';
 
 @Component({
     selector: 'app-home-login-box',
@@ -37,7 +38,7 @@ export class LoginBoxComponent {
     }
 
     keyDownFunction (event): void {
-        if (event.keyCode === 13) {
+        if (StringHelper.isKey(event, 'enter')) {
             this.doLogin();
         }
     }

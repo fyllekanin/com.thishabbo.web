@@ -24,6 +24,7 @@ import { HttpService } from 'core/services/http/http.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { LogDetailsComponent } from './log-details/log-details.component';
 import { DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
+import { ArrayHelper } from 'shared/helpers/array.helper';
 
 @Component({
     selector: 'app-sitecp-moderation-logs',
@@ -96,6 +97,7 @@ export class LogsComponent extends Page implements OnDestroy {
 
     private onData (data: { data: LogPage }): void {
         this._data = data.data;
+        this._data.actions.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'description'));
         this.createOrUpdateTable();
 
         this.pagination = new PaginationModel({
@@ -120,7 +122,7 @@ export class LogsComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableFilters(): Array<FilterConfig> {
+    private getTableFilters (): Array<FilterConfig> {
         return [
             new FilterConfig({
                 title: 'User',

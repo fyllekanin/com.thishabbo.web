@@ -2,7 +2,6 @@
 
 namespace App\Helpers;
 
-use App\EloquentModels\Badge;
 use App\EloquentModels\Shop\Subscription;
 use App\EloquentModels\Shop\UserSubscription;
 use App\EloquentModels\User\User;
@@ -81,9 +80,10 @@ class UserHelper {
         $user->nickname = $userObj->nickname;
         $user->userBars = self::getUserBars($userId);
         $user->habbo = Value::objectProperty($userObj, 'habbo', '');
-        $user->createdAt = $postBit->hideJoinDate ? null : $userObj->createdAt->timestamp;
-        $user->posts = $postBit->hidePostCount ? null : $userObj->posts;
-        $user->likes = $postBit->hideLikesCount ? null : $userObj->likes;
+        $user->createdAt = $userObj->createdAt->timestamp;
+        $user->posts = $userObj->posts;
+        $user->likes = $userObj->likes;
+        $user->postBitSettings = $postBit;
         $user->badgeIds = Value::objectJsonProperty($userdata, 'activeBadges', []);
 
         if (isset($userdata->nameColor)) {
@@ -166,14 +166,11 @@ class UserHelper {
     public static function getUserPostBit($userdata) {
         $obj = [];
         $postBitOptions = ConfigHelper::getPostBitConfig();
-        $badges = Value::objectJsonProperty($userdata, 'activeBadges', []);
 
         foreach ($postBitOptions as $key => $value) {
             $obj[$key] = $userdata->postBit & $value;
         }
-
-        $obj['badges'] = Badge::whereIn('badgeId', $badges)->orderBy('updatedAt', 'ASC')->get(['badgeId', 'name', 'description', 'updatedAt']);
-
+        
         return $obj;
     }
 

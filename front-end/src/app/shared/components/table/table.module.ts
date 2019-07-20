@@ -7,6 +7,7 @@ import { NgModule } from '@angular/core';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 import { ButtonModule } from 'shared/directives/button/button.module';
 import { RouterModule } from '@angular/router';
+import { SelectModule } from 'shared/components/form/select/select.module';
 
 @NgModule({
     imports: [
@@ -16,7 +17,8 @@ import { RouterModule } from '@angular/router';
         FormsModule,
         SafeHtmlModule,
         ButtonModule,
-        RouterModule
+        RouterModule,
+        SelectModule
     ],
     declarations: [
         TableComponent

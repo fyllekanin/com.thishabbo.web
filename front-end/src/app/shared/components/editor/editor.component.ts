@@ -14,6 +14,7 @@ import { HttpService } from 'core/services/http/http.service';
 import { BBcodeModel } from '../../../pages/sitecp/sub-pages/content/bbcodes/bbcode.model';
 import { IdHelper } from 'shared/helpers/id.helper';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
+import { StringHelper } from 'shared/helpers/string.helper';
 
 @Component({
     selector: 'app-editor',
@@ -124,7 +125,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
         }
         this._editorInstance.keybind('keyup', e => {
             this.onKeyUp.emit(this.getEditorValue());
-            if (e.altKey && e.keyCode === 83) {
+            if (e.altKey && StringHelper.isKey(e, 's')) {
                 e.preventDefault();
                 const callbacks = this._editorActions.filter(button => button.saveCallback);
                 if (callbacks.length > 0) {

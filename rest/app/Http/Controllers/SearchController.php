@@ -5,14 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Impl\SearchControllerImpl;
 use App\Logger;
 use App\Models\Logger\Action;
+use App\Services\ForumService;
 use Illuminate\Http\Request;
 
 class SearchController extends Controller {
     private $myImpl = null;
+    private $forumService;
 
-    public function __construct(SearchControllerImpl $impl) {
+    public function __construct(SearchControllerImpl $impl, ForumService $forumService) {
         parent::__construct();
         $this->myImpl = $impl;
+        $this->forumService = $forumService;
     }
 
     /**
@@ -31,8 +34,10 @@ class SearchController extends Controller {
             'total' => $result->total,
             'page' => $page,
             'items' => $result->items,
+            'categories' => $this->forumService->getCategoryTree($user, [], -1),
             'parameters' => [
                 'type' => $type,
+                'categoryId' => $request->input('categoryId'),
                 'text' => $request->input('text'),
                 'byUser' => $request->input('byUser'),
                 'from' => $request->input('from'),

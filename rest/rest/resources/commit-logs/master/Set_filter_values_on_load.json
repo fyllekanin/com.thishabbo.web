@@ -1,0 +1,1 @@
+{"topic":"Set filter values on load","type":"Refactor / Improvement","body":"When loading a page with filters (query parameters) these values were not restored for the user in the inputs. This now restores and show the actual filters which are applied on load"}

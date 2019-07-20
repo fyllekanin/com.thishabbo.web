@@ -41,7 +41,7 @@ export class RadioService {
             if (!res.isTimeout) {
                 this._notificationService.sendInfoNotification('You liked the DJ!');
             } else {
-                this._notificationService.sendErrorNotification(`You need to wait ${Math.floor(res.timeLeft / 60)} min(s) to like!`);
+                this._notificationService.sendErrorNotification(`You need to wait ${Math.ceil(res.timeLeft / 60)} min(s) to like!`);
             }
         }, this._notificationService.failureNotification.bind(this._notificationService));
     }
