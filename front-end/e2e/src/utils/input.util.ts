@@ -1,4 +1,4 @@
-import { browser, by, element, ElementFinder, ExpectedConditions, Key, protractor } from 'protractor';
+import { browser, by, element, ElementFinder, ExpectedConditions, protractor } from 'protractor';
 import { CommonUtil } from './common.util';
 
 export class InputUtil {
@@ -11,7 +11,6 @@ export class InputUtil {
     static fillInput (ele: ElementFinder, value: string | number): void {
         browser.wait(ExpectedConditions.presenceOf(ele), 10000, 'Expected element to be present');
         ele.sendKeys(value);
-        ele.sendKeys(Key.TAB);
     }
 
     static clearInput (ele: ElementFinder): void {
