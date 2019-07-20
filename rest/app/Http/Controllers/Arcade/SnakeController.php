@@ -87,8 +87,17 @@ class SnakeController extends Controller {
         $game->isFinished = true;
         $game->save();
 
-        $peopleWithHigherScore = Game::where('gameType', $game->gameType)->where('score', '>', $game->score)->count();
-        switch ($peopleWithHigherScore) {
+        $this->checkWinnings($game, $user, $creditsService);
+        Logger::user($user->userId, $request->ip(), Action::FINISHED_SNAKE_GAME, ['score' => $game->score]);
+        return response()->json([
+            'score' => $game->score,
+            'highscore' => $this->getSnakeHighscoreTable()
+        ]);
+    }
+
+    private function checkWinnings($game, $user, $creditsService) {
+        $highscores = Game::where('gameType', $game->gameType)->where('score', '>', $game->score)->count();
+        switch ($highscores) {
             case 0:
                 $creditsService->giveCredits($user->userId, 1000);
                 break;
@@ -106,11 +115,5 @@ class SnakeController extends Controller {
                 $creditsService->giveCredits($user->userId, 500);
                 break;
         }
-
-        Logger::user($user->userId, $request->ip(), Action::FINISHED_SNAKE_GAME, ['score' => $game->score]);
-        return response()->json([
-            'score' => $game->score,
-            'highscore' => $this->getSnakeHighscoreTable()
-        ]);
     }
 }

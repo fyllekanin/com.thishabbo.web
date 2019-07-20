@@ -101,8 +101,17 @@ class FastTyperController extends Controller {
         $game->isFinished = true;
         $game->save();
 
-        $peopleWithHigherScore = Game::where('gameType', $game->gameType)->where('score', '>', $game->score)->count();
-        switch ($peopleWithHigherScore) {
+        $this->checkWinnings($game, $user, $creditsService);
+        Logger::user($user->userId, $request->ip(), Action::FINISHED_FASTEST_TYPE_GAME, ['score' => $game->score]);
+        return response()->json([
+            'score' => $game->score,
+            'highscore' => $this->getFastTyperHighscoreTable()
+        ]);
+    }
+
+    private function checkWinnings($game, $user, $creditsService) {
+        $highscores = Game::where('gameType', $game->gameType)->where('score', '>', $game->score)->count();
+        switch ($highscores) {
             case 0:
                 $creditsService->giveCredits($user->userId, 1000);
                 break;
@@ -120,12 +129,6 @@ class FastTyperController extends Controller {
                 $creditsService->giveCredits($user->userId, 500);
                 break;
         }
-
-        Logger::user($user->userId, $request->ip(), Action::FINISHED_FASTEST_TYPE_GAME, ['score' => $game->score]);
-        return response()->json([
-            'score' => $game->score,
-            'highscore' => $this->getFastTyperHighscoreTable()
-        ]);
     }
 
     /**
