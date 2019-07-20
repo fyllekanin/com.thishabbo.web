@@ -5,8 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Action, FilterConfig, TableAction, TableConfig, TableRow } from 'shared/components/table/table.model';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, Router } from '@angular/router';
 
 describe('TableComponent', () => {
 
@@ -17,8 +16,7 @@ describe('TableComponent', () => {
             imports: [
                 CommonModule,
                 FormsModule,
-                SafeHtmlModule,
-                RouterTestingModule
+                SafeHtmlModule
             ],
             declarations: [
                 TableComponent
@@ -29,6 +27,13 @@ describe('TableComponent', () => {
                         navigateByUrl: () => {
                         },
                         createUrlTree: () => {
+                        }
+                    }
+                },
+                {
+                    provide: ActivatedRoute, useValue: {
+                        snapshot: {
+                            queryParams: {}
                         }
                     }
                 }
