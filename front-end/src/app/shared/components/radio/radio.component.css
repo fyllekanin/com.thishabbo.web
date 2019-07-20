@@ -150,7 +150,7 @@
 }
 
 .says {
-    width: 58%;
+    width: 56%;
     height: 28px;
     float: left;
     white-space: nowrap;
@@ -189,7 +189,7 @@
 }
 
 .stats {
-    width: 41.4%;
+    width: 43.4%;
     display: inline-block;
     margin-left: 1px;
     margin-top: -5px;
