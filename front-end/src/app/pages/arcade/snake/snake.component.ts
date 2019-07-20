@@ -62,6 +62,7 @@ export class SnakeComponent extends Page implements AfterViewInit, OnDestroy {
     start (): void {
         this._httpService.get('arcade/snake')
             .subscribe(res => {
+                this._gameSpeed = 100;
                 this._gameId = res.gameId;
                 this.tabs = [];
                 this.updateGameSpeed();

@@ -34,7 +34,7 @@ class SnakeController extends Controller {
         $highScore = Game::orderBy('score', 'DESC')
             ->where('gameType', $this->gameTypes->snake)
             ->where('isFinished', '>', 0)
-            ->take(15)
+            ->take(10)
             ->get();
 
         return $asJson ? response()->json($highScore) : $highScore;
