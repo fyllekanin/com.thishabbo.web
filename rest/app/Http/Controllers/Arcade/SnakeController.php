@@ -95,6 +95,12 @@ class SnakeController extends Controller {
         ]);
     }
 
+    /**
+     * @param $game
+     * @param $user
+     * @param $creditsService
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
     private function checkWinnings($game, $user, $creditsService) {
         $highscores = Game::where('gameType', $game->gameType)->where('score', '>', $game->score)->count();
         switch ($highscores) {
