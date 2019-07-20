@@ -53,7 +53,7 @@ class SnakeController extends Controller {
 
         Condition::precondition(!$creditsService->haveEnoughCredits($user->userId, ConfigHelper::getCostSettings()->arcade), 400,
             'You need at least ' . ConfigHelper::getCostSettings()->arcade . ' credits to play');
-        $creditsService->takeCredits($user->userOd, ConfigHelper::getCostSettings()->arcade);
+        $creditsService->takeCredits($user->userId, ConfigHelper::getCostSettings()->arcade);
 
         $game = new Game([
             'userId' => $user->userId,
