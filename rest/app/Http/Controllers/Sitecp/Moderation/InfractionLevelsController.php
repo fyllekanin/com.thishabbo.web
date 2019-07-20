@@ -33,7 +33,7 @@ class InfractionLevelsController extends Controller {
 
         return response()->json([
             'page' => $page,
-            'total' => $infractionLevelsSql->count('infractionLevelId'),
+            'total' => DataHelper::getPage($infractionLevelsSql->count('infractionLevelId')),
             'items' => $infractionLevelsSql->take($this->perPage)
                 ->skip(DataHelper::getOffset($page))
                 ->get()
