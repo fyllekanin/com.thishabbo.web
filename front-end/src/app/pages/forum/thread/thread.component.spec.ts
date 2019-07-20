@@ -116,33 +116,6 @@ describe('ThreadComponent', () => {
         });
     });
 
-    describe('subTitle', () => {
-        it('should return empty string if thread is open', () => {
-            // Given
-            sendThread.next({data: new ThreadPage({isOpen: true})});
-
-            // When
-            const result = component.subTitle;
-
-            // Then
-            expect(result).toBe('');
-        });
-        it('should return non-empty string if thread is closed', () => {
-            // Given
-            sendThread.next({
-                data: new ThreadPage({
-                    isOpen: false
-                })
-            });
-
-            // When
-            const result = component.subTitle;
-
-            // Then
-            expect(result).not.toBe('');
-        });
-    });
-
     it('posts should return thread posts with lowest ID first', () => {
         // Given
         sendThread.next({
