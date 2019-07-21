@@ -29,7 +29,7 @@ class ShopController extends Controller {
         $this->creditsService = $creditsService;
     }
 
-    public function getPaymentVerification(Request $request, $paymentId, $payerId) {
+    public function getPaymentVerification($paymentId, $payerId) {
         $apiContext = new ApiContext(new OAuthTokenCredential(config('paypal.client_id'), config('paypal.secret')));
         $apiContext->setConfig(config('paypal.settings'));
 

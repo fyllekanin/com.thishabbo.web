@@ -18,6 +18,12 @@ use App\Utils\Iterables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Class ThreadController
+ *
+ * @package App\Http\Controllers\Moderation
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ */
 class ThreadController extends Controller {
     private $forumService;
 
