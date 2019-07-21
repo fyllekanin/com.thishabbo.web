@@ -1,0 +1,1 @@
+{"topic":"Update paypal clientId","type":"Bug","body":"The clientId in angular was incorrect and there for paypal did not work"}

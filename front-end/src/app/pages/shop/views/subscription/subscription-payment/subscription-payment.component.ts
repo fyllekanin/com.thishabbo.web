@@ -74,7 +74,7 @@ export class SubscriptionPaymentComponent extends InnerDialogComponent {
     private setConfig (): void {
         this.paypalConfig = {
             currency: 'GBP',
-            clientId: 'AY93kR0Gr1VxHYUKW47FNfu1dwMjwgOQ5oKjLlM8Iiwkku8UvgOqJ9sj0C7jrzjiIL1vRdbzqmoMHxKW',
+            clientId: 'AbqW_Z73zTKh4ABcSB3tvfn544vYNh3a0DuJUNauSr7UpbgSxjkzEHUYjb8I28j_f3wT96a4RSY648ju',
             createOrderOnClient: () => <ICreateOrderRequest>{
                 intent: 'CAPTURE',
                 purchase_units: [{
