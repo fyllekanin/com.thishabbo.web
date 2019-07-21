@@ -22,6 +22,7 @@ import { DialogService } from 'core/services/dialog/dialog.service';
 
 @Injectable()
 export class HttpRequestInterceptor implements HttpInterceptor {
+    private static PULL_STOP = false;
     private readonly GET_METHOD = 'GET';
     private isRefreshingToken = false;
     private tokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
@@ -73,6 +74,9 @@ export class HttpRequestInterceptor implements HttpInterceptor {
                             this._router.navigateByUrl('/page/missing');
                             return observableThrowError(error);
                         case 418:
+                            if (HttpRequestInterceptor.PULL_STOP && req.url.indexOf('puller/pull') > -1) {
+                                return observableThrowError(error);
+                            }
                             this._dialogService.confirm({
                                 title: `New version detected, ${window['version']} -> ${error.error.message}`,
                                 content: `There is a new version available, click reload to load the new version.<br/>
@@ -83,6 +87,7 @@ export class HttpRequestInterceptor implements HttpInterceptor {
                                     location.reload(true);
                                 }
                             });
+                            HttpRequestInterceptor.PULL_STOP = true;
                             return observableThrowError(error);
                         case 500:
                             return observableThrowError(error);

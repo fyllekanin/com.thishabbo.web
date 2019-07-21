@@ -1,0 +1,1 @@
+{"topic":"Do not spam new version dialog","type":"Refactor / Improvement","body":"The version dialog always came up to fast when people wanted to save stuff. Changed to only come up once on pull then stop, otherwise only come up on other requests"}
