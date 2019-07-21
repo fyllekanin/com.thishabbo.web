@@ -47,7 +47,7 @@ return [
         'canApprovePosts' => 1024,
         'canManagePolls' => 4096,
         'canChangeOwner' => 8192,
-        'canMergePosts' => 16384,
+        'canMergeThreadsAndPosts' => 16384,
         'canMoveThreads' => 32768
     ],
     'FORUM_OPTIONS' => [

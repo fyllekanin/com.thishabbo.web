@@ -62,7 +62,7 @@ export class ForumPermissions {
     @primitive()
     canChangeOwner: boolean;
     @primitive()
-    canMergePosts: boolean;
+    canMergeThreadsAndPosts: boolean;
     @primitive()
     canMoveThreads: boolean;
     @primitive()

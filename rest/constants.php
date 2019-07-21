@@ -18,3 +18,7 @@ define('CONST_DB_PASSWORD', '');
 define('CONST_CACHE_DRIVER', 'array');
 define('CONST_QUEUE_CONNECTION', 'database');
 define('CONST_QUEUE_TABLE', 'jobs');
+
+define('PAYPAL_CLIENT_ID', 'AY93kR0Gr1VxHYUKW47FNfu1dwMjwgOQ5oKjLlM8Iiwkku8UvgOqJ9sj0C7jrzjiIL1vRdbzqmoMHxKW');
+define('PAYPAL_SECRET', 'EAcCmr13_6usxNHsWD2Ejf1VVohheUbr0OdgQc0x1u4NGVUb4H2A1slM2ZrRoIvp7lpt8NDqU1txAQ6c');
+define('PAYPAL_MODE', 'sandbox');

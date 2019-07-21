@@ -132,7 +132,8 @@ export class TopBarComponent {
             NotificationTypes.RADIO_REQUEST,
             NotificationTypes.LIKE_DJ,
             NotificationTypes.LIKE_HOST,
-            NotificationTypes.SENT_THC
+            NotificationTypes.SENT_THC,
+            NotificationTypes.REFERRAL
         ].indexOf(notification.type) > -1;
     }
 }

@@ -14,6 +14,10 @@ use App\Models\Logger\Action;
 use App\Services\CreditsService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
+use PayPal\Api\Payment;
+use PayPal\Api\PaymentExecution;
+use PayPal\Auth\OAuthTokenCredential;
+use PayPal\Rest\ApiContext;
 
 class ShopController extends Controller {
     private $myImpl;
@@ -23,6 +27,18 @@ class ShopController extends Controller {
         parent::__construct();
         $this->myImpl = $impl;
         $this->creditsService = $creditsService;
+    }
+
+    public function getPaymentVerification(Request $request, $paymentId, $payerId) {
+        $apiContext = new ApiContext(new OAuthTokenCredential(config('paypal.client_id'), config('paypal.secret')));
+        $apiContext->setConfig(config('paypal.settings'));
+
+        $payment = Payment::get($paymentId, $apiContext);
+        $execution = new PaymentExecution();
+        $execution->setPayerId($payerId);
+        $result = $payment->execute($execution, $apiContext);
+
+        dd($result);
     }
 
     public function sendThc(Request $request) {

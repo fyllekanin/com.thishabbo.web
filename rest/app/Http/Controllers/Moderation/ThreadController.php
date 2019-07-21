@@ -31,6 +31,49 @@ class ThreadController extends Controller {
         $this->forumService = $forumService;
     }
 
+    public function mergeThreads(Request $request, $srcThreadId) {
+        $user = $request->get('auth');
+        $destThreadId = $request->input('destThreadId');
+        $forumPermissions = ConfigHelper::getForumPermissions();
+
+        $srcThread = Thread::find($srcThreadId);
+        $destThread = Thread::find($destThreadId);
+        Condition::precondition(!$srcThread, 404, 'Source thread do not exist');
+        Condition::precondition(!$destThread, 404, 'Destination thread do not exist');
+
+        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, $forumPermissions->canRead, $srcThread->categoryId), 400,
+            'You don\'t have access to the source category');
+        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, $forumPermissions->canRead, $destThread->categoryId), 400,
+            'You don\'t have access to the destination category');
+        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, $forumPermissions->canMergeThreadsAndPosts, $srcThread->categoryId), 400,
+            'You don\'t have access to merge thread in the source category');
+        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, $forumPermissions->canMergeThreadsAndPosts, $destThread->categoryId), 400,
+            'You don\'t have access to merge thread in the destination category');
+
+        $destThread->firstPost->content .= "
+--------------------------------------------
+" . $srcThread->firstPost->content;
+        $destThread->firstPost->save();
+        $destThread->posts += $srcThread->posts;
+        $destThread->save();
+        $srcThread->firstPost->isDeleted = true;
+        $srcThread->firstPost->save();
+        Post::where('threadId', $srcThread->threadId)->update(['threadId' => $destThread->threadId]);
+        $srcThread->isDeleted = true;
+        $srcThread->save();
+
+        $this->forumService->updateLastPostIdOnCategory($srcThread->categoryId);
+        $this->forumService->updateLastPostIdOnCategory($destThread->categoryId);
+
+        Logger::mod($user->userId, $request->ip(), Action::MERGED_THREAD, [
+            'sourceThread' => $srcThread->title,
+            'destinationThread' => $destThread->title,
+            'sourceThreadId' => $srcThread->threadId,
+            'destinationThreadId' => $destThread->threadId
+        ], $srcThread->threadId);
+        return response()->json();
+    }
+
     /**
      * @param Request $request
      * @param         $categoryId
@@ -62,7 +105,7 @@ class ThreadController extends Controller {
 
         Condition::precondition(!$sameCategoryId, 400, 'You are trying to move threads from different categories');
         Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, $forumPermissions->canMoveThreads, $oldCategoryId), 400,
-            'You don\'t have access to move threads from this category!s');
+            'You don\'t have access to move threads from this category!');
 
         $threadsSql->update([
             'categoryId' => $category->categoryId

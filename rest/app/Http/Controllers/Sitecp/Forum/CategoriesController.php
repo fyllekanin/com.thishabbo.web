@@ -48,7 +48,7 @@ class CategoriesController extends Controller {
                 ['name' => 'Can open/close threads', 'children' => $this->getGroupsWithPermission($groups, $forumPermissions->canCloseOpenThread, $category->categoryId)],
                 ['name' => 'Can approve/unapprove threads', 'children' => $this->getGroupsWithPermission($groups, $forumPermissions->canApproveThreads, $category->categoryId)],
                 ['name' => 'Can approve/unapprove posts', 'children' => $this->getGroupsWithPermission($groups, $forumPermissions->canApprovePosts, $category->categoryId)],
-                ['name' => 'Can merge posts', 'children' => $this->getGroupsWithPermission($groups, $forumPermissions->canMergePosts, $category->categoryId)],
+                ['name' => 'Can merge threads and posts', 'children' => $this->getGroupsWithPermission($groups, $forumPermissions->canMergeThreadsAndPosts, $category->categoryId)],
                 ['name' => 'Can change owner', 'children' => $this->getGroupsWithPermission($groups, $forumPermissions->canChangeOwner, $category->categoryId)],
                 ['name' => 'Can sticky threads', 'children' => $this->getGroupsWithPermission($groups, $forumPermissions->canStickyThread, $category->categoryId)],
                 ['name' => 'Can delete threads/posts', 'children' => $this->getGroupsWithPermission($groups, $forumPermissions->canDeletePosts, $category->categoryId)],

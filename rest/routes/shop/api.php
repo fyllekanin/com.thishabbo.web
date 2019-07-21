@@ -10,3 +10,5 @@ Route::post('/loot-boxes/open/{lootBoxId}', 'ShopController@openLootBox');
 Route::post('/subscriptions/buy/{subscriptionId}', 'ShopController@buySubscription');
 
 Route::post('/send-thc', 'ShopController@sendThc');
+
+Route::get('/payment-verification/{paymentId}/{payerId}', 'ShopController@getPaymentVerification');

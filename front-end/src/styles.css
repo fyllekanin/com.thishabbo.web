@@ -101,17 +101,6 @@ h2 {
     display: initial;
 }
 
-@media screen and (max-width: 1200px) {
-    .wrapper-margin-x {
-        padding-right: 0.312rem;
-        padding-left: 0.312rem;
-    }
-
-    .mobile-hidden {
-        display: none;
-    }
-}
-
 .generic-radio-button {
     color: white;
     background: #dddddd url(/assets/images/bargradient.png);
@@ -322,4 +311,20 @@ summary {
 table td {
     min-width: 100px;
     word-wrap: break-word;
+}
+
+@media screen and (max-width: 1200px) {
+    .wrapper-margin-x {
+        padding-right: 0.312rem;
+        padding-left: 0.312rem;
+    }
+
+    .mobile-hidden {
+        display: none;
+    }
+
+    table td {
+        min-width: 0;
+        word-wrap: break-word;
+    }
 }

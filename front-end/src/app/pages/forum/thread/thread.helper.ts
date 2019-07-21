@@ -10,6 +10,7 @@ import { User } from 'core/services/auth/auth.model';
 import { MoveThreadComponent } from './move-thread/move-thread.component';
 import { ComponentFactoryResolver } from '@angular/core';
 import { EditHistoryComponent } from './edit-history/edit-history.component';
+import { MergeThreadComponent } from './merge-thread/merge-thread.component';
 
 export class ThreadActionExecutor {
     private readonly _httpService: HttpService;
@@ -116,7 +117,30 @@ export class ThreadActionExecutor {
                 }
                 this.deletePosts(selectedIds);
                 break;
+            case ThreadActions.MERGE_THREAD:
+                this.mergeThread();
+                break;
         }
+    }
+
+    private mergeThread (): void {
+        this._dialogService.openDialog({
+            title: 'Merging Thread',
+            component: this._componentFactory.resolveComponentFactory(MergeThreadComponent),
+            buttons: [
+                new DialogCloseButton('Close'),
+                new DialogButton({
+                    title: 'Merge',
+                    callback: threadId => {
+                        this._httpService.put(`forum/moderation/thread/merge/${this._threadPage.threadId}`, {destThreadId: threadId})
+                            .subscribe(() => {
+                                this._notificationService.sendInfoNotification('Threads Merged!');
+                                this._router.navigateByUrl(`/forum/thread/${threadId}/page/1`);
+                            }, this._notificationService.failureNotification.bind(this._notificationService));
+                    }
+                })
+            ]
+        });
     }
 
     private deletePosts (postIds: Array<number>): void {

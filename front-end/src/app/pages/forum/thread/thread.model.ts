@@ -109,6 +109,7 @@ export enum ThreadActions {
     CHANGE_THREAD_OWNER,
     MERGE_POSTS,
     MOVE_THREAD,
+    MERGE_THREAD,
     SUBSCRIBE,
     UNSUBSCRIBE,
     IGNORE,
@@ -175,7 +176,7 @@ export function getPostTools (forumPermissions: ForumPermissions) {
     return [
         {title: 'Approve Posts', value: ThreadActions.APPROVE_POSTS, condition: forumPermissions.canApprovePosts},
         {title: 'Unapprove Posts', value: ThreadActions.UNAPPROVE_POSTS, condition: forumPermissions.canApprovePosts},
-        {title: 'Merge Posts', value: ThreadActions.MERGE_POSTS, condition: forumPermissions.canMergePosts},
+        {title: 'Merge Posts', value: ThreadActions.MERGE_POSTS, condition: forumPermissions.canMergeThreadsAndPosts},
         {title: 'Change Owner', value: ThreadActions.CHANGE_POST_OWNER, condition: forumPermissions.canChangeOwner},
         {title: 'Edit History', value: ThreadActions.POST_HISTORY, condition: forumPermissions.canEditOthersPosts},
         {title: 'Delete Posts', value: ThreadActions.DELETE_POSTS, condition: forumPermissions.canDeletePosts}
@@ -253,6 +254,11 @@ export function getThreadTools (userId: number, threadPage: ThreadPage, forumPer
             title: 'Move Thread',
             value: ThreadActions.MOVE_THREAD,
             condition: forumPermissions.canMoveThreads
+        },
+        {
+            title: 'Merge Thread',
+            value: ThreadActions.MERGE_THREAD,
+            condition: forumPermissions.canMergeThreadsAndPosts
         },
         {
             title: 'Edit History',

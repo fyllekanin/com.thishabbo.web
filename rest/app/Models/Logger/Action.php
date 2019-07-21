@@ -2249,4 +2249,19 @@ class Action {
         'contentTable' => 'users',
         'contentSelect' => 'nickname'
     ];
+
+    const MERGED_THREAD = [
+        'id' => 198,
+        'description' => 'User merged threads',
+        'data' => [
+            'sourceThread' => 'Name of source thread',
+            'destinationThread' => 'Name of destination thread',
+            'sourceThreadId' => 'ID of source thread',
+            'destinationThreadId' => 'ID of destination thread'
+        ],
+        'log' => 'log_mod',
+        'contentId' => 'threadId',
+        'contentTable' => 'threads',
+        'contentSelect' => 'title'
+    ];
 }

@@ -65,7 +65,7 @@ class GroupPermissionsController extends Controller {
             (object)['name' => 'Can open/close threads', 'value' => $this->forumPermissions->canCloseOpenThread],
             (object)['name' => 'Can approve/unapprove threads', 'value' => $this->forumPermissions->canApproveThreads],
             (object)['name' => 'Can approve/unapprove posts', 'value' => $this->forumPermissions->canApprovePosts],
-            (object)['name' => 'Can merge posts', 'value' => $this->forumPermissions->canMergePosts],
+            (object)['name' => 'Can merge threads and posts', 'value' => $this->forumPermissions->canMergeThreadsAndPosts],
             (object)['name' => 'Can change owner', 'value' => $this->forumPermissions->canChangeOwner],
             (object)['name' => 'Can sticky threads', 'value' => $this->forumPermissions->canStickyThread],
             (object)['name' => 'Can delete threads/posts', 'value' => $this->forumPermissions->canDeletePosts],

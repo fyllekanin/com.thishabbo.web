@@ -1,0 +1,1 @@
+{"topic":"Fix referral notification","type":"Bug","body":"Referral notification was never displayed to the user and then got marked as read when they used read all"}
