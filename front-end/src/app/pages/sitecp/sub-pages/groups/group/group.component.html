@@ -108,6 +108,16 @@
                 </div>
                 <div>
                     <label class="checkbox-container">
+                        Access to manage Badges
+                        <span tooltip="Tick this to grant access to manage Badges" class="checkbox-info">
+                            <em class="fas fa-question-circle"></em>
+                        </span>
+                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canManageBadges">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
                         Access to approve Group Requests from Public Groups
                         <input type="checkbox" [(ngModel)]="sitecpPermissions.canApprovePublicGroups">
                         <span class="checkmark"></span>
