@@ -1,9 +1,9 @@
 <?php
 return [
-    'client_id' => PAYPAL_CLIENT_ID,
-    'secret' => PAYPAL_SECRET,
+    'client_id' => CONST_PAYPAL_CLIENT_ID,
+    'secret' => CONST_PAYPAL_SECRET,
     'settings' => [
-        'mode' => PAYPAL_MODE,
+        'mode' => CONST_PAYPAL_MODE,
         'http.ConnectionTimeOut' => 1000,
         'log.LogEnabled' => true,
         'log.FileName' => storage_path() . '/logs/paypal.log',
