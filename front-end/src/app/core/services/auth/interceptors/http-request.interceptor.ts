@@ -80,7 +80,7 @@ export class HttpRequestInterceptor implements HttpInterceptor {
                             this._dialogService.confirm({
                                 title: `New version detected, ${window['version']} -> ${error.error.message}`,
                                 content: `There is a new version available, click reload to load the new version.<br/>
-                                If interested in what's new, scroll down and look on versions!`,
+                                If interested in what's new, scroll down and look on versions! <img src="/assets/images/update.png"/>`,
                                 forced: true,
                                 callback: () => {
                                     this._dialogService.closeDialog();

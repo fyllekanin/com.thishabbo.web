@@ -41,11 +41,11 @@
       true,
       {
         "order": [
+          "private-static-field",
           "private-instance-field",
           "public-instance-field",
           "public-constructor",
           "public-static-field",
-          "private-static-field",
           "private-constructor",
           "public-instance-method",
           "protected-instance-method",
