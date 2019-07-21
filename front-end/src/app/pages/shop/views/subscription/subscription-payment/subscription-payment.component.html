@@ -1,6 +1,23 @@
-<button appButton (onClick)="buyWithCredits()">Credits</button>
-<div *ngIf="paypalConfig">
-    <hr/>
+<div *ngIf="isLoading" class="centered">
+    <div class="lds-roller">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
 
-    <ngx-paypal [config]="paypalConfig"></ngx-paypal>
+<div *ngIf="showSuccess">
+    <app-info-box [model]="successMessage"></app-info-box>
+</div>
+<div *ngIf="!isLoading && !showSuccess">
+    <button appButton (onClick)="buyWithCredits()">Credits</button>
+    <div *ngIf="paypalConfig">
+        <hr/>
+        <ngx-paypal [config]="paypalConfig"></ngx-paypal>
+    </div>
 </div>

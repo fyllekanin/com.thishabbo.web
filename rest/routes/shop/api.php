@@ -11,4 +11,4 @@ Route::post('/subscriptions/buy/{subscriptionId}', 'ShopController@buySubscripti
 
 Route::post('/send-thc', 'ShopController@sendThc');
 
-Route::get('/payment-verification/{paymentId}/{payerId}', 'ShopController@getPaymentVerification');
+Route::get('/payment-verification/{orderId}', 'ShopController@getPaymentVerification');

@@ -4,19 +4,42 @@ import { ShopSubscription } from '../../../shop.model';
 import { ICreateOrderRequest, IPayPalConfig } from 'ngx-paypal';
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
+import { INFO_BOX_TYPE, InfoBoxModel } from 'shared/app-views/info-box/info-box.model';
 
 @Component({
     selector: 'app-shop-subscriptions-payment',
     templateUrl: 'subscription-payment.component.html',
-    styles: [`button {
-        width: 100%;
-    }`]
+    styles: [
+            `button {
+            width: 100%;
+        }`,
+            `.lds-roller div:after {
+            content: " ";
+            display: block;
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #000;
+            margin: -3px 0 0 -3px;
+        }`,
+            `.lds-roller {
+            left: calc(50% - 64px);
+        }`
+    ]
 })
 export class SubscriptionPaymentComponent extends InnerDialogComponent {
     private _data: ShopSubscription;
 
     paypalConfig: IPayPalConfig;
-    showSuccess: boolean;
+    showSuccess = false;
+    isLoading = false;
+
+    successMessage: InfoBoxModel = {
+        type: INFO_BOX_TYPE.INFO,
+        title: 'Success!',
+        content: 'Your subscription is now added on your account!'
+    };
 
     constructor (
         private _httpService: HttpService,
@@ -26,6 +49,8 @@ export class SubscriptionPaymentComponent extends InnerDialogComponent {
     }
 
     setData (subscription: ShopSubscription) {
+        this.isLoading = false;
+        this.showSuccess = false;
         this._data = subscription;
         if (this._data.pounds > 0) {
             this.setConfig();
@@ -37,10 +62,12 @@ export class SubscriptionPaymentComponent extends InnerDialogComponent {
     }
 
     buyWithCredits (): void {
+        this.isLoading = true;
         this._httpService.post(`shop/subscriptions/buy/${this._data.subscriptionId}`, null)
             .subscribe(() => {
                 this._notificationService.sendInfoNotification('The purchase is done!');
                 this.showSuccess = true;
+                this.isLoading = false;
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
@@ -51,6 +78,7 @@ export class SubscriptionPaymentComponent extends InnerDialogComponent {
             createOrderOnClient: () => <ICreateOrderRequest>{
                 intent: 'CAPTURE',
                 purchase_units: [{
+                    reference_id: String(this._data.subscriptionId),
                     amount: {
                         currency_code: 'GBP',
                         value: String(this._data.pounds),
@@ -79,17 +107,16 @@ export class SubscriptionPaymentComponent extends InnerDialogComponent {
                 label: 'paypal',
                 layout: 'vertical'
             },
-            onApprove: (data, actions) => {
-                console.log('onApprove - transaction was approved, but not authorized', data, actions);
-                actions.order.get().then(details => {
-                    console.log('onApprove - you can get full order details inside onApprove: ', details);
-                });
-
+            onApprove: () => {
             },
             onClientAuthorization: (data) => {
-                console.log(`onClientAuthorization - you should probably inform your server
-                about completed transaction at this point`, data);
-                this.showSuccess = true;
+                this.isLoading = true;
+                this._httpService.get(`shop/payment-verification/${data.id}`)
+                    .subscribe(() => {
+                        this.isLoading = false;
+                        this.showSuccess = true;
+                        this._notificationService.sendInfoNotification('Subscription bought!');
+                    }, this._notificationService.failureNotification.bind(this._notificationService));
             }
         };
     }

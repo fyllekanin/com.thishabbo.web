@@ -2264,4 +2264,14 @@ class Action {
         'contentTable' => 'threads',
         'contentSelect' => 'title'
     ];
+
+    const PAYPAL_SUBSCRIPTION = [
+        'id' => 199,
+        'description' => 'User bought subscription with paypal',
+        'data' => [],
+        'log' => 'log_user',
+        'contentId' => 'subscriptionId',
+        'contentTable' => 'subscriptions',
+        'contentSelect' => 'title'
+    ];
 }

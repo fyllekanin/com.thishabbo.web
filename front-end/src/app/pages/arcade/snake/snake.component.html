@@ -1,6 +1,6 @@
 <div class="grid-container full">
     <div class="grid-x grid-margin-x">
-        <div class="cell small-9">
+        <div class="cell small-8">
             <app-title
                     [title]="'Snake - Score: ' + score"
                     [tabs]="tabs"
@@ -10,6 +10,7 @@
                 <canvas style="width: 100%;" #game></canvas>
             </app-content>
         </div>
+        <div class="cell small-1"></div>
         <div class="cell small-3">
             <app-title [title]="'Highscore'"></app-title>
             <app-content>

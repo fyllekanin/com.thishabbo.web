@@ -14,10 +14,10 @@ use App\Models\Logger\Action;
 use App\Services\CreditsService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
-use PayPal\Api\Payment;
-use PayPal\Api\PaymentExecution;
-use PayPal\Auth\OAuthTokenCredential;
-use PayPal\Rest\ApiContext;
+use PayPalCheckoutSdk\Core\PayPalHttpClient;
+use PayPalCheckoutSdk\Core\ProductionEnvironment;
+use PayPalCheckoutSdk\Core\SandboxEnvironment;
+use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;
 
 class ShopController extends Controller {
     private $myImpl;
@@ -29,16 +29,37 @@ class ShopController extends Controller {
         $this->creditsService = $creditsService;
     }
 
-    public function getPaymentVerification($paymentId, $payerId) {
-        $apiContext = new ApiContext(new OAuthTokenCredential(config('paypal.client_id'), config('paypal.secret')));
-        $apiContext->setConfig(config('paypal.settings'));
+    public function getPaymentVerification(Request $request, $orderId) {
+        $user = $request->get('auth');
+        $environment = null;
+        if (config('paypal.settings.mode') == 'sandbox') {
+            $environment = new SandBoxEnvironment(config('paypal.client_id'), config('paypal.secret'));
+        } else {
+            $environment = new ProductionEnvironment(config('paypal.client_id'), config('paypal.secret'));
+        }
+        $client = new PayPalHttpClient($environment);
 
-        $payment = Payment::get($paymentId, $apiContext);
-        $execution = new PaymentExecution();
-        $execution->setPayerId($payerId);
-        $result = $payment->execute($execution, $apiContext);
+        $paypalRequest = new OrdersCaptureRequest($orderId);
+        $paypalRequest->prefer('return=representation');
 
-        dd($result);
+        $subscriptionId = 0;
+        try {
+            $response = $client->execute($paypalRequest);
+            $status = $response->result->status;
+            $subscriptionId = $response->result->purchase_units[0]->reference_id;
+            Condition::precondition($status != 'COMPLETED', 400, 'Something went wrong!');
+
+            $oneMonth = 2419200;
+            $this->myImpl->giveUserSubscription($user, (object)[
+                'subscriptionId' => $subscriptionId,
+                'subscriptionTime' => $oneMonth
+            ]);
+        } catch (\HttpException $e) {
+            Condition::precondition(true, 400, 'Something went wrong!');
+        }
+
+        Logger::user($user->userId, $request->ip(), Action::PAYPAL_SUBSCRIPTION, [], $subscriptionId);
+        return response()->json();
     }
 
     public function sendThc(Request $request) {
