@@ -9,5 +9,8 @@ export class UserView {
 
     constructor (source: Partial<UserView>) {
         ClassHelper.assign(this, source);
+        if (!this.user) {
+            this.user = new SlimUser({userId: 0});
+        }
     }
 }

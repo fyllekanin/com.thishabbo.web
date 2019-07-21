@@ -14,7 +14,8 @@
     </div>
     <div *ngIf="isRadioRequest">
         New request! <br/>
-        <app-user-link [user]="user" [isMiniProfileDisabled]="true"></app-user-link>
+        <app-user-link *ngIf="user" [user]="user" [isMiniProfileDisabled]="true"></app-user-link>
+        <span *ngIf="!user">{{customData}}</span>
         sent a request!
     </div>
     <div *ngIf="isReferral">

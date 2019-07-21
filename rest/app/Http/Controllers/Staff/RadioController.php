@@ -232,7 +232,7 @@ class RadioController extends Controller {
         $radioRequest->save();
 
         $radio = new RadioSettings(SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->radio));
-        NotificationFactory::newRadioRequest($radio->userId, $user->userId);
+        NotificationFactory::newRadioRequest($radio->userId, $user->userId, $radioRequest->requestId);
         Logger::user($user->userId, $request->ip(), Action::DID_RADIO_REQUEST);
         return response()->json();
     }

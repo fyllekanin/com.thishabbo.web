@@ -86,12 +86,12 @@ class NotificationFactory {
         ]);
     }
 
-    public static function newRadioRequest($userId, $senderId) {
+    public static function newRadioRequest($userId, $senderId, $requestId) {
         DB::table('notifications')->insert([
             'userId' => $userId,
             'senderId' => $senderId,
             'type' => Type::getType(Type::RADIO_REQUEST),
-            'contentId' => 0,
+            'contentId' => $requestId,
             'createdAt' => time()
         ]);
     }
