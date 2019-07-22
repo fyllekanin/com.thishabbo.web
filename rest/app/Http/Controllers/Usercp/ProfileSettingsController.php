@@ -191,11 +191,13 @@ class ProfileSettingsController extends Controller {
         AvatarHelper::backupAvatarIfExists(AvatarHelper::getCurrentAvatar($user->userId));
 
         $destination = SettingsHelper::getResourcesPath('images/users/' . $user->userId . '.gif');
-        $img = Image::make($avatar);
         if ($resizeForMe) {
+            $img = Image::make($avatar);
             $img->resize($avatarSize->width, $avatarSize->height);
+            $img->save($destination);
+        } else {
+            $avatar->move(SettingsHelper::getResourcesPath('images/users/'), $user->userId . '.gif');
         }
-        $img->save($destination);
 
         $dimensions = getimagesize($destination);
         $avatar = new Avatar([
