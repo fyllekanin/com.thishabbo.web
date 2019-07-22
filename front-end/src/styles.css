@@ -37,6 +37,24 @@ html, body {
     display: inline-block;
 }
 
+.mention-user-2 {
+    color: #159cfc;
+    display: inline-block;
+}
+
+.mention-user-2::before {
+    content: '@';
+}
+
+.mention-group-2 {
+    color: #159cfc;
+    display: inline-block;
+}
+
+.mention-group-2::before {
+    content: '#';
+}
+
 .mention-group {
     color: #5592c5;
     display: inline-block;
