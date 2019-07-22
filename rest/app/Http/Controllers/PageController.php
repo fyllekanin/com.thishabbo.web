@@ -40,20 +40,20 @@ class PageController extends Controller {
     }
 
     public function getVersions($page) {
-        $folderNames = Iterables::filter(scandir(SettingsHelper::getResourcesPath('commit-logs')), function($folder) {
+        $folderNames = Iterables::filter(scandir(SettingsHelper::getResourcesPath('commit-logs')), function ($folder) {
             return preg_match('/[0-9]+.[0-9]+.[0-9]+/', $folder);
         });
         usort($folderNames, 'version_compare');
         $folderNames = array_reverse($folderNames);
 
-        $versions = array_map(function($folder) {
+        $versions = array_map(function ($folder) {
 
-            return (object) [
+            return (object)[
                 'version' => $folder,
                 'changes' => $this->myImpl->getCommitLogChanges($folder)
             ];
         }, $folderNames);
-        $versions = Iterables::filter($versions, function($version) {
+        $versions = Iterables::filter($versions, function ($version) {
             return count($version->changes) > 0;
         });
 
@@ -74,7 +74,7 @@ class PageController extends Controller {
     public function getGroupList() {
         return response()->json(GroupList::orderBy('displayOrder', 'ASC')->get()->map(function ($item) {
             return [
-                'name' => $item->group->name,
+                'name' => $item->group->nickname ? $item->group->nickname : $item->group->name,
                 'color' => $item->color,
                 'users' => $item->group->userGroup()->get()->map(function ($relation) {
                     $userData = UserHelper::getUserDataOrCreate($relation->userId);

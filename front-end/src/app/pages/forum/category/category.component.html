@@ -20,8 +20,10 @@
                    [top]="stickyHeader"></app-title>
         <app-content [isContracted]="isStickiesVisible">
             <app-forum-slim-thread *ngFor="let stickyThread of categoryPage.stickyThreads"
+                                   [thread]="stickyThread"
                                    [forumPermissions]="categoryPage.forumPermissions"
-                                   [thread]="stickyThread">
+                                   [isChecked]="isChecked(stickyThread)"
+                                   (onCheckChanged)="onCheckChanged($event)">
             </app-forum-slim-thread>
         </app-content>
     </div>

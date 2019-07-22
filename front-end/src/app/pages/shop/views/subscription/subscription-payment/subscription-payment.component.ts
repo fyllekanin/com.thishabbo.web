@@ -76,7 +76,7 @@ export class SubscriptionPaymentComponent extends InnerDialogComponent {
             currency: 'GBP',
             clientId: 'AbqW_Z73zTKh4ABcSB3tvfn544vYNh3a0DuJUNauSr7UpbgSxjkzEHUYjb8I28j_f3wT96a4RSY648ju',
             createOrderOnClient: () => <ICreateOrderRequest>{
-                intent: 'CAPTURE',
+                intent: 'AUTHORIZE',
                 purchase_units: [{
                     reference_id: String(this._data.subscriptionId),
                     amount: {

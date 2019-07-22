@@ -7,6 +7,16 @@
                 <input type="text" name="name" [(ngModel)]="group.name"/>
             </div>
             <div class="cell small-12 medium-4">
+                <label>
+                    Nickname
+                    <span tooltip="Nickname is for tagging, userbar and staff list, if empty it will use the group name (not for tagging)"
+                          class="checkbox-info">
+                        <em class="fas fa-question-circle"></em>
+                    </span>
+                </label>
+                <input type="text" [(ngModel)]="group.nickname" placeholder="Nickname"/>
+            </div>
+            <div class="cell small-12 medium-4">
                 <label>Immunity</label>
                 <input type="number" [(ngModel)]="group.immunity" (keyup)="onImmunityChange()" min="0"/>
             </div>
@@ -467,7 +477,7 @@
             </div>
             <div class="cell small-6">
                 <label class="checkbox-container">
-                    Usergroup can be tagged?<br> <em>If ticked, if somebody posts <strong>@usergroup</strong> it
+                    Usergroup can be tagged?<br> <em>If ticked, if somebody posts <strong>#usergroup</strong> it
                     will tag
                     everyone within that user group. Useful for Sitecp groups - not useful for groups with tons of
                     people
@@ -495,12 +505,7 @@
             <div class="cell small-6">
                 <label>
                     Userbar Styling
-                    <span tooltip="Nickname is only for userbar, if empty it will use the group name"
-                          class="checkbox-info">
-                        <em class="fas fa-question-circle"></em>
-                    </span>
                 </label>
-                <input type="text" [(ngModel)]="group.nickname" placeholder="Name on Userbar..."/>
                 <textarea autocomplete="off" autocapitalize="off" spellcheck="false" type="text"
                           [(ngModel)]="group.userBarStyling"></textarea>
 

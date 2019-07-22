@@ -77,8 +77,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
     }
 
     getEditorValue (): string {
-        const value = this._editorInstance ? this._editorInstance.getBBCode() : '';
-        return value.replace(new RegExp(/(?:^|)(@)(?!\.)(?!\S*\.\.)(?!\S*\.[\s|$])([a-z0-9\.]+)(?=\s|$)/gmi), '[mention]@$2[/mention]');
+        return this._editorInstance ? this._editorInstance.getBBCode() : '';
     }
 
     onClick (value: number): void {

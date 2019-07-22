@@ -1,0 +1,1 @@
+{"topic":"Fix copying permissions","type":"Bug","body":"When creating a category it did not copy the parents permissions"}

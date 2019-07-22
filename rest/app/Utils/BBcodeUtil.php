@@ -30,9 +30,7 @@ class BBcodeUtil {
                     '<img src="/rest/resources/images/emojis/' . $bbcode->bbcodeId . '.gif" />', $content);
                 continue;
             }
-            while (preg_match($bbcode->pattern, $content)) {
-                $content = preg_replace([$bbcode->pattern], [$bbcode->replace], $content);
-            }
+            $content = preg_replace([$bbcode->pattern], [$bbcode->replace], $content);
         }
 
         return $nl2br ? nl2br($content) : $content;

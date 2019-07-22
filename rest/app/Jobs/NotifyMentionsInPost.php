@@ -2,7 +2,9 @@
 
 namespace App\Jobs;
 
+use App\EloquentModels\Group\Group;
 use App\EloquentModels\User\User;
+use App\EloquentModels\User\UserGroup;
 use App\Helpers\ConfigHelper;
 use App\Models\Notification\Type;
 use App\Utils\Iterables;
@@ -24,9 +26,11 @@ use Illuminate\Support\Facades\DB;
  */
 class NotifyMentionsInPost implements ShouldQueue {
     private $quoteRegex = '/\[quotepost=(.*?)\](.*?)\[\/quotepost\]/si';
-    private $mentionRegex = '/\[mention]@(.*?)\[\/mention\]/si';
+    private $mentionRegex = '/@([a-zA-Z0-9]+)/si';
+    private $groupRegex = '/#([a-zA-Z0-9_]+)/si';
 
     private $mentionTypeUser = 'user';
+    private $mentionTypeGroup = 'group';
 
     private $ignoredNotificationTypes;
     private $content;
@@ -55,7 +59,8 @@ class NotifyMentionsInPost implements ShouldQueue {
     public function handle() {
         $quotedPostIds = $this->getQuotedUserIds($this->content);
         $content = preg_replace($this->quoteRegex, '', $this->content);
-        $mentionedIds = $this->getMentionedIds($content, $this->mentionTypeUser);
+        $mentionedIds = $this->getUserIds($content, $this->mentionTypeUser);
+        $groupTags = $this->getUserIds($content, $this->mentionTypeGroup, $mentionedIds);
 
         $quotedPosts = DB::table('posts')->select('userId')->whereIn('postId', $quotedPostIds)->get()->toArray();
         $quotedUserIds = array_map(function ($post) {
@@ -84,7 +89,8 @@ class NotifyMentionsInPost implements ShouldQueue {
 
         $quoteInserts = $this->createNotificationInserts($quotedUserIds, $this->userId, $quoteType, $this->postId, $quotedFromEarlier);
         $mentionInserts = $this->createNotificationInserts($mentionedIds, $this->userId, $mentionType, $this->postId, $mentionedFromEarlier);
-        $inserts = array_merge($quoteInserts, $mentionInserts);
+        $groupInserts = $this->createNotificationInserts($groupTags, $this->userId, $mentionType, $this->postId, $mentionedFromEarlier);
+        $inserts = array_merge($quoteInserts, array_merge($mentionInserts, $groupInserts));
 
         DB::table('notifications')->insert($inserts);
     }
@@ -121,10 +127,35 @@ class NotifyMentionsInPost implements ShouldQueue {
         return [];
     }
 
-    private function getMentionedIds($content, $mentionType) {
-        if ($mentionType == $this->mentionTypeUser && preg_match_all($this->mentionRegex, $content, $matches)) {
-            return User::whereIn('nickname', str_replace('_', ' ', $matches[1]))->pluck('userId');
+    private function getUserIds($content, $mentionType, $ignoreIds = []) {
+        $userIds = [];
+        if ($mentionType == $this->mentionTypeUser) {
+            preg_match_all($this->mentionRegex, $content, $matches);
+            if ($matches && count($matches) > 0 && count($matches[1]) > 0) {
+                $results = array_map(function ($match) {
+                    return "'" . strtolower(str_replace('_', ' ', $match)) . "'";
+                }, $matches[1]);
+                
+                $userIds = User::whereRaw('lower(nickname) IN (' . join(',', $results) . ')')
+                    ->whereNotIn('userId', $ignoreIds)->pluck('userId')->toArray();
+            }
         }
-        return [];
+
+        if ($mentionType == $this->mentionTypeGroup) {
+            preg_match_all($this->groupRegex, $content, $matches);
+            if ($matches && count($matches) > 0 && count($matches[1]) > 0) {
+                $results = array_map(function ($match) {
+                    return "'" . strtolower(str_replace('_', ' ', $match)) . "'";
+                }, $matches[1]);
+
+                $groupIds = Group::whereRaw('lower(nickname) IN (' . join(',', $results) . ')')
+                    ->whereRaw('(options & ' . ConfigHelper::getGroupOptionsConfig()->canBeTagged . ')')
+                    ->pluck('groupId');
+                $userIds = array_merge($userIds, UserGroup::whereIn('groupId', $groupIds)
+                    ->whereNotIn('userId', $ignoreIds)->pluck('userId')->toArray());
+            }
+        }
+
+        return $userIds;
     }
 }

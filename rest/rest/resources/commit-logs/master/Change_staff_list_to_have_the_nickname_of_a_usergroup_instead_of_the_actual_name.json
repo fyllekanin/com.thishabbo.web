@@ -1,0 +1,1 @@
+{"topic":"Change staff list to have the nickname of a usergroup instead of the actual name","type":"Refactor / Improvement","body":"Use the nickname if its set, if not default back on the name"}

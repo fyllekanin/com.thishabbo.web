@@ -285,24 +285,15 @@ class CategoriesController extends Controller {
      * @param $category
      */
     private function createForumPermissions($category) {
-        $parentPermissions = ForumPermission::where('categoryId', $category->parentId)->get();
-        if ($parentPermissions && count($parentPermissions) > 0) {
-            foreach ($parentPermissions as $parentPermission) {
+        ForumPermission::where('categoryId', $category->parentId)->get()
+            ->each(function ($parentPermission) use ($category) {
                 $permission = new ForumPermission([
                     'categoryId' => $category->categoryId,
                     'groupId' => $parentPermission->groupId,
                     'permissions' => $parentPermission->permissions
                 ]);
                 $permission->save();
-            }
-        } else {
-            $permission = new ForumPermission([
-                'categoryId' => $category->categoryId,
-                'groupId' => 0,
-                'permissions' => 1
-            ]);
-            $permission->save();
-        }
+            });
     }
 
     private function cascadeCategoryOptions($category) {
