@@ -268,7 +268,7 @@ class CategoryCrudController extends Controller {
 
         foreach ($childCategories as $child) {
             if (PermissionHelper::haveForumPermission($userId, ConfigHelper::getForumPermissions()->canViewOthersThreads, $child->categoryId) &&
-                    PermissionHelper::haveForumPermission($userId, ConfigHelper::getForumPermissions()->canRead, Thread::where('lastPostId', $child->lastPostId)->value('categoryId))) {
+                    PermissionHelper::haveForumPermission($userId, ConfigHelper::getForumPermissions()->canRead, Thread::where('lastPostId', $child->lastPostId)->value('categoryId'))) {
                 $child->lastPost = $this->forumService->getSlimPost($child->lastPostId);
                 $child->haveRead = $this->forumService->haveReadCategory($child, $userId);
             } else {
