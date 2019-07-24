@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\DB;
 class NotifyMentionsInPost implements ShouldQueue {
     private $quoteRegex = '/\[quotepost=(.*?)\](.*?)\[\/quotepost\]/si';
     private $mentionRegex = '/@([a-zA-Z0-9]+)/si';
-    private $groupRegex = '/@([a-zA-Z0-9_]+)/si';
+    private $groupRegex = '/:([a-zA-Z0-9_]+):/si';
 
     private $mentionTypeUser = 'user';
     private $mentionTypeGroup = 'group';
