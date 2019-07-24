@@ -15,8 +15,8 @@ class UpdateNewMentionBbcodes extends Migration {
             'updatedAt' => time()
         ]);
         DB::table('bbcodes')->where('name', 'Group tag v2')->update([
-            'example' => '@group_nickname',
-            'pattern' => '/@([a-zA-Z0-9_]+)/si',
+            'example' => '!group_nickname',
+            'pattern' => '/!([a-zA-Z0-9_]+)/si',
             'replace' => '<a class="mention-group">$1</a>',
             'updatedAt' => time()
         ]);
