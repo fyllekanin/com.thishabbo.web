@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Sitecp\User;
 
 use App\EloquentModels\User\Ban;
 use App\EloquentModels\User\Token;
-use App\EloquentModels\User\User;
 use App\Helpers\DataHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
@@ -103,9 +102,8 @@ class BansController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function getBannedUsers(Request $request, $page) {
-        $user = $request->get('auth');
         $filter = $request->input('nickname');
-        $bansSql = Ban::active()->withImmunityLessThan(User::getImmunity($user->userId))->withNicknameLike($filter);
+        $bansSql = Ban::active()->withNicknameLike($filter);
         $total = DataHelper::getPage($bansSql->count('banId'));
         $bans = $bansSql->take($this->perPage)->skip(DataHelper::getOffset($page))->get()->map(function ($ban) {
             return $this->mapBan($ban);
