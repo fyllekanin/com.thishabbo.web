@@ -1,0 +1,1 @@
+{"topic":"Fix paypal purchase","type":"Bug","body":"Incorrect intent on paypal request, causes crash on request"}

@@ -417,12 +417,16 @@ class AccountController extends Controller {
     public function getThreadSubscriptions(Request $request) {
         $user = $request->get('auth');
 
-        return ThreadSubscription::where('userId', $user->userId)->get()->map(function ($subscription) {
-            return [
-                'threadId' => $subscription->thread->threadId,
-                'title' => $subscription->thread->title
-            ];
-        });
+        return ThreadSubscription::with('thread')->where('userId', $user->userId)->get()
+            ->filter(function ($subscription) {
+                return $subscription->thread;
+            })
+            ->map(function ($subscription) {
+                return [
+                    'threadId' => $subscription->thread->threadId,
+                    'title' => $subscription->thread->title
+                ];
+            });
     }
 
     /**
@@ -433,12 +437,16 @@ class AccountController extends Controller {
     public function getCategorySubscriptions(Request $request) {
         $user = $request->get('auth');
 
-        return CategorySubscription::where('userId', $user->userId)->get()->map(function ($subscription) {
-            return [
-                'categoryId' => $subscription->category->categoryId,
-                'title' => $subscription->category->title
-            ];
-        });
+        return CategorySubscription::with('category')->where('userId', $user->userId)->get()
+            ->filter(function ($subscription) {
+                return $subscription->category;
+            })
+            ->map(function ($subscription) {
+                return [
+                    'categoryId' => $subscription->category->categoryId,
+                    'title' => $subscription->category->title
+                ];
+            });
     }
 
     /**
@@ -452,7 +460,7 @@ class AccountController extends Controller {
         $user = $request->get('auth');
 
         return response()->json([
-            'userId' => $user->userId,
+            'xp' => UserHelper::getUserDataOrCreate($user->userId)->xp,
             'registerTimestamp' => $user->createdAt->timestamp,
             'itemsOwned' => UserItem::where('userId', $user->userId)->count(),
             'likes' => $user->likes,

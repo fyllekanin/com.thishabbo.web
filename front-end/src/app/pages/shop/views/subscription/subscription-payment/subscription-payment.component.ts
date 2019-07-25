@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { InnerDialogComponent } from 'shared/app-views/dialog/dialog.model';
 import { ShopSubscription } from '../../../shop.model';
-import { ICreateOrderRequest, IPayPalConfig } from 'ngx-paypal';
+import { ICreateOrderRequest, IOnApproveCallbackData, IPayPalConfig } from 'ngx-paypal';
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { INFO_BOX_TYPE, InfoBoxModel } from 'shared/app-views/info-box/info-box.model';
@@ -76,7 +76,7 @@ export class SubscriptionPaymentComponent extends InnerDialogComponent {
             currency: 'GBP',
             clientId: 'AbqW_Z73zTKh4ABcSB3tvfn544vYNh3a0DuJUNauSr7UpbgSxjkzEHUYjb8I28j_f3wT96a4RSY648ju',
             createOrderOnClient: () => <ICreateOrderRequest>{
-                intent: 'AUTHORIZE',
+                intent: 'CAPTURE',
                 purchase_units: [{
                     reference_id: String(this._data.subscriptionId),
                     amount: {
@@ -108,15 +108,22 @@ export class SubscriptionPaymentComponent extends InnerDialogComponent {
                 layout: 'vertical'
             },
             onApprove: () => {
+                // Empty
             },
-            onClientAuthorization: (data) => {
+            authorizeOnServer: (data: IOnApproveCallbackData) => {
                 this.isLoading = true;
-                this._httpService.get(`shop/payment-verification/${data.id}`)
-                    .subscribe(() => {
-                        this.isLoading = false;
-                        this.showSuccess = true;
-                        this._notificationService.sendInfoNotification('Subscription bought!');
-                    }, this._notificationService.failureNotification.bind(this._notificationService));
+                return new Promise((resolve, reject) => {
+                    this._httpService.get(`shop/payment-verification/${data.orderID}`)
+                        .subscribe(() => {
+                            this.isLoading = false;
+                            this.showSuccess = true;
+                            this._notificationService.sendInfoNotification('Subscription bought!');
+                            resolve();
+                        }, error => {
+                            this._notificationService.failureNotification(error);
+                            reject();
+                        });
+                });
             }
         };
     }

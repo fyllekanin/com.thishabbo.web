@@ -30,6 +30,7 @@ class ThreadCrudControllerImpl {
 
     public function getThreadReaders($threadId, $lastRead) {
         return ThreadRead::where('threadId', $threadId)->where('updatedAt', '>', $lastRead)
+            ->orderBy('updatedAt', 'DESC')
             ->get(['userId', 'updatedAt'])->map(function ($read) {
                 return [
                     'user' => UserHelper::getSlimUser($read->userId),

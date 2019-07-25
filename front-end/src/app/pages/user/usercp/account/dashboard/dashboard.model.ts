@@ -13,7 +13,7 @@ export class UserCpDashboardSubscription {
 
 export class UserCpDashboardModel {
     @primitive()
-    userId: number;
+    xp: number;
     @primitive()
     registerTimestamp: number;
     @primitive()
