@@ -25,7 +25,6 @@ import { ThreadService } from '../services/thread.service';
 import { ThreadActionExecutor } from './thread.helper';
 import { ThreadPostersComponent } from './thread-posters/thread-posters.component';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
-import { StringHelper } from 'shared/helpers/string.helper';
 import { StatsBoxModel } from 'shared/app-views/stats-boxes/stats-boxes.model';
 import { INFO_BOX_TYPE, InfoBoxModel } from 'shared/app-views/info-box/info-box.model';
 
@@ -34,7 +33,6 @@ import { INFO_BOX_TYPE, InfoBoxModel } from 'shared/app-views/info-box/info-box.
     templateUrl: 'thread.component.html',
     styleUrls: ['thread.component.css']
 })
-
 export class ThreadComponent extends Page implements OnDestroy {
     private _threadPage: ThreadPage = new ThreadPage();
     private _isToolsVisible = false;
@@ -73,10 +71,6 @@ export class ThreadComponent extends Page implements OnDestroy {
         this.isMiniProfileDisabled = Boolean(localStorage.getItem(LOCAL_STORAGE.MINI_PROFILE_DISABLED));
         this.addSubscription(this._activatedRoute.data, this.onData.bind(this));
         this._multiQuotedPosts = [];
-    }
-
-    prettify (str: string): string {
-        return StringHelper.prettifyString(str);
     }
 
     trackPosts (_index: number, item: PostModel): number {

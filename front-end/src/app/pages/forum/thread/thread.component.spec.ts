@@ -1,6 +1,6 @@
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
-import { ForumPermissions } from '../forum.model';
+import { AutoSave, ForumPermissions } from '../forum.model';
 import { Subject, throwError } from 'rxjs';
 import { AuthService } from 'core/services/auth/auth.service';
 import { HttpService } from 'core/services/http/http.service';
@@ -16,6 +16,7 @@ import { ThreadService } from '../services/thread.service';
 import { PostModel } from '../post/post.model';
 import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
 import { User } from 'core/services/auth/auth.model';
+import { AutoSaveHelper } from 'shared/helpers/auto-save.helper';
 
 describe('ThreadComponent', () => {
 
@@ -79,6 +80,42 @@ describe('ThreadComponent', () => {
 
         fixture = TestBed.createComponent(ThreadComponent);
         component = fixture.componentInstance;
+    });
+
+    it('trackPosts should return the updatedAt from the postModel', () => {
+        // Given
+        const item = new PostModel({updatedAt: 123});
+
+        // When
+        const result = component.trackPosts(0, item);
+
+        // Then
+        expect(result).toEqual(123);
+    });
+
+    describe('onKeyUp', () => {
+        it('it should not do anything if content is not set', () => {
+            // Given
+            const content = null;
+            component['_threadPage'] = new ThreadPage({threadId: 5});
+
+            // When
+            component.onKeyUp(content);
+
+            // Then
+            expect(AutoSaveHelper.get(AutoSave.POST, 5)).toBeNull();
+        });
+        it('it should save the content as auto save', () => {
+            // Given
+            const content = 'test';
+            component['_threadPage'] = new ThreadPage({threadId: 5});
+
+            // When
+            component.onKeyUp(content);
+
+            // Then
+            expect(AutoSaveHelper.get(AutoSave.POST, 5).content).toEqual('test');
+        });
     });
 
     describe('onButtonClick', () => {
