@@ -12,6 +12,7 @@ export class EditHistoryComponent implements InnerDialogComponent {
 
     historyTimestamp = -1;
     edits: Array<{ label: string, timestamp: number }> = [];
+    viewBBcode = false;
 
     getData () {
     }

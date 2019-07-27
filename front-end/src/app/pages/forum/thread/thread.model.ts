@@ -131,6 +131,10 @@ export class PostHistoryModel {
     @primitive()
     after: string;
     @primitive()
+    beforeParsed: string;
+    @primitive()
+    afterParsed: string;
+    @primitive()
     createdAt: number;
 
     constructor (source: Partial<PostHistoryModel>) {

@@ -104,8 +104,10 @@ class PostCrudController extends Controller {
                 $data = json_decode($log->data);
                 return [
                     'user' => UserHelper::getSlimUser($log->userId),
-                    'before' => BBcodeUtil::bbcodeParser($data->oldContent),
-                    'after' => BBcodeUtil::bbcodeParser($data->newContent),
+                    'before' => $data->oldContent,
+                    'beforeParsed' => BBcodeUtil::bbcodeParser($data->oldContent),
+                    'after' => $data->newContent,
+                    'afterParsed' => BBcodeUtil::bbcodeParser($data->newContent),
                     'createdAt' => $log->createdAt->timestamp
                 ];
             });
