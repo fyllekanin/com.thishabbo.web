@@ -1,6 +1,6 @@
 {
   "name": "rabbit-network-forum",
-  "version": "1.31.1",
+  "version": "1.31.2",
   "scripts": {
     "ng": "ng",
     "start": "node --max-old-space-size=8192 ./node_modules/@angular/cli/bin/ng serve --live-reload --proxy-config proxy.conf.json",
