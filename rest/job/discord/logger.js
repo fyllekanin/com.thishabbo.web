@@ -5,8 +5,10 @@ const TOKEN = '{token}';
 let CHANNEL = null;
 
 const events = [
-    'message',
-    'messageDelete'
+    {
+        event: 'messageDelete',
+        message: 'deleted message'
+    }
 ];
 
 client.on('ready', () => {
@@ -15,12 +17,12 @@ client.on('ready', () => {
 });
 
 events.forEach(event => {
-    client.on(event, data => {
+    client.on(event.event, data => {
         if (!CHANNEL || data.channel.id === CHANNEL.id) {
             return;
         }
         let message = '**Log**\n';
-        message += `User: ${data.author.username}#${data.author.discriminator} - ${event === 'message' ? 'sent' : 'deleted'} in channel: **${data.channel.name}**\n`;
+        message += `User: ${data.author.username}#${data.author.discriminator} - ${event.message} in channel: **${data.channel.name}**\n`;
         message += '```';
         message += data.content;
         message += '```';
