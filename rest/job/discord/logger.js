@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
-const TOKEN = 'MjkyMDQxMjA1MTcxMDkzNTA0.XT8fjA.aDK7u-7xvoTYdW0O82-byoMX04I';
+const TOKEN = 'token';
 let CHANNEL = null;
 
 const events = [
@@ -13,7 +13,6 @@ client.on('ready', () => {
     console.log(`Discord bot is ready`);
     CHANNEL = client.channels.get('587240431683764224');
 });
-
 
 events.forEach(event => {
     client.on(event, data => {
