@@ -29,12 +29,7 @@
     },
     {
       "name": "discord-logger",
-      "script": "job/discord/logger.js",
-      "cwd": "",
-      "watch": true,
-      "log_file": "storage/logs/discord-logger.log",
-      "instances": 1,
-      "interpreter": "node"
+      "script": "job/discord/logger.js"
     }
   ]
 }
