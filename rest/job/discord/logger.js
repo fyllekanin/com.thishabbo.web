@@ -21,12 +21,12 @@ events.forEach(event => {
         if (!CHANNEL || data.channel.id === CHANNEL.id) {
             return;
         }
-        let message = '**Log**\n';
-        message += `User: ${data.author.username}#${data.author.discriminator} - ${event.message} in channel: **${data.channel.name}**\n`;
-        message += '```';
-        message += data.content;
-        message += '```';
-        CHANNEL.send(message);
+        const embed = new Discord.RichEmbed()
+            .setTitle(`${data.author.username}#${data.author.discriminator} ${event.message}`)
+            .setColor(0xFF0000)
+            .setDescription(data.cleanContent);
+
+        CHANNEL.send(embed);
     });
 });
 
