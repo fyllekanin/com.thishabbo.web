@@ -2,6 +2,7 @@
 
 namespace App\Models\Radio;
 
+use App\Utils\Value;
 use ReflectionClass;
 
 class RadioServerTypes {
@@ -54,18 +55,18 @@ class RadioSettings {
             $data = (object)[];
         }
 
-        $this->ip = $data->ip;
-        $this->port = $data->port;
-        $this->password = $data->password;
-        $this->adminPassword = $data->adminPassword;
-        $this->likes = $data->likes;
-        $this->userId = $data->userId;
-        $this->nextDjId = $data->nextDjId;
-        $this->listeners = $data->listeners;
-        $this->song = $data->song;
-        $this->albumArt = $data->albumArt;
-        $this->djSays = $data->djSays;
-        $this->serverType = $data->serverType;
+        $this->ip = Value::objectProperty($data, 'ip', '');
+        $this->port = Value::objectProperty($data, 'port', '');
+        $this->password = Value::objectProperty($data, 'password', '');
+        $this->adminPassword = Value::objectProperty($data, 'adminPassword', '');
+        $this->likes = Value::objectProperty($data, 'likes', '');
+        $this->userId = Value::objectProperty($data, 'userId', '');
+        $this->nextDjId = Value::objectProperty($data, 'nextDjId', '');
+        $this->listeners = Value::objectProperty($data, 'listeners', '');
+        $this->song = Value::objectProperty($data, 'song', '');
+        $this->albumArt = Value::objectProperty($data, 'albumArt', '');
+        $this->djSays = Value::objectProperty($data, 'djSays', '');
+        $this->serverType = Value::objectProperty($data, 'serverType', '');
     }
 
     public function jsonSerialize() {
