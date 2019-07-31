@@ -2,38 +2,6 @@ import { arrayOf, ClassHelper, objectOf, primitive, time } from 'shared/helpers/
 import { SlimUser } from 'core/services/auth/auth.model';
 import { ArrayHelper } from 'shared/helpers/array.helper';
 
-export class ForumLatestPost {
-    @primitive()
-    category: string;
-    @primitive()
-    page: number;
-    @primitive()
-    postId: number;
-    @primitive()
-    style: string;
-    @primitive()
-    text: string;
-    @primitive()
-    threadId: number;
-    @primitive()
-    title: string;
-    @objectOf(SlimUser)
-    user: SlimUser;
-    @time()
-    createdAt: string;
-    @primitive()
-    isRead: boolean;
-
-    constructor (source: Partial<ForumLatestPost>) {
-        ClassHelper.assign(this, source);
-    }
-
-    get time (): string {
-        return this.createdAt;
-    }
-}
-
-
 export class ForumPermissions {
     @primitive()
     canPost: boolean;
@@ -141,7 +109,7 @@ export class SlimThread {
     @objectOf(SlimUser)
     user: SlimUser;
     @objectOf(SlimPost)
-    lastPostViewed: SlimPost;
+    firstUnreadPost: SlimPost
 
     constructor (source?: Partial<SlimThread>) {
         ClassHelper.assign(this, source);
@@ -164,7 +132,7 @@ export class SlimCategory {
     @objectOf(SlimPost)
     lastPost: SlimPost;
     @objectOf(SlimPost)
-    lastPostViewed: SlimPost;
+    firstUnreadPost: SlimPost;
     @arrayOf(SlimCategory)
     children: Array<SlimCategory> = [];
     @primitive()
@@ -177,6 +145,39 @@ export class SlimCategory {
     constructor (source?: Partial<SlimCategory>) {
         ClassHelper.assign(this, source);
         this.children.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'displayOrder'));
+    }
+}
+
+export class ForumLatestPost {
+    @primitive()
+    category: string;
+    @primitive()
+    page: number;
+    @primitive()
+    postId: number;
+    @primitive()
+    style: string;
+    @primitive()
+    text: string;
+    @primitive()
+    threadId: number;
+    @primitive()
+    title: string;
+    @objectOf(SlimUser)
+    user: SlimUser;
+    @time()
+    createdAt: string;
+    @objectOf(SlimPost)
+    firstUnreadPost: SlimPost;
+    @primitive()
+    isRead: boolean;
+
+    constructor (source: Partial<ForumLatestPost>) {
+        ClassHelper.assign(this, source);
+    }
+
+    get time (): string {
+        return this.createdAt;
     }
 }
 

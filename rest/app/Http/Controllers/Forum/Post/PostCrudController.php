@@ -63,7 +63,7 @@ class PostCrudController extends Controller {
             $this->forumService->getCategoriesUserCantSeeOthersThreadsIn($user->userId));
         $ignoredThreadIds = IgnoredThread::where('userId', $user->userId)->pluck('threadId');
 
-        $latestPosts = $this->forumService->getLatestPosts($categoryIds, $ignoredThreadIds,
+        $latestPosts = $this->forumService->getLatestPosts($user->userId, $categoryIds, $ignoredThreadIds,
             $ignoredCategoryIds, $perPage, DataHelper::getOffset($page, $perPage));
         $total = DataHelper::getPage($latestPosts->total, $perPage);
 

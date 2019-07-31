@@ -200,7 +200,7 @@ class ForumService {
      *
      * @return object with data and total
      */
-    public function getLatestPosts($categoryIds, $ignoredThreadIds, $ignoredCategoryIds, $amount, $skip = 0) {
+    public function getLatestPosts($userId, $categoryIds, $ignoredThreadIds, $ignoredCategoryIds, $amount, $skip = 0) {
         $threadsSql = Thread::select('title', 'categoryId', 'threadId', 'lastPostId', 'posts')
             ->with(['prefix', 'latestPost'])
             ->isApproved()
@@ -209,10 +209,13 @@ class ForumService {
             ->whereNotIn('threadId', $ignoredThreadIds)
             ->whereNotIn('categoryId', $ignoredCategoryIds);
 
+        $permissions = ConfigHelper::getForumPermissions();
+
         return (object)[
             'total' => $threadsSql->count('threadId'),
-            'data' => $threadsSql->take($amount)->skip($skip)->orderBy('lastPostId', 'DESC')->get()->map(function ($thread) {
-                $page = DataHelper::getPage($thread->posts);
+            'data' => $threadsSql->take($amount)->skip($skip)->orderBy('lastPostId', 'DESC')->get()->map(function ($thread) use ($userId, $permissions) {
+                $canApprovePosts = PermissionHelper::haveForumPermission($userId, $permissions->canApprovePosts, $thread->category->categoryId);
+                $firstUnread = $this->getFirstUnreadPost($userId, $thread->threadId, $canApprovePosts);
 
                 return (object)[
                     'title' => $thread->title,
@@ -223,7 +226,7 @@ class ForumService {
                     'postId' => $thread->lastPostId,
                     'createdAt' => $thread->latestPost ? $thread->latestPost->createdAt->timestamp : 0,
                     'user' => Userhelper::getSlimUser($thread->latestPost ? $thread->latestPost->userId : 0),
-                    'page' => $page < 1 ? 1 : $page
+                    'firstUnreadPost' => $firstUnread
                 ];
             })
         ];
@@ -357,9 +360,20 @@ class ForumService {
      *
      * @return mixed
      */
-    public function getLastViewed($userId, $threadId, $canApprovePosts) {
+    public function getFirstUnreadPost ($userId, $threadId, $canApprovePosts) {
         $lastRead = ThreadRead::where('userId', $userId)->where('threadId', $threadId)->value('updatedAt');
         $timestamp = $lastRead ? $lastRead->timestamp : 0;
-        return $this->getSlimPost(Post::where('threadId', $threadId)->where('createdAt', '<', $timestamp)->orderBy('createdAt', 'DESC')->value('postId'));
+        $firstUnread = Post::where('threadId', $threadId)->where('createdAt', '>', $timestamp)->orderBy('createdAt', 'ASC')->first();
+        $firstUnread = $firstUnread ? $firstUnread : Post::where('threadId', $threadId)->orderBy('createdAt', 'DESC')->first();
+        $previousPosts = Post::where('threadId', $threadId)->where('createdAt', '<', $timestamp)->isApproved($canApprovePosts)->count();
+        return [
+            'postId' => $firstUnread->postId,
+            'threadId' => $firstUnread->threadId,
+            'threadTitle' => $firstUnread->thread->title,
+            'prefix' => $firstUnread->thread->prefix,
+            'user' => UserHelper::getSlimUser($firstUnread->userId),
+            'createdAt' => $firstUnread->createdAt->timestamp,
+            'page' => DataHelper::getPage($previousPosts)
+        ];
     }
 }
