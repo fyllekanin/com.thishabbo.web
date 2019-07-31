@@ -109,7 +109,7 @@ export class SlimThread {
     @objectOf(SlimUser)
     user: SlimUser;
     @objectOf(SlimPost)
-    firstUnreadPost: SlimPost
+    firstUnreadPost: SlimPost;
 
     constructor (source?: Partial<SlimThread>) {
         ClassHelper.assign(this, source);
