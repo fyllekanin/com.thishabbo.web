@@ -1,0 +1,1 @@
+{"topic":"Removed immunity check on bans","type":"Bug","body":"Solves the issue of empty bans page, immunity check is a big over done anyway as they can't do anything with the user anyway."}

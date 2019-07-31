@@ -2,10 +2,12 @@
 
 namespace App\Views;
 
+use stdClass;
+
 class JobApplicationView {
 
     public static function of($data) {
-        $threadSkeleton = new \stdClass();
+        $threadSkeleton = new stdClass();
 
         $threadSkeleton->content = "[b]Habbo[/b]
         " . $data->habbo . "

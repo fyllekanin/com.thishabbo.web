@@ -10,7 +10,7 @@ class LoggerActionsTest extends TestCase {
 
     use RefreshDatabase;
 
-    public function testThatActionsHaveCorrectFieldsAndNoDuplicates () {
+    public function testThatActionsHaveCorrectFieldsAndNoDuplicates() {
         $usedIds = [];
         try {
             $actions = Action::getAllConstants();
@@ -25,6 +25,7 @@ class LoggerActionsTest extends TestCase {
             }
 
         } catch (\ReflectionException $e) {
+            $this->assertTrue(false);
         }
 
         $this->assertTrue(true);

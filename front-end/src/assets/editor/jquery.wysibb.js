@@ -2233,23 +2233,7 @@ var wbbdebug = false;
 
 
             var $wrap = $(this.elFromString("<div>" + bbdata + "</div>"));
-            //transform smiles
-            /* $wrap.contents().filter(function() {return this.nodeType==3}).each($.proxy(smilerpl,this)).end().find("*").contents().filter(function() {return this.nodeType==3}).each($.proxy(smilerpl,this));
-
-			function smilerpl(i,el) {
-				var ndata = el.data;
-				$.each(this.options.smileList,$.proxy(function(i,row) {
-					var fidx = ndata.indexOf(row.bbcode);
-					if (fidx!=-1) {
-						var afternode_txt = ndata.substring(fidx+row.bbcode.length,ndata.length);
-						var afternode = document.createTextNode(afternode_txt);
-						el.data = ndata = el.data.substr(0,fidx);
-						$(el).after(afternode).after(this.strf(row.img,this.options));
-					}
-				},this));
-			} */
             this.getHTMLSmiles($wrap);
-            //$wrap.contents().filter(function() {return this.nodeType==3}).each($.proxy(this,smileRPL,this));
 
             return $wrap.html();
         },
@@ -2541,25 +2525,9 @@ var wbbdebug = false;
             }, this));
             $block.find("*[wbbkeep]").removeAttr("wbbkeep").removeAttr("style");
             $.log($block.html());
-            //$.log("BBCODE: "+this.toBB($block.clone(true)));
+
             $block.html(this.getHTML(this.toBB($block), true));
             $.log($block.html());
-
-            //OLD
-            /* $.each(this.options.rules,$.proxy(function(s,bb) {
-				$block.find(s).attr("wbbkeep",1);
-			},this));
-
-			//replace div and p without last br to html()+br
-			$block.find("*[wbbkeep!='1']").each($.proxy(function(i,el) {
-				var $this = $(el);
-				if ($this.is('div,p') && ($this.children().size()==0 || el.lastChild.tagName!="BR")) {
-					$this.after("<br/>").after($this.contents()).remove();
-				}else{
-					$this.after($this.contents()).remove();
-				}
-			},this));
-			$block.find("*[wbbkeep]").removeAttr("wbbkeep").removeAttr("style"); */
         },
         sortArray: function (ar, asc) {
             ar.sort(function (a, b) {

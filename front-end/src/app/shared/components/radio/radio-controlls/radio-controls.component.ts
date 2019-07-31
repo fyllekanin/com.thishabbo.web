@@ -16,14 +16,14 @@ export class RadioControlsComponent implements AfterViewInit {
 
     @ViewChild('player', {static: true}) player: ElementRef<HTMLAudioElement>;
     isPlaying = false;
-    volume = 0.5;
+    volume = 1;
 
     constructor (
         private _radioService: RadioService,
         private _notificationService: NotificationService,
         private _continuesInformationService: ContinuesInformationService
     ) {
-        this.volume = Number(localStorage.getItem(LOCAL_STORAGE.VOLUME)) || 0.5;
+        this.volume = Number(localStorage.getItem(LOCAL_STORAGE.VOLUME)) || 1;
         _continuesInformationService.onContinuesInformation.subscribe(continuesInformation => {
             this._data = continuesInformation.radio;
             this._radioUrl = `${this._data.ip}:${this._data.port}/;stream.nsv`;

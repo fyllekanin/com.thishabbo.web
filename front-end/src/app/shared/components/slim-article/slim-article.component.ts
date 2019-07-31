@@ -28,7 +28,7 @@ export class SlimArticleComponent {
     }
 
     get backgroundImage (): string {
-        return `url(/rest/resources/images/thumbnails/${this._article.threadId}.gif)`;
+        return `url(/rest/resources/images/thumbnails/${this._article.threadId}.gif?updatedAt=${this._article.updatedAt})`;
     }
 
     get badgeUrl (): string {

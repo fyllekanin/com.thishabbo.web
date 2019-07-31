@@ -26,6 +26,10 @@
       "log_file": "storage/logs/cron.log",
       "instances": 1,
       "interpreter": "bash"
+    },
+    {
+      "name": "discord-logger",
+      "script": "job/discord/logger.js"
     }
   ]
 }

@@ -30,6 +30,7 @@ use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use stdClass;
 
 class ThreadCrudController extends Controller {
     private $categoryTemplates = null;
@@ -133,7 +134,6 @@ class ThreadCrudController extends Controller {
      * @param Request $request
      *
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function createThread(Request $request) {
         $user = $request->get('auth');
@@ -176,6 +176,7 @@ class ThreadCrudController extends Controller {
 
         $thread->title = $threadSkeleton->title;
         $thread->prefixId = isset($threadSkeleton->prefixId) ? $threadSkeleton->prefixId : 0;
+        $thread->touch();
         $thread->save();
 
         NotifyMentionsInPost::dispatch($threadSkeleton->content, $thread->firstPostId, $user->userId);
@@ -215,7 +216,7 @@ class ThreadCrudController extends Controller {
         PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canCreateThreads,
             $categoryId, 'No permissions to create threads in this category');
 
-        $newThread = new \stdClass();
+        $newThread = new stdClass();
         $newThread->threadId = -1;
         $newThread->categoryId = $categoryId;
         $newThread->content = '';

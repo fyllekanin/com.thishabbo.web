@@ -29,7 +29,7 @@ export class SitecpComponent extends Page implements OnDestroy, OnInit {
         elementRef: ElementRef
     ) {
         super(elementRef);
-        breadcrumbService.breadcrumb = new Breadcrumb({current: 'SitecpCP'});
+        breadcrumbService.breadcrumb = new Breadcrumb({current: 'SiteCP'});
     }
 
     ngOnInit (): void {

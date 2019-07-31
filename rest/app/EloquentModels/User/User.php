@@ -11,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
  * @property mixed nickname
  * @property mixed userId
  * @property mixed referralId
+ * @property mixed username
  * @method static withNickname
  *
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)

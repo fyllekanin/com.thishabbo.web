@@ -1,16 +1,16 @@
 {
   "name": "rabbit-network-forum",
-  "version": "1.29.2",
+  "version": "1.31.4",
   "scripts": {
     "ng": "ng",
-    "start": "node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng serve --live-reload --proxy-config proxy.conf.json",
+    "start": "node --max-old-space-size=8192 ./node_modules/@angular/cli/bin/ng serve --live-reload --proxy-config proxy.conf.json",
     "build": "node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng build",
-    "build:prod": "node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng build --prod",
-    "test": "node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng test",
+    "build:prod": "node --max-old-space-size=8192 ./node_modules/@angular/cli/bin/ng build --prod",
+    "test": "node --max-old-space-size=8192 ./node_modules/@angular/cli/bin/ng test",
     "test:coverage": "node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng test --code-coverage",
     "test:watch": "node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng test --watch=true",
     "test:chrome": "node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng test --watch=true --browsers=Chrome",
-    "lint": "node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng lint",
+    "lint": "node --max-old-space-size=8192 ./node_modules/@angular/cli/bin/ng lint",
     "e2e": "webdriver-manager update && node ./node_modules/protractor/bin/protractor ./e2e/protractor.conf.js",
     "e2e:jenkins": "webdriver-manager update --versions.chrome 2.46 && node ./node_modules/protractor/bin/protractor ./e2e/protractor-jenkins.conf.js"
   },

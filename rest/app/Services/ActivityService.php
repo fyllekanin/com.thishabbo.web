@@ -10,6 +10,7 @@ use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
 use App\Models\Logger\Action;
 use App\Utils\Value;
+use stdClass;
 
 class ActivityService {
 
@@ -26,8 +27,9 @@ class ActivityService {
         $activities = [];
         $limit = 5;
         $lastItemId = null;
+        $isRunning = true;
 
-        while (count($activities) < $limit) {
+        while ($isRunning) {
             $item = null;
             $sql = null;
             if ($lastItemId) {
@@ -45,9 +47,10 @@ class ActivityService {
                 break;
             }
 
-            $item->data = isset($item->data) && !empty($item->data) ? (object)json_decode($item->data) : new \stdClass();
+            $item->data = isset($item->data) && !empty($item->data) ? (object)json_decode($item->data) : new stdClass();
             if ($this->isItemValid($item, $categoryIds, $ignoredThreadIds, $userId)) {
                 $activities[] = $this->convertItem($userId, $item);
+                $isRunning = count($activities) < $limit;
             }
             $lastItemId = $item->logId;
         }

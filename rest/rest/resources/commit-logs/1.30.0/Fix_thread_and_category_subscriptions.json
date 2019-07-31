@@ -1,0 +1,1 @@
+{"topic":"Fix thread and category subscriptions","type":"Bug","body":"If a thread or category that a user was subscribed to got deleted the pages crashed because they could not find the entity"}

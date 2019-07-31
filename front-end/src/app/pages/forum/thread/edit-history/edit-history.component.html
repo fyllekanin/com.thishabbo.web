@@ -1,18 +1,31 @@
-<select [(ngModel)]="historyTimestamp">
-    <option disabled [value]="-1">Select...</option>
-    <option *ngFor="let item of edits" [value]="item.timestamp">
-        {{item.label}}
-    </option>
-</select>
+<div class="grid-container">
+    <div class="grid-x grid-margin-x">
+        <div class="cell small-10">
+            <select [(ngModel)]="historyTimestamp">
+                <option disabled [value]="-1">Select...</option>
+                <option *ngFor="let item of edits" [value]="item.timestamp">
+                    {{item.label}}
+                </option>
+            </select>
+        </div>
+        <div class="cell small-2">
+            <label class="checkbox-container">
+                View BBcode
+                <input type="checkbox" [(ngModel)]="viewBBcode">
+                <span class="checkmark"></span>
+            </label>
+        </div>
+    </div>
+</div>
 
 <div *ngIf="edit">
     <details>
         <summary>Before</summary>
-        <div [innerHTML]="edit.before | safeHtml"></div>
+        <div [innerHTML]="viewBBcode ? edit.before : edit.beforeParsed | safeHtml"></div>
     </details>
 
     <details>
         <summary>After</summary>
-        <div [innerHTML]="edit.after | safeHtml"></div>
+        <div [innerHTML]="viewBBcode ? edit.after : edit.afterParsed | safeHtml"></div>
     </details>
 </div>

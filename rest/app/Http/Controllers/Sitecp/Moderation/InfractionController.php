@@ -25,6 +25,7 @@ use App\Utils\Condition;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use stdClass;
 
 class InfractionController extends Controller {
     private $forumService;
@@ -172,10 +173,9 @@ class InfractionController extends Controller {
      * @param $infractionLevel
      * @param $infraction
      *
-     * @throws ValidationException
      */
     private function createInfractionThread(ThreadCrudController $threadCrudController, $infractionLevel, $infraction) {
-        $threadSkeleton = new \stdClass();
+        $threadSkeleton = new stdClass();
         $infracted = UserHelper::getUserFromId($infraction->infractedId);
         $points = Infraction::isActive()
             ->where('infractedId', $infracted->userId)

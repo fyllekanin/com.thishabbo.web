@@ -6,6 +6,7 @@ use App\EloquentModels\Forum\Post;
 use App\EloquentModels\Forum\PostLike;
 use App\EloquentModels\Forum\Thread;
 use App\EloquentModels\User\User;
+use App\EloquentModels\User\Token;
 use App\Helpers\ConfigHelper;
 use App\Helpers\DataHelper;
 use App\Helpers\PermissionHelper;
@@ -189,6 +190,10 @@ class UserController extends Controller {
             $userData->save();
         }
         $current->save();
+        
+        if ($shouldCheckPassword) {
+            Token::where('userId', $current->userId)->delete();   
+        }
 
         Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_USERS_BASIC_SETTINGS, [
             'beforeNickname' => $beforeNickname,

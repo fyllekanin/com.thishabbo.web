@@ -17,6 +17,7 @@ use App\Utils\Iterables;
 use App\Utils\Value;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use stdClass;
 
 class CategoriesController extends Controller {
     private $forumService;
@@ -223,7 +224,7 @@ class CategoriesController extends Controller {
     public function getCategory(Request $request, $categoryId) {
         $category = Category::find($categoryId);
         $user = $request->get('auth');
-        $category = $categoryId == 'new' ? new \stdClass() : $category;
+        $category = $categoryId == 'new' ? new stdClass() : $category;
 
         Condition::precondition(!$category, 404, 'Category does not exist');
         $category->options = $this->getCategoryOptions($category);

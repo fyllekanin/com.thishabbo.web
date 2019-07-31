@@ -1,42 +1,43 @@
-import { DialogService } from 'core/services/dialog/dialog.service';
-import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
-import { ForumPermissions } from '../forum.model';
-import { Subject, throwError } from 'rxjs';
-import { AuthService } from 'core/services/auth/auth.service';
-import { HttpService } from 'core/services/http/http.service';
-import { RouterTestingModule } from '@angular/router/testing';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ThreadComponent } from './thread.component';
-import { NotificationService } from 'core/services/notification/notification.service';
-import { EditorAction } from 'shared/components/editor/editor.model';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ThreadActions, ThreadPage } from './thread.model';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { ThreadService } from '../services/thread.service';
-import { PostModel } from '../post/post.model';
-import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
+import { RouterTestingModule } from '@angular/router/testing';
 import { User } from 'core/services/auth/auth.model';
+import { AuthService } from 'core/services/auth/auth.service';
+import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
+import { DialogService } from 'core/services/dialog/dialog.service';
+import { HttpService } from 'core/services/http/http.service';
+import { NotificationService } from 'core/services/notification/notification.service';
+import { Subject, throwError } from 'rxjs';
+import { EditorAction } from 'shared/components/editor/editor.model';
+import { AutoSaveHelper } from 'shared/helpers/auto-save.helper';
+import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
+import { AutoSave, ForumPermissions } from '../forum.model';
+import { PostModel } from '../post/post.model';
+import { ThreadService } from '../services/thread.service';
+import { ThreadComponent } from './thread.component';
+import { ThreadActions, ThreadPage } from './thread.model';
 
 describe('ThreadComponent', () => {
 
     class HttpServiceMock {
-        post () {
+        post() {
             return null;
         }
     }
 
     class AuthServiceMock {
-        isLoggedIn () {
+        isLoggedIn() {
             return true;
         }
 
-        get authUser () {
-            return {userId: 1};
+        get authUser() {
+            return { userId: 1 };
         }
     }
 
     class NotificationServiceMock {
-        failureNotification () {
+        failureNotification() {
         }
     }
 
@@ -61,18 +62,18 @@ describe('ThreadComponent', () => {
                 ThreadComponent
             ],
             providers: [
-                {provide: HttpService, useValue: httpService},
-                {provide: AuthService, useValue: authService},
-                {provide: NotificationService, useValue: notificationService},
-                {provide: ActivatedRoute, useValue: {data: sendThread.asObservable()}},
+                { provide: HttpService, useValue: httpService },
+                { provide: AuthService, useValue: authService },
+                { provide: NotificationService, useValue: notificationService },
+                { provide: ActivatedRoute, useValue: { data: sendThread.asObservable() } },
                 {
                     provide: BreadcrumbService, useValue: {
-                        set breadcrumb (_val) {
+                        set breadcrumb(_val) {
                         }
                     }
                 },
-                {provide: DialogService, useValue: {}},
-                {provide: ThreadService, useValue: {}}
+                { provide: DialogService, useValue: {} },
+                { provide: ThreadService, useValue: {} }
             ],
             schemas: [NO_ERRORS_SCHEMA]
         });
@@ -81,14 +82,50 @@ describe('ThreadComponent', () => {
         component = fixture.componentInstance;
     });
 
+    it('trackPosts should return the updatedAt from the postModel', () => {
+        // Given
+        const item = new PostModel({ updatedAt: 123 });
+
+        // When
+        const result = component.trackPosts(0, item);
+
+        // Then
+        expect(result).toEqual(123);
+    });
+
+    describe('onKeyUp', () => {
+        it('should not do anything if content is not set', () => {
+            // Given
+            const content = null;
+            component['_threadPage'] = new ThreadPage({ threadId: 5 });
+
+            // When
+            component.onKeyUp(content);
+
+            // Then
+            expect(AutoSaveHelper.get(AutoSave.POST, 99)).toBeNull();
+        });
+        it('should save the content as auto save', () => {
+            // Given
+            const content = 'test';
+            component['_threadPage'] = new ThreadPage({ threadId: 5 });
+
+            // When
+            component.onKeyUp(content);
+
+            // Then
+            expect(AutoSaveHelper.get(AutoSave.POST, 5).content).toEqual('test');
+        });
+    });
+
     describe('onButtonClick', () => {
         it('should call failureNotification on failed POST', () => {
             // Given
             spyOn(notificationService, 'failureNotification');
-            spyOn(httpService, 'post').and.returnValue(throwError({error: {message: 'Message'}}));
+            spyOn(httpService, 'post').and.returnValue(throwError({ error: { message: 'Message' } }));
 
             // When
-            component.onButtonClick(new EditorAction({title: 'test', value: ThreadActions.POST}));
+            component.onButtonClick(new EditorAction({ title: 'test', value: ThreadActions.POST }));
 
             // Then
             expect(httpService.post).toHaveBeenCalledTimes(1);
@@ -121,8 +158,8 @@ describe('ThreadComponent', () => {
         sendThread.next({
             data: new ThreadPage({
                 threadPosts: [
-                    new PostModel({postId: 2}),
-                    new PostModel({postId: 1})
+                    new PostModel({ postId: 2 }),
+                    new PostModel({ postId: 1 })
                 ]
             })
         });
@@ -166,7 +203,7 @@ describe('ThreadComponent', () => {
         it('should return true if thread is open', () => {
             // Given
             spyOn(authService, 'isLoggedIn').and.returnValue(true);
-            spyOnProperty(authService, 'authUser', 'get').and.returnValue({userId: 1});
+            spyOnProperty(authService, 'authUser', 'get').and.returnValue({ userId: 1 });
             sendThread.next({
                 data: new ThreadPage({
                     isOpen: true,
@@ -187,12 +224,12 @@ describe('ThreadComponent', () => {
         it('should return true if thread is closed but have canCloseOpenThread permission and category is open', () => {
             // Given
             spyOn(authService, 'isLoggedIn').and.returnValue(true);
-            spyOnProperty(authService, 'authUser', 'get').and.returnValue({userId: 1});
+            spyOnProperty(authService, 'authUser', 'get').and.returnValue({ userId: 1 });
             sendThread.next({
                 data: new ThreadPage({
                     isOpen: false,
                     categoryIsOpen: true,
-                    forumPermissions: new ForumPermissions({canCloseOpenThread: true}),
+                    forumPermissions: new ForumPermissions({ canCloseOpenThread: true }),
                     user: new User({
                         userId: 1
                     })
@@ -252,7 +289,7 @@ describe('ThreadComponent', () => {
         it('should return empty message if nothing', () => {
             // Given
             spyOn(authService, 'isLoggedIn').and.returnValue(true);
-            spyOnProperty(authService, 'authUser', 'get').and.returnValue({userId: 1});
+            spyOnProperty(authService, 'authUser', 'get').and.returnValue({ userId: 1 });
             sendThread.next({
                 data: new ThreadPage({
                     isOpen: true,

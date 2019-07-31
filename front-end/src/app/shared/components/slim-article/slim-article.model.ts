@@ -25,6 +25,8 @@ export class SlimArticle {
     user: SlimUser;
     @time()
     createdAt: string;
+    @primitive()
+    updatedAt: number;
     @objectOf(Prefix)
     prefix: Prefix;
 

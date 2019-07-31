@@ -10,6 +10,7 @@ use App\EloquentModels\User\UserGroup;
 use App\Utils\BBcodeUtil;
 use App\Utils\Value;
 use Illuminate\Support\Facades\Cache;
+use stdClass;
 
 class UserHelper {
 
@@ -76,7 +77,7 @@ class UserHelper {
         $userdata = self::getUserDataOrCreate($userId);
         $postBit = (object)self::getUserPostBit($userdata);
 
-        $user = new \stdClass();
+        $user = new stdClass();
         $user->userId = $userId;
         $user->nickname = $userObj->nickname;
         $user->userBars = self::getUserBars($userId);

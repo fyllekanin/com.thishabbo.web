@@ -250,9 +250,9 @@ export class DashboardComponent extends Page implements OnDestroy {
         this.stats = [
             new StatsBoxModel({
                 borderColor: TitleTopBorder.GREEN,
-                icon: 'fas fa-id-card',
-                title: 'User ID',
-                breadText: String(this._data.userId)
+                icon: 'fas fa-fill',
+                title: 'XP',
+                breadText: String(this._data.xp)
             }),
             new StatsBoxModel({
                 borderColor: TitleTopBorder.PINK,

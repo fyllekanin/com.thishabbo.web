@@ -225,27 +225,9 @@ class GroupsController extends Controller {
      */
     public function getGroup(Request $request, $groupId) {
         $user = $request->get('auth');
-        $group = Group::find($groupId);
         $immunity = User::getImmunity($user->userId);
-
-        if (!$group) {
-            $group = new \stdClass();
-            $group->immunity = 0;
-            $group->sitecpPermissions = 0;
-            $group->options = 0;
-            $group->staffPermissions = 0;
-            $group->groups = Group::where('immunity', '<', $immunity)->orderBy('name', 'ASC')->get()->map(function ($group) {
-                $nameColor = Value::objectJsonProperty($group, 'nameColor', '');
-                return [
-                    'sitecpPermissions' => $this->buildSitecpPermissions($group),
-                    'staffPermissions' => $this->buildStaffPermissions($group),
-                    'options' => $this->buildGroupOptions($group),
-                    'name' => $group->name,
-                    'immunity' => $group->immunity,
-                    'nameColor' => $nameColor == '' ? '' : $group->nameColor[0]
-                ];
-            });
-        }
+        $group = Group::find($groupId);
+        $group = $group ? $group : $this->getDefaultGroup($immunity);
 
         Condition::precondition($group->immunity >= $immunity, 400, 'This group have higher immunity then you!');
         $group->maxImmunity = $immunity - 1;
@@ -396,5 +378,25 @@ class GroupsController extends Controller {
         }
 
         return $obj;
+    }
+
+    private function getDefaultGroup($immunity) {
+        return (object)[
+            'immunity' => 0,
+            'sitecpPermissions' => 0,
+            'options' => 0,
+            'staffPermissions' => 0,
+            'groups' => Group::where('immunity', '<', $immunity)->orderBy('name', 'ASC')->get()->map(function ($group) {
+                $nameColor = Value::objectJsonProperty($group, 'nameColor', '');
+                return [
+                    'sitecpPermissions' => $this->buildSitecpPermissions($group),
+                    'staffPermissions' => $this->buildStaffPermissions($group),
+                    'options' => $this->buildGroupOptions($group),
+                    'name' => $group->name,
+                    'immunity' => $group->immunity,
+                    'nameColor' => $nameColor == '' ? '' : $group->nameColor[0]
+                ];
+            })
+        ];
     }
 }

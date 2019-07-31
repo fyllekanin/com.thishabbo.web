@@ -13,6 +13,7 @@ use App\Services\CreditsService;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
+use stdClass;
 
 class BetsController extends Controller {
     private $creditsService;
@@ -144,7 +145,7 @@ class BetsController extends Controller {
         $bet = Bet::find($betId);
 
         return response()->json([
-            'bet' => $bet ? $bet : new \stdClass(),
+            'bet' => $bet ? $bet : new stdClass(),
             'categories' => BetCategory::all()
         ]);
     }
