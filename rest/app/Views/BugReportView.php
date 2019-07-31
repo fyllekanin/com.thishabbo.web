@@ -3,11 +3,12 @@
 namespace App\Views;
 
 use App\EloquentModels\User\User;
+use stdClass;
 
 class BugReportView {
 
     public static function of(User $user, $data) {
-        $reportData = new \stdClass();
+        $reportData = new stdClass();
 
         $reportData->title = "Bug reported by " . $user->username;
 

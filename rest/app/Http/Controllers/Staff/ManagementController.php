@@ -21,6 +21,7 @@ use App\Utils\Iterables;
 use App\Utils\Value;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use stdClass;
 
 class ManagementController extends Controller {
     private $settingKeys;
@@ -98,7 +99,7 @@ class ManagementController extends Controller {
      */
     public function getDoNotHire($nickname) {
         $entries = json_decode(SettingsHelper::getSettingValue($this->settingKeys->doNotHire));
-        $entryInfo = new \stdClass();
+        $entryInfo = new stdClass();
 
         if (!$entries) {
             $entries = [];
@@ -371,7 +372,7 @@ class ManagementController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function getPermShow($timetableId) {
-        $permShow = $timetableId == 'new' ? new \stdClass() : Timetable::find($timetableId)->permShow;
+        $permShow = $timetableId == 'new' ? new stdClass() : Timetable::find($timetableId)->permShow;
         return response()->json($permShow);
     }
 

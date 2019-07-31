@@ -15,6 +15,7 @@ use App\Utils\Condition;
 use App\Utils\Iterables;
 use App\Utils\Value;
 use Illuminate\Http\Request;
+use stdClass;
 
 class WelcomeBotController extends Controller {
     private $welcomeBotKeys = [];
@@ -90,7 +91,7 @@ class WelcomeBotController extends Controller {
             $category->setAppends([]);
         });
 
-        $welcomeBot = new \stdClass();
+        $welcomeBot = new stdClass();
         foreach (Setting::whereIn('key', $this->welcomeBotKeys)->get() as $setting) {
             switch ($setting->key) {
                 case $this->settingKeys->botUserId:

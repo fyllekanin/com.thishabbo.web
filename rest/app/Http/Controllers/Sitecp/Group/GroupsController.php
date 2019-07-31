@@ -16,6 +16,7 @@ use App\Models\Logger\Action;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
+use stdClass;
 
 class GroupsController extends Controller {
 
@@ -229,7 +230,7 @@ class GroupsController extends Controller {
         $immunity = User::getImmunity($user->userId);
 
         if (!$group) {
-            $group = new \stdClass();
+            $group = new stdClass();
             $group->immunity = 0;
             $group->sitecpPermissions = 0;
             $group->options = 0;

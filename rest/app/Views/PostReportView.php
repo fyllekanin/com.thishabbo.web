@@ -5,11 +5,12 @@ namespace App\Views;
 use App\EloquentModels\Forum\Post;
 use App\EloquentModels\User\User;
 use App\Helpers\DataHelper;
+use stdClass;
 
 class PostReportView {
 
     public static function of(User $user, Post $post, $message) {
-        $threadSkeleton = new \stdClass();
+        $threadSkeleton = new stdClass();
         $postsBefore = Post::where('postId', '<', $post->postId)->where('threadId', $post->threadId)->count();
         $page = DataHelper::getPage($postsBefore);
 
