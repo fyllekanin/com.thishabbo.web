@@ -6,7 +6,7 @@
             <span *ngIf="isSticky" class="sticky">Sticky</span>
             <em class="icon"
                 [ngClass]="icon + (haveRead ? ' read-icon' : '') + (thread.isSticky ? ' red-text' : '')"></em>
-            <a class="title" [routerLink]="[threadUrl]" title="{{title}}"
+            <a class="title" [routerLink]="[threadUrl]" [queryParams]="{scrollTo: 'post-' + lastPostViewed.postId}" title="{{title}}"
                [ngClass]="(haveRead ? 'read' : '') + (thread.isSticky ? ' red-text' : '')">
                 <span *ngIf="thread.prefix" [style]="thread.prefix.style | safeStyle">
                     {{thread.prefix.text}} &#xbb;

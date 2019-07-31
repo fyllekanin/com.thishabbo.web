@@ -55,6 +55,18 @@ export class SlimCategoryComponent extends Page implements OnDestroy {
         return this._slimCategory.lastPost;
     }
 
+    get lastPostThreadId (): number {
+        return this._slimCategory.lastPost.threadId;
+    }
+
+    get lastPostViewedPage (): number {
+        return this._slimCategory.lastPostViewed ? this._slimCategory.lastPostViewed.page : 1;
+    }
+
+    get lastPostViewedId (): number {
+        return this._slimCategory.lastPostViewed ? this._slimCategory.lastPostViewed.postId : null;
+    }
+
     get children (): Array<SlimCategory> {
         return this._slimCategory.children;
     }
