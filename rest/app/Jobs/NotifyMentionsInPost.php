@@ -32,7 +32,7 @@ class NotifyMentionsInPost implements ShouldQueue {
     private $mentionTypeUser = 'user';
     private $mentionTypeGroup = 'group';
 
-    private $ignoredNotificationTypes;
+    private $ignoredTypes;
     private $content;
     private $postId;
     private $userId;
@@ -50,7 +50,7 @@ class NotifyMentionsInPost implements ShouldQueue {
         $this->content = $content;
         $this->postId = $postId;
         $this->userId = $userId;
-        $this->ignoredNotificationTypes = ConfigHelper::getIgnoredNotificationsConfig();
+        $this->ignoredTypes = ConfigHelper::getIgnoredNotificationsConfig();
     }
 
     /**
@@ -114,8 +114,8 @@ class NotifyMentionsInPost implements ShouldQueue {
 
     private function isUserIgnoringNotification($userId, $type) {
         $notificationType = $type == Type::getType(Type::MENTION) ?
-            $this->ignoredNotificationTypes->MENTION_NOTIFICATIONS :
-            $this->ignoredNotificationTypes->QUOTE_NOTIFICATIONS;
+            $this->ignoredTypes->MENTION_NOTIFICATIONS :
+            $this->ignoredTypes->QUOTE_NOTIFICATIONS;
         return User::where('userId', $userId)
                 ->whereRaw('(ignoredNotifications & ' . $notificationType . ')')->count('userId') > 0;
     }

@@ -12,6 +12,7 @@ use App\Models\Logger\Action;
 use App\Services\ForumService;
 use App\Utils\Condition;
 use Illuminate\Http\Request;
+use stdClass;
 
 class PrefixController extends Controller {
     private $forumService;
@@ -40,7 +41,7 @@ class PrefixController extends Controller {
         $prefix = null;
 
         if ($prefixId == 'new') {
-            $prefix = new \stdClass();
+            $prefix = new stdClass();
             $prefix->categoryIds = '';
         } else {
             $prefix = Prefix::find($prefixId);

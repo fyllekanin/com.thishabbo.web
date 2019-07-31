@@ -5,11 +5,12 @@ namespace App\Views;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\VisitorMessage;
 use App\Helpers\DataHelper;
+use stdClass;
 
 class VisitorMessageReportView {
 
     public static function of(User $user, VisitorMessage $visitorMessage, $message) {
-        $threadSkeleton = new \stdClass();
+        $threadSkeleton = new stdClass();
 
         $subjectId = $visitorMessage->isComment() ? $visitorMessage->parentId : $visitorMessage->visitorMessageId;
         $page = DataHelper::getPage(VisitorMessage::where('hostId', $visitorMessage->hostId)

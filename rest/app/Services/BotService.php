@@ -7,6 +7,7 @@ use App\EloquentModels\User\User;
 use App\Helpers\ConfigHelper;
 use App\Http\Controllers\Forum\Thread\ThreadCrudController;
 use Illuminate\Validation\ValidationException;
+use stdClass;
 
 class BotService {
     private $threadController;
@@ -55,7 +56,7 @@ class BotService {
             return;
         }
 
-        $threadSkeleton = new \stdClass();
+        $threadSkeleton = new stdClass();
         $threadSkeleton->categoryId = $welcomeBotSettings->categoryId;
         $threadSkeleton->content = str_replace(':nickname:', '[mention]@' . $user->nickname . '[/mention]', $welcomeBotSettings->content);
         $threadSkeleton->title = 'Welcome ' . $user->nickname . '!';

@@ -30,6 +30,7 @@ use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use stdClass;
 
 class ThreadCrudController extends Controller {
     private $categoryTemplates = null;
@@ -215,7 +216,7 @@ class ThreadCrudController extends Controller {
         PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canCreateThreads,
             $categoryId, 'No permissions to create threads in this category');
 
-        $newThread = new \stdClass();
+        $newThread = new stdClass();
         $newThread->threadId = -1;
         $newThread->categoryId = $categoryId;
         $newThread->content = '';
