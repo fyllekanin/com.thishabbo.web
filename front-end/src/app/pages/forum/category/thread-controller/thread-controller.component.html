@@ -19,7 +19,7 @@
             </div>
             <div *ngIf="shouldHaveThumbnail" class="cell small-6">
                 <label>Preview Thumbnail:</label>
-                <details><summary>Click to view Thumbnail</summary><img appLazyLoad [image]="thumbnailUrl"/></details>
+                <details style="margin:0;"><summary>Click to view Thumbnail</summary><img appLazyLoad [image]="thumbnailUrl"/></details>
             </div>
             <div *ngIf="isQuestTemplate" class="cell small-4">
                 <label>Badge: <em *ngIf="badeHaveError" class="error">Only name!</em></label>
