@@ -13,12 +13,13 @@ class ShopItemData {
     public function __construct($data) {
         try {
             $data = json_decode($data);
-            $this->subscriptionTime = $data->subscriptionTime;
-            $this->subscriptionId = $data->subscriptionId;
-            $this->badgeId = $data->badgeId;
         } catch (\Exception $exception) {
-
+            $data = (object)[];
         }
+
+        $this->subscriptionTime = $data->subscriptionTime;
+        $this->subscriptionId = $data->subscriptionId;
+        $this->badgeId = $data->badgeId;
     }
 
     public function jsonSerialize() {

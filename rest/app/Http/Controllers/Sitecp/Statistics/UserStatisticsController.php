@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Sitecp\Statistics;
 use App\EloquentModels\User\Login;
 use App\Http\Controllers\Controller;
 use App\Utils\Condition;
+use DateTime;
 
 class UserStatisticsController extends Controller {
 
@@ -50,9 +51,9 @@ class UserStatisticsController extends Controller {
         $statistics = [];
 
         for ($i = 1; $i < $days; $i++) {
-            $start = new \DateTime($year . '-' . $month . '-' . $i);
+            $start = new DateTime($year . '-' . $month . '-' . $i);
             $start->setTime(0, 0, 0);
-            $end = new \DateTime($year . '-' . $month . '-' . $i);
+            $end = new DateTime($year . '-' . $month . '-' . $i);
             $end->setTime(23, 59, 59);
 
             $statistics[] = [

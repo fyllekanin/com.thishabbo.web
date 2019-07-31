@@ -13,7 +13,6 @@ use App\Views\BugReportView;
 use App\Views\ContactApplicationView;
 use App\Views\JobApplicationView;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 
 class FormController extends Controller {
 
@@ -34,10 +33,7 @@ class FormController extends Controller {
 
         foreach ($jobCategories as $category) {
             $threadSkeleton->categoryId = $category->categoryId;
-            try {
-                $threadCrudController->doThread($user, null, $threadSkeleton, null, true);
-            } catch (ValidationException $e) {
-            }
+            $threadCrudController->doThread($user, null, $threadSkeleton, null, true);
         }
 
         Logger::user($user->userId, $request->ip(), Action::CREATED_APPLICATION);
@@ -58,10 +54,7 @@ class FormController extends Controller {
 
         foreach ($jobCategories as $category) {
             $threadSkeleton->categoryId = $category->categoryId;
-            try {
-                $threadCrudController->doThread($user, null, $threadSkeleton, null, true);
-            } catch (ValidationException $e) {
-            }
+            $threadCrudController->doThread($user, null, $threadSkeleton, null, true);
         }
 
         Logger::user($user->userId, $request->ip(), Action::CREATED_CONTACT);

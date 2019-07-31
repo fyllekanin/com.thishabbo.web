@@ -17,6 +17,7 @@ class RadioServerTypes {
             }
             return false;
         } catch (\ReflectionException $e) {
+            return false;
         }
     }
 
@@ -49,21 +50,22 @@ class RadioSettings {
     public function __construct($data) {
         try {
             $data = json_decode($data);
-            $this->ip = $data->ip;
-            $this->port = $data->port;
-            $this->password = $data->password;
-            $this->adminPassword = $data->adminPassword;
-            $this->likes = $data->likes;
-            $this->userId = $data->userId;
-            $this->nextDjId = $data->nextDjId;
-            $this->listeners = $data->listeners;
-            $this->song = $data->song;
-            $this->albumArt = $data->albumArt;
-            $this->djSays = $data->djSays;
-            $this->serverType = $data->serverType;
         } catch (\Exception $exception) {
-
+            $data = (object)[];
         }
+
+        $this->ip = $data->ip;
+        $this->port = $data->port;
+        $this->password = $data->password;
+        $this->adminPassword = $data->adminPassword;
+        $this->likes = $data->likes;
+        $this->userId = $data->userId;
+        $this->nextDjId = $data->nextDjId;
+        $this->listeners = $data->listeners;
+        $this->song = $data->song;
+        $this->albumArt = $data->albumArt;
+        $this->djSays = $data->djSays;
+        $this->serverType = $data->serverType;
     }
 
     public function jsonSerialize() {
