@@ -207,7 +207,7 @@ class PostCrudController extends Controller {
             ->where('createdAt', '>', $this->nowMinus15)
             ->count('postId');
 
-        //Condition::precondition($postedInRecently > 0, 550, 'You are posting to quick!');
+        Condition::precondition($postedInRecently > 0, 550, 'You are posting to quick!');
 
         $thread = Thread::with('category')->where('threadId', $threadId)->first();
 
