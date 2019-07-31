@@ -164,7 +164,6 @@ class BadgesController extends Controller {
         }
 
         Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_BADGE, ['badge' => $badge->name]);
-
         return $this->getBadge($badgeId);
     }
 

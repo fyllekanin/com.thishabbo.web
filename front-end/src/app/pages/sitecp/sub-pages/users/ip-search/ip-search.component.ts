@@ -4,9 +4,17 @@ import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { SITECP_BREADCRUMB_ITEM, USER_LIST_BREADCRUMB_ITEM } from '../../../sitecp.constants';
 import { HttpService } from 'core/services/http/http.service';
-import { TableCell, TableConfig, TableHeader, TableRow } from 'shared/components/table/table.model';
+import {
+    FILTER_TYPE_CONFIG,
+    FilterConfig,
+    TableCell,
+    TableConfig,
+    TableHeader,
+    TableRow
+} from 'shared/components/table/table.model';
 import { IpSearchModel } from './ip-search.model';
 import { TimeHelper } from 'shared/helpers/time.helper';
+import { QueryParameters } from 'core/services/http/http.model';
 
 @Component({
     selector: 'app-sitecp-ip-search',
@@ -15,12 +23,11 @@ import { TimeHelper } from 'shared/helpers/time.helper';
 export class IpSearchComponent extends Page implements OnDestroy {
     private _data: Array<IpSearchModel> = [];
     private _filterTimer = null;
+    private _filter: QueryParameters;
 
     tableConfig: TableConfig;
-    ipAddress: string;
-    nickname: string;
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService
@@ -33,16 +40,18 @@ export class IpSearchComponent extends Page implements OnDestroy {
                 USER_LIST_BREADCRUMB_ITEM
             ]
         });
+        this.createOrUpdateTable();
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         this.destroy();
     }
 
-    onFilter(): void {
+    onFilter (queryParameters: QueryParameters): void {
+        this._filter = queryParameters;
         clearTimeout(this._filterTimer);
         this._filterTimer = setTimeout(() => {
-            this._httpService.get('sitecp/users/ip-search', { nickname: this.nickname, ipAddress: this.ipAddress })
+            this._httpService.get('sitecp/users/ip-search', this._filter)
                 .subscribe(data => {
                     this._data = data.map(res => new IpSearchModel(res));
                     this.createOrUpdateTable();
@@ -50,7 +59,7 @@ export class IpSearchComponent extends Page implements OnDestroy {
         }, 200);
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -58,27 +67,40 @@ export class IpSearchComponent extends Page implements OnDestroy {
         this.tableConfig = new TableConfig({
             title: 'Result',
             headers: this.getTableHeaders(),
-            rows: this.getTableRows()
+            rows: this.getTableRows(),
+            filterConfigs: [
+                new FilterConfig({
+                    title: 'Nickname',
+                    placeholder: 'Search by nickname...',
+                    key: 'nickname'
+                }),
+                FILTER_TYPE_CONFIG,
+                new FilterConfig({
+                    title: 'IP',
+                    key: 'ip',
+                    placeholder: 'Search by ip....'
+                })
+            ]
         });
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         return this._data.map(item => {
             return new TableRow({
                 cells: [
-                    new TableCell({ title: item.nickname }),
-                    new TableCell({ title: item.ip }),
-                    new TableCell({ title: TimeHelper.getLongDateWithTime(item.createdAt) })
+                    new TableCell({title: item.nickname}),
+                    new TableCell({title: item.ip}),
+                    new TableCell({title: TimeHelper.getLongDateWithTime(item.createdAt)})
                 ]
             });
         });
     }
 
-    private getTableHeaders(): Array<TableHeader> {
+    private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({ title: 'Nickname' }),
-            new TableHeader({ title: 'IP' }),
-            new TableHeader({ title: 'Date' })
+            new TableHeader({title: 'Nickname'}),
+            new TableHeader({title: 'IP'}),
+            new TableHeader({title: 'Date'})
         ];
     }
 }

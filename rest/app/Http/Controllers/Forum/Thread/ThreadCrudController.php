@@ -133,7 +133,6 @@ class ThreadCrudController extends Controller {
      * @param Request $request
      *
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function createThread(Request $request) {
         $user = $request->get('auth');
@@ -176,6 +175,7 @@ class ThreadCrudController extends Controller {
 
         $thread->title = $threadSkeleton->title;
         $thread->prefixId = isset($threadSkeleton->prefixId) ? $threadSkeleton->prefixId : 0;
+        $thread->touch();
         $thread->save();
 
         NotifyMentionsInPost::dispatch($threadSkeleton->content, $thread->firstPostId, $user->userId);
