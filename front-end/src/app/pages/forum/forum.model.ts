@@ -140,6 +140,8 @@ export class SlimThread {
     icon: string;
     @objectOf(SlimUser)
     user: SlimUser;
+    @objectOf(SlimPost)
+    lastPostViewed: SlimPost;
 
     constructor (source?: Partial<SlimThread>) {
         ClassHelper.assign(this, source);
@@ -161,6 +163,8 @@ export class SlimCategory {
     threads: number;
     @objectOf(SlimPost)
     lastPost: SlimPost;
+    @objectOf(SlimPost)
+    lastPostViewed: SlimPost;
     @arrayOf(SlimCategory)
     children: Array<SlimCategory> = [];
     @primitive()

@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Page } from 'shared/page/page.model';
-import { ForumPermissions, SlimThread } from '../forum.model';
+import { ForumPermissions, SlimThread, SlimPost } from '../forum.model';
 import { IUserProfile } from 'shared/directives/user-profile.directive';
 
 @Component({
@@ -58,7 +58,11 @@ export class SlimThreadComponent extends Page implements OnDestroy {
     }
 
     get threadUrl (): string {
-        return `/forum/thread/${this._slimThread.threadId}/page/1`;
+        return `/forum/thread/${this._slimThread.threadId}/page/${this._slimThread.lastPostViewed.page}`;
+    }
+
+    get lastPostViewed (): SlimPost {
+        return this._slimThread.lastPostViewed;
     }
 
     get isClosed (): boolean {

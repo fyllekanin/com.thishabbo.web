@@ -31,4 +31,8 @@ class ForumHelper {
     public static function isCategoryAuthOnly($categoryId) {
         return ForumPermission::where('categoryId', $categoryId)->where('groupId', 0)->where('isAuthOnly', true)->count() > 0;
     }
+
+    public static function getLastViewedPost($userId, $threadId) {
+
+    }
 }

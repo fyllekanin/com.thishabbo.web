@@ -349,4 +349,17 @@ class ForumService {
 
         return $categories;
     }
+
+    /**
+     * @param $userId
+     * @param $threadId
+     * @param $canApprovePosts
+     *
+     * @return mixed
+     */
+    public function getLastViewed($userId, $threadId, $canApprovePosts) {
+        $lastRead = ThreadRead::where('userId', $userId)->where('threadId', $threadId)->value('updatedAt');
+        $timestamp = $lastRead ? $lastRead->timestamp : 0;
+        return $this->getSlimPost(Post::where('threadId', $threadId)->where('createdAt', '<', $timestamp)->orderBy('createdAt', 'DESC')->value('postId'));
+    }
 }

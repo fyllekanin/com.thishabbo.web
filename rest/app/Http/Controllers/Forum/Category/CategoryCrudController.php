@@ -147,7 +147,7 @@ class CategoryCrudController extends Controller {
             'parents' => $this->forumService->getCategoryParents($category),
             'categories' => $this->getSlimChildCategories($categoryId, $user->userId),
             'stickyThreads' => $page <= 1 ? $this->getStickyThreadsForCategory($categoryId, $forumPermissions, $user->userId, $category) : [],
-            'threads' => $this->buildThreadsForCategory($threads, $user->userId, $category),
+            'threads' => $this->buildThreadsForCategory($threads, $user->userId, $category, $forumPermissions->canApprovePosts),
             'total' => $total,
             'forumPermissions' => $forumPermissions,
             'page' => $page,
@@ -190,11 +190,15 @@ class CategoryCrudController extends Controller {
      *
      * @return mixed
      */
-    private function buildThreadsForCategory($threads, $userId, $category) {
+    private function buildThreadsForCategory($threads, $userId, $category, $canApprovePosts) {
         foreach ($threads as $thread) {
             $thread->lastPost = $this->mapLastPost($thread, $thread->latestPost);
             $thread->haveRead = $this->forumService->haveReadThread($thread, $userId);
             $thread->icon = $category->icon;
+
+            $lastViewed = $this->forumService->getLastViewed($userId, $thread->threadId, $canApprovePosts);
+            $thread->lastPageViewed = $lastViewed->page;
+            $thread->lastPostViewed = $lastViewed->post;
         }
         return $threads;
     }
@@ -220,7 +224,7 @@ class CategoryCrudController extends Controller {
         }
         $threads = $threadSql->with(['prefix', 'latestPost'])->withNickname()->get();
 
-        return $this->buildThreadsForCategory($threads, $userId, $category);
+        return $this->buildThreadsForCategory($threads, $userId, $category, $categoryPermissions->canApprovePosts);
     }
 
     /**
@@ -257,6 +261,7 @@ class CategoryCrudController extends Controller {
      * @return array
      */
     private function getSlimChildCategories($categoryId, $userId) {
+        $permissions = ConfigHelper::getForumPermissions();
         $categoryIds = $this->forumService->getAccessibleCategories($userId);
         $childCategories = Category::nonHidden()
             ->withParent($categoryId)
@@ -267,11 +272,11 @@ class CategoryCrudController extends Controller {
         $children = [];
 
         foreach ($childCategories as $child) {
-            if (PermissionHelper::haveForumPermission($userId, ConfigHelper::getForumPermissions()->canViewOthersThreads, $child->categoryId)) {
+            if (PermissionHelper::haveForumPermission($userId, $permissions->canViewOthersThreads, $child->categoryId)) {
                 $child->lastPost = $this->forumService->getSlimPost($child->lastPostId);
                 $child->haveRead = $this->forumService->haveReadCategory($child, $userId);
             } else {
-                $canApproveThreads = PermissionHelper::haveForumPermission($userId, ConfigHelper::getForumPermissions()->canApproveThreads, $child->categoryId);
+                $canApproveThreads = PermissionHelper::haveForumPermission($userId, $permissions->canApproveThreads, $child->categoryId);
                 $categoryIdsChain = $this->getCategoryIdsChain($child->categoryId, $categoryIds);
                 $last = Thread::belongsToUser($userId)
                     ->isApproved($canApproveThreads)
@@ -282,6 +287,12 @@ class CategoryCrudController extends Controller {
                     ->first();
                 $child->lastPost = $last ? $this->forumService->getSlimPost($last->lastPostId) : null;
             }
+
+            $canApprovePosts = PermissionHelper::haveForumPermission($userId, $permissions->canApprovePosts, $child->categoryId);
+
+            $child->lastPostViewed = $child->lastPost ?
+                $this->forumService->getLastViewed($userId, $child->lastPost['threadId'], $canApprovePosts) : null;
+
             $child->children = Category::whereIn('categoryId', $categoryIds)
                 ->where('parentId', $child->categoryId)
                 ->select('categoryId', 'title', 'displayOrder')
