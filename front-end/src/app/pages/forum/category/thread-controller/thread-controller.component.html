@@ -13,9 +13,13 @@
                     <option *ngFor="let prefix of thread.prefixes" value="{{prefix.prefixId}}">{{prefix.text}}</option>
                 </select>
             </div>
-            <div *ngIf="shouldHaveThumbnail" class="cell small-4">
+            <div *ngIf="shouldHaveThumbnail" class="cell small-6">
                 <label>Thumbnail:</label>
                 <input type="file" accept="image/*" #file name="thread-thumbnail">
+            </div>
+            <div *ngIf="shouldHaveThumbnail" class="cell small-6">
+                <label>Preview Thumbnail:</label>
+                <details><summary>Click to view Thumbnail</summary><img appLazyLoad [image]="thumbnailUrl"/></details>
             </div>
             <div *ngIf="isQuestTemplate" class="cell small-4">
                 <label>Badge: <em *ngIf="badeHaveError" class="error">Only name!</em></label>

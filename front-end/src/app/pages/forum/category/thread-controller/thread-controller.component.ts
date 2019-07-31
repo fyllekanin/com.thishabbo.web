@@ -168,6 +168,10 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
         return this._data.badge ? `https://habboo-a.akamaihd.net/c_images/album1584/${this._data.badge}.gif` : '';
     }
 
+    get thumbnailUrl (): string {
+        return `/rest/resources/images/thumbnails/${this._data.threadId}.gif`;
+    }
+
     get canHavePoll (): boolean {
         return this._data.canHavePoll;
     }
