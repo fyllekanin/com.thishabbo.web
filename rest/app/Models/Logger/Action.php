@@ -23,6 +23,7 @@ class Action {
                 return $action['id'] == $actionId;
             });
         } catch (\ReflectionException $e) {
+            return null;
         }
     }
 
@@ -32,6 +33,7 @@ class Action {
                 return $action['log'] == $log;
             });
         } catch (\ReflectionException $e) {
+            return null;
         }
     }
 

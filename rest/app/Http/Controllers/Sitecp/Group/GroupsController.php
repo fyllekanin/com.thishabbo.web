@@ -227,10 +227,10 @@ class GroupsController extends Controller {
     public function getGroup(Request $request, $groupId) {
         $user = $request->get('auth');
         $group = Group::find($groupId);
+        $group = $group ? $group : new stdClass();
         $immunity = User::getImmunity($user->userId);
 
         if (!$group) {
-            $group = new stdClass();
             $group->immunity = 0;
             $group->sitecpPermissions = 0;
             $group->options = 0;

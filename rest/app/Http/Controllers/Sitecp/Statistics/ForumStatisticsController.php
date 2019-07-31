@@ -6,6 +6,7 @@ use App\EloquentModels\Forum\Post;
 use App\EloquentModels\Forum\Thread;
 use App\Http\Controllers\Controller;
 use App\Utils\Condition;
+use DateTime;
 
 class ForumStatisticsController extends Controller {
     /**
@@ -76,9 +77,9 @@ class ForumStatisticsController extends Controller {
         $statistics = [];
 
         for ($i = 1; $i < $days; $i++) {
-            $start = new \DateTime($year . '-' . $month . '-' . $i);
+            $start = new DateTime($year . '-' . $month . '-' . $i);
             $start->setTime(0, 0, 0);
-            $end = new \DateTime($year . '-' . $month . '-' . $i);
+            $end = new DateTime($year . '-' . $month . '-' . $i);
             $end->setTime(23, 59, 59);
 
             $statistics[] = [
@@ -104,9 +105,9 @@ class ForumStatisticsController extends Controller {
         $statistics = [];
 
         for ($i = 1; $i < $days; $i++) {
-            $start = new \DateTime($year . '-' . $month . '-' . $i);
+            $start = new DateTime($year . '-' . $month . '-' . $i);
             $start->setTime(0, 0, 0);
-            $end = new \DateTime($year . '-' . $month . '-' . $i);
+            $end = new DateTime($year . '-' . $month . '-' . $i);
             $end->setTime(23, 59, 59);
 
             $statistics[] = [
