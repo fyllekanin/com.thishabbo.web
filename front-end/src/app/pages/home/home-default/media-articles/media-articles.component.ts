@@ -9,8 +9,8 @@ import { SlimArticle } from 'shared/components/slim-article/slim-article.model';
 export class MediaArticlesComponent {
     private _articles: Array<SlimArticle> = [];
 
-    getBackgroundImage (articleId: number): string {
-        return `url(/rest/resources/images/thumbnails/${articleId}.gif)`;
+    getBackgroundImage (article: SlimArticle): string {
+        return `url(/rest/resources/images/thumbnails/${article.threadId}.gif?updatedAt=${article.updatedAt})`;
     }
 
     @Input()

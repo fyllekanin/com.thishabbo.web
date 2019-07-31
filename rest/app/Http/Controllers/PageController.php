@@ -275,6 +275,7 @@ class PageController extends Controller {
             'tags' => $tags,
             'user' => UserHelper::getSlimUser($thread->userId),
             'createdAt' => $thread->createdAt->timestamp,
+            'updatedAt' => $thread->updatedAt->timestamp,
             'prefix' => $thread->prefix
         ];
     }
