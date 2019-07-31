@@ -195,10 +195,7 @@ class CategoryCrudController extends Controller {
             $thread->lastPost = $this->mapLastPost($thread, $thread->latestPost);
             $thread->haveRead = $this->forumService->haveReadThread($thread, $userId);
             $thread->icon = $category->icon;
-
-            $lastViewed = $this->forumService->getLastViewed($userId, $thread->threadId, $canApprovePosts);
-            $thread->lastPageViewed = $lastViewed->page;
-            $thread->lastPostViewed = $lastViewed->post;
+            $thread->firstUnreadPost = $this->forumService->getFirstUnreadPost($userId, $thread->threadId, $canApprovePosts);
         }
         return $threads;
     }
@@ -290,9 +287,7 @@ class CategoryCrudController extends Controller {
             }
 
             $canApprovePosts = PermissionHelper::haveForumPermission($userId, $permissions->canApprovePosts, $child->categoryId);
-
-            $child->lastPostViewed = $child->lastPost ?
-                $this->forumService->getLastViewed($userId, $child->lastPost['threadId'], $canApprovePosts) : null;
+            $child->firstUnreadPost = $this->forumService->getFirstUnreadPost($userId, $child->lastPost['threadId'], $canApprovePosts);
 
             $child->children = Category::whereIn('categoryId', $categoryIds)
                 ->where('parentId', $child->categoryId)
@@ -338,7 +333,7 @@ class CategoryCrudController extends Controller {
         $ignoredThreadIds = IgnoredThread::where('userId', $user->userId)->pluck('threadId');
 
         return $this->forumService
-            ->getLatestPosts($categoryIds, $ignoredThreadIds, $ignoredCategoryIds, 15)
+            ->getLatestPosts($user->userId, $categoryIds, $ignoredThreadIds, $ignoredCategoryIds, 15)
             ->data;
     }
 

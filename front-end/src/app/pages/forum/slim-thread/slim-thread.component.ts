@@ -58,11 +58,11 @@ export class SlimThreadComponent extends Page implements OnDestroy {
     }
 
     get threadUrl (): string {
-        return `/forum/thread/${this._slimThread.threadId}/page/${this._slimThread.lastPostViewed.page}`;
+        return `/forum/thread/${this._slimThread.threadId}/page/${this._slimThread.firstUnreadPost.page}`;
     }
 
-    get lastPostViewed (): SlimPost {
-        return this._slimThread.lastPostViewed;
+    get firstUnreadPost (): SlimPost {
+        return this._slimThread.firstUnreadPost;
     }
 
     get isClosed (): boolean {

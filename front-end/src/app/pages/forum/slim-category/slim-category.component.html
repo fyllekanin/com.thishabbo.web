@@ -16,21 +16,17 @@
         <div *ngIf="lastPost" class="cell small-3 small-width">
             <a
                 class="thread-name"
-                [routerLink]="['/forum', 'thread', lastPostThreadId, 'page', lastPostViewedPage]"
-                [queryParams]="{scrollTo: 'post-' + lastPostViewedId}"   >
+                [routerLink]="['/forum', 'thread', lastPost.threadId, 'page', lastPost.page]"
+                [queryParams]="{ scrollTo: 'post-' + lastPost.postId}" >
                 <span *ngIf="lastPost.prefix" [style]="lastPost.prefix.style | safeStyle">
-                    {{lastPostViewed.prefix.text}} &#xbb;
+                    {{lastPost.prefix.text}} &#xbb;
                 </span>
-                {{lastPostViewed.threadTitle}}
+                {{lastPost.threadTitle}}
             </a>
             <div class="nickname">
                 <app-user-link [user]="lastPost.user"></app-user-link>
             </div>
-            <a class="time-ago"
-                [routerLink]="['/forum', 'thread', lastPost.threadId, 'page', lastPost.page]"
-                [queryParams]="{scrollTo: 'post-' + lastPost.postId}">
-                {{timeAgo(lastPost.createdAt)}}
-            </a>
+            <div class="time-ago">{{timeAgo(lastPost.createdAt)}}</div>
         </div>
         <div *ngIf="!lastPost" class="cell small-3">
             <strong>No threads yet, oops!</strong>
