@@ -178,7 +178,8 @@ export class SlimCategory {
 
 export enum AutoSave {
     POST,
-    THREAD
+    THREAD,
+    POST_EDIT
 }
 
 export interface ForumAutoSave {

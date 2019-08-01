@@ -1,7 +1,7 @@
 import { EditorComponent } from 'shared/components/editor/editor.component';
 import { EditorAction } from 'shared/components/editor/editor.model';
 import { AuthService } from 'core/services/auth/auth.service';
-import { ForumPermissions } from '../forum.model';
+import { AutoSave, ForumPermissions } from '../forum.model';
 import { PostActions, PostModel } from './post.model';
 import { Page } from 'shared/page/page.model';
 import {
@@ -23,6 +23,7 @@ import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.
 import { InfractionService } from 'shared/components/infraction/infraction.service';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { Router } from '@angular/router';
+import { AutoSaveHelper } from 'shared/helpers/auto-save.helper';
 
 @Component({
     selector: 'app-forum-post',
@@ -130,6 +131,9 @@ ${content}[/quotepost]\n\r`);
             case PostActions.SAVE:
                 this.onSave();
                 break;
+            case PostActions.AUTO_SAVE:
+                this.onOpenAutoSave();
+                break;
         }
     }
 
@@ -139,10 +143,30 @@ ${content}[/quotepost]\n\r`);
         }, '');
     }
 
+    onKeyUp (content: string): void {
+        if (!content) {
+            return;
+        }
+
+        AutoSaveHelper.save({
+            type: AutoSave.POST_EDIT,
+            contentId: this._postModel.postId,
+            content: content
+        });
+    }
+
     @Input()
     set postModel (postModel: PostModel) {
         this._postModel = postModel || new PostModel();
         this.setLikers();
+
+        if (AutoSaveHelper.exists(AutoSave.POST_EDIT, this._postModel.postId) &&
+            this.editorButtons.findIndex(button => button.value === PostActions.AUTO_SAVE) === -1) {
+            this.editorButtons.push(new EditorAction({
+                title: 'Open Auto-Save',
+                value: PostActions.AUTO_SAVE
+            }));
+        }
     }
 
     @Input()
@@ -204,6 +228,13 @@ ${content}[/quotepost]\n\r`);
         return this._isMultiQuoted;
     }
 
+    private onOpenAutoSave (): void {
+        const autoSave = AutoSaveHelper.get(AutoSave.POST_EDIT, this._postModel.postId);
+        this.editor.content = autoSave.content;
+        AutoSaveHelper.remove(AutoSave.POST_EDIT, this._postModel.postId);
+        this.editorButtons = this.editorButtons.filter(button => button.value !== PostActions.AUTO_SAVE);
+    }
+
     private setLikers (): void {
         this.visibleLikers = this._postModel.likers.slice(0, 4);
         this.moreLikerNames = this._postModel.likers.slice(4, this._postModel.likers.length);
@@ -216,8 +247,8 @@ ${content}[/quotepost]\n\r`);
     }
 
     private onSave (): void {
-        this._isInEditMode = false;
         this._postModel.content = this.editor.getEditorValue();
+        this._isInEditMode = false;
         this.onUpdatePost.emit(this._postModel);
     }
 }

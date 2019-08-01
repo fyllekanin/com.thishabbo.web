@@ -132,6 +132,7 @@ export class ThreadComponent extends Page implements OnDestroy {
         this._httpService.put(`forum/thread/post/${postModel.postId}`, {post: postModel})
             .subscribe(res => {
                 this.onSuccessUpdate(res);
+                AutoSaveHelper.remove(AutoSave.POST_EDIT, postModel.postId);
             }, error => {
                 this._notificationService.failureNotification(error);
             });
@@ -244,7 +245,6 @@ ${postContent}[/quotepost]\n\r`;
     }
 
     private doPost (toggleThread: boolean): void {
-
         const threadId = this._threadPage ? this._threadPage.threadId : 0;
         const content = this.editor ? this.editor.getEditorValue() : '';
 

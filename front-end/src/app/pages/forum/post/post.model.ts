@@ -1,5 +1,5 @@
 import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
-import { User, SlimUser } from 'core/services/auth/auth.model';
+import { SlimUser, User } from 'core/services/auth/auth.model';
 
 export class PostModel {
     @primitive()
@@ -36,5 +36,6 @@ export class PostModel {
 
 export enum PostActions {
     SAVE,
-    BACK
+    BACK,
+    AUTO_SAVE
 }

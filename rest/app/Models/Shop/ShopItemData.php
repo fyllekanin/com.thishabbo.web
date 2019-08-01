@@ -2,6 +2,8 @@
 
 namespace App\Models\Shop;
 
+use App\Utils\Value;
+
 /**
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
@@ -17,9 +19,9 @@ class ShopItemData {
             $data = (object)[];
         }
 
-        $this->subscriptionTime = $data->subscriptionTime;
-        $this->subscriptionId = $data->subscriptionId;
-        $this->badgeId = $data->badgeId;
+        $this->subscriptionTime = Value::objectProperty($data, 'subscriptionTime', 0);
+        $this->subscriptionId = Value::objectProperty($data, 'subscriptionId', 0);
+        $this->badgeId = Value::objectProperty($data, 'badgeId', 0);
     }
 
     public function jsonSerialize() {
