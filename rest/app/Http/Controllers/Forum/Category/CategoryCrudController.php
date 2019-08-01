@@ -21,6 +21,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use App\Utils\Value;
 
 class CategoryCrudController extends Controller {
     private $categoryTemplates = null;
@@ -195,7 +196,7 @@ class CategoryCrudController extends Controller {
             $thread->lastPost = $this->mapLastPost($thread, $thread->latestPost);
             $thread->haveRead = $this->forumService->haveReadThread($thread, $userId);
             $thread->icon = $category->icon;
-            $thread->firstUnreadPost = $this->forumService->getFirstUnreadPost($userId, $thread->threadId, $canApprovePosts);
+            $thread->threadRedirect = $this->forumService->getFirstUnreadPost($userId, $thread->threadId, $canApprovePosts);
         }
         return $threads;
     }
@@ -287,7 +288,7 @@ class CategoryCrudController extends Controller {
             }
 
             $canApprovePosts = PermissionHelper::haveForumPermission($userId, $permissions->canApprovePosts, $child->categoryId);
-            $child->firstUnreadPost = $this->forumService->getFirstUnreadPost($userId, $child->lastPost['threadId'], $canApprovePosts);
+            $child->lastPostRedirect = $this->forumService->getFirstUnreadPost($userId, $child->lastPost['threadId'], $canApprovePosts);
 
             $child->children = Category::whereIn('categoryId', $categoryIds)
                 ->where('parentId', $child->categoryId)

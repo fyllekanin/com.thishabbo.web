@@ -226,7 +226,7 @@ class ForumService {
                     'postId' => $thread->lastPostId,
                     'createdAt' => $thread->latestPost ? $thread->latestPost->createdAt->timestamp : 0,
                     'user' => Userhelper::getSlimUser($thread->latestPost ? $thread->latestPost->userId : 0),
-                    'firstUnreadPost' => $firstUnread
+                    'threadRedirect' => $firstUnread
                 ];
             })
         ];
@@ -366,13 +366,8 @@ class ForumService {
         $firstUnread = Post::where('threadId', $threadId)->where('createdAt', '>', $timestamp)->orderBy('createdAt', 'ASC')->first();
         $firstUnread = $firstUnread ? $firstUnread : Post::where('threadId', $threadId)->orderBy('createdAt', 'DESC')->first();
         $previousPosts = Post::where('threadId', $threadId)->where('createdAt', '<', $timestamp)->isApproved($canApprovePosts)->count();
-        return [
+        return (object) [
             'postId' => $firstUnread->postId,
-            'threadId' => $firstUnread->threadId,
-            'threadTitle' => $firstUnread->thread->title,
-            'prefix' => $firstUnread->thread->prefix,
-            'user' => UserHelper::getSlimUser($firstUnread->userId),
-            'createdAt' => $firstUnread->createdAt->timestamp,
             'page' => DataHelper::getPage($previousPosts)
         ];
     }

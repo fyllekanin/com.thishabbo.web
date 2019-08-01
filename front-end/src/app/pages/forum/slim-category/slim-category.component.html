@@ -16,8 +16,8 @@
         <div *ngIf="lastPost" class="cell small-3 small-width">
             <a
                 class="thread-name"
-                [routerLink]="['/forum', 'thread', lastPost.threadId, 'page', lastPost.page]"
-                [queryParams]="{ scrollTo: 'post-' + lastPost.postId}" >
+                [routerLink]="['/forum', 'thread', lastPost.threadId, 'page', lastPostRedirect.page]"
+                [queryParams]="{ scrollTo: 'post-' + lastPostRedirect.postId }" >
                 <span *ngIf="lastPost.prefix" [style]="lastPost.prefix.style | safeStyle">
                     {{lastPost.prefix.text}} &#xbb;
                 </span>
