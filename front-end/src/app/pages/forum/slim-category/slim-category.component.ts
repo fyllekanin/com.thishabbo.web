@@ -1,4 +1,4 @@
-import { SlimCategory, SlimPost } from '../forum.model';
+import { SlimCategory, SlimPost, ThreadRedirect } from '../forum.model';
 import { Component, ElementRef, Input, OnDestroy } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { IUserProfile } from 'shared/directives/user-profile.directive';
@@ -55,9 +55,9 @@ export class SlimCategoryComponent extends Page implements OnDestroy {
         return this._slimCategory.lastPost;
     }
 
-    get firstUnreadPost (): SlimPost {{
-        return this._slimCategory.firstUnreadPost;
-    }}
+    get lastPostRedirect (): ThreadRedirect {
+        return this._slimCategory.lastPostRedirect;
+    }
 
     get children (): Array<SlimCategory> {
         return this._slimCategory.children;

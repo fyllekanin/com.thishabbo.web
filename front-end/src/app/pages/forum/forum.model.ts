@@ -56,6 +56,17 @@ export class ThreadPrefix {
     }
 }
 
+export class ThreadRedirect {
+    @primitive()
+    page: number;
+    @primitive()
+    postId: number;
+
+    constructor (source: Partial<SlimPost>) {
+        ClassHelper.assign(this, source);
+    }
+}
+
 export class SlimPost {
     @primitive()
     postId: number;
@@ -108,8 +119,8 @@ export class SlimThread {
     icon: string;
     @objectOf(SlimUser)
     user: SlimUser;
-    @objectOf(SlimPost)
-    firstUnreadPost: SlimPost;
+    @objectOf(ThreadRedirect)
+    threadRedirect: ThreadRedirect;
 
     constructor (source?: Partial<SlimThread>) {
         ClassHelper.assign(this, source);
@@ -131,8 +142,8 @@ export class SlimCategory {
     threads: number;
     @objectOf(SlimPost)
     lastPost: SlimPost;
-    @objectOf(SlimPost)
-    firstUnreadPost: SlimPost;
+    @objectOf(ThreadRedirect)
+    lastPostRedirect: ThreadRedirect;
     @arrayOf(SlimCategory)
     children: Array<SlimCategory> = [];
     @primitive()
@@ -167,8 +178,8 @@ export class ForumLatestPost {
     user: SlimUser;
     @time()
     createdAt: string;
-    @objectOf(SlimPost)
-    firstUnreadPost: SlimPost;
+    @objectOf(ThreadRedirect)
+    threadRedirect: ThreadRedirect;
     @primitive()
     isRead: boolean;
 

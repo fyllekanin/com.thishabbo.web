@@ -8,8 +8,8 @@
                 <div appUserProfile appLazyLoad [float]="'left'"
                      [image]="'url(/rest/resources/images/users/' + item.user.userId + '.gif)'"></div>
                 <div class="latest-post-info truncate">
-                    <a [routerLink]="['/forum', 'thread', item.threadId, 'page', item.firstUnreadPost.page ]"
-                       [queryParams]="{ scrollTo: 'post-' + item.firstUnreadPost.postId }" [ngClass]="item.isRead ? '' : 'bold'">
+                    <a [routerLink]="['/forum', 'thread', item.threadId, 'page', item.threadRedirect.page ]"
+                       [queryParams]="{ scrollTo: 'post-' + item.threadRedirect.postId }" [ngClass]="item.isRead ? '' : 'bold'">
                         <span *ngIf="item.text" [style]="item.style | safeStyle">{{item.text}} »</span> {{item.title}}
                     </a>
                     <br/>
