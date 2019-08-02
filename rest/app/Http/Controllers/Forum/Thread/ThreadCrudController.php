@@ -282,10 +282,6 @@ class ThreadCrudController extends Controller {
         $this->forumService->updateReadThread($thread->threadId, $user->userId);
         $permissions = $this->forumService->getForumPermissionsForUserInCategory($user->userId, $thread->categoryId);
 
-        if ($permissions->canApprovePosts) {
-            $thread->posts += $thread->threadPosts()->where('isApproved', '<', 1)->count('threadId');
-        }
-
         $thread->load(['threadPosts' => function ($query) use ($permissions, $page, $postedBy) {
             if ($postedBy) {
                 $query->where('userId', $postedBy->userId);
@@ -296,9 +292,13 @@ class ThreadCrudController extends Controller {
         }]);
 
         $thread->page = $page;
+        
+        $total = Post::where('threadId', $thread->threadId)
+            ->where('isApproved', ($permissions->canApprovePosts ? '>=' : '>'), 0)
+            ->count('postId');
         $thread->total = $postedBy ?
             $this->myImpl->getThreadPostTotalByUser($thread->threadId, $user->userId, $permissions->canApprovePosts) :
-            DataHelper::getPage($thread->posts);
+            DataHelper::getPage($total);
 
         $thread->contentApproval = PermissionHelper::haveGroupOption($user->userId, ConfigHelper::getGroupOptionsConfig()->contentNeedApproval);
         $thread->forumPermissions = $permissions;
