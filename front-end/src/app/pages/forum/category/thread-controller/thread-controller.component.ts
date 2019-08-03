@@ -26,6 +26,7 @@ import { FORUM_BREADCRUM_ITEM } from '../../forum.constants';
 
 export class ThreadControllerComponent extends Page implements OnDestroy {
     private _data: ThreadSkeleton = new ThreadSkeleton();
+    public thumbnailLoaded: thumbnailLoaded;
 
     @ViewChild('editor', {static: true}) editor: EditorComponent;
     @ViewChild('file', {static: false}) fileInput;
