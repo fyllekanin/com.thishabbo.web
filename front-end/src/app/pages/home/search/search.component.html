@@ -1,40 +1,41 @@
 <div class="grid-x grid-margin-x">
     <div class="cell small-12 medium-9">
-        <app-title [title]="'Result'"></app-title>
-        <app-content>
-            <div class="grid-container">
-                <div class="grid-x" *ngFor="let item of items">
-                    <div class="cell small-12 search-item">
-                        <img appUserProfile [info]="item.user"/>
-                        <div class="data">
-                            <div *ngIf="parameters.type === 'threads'">
-                                <a [routerLink]="['/forum/thread/' + item.id + '/page/1']"
-                                   class="title">{{item.title}}</a>
-                                <br/>
-                                {{timeAgo(item.createdAt)}}
-                                <br/>
-                                by
-                                <app-user-link [user]="item.user"></app-user-link>
-                            </div>
-                            <div *ngIf="parameters.type === 'posts'">
-                                <a [routerLink]="['/forum/thread/' + item.parentId + '/page/' + item.page]"
-                                   [queryParams]="{ scrollTo: item.id }" class="title">{{item.title}}</a>
-                                <br/>
-                                {{timeAgo(item.createdAt)}}
-                                <br/>
-                                by
-                                <app-user-link [user]="item.user"></app-user-link>
-                            </div>
-                            <div *ngIf="parameters.type === 'users'">
-                                <app-user-link [user]="item.user"></app-user-link>
-                                <br/>
-                                Joined at {{timeAgo(item.user.createdAt)}}
+        <div *ngIf="parameters.type !== 'posts'">
+            <app-title [title]="'Result'"></app-title>
+            <app-content>
+                <div class="grid-container">
+                    <div class="grid-x" *ngFor="let item of items">
+                        <div class="cell small-12 search-item">
+                            <img appUserProfile [info]="item.user"/>
+                            <div class="data">
+                                <div *ngIf="parameters.type === 'threads'">
+                                    <a [routerLink]="['/forum/thread/' + item.id + '/page/1']"
+                                    class="title">{{item.title}}</a>
+                                    <br/>
+                                    {{timeAgo(item.createdAt)}}
+                                    <br/>
+                                    by
+                                    <app-user-link [user]="item.user"></app-user-link>
+                                </div>
+                                <div *ngIf="parameters.type === 'users'">
+                                    <app-user-link [user]="item.user"></app-user-link>
+                                    <br/>
+                                    Joined at {{timeAgo(item.user.createdAt)}}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </app-content>
+        </div>
+        <div *ngIf="parameters.type === 'posts'">
+            <div *ngFor="let item of items">
+                <app-title [title]="getPostResultTitle(item)"></app-title>
+                <app-content>
+                    <span [innerHTML]="item.content | safeHtml"></span>
+                </app-content>
             </div>
-        </app-content>
+        </div>
         <app-pagination [paginationModel]="pagination"></app-pagination>
     </div>
     <div class="cell small-12 medium-3">

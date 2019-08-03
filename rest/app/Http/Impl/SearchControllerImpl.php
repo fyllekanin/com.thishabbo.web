@@ -9,6 +9,7 @@ use App\Helpers\ConfigHelper;
 use App\Helpers\DataHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
+use App\Utils\BBcodeUtil;
 use App\Http\Controllers\Controller;
 use App\Services\ForumService;
 use App\Utils\Condition;
@@ -79,6 +80,7 @@ class SearchControllerImpl {
                 'posts.threadId',
                 'posts.userId',
                 'posts.createdAt',
+                'posts.content',
                 'threads.categoryId',
                 'threads.title'
             ]);
@@ -98,6 +100,7 @@ class SearchControllerImpl {
                     ->isApproved()->count('postId')),
                 'user' => UserHelper::getSlimUser($item->userId),
                 'title' => $item->title,
+                'content' => BBcodeUtil::bbcodeParser($item->content),
                 'createdAt' => $item->createdAt->timestamp
             ];
         })->toArray();
