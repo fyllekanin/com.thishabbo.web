@@ -15,3 +15,6 @@
 .remove-answer i {
     cursor: pointer;
 }
+.thumbnailPreview {
+    display: none;
+}
