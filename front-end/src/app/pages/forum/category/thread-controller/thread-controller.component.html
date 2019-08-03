@@ -17,9 +17,9 @@
                 <label>Thumbnail:</label>
                 <input type="file" accept="image/*" #file name="thread-thumbnail">
             </div>
-            <div id="thumbnail-preview" class="cell small-6" style="display:none;">
+            <div class="cell small-6">
                 <label>Preview Thumbnail:</label>
-                <details style="margin:0;"><summary>Click to view Thumbnail</summary><img appLazyLoad id="thumbnailPreview" [src]="thumbnailUrl"/></details>
+                <details style="margin:0;"><summary>Click to view Thumbnail</summary><img [src]="thumbnailUrl" [hidden]="!thumbnailLoaded" (load)="thumbnailLoaded = true"/></details>
             </div>
             <div *ngIf="isQuestTemplate" class="cell small-4">
                 <label>Badge: <em *ngIf="badeHaveError" class="error">Only name!</em></label>
