@@ -1,0 +1,1 @@
+{"topic":"Add Thumbnail Preview on Edit Thread","type":"Bug","body":"Fixes #692 which prevented media editors from seeing if a thumbnail was already uploaded. Now thumbnail preview option, only shows if a thumbnail exists."}

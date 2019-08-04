@@ -26,6 +26,7 @@ import { FORUM_BREADCRUM_ITEM } from '../../forum.constants';
 
 export class ThreadControllerComponent extends Page implements OnDestroy {
     private _data: ThreadSkeleton = new ThreadSkeleton();
+    thumbnailLoaded;
 
     @ViewChild('editor', {static: true}) editor: EditorComponent;
     @ViewChild('file', {static: false}) fileInput;
@@ -166,6 +167,10 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
 
     get badgeUrl (): string {
         return this._data.badge ? `https://habboo-a.akamaihd.net/c_images/album1584/${this._data.badge}.gif` : '';
+    }
+
+    get thumbnailUrl (): string {
+        return `/rest/resources/images/thumbnails/${this._data.threadId}.gif`;
     }
 
     get canHavePoll (): boolean {
