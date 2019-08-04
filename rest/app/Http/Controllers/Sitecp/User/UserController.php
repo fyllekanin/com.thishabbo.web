@@ -73,6 +73,7 @@ class UserController extends Controller {
         ]);
         Timetable::where('userId', $srcUser->userId)->update(['userId' => $destUser->userId]);
         UserItem::where('userId', $srcUser->userId)->update(['userId' => $destUser->userId]);
+        User::where('referralId', $srcUser->userId)->update(['referralId' => $destUser->userId]);
 
         $destUser->posts += $srcUser->posts;
         $destUser->threads += $srcUser->threads;
@@ -81,7 +82,7 @@ class UserController extends Controller {
         $destUser->userdata->xp += $srcUser->userdata->xp;
         $destUser->userdata->save();
         $srcUser->userdata->delete();
-        
+
         $destUser->lastActivity = max($srcUser->lastActivity, $destUser->lastActivity);
         $destUser->save();
         $srcUser->delete();
