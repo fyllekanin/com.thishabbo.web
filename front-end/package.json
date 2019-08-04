@@ -12,7 +12,7 @@
     "test:chrome": "node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng test --watch=true --browsers=Chrome",
     "lint": "node --max-old-space-size=8192 ./node_modules/@angular/cli/bin/ng lint",
     "e2e": "webdriver-manager update && node ./node_modules/protractor/bin/protractor ./e2e/protractor.conf.js",
-    "e2e:jenkins": "webdriver-manager update --versions.chrome 75.0.3770.140 && node ./node_modules/protractor/bin/protractor ./e2e/protractor-jenkins.conf.js"
+    "e2e:jenkins": "webdriver-manager update --versions.chrome 74.0.3729.185 && node ./node_modules/protractor/bin/protractor ./e2e/protractor-jenkins.conf.js"
   },
   "private": true,
   "dependencies": {

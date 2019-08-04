@@ -1,4 +1,4 @@
-import { browser, by, element, ElementFinder, ExpectedConditions, protractor } from 'protractor';
+import { browser, by, element, ElementFinder, ExpectedConditions, Key } from 'protractor';
 import { CommonUtil } from './common.util';
 
 export class InputUtil {
@@ -27,8 +27,8 @@ export class InputUtil {
         browser.wait(ExpectedConditions.presenceOf(ele), 10000, 'Expected element to be present');
         return browser.actions().mouseMove(ele)
             .click()
-            .sendKeys(protractor.Key.chord(protractor.Key.CONTROL, 'a'))
-            .sendKeys(protractor.Key.BACK_SPACE)
+            .sendKeys(Key.chord(Key.CONTROL, 'a'))
+            .sendKeys(Key.BACK_SPACE)
             .sendKeys(value)
             .perform();
     }
