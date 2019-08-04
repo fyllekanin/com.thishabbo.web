@@ -8,6 +8,7 @@ use App\EloquentModels\Forum\Thread;
 use App\EloquentModels\Staff\Timetable;
 use App\EloquentModels\User\Token;
 use App\EloquentModels\User\User;
+use App\EloquentModels\User\UserGroup;
 use App\EloquentModels\User\UserItem;
 use App\Helpers\ConfigHelper;
 use App\Helpers\DataHelper;
@@ -74,6 +75,7 @@ class UserController extends Controller {
         Timetable::where('userId', $srcUser->userId)->update(['userId' => $destUser->userId]);
         UserItem::where('userId', $srcUser->userId)->update(['userId' => $destUser->userId]);
         User::where('referralId', $srcUser->userId)->update(['referralId' => $destUser->userId]);
+        UserGroup::where('userId', $srcUser->userId)->delete();
 
         $destUser->posts += $srcUser->posts;
         $destUser->threads += $srcUser->threads;
