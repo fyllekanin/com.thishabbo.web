@@ -10,6 +10,7 @@ use App\EloquentModels\User\Token;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserGroup;
 use App\EloquentModels\User\UserItem;
+use App\EloquentModels\User\VisitorMessage;
 use App\Helpers\ConfigHelper;
 use App\Helpers\DataHelper;
 use App\Helpers\PermissionHelper;
@@ -75,6 +76,7 @@ class UserController extends Controller {
         Timetable::where('userId', $srcUser->userId)->update(['userId' => $destUser->userId]);
         UserItem::where('userId', $srcUser->userId)->update(['userId' => $destUser->userId]);
         User::where('referralId', $srcUser->userId)->update(['referralId' => $destUser->userId]);
+        VisitorMessage::where('userID', $srcUser->userId)->update(['userId' => $destUser->userId]);
         UserGroup::where('userId', $srcUser->userId)->delete();
 
         $destUser->posts += $srcUser->posts;
