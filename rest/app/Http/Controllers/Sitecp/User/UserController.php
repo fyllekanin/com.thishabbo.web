@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Sitecp\User;
 use App\EloquentModels\Forum\Post;
 use App\EloquentModels\Forum\PostLike;
 use App\EloquentModels\Forum\Thread;
-use App\EloquentModels\User\User;
+use App\EloquentModels\Staff\Timetable;
 use App\EloquentModels\User\Token;
+use App\EloquentModels\User\User;
+use App\EloquentModels\User\UserItem;
 use App\Helpers\ConfigHelper;
 use App\Helpers\DataHelper;
 use App\Helpers\PermissionHelper;
@@ -69,10 +71,18 @@ class UserController extends Controller {
         PostLike::where('userId', $srcUser->userId)->update([
             'userId' => $destUser->userId
         ]);
+        Timetable::where('userId', $srcUser->userId)->update(['userId' => $destUser->userId]);
+        UserItem::where('userId', $srcUser->userId)->update(['userId' => $destUser->userId]);
+        User::where('referralId', $srcUser->userId)->update(['referralId' => $destUser->userId]);
 
         $destUser->posts += $srcUser->posts;
         $destUser->threads += $srcUser->threads;
         $destUser->likes += $srcUser->likes;
+        $destUser->userdata->credits += $srcUser->userdata->credits;
+        $destUser->userdata->xp += $srcUser->userdata->xp;
+        $destUser->userdata->save();
+        $srcUser->userdata->delete();
+
         $destUser->lastActivity = max($srcUser->lastActivity, $destUser->lastActivity);
         $destUser->save();
         $srcUser->delete();
@@ -190,9 +200,9 @@ class UserController extends Controller {
             $userData->save();
         }
         $current->save();
-        
+
         if ($shouldCheckPassword) {
-            Token::where('userId', $current->userId)->delete();   
+            Token::where('userId', $current->userId)->delete();
         }
 
         Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_USERS_BASIC_SETTINGS, [
