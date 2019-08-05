@@ -27,28 +27,30 @@ class PageControllerImpl {
         $parsed = json_decode($value);
 
         $userIds = [
-            $parsed->globalManagement,
-            $parsed->europeManagement,
-            $parsed->oceaniaManagement,
-            $parsed->northAmericanManagement,
-            $parsed->europeRadio,
-            $parsed->oceaniaRadio,
-            $parsed->northAmericanRadio,
-            $parsed->europeEvents,
-            $parsed->oceaniaEvents,
-            $parsed->northAmericanEvents,
-            $parsed->moderation,
-            $parsed->media,
-            $parsed->quests,
-            $parsed->graphics,
-            $parsed->audioProducer
+            ["Global Management", $parsed->globalManagement],
+            ["EU Management", $parsed->europeManagement],
+            ["OC Management", $parsed->oceaniaManagement],
+            ["NA Management", $parsed->northAmericanManagement],
+            ["EU Radio", $parsed->europeRadio],
+            ["OC Radio", $parsed->oceaniaRadio],
+            ["NA Radio", $parsed->northAmericanRadio],
+            ["EU Events", $parsed->europeEvents],
+            ["OC Events", $parsed->oceaniaEvents],
+            ["NA Events", $parsed->northAmericanEvents],
+            ["Moderation", $parsed->moderation],
+            ["Media", $parsed->media],
+            ["Quests", $parsed->quests],
+            ["Graphics", $parsed->graphics],
+            ["Audio Producer", $parsed->audioProducer]
         ];
 
-        return array_map(function ($userId) {
-            return User::where('userId', $userId)->first(['nickname', 'habbo']);
+        return array_values(array_map(function ($userId) {
+            $temp = User::where('userId', $userId[1])->first(['nickname', 'habbo']);
+            $temp["role"] = $userId[0];
+            return $temp;
         }, array_filter($userIds, function ($userId) {
-            return User::where('userId', $userId)->count() > 0;
-        }));
+            return User::where('userId', $userId[1])->count() > 0;
+        })));
     }
 
     /**
