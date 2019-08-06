@@ -27,29 +27,29 @@ class PageControllerImpl {
         $parsed = json_decode($value);
 
         $userIds = [
-            ["Global Management", $parsed->globalManagement],
-            ["EU Management", $parsed->europeManagement],
-            ["OC Management", $parsed->oceaniaManagement],
-            ["NA Management", $parsed->northAmericanManagement],
-            ["EU Radio", $parsed->europeRadio],
-            ["OC Radio", $parsed->oceaniaRadio],
-            ["NA Radio", $parsed->northAmericanRadio],
-            ["EU Events", $parsed->europeEvents],
-            ["OC Events", $parsed->oceaniaEvents],
-            ["NA Events", $parsed->northAmericanEvents],
-            ["Moderation", $parsed->moderation],
-            ["Media", $parsed->media],
-            ["Quests", $parsed->quests],
-            ["Graphics", $parsed->graphics],
-            ["Audio Producer", $parsed->audioProducer]
+            (object) ['Role' => "Global Management", 'userId' => $parsed->globalManagement],
+            (object) ['Role' => "EU Management", 'userId' => $parsed->europeManagement],
+            (object) ['Role' => "OC Management", 'userId' => $parsed->oceaniaManagement],
+            (object) ['Role' => "NA Management", 'userId' => $parsed->northAmericanManagement],
+            (object) ['Role' => "EU Radio", 'userId' => $parsed->europeRadio],
+            (object) ['Role' => "OC Radio", 'userId' => $parsed->oceaniaRadio],
+            (object) ['Role' => "NA Radio", 'userId' => $parsed->northAmericanRadio],
+            (object) ['Role' => "EU Events", 'userId' => $parsed->europeEvents],
+            (object) ['Role' => "OC Events", 'userId' => $parsed->oceaniaEvents],
+            (object) ['Role' => "NA Events", 'userId' => $parsed->northAmericanEvents],
+            (object) ['Role' => "Moderation", 'userId' => $parsed->moderation],
+            (object) ['Role' => "Media", 'userId' => $parsed->media],
+            (object) ['Role' => "Quests", 'userId' => $parsed->quests],
+            (object) ['Role' => "Graphics", 'userId' => $parsed->graphics],
+            (object) ['Role' => "Audio Producer", 'userId' => $parsed->audioProducer]
         ];
 
-        return array_values(array_map(function ($userId) {
-            $temp = User::where('userId', $userId[1])->first(['nickname', 'habbo']);
-            $temp["role"] = $userId[0];
+        return array_values(array_map(function ($data) {
+            $temp = User::where('userId', $data->userId)->first(['nickname', 'habbo']);
+            $temp->role = $data->Role;
             return $temp;
-        }, array_filter($userIds, function ($userId) {
-            return User::where('userId', $userId[1])->count() > 0;
+        }, array_filter($userIds, function ($data) {
+            return User::where('userId', $data->userId)->count() > 0;
         })));
     }
 
