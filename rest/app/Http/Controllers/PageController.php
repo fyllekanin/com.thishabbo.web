@@ -19,6 +19,7 @@ use App\Http\Impl\PageControllerImpl;
 use App\Models\User\CustomUserFields;
 use App\Utils\BBcodeUtil;
 use App\Utils\Iterables;
+use App\Utils\Condition;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -135,6 +136,9 @@ class PageController extends Controller {
      */
     public function getMaintenanceMessage() {
         $settingKeys = ConfigHelper::getKeyConfig();
+
+        Condition::precondition(!SettingsHelper::getSettingValue($settingKeys->isMaintenance), 404, 'Maintenance is not enabled.');
+            
         return response()->json([
             'content' => BBcodeUtil::bbcodeParser(SettingsHelper::getSettingValue($settingKeys->maintenanceContent))
         ]);
