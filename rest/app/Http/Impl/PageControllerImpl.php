@@ -46,7 +46,7 @@ class PageControllerImpl {
 
         return array_values(array_map(function ($data) {
             $temp = User::where('userId', $data->userId)->first(['nickname', 'habbo']);
-            $temp->role = $data->Role;
+            $temp->role = $data->role;
             return $temp;
         }, array_filter($userIds, function ($data) {
             return User::where('userId', $data->userId)->count() > 0;
