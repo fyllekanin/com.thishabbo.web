@@ -41,6 +41,8 @@ export class SearchResult {
     @primitive()
     title: string;
     @primitive()
+    content: string;
+    @primitive()
     createdAt: number;
 
 

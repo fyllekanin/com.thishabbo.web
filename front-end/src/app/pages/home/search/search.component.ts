@@ -65,6 +65,10 @@ export class SearchComponent extends Page implements OnDestroy {
         this.onSearch();
     }
 
+    getPostResultTitle (item: SearchResult): string {
+        return `Posted by ${item.user.nickname} - ${this.timeAgo(item.createdAt)}`;
+    }
+
     get parameters (): SearchParameters {
         return this._data ? this._data.parameters : new SearchParameters({});
     }
