@@ -27,21 +27,21 @@ class PageControllerImpl {
         $parsed = json_decode($value);
 
         $userIds = [
-            (object) ['Role' => "Global Management", 'userId' => $parsed->globalManagement],
-            (object) ['Role' => "EU Management", 'userId' => $parsed->europeManagement],
-            (object) ['Role' => "OC Management", 'userId' => $parsed->oceaniaManagement],
-            (object) ['Role' => "NA Management", 'userId' => $parsed->northAmericanManagement],
-            (object) ['Role' => "EU Radio", 'userId' => $parsed->europeRadio],
-            (object) ['Role' => "OC Radio", 'userId' => $parsed->oceaniaRadio],
-            (object) ['Role' => "NA Radio", 'userId' => $parsed->northAmericanRadio],
-            (object) ['Role' => "EU Events", 'userId' => $parsed->europeEvents],
-            (object) ['Role' => "OC Events", 'userId' => $parsed->oceaniaEvents],
-            (object) ['Role' => "NA Events", 'userId' => $parsed->northAmericanEvents],
-            (object) ['Role' => "Moderation", 'userId' => $parsed->moderation],
-            (object) ['Role' => "Media", 'userId' => $parsed->media],
-            (object) ['Role' => "Quests", 'userId' => $parsed->quests],
-            (object) ['Role' => "Graphics", 'userId' => $parsed->graphics],
-            (object) ['Role' => "Audio Producer", 'userId' => $parsed->audioProducer]
+            (object) ['role' => 'Global Management', 'userId' => $parsed->globalManagement],
+            (object) ['role' => 'EU Management', 'userId' => $parsed->europeManagement],
+            (object) ['role' => 'OC Management', 'userId' => $parsed->oceaniaManagement],
+            (object) ['role' => 'NA Management', 'userId' => $parsed->northAmericanManagement],
+            (object) ['role' => 'EU Radio', 'userId' => $parsed->europeRadio],
+            (object) ['role' => 'OC Radio', 'userId' => $parsed->oceaniaRadio],
+            (object) ['role' => 'NA Radio', 'userId' => $parsed->northAmericanRadio],
+            (object) ['role' => 'EU Events', 'userId' => $parsed->europeEvents],
+            (object) ['role' => 'OC Events', 'userId' => $parsed->oceaniaEvents],
+            (object) ['role' => 'NA Events', 'userId' => $parsed->northAmericanEvents],
+            (object) ['role' => 'Moderation', 'userId' => $parsed->moderation],
+            (object) ['role' => 'Media', 'userId' => $parsed->media],
+            (object) ['role' => 'Quests', 'userId' => $parsed->quests],
+            (object) ['role' => 'Graphics', 'userId' => $parsed->graphics],
+            (object) ['role' => 'Audio Producer', 'userId' => $parsed->audioProducer]
         ];
 
         return array_values(array_map(function ($data) {
