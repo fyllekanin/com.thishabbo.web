@@ -27,28 +27,30 @@ class PageControllerImpl {
         $parsed = json_decode($value);
 
         $userIds = [
-            $parsed->globalManagement,
-            $parsed->europeManagement,
-            $parsed->oceaniaManagement,
-            $parsed->northAmericanManagement,
-            $parsed->europeRadio,
-            $parsed->oceaniaRadio,
-            $parsed->northAmericanRadio,
-            $parsed->europeEvents,
-            $parsed->oceaniaEvents,
-            $parsed->northAmericanEvents,
-            $parsed->moderation,
-            $parsed->media,
-            $parsed->quests,
-            $parsed->graphics,
-            $parsed->audioProducer
+            (object) ['role' => 'Global Management', 'userId' => $parsed->globalManagement],
+            (object) ['role' => 'EU Management', 'userId' => $parsed->europeManagement],
+            (object) ['role' => 'OC Management', 'userId' => $parsed->oceaniaManagement],
+            (object) ['role' => 'NA Management', 'userId' => $parsed->northAmericanManagement],
+            (object) ['role' => 'EU Radio', 'userId' => $parsed->europeRadio],
+            (object) ['role' => 'OC Radio', 'userId' => $parsed->oceaniaRadio],
+            (object) ['role' => 'NA Radio', 'userId' => $parsed->northAmericanRadio],
+            (object) ['role' => 'EU Events', 'userId' => $parsed->europeEvents],
+            (object) ['role' => 'OC Events', 'userId' => $parsed->oceaniaEvents],
+            (object) ['role' => 'NA Events', 'userId' => $parsed->northAmericanEvents],
+            (object) ['role' => 'Moderation', 'userId' => $parsed->moderation],
+            (object) ['role' => 'Media', 'userId' => $parsed->media],
+            (object) ['role' => 'Quests', 'userId' => $parsed->quests],
+            (object) ['role' => 'Graphics', 'userId' => $parsed->graphics],
+            (object) ['role' => 'Audio Producer', 'userId' => $parsed->audioProducer]
         ];
 
-        return array_map(function ($userId) {
-            return User::where('userId', $userId)->first(['nickname', 'habbo']);
-        }, array_filter($userIds, function ($userId) {
-            return User::where('userId', $userId)->count() > 0;
-        }));
+        return array_values(array_map(function ($data) {
+            $temp = User::where('userId', $data->userId)->first(['nickname', 'habbo']);
+            $temp->role = $data->role;
+            return $temp;
+        }, array_filter($userIds, function ($data) {
+            return User::where('userId', $data->userId)->count() > 0;
+        })));
     }
 
     /**
