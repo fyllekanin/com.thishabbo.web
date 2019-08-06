@@ -41,10 +41,6 @@ export class StaffSpotlightComponent {
         return this._current ? this._current.nickname : '';
     }
 
-    get role(): string {
-        return this._current ? this._current.role : '';
-    }
-
     get habbo(): string {
         const base = 'https://www.habbo.com/habbo-imaging/avatarimage?user=';
         const modifiers = '&direction=4&head_direction=3&action=0&gesture=sml&size=m';

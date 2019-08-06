@@ -27,8 +27,6 @@ export class StaffSpotlightUser {
     nickname: string;
     @primitive()
     habbo: string;
-    @primitive()
-    role: string;
 
     constructor (source: Partial<StaffSpotlightUser>) {
         ClassHelper.assign(this, source);
