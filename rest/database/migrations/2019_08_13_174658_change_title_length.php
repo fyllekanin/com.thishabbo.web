@@ -11,9 +11,11 @@ class ChangeTitleLength extends Migration {
      * @return void
      */
     public function up() {
+        DB::statement('DROP INDEX threads_title_index ON threads;');
         Schema::table('threads', function (Blueprint $table) {
             $table->text('title')->change();
         });
+        DB::statement('ALTER TABLE threads ADD FULLTEXT INDEX ThreadsTitleIndex (title)');
     }
 
     /**
