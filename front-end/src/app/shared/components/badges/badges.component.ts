@@ -8,6 +8,8 @@ import { BadgeModel } from 'shared/components/badges/badges.model';
 })
 export class BadgesComponent {
 
+    @Input() size = 'small-6 medium-3';
+
     @Input()
     badges: Array<BadgeModel> = [];
 }

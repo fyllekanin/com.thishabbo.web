@@ -2276,4 +2276,28 @@ class Action {
         'contentTable' => 'subscriptions',
         'contentSelect' => 'title'
     ];
+
+    const THREAD_BANNED = [
+        'id' => 200,
+        'description' => 'User banned user from thread',
+        'data' => [
+            'thread' => 'Thread the user got banned from'
+        ],
+        'log' => 'log_mod',
+        'contentId' => 'userId',
+        'contentTable' => 'users',
+        'contentSelect' => 'nickname'
+    ];
+
+    const THREAD_UNBANNED = [
+        'id' => 201,
+        'description' => 'User unbanned user from thread',
+        'data' => [
+            'thread' => 'Thread the user got unbanned from'
+        ],
+        'log' => 'log_mod',
+        'contentId' => 'userId',
+        'contentTable' => 'users',
+        'contentSelect' => 'nickname'
+    ];
 }

@@ -53,6 +53,11 @@ export class ThreadComponent extends Page implements OnDestroy {
         title: 'Thread Closed',
         content: 'The thread is closed'
     };
+    threadBanned: InfoBoxModel = {
+        type: INFO_BOX_TYPE.WARNING,
+        title: 'You are banned',
+        content: 'You are banned from viewing this thread'
+    };
 
     constructor (
         private _dialogService: DialogService,

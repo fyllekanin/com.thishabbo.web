@@ -41,6 +41,7 @@ Route::group(['middleware' => ['maintenance']], function () {
     Route::get('/page/versions/page/{page}', 'PageController@getVersions');
     Route::get('/page/profile/{nickname}/page/{page}', 'ProfileController@getProfile');
     Route::get('/page/custom/{page}', 'PageController@getCustomPage');
+    Route::get('/page/badges/page/{page}', 'PageController@getBadges');
     Route::get('/page/badge-guides/page/{page}', 'PageController@getBadgeGuides');
     Route::get('/page/home', 'PageController@getHomePage');
     Route::get('/page/register', 'PageController@getRegisterPage');

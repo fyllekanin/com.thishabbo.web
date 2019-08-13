@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Moderation;
 use App\EloquentModels\Forum\Category;
 use App\EloquentModels\Forum\Post;
 use App\EloquentModels\Forum\Thread;
+use App\EloquentModels\Forum\ThreadBan;
 use App\EloquentModels\User\User;
 use App\Helpers\ConfigHelper;
 use App\Helpers\PermissionHelper;
@@ -35,6 +36,64 @@ class ThreadController extends Controller {
     public function __construct(ForumService $forumService) {
         parent::__construct();
         $this->forumService = $forumService;
+    }
+
+    public function getThreadBans(Request $request, $threadId) {
+        $user = $request->get('auth');
+        $thread = Thread::find($threadId);
+
+        Condition::precondition(!$thread, 404, 'No thread with that ID');
+        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canThreadBan, $thread->categoryId,
+            'You do not have permission to thread ban here!');
+
+        return response()->json(ThreadBan::where('threadId', $thread->threadId)->orderBy('createdAt', 'DESC')->get()->map(function ($ban) {
+            return [
+                'threadBanId' => $ban->threadBanId,
+                'user' => UserHelper::getSlimUser($ban->userId),
+                'bannedBy' => UserHelper::getSlimUser($ban->bannedById),
+                'bannedAt' => $ban->createdAt->timestamp
+            ];
+        }));
+    }
+
+    public function createThreadBan(Request $request, $threadId) {
+        $user = $request->get('auth');
+        $banned = User::withNickname($request->input('nickname'))->first();
+        $thread = Thread::find($threadId);
+
+        Condition::precondition(!$thread, 404, 'No thread with that ID');
+        Condition::precondition(!$banned, 404, 'No user with that nickname');
+        Condition::precondition(!UserHelper::canManageUser($user, $banned->userId), 400, 'You can not ban this user');
+        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canThreadBan, $thread->categoryId,
+            'You do not have permission to thread ban here!');
+
+        $threadBan = new ThreadBan([
+            'userId' => $banned->userId,
+            'bannedById' => $user->userId,
+            'threadId' => $thread->threadId
+        ]);
+        $threadBan->save();
+
+        Logger::mod($user->userId, $request->ip(), Action::THREAD_BANNED, ['thread' => $thread->title], $banned->userId);
+        return $this->getThreadBans($request, $threadId);
+    }
+
+    public function deleteThreadBan(Request $request, $threadBanId) {
+        $user = $request->get('auth');
+        $threadBan = ThreadBan::find($threadBanId);
+        $thread = Thread::find($threadBan->threadId);
+
+        Condition::precondition(!$thread, 404, 'No thread with that ID');
+        Condition::precondition(!$threadBan, 404, 'No thread ban with that ID');
+        Condition::precondition(!UserHelper::canManageUser($user, $threadBan->userId), 400, 'You can not unban this user');
+        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canThreadBan, $thread->categoryId,
+            'You do not have permission to thread ban here!');
+
+        $threadBan->isDeleted = true;
+        $threadBan->save();
+
+        Logger::mod($user->userId, $request->ip(), Action::THREAD_UNBANNED, ['thread' => $thread->title], $threadBan->userId);
+        return $this->getThreadBans($request, $threadBan->threadId);
     }
 
     public function mergeThreads(Request $request, $srcThreadId) {

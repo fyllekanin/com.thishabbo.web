@@ -11,6 +11,7 @@ import { MoveThreadComponent } from './move-thread/move-thread.component';
 import { ComponentFactoryResolver } from '@angular/core';
 import { EditHistoryComponent } from './edit-history/edit-history.component';
 import { MergeThreadComponent } from './merge-thread/merge-thread.component';
+import { ThreadBansComponent } from './thread-bans/thread-bans.component';
 
 export class ThreadActionExecutor {
     private readonly _httpService: HttpService;
@@ -120,7 +121,20 @@ export class ThreadActionExecutor {
             case ThreadActions.MERGE_THREAD:
                 this.mergeThread();
                 break;
+            case ThreadActions.THREAD_BANS:
+                this.openThreadBans();
         }
+    }
+
+    private openThreadBans (): void {
+        this._dialogService.openDialog({
+            title: 'Thread Bans',
+            component: this._componentFactory.resolveComponentFactory(ThreadBansComponent),
+            data: this._threadPage,
+            buttons: [
+                new DialogCloseButton('Close')
+            ]
+        });
     }
 
     private mergeThread (): void {

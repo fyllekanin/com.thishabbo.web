@@ -53,4 +53,8 @@ Route::prefix('moderation')->group(function () {
 
     Route::post('/post/report', 'Forum\Post\PostCrudController@createReportPost');
     Route::put('/thread/merge/{threadId}', 'Moderation\ThreadController@mergeThreads');
+
+    Route::get('/thread/bans/{threadId}', 'Moderation\ThreadController@getThreadBans');
+    Route::post('/thread/bans/{threadId}', 'Moderation\ThreadController@createThreadBan');
+    Route::delete('/thread/bans/{threadBanId}', 'Moderation\ThreadController@deleteThreadBan');
 });

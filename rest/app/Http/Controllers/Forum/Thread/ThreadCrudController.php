@@ -9,6 +9,7 @@ use App\EloquentModels\Forum\Post;
 use App\EloquentModels\Forum\Prefix;
 use App\EloquentModels\Forum\TemplateData;
 use App\EloquentModels\Forum\Thread;
+use App\EloquentModels\Forum\ThreadBan;
 use App\EloquentModels\Forum\ThreadPoll;
 use App\EloquentModels\Forum\ThreadRead;
 use App\EloquentModels\Forum\ThreadSubscription;
@@ -156,6 +157,8 @@ class ThreadCrudController extends Controller {
         $category = Category::where('categoryId', $threadSkeleton->categoryId)->first(['template', 'options']);
 
         Condition::precondition(!$category, 404, 'Category do not exist');
+        Condition::precondition(ThreadBan::where('threadId', $threadId)->where('userId', $user->userId)->count() > 0, 400,
+            'You are banned from this thread');
 
         $isPrefixMandatory = $category->options & ConfigHelper::getForumOptionsConfig()->prefixMandatory;
         $havePrefix = isset($threadSkeleton->prefixId) && $threadSkeleton->prefixId > 0;
@@ -211,6 +214,8 @@ class ThreadCrudController extends Controller {
         $category = Category::find($categoryId);
 
         Condition::precondition(!$category, 404, 'No category with that ID');
+        Condition::precondition(ThreadBan::where('threadId', $threadId)->where('userId', $user->userId)->count() > 0, 400,
+            'You are banned from this thread');
         PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead,
             $categoryId, 'No permissions to access this category');
         PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canCreateThreads,
@@ -292,7 +297,7 @@ class ThreadCrudController extends Controller {
         }]);
 
         $thread->page = $page;
-        
+
         $total = Post::where('threadId', $thread->threadId)
             ->where('isApproved', ($permissions->canApprovePosts ? '>=' : '>'), 0)
             ->count('postId');
@@ -316,6 +321,12 @@ class ThreadCrudController extends Controller {
 
         $thread->readers = $this->myImpl->getThreadReaders($thread->threadId, 0);
         $thread->currentReaders = $this->myImpl->getThreadReaders($thread->threadId, time() - 600);
+        $thread->isThreadBanned = false;
+
+        if (ThreadBan::where('threadId', $threadId)->where('userId', $user->userId)->count() > 0) {
+            $thread->isThreadBanned = true;
+            $thread->threadPosts = [];
+        }
 
         return response()->json($thread);
     }

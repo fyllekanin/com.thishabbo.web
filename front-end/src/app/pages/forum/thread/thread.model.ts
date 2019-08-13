@@ -80,6 +80,8 @@ export class ThreadPage {
     tags: Array<string> = [];
     @primitive()
     roomLink: string;
+    @primitive()
+    isThreadBanned: boolean;
 
     constructor (source?: Partial<ThreadPage>) {
         ClassHelper.assign(this, source);
@@ -120,7 +122,8 @@ export enum ThreadActions {
     THREAD_POSTERS,
     CHANGE_POST_OWNER,
     SELECT_ALL,
-    DELETE_POSTS
+    DELETE_POSTS,
+    THREAD_BANS
 }
 
 export class PostHistoryModel {
@@ -253,6 +256,11 @@ export function getThreadTools (userId: number, threadPage: ThreadPage, forumPer
             title: 'Change Owner',
             value: ThreadActions.CHANGE_THREAD_OWNER,
             condition: forumPermissions.canChangeOwner
+        },
+        {
+            title: 'Thread Bans',
+            value: ThreadActions.THREAD_BANS,
+            condition: forumPermissions.canThreadBan
         },
         {
             title: 'Move Thread',

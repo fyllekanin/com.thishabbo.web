@@ -44,6 +44,7 @@ import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.modul
 import { UserPostBitModule } from 'shared/components/user-post-bit/user-post-bit.module';
 import { InfoBoxModule } from 'shared/app-views/info-box/info-box.module';
 import { MergeThreadComponent } from './thread/merge-thread/merge-thread.component';
+import { ThreadBansComponent } from './thread/thread-bans/thread-bans.component';
 
 @NgModule({
     imports: [
@@ -85,7 +86,8 @@ import { MergeThreadComponent } from './thread/merge-thread/merge-thread.compone
         LatestPostsComponent,
         LatestThreadsComponent,
         ThreadPostersComponent,
-        MergeThreadComponent
+        MergeThreadComponent,
+        ThreadBansComponent
     ],
     providers: [
         ForumHomeResolver,
@@ -102,7 +104,8 @@ import { MergeThreadComponent } from './thread/merge-thread/merge-thread.compone
         MoveThreadComponent,
         EditHistoryComponent,
         ThreadPostersComponent,
-        MergeThreadComponent
+        MergeThreadComponent,
+        ThreadBansComponent
     ],
     exports: []
 })

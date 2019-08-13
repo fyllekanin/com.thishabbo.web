@@ -23,6 +23,9 @@ import { ReportBugComponent } from './report-bug/report-bug.component';
 import { TimetableComponent } from './timetable/timetable.component';
 import { TimetableResolver } from 'shared/services/timetable.resolver';
 import { UserLinkModule } from 'shared/components/user/user-link.module';
+import { BadgesModule } from 'shared/components/badges/badges.module';
+import { BadgesComponent } from './badges/badges.component';
+import { BadgesPageResolver } from './services/badges-page.resolver';
 
 @NgModule({
     imports: [
@@ -38,7 +41,8 @@ import { UserLinkModule } from 'shared/components/user/user-link.module';
         SlimArticleModule,
         PaginationModule,
         InfoBoxModule,
-        UserLinkModule
+        UserLinkModule,
+        BadgesModule
     ],
     declarations: [
         CustomPageComponent,
@@ -47,12 +51,14 @@ import { UserLinkModule } from 'shared/components/user/user-link.module';
         ContactComponent,
         JobComponent,
         ReportBugComponent,
-        TimetableComponent
+        TimetableComponent,
+        BadgesComponent
     ],
     providers: [
         CustomPageResolver,
         BadgeArticlesResolver,
-        TimetableResolver
+        TimetableResolver,
+        BadgesPageResolver
     ],
     exports: [
         RouterModule

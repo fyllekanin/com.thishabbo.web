@@ -1,5 +1,6 @@
 <app-info-box *ngIf="!thread.isOpen" [model]="closedThread"></app-info-box>
-<div class="grid-container">
+<app-info-box *ngIf="thread.isThreadBanned" [model]="threadBanned"></app-info-box>
+<div class="grid-container" *ngIf="!thread.isThreadBanned">
     <div class="grid-x grid-margin-x">
         <div class="cell small-12">
             <app-stats-boxes [stats]="stats" [minHeight]="'110px'"></app-stats-boxes>

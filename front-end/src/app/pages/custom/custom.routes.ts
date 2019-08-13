@@ -10,6 +10,8 @@ import { JobComponent } from './job/job.component';
 import { ReportBugComponent } from './report-bug/report-bug.component';
 import { TimetableComponent } from './timetable/timetable.component';
 import { TimetableResolver } from 'shared/services/timetable.resolver';
+import { BadgesComponent } from './badges/badges.component';
+import { BadgesPageResolver } from './services/badges-page.resolver';
 
 export const customRoutes: Routes = [
     {
@@ -46,17 +48,24 @@ export const customRoutes: Routes = [
             {
                 path: 'radio-timetable',
                 component: TimetableComponent,
-                data: { type: 'radio' },
+                data: {type: 'radio'},
                 resolve: {
-                    data: TimetableResolver,
+                    data: TimetableResolver
                 }
             },
             {
                 path: 'events-timetable',
                 component: TimetableComponent,
-                data: { type: 'events' },
+                data: {type: 'events'},
                 resolve: {
-                    data: TimetableResolver,
+                    data: TimetableResolver
+                }
+            },
+            {
+                path: 'badges/page/:page',
+                component: BadgesComponent,
+                resolve: {
+                    data: BadgesPageResolver
                 }
             },
             {

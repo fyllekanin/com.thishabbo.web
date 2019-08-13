@@ -9,6 +9,7 @@ import { INFO_BOX_TYPE, InfoBoxModel } from 'shared/app-views/info-box/info-box.
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-staff-radio-requests',
@@ -17,6 +18,9 @@ import { NotificationService } from 'core/services/notification/notification.ser
 export class RequestsComponent extends Page implements OnDestroy {
     private _data: RequestsPage = new RequestsPage(null);
 
+    reload: Array<TitleTab> = [
+        new TitleTab({title: 'Reload'})
+    ];
     tabs: Array<TitleTab> = [];
     infoModel: InfoBoxModel = {
         title: 'Hey!',
@@ -49,6 +53,14 @@ export class RequestsComponent extends Page implements OnDestroy {
     getTitle (item: RequestModel): string {
         const ip = item.ip ? ` (ip: ${item.ip})` : '';
         return `Request ${ip}`;
+    }
+
+    onReload (): void {
+        this._httpService.get('staff/radio/requests')
+            .pipe(map(res => new RequestsPage(res)))
+            .subscribe(page => {
+                this.onData({data: page});
+            });
     }
 
     onDelete (item: RequestModel): void {

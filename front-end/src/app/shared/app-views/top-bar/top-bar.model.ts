@@ -63,6 +63,7 @@ export class NotificationModel<T> {
             case NotificationTypes.LIKE_HOST:
             case NotificationTypes.RADIO_REQUEST:
             case NotificationTypes.SENT_THC:
+            case NotificationTypes.REFERRAL:
                 this._item = new UserView(source.item);
                 break;
             case NotificationTypes.VISITOR_MESSAGE:

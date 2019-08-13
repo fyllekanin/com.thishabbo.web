@@ -48,7 +48,8 @@ return [
         'canManagePolls' => 4096,
         'canChangeOwner' => 8192,
         'canMergeThreadsAndPosts' => 16384,
-        'canMoveThreads' => 32768
+        'canMoveThreads' => 32768,
+        'canThreadBan' => 262144
     ],
     'FORUM_OPTIONS' => [
         'threadsNeedApproval' => 1,

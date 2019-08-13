@@ -123,11 +123,16 @@ export class LogsComponent extends Page implements OnDestroy {
     }
 
     private getTableFilters (): Array<FilterConfig> {
+        const values = {
+            user: this.getFilterValueByKey('user'),
+            action: this.getFilterValueByKey('action')
+        };
         return [
             new FilterConfig({
                 title: 'User',
                 placeholder: 'Search for specific user...',
-                key: 'user'
+                key: 'user',
+                value: values.user
             }),
             new FilterConfig({
                 title: 'Action',
@@ -136,9 +141,18 @@ export class LogsComponent extends Page implements OnDestroy {
                 items: this._data.actions.map(action => new FilterConfigItem({
                     label: action.description,
                     value: String(action.id)
-                }))
+                })),
+                value: values.action
             })
         ];
+    }
+
+    private getFilterValueByKey (key: string): string {
+        if (!this.tableConfig || !this.tableConfig.filterConfigs) {
+            return undefined;
+        }
+        const filter = this.tableConfig.filterConfigs.find(item => item.key === key);
+        return filter ? filter.value : undefined;
     }
 
     private getTableRows (): Array<TableRow> {

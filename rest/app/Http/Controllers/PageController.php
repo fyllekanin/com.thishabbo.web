@@ -140,6 +140,23 @@ class PageController extends Controller {
         ]);
     }
 
+    public function getBadges($page) {
+        $threeDays = 259200;
+
+        return response()->json([
+            'total' => DataHelper::getPage(HabboBadge::count()),
+            'page' => $page,
+            'items' => HabboBadge::orderBy('createdAt', 'DESC')->skip(DataHelper::getOffset($page, 72))->take(72)->get()->map(function ($item) use ($threeDays) {
+                return [
+                    'habboBadgeId' => $item->habboBadgeId,
+                    'description' => $item->description,
+                    'isNew' => $item->createdAt->timestamp > (time() - $threeDays),
+                    'createdAt' => $item->createdAt->timestamp
+                ];
+            })
+        ]);
+    }
+
     /**
      * Get the home page resource
      *

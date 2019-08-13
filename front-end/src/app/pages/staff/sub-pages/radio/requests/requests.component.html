@@ -5,7 +5,14 @@
     </app-content>
 </div>
 <div *ngIf="requests.length > 0">
-    <div *ngFor="let item of requests">
+    <app-title [title]="'Request Line'" [tabs]="reload" (onTabClick)="onReload()"></app-title>
+    <app-content>
+        Below are all the current requests to the current Radio DJ. <br/>
+        You can either choose to delete the requests that you have fulfilled to keep it clear you can let them <br/>
+        be as they are. Only the requests within 2 hours time are shown and older will automatically not be shown!.
+    </app-content>
+
+    <div *ngFor="let item of requests; let first = first">
         <app-title [title]="getTitle(item)" [tabs]="tabs" (onTabClick)="onDelete(item)"></app-title>
         <app-content>
             <div class="quotepost">

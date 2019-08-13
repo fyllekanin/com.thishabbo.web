@@ -1,0 +1,15 @@
+<div class="grid-container content-margin position-relative">
+    <div class="grid-x">
+        <div class="cell small-12">
+            <label>Ban User:</label>
+        </div>
+        <div class="cell small-11">
+            <input [(ngModel)]="nickname" type="text" placeholder="Nickname to ban..."/>
+        </div>
+        <div class="cell small-1">
+            <button appButton (onClick)="onBan()">Ban</button>
+        </div>
+    </div>
+</div>
+<hr/>
+<app-table [config]="tableConfig" (onAction)="onUnban($event)"></app-table>

@@ -2,8 +2,9 @@
 <app-content>
     <div class="grid-container">
         <div class="grid-x">
-            <div *ngFor="let badge of badges" class="cell small-6 medium-3">
-                <div class="badge" [attr.tooltip]="badge.description + '&#xa;' + badge.createdAt">
+            <div *ngFor="let badge of badges" class="cell" [ngClass]="size">
+                <div class="badge"
+                     [attr.tooltip]="badge.description + '&#xa;' + badge.habboBadgeId + '&#xa;' + badge.createdAt">
                     <div class="new" *ngIf="badge.isNew">New</div>
                     <img [src]="badge.url" (error)="badge.notFound = true;"/>
                 </div>

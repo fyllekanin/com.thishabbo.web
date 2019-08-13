@@ -115,6 +115,13 @@
                 </div>
                 <div>
                     <label class="checkbox-container">
+                        Access to ban users from threads?
+                        <input type="checkbox" [(ngModel)]="permissions.canThreadBan">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
                         Access to Close / Open Threads?
                         <input type="checkbox" [(ngModel)]="permissions.canCloseOpenThread">
                         <span class="checkmark"></span>
