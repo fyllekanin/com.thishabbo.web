@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateTableScheme extends Migration {
+class UpdateDbScheme extends Migration {
 
     /**
      * Run the migrations.
