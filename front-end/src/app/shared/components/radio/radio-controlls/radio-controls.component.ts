@@ -16,7 +16,7 @@ export class RadioControlsComponent implements AfterViewInit {
 
     @ViewChild('player', {static: true}) player: ElementRef<HTMLAudioElement>;
     isPlaying = false;
-    volume = 1;
+    volume = 100;
 
     constructor (
         private _radioService: RadioService,

@@ -65,7 +65,7 @@ export class RadioService {
         this._dialogService.openDialog({
             title: 'Radio Info',
             content: `<strong>Current DJ:</strong> <br /> ${stats.currentDj.nickname} <br /><br />
-                <strong>Song:</strong> <br /> ${stats.song} <br /><br />
+                <strong>Song:</strong> <br /> ${isPlaying ? stats.song : 'Tune '} <br /><br />
                 <strong>Listeners:</strong> <br /> ${isPlaying ? stats.listeners : 'Tune in to see the song...'}`,
             buttons: [
                 new DialogCloseButton('Close')
