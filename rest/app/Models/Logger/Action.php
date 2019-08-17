@@ -927,7 +927,8 @@ class Action {
         'id' => 78,
         'description' => 'User updated a category',
         'data' => [
-            'category' => 'Title of category',
+            'before' => 'Before',
+            'after' => 'After',
             'isCascade' => 'If the update was cascading for options'
         ],
         'log' => 'log_sitecp',
@@ -940,7 +941,7 @@ class Action {
         'id' => 79,
         'description' => 'User deleted a category',
         'data' => [
-            'category' => 'Title of category'
+            'category' => 'Category'
         ],
         'log' => 'log_sitecp',
         'contentId' => 'categoryId',

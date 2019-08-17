@@ -148,7 +148,7 @@ class CategoriesController extends Controller {
         Category::where('parentId', $categoryId)->update(['parentId' => -1]);
 
         $this->forumService->updateLastPostIdOnCategory($category->parentId);
-        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_CATEGORY, ['category' => $category->title], $category->categoryId);
+        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_CATEGORY, ['category' => $category], $category->categoryId);
         return response()->json();
     }
 
@@ -181,6 +181,7 @@ class CategoriesController extends Controller {
 
         $newCategoryId = $newCategory->categoryId;
         $oldCategoryId = $category->categoryId;
+        $oldCategory = $category;
 
         $newCategory->options = PermissionHelper::nameToNumberOptions($newCategory);
         $category->parentId = Value::objectProperty($newCategory, 'parentId', -1);
@@ -207,7 +208,8 @@ class CategoriesController extends Controller {
         }
 
         Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_CATEGORY, [
-            'category' => $newCategory->title,
+            'before' => $oldCategory,
+            'after' => $category,
             'isCascade' => $isCascade
         ], $newCategory->categoryId);
         return $this->getCategory($request, $categoryId);
