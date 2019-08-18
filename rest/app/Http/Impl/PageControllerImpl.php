@@ -7,6 +7,7 @@ use App\Helpers\ConfigHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\SettingsHelper;
 use App\Utils\Iterables;
+use App\Utils\Value;
 use Illuminate\Support\Facades\File;
 
 class PageControllerImpl {
@@ -27,23 +28,23 @@ class PageControllerImpl {
         $parsed = json_decode($value);
 
         $userIds = [
-            (object)['role' => 'Global Management', 'userId' => $parsed->globalManagement],
-            (object)['role' => 'EU Management', 'userId' => $parsed->europeManagement],
-            (object)['role' => 'OC Management', 'userId' => $parsed->oceaniaManagement],
-            (object)['role' => 'NA Management', 'userId' => $parsed->northAmericanManagement],
-            (object)['role' => 'EU Radio', 'userId' => $parsed->europeRadio],
-            (object)['role' => 'OC Radio', 'userId' => $parsed->oceaniaRadio],
-            (object)['role' => 'NA Radio', 'userId' => $parsed->northAmericanRadio],
-            (object)['role' => 'EU Events', 'userId' => $parsed->europeEvents],
-            (object)['role' => 'OC Events', 'userId' => $parsed->oceaniaEvents],
-            (object)['role' => 'NA Events', 'userId' => $parsed->northAmericanEvents],
-            (object)['role' => 'Moderation', 'userId' => $parsed->moderation],
-            (object)['role' => 'Media', 'userId' => $parsed->media],
-            (object)['role' => 'Quests', 'userId' => $parsed->quests],
-            (object)['role' => 'Graphics', 'userId' => $parsed->graphics],
-            (object)['role' => 'Audio Producer', 'userId' => $parsed->audioProducer],
-            (object)['role' => 'Community Events', 'userId' => $parsed->communityEvents],
-            (object)['role' => 'Builder', 'userId' => $parsed->builder]
+            (object)['role' => 'Global Management', 'userId' => Value::objectProperty($parsed, 'globalManagement', null)],
+            (object)['role' => 'EU Management', 'userId' => Value::objectProperty($parsed, 'europeManagement', null)],
+            (object)['role' => 'OC Management', 'userId' => Value::objectProperty($parsed, 'oceaniaManagement', null)],
+            (object)['role' => 'NA Management', 'userId' => Value::objectProperty($parsed, 'northAmericanManagement', null)],
+            (object)['role' => 'EU Radio', 'userId' => Value::objectProperty($parsed, 'europeRadio', null)],
+            (object)['role' => 'OC Radio', 'userId' => Value::objectProperty($parsed, 'oceaniaRadio', null)],
+            (object)['role' => 'NA Radio', 'userId' => Value::objectProperty($parsed, 'northAmericanRadio', null)],
+            (object)['role' => 'EU Events', 'userId' => Value::objectProperty($parsed, 'europeEvents', null)],
+            (object)['role' => 'OC Events', 'userId' => Value::objectProperty($parsed, 'oceaniaEvents', null)],
+            (object)['role' => 'NA Events', 'userId' => Value::objectProperty($parsed, 'northAmericanEvents', null)],
+            (object)['role' => 'Moderation', 'userId' => Value::objectProperty($parsed, 'moderation', null)],
+            (object)['role' => 'Media', 'userId' => Value::objectProperty($parsed, 'media', null)],
+            (object)['role' => 'Quests', 'userId' => Value::objectProperty($parsed, 'quests', null)],
+            (object)['role' => 'Graphics', 'userId' => Value::objectProperty($parsed, 'graphics', null)],
+            (object)['role' => 'Audio Producer', 'userId' => Value::objectProperty($parsed, 'audioProducer', null)],
+            (object)['role' => 'Community Events', 'userId' => Value::objectProperty($parsed, 'communityEvents', null)],
+            (object)['role' => 'Builder', 'userId' => Value::objectProperty($parsed, 'builder', null)]
         ];
 
         return array_values(array_map(function ($data) {
