@@ -339,7 +339,7 @@ class ForumService {
     public function getCategoryTree($user, $ignoreIds = [], $parentId = -1) {
         $forumPermissions = ConfigHelper::getForumPermissions();
         $categories = Category::where('parentId', $parentId)->select('categoryId', 'title', 'displayOrder')->get();
-        Iterables::filter(Category::where('parentId', $parentId)->select('categoryId', 'title', 'displayOrder')->getQuery()->get()->toArray(),
+        Iterables::filter(Category::where('parentId', $parentId)->select('categoryId', 'title', 'displayOrder')->where('isDeleted', '<', 1)->getQuery()->get()->toArray(),
             function ($category) use ($ignoreIds, $forumPermissions, $user) {
                 return in_array($category->categoryId, $ignoreIds) || !PermissionHelper::haveForumPermission($user->userId, $forumPermissions->canRead, $category->categoryId);
             });

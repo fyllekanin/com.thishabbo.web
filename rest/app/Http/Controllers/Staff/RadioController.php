@@ -263,7 +263,7 @@ class RadioController extends Controller {
         $user = $request->get('auth');
         $canSeeRequestIp = PermissionHelper::haveStaffPermission($user->userId, ConfigHelper::getStaffConfig()->canSeeIpsAndDeleteRequests);
 
-        $radioRequests = RadioRequest::twoHours()->orderBy('requestId', 'DESC')->where('isDeleted', false)->getQuery()->get();
+        $radioRequests = RadioRequest::twoHours()->orderBy('requestId', 'DESC')->where('isDeleted', '<', 1)->getQuery()->get();
         foreach ($radioRequests as $radioRequest) {
             if (!$canSeeRequestIp) {
                 unset($radioRequest->ip);

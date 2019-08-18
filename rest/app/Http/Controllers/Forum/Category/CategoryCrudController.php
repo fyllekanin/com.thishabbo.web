@@ -268,7 +268,7 @@ class CategoryCrudController extends Controller {
 
         foreach ($childCategories as $child) {
             if (PermissionHelper::haveForumPermission($userId, ConfigHelper::getForumPermissions()->canViewOthersThreads, $child->categoryId) &&
-                    PermissionHelper::haveForumPermission($userId, ConfigHelper::getForumPermissions()->canRead, Thread::where('lastPostId', $child->lastPostId)->value('categoryId'))) {
+                PermissionHelper::haveForumPermission($userId, ConfigHelper::getForumPermissions()->canRead, Thread::where('lastPostId', $child->lastPostId)->value('categoryId'))) {
                 $child->lastPost = $this->forumService->getSlimPost($child->lastPostId);
                 $child->haveRead = $this->forumService->haveReadCategory($child, $userId);
             } else {
@@ -277,6 +277,7 @@ class CategoryCrudController extends Controller {
                 $last = Thread::belongsToUser($userId)
                     ->isApproved($canApproveThreads)
                     ->whereIn('categoryId', $categoryIdsChain)
+                    ->where('isDeleted', '<', 1)
                     ->orderBy('lastPostId', 'DESC')
                     ->select('lastPostId')
                     ->getQuery()
@@ -285,6 +286,7 @@ class CategoryCrudController extends Controller {
             }
             $child->children = Category::whereIn('categoryId', $categoryIds)
                 ->where('parentId', $child->categoryId)
+                ->where('isDeleted', '<', 1)
                 ->select('categoryId', 'title', 'displayOrder')
                 ->orderBy('displayOrder', 'ASC')
                 ->getQuery()

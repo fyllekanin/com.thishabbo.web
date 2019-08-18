@@ -1,0 +1,1 @@
+{"topic":"Fix showing deleted items","type":"Bug","body":"Some places where query was using native laravel query the deleted where was not appended"}

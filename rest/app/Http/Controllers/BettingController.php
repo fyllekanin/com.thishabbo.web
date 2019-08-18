@@ -257,7 +257,7 @@ class BettingController extends Controller {
      * @return array
      */
     private function getTrendingBets() {
-        $bets = Bet::where('isFinished', false)->getQuery()->get()->map(function ($bet) {
+        $bets = Bet::where('isFinished', false)->where('isDeleted', '<', 1)->getQuery()->get()->map(function ($bet) {
             $bet->backersCount = UserBet::where('betId', $bet->betId)->count('userBetId');
             return $bet;
         })->toArray();
