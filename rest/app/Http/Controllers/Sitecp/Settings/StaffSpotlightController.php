@@ -124,7 +124,9 @@ class StaffSpotlightController extends Controller {
             'media' => $information->media,
             'quests' => $information->quests,
             'graphics' => $information->graphics,
-            'audioProducer' => $information->audioProducer
+            'audioProducer' => $information->audioProducer,
+            'communityEvents' => $information->communityEvents,
+            'builder' => $information->builder
         ];
 
         foreach ($newInformation as $key => $value) {

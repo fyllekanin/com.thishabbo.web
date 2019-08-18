@@ -37,6 +37,10 @@ export class StaffOfTheWeekModel {
     graphics: string;
     @primitive()
     audioProducer: string;
+    @primitive()
+    communityEvents: string;
+    @primitive()
+    builder: string;
 
     constructor (source?) {
         ClassHelper.assign(this, source);
