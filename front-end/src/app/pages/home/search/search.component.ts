@@ -19,6 +19,7 @@ import { StringHelper } from 'shared/helpers/string.helper';
 export class SearchComponent extends Page implements OnDestroy {
     private _data: SearchPage;
 
+    type: string;
     categorySelectItems: Array<SelectItem> = [];
     pagination: PaginationModel;
     tabs: Array<TitleTab> = [
@@ -79,6 +80,7 @@ export class SearchComponent extends Page implements OnDestroy {
 
     private onData (data: { data: SearchPage }): void {
         this._data = data.data;
+        this.type = this._data.parameters.type;
 
         this.categorySelectItems = ArrayHelper.flatCategories(this._data.categories, '', true)
             .map(item => ({label: item.title, value: item.categoryId}));

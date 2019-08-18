@@ -20,7 +20,7 @@ import { PostService } from '../services/post.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { ReportComponent } from './report/report.component';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
-import { InfractionService } from 'shared/components/infraction/infraction.service';
+import { InfractionService, InfractionType } from 'shared/components/infraction/infraction.service';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { Router } from '@angular/router';
 import { AutoSaveHelper } from 'shared/helpers/auto-save.helper';
@@ -74,7 +74,7 @@ export class PostComponent extends Page implements OnDestroy {
     }
 
     infract (): void {
-        this._infractionService.infract(this._postModel.user.userId);
+        this._infractionService.infract(this._postModel.user.userId, InfractionType.POST, this._postModel.content);
     }
 
     reportPost (): void {

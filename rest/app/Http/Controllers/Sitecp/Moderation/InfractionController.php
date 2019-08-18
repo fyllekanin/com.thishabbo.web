@@ -24,7 +24,6 @@ use App\Services\PointsService;
 use App\Utils\Condition;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 use stdClass;
 
 class InfractionController extends Controller {
@@ -112,7 +111,6 @@ class InfractionController extends Controller {
      * @param ThreadCrudController $threadCrudController
      *
      * @return JsonResponse
-     * @throws ValidationException
      */
     public function createInfraction(Request $request, ThreadCrudController $threadCrudController) {
         $user = $request->get('auth');
@@ -131,7 +129,7 @@ class InfractionController extends Controller {
         $infraction->save();
 
         if (isset($infractionLevel->categoryId) && $infractionLevel->categoryId > 0 && $this->botAccountExists()) {
-            $this->createInfractionThread($threadCrudController, $infractionLevel, $infraction);
+            $this->createInfractionThread($threadCrudController, $infractionLevel, $infraction, $request->input('type'), $request->input('content'));
         } else {
             NotificationFactory::newInfractionGiven($data->userId, $user->userId, $infraction->infractionId);
         }
@@ -174,7 +172,7 @@ class InfractionController extends Controller {
      * @param $infraction
      *
      */
-    private function createInfractionThread(ThreadCrudController $threadCrudController, $infractionLevel, $infraction) {
+    private function createInfractionThread(ThreadCrudController $threadCrudController, $infractionLevel, $infraction, $type, $content) {
         $threadSkeleton = new stdClass();
         $infracted = UserHelper::getUserFromId($infraction->infractedId);
         $points = Infraction::isActive()
@@ -184,17 +182,42 @@ class InfractionController extends Controller {
                 return $prev + $curr->level()->value('points');
             }, 0);
 
+        $typeInText;
+        switch ($type) {
+            case 1:
+                $typeInText = 'Post';
+                break;
+            case 2:
+                $typeInText = 'Visitor Message';
+                break;
+            case 3:
+                $typeInText = 'User';
+                break;
+        }
+
         $threadSkeleton->content = "Hey [mention]@" . $infracted->nickname . "[/mention] 
 Below you can find information regarding the infraction or warning you have just been given.
 [i]If you'd like to appeal against your infraction or warning, please speak to the Forum Admin.[/i]
         
+[b]Details:[/b]
 [quote]
-[b]Infraction/Warning Type:[/b] " . $infractionLevel->title . "
-[b]Penalty in credits:[/b] " . $infractionLevel->penalty . " credits was taken
-[b]Reason:[/b] " . $infraction->reason . "
+Infraction/Warning Type: " . $infractionLevel->title . "
+Penalty in credits: " . $infractionLevel->penalty . " credits was taken
+Reason: " . $infraction->reason . "
+Type: " . $typeInText . "
             
-[b]Current Infraction/Warning Points:[/b] " . $points . "
+Current Infraction/Warning Points: " . $points . "
+[/quote]
+";
+
+        if ($content) {
+            $threadSkeleton->content .= "
+[b]Content that caused the infraction:[/b]
+[quote]
+" . $content . "
 [/quote]";
+        }
+
         $threadSkeleton->title = $infracted->nickname . " received an infraction";
         $threadSkeleton->categoryId = $infractionLevel->categoryId;
 

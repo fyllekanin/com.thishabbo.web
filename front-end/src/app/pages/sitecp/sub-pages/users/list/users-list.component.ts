@@ -22,7 +22,7 @@ import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.
 import { UsersListService } from '../services/users-list.service';
 import { MergeUsersComponent } from './merge-users/merge-users.component';
 import { QueryParameters } from 'core/services/http/http.model';
-import { InfractionService } from 'shared/components/infraction/infraction.service';
+import { InfractionService, InfractionType } from 'shared/components/infraction/infraction.service';
 
 @Component({
     selector: 'app-sitecp-users-list',
@@ -90,7 +90,7 @@ export class UsersListComponent extends Page implements OnDestroy {
                 this.openMergeDialog(action.rowId);
                 break;
             case UserListAction.GIVE_INFRACTION:
-                this._infractionService.infract(Number(action.rowId));
+                this._infractionService.infract(Number(action.rowId), InfractionType.USER, null);
                 break;
             case UserListAction.MANAGE_ESSENTIALS:
                 this._router.navigateByUrl(`/sitecp/users/${action.rowId}/essentials`);

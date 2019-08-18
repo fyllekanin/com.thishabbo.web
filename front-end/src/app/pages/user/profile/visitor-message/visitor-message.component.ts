@@ -4,7 +4,7 @@ import { TimeHelper } from 'shared/helpers/time.helper';
 import { ProfileService } from '../profile.service';
 import { AuthService } from 'core/services/auth/auth.service';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { InfractionService } from 'shared/components/infraction/infraction.service';
+import { InfractionService, InfractionType } from 'shared/components/infraction/infraction.service';
 import { TitleTopBorder } from 'shared/app-views/title/title.model';
 import { Button } from 'shared/directives/button/button.model';
 import { StringHelper } from 'shared/helpers/string.helper';
@@ -76,7 +76,7 @@ export class VisitorMessageComponent implements AfterContentInit {
 
     infract (event, visitorMessage: ProfileVisitorMessage): void {
         event.stopPropagation();
-        this._infractionService.infract(visitorMessage.user.userId);
+        this._infractionService.infract(visitorMessage.user.userId, InfractionType.VISITOR_MESSAGE, this.content);
     }
 
     report (event, visitorMessage: ProfileVisitorMessage): void {
