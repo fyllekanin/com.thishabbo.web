@@ -225,7 +225,7 @@ class ProfileController extends Controller {
      */
     public function createReportVisitorMessage(Request $request, ForumService $forumService,
                                                ForumValidatorService $validatorService, PointsService $pointsService,
-                                               ThreadCrudControllerImpl $threadCrudControllerImpl, $visitorMessageId) {
+                                               ThreadCrudControllerImpl $threadControllerImpl, $visitorMessageId) {
         $user = $request->get('auth');
         $visitorMessage = VisitorMessage::find($visitorMessageId);
         $message = $request->input('message');
@@ -235,7 +235,7 @@ class ProfileController extends Controller {
 
         $threadSkeleton = VisitorMessageReportView::of($user, $visitorMessage, $message);
         $reportCategories = Category::isReportCategory()->get();
-        $threadController = new ThreadCrudController($forumService, $validatorService, $pointsService, $threadCrudControllerImpl);
+        $threadController = new ThreadCrudController($forumService, $validatorService, $pointsService, $threadControllerImpl);
 
         foreach ($reportCategories as $category) {
             $threadSkeleton->categoryId = $category->categoryId;
