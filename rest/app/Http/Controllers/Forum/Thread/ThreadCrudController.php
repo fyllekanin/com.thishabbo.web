@@ -10,7 +10,6 @@ use App\EloquentModels\Forum\Prefix;
 use App\EloquentModels\Forum\TemplateData;
 use App\EloquentModels\Forum\Thread;
 use App\EloquentModels\Forum\ThreadBan;
-use App\EloquentModels\Forum\ThreadPoll;
 use App\EloquentModels\Forum\ThreadRead;
 use App\EloquentModels\Forum\ThreadSubscription;
 use App\EloquentModels\User\User;
@@ -187,7 +186,7 @@ class ThreadCrudController extends Controller {
             $this->uploadFileAndCreateTemplateData($threadSkeleton, $thumbnail, $threadId, $request->hasFile('thumbnail'));
         }
 
-        $this->createOrUpdatePoll($thread, $threadSkeleton);
+        $this->myImpl->createOrUpdatePoll($thread, $threadSkeleton);
         Logger::user($user->userId, $request->ip(), Action::UPDATED_THREAD, [
             'thread' => $thread->title,
             'postId' => $thread->firstPostId,
@@ -392,22 +391,12 @@ class ThreadCrudController extends Controller {
         }
 
         $this->logThreadCreation($thread, $request, $user);
-        $this->createThreadPoll($thread, $threadSkeleton);
+        $this->myImpl->createThreadPoll($thread, $threadSkeleton);
         $this->forumService->updateLastPostIdOnCategory($thread->categoryId);
         $this->forumService->updateReadCategory($thread->categoryId, $user->userId);
         $this->forumService->updateReadThread($thread->threadId, $user->userId);
         NotifyCategorySubscribers::dispatch($thread->categoryId, $thread->userId, $thread->threadId);
         return response()->json(['threadId' => $thread->threadId], 201);
-    }
-
-    private function createOrUpdatePoll($thread, $threadSkeleton) {
-        if (!$thread->poll) {
-            $this->createThreadPoll($thread, $threadSkeleton);
-        }
-        if ($thread->poll && $threadSkeleton->poll) {
-            $thread->poll->isResultPublic = $threadSkeleton->poll->isPublic;
-            $thread->poll->save();
-        }
     }
 
     private function logThreadCreation($thread, $request, $user) {
@@ -449,23 +438,6 @@ class ThreadCrudController extends Controller {
                 ]);
             }
         }
-    }
-
-    /**
-     * @param $thread
-     * @param $threadSkeleton
-     */
-    private function createThreadPoll($thread, $threadSkeleton) {
-        if (!isset($threadSkeleton->poll)) {
-            return;
-        }
-        $threadPoll = new ThreadPoll([
-            'threadId' => $thread->threadId,
-            'question' => $threadSkeleton->poll->question,
-            'options' => json_encode($threadSkeleton->poll->answers),
-            'isResultPublic' => $threadSkeleton->poll->isPublic
-        ]);
-        $threadPoll->save();
     }
 
     /**
