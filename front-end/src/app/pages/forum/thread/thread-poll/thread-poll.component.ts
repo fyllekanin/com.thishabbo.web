@@ -38,14 +38,13 @@ export class ThreadPollComponent implements OnInit {
 
     vote (): void {
         this._httpService.post(`forum/thread/${this._threadId}/vote`, {answerId: this.answerId})
-            .subscribe(() => {
+            .subscribe(poll => {
+                this._poll = new ThreadPoll(poll);
+                this.setAnswers();
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Your vote is saved!'
                 }));
-                this._poll.haveVoted = true;
-                const answer = this._poll.answers.find(ans => ans.id === this.answerId);
-                answer.answers += 1;
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
@@ -66,6 +65,10 @@ export class ThreadPollComponent implements OnInit {
 
     get haveVoted (): boolean {
         return this._poll.haveVoted;
+    }
+
+    get isPublic (): boolean {
+        return this._poll.isPublic;
     }
 
     get options (): Array<ThreadAnswer> {

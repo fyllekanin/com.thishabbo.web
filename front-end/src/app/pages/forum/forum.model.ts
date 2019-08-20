@@ -71,6 +71,8 @@ export class ForumPermissions {
     canPostInOthersThreads: boolean;
     @primitive()
     canThreadBan: boolean;
+    @primitive()
+    canSeeNonPublicPollResults: boolean;
 
     constructor (source?: Partial<ForumPermissions>) {
         ClassHelper.assign(this, source);

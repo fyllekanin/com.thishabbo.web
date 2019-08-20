@@ -1,0 +1,1 @@
+{"topic":"Fix result after voting","type":"Bug","body":"The result after putting in a vote were incorrect. Make the state of the poll correct after you have voted"}

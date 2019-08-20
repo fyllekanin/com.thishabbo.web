@@ -87,6 +87,7 @@ class ThreadActionController extends Controller {
 
         $threadPoll = ThreadPoll::where('threadId', $threadId)->first();
         Condition::precondition(!$threadPoll, 404, 'The thread do not have a poll');
+        Condition::precondition($user->userId < 1, 400, 'You need to be logged in to enter a vote');
         Condition::precondition(ThreadPollAnswer::where('threadPollId', $threadPoll->threadPollId)
                 ->where('userId', $user->userId)->count('threadPollId') > 0, 400, 'You have already voted');
 
@@ -103,7 +104,7 @@ class ThreadActionController extends Controller {
         $answer->save();
 
         Logger::user($user->userId, $request->ip(), Action::VOTED_ON_POLL);
-        return response()->json();
+        return response()->json($this->forumService->getThreadPoll($threadPoll->thread, $user->userId));
     }
 
     /**

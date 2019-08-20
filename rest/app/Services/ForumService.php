@@ -26,10 +26,21 @@ use Illuminate\Support\Facades\Cache;
  */
 class ForumService {
 
-    public function getThreadPoll($threadId, $userId) {
-        $threadPoll = ThreadPoll::where('threadId', $threadId)->first();
+    public function getThreadPoll($thread, $userId) {
+        $threadPoll = ThreadPoll::where('threadId', $thread->threadId)->first();
         if (!$threadPoll) {
             return null;
+        }
+
+        $canViewPoll = $thread->userId == $userId ||
+            PermissionHelper::haveForumPermission($userId, ConfigHelper::getForumPermissions()->canSeeNonPublicPollResults, $thread->categoryId);
+        if (!$threadPoll->isResultPublic && !$canViewPoll) {
+            return [
+                'question' => $threadPoll->question,
+                'isPublic' => false,
+                'haveVoted' => ThreadPollAnswer::where('threadPollId', $threadPoll->threadPollId)
+                        ->where('userId', $userId)->count('threadPollId') > 0
+            ];
         }
 
         $answers = json_decode($threadPoll->options);
@@ -38,6 +49,7 @@ class ForumService {
                 ->where('answer', $answer->id)->count('threadPollId');
         }
         return [
+            'isPublic' => $threadPoll->isResultPublic || $canViewPoll,
             'question' => $threadPoll->question,
             'answers' => $answers,
             'haveVoted' => ThreadPollAnswer::where('threadPollId', $threadPoll->threadPollId)

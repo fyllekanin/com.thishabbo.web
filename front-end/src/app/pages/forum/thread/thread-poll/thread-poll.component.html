@@ -1,10 +1,15 @@
 <app-title [title]="question" [tabs]="haveVoted ? [] : tabs" (onTabClick)="vote()"></app-title>
 <app-content *ngIf="haveVoted">
-    <div class="answer" *ngFor="let answer of answers">
-        <div>{{answer.label}}</div>
-        <div class="percentage" [ngStyle]="{ 'width': answer.percentage + '%' }">
-            {{answer.votes}} votes <em>({{answer.percentage}}%)</em>
+    <div *ngIf="isPublic">
+        <div class="answer" *ngFor="let answer of answers">
+            <div>{{answer.label}}</div>
+            <div class="percentage" [ngStyle]="{ 'width': answer.percentage + '%' }">
+                {{answer.votes}} votes <em>({{answer.percentage}}%)</em>
+            </div>
         </div>
+    </div>
+    <div *ngIf="!isPublic">
+        Thread result is only viewable by the creator
     </div>
 </app-content>
 <app-content *ngIf="!haveVoted">

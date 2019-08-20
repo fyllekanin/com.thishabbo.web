@@ -9,7 +9,7 @@ export class ThreadAnswer {
     @primitive()
     answers: number;
 
-    constructor(source?: Partial<ThreadAnswer>) {
+    constructor (source?: Partial<ThreadAnswer>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -23,8 +23,10 @@ export class ThreadPoll {
     haveVoted: boolean;
     @primitive()
     isNew: boolean;
+    @primitive()
+    isPublic: boolean;
 
-    constructor(source: Partial<ThreadPoll>) {
+    constructor (source: Partial<ThreadPoll>) {
         ClassHelper.assign(this, source);
     }
 }

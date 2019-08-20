@@ -19,7 +19,9 @@
             </div>
             <div class="cell small-6" [hidden]="!thumbnailLoaded">
                 <label>Preview Thumbnail:</label>
-                <details style="margin:0;"><summary>Click to view Thumbnail</summary><img [src]="thumbnailUrl" (load)="thumbnailLoaded = true"/></details>
+                <details style="margin:0;">
+                    <summary>Click to view Thumbnail</summary>
+                    <img [src]="thumbnailUrl" (load)="thumbnailLoaded = true"/></details>
             </div>
             <div *ngIf="isQuestTemplate" class="cell small-4">
                 <label>Badge: <em *ngIf="badeHaveError" class="error">Only name!</em></label>
@@ -98,6 +100,12 @@
 <app-content *ngIf="canHavePoll">
     <div *ngIf="thread.poll">
         <em>You can later not edit the poll after creation, make sure it's correct before saving</em>
+        <br/>
+        <label class="checkbox-container">
+            Is poll result public?
+            <input type="checkbox" [(ngModel)]="thread.poll.isPublic">
+            <span class="checkmark"></span>
+        </label>
         <div class="grid-container full poll-answer">
             <div class="grid-x">
                 <div class="cell small-11">

@@ -187,10 +187,7 @@ class ThreadCrudController extends Controller {
             $this->uploadFileAndCreateTemplateData($threadSkeleton, $thumbnail, $threadId, $request->hasFile('thumbnail'));
         }
 
-        if (!$thread->poll) {
-            $this->createThreadPoll($thread, $threadSkeleton);
-        }
-
+        $this->createOrUpdatePoll($thread, $threadSkeleton);
         Logger::user($user->userId, $request->ip(), Action::UPDATED_THREAD, [
             'thread' => $thread->title,
             'postId' => $thread->firstPostId,
@@ -248,7 +245,7 @@ class ThreadCrudController extends Controller {
 
         $thread->prefixes = Prefix::availableForCategory($thread->categoryId)->get(['prefixId', 'text']);
         $thread->forumPermissions = $this->forumService->getForumPermissionsForUserInCategory($user->userId, $categoryId);
-        $thread->poll = $this->forumService->getThreadPoll($thread->threadId, $user->userId);
+        $thread->poll = $this->forumService->getThreadPoll($thread, $user->userId);
         $thread->canHavePoll = $category->options & ConfigHelper::getForumOptionsConfig()->threadsCanHavePolls;
 
         return response()->json($thread);
@@ -309,7 +306,7 @@ class ThreadCrudController extends Controller {
         $thread->forumPermissions = $permissions;
         $thread->isSubscribed = ThreadSubscription::where('userId', $user->userId)->where('threadId', $threadId)->count('threadId') > 0;
         $thread->append('categoryIsOpen');
-        $thread->poll = $this->forumService->getThreadPoll($thread->threadId, $user->userId);
+        $thread->poll = $this->forumService->getThreadPoll($thread, $user->userId);
         $thread->isIgnored = IgnoredThread::where('userId', $user->userId)->where('threadId', $thread->threadId)->count('threadId') > 0;
         $thread->template = $thread->category->template;
 
@@ -403,6 +400,16 @@ class ThreadCrudController extends Controller {
         return response()->json(['threadId' => $thread->threadId], 201);
     }
 
+    private function createOrUpdatePoll($thread, $threadSkeleton) {
+        if (!$thread->poll) {
+            $this->createThreadPoll($thread, $threadSkeleton);
+        }
+        if ($thread->poll && $threadSkeleton->poll) {
+            $thread->poll->isResultPublic = $threadSkeleton->poll->isPublic;
+            $thread->poll->save();
+        }
+    }
+
     private function logThreadCreation($thread, $request, $user) {
         Logger::user($user->userId, ($request ? $request->ip() : ''), Action::CREATED_THREAD, [
             'thread' => $thread->title,
@@ -455,7 +462,8 @@ class ThreadCrudController extends Controller {
         $threadPoll = new ThreadPoll([
             'threadId' => $thread->threadId,
             'question' => $threadSkeleton->poll->question,
-            'options' => json_encode($threadSkeleton->poll->answers)
+            'options' => json_encode($threadSkeleton->poll->answers),
+            'isResultPublic' => $threadSkeleton->poll->isPublic
         ]);
         $threadPoll->save();
     }
