@@ -8,7 +8,7 @@ define('CONST_APP_LOCALE', 'en');
 
 define('CONST_LOG_CHANNEL', 'stack');
 
-define('CONST_DB_CONNECTION', 'mysql');
+define('CONST_DB_CONNECTION', 'sqlite');
 define('CONST_DB_HOST', '127.0.0.1');
 define('CONST_DB_PORT', '3306');
 define('CONST_DB_DATABASE', 'thsite');
