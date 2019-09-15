@@ -18,4 +18,9 @@ if ($uri !== '/' && file_exists(__DIR__ . '/rest' . $uri)) {
     return false;
 }
 
+// If the request is trying to get a resource
+if (strpos($uri, 'resource') !== false) {
+    return false;
+}
+
 require_once __DIR__ . '/rest/index.php';
