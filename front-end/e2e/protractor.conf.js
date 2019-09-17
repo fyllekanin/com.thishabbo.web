@@ -18,7 +18,7 @@ exports.config = {
         acceptInsecureCerts: true,
         chromeOptions: {
             args: ['--headless'],
-            binary: puppeteer.executablePath(),
+            binary: puppeteer.executablePath()
         }
     },
     directConnect: true,
