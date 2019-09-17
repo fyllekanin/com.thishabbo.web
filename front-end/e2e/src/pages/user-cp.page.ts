@@ -65,7 +65,7 @@ export class UserCpPage {
 
     static applyToGroup(value: string): void {
         const ele = element(by.cssContainingText('.groups', value)).element(by.xpath('..'))
-            .element(by.cssContainingText('span', 'Apply'));
+            .all(by.cssContainingText('span', 'Apply')).get(0);
         CommonUtil.click(ele);
     }
 

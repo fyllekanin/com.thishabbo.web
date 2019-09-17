@@ -37,7 +37,7 @@ export class NavigationUtil {
     }
 
     static clickStaffCpTool (value: string): void {
-        const ele = element(by.cssContainingText('app-staff app-side-menu app-content span', value));
+        const ele = element.all(by.cssContainingText('app-staff app-side-menu app-content span', value)).get(0);
         CommonUtil.click(ele);
     }
 
