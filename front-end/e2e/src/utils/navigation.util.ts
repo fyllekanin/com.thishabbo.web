@@ -49,8 +49,8 @@ export class NavigationUtil {
     }
 
     static clickTab (value: string, preSelectors?: string): void {
-        const ele = element(by.cssContainingText((preSelectors ? `${preSelectors} ` : '') +
-            'app-title .wrapper .tab', value));
+        const ele = element.all(by.cssContainingText((preSelectors ? `${preSelectors} ` : '') +
+            'app-title .wrapper .tab', value)).get(0);
         CommonUtil.click(ele);
     }
 
