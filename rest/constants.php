@@ -5,6 +5,7 @@ define('CONST_APP_KEY', 'base64:FgYQAkO319B5M7ug+h9kPfzMpGtbXXGgM2fVs5FihiM=');
 define('CONST_APP_DEBUG', 'true');
 define('CONST_APP_URL', 'http://localhost');
 define('CONST_APP_LOCALE', 'en');
+define('CONST_APP_SUPER_ADMINS', [1]);
 
 define('CONST_LOG_CHANNEL', 'stack');
 

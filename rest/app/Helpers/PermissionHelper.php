@@ -8,7 +8,7 @@ use App\EloquentModels\Group\Group;
 use Illuminate\Support\Facades\Cache;
 
 class PermissionHelper {
-    private static $superUsers = [1];
+    private static $superUsers = CONST_APP_SUPER_ADMINS;
 
     public static function isSuperSitecp($userId) {
         return in_array($userId, self::$superUsers);

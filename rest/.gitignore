@@ -16,3 +16,4 @@ thishabbo-job.log
 .env
 constants.php
 cache
+phpd.log
