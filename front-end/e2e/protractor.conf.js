@@ -17,8 +17,7 @@ exports.config = {
         marionette: true,
         acceptInsecureCerts: true,
         chromeOptions: {
-            args: ['--headless'],
-            binary: puppeteer.executablePath()
+            args: ['--headless', 'no-sandbox', '--disable-gpu', '--window-size=1280,1024']
         }
     },
     directConnect: true,
