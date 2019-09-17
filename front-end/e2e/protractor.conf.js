@@ -17,10 +17,8 @@ exports.config = {
         marionette: true,
         acceptInsecureCerts: true,
         chromeOptions: {
-            args: process.env.HEADLESS
-                ? ['--headless', '--no-sandbox', '--disable-dev-shm-usage']
-                : [],
-            binary: process.env.HEADLESS ? puppeteer.executablePath() : undefined,
+            args: ['--headless'],
+            binary: puppeteer.executablePath(),
         }
     },
     directConnect: true,
