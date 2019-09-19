@@ -1,7 +1,9 @@
 <?php
 
 return [
-
+    /**
+     * Version of the application, match with the front-end version for the communication to be verified
+     */
     'version' => '{version}',
 
     /*
