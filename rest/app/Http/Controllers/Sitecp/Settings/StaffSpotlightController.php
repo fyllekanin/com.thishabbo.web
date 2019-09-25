@@ -41,7 +41,7 @@ class StaffSpotlightController extends Controller {
 
         return response()->json([
             'member' => Value::objectProperty($motm, 'member', null),
-            'staff' => Value::objectProperty($motm, 'staff', null),
+            'photo' => Value::objectProperty($motm, 'photo', null),
             'month' => Value::objectProperty($motm, 'month', null)
         ]);
     }
@@ -64,12 +64,12 @@ class StaffSpotlightController extends Controller {
 
         Condition::precondition(!empty($information->member) && User::withNickname($information->member)->count('userId') == 0,
             404, 'No member with that nickname');
-        Condition::precondition(!empty($information->staff) && User::withNickname($information->staff)->count('userId') == 0,
+        Condition::precondition(!empty($information->photo) && User::withNickname($information->photo)->count('userId') == 0,
             404, 'No staff with that nickname');
 
         $newInformation = [
             'member' => $information->member,
-            'staff' => $information->staff,
+            'photo' => $information->photo,
             'month' => $information->month,
             'year' => date('Y')
         ];

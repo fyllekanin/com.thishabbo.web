@@ -24,7 +24,7 @@
                             [title]="getPostTitle(post, index)"
                             [tabs]="first ? tabs : null"
                             (onTabClick)="onTabClick($event)"
-                            (onCheckboxChange)="post.isSelected = !post.isSelected">
+                            (onCheckboxChange)="onCheckboxChange(post)">
                     </app-title>
                     <app-content>
                         <app-forum-post

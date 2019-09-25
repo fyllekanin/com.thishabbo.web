@@ -47,6 +47,7 @@ export class KickDjComponent extends Page implements OnDestroy {
     private doKick(): void {
         this._httpService.post('staff/radio/kick/dj', {})
             .subscribe(() => {
+                this._dialogService.closeDialog();
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success - Kicked',
                     message: 'DJ has been kicked off air!'

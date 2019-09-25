@@ -10,7 +10,7 @@ class BugReportView {
     public static function of(User $user, $data) {
         $reportData = new stdClass();
 
-        $reportData->title = "Bug reported by " . $user->username;
+        $reportData->title = $data->title . ' - ' . $user->username;
 
         $reportData->body = "#### Issue description
 - " . $data->description . "

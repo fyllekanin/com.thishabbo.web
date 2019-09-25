@@ -6,7 +6,7 @@ export class MemberOfTheMonthModel {
     @primitive()
     member: string;
     @primitive()
-    staff: string;
+    photo: string;
 
     constructor (source?) {
         ClassHelper.assign(this, source);

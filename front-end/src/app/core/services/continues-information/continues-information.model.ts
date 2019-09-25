@@ -88,7 +88,7 @@ export class MonthInformation {
     @objectOf(SlimUser)
     member: SlimUser;
     @objectOf(SlimUser)
-    staff: SlimUser;
+    photo: SlimUser;
     @primitive()
     month: string;
     @primitive()

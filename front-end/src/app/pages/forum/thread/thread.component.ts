@@ -172,7 +172,8 @@ ${postContent}[/quotepost]\n\r`;
         if (!post.isApproved) {
             title += ' | unapproved';
         }
-        return `#${(this._threadPage.page > 1 ? this._threadPage.page * 10 : 0) + (index + 1)} - ${title}`;
+        const prefix = this._threadPage.page > 1 ? this._threadPage.page - 1 : '';
+        return `#${prefix + '' + (index + 1)} - ${title}`;
     }
 
     onTabClick (action: number): void {
@@ -209,6 +210,20 @@ ${postContent}[/quotepost]\n\r`;
                 this._threadPage.isSubscribed = isSubscribed;
                 this.createOrUpdateTabs();
             });
+    }
+
+    onCheckboxChange(post: PostModel): void {
+        post.isSelected = !post.isSelected;
+
+        if (this.posts.some(item => item.isSelected)) {
+            this._isToolsVisible = true;
+            if (!this.fixedTools) {
+                this.buildModerationTools();
+            }
+        } else {
+            this._isToolsVisible = false;
+            this.fixedTools = null;
+        }
     }
 
     get canPost (): boolean {

@@ -146,6 +146,16 @@ export class CategoryComponent extends Page implements OnDestroy {
         } else {
             this._selectedThreadIds.push(threadId);
         }
+
+        if (this._selectedThreadIds.length > 0) {
+            this._isToolsVisible = true;
+            if (!this.fixedTools) {
+                this.buildModerationTools();
+            }
+        } else {
+            this._isToolsVisible = false;
+            this.fixedTools = null;
+        }
     }
 
     isChecked (thread: SlimThread): boolean {

@@ -19,12 +19,12 @@
                 </div>
             </div>
             <div class="cell small-6 medium-2">
-                <label><em class="fa fa-user"></em> Staff of the Month</label>
-                <div *ngIf="month && month.staff">
-                    <img appUserProfile [info]="month.staff" [isSmall]="true" class="small-avatar"/>
-                    <app-user-link [user]="month.staff"></app-user-link>
+                <label><em class="fa fa-user"></em> Photo Comp Winner</label>
+                <div *ngIf="month && month.photo">
+                    <img appUserProfile [info]="month.photo" [isSmall]="true" class="small-avatar"/>
+                    <app-user-link [user]="month.photo"></app-user-link>
                     <br/>
-                    Staff of the month <br/>
+                    Photo Comp Winner <br/>
                     {{month.year}} {{month.month}}
                 </div>
             </div>

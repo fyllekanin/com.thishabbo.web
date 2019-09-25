@@ -88,11 +88,11 @@ class StreamController extends Controller {
         $motm = json_decode(SettingsHelper::getSettingValue($this->settingKeys->memberOfTheMonth));
 
         $member = User::withNickname(Value::objectProperty($motm, 'member', ''))->first();
-        $staff = User::withNickname(Value::objectProperty($motm, 'staff', ''))->first();
+        $photo = User::withNickname(Value::objectProperty($motm, 'photo', ''))->first();
 
         return [
             'member' => $member ? UserHelper::getSlimUser($member->userId) : null,
-            'staff' => $staff ? UserHelper::getSlimUser($staff->userId) : null,
+            'photo' => $photo ? UserHelper::getSlimUser($photo->userId) : null,
             'month' => Value::objectProperty($motm, 'month', null),
             'year' => Value::objectProperty($motm, 'year', date('Y')),
         ];

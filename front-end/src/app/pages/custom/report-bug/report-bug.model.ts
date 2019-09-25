@@ -2,6 +2,8 @@ import { primitiveOf } from 'shared/helpers/class.helper';
 
 export class ReportBugModel {
     @primitiveOf(String)
+    title = '';
+    @primitiveOf(String)
     description = '';
     @primitiveOf(String)
     steps = '';

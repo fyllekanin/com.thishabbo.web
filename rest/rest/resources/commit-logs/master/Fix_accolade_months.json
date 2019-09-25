@@ -1,0 +1,1 @@
+{"topic":"Fix accolade months","type":"Bug","body":"Months would thanks to timezone go back sometimes to a previous month, this commit fixes this issue and keeps them to UTC"}

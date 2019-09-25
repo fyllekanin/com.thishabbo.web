@@ -78,7 +78,7 @@ class RadioController extends Controller {
         $radio = new RadioSettings(SettingsHelper::getSettingValue($settingKeys->radio));
         $info = SettingsHelper::getRadioConnectionInformation();
 
-        $isDj = $user->userId == $radio->nextDjId || $user->userId == $radio->userId;
+        $isDj = $user->userId == $radio->nextDjId || $user->userId == $radio->userId || $user->userId == $this->getCurrentDjId();
         $response = PermissionHelper::haveStaffPermission($user->userId, ConfigHelper::getStaffConfig()->canAlwaysSeeConnectionInformation) || $isDj
             ? $info : null;
         return response()->json($response);
@@ -432,5 +432,13 @@ class RadioController extends Controller {
         $canDelete = PermissionHelper::haveStaffPermission($user->userId, ConfigHelper::getStaffConfig()->canAlwaysSeeConnectionInformation);
 
         return $isCurrentDj || $canDelete;
+    }
+
+    private function getCurrentDjId() {
+        $day = date('N');
+        $hour = date('G');
+
+        $currentSlot = Timetable::radio()->isActive()->where('day', $day)->where('hour', $hour)->first();
+        return $currentSlot ? $currentSlot->user->userId : null;
     }
 }

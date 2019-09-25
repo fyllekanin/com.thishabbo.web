@@ -16,8 +16,8 @@ export class AccoladeComponent extends InnerDialogComponent {
     months: Array<{ label: string, number: number }> = [];
 
     getData () {
-        this._accolade.start = new Date(`${this.start.year}-${this.start.month}-01`).getTime() / 1000;
-        this._accolade.end = this.end.year && this.end.month ? new Date(`${this.end.year}-${this.end.month}-01`).getTime() / 1000 : null;
+        this._accolade.start = this.getTime(this.start.year, this.start.month);
+        this._accolade.end = this.getTime(this.end.year, this.end.month);
         return this._accolade;
     }
 
@@ -42,6 +42,10 @@ export class AccoladeComponent extends InnerDialogComponent {
 
     get accolade (): AccoladeItem {
         return this._accolade;
+    }
+
+    private getTime(year: number, month: number): number {
+        return new Date(Date.UTC(year, month, 1)).getTime() / 1000;
     }
 
     private setStartAndEnd (): void {

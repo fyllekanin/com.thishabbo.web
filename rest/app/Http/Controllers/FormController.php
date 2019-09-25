@@ -66,6 +66,7 @@ class FormController extends Controller {
         $data = (object)$request->input('data');
 
         Condition::precondition(!$user || $user->userId == 0, 400, 'You need to be logged in to report a bug!');
+        Condition::precondition(!isset($data->title) || empty($data->title), 400, 'You must set a title for the bug!');
         Condition::precondition(!isset($data->description) || empty($data->description), 400, 'You must describe the bug!');
         Condition::precondition(!isset($data->steps) || empty($data->steps), 400, 'You must describe how to make the bug happen!');
         Condition::precondition(!isset($data->expected) || empty($data->expected), 400, 'You must tell us what you expected to happen!');
