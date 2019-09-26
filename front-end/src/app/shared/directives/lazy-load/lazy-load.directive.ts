@@ -20,7 +20,7 @@ export class LazyLoadDirective implements AfterViewInit {
     ) {}
 
     ngAfterViewInit (): void {
-        this.loadImage();
+        this.setImage();
     }
 
     @Input()
@@ -30,16 +30,16 @@ export class LazyLoadDirective implements AfterViewInit {
         }
         this.subscribeToScroll();
         this._imageUrl = url;
-        this.loadImage();
+        this.setImage();
     }
 
     private onScroll (event): void {
         event.stopPropagation();
-        this.loadImage();
+        this.setImage();
     }
 
     private setImage (): void {
-        if (this._isLoaded) {
+        if (this._isLoaded || !this.isInsideViewport()) {
             return;
         }
         this.unsubscribeToScroll();
@@ -48,12 +48,6 @@ export class LazyLoadDirective implements AfterViewInit {
             this._elementRef.nativeElement.src = this._imageUrl;
         } else {
             this.backgroundUrl = this._santitizer.bypassSecurityTrustStyle(this._imageUrl);
-        }
-    }
-
-    private loadImage (): void {
-        if (!this._isLoaded && this.isInsideViewport()) {
-            this.setImage();
         }
     }
 
