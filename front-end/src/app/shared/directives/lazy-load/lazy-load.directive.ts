@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, ElementRef, HostBinding, Input, OnDestroy, Sanitizer, SecurityContext } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, HostBinding, Input, OnDestroy } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 
