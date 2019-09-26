@@ -1,11 +1,11 @@
-import { AfterViewInit, Directive, ElementRef, HostBinding, Input, OnDestroy } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, HostBinding, Input } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Directive({
     selector: '[appLazyLoad]'
 })
-export class LazyLoadDirective implements OnDestroy, AfterViewInit {
+export class LazyLoadDirective implements AfterViewInit {
     private _isLoaded = false;
     private _imageUrl: string;
 
@@ -21,12 +21,6 @@ export class LazyLoadDirective implements OnDestroy, AfterViewInit {
 
     ngAfterViewInit (): void {
         this.loadImage();
-    }
-
-    ngOnDestroy (): void {
-        if (!this.haveLoadedImage() && this.isInsideViewport()) {
-            this.setImage();
-        }
     }
 
     @Input()
@@ -58,7 +52,7 @@ export class LazyLoadDirective implements OnDestroy, AfterViewInit {
     }
 
     private loadImage (): void {
-        if (!this.haveLoadedImage() && this.isInsideViewport()) {
+        if (!this._isLoaded && this.isInsideViewport()) {
             this.setImage();
         }
     }
@@ -71,10 +65,6 @@ export class LazyLoadDirective implements OnDestroy, AfterViewInit {
         if (this._scrollSubscription) {
             this._scrollSubscription.unsubscribe();
         }
-    }
-
-    private haveLoadedImage (): boolean {
-        return this._imageUrl === this._loadedImage;
     }
 
     private isInsideViewport (): boolean {
