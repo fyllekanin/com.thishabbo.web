@@ -42,7 +42,7 @@ export class UserProfileDirective {
         this.width = value ? '50px' : '70px';
     }
 
-    protected setImage (): void {
+    private setImage (): void {
         this._elementRef.nativeElement.style.backgroundImage =
             `url(/rest/resources/images/users/${this._info.userId}.gif?updatedAt=${this._info.avatarUpdatedAt})`;
     }

@@ -42,7 +42,6 @@ class PageControllerImpl {
             (object)['role' => 'Media', 'userId' => Value::objectProperty($parsed, 'media', null)],
             (object)['role' => 'Quests', 'userId' => Value::objectProperty($parsed, 'quests', null)],
             (object)['role' => 'Graphics', 'userId' => Value::objectProperty($parsed, 'graphics', null)],
-            (object)['role' => 'Audio Producer', 'userId' => Value::objectProperty($parsed, 'audioProducer', null)],
             (object)['role' => 'Community Events', 'userId' => Value::objectProperty($parsed, 'communityEvents', null)],
             (object)['role' => 'Builder', 'userId' => Value::objectProperty($parsed, 'builder', null)]
         ];

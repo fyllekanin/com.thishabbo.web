@@ -1,0 +1,1 @@
+{"topic":"Fix lazy loading","type":"Bug","body":"The lazy loading feature was a bit buggy and the footer logic with safeStyle made the instance change 24/7"}

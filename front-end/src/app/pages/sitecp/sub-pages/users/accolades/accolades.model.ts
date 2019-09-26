@@ -8,8 +8,7 @@ export const ACCOLADE_LABEL_MAP = new Map<number, string>([
     [3, 'Management'],
     [4, 'Moderator'],
     [5, 'Veteran'],
-    [6, 'Developer'],
-    [7, 'Audio Producer']
+    [6, 'Developer']
 ]);
 
 export class AccoladeItem {

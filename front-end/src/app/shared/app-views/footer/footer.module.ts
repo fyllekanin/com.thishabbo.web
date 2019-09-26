@@ -5,6 +5,7 @@ import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
 import { CommonModule } from '@angular/common';
 import { UserProfileModule } from 'shared/directives/user-profile.module';
 import { UserLinkModule } from 'shared/components/user/user-link.module';
+import { LazyLoadModule } from 'shared/directives/lazy-load/lazy-load.module';
 
 @NgModule({
     imports: [
@@ -12,7 +13,8 @@ import { UserLinkModule } from 'shared/components/user/user-link.module';
         RouterModule,
         SafeStyleModule,
         UserProfileModule,
-        UserLinkModule
+        UserLinkModule,
+        LazyLoadModule
     ],
     declarations: [
         FooterComponent

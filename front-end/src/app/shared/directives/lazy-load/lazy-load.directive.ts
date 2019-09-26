@@ -1,11 +1,12 @@
-import { AfterViewInit, Directive, ElementRef, HostBinding, Input, OnDestroy } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, HostBinding, Input, OnDestroy, Sanitizer, SecurityContext } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Directive({
     selector: '[appLazyLoad]'
 })
 export class LazyLoadDirective implements OnDestroy, AfterViewInit {
-    private _loadedImage = null;
+    private _isLoaded = false;
     private _imageUrl: string;
 
     private _scrollSubscription: Subscription;
@@ -14,15 +15,9 @@ export class LazyLoadDirective implements OnDestroy, AfterViewInit {
     @HostBinding('style.display') display = 'inline-block';
 
     constructor (
-        protected _elementRef: ElementRef
-    ) {
-    }
-
-    onScroll (event): void {
-        event.stopPropagation();
-
-        this.loadImage();
-    }
+        private _elementRef: ElementRef,
+        private _santitizer: DomSanitizer
+    ) {}
 
     ngAfterViewInit (): void {
         this.loadImage();
@@ -36,18 +31,29 @@ export class LazyLoadDirective implements OnDestroy, AfterViewInit {
 
     @Input()
     set image (url: string) {
+        if (this._isLoaded) {
+            return;
+        }
         this.subscribeToScroll();
         this._imageUrl = url;
         this.loadImage();
     }
 
-    protected setImage (): void {
+    private onScroll (event): void {
+        event.stopPropagation();
+        this.loadImage();
+    }
+
+    private setImage (): void {
+        if (this._isLoaded) {
+            return;
+        }
         this.unsubscribeToScroll();
-        this._loadedImage = this._imageUrl;
+        this._isLoaded = true;
         if (this._elementRef.nativeElement.nodeName === 'IMG') {
             this._elementRef.nativeElement.src = this._imageUrl;
         } else {
-            this.backgroundUrl = this._imageUrl;
+            this.backgroundUrl = this._santitizer.bypassSecurityTrustStyle(this._imageUrl);
         }
     }
 
