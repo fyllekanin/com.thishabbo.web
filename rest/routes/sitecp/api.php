@@ -102,7 +102,7 @@ Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions
 });
 
 Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canSeeIps)], function () {
-    Route::get('/users/ip-search', 'IpSearchController@getIpSearch');
+    Route::get('/users/ip-search', 'Search\IpSearchController@getIpSearch');
 });
 
 Route::group(['middleware' => PermissionHelper::getSitecpMiddleware([$permissions->canEditUserBasic, $permissions->canEditUserAdvanced,
