@@ -22,7 +22,6 @@ import { PageModule } from 'shared/page/page.module';
 import { NgModule } from '@angular/core';
 import { TitleModule } from 'shared/app-views/title/title.module';
 import { ButtonModule } from 'shared/directives/button/button.module';
-import { LazyLoadModule } from 'shared/directives/lazy-load/lazy-load.module';
 import { SortingComponent } from './category/sorting/sorting.component';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
@@ -59,7 +58,6 @@ import { ThreadBansComponent } from './thread/thread-bans/thread-bans.component'
         FormsModule,
         FixedToolsModule,
         ButtonModule,
-        LazyLoadModule,
         SafeHtmlModule,
         SafeStyleModule,
         InfractionModule,

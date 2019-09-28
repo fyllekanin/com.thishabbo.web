@@ -3,28 +3,27 @@
         <div class="grid-x">
             <div class="cell small-12 medium-8">
                 <label><em class="fa fa-user"></em> Active Users</label>
-                <div class="active-user" appLazyLoad *ngFor="let activeUser of activeUsers"
-                     [attr.tooltip]="activeUser.nickname"
-                     (click)="goToProfile(activeUser.nickname)"
-                     [image]="getAvatarUrl(activeUser)"></div>
+                <div class="active-user" *ngFor="let activeUser of activeUsers; trackBy: trackUsers;"
+                    [attr.tooltip]="activeUser.nickname" (click)="goToProfile(activeUser.nickname)"
+                    [style.backgroundImage]="getAvatarUrl(activeUser) | safeStyle"></div>
             </div>
             <div class="cell small-6 medium-2">
                 <label><em class="fa fa-user"></em> Member of the Month</label>
                 <div *ngIf="month && month.member">
-                    <img appUserProfile [info]="month.member" [isSmall]="true" class="small-avatar"/>
+                    <img appUserProfile [info]="month.member" [isSmall]="true" class="small-avatar" />
                     <app-user-link [user]="month.member"></app-user-link>
-                    <br/>
-                    Member of the month <br/>
+                    <br />
+                    Member of the month <br />
                     {{month.year}} {{month.month}}
                 </div>
             </div>
             <div class="cell small-6 medium-2">
                 <label><em class="fa fa-user"></em> Photo Comp Winner</label>
                 <div *ngIf="month && month.photo">
-                    <img appUserProfile [info]="month.photo" [isSmall]="true" class="small-avatar"/>
+                    <img appUserProfile [info]="month.photo" [isSmall]="true" class="small-avatar" />
                     <app-user-link [user]="month.photo"></app-user-link>
-                    <br/>
-                    Photo Comp Winner <br/>
+                    <br />
+                    Photo Comp Winner <br />
                     {{month.year}} {{month.month}}
                 </div>
             </div>

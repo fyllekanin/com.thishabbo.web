@@ -3,8 +3,9 @@
     <app-content>
         <div class="grid-x align-center">
             <div class="cell small-4 medium-2" *ngFor="let user of group.users">
-                <div appUserProfile appLazyLoad
-                     [image]="'url(/rest/resources/images/users/' + user.userId + '.gif)'"></div>
+                <div appUserProfile
+                    [style.backgroundImage]="'url(/rest/resources/images/users/' + user.userId + '.gif)' | safeStyle">
+                </div>
                 <div class="user-info">
                     <div>
                         <app-user-link [user]="user"></app-user-link>

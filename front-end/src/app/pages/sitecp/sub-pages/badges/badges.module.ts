@@ -15,7 +15,7 @@ import { PaginationModule } from 'shared/app-views/pagination/pagination.module'
 import { BadgeUsersResolver } from './services/badge-users.resolver';
 import { BadgeUsersComponent } from './badge-users/badge-users.component';
 import { ButtonModule } from 'shared/directives/button/button.module';
-import { LazyLoadModule } from 'shared/directives/lazy-load/lazy-load.module';
+import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
 
 @NgModule({
     imports: [
@@ -28,7 +28,7 @@ import { LazyLoadModule } from 'shared/directives/lazy-load/lazy-load.module';
         FormsModule,
         CommonModule,
         ButtonModule,
-        LazyLoadModule
+        SafeStyleModule
     ],
     declarations: [
         BadgesListComponent,

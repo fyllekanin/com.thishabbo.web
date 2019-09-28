@@ -33,9 +33,13 @@ export class FooterComponent {
         return this._info ? this._info.footer.month : null;
     }
 
+    trackUsers(_index: number, item: ActiveUser): number {
+        return item.userId;
+    }
+
     getAvatarUrl(activeUser: ActiveUser): string {
         return `url('/rest/resources/images/users/` +
-            `${activeUser.userId}.gif?${activeUser.avatarUpdatedAt}')`;
+            `${activeUser.userId}.gif${activeUser.avatarUpdatedAt ? `?updatedAt=${activeUser.avatarUpdatedAt}` : ''}')`;
     }
 
     goToProfile(nickname: string) {

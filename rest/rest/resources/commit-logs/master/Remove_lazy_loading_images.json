@@ -1,0 +1,1 @@
+{"topic":"Remove lazy loading images","type":"Refactor / Improvement","body":"The lazy loading images isnt giving the performance boost it should, this is a try to remove it and see the difference. Lazy rendering will be looked into instead"}

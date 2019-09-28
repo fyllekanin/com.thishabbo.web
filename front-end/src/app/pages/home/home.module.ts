@@ -14,7 +14,6 @@ import { ButtonModule } from 'shared/directives/button/button.module';
 import { LoginBoxComponent } from './home-default/login-box/login-box.component';
 import { InfoBoxModule } from 'shared/app-views/info-box/info-box.module';
 import { MediaArticlesComponent } from './home-default/media-articles/media-articles.component';
-import { LazyLoadModule } from 'shared/directives/lazy-load/lazy-load.module';
 import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 import { StaffSpotlightComponent } from './home-default/staff-spotlight/staff-spotlight.component';
@@ -42,7 +41,6 @@ import { SelectModule } from 'shared/components/form/select/select.module';
         UserProfileModule,
         ButtonModule,
         InfoBoxModule,
-        LazyLoadModule,
         SafeStyleModule,
         SafeHtmlModule,
         PaginationModule,

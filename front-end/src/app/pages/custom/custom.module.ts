@@ -6,7 +6,6 @@ import { customRoutes } from './custom.routes';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { LazyLoadModule } from 'shared/directives/lazy-load/lazy-load.module';
 import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 import { CustomPageComponent } from './custom-page/custom-page.component';
@@ -35,7 +34,6 @@ import { BadgesPageResolver } from './services/badges-page.resolver';
         PageModule,
         FormsModule,
         CommonModule,
-        LazyLoadModule,
         SafeStyleModule,
         SafeHtmlModule,
         SlimArticleModule,

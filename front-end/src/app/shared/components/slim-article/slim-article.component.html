@@ -1,7 +1,7 @@
-<div class="image" appLazyLoad [image]="backgroundImage">
+<div class="image" [style.backgroundImage]="backgroundImage | safeStyle">
     <div class="inner-image">
         <div class="badge" *ngIf="haveBadge">
-            <img appLazyLoad [image]="badgeUrl"/>
+            <img [src]="badgeUrl" />
         </div>
     </div>
 </div>

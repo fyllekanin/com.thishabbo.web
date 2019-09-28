@@ -8,7 +8,6 @@ import { RouterStateService } from 'core/services/router/router-state.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { ThemeHelper } from 'shared/helpers/theme.helper';
-import { StringHelper } from 'shared/helpers/string.helper';
 
 @Component({
     selector: 'app-top-bar',
@@ -23,7 +22,7 @@ export class TopBarComponent {
     loginName = '';
     password = '';
 
-    constructor (
+    constructor(
         private _authService: AuthService,
         private _router: Router,
         private _httpService: HttpService,
@@ -34,7 +33,7 @@ export class TopBarComponent {
         this._continuesInformationService.onNotifications.subscribe(this.onNotifications.bind(this));
     }
 
-    login (): void {
+    login(): void {
         this._authService.login(this.loginName, this.password, true, () => {
             this._router.navigateByUrl('/auth/login');
         });
@@ -42,13 +41,7 @@ export class TopBarComponent {
         this.password = '';
     }
 
-    keyDownFunction (event): void {
-        if (StringHelper.isKey(event, 'enter')) {
-            this.login();
-        }
-    }
-
-    notificationClick (notificationId: number): void {
+    notificationClick(notificationId: number): void {
         this._httpService.put(`puller/notifications/read/${notificationId}`)
             .subscribe(() => {
                 this._continuesInformationService.removeNotification(notificationId);
@@ -60,7 +53,7 @@ export class TopBarComponent {
             });
     }
 
-    readAllNotifications (): void {
+    readAllNotifications(): void {
         this._httpService.put('puller/notifications/read/all/notifications')
             .subscribe(() => {
                 this._continuesInformationService.removeNotificationIds(this._notifications
@@ -74,7 +67,7 @@ export class TopBarComponent {
             });
     }
 
-    readAllMessages (): void {
+    readAllMessages(): void {
         this._httpService.put('puller/notifications/read/all/messages')
             .subscribe(() => {
                 this._continuesInformationService.removeNotificationIds(this._messages
@@ -88,37 +81,37 @@ export class TopBarComponent {
             });
     }
 
-    get loggedIn (): boolean {
+    get loggedIn(): boolean {
         return this._authService.isLoggedIn();
     }
 
-    get notifications (): Array<NotificationModel<any>> {
+    get notifications(): Array<NotificationModel<any>> {
         return this._notifications;
     }
 
-    get messages (): Array<NotificationModel<any>> {
+    get messages(): Array<NotificationModel<any>> {
         return this._messages;
     }
 
-    get isMobile (): boolean {
+    get isMobile(): boolean {
         return ThemeHelper.isMobile();
     }
 
-    private onNotifications (notifications: Array<NotificationModel<any>>): void {
+    private onNotifications(notifications: Array<NotificationModel<any>>): void {
         this._notifications = notifications.filter(this.isNotification);
         this._messages = notifications.filter(this.isMessage);
         this.updateTitle();
     }
 
-    private updateTitle (): void {
+    private updateTitle(): void {
         this._routerStateService.updateNotificationAmount(this._notifications.length + this._messages.length);
     }
 
-    private isMessage (notification: NotificationModel<any>): boolean {
+    private isMessage(notification: NotificationModel<any>): boolean {
         return notification.type === NotificationTypes.VISITOR_MESSAGE;
     }
 
-    private isNotification (notification: NotificationModel<any>): boolean {
+    private isNotification(notification: NotificationModel<any>): boolean {
         return [
             NotificationTypes.FOLLOWED,
             NotificationTypes.BADGE,

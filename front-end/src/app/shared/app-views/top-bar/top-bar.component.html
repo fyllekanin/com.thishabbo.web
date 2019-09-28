@@ -11,13 +11,13 @@
             </div>
             <div class="cell small-4 medium-4 login-pc" *ngIf="!loggedIn">
                 <div class="login-wrapper">
-                    <input type="text" class="top-login" (keydown)="keyDownFunction($event)" [(ngModel)]="loginName"
-                           placeholder="Username/Habbo"
-                           name="loginName"/>
-                    <input type="password" class="top-login" (keydown)="keyDownFunction($event)" [(ngModel)]="password"
-                           placeholder="Password"
-                           name="password"/>
-                    <button appButton [float]="'right'" class="top-login-button" (onClick)="login()">Login</button>
+                    <form (ngSubmit)="login()">
+                        <input type="text" class="top-login" [(ngModel)]="loginName" placeholder="Username/Habbo"
+                            name="loginName" />
+                        <input type="password" class="top-login" [(ngModel)]="password" placeholder="Password"
+                            name="password" />
+                        <button appButton [float]="'right'" class="top-login-button">Login</button>
+                    </form>
                 </div>
             </div>
             <div class="cell small-5 medium-4 login-phone" *ngIf="!loggedIn">
@@ -34,15 +34,15 @@
                             <strong>Notifications</strong>
                             <div class="pull-right">
                                 <a class="notification-tool"
-                                   [routerLink]="['/user/usercp/account/notifications/page/1']">See All</a>
+                                    [routerLink]="['/user/usercp/account/notifications/page/1']">See All</a>
                                 <a class="notification-tool not-clickable">-</a>
                                 <a class="notification-tool" (click)="readAllNotifications()"
-                                   *ngIf="notifications.length > 0">Read
+                                    *ngIf="notifications.length > 0">Read
                                     All
                                 </a>
                                 <a class="notification-tool not-clickable" *ngIf="notifications.length > 0">-</a>
                                 <a class="notification-tool"
-                                   [routerLink]="['/user/usercp/subscriptions/notification-settings']">Settings</a>
+                                    [routerLink]="['/user/usercp/subscriptions/notification-settings']">Settings</a>
                             </div>
                         </div>
                         <div class="notification-overflow">
@@ -50,40 +50,38 @@
                                 You do not have any notifications currently!
                             </div>
                             <div class="notification-view" *ngFor="let notification of notifications"
-                                 (click)="notificationClick(notification.notificationId)"
-                                 [ngSwitch]="notification.type">
+                                (click)="notificationClick(notification.notificationId)" [ngSwitch]="notification.type">
                                 <app-top-bar-thread-view *ngSwitchCase="1" [notification]="notification"
-                                                         (onClick)="notificationClick($event)"></app-top-bar-thread-view>
+                                    (onClick)="notificationClick($event)"></app-top-bar-thread-view>
                                 <app-top-bar-thread-view *ngSwitchCase="2" [notification]="notification"
-                                                         (onClick)="notificationClick($event)"></app-top-bar-thread-view>
+                                    (onClick)="notificationClick($event)"></app-top-bar-thread-view>
                                 <app-top-bar-thread-view *ngSwitchCase="4" [notification]="notification"
-                                                         (onClick)="notificationClick($event)"></app-top-bar-thread-view>
+                                    (onClick)="notificationClick($event)"></app-top-bar-thread-view>
                                 <app-top-bar-thread-view *ngSwitchCase="10" [notification]="notification"
-                                                         (onClick)="notificationClick($event)"></app-top-bar-thread-view>
+                                    (onClick)="notificationClick($event)"></app-top-bar-thread-view>
 
                                 <app-top-bar-badge-view *ngSwitchCase="3" [notification]="notification"
-                                                        (onClick)="notificationClick($event)"></app-top-bar-badge-view>
+                                    (onClick)="notificationClick($event)"></app-top-bar-badge-view>
                                 <app-top-bar-category-view *ngSwitchCase="5" [notification]="notification"
-                                                           (onClick)="notificationClick($event)"></app-top-bar-category-view>
+                                    (onClick)="notificationClick($event)"></app-top-bar-category-view>
                                 <app-top-bar-infraction-view *ngSwitchCase="6" [notification]="notification"
-                                                             (onClick)="notificationClick($event)"></app-top-bar-infraction-view>
+                                    (onClick)="notificationClick($event)"></app-top-bar-infraction-view>
                                 <app-top-bar-infraction-view *ngSwitchCase="7" [notification]="notification"
-                                                             (onClick)="notificationClick($event)"></app-top-bar-infraction-view>
+                                    (onClick)="notificationClick($event)"></app-top-bar-infraction-view>
                                 <app-top-bar-follower-view *ngSwitchCase="8" [notification]="notification"
-                                                           (onClick)="notificationClick($event)"></app-top-bar-follower-view>
-                                <app-top-bar-visitor-message-view *ngSwitchCase="9"
-                                                                  [notification]="notification"
-                                                                  (onClick)="notificationClick($event)"></app-top-bar-visitor-message-view>
+                                    (onClick)="notificationClick($event)"></app-top-bar-follower-view>
+                                <app-top-bar-visitor-message-view *ngSwitchCase="9" [notification]="notification"
+                                    (onClick)="notificationClick($event)"></app-top-bar-visitor-message-view>
                                 <app-top-bar-user-view *ngSwitchCase="11" [notification]="notification"
-                                                       (onClick)="notificationClick($event)"></app-top-bar-user-view>
+                                    (onClick)="notificationClick($event)"></app-top-bar-user-view>
                                 <app-top-bar-user-view *ngSwitchCase="12" [notification]="notification"
-                                                       (onClick)="notificationClick($event)"></app-top-bar-user-view>
+                                    (onClick)="notificationClick($event)"></app-top-bar-user-view>
                                 <app-top-bar-user-view *ngSwitchCase="13" [notification]="notification"
-                                                       (onClick)="notificationClick($event)"></app-top-bar-user-view>
+                                    (onClick)="notificationClick($event)"></app-top-bar-user-view>
                                 <app-top-bar-user-view *ngSwitchCase="14" [notification]="notification"
-                                                       (onClick)="notificationClick($event)"></app-top-bar-user-view>
+                                    (onClick)="notificationClick($event)"></app-top-bar-user-view>
                                 <app-top-bar-user-view *ngSwitchCase="15" [notification]="notification"
-                                                       (onClick)="notificationClick($event)"></app-top-bar-user-view>
+                                    (onClick)="notificationClick($event)"></app-top-bar-user-view>
                             </div>
                         </div>
                     </div>
@@ -96,15 +94,15 @@
                             <strong>Inbox</strong>
                             <div class="pull-right">
                                 <a class="notification-tool"
-                                   [routerLink]="['/user/usercp/account/notifications/page/1']">See All</a>
+                                    [routerLink]="['/user/usercp/account/notifications/page/1']">See All</a>
                                 <a class="notification-tool not-clickable">-</a>
                                 <a class="notification-tool" (click)="readAllMessages()"
-                                   *ngIf="messages.length > 0">Read
+                                    *ngIf="messages.length > 0">Read
                                     All
                                 </a>
                                 <a class="notification-tool not-clickable" *ngIf="messages.length > 0">-</a>
                                 <a class="notification-tool"
-                                   [routerLink]="['/user/usercp/subscriptions/notification-settings']">Settings</a>
+                                    [routerLink]="['/user/usercp/subscriptions/notification-settings']">Settings</a>
                             </div>
                         </div>
 
@@ -112,10 +110,9 @@
                             You do not have any messages currently!
                         </div>
                         <div class="notification-view" *ngFor="let message of messages"
-                             (click)="notificationClick(message.notificationId)"
-                             [ngSwitch]="message.type">
+                            (click)="notificationClick(message.notificationId)" [ngSwitch]="message.type">
                             <app-top-bar-visitor-message-view *ngSwitchCase="9" [notification]="message"
-                                                              (onClick)="notificationClick($event)"></app-top-bar-visitor-message-view>
+                                (onClick)="notificationClick($event)"></app-top-bar-visitor-message-view>
                         </div>
                     </div>
                 </div>
