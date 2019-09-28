@@ -16,7 +16,7 @@ class IpSearchController extends Controller {
         if (!$nickname && !$ipAddress) {
             return response()->json([]);
         }
-        
+
         $items = [];
         $logTables = ['login', 'log_sitecp', 'log_staff', 'log_mod', 'log_user'];
         foreach ($logTables as $table) {
@@ -36,6 +36,8 @@ class IpSearchController extends Controller {
                 ->toArray());
         }
 
-        return response()->json(Iterables::unique(Iterables::sortByPropertyAsc($items, 'nickname'), 'userId'));
+        $dateSorted = Iterables::sortByPropertyDesc($items, 'createdAt');
+        $unique = Iterables::unique($dateSorted, 'userId');
+        return Iterables::sortByPropertyAsc($unique, 'nickname');
     }
 }
