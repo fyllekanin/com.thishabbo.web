@@ -1,4 +1,4 @@
-import { Component, ElementRef } from "@angular/core";
+import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { ActivatedRoute } from '@angular/router';
 import { ThcRequestLogPage } from './thc-requests-log.model';
@@ -13,7 +13,7 @@ import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
     templateUrl: 'thc-requests-log.component.html',
     styleUrls: ['thc-requests-log.component.css']
 })
-export class ThcRequestsLogComponent extends Page {
+export class ThcRequestsLogComponent extends Page implements OnDestroy {
     private _data: ThcRequestLogPage;
 
     tableConfig: TableConfig;
@@ -31,7 +31,7 @@ export class ThcRequestsLogComponent extends Page {
             items: [
                 STAFFCP_BREADCRUM_ITEM
             ]
-        })
+        });
     }
 
     ngOnDestroy(): void {
@@ -46,7 +46,7 @@ export class ThcRequestsLogComponent extends Page {
             total: this._data.total,
             page: this._data.page,
             url: '/staff/thc-requests-log/page/:page'
-        })
+        });
     }
 
     private createOrUpdateTable(): void {
