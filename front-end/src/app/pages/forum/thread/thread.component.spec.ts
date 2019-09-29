@@ -1,5 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { User } from 'core/services/auth/auth.model';
@@ -94,28 +94,30 @@ describe('ThreadComponent', () => {
     });
 
     describe('onKeyUp', () => {
-        it('should not do anything if content is not set', () => {
+        it('should not do anything if content is not set', fakeAsync(() => {
             // Given
             const content = null;
             component['_threadPage'] = new ThreadPage({ threadId: 5 });
 
             // When
             component.onKeyUp(content);
+            tick(201);
 
             // Then
             expect(AutoSaveHelper.get(AutoSave.POST, 99)).toBeNull();
-        });
-        it('should save the content as auto save', () => {
+        }));
+        it('should save the content as auto save', fakeAsync(() => {
             // Given
             const content = 'test';
             component['_threadPage'] = new ThreadPage({ threadId: 5 });
 
             // When
             component.onKeyUp(content);
+            tick(201);
 
             // Then
             expect(AutoSaveHelper.get(AutoSave.POST, 5).content).toEqual('test');
-        });
+        }));
     });
 
     describe('onButtonClick', () => {
