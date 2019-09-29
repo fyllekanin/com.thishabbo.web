@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 $permissions = ConfigHelper::getStaffConfig();
 
 Route::post('request-thc', 'Staff\StaffController@createRequestThc');
+Route::get('thc-requests-log/page/{page}', 'Staff\StaffController@getThcRequestsLog');
 Route::get('dashboard/{start}', 'Staff\StaffController@getDashboardStats');
 
 Route::get('/ping', 'PageController@getPing');

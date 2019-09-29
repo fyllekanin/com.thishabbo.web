@@ -16,14 +16,14 @@ import { NotificationService } from 'core/services/notification/notification.ser
 })
 export class JobComponent extends Page implements OnDestroy {
     private _jobs: Array<{ checked: boolean, label: string }> = [
-        {checked: false, label: 'Decide for me!'},
-        {checked: false, label: 'Events Host'},
-        {checked: false, label: 'Radio DJ'},
-        {checked: false, label: 'Graphics Artist'},
-        {checked: false, label: 'Media Journalist'},
-        {checked: false, label: 'Quest/Tutorial Reporter'},
-        {checked: false, label: 'Developer'},
-        {checked: false, label: 'Web Designer'}
+        { checked: false, label: 'Decide for me!' },
+        { checked: false, label: 'Events Host' },
+        { checked: false, label: 'Radio DJ' },
+        { checked: false, label: 'Graphics Artist' },
+        { checked: false, label: 'Media Journalist' },
+        { checked: false, label: 'Quest/Tutorial Reporter' },
+        { checked: false, label: 'Developer' },
+        { checked: false, label: 'Web Designer' }
     ];
     notLoggedIn: InfoBoxModel = {
         type: INFO_BOX_TYPE.INFO,
@@ -32,10 +32,10 @@ export class JobComponent extends Page implements OnDestroy {
     };
     data = new JobModel();
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Apply'})
+        new TitleTab({ title: 'Apply' })
     ];
 
-    constructor (
+    constructor(
         private _httpService: HttpService,
         private _notificationService: NotificationService,
         private _authService: AuthService,
@@ -48,22 +48,22 @@ export class JobComponent extends Page implements OnDestroy {
         });
     }
 
-    get isLoggedIn (): boolean {
+    get isLoggedIn(): boolean {
         return this._authService.isLoggedIn();
     }
 
-    get jobs (): Array<{ checked: boolean, label: string }> {
+    get jobs(): Array<{ checked: boolean, label: string }> {
         return this._jobs;
     }
 
-    ngOnDestroy () {
+    ngOnDestroy() {
         super.destroy();
     }
 
-    onApply (): void {
+    onApply(): void {
         this.data.job = this._jobs.filter(job => job.checked)
             .map(job => job.label).join(', ');
-        this._httpService.post('form/job', {data: this.data})
+        this._httpService.post('form/job', { data: this.data })
             .subscribe(() => {
                 this._notificationService.sendInfoNotification('Application posted!');
                 this._jobs.forEach(job => job.checked = false);

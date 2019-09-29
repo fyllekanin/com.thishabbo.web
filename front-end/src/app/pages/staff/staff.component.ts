@@ -24,22 +24,23 @@ export class StaffComponent extends Page implements OnDestroy, OnInit {
 
     blocks: Array<SideMenuBlock> = [];
 
-    constructor (
+    constructor(
         private _authService: AuthService,
         breadcrumbService: BreadcrumbService,
         elementRef: ElementRef
     ) {
         super(elementRef);
-        breadcrumbService.breadcrumb = new Breadcrumb({current: 'StaffCP'});
+        breadcrumbService.breadcrumb = new Breadcrumb({ current: 'StaffCP' });
     }
 
-    ngOnInit (): void {
+    ngOnInit(): void {
         this.blocks = [
             new SideMenuBlock({
                 title: 'All Staff',
                 items: [
-                    new SideMenuItem({title: 'Dashboard', link: '/staff/dashboard'}),
-                    new SideMenuItem({title: 'Request THC', link: '/staff/request-thc'})
+                    new SideMenuItem({ title: 'Dashboard', link: '/staff/dashboard' }),
+                    new SideMenuItem({ title: 'Request THC', link: '/staff/request-thc' }),
+                    new SideMenuItem({ title: 'THC Requests Log', link: '/staff/thc-requests-log/page/1' })
                 ]
             }),
             new SideMenuBlock({
@@ -135,7 +136,7 @@ export class StaffComponent extends Page implements OnDestroy, OnInit {
         ];
     }
 
-    ngOnDestroy (): void {
+    ngOnDestroy(): void {
         super.destroy();
     }
 }

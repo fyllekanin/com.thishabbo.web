@@ -124,6 +124,7 @@ class StaffSpotlightController extends Controller {
             'media' => $information->media,
             'quests' => $information->quests,
             'graphics' => $information->graphics,
+            'recruitment' => $information->recruitment,
             'audioProducer' => $information->audioProducer,
             'communityEvents' => $information->communityEvents,
             'builder' => $information->builder

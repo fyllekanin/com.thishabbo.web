@@ -5,6 +5,8 @@ import { RequestThcComponent } from './request-thc/request-thc.component';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 import { DashboardService } from './dashboard/dashboard.service';
 import { PING_TYPES } from 'core/services/continues-information/continues-information.model';
+import { ThcRequestsLogComponent } from './thc-requests-log/thc-requests-log.component';
+import { ThcRequestsResolver } from './thc-requests-log/thc-requests-log.resolver';
 
 export const staffRoutes: Routes = [
     {
@@ -30,6 +32,13 @@ export const staffRoutes: Routes = [
                 },
                 data: {
                     type: PING_TYPES.STAFF
+                }
+            },
+            {
+                path: 'thc-requests-log/page/:page',
+                component: ThcRequestsLogComponent,
+                resolve: {
+                    data: ThcRequestsResolver
                 }
             },
             {

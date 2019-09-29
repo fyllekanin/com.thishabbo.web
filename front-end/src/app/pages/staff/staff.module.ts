@@ -13,6 +13,9 @@ import { SideMenuModule } from 'shared/app-views/side-menu/side-menu.module';
 import { TableModule } from 'shared/components/table/table.module';
 import { StatsBoxesModule } from 'shared/app-views/stats-boxes/stats-boxes.module';
 import { DashboardService } from './dashboard/dashboard.service';
+import { ThcRequestsLogComponent } from './thc-requests-log/thc-requests-log.component';
+import { ThcRequestsResolver } from './thc-requests-log/thc-requests-log.resolver';
+import { PaginationModule } from 'shared/app-views/pagination/pagination.module';
 
 @NgModule({
     imports: [
@@ -24,15 +27,18 @@ import { DashboardService } from './dashboard/dashboard.service';
         CommonModule,
         SideMenuModule,
         TableModule,
-        StatsBoxesModule
+        StatsBoxesModule,
+        PaginationModule
     ],
     declarations: [
         StaffComponent,
         DashboardComponent,
-        RequestThcComponent
+        RequestThcComponent,
+        ThcRequestsLogComponent
     ],
     providers: [
-        DashboardService
+        DashboardService,
+        ThcRequestsResolver
     ],
     exports: [
         RouterModule

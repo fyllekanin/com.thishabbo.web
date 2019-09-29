@@ -12,6 +12,8 @@ use App\Models\Logger\Action;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
+use App\EloquentModels\Log\LogSitecp;
+use App\Helpers\DataHelper;
 
 class StaffController extends Controller {
 
@@ -35,6 +37,40 @@ class StaffController extends Controller {
                 'events' => $this->getNextEventsSlot($user),
                 'radio' => $this->getNextRadioSlot($user)
             ]
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param Number $page
+     */
+    public function getThcRequestsLog(Request $request, $page) {
+        $user = $request->get('auth');
+
+        $logSql = RequestThc::where('requesterId', $user->userId)
+        ->withoutGlobalScope('nonHardDeleted');
+        $total = $logSql->count();
+        $items = $logSql->orderBy('createdAt', 'DESC')
+            ->skip(DataHelper::getOffset($page))
+            ->take($this->perPage)
+            ->get()
+            ->map(function($item) {
+                $log = LogSitecp::where('contentId', $item->requestThcId)->first();
+
+                return [
+                    'nickname' => $item->receiver->nickname,
+                    'habbo' => $item->receiver->habbo,
+                    'amount' => $item->amount,
+                    'isPending' => !$item->isDeleted,
+                    'isApproved' => Value::objectJsonProperty($log, 'wasApproved', false),
+                    'updatedAt' => $item->updatedAt->timestamp
+                ];
+            });
+
+        return response()->json([
+            'total' => $total,
+            'page' => $page,
+            'items' => $items
         ]);
     }
 

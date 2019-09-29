@@ -36,13 +36,15 @@ export class StaffOfTheWeekModel {
     @primitive()
     graphics: string;
     @primitive()
+    recruitment: string;
+    @primitive()
     audioProducer: string;
     @primitive()
     communityEvents: string;
     @primitive()
     builder: string;
 
-    constructor (source?) {
+    constructor(source?) {
         ClassHelper.assign(this, source);
     }
 }
