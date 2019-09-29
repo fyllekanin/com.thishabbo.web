@@ -1,0 +1,1 @@
+{"topic":"Try to speed up auto save","type":"Refactor / Improvement","body":"Set a timeout on the autosave, this was done at every click and doing calculations. Add a 200ms timeout incase the user continues"}

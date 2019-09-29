@@ -4,14 +4,18 @@ import { AutoSave, ForumAutoSave } from '../../pages/forum/forum.model';
 export class AutoSaveHelper {
 
     static readonly AUTO_SAVE_PREFIX = 'auto-save-';
+    private static SAVE_TIMEOUT;
 
     static exists(type: AutoSave, contentId: number): boolean {
         return Boolean(localStorage.getItem(AutoSaveHelper.buildAutoSaveKey(type, contentId)));
     }
 
     static save(autoSave: ForumAutoSave): void {
-        autoSave.expiresAt = (new Date().getTime() / 1000) + 3600;
-        localStorage.setItem(AutoSaveHelper.buildAutoSaveKey(autoSave.type, autoSave.contentId), JSON.stringify(autoSave));
+        clearTimeout(AutoSaveHelper.SAVE_TIMEOUT);
+        AutoSaveHelper.SAVE_TIMEOUT = setTimeout(() => {
+            autoSave.expiresAt = (new Date().getTime() / 1000) + 3600;
+            localStorage.setItem(AutoSaveHelper.buildAutoSaveKey(autoSave.type, autoSave.contentId), JSON.stringify(autoSave));
+        }, 200);
     }
 
     static get(type: AutoSave, contentId: number): ForumAutoSave {
