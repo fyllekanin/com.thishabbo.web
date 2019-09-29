@@ -2,9 +2,8 @@ import { AutoSave, ForumAutoSave } from '../../pages/forum/forum.model';
 
 
 export class AutoSaveHelper {
-
-    static readonly AUTO_SAVE_PREFIX = 'auto-save-';
     private static SAVE_TIMEOUT;
+    static readonly AUTO_SAVE_PREFIX = 'auto-save-';
 
     static exists(type: AutoSave, contentId: number): boolean {
         return Boolean(localStorage.getItem(AutoSaveHelper.buildAutoSaveKey(type, contentId)));
