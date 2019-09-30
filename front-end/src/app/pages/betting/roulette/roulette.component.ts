@@ -23,15 +23,15 @@ export class RouletteComponent extends Page implements OnDestroy {
     private _data: RouletteModel = new RouletteModel();
     private _numbers: Array<RouletteNumber> = [];
 
-    @ViewChild('wrapper', {static: true}) wrapper;
-    @ViewChild('wheel', {static: true}) wheel;
+    @ViewChild('wrapper', { static: true }) wrapper;
+    @ViewChild('wheel', { static: true }) wheel;
     amount: number;
     betBorder = TitleTopBorder.BLUE;
     rouletteBorder = TitleTopBorder.RED;
     isSpinning = false;
     stats: Array<StatsBoxModel> = [];
 
-    constructor (
+    constructor(
         private _notificationService: NotificationService,
         private _httpService: HttpService,
         elementRef: ElementRef,
@@ -49,11 +49,11 @@ export class RouletteComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy (): void {
+    ngOnDestroy(): void {
         super.destroy();
     }
 
-    spin (color: string): void {
+    spin(color: string): void {
         if (this.isSpinning) {
             this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Oops!',
@@ -63,15 +63,13 @@ export class RouletteComponent extends Page implements OnDestroy {
             return;
         }
         this.isSpinning = true;
-        this._httpService.post('betting/roulette', {color: color, amount: this.amount})
+        this._httpService.post('betting/roulette', { color: color, amount: this.amount })
             .subscribe(res => {
-                this.setMiddle(50);
-
                 const item = new Roulette(res);
                 this._numbers = item.numbers;
-                this.setMiddle(item.boxNumber);
 
                 setTimeout(() => {
+                    this.setMiddle(item.boxNumber);
                     let notification;
                     if (item.isWin) {
                         this._data.stats.credits += item.profit;
@@ -90,28 +88,30 @@ export class RouletteComponent extends Page implements OnDestroy {
                     }
                     this.isSpinning = false;
                     this.updateStats();
-                    this._notificationService.sendNotification(notification);
-                }, 2000);
+                    setTimeout(() => {
+                        this._notificationService.sendNotification(notification);
+                    }, 1500);
+                }, 200);
             }, err => {
                 this.isSpinning = false;
                 this._notificationService.failureNotification(err);
             });
     }
 
-    get numbers (): Array<RouletteNumber> {
+    get numbers(): Array<RouletteNumber> {
         return this._numbers;
     }
 
-    private onData (data: { data: RouletteModel }): void {
+    private onData(data: { data: RouletteModel }): void {
         this._data = data.data;
         this.updateStats();
     }
 
-    private updateStats (): void {
+    private updateStats(): void {
         this.stats = getBettingStats(this._data.stats);
     }
 
-    private getInitial (): Array<RouletteNumber> {
+    private getInitial(): Array<RouletteNumber> {
         const numbers = [];
         for (let i = 0; i < 400; i++) {
             if (i % 6 === 0) {
@@ -130,7 +130,7 @@ export class RouletteComponent extends Page implements OnDestroy {
         return numbers;
     }
 
-    private setMiddle (number: number): void {
+    private setMiddle(number: number): void {
         const add = (this.wheel.nativeElement.offsetWidth / 2 - 25);
         this.wrapper.nativeElement.style.marginLeft = `-${number * 50 - add}px`;
     }
