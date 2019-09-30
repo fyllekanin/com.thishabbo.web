@@ -17,8 +17,9 @@ export class UserProfileDirective {
     @HostBinding('style.width') width = '70px';
     @HostBinding('style.-webkit-box-shadow') webkitBoxShadow;
     @HostBinding('style.float') floatStyle;
+    @HostBinding('style.martin') margin = '0 auto';
 
-    constructor (
+    constructor(
         protected _elementRef: ElementRef,
         sanitizer: DomSanitizer
     ) {
@@ -26,23 +27,23 @@ export class UserProfileDirective {
     }
 
     @Input()
-    set info (info: IUserProfile) {
+    set info(info: IUserProfile) {
         this._info = info || {};
         this.setImage();
     }
 
     @Input()
-    set float (float: 'right' | 'left') {
+    set float(float: 'right' | 'left') {
         this.floatStyle = float;
     }
 
     @Input()
-    set isSmall (value: boolean) {
+    set isSmall(value: boolean) {
         this.height = value ? '50px' : '70px';
         this.width = value ? '50px' : '70px';
     }
 
-    private setImage (): void {
+    private setImage(): void {
         this._elementRef.nativeElement.style.backgroundImage =
             `url(/rest/resources/images/users/${this._info.userId}.gif?updatedAt=${this._info.avatarUpdatedAt})`;
     }
