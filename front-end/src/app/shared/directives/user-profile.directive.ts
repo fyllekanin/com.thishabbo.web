@@ -17,7 +17,7 @@ export class UserProfileDirective {
     @HostBinding('style.width') width = '70px';
     @HostBinding('style.-webkit-box-shadow') webkitBoxShadow;
     @HostBinding('style.float') floatStyle;
-    @HostBinding('style.martin') margin = '0 auto';
+    @HostBinding('style.margin') margin = '0 auto';
 
     constructor(
         protected _elementRef: ElementRef,
