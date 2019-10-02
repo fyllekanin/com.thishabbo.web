@@ -3,7 +3,7 @@ import { InnerDialogComponent } from 'shared/app-views/dialog/dialog.model';
 import { MoveThreadCategory } from './move-thread.model';
 import { HttpService } from 'core/services/http/http.service';
 import { ArrayHelper } from 'shared/helpers/array.helper';
-import { SelectItem } from "shared/components/form/select/select.model";
+import { SelectItem } from 'shared/components/form/select/select.model';
 
 @Component({
     selector: 'app-forum-thread-move',
