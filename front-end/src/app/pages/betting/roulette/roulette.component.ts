@@ -71,24 +71,24 @@ export class RouletteComponent extends Page implements OnDestroy {
                 setTimeout(() => {
                     this.setMiddle(item.boxNumber);
                     let notification;
-                    if (item.isWin) {
-                        this._data.stats.credits += item.profit;
-                        notification = new NotificationMessage({
-                            title: 'Win!',
-                            message: `You won ${item.profit} credits`,
-                            type: NotificationType.SUCCESS
-                        });
-                    } else {
-                        this._data.stats.credits -= this.amount;
-                        notification = new NotificationMessage({
-                            title: 'Lost!',
-                            message: `You lost ${this.amount} credits`,
-                            type: NotificationType.ERROR
-                        });
-                    }
-                    this.isSpinning = false;
-                    this.updateStats();
                     setTimeout(() => {
+                        if (item.isWin) {
+                            this._data.stats.credits += item.profit;
+                            notification = new NotificationMessage({
+                                title: 'Win!',
+                                message: `You won ${item.profit} credits`,
+                                type: NotificationType.SUCCESS
+                            });
+                        } else {
+                            this._data.stats.credits -= this.amount;
+                            notification = new NotificationMessage({
+                                title: 'Lost!',
+                                message: `You lost ${this.amount} credits`,
+                                type: NotificationType.ERROR
+                            });
+                        }
+                        this.isSpinning = false;
+                        this.updateStats();
                         this._notificationService.sendNotification(notification);
                     }, 1500);
                 }, 200);
