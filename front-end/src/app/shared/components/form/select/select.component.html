@@ -1,4 +1,5 @@
 <div contenteditable="true" (focus)="onFocus()" class="input"
+     [attr.data-placeholder]="placeholderText ? placeholderText : ''"
      [textContent]="textContent"
      (input)="filter = $event.target.textContent; checkIfEmpty();">
 </div>

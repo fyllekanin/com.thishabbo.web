@@ -1,6 +1,2 @@
-<select [(ngModel)]="categoryId">
-    <option disabled [value]="-1">Select...</option>
-    <option *ngFor="let item of items" [value]="item.categoryId">
-        {{item.title}}
-    </option>
-</select>
+<app-form-select [items]="items"
+                 (valueChange)="categoryId = $event.value"></app-form-select>

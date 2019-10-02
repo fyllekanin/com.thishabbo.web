@@ -44,6 +44,7 @@ import { UserPostBitModule } from 'shared/components/user-post-bit/user-post-bit
 import { InfoBoxModule } from 'shared/app-views/info-box/info-box.module';
 import { MergeThreadComponent } from './thread/merge-thread/merge-thread.component';
 import { ThreadBansComponent } from './thread/thread-bans/thread-bans.component';
+import { SelectModule } from "shared/components/form/select/select.module";
 
 @NgModule({
     imports: [
@@ -65,7 +66,8 @@ import { ThreadBansComponent } from './thread/thread-bans/thread-bans.component'
         UserLinkModule,
         StatsBoxesModule,
         UserPostBitModule,
-        InfoBoxModule
+        InfoBoxModule,
+        SelectModule
     ],
     declarations: [
         ForumHomeComponent,

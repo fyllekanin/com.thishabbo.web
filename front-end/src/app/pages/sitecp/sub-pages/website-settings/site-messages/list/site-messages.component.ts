@@ -1,6 +1,13 @@
-import { Component, ElementRef, OnDestroy } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    OnDestroy
+} from '@angular/core';
 import { Page } from 'shared/page/page.model';
-import { ActivatedRoute, Router } from '@angular/router';
+import {
+    ActivatedRoute,
+    Router
+} from '@angular/router';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import {
@@ -8,7 +15,10 @@ import {
     SITECP_BREADCRUMB_ITEM,
     WEBSITE_SETTINGS_BREADCRUMB_ITEM
 } from '../../../../sitecp.constants';
-import { SiteMessageModel, SiteMessagesActions } from '../site-message.model';
+import {
+    SiteMessageModel,
+    SiteMessagesActions
+} from '../site-message.model';
 import {
     Action,
     TableAction,
@@ -33,11 +43,11 @@ export class SiteMessagesComponent extends Page implements OnDestroy {
 
     tableConfig: TableConfig;
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Create New', link: '/sitecp/website-settings/site-messages/new'}),
-        new TitleTab({title: 'Back', link: '/sitecp/website-settings'})
+        new TitleTab({ title: 'Create New', link: '/sitecp/website-settings/site-messages/new' }),
+        new TitleTab({ title: 'Back', link: '/sitecp/website-settings' })
     ];
 
-    constructor (
+    constructor(
         private _router: Router,
         private _httpService: HttpService,
         private _dialogService: DialogService,
@@ -57,12 +67,12 @@ export class SiteMessagesComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy (): void {
+    ngOnDestroy(): void {
         super.destroy();
     }
 
-    onAction (action: Action): void {
-        switch (action.value) {
+    onAction(action: Action): void {
+        switch(action.value) {
             case SiteMessagesActions.EDIT:
                 this._router.navigateByUrl(`/sitecp/website-settings/site-messages/${action.rowId}`);
                 break;
@@ -74,6 +84,7 @@ export class SiteMessagesComponent extends Page implements OnDestroy {
                     callback: () => {
                         this._httpService.delete(`sitecp/content/site-messages/${action.rowId}`)
                             .subscribe(() => {
+                                this._dialogService.closeDialog();
                                 this._data = this._data.filter(item => item.siteMessageId === siteMessage.siteMessageId);
                                 this.createOrUpdateTable();
                                 this._notificationService.sendNotification(new NotificationMessage({
@@ -87,13 +98,13 @@ export class SiteMessagesComponent extends Page implements OnDestroy {
         }
     }
 
-    private onData (data: { data: Array<SiteMessageModel> }): void {
+    private onData(data: { data: Array<SiteMessageModel> }): void {
         this._data = data.data;
         this.createOrUpdateTable();
     }
 
-    private createOrUpdateTable (): void {
-        if (this.tableConfig) {
+    private createOrUpdateTable(): void {
+        if(this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
         }
@@ -104,27 +115,27 @@ export class SiteMessagesComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableRows (): Array<TableRow> {
+    private getTableRows(): Array<TableRow> {
         const actions = [
-            new TableAction({title: 'Edit', value: SiteMessagesActions.EDIT}),
-            new TableAction({title: 'Delete', value: SiteMessagesActions.DELETE})
+            new TableAction({ title: 'Edit', value: SiteMessagesActions.EDIT }),
+            new TableAction({ title: 'Delete', value: SiteMessagesActions.DELETE })
         ];
         return this._data.map(item => new TableRow({
             id: item.siteMessageId.toString(),
             cells: [
-                new TableCell({title: item.title}),
-                new TableCell({title: item.isActive ? 'Yes' : 'No'}),
-                new TableCell({title: TimeHelper.getLongDateWithTime(item.createdAt)})
+                new TableCell({ title: item.title }),
+                new TableCell({ title: item.isActive ? 'Yes' : 'No' }),
+                new TableCell({ title: TimeHelper.getLongDateWithTime(item.createdAt) })
             ],
             actions: actions
         }));
     }
 
-    private getTableHeaders (): Array<TableHeader> {
+    private getTableHeaders(): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Title'}),
-            new TableHeader({title: 'Is Active'}),
-            new TableHeader({title: 'Created At'})
+            new TableHeader({ title: 'Title' }),
+            new TableHeader({ title: 'Is Active' }),
+            new TableHeader({ title: 'Created At' })
         ];
     }
 }

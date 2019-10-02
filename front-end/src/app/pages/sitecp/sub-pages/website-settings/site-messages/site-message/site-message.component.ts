@@ -1,6 +1,14 @@
-import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    OnDestroy,
+    ViewChild
+} from '@angular/core';
 import { Page } from 'shared/page/page.model';
-import { ActivatedRoute, Router } from '@angular/router';
+import {
+    ActivatedRoute,
+    Router
+} from '@angular/router';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import {
@@ -8,7 +16,10 @@ import {
     SITECP_BREADCRUMB_ITEM,
     WEBSITE_SETTINGS_BREADCRUMB_ITEM
 } from '../../../../sitecp.constants';
-import { SiteMessageModel, SiteMessagesActions } from '../site-message.model';
+import {
+    SiteMessageModel,
+    SiteMessagesActions
+} from '../site-message.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { HttpService } from 'core/services/http/http.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
@@ -23,10 +34,10 @@ import { EditorComponent } from 'shared/components/editor/editor.component';
 export class SiteMessageComponent extends Page implements OnDestroy {
     private _data: SiteMessageModel;
 
-    @ViewChild('editor', {static: true}) editor: EditorComponent;
+    @ViewChild('editor', { static: true }) editor: EditorComponent;
     tabs: Array<TitleTab> = [];
 
-    constructor (
+    constructor(
         private _router: Router,
         private _httpService: HttpService,
         private _dialogService: DialogService,
@@ -47,12 +58,12 @@ export class SiteMessageComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy (): void {
+    ngOnDestroy(): void {
         super.destroy();
     }
 
-    onTabClick (value: number): void {
-        switch (value) {
+    onTabClick(value: number): void {
+        switch(value) {
             case SiteMessagesActions.SAVE:
                 this.onSave();
                 break;
@@ -62,10 +73,10 @@ export class SiteMessageComponent extends Page implements OnDestroy {
         }
     }
 
-    onSave (): void {
+    onSave(): void {
         this._data.content = this.editor.getEditorValue();
-        if (this._data.createdAt) {
-            this._httpService.put(`sitecp/content/site-messages/${this._data.siteMessageId}`, {data: this._data})
+        if(this._data.createdAt) {
+            this._httpService.put(`sitecp/content/site-messages/${this._data.siteMessageId}`, { data: this._data })
                 .subscribe(() => {
                     this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
@@ -73,7 +84,7 @@ export class SiteMessageComponent extends Page implements OnDestroy {
                     }));
                 }, this._notificationService.failureNotification.bind(this._notificationService));
         } else {
-            this._httpService.post(`sitecp/content/site-messages`, {data: this._data})
+            this._httpService.post(`sitecp/content/site-messages`, { data: this._data })
                 .subscribe(() => {
                     this._data.createdAt = new Date().getTime() / 1000;
                     this.setTabs();
@@ -85,36 +96,37 @@ export class SiteMessageComponent extends Page implements OnDestroy {
         }
     }
 
-    get model (): SiteMessageModel {
+    get model(): SiteMessageModel {
         return this._data;
     }
 
-    get title (): string {
+    get title(): string {
         return this._data && this._data.createdAt ? `Editing: ${this._data.title}` : `Creating: ${this._data.title}`;
     }
 
-    private onData (data: { data: SiteMessageModel }): void {
+    private onData(data: { data: SiteMessageModel }): void {
         this._data = data.data;
         this.setTabs();
     }
 
-    private setTabs (): void {
+    private setTabs(): void {
         const tabs = [
-            {title: 'Save', value: SiteMessagesActions.SAVE, condition: true},
-            {title: 'Back', link: '/sitecp/website-settings/site-messages', condition: true},
-            {title: 'Delete', value: SiteMessagesActions.DELETE, condition: this._data.createdAt}
+            { title: 'Save', value: SiteMessagesActions.SAVE, condition: true },
+            { title: 'Back', link: '/sitecp/website-settings/site-messages', condition: true },
+            { title: 'Delete', value: SiteMessagesActions.DELETE, condition: this._data.createdAt }
         ];
 
         this.tabs = tabs.filter(item => item.condition).map(item => new TitleTab(item));
     }
 
-    private onDelete (): void {
+    private onDelete(): void {
         this._dialogService.confirm({
             title: 'Site Message',
             content: 'Are you sure you want to delete this site message?',
             callback: () => {
                 this._httpService.delete(`sitecp/content/site-messages/${this._data.siteMessageId}`)
                     .subscribe(() => {
+                        this._dialogService.closeDialog();
                         this._notificationService.sendNotification(new NotificationMessage({
                             title: 'Success',
                             message: 'Site Message has been deleted!'
