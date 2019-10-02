@@ -18,7 +18,9 @@
                 <app-user-link [user]="thread.user"></app-user-link>
             </div>
         </div>
-        <img class="mobile-hidden" appUserProfile [info]="lastPostInfo"/>
+        <div>
+            <img class="mobile-hidden" appUserProfile [info]="lastPostInfo"/>
+        </div>
         <div class="cell small-4 medium-2">
             <div class="latest-post" (click)="goToLastPost()" [ngClass]="thread.isSticky ? 'red-text' : ''">Latest
                 Post
