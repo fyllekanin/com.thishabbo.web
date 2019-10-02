@@ -118,7 +118,7 @@ export class SiteMessageComponent extends Page implements OnDestroy {
 
         this.tabs = tabs.filter (item => item.condition).map (item => new TitleTab (item));
     }
-    
+
     private onDelete (): void {
         this._dialogService.confirm ({
             title: 'Site Message',

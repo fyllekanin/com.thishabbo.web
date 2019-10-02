@@ -66,7 +66,7 @@ export class SelectComponent {
             this.isOpen = true;
         }
     }
-    
+
     onValueChanged (item: SelectItem) {
         this._value = item;
         this.updatePlaceHolderText ();
