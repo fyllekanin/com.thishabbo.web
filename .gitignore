@@ -7,3 +7,5 @@ target/*
 rest/composer.lock
 **/debug.log
 front-end/debug.log
+front-end/proxy.conf.json
+rest/constants.php

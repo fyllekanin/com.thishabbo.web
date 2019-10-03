@@ -14,7 +14,7 @@ define('CONST_DB_HOST', '127.0.0.1');
 define('CONST_DB_PORT', '3306');
 define('CONST_DB_DATABASE', 'thsite');
 define('CONST_DB_USERNAME', 'root');
-define('CONST_DB_PASSWORD', 'jenkins');
+define('CONST_DB_PASSWORD', '');
 
 define('CONST_CACHE_DRIVER', 'array');
 define('CONST_QUEUE_CONNECTION', 'database');
