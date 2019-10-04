@@ -7,22 +7,19 @@ import { ContinuesInformationService } from 'core/services/continues-information
 import { RouterStateService } from 'core/services/router/router-state.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
-import { ThemeHelper } from 'shared/helpers/theme.helper';
 
 @Component({
     selector: 'app-top-bar',
     templateUrl: 'top-bar.component.html',
-    styleUrls: ['top-bar.component.css']
+    styleUrls: [ 'top-bar.component.css' ]
 })
-
 export class TopBarComponent {
-    private _notifications: Array<NotificationModel<any>> = [];
-    private _messages: Array<NotificationModel<any>> = [];
-
     loginName = '';
     password = '';
+    notifications: Array<NotificationModel<any>> = [];
+    messages: Array<NotificationModel<any>> = [];
 
-    constructor(
+    constructor (
         private _authService: AuthService,
         private _router: Router,
         private _httpService: HttpService,
@@ -33,7 +30,7 @@ export class TopBarComponent {
         this._continuesInformationService.onNotifications.subscribe(this.onNotifications.bind(this));
     }
 
-    login(): void {
+    login (): void {
         this._authService.login(this.loginName, this.password, true, () => {
             this._router.navigateByUrl('/auth/login');
         });
@@ -41,24 +38,24 @@ export class TopBarComponent {
         this.password = '';
     }
 
-    notificationClick(notificationId: number): void {
+    notificationClick (notificationId: number): void {
         this._httpService.put(`puller/notifications/read/${notificationId}`)
             .subscribe(() => {
                 this._continuesInformationService.removeNotification(notificationId);
-                this._notifications = this._notifications.filter(this.isNotification)
+                this.notifications = this.notifications.filter(this.isNotification)
                     .filter(notification => notification.notificationId !== notificationId);
-                this._messages = this._messages.filter(this.isMessage)
+                this.messages = this.messages.filter(this.isMessage)
                     .filter(notification => notification.notificationId !== notificationId);
-                this._routerStateService.updateNotificationAmount(this._notifications.length);
+                this._routerStateService.updateNotificationAmount(this.notifications.length);
             });
     }
 
-    readAllNotifications(): void {
+    readAllNotifications (): void {
         this._httpService.put('puller/notifications/read/all/notifications')
             .subscribe(() => {
-                this._continuesInformationService.removeNotificationIds(this._notifications
+                this._continuesInformationService.removeNotificationIds(this.notifications
                     .map(notification => notification.notificationId));
-                this._notifications = [];
+                this.notifications = [];
                 this.updateTitle();
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
@@ -67,12 +64,12 @@ export class TopBarComponent {
             });
     }
 
-    readAllMessages(): void {
+    readAllMessages (): void {
         this._httpService.put('puller/notifications/read/all/messages')
             .subscribe(() => {
-                this._continuesInformationService.removeNotificationIds(this._messages
+                this._continuesInformationService.removeNotificationIds(this.messages
                     .map(notification => notification.notificationId));
-                this._messages = [];
+                this.messages = [];
                 this.updateTitle();
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
@@ -81,37 +78,25 @@ export class TopBarComponent {
             });
     }
 
-    get loggedIn(): boolean {
+    get loggedIn (): boolean {
         return this._authService.isLoggedIn();
     }
 
-    get notifications(): Array<NotificationModel<any>> {
-        return this._notifications;
-    }
-
-    get messages(): Array<NotificationModel<any>> {
-        return this._messages;
-    }
-
-    get isMobile(): boolean {
-        return ThemeHelper.isMobile();
-    }
-
-    private onNotifications(notifications: Array<NotificationModel<any>>): void {
-        this._notifications = notifications.filter(this.isNotification);
-        this._messages = notifications.filter(this.isMessage);
+    private onNotifications (notifications: Array<NotificationModel<any>>): void {
+        this.notifications = notifications.filter(this.isNotification);
+        this.messages = notifications.filter(this.isMessage);
         this.updateTitle();
     }
 
-    private updateTitle(): void {
-        this._routerStateService.updateNotificationAmount(this._notifications.length + this._messages.length);
+    private updateTitle (): void {
+        this._routerStateService.updateNotificationAmount(this.notifications.length + this.messages.length);
     }
 
-    private isMessage(notification: NotificationModel<any>): boolean {
+    private isMessage (notification: NotificationModel<any>): boolean {
         return notification.type === NotificationTypes.VISITOR_MESSAGE;
     }
 
-    private isNotification(notification: NotificationModel<any>): boolean {
+    private isNotification (notification: NotificationModel<any>): boolean {
         return [
             NotificationTypes.FOLLOWED,
             NotificationTypes.BADGE,

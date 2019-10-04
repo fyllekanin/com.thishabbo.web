@@ -7,11 +7,8 @@
                 <input name="title" [(ngModel)]="model.title" type="text">
             </div>
             <div class="cell small-6">
-                <label>Is Active</label>
-                <select [(ngModel)]="model.isActive">
-                    <option [value]="0">No</option>
-                    <option [value]="1">Yes</option>
-                </select>
+                <label>Expires At</label>
+                <input type="date" [min]="minDate" [(ngModel)]="expiresAt"/>
             </div>
             <div class="cell small-12">
                 <label>Type</label>

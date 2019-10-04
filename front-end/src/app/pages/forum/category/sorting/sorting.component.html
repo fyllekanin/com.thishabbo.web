@@ -5,13 +5,13 @@
             <div class="cell small-4">
                 <label>Sorted By</label>
                 <select [(ngModel)]="options.sortedBy">
-                    <option *ngFor="let item of sortedByOptions" [value]="item">{{prettifyString(item)}}</option>
+                    <option *ngFor="let item of sortedByOptions" [value]="item.value">{{item.label}}</option>
                 </select>
             </div>
             <div class="cell small-4">
                 <label>Sort Order</label>
                 <select [(ngModel)]="options.sortOrder">
-                    <option *ngFor="let item of sortOrderOptions" [value]="item">{{prettifyString(item)}}</option>
+                    <option *ngFor="let item of sortOrderOptions" [value]="item.value">{{item.label}}</option>
                 </select>
             </div>
             <div class="cell small-4">

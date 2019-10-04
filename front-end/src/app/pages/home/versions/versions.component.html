@@ -5,12 +5,11 @@
                 <app-title [title]="version.version"></app-title>
                 <app-content>
                     <div *ngFor="let change of version.changes; let last = last">
-                        <div class="quote">
-                            <strong [ngClass]="change.class">{{change.type}}</strong> <br/>
-                            <u>{{change.topic}}</u> <br/> <br/>
-                            <pre>{{change.body}}</pre>
-                        </div>
-                        <hr *ngIf="!last"/>
+
+                        <strong [ngClass]="change.class">{{change.type}}</strong> - {{change.topic}} <br/>
+                        <pre>{{change.body}}</pre>
+                        <br *ngIf="!last"/>
+                        <br *ngIf="!last"/>
                     </div>
                 </app-content>
             </div>

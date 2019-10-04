@@ -7,8 +7,6 @@ export class SiteMessageModel {
     title: string;
     @primitiveOf(Number)
     type = 1;
-    @primitiveOf(Number)
-    isActive = 1;
     @primitive()
     content: string;
     @primitive()
@@ -18,8 +16,12 @@ export class SiteMessageModel {
     @primitive()
     updatedAt: number;
 
-    constructor(source?: Partial<SiteMessageModel>) {
+    constructor (source?: Partial<SiteMessageModel>) {
         ClassHelper.assign(this, source);
+    }
+
+    isExpired (): boolean {
+        return (new Date().getTime() / 1000) > this.expiresAt;
     }
 }
 

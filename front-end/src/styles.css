@@ -346,3 +346,21 @@ table td {
         word-wrap: break-word;
     }
 }
+
+.for-mobile {
+    display: none;
+}
+
+.for-desktop {
+    display: block;
+}
+
+@media screen and (max-width: 600px) {
+    .for-mobile {
+        display: block;
+    }
+
+    .for-desktop {
+        display: none;
+    }
+}

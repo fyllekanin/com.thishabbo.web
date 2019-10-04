@@ -1,4 +1,4 @@
-import { arrayOf, ClassHelper, objectOf, primitive, primitiveOf } from 'shared/helpers/class.helper';
+import {arrayOf, ClassHelper, objectOf, primitive, primitiveOf, time} from 'shared/helpers/class.helper';
 import { UserHelper } from 'shared/helpers/user.helper';
 import { TabModel } from 'shared/app-views/header/tabs/tabs.model';
 
@@ -67,15 +67,24 @@ export class SlimUser {
     posts: number;
     @primitive()
     likes: number;
-    @primitive()
+    @time()
     createdAt: number;
+
+    avatarUrl: string;
+    coverUrl: string;
+    iconUrl: string;
+    effectUrl: string;
+    nameStyling: string;
 
     constructor (source?: Partial<SlimUser>) {
         ClassHelper.assign(this, source);
-    }
 
-    get nameStyling (): string {
-        return UserHelper.getNameColor(this.nameColor);
+        this.avatarUrl = `url('/rest/resources/images/users/${this.userId}.gif?${this.avatarUpdatedAt}')`;
+        this.coverUrl = `url('/rest/resources/images/covers/${this.userId}.gif?${this.avatarUpdatedAt}')`;
+        this.iconUrl = this.iconId ? `/rest/resources/images/shop/${this.iconId}.gif` : null;
+        this.iconPosition = this.iconPosition || 'left';
+        this.effectUrl = this.effectId ? `url(/rest/resources/images/shop/${this.effectId}.gif)` : '';
+        this.nameStyling = UserHelper.getNameColor(this.nameColor);
     }
 }
 

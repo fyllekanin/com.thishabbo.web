@@ -19,7 +19,7 @@
                 </app-content>
             </div>
 
-            <div *ngIf="haveForumStats && !isForumStatsHidden">
+            <div *ngIf="forumStats && !isForumStatsHidden">
                 <app-title [title]="'Forum Stats'" [top]="latestPostersTop" [tabs]="statTabs"
                            (onTabClick)="onStatsTabClick($event)"></app-title>
                 <app-content>
@@ -27,13 +27,14 @@
                         <div class="grid-x grid-margin-x">
                             <div class="cell small-3">
                                 <label>Top Posters</label>
-                                <div *ngIf="!topPosters">
+                                <div *ngIf="!forumStats.topPosters">
                                     Loading...
                                 </div>
-                                <div *ngIf="topPosters && topPosters.length === 0">
+                                <div *ngIf="forumStats.topPosters && forumStats.topPosters.length === 0">
                                     No top posters as of now...
                                 </div>
-                                <div class="gray-content-wrapper" *ngFor="let topPoster of topPosters; let i = index;">
+                                <div class="gray-content-wrapper"
+                                     *ngFor="let topPoster of forumStats.topPosters; let i = index;">
                                     {{i + 1}}.
                                     <app-user-link [user]="topPoster.user"></app-user-link>
 
@@ -42,14 +43,14 @@
                             </div>
                             <div class="cell small-3">
                                 <label>Top Posters Today</label>
-                                <div *ngIf="!topPostersToday">
+                                <div *ngIf="!forumStats.topPostersToday">
                                     Loading...
                                 </div>
-                                <div *ngIf="topPostersToday && topPostersToday.length === 0">
+                                <div *ngIf="forumStats.topPostersToday && forumStats.topPostersToday.length === 0">
                                     No top posters today as of now...
                                 </div>
                                 <div class="gray-content-wrapper"
-                                     *ngFor="let topPoster of topPostersToday; let i = index;">
+                                     *ngFor="let topPoster of forumStats.topPostersToday; let i = index;">
                                     {{i + 1}}.
                                     <app-user-link [user]="topPoster.user"></app-user-link>
 
@@ -58,13 +59,13 @@
                             </div>
                             <div class="cell small-6">
                                 <label>Latest Posts</label>
-                                <div *ngIf="!latestPosts">
+                                <div *ngIf="!forumStats.latestPosts">
                                     Loading...
                                 </div>
-                                <div *ngIf="latestPosts && latestPosts.length === 0">
+                                <div *ngIf="forumStats.latestPosts && forumStats.latestPosts.length === 0">
                                     No posts as of now...
                                 </div>
-                                <div *ngFor="let latestPost of latestPosts;" class="latest-post-row">
+                                <div *ngFor="let latestPost of forumStats.latestPosts;" class="latest-post-row">
                                     <span class="data">
                                         <a class="title"
                                            [routerLink]="['/forum', 'thread', latestPost.threadId, 'page', latestPost.page]"
@@ -86,7 +87,7 @@
 
                 <app-title [title]="currentlyActiveTitle" [top]="latestPostersTop"></app-title>
                 <app-content>
-                    <span *ngFor="let user of currentlyActive; let last = last;">
+                    <span *ngFor="let user of forumStats.currentlyActive; let last = last;">
                         <app-user-link [user]="user"></app-user-link><span *ngIf="!last">, </span><span
                             *ngIf="last">.</span>
                     </span>
@@ -94,7 +95,7 @@
 
                 <app-title [title]="activeTodayTitle" [top]="latestPostersTop"></app-title>
                 <app-content>
-                    <span *ngFor="let user of activeToday; let last = last;">
+                    <span *ngFor="let user of forumStats.activeToday; let last = last;">
                         <app-user-link [user]="user"></app-user-link><span *ngIf="!last">, </span><span
                             *ngIf="last">.</span>
                     </span>

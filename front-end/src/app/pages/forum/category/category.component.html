@@ -5,7 +5,7 @@
             [paginationModel]="pagination">
     </app-pagination>
 
-    <div *ngIf="haveSubCategories">
+    <div *ngIf="categoryPage.categories.length > 0">
         <app-title
                 [title]="'Sub Categories'">
         </app-title>
@@ -28,7 +28,7 @@
         </app-content>
     </div>
 
-    <div *ngIf="!isMainParent">
+    <div *ngIf="this.categoryPage.parents.length > 0">
         <app-title
                 [title]="'Threads'"
                 [tabs]="tabs"

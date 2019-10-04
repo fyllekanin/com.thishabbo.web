@@ -1,0 +1,1 @@
+{"topic":"Performance refactor","type":"Refactor / Improvement","body":"A lot of code have been re-written to give better performance, this is one step out of many to speed up the site as it's currently pretty slow"}

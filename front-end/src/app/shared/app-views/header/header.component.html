@@ -3,7 +3,7 @@
     <div class="grid-container height-100">
         <div class="grid-x grid-margin-x">
             <div class="cell small-4">
-                <app-header-activities [activities]="activities"></app-header-activities>
+                <app-header-activities [activities]="info.activities"></app-header-activities>
             </div>
             <div class="cell small-4 align-center">
                 <a class="logo" [ngClass]="isMinimalistic ? 'minimalistic-logo' : ''" [routerLink]="[homePage]">
@@ -12,7 +12,7 @@
                 </a>
             </div>
             <div class="cell small-4">
-                <app-radio [stats]="radioStats" [eventStats]="eventStats"></app-radio>
+                <app-radio [stats]="info.radio" [eventStats]="info.events"></app-radio>
             </div>
         </div>
     </div>
@@ -24,7 +24,7 @@
     <div class="grid-container">
         <div class="grid-x grid-margin-x">
             <div class="cell medium-9 tabs">
-                <div class="inner-search-bar" *ngIf="!isMobile">
+                <div class="inner-search-bar for-desktop">
                     <app-search-bar></app-search-bar>
                 </div>
             </div>

@@ -20,7 +20,7 @@
                                 <div *ngIf="type === 'users'">
                                     <app-user-link [user]="item.user"></app-user-link>
                                     <br/>
-                                    Joined at {{timeAgo(item.user.createdAt)}}
+                                    Joined at {{item.user.createdAt}}
                                 </div>
                             </div>
                         </div>

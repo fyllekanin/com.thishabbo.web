@@ -5,12 +5,11 @@ import { StringHelper } from 'shared/helpers/string.helper';
 import { NAME_POSITIONS } from 'shared/constants/name-positions.constants';
 import { AvatarModel } from '../../../pages/user/usercp/essentials/avatar/avatar.model';
 import { UserHelper } from 'shared/helpers/user.helper';
-import { ThemeHelper } from 'shared/helpers/theme.helper';
 
 @Component({
     selector: 'app-user-post-bit',
     templateUrl: 'user-post-bit.component.html',
-    styleUrls: ['user-post-bit.component.css']
+    styleUrls: [ 'user-post-bit.component.css' ]
 })
 export class UserPostBitComponent {
     private _user = new User();
@@ -70,10 +69,6 @@ export class UserPostBitComponent {
 
     get height (): string {
         return this.avatarSize.height ? `${this.avatarSize.height}px` : 'auto';
-    }
-
-    get isMobile (): boolean {
-        return ThemeHelper.isMobile();
     }
 
     private setSocials (): void {

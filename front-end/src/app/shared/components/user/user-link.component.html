@@ -1,14 +1,14 @@
 <div class="mini-profile" [ngClass]="isMiniProfileDisabled ? 'disabled' : ''">
-    <div class="mini-cover" [style.background-image]="coverUrl">
+    <div class="mini-cover" [style.background-image]="user.coverUrl">
         <div class="mini-username">
-            <span [style]="nameStyling | safeStyle">{{ user ? user.nickname : '' }}</span>
+            <span [style]="user.nameStyling | safeStyle">{{ user ? user.nickname : '' }}</span>
         </div>
     </div>
-    <div [style.background-image]="avatarUrl" class="mini-av"></div>
+    <div [style.background-image]="user.avatarUrl" class="mini-av"></div>
     <div class="mini-info">
         <div class="grid-x">
             <div class="cell small-12 mini-links">
-                <b>Join Date:</b> {{ joinDate }}<br/>
+                <b>Join Date:</b> {{ user.createdAt }}<br/>
                 <b>Posts:</b> {{ posts }} - <b>Likes:</b> {{likes}} <br/>
                 <a [routerLink]="['/home/search/posts/page/1']"
                    [queryParams]="{ byUser: user ? user.nickname : '', order: 'desc'}">Search posts by user
@@ -17,9 +17,9 @@
         </div>
     </div>
 </div>
-<span [style.background]="effect">
-    <a class="nickname" [routerLink]="['/user/profile/', nickname]" [style]="nameStyling | safeStyle">
-        <img *ngIf="iconImage" [ngClass]="iconPosition + '-icon'" [src]="iconImage" alt="Icon"/>
-        {{nickname}}
+<span [style.background]="user.effectUrl">
+    <a class="nickname" [routerLink]="['/user/profile/', user.nickname]" [style]="user.nameStyling | safeStyle">
+        <img *ngIf="user.iconUrl" [ngClass]="user.iconPosition + '-icon'" [src]="user.iconUrl" alt="Icon"/>
+        {{user.nickname}}
     </a>
 </span>

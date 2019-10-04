@@ -6,35 +6,29 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 @Component({
     selector: 'app-forum-category-sorting',
     templateUrl: 'sorting.component.html',
-    styleUrls: ['sorting.component.css']
+    styleUrls: [ 'sorting.component.css' ]
 })
 export class SortingComponent {
-    private _options: CategoryDisplayOptions = new CategoryDisplayOptions();
-
-    tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Show Threads'})
-    ];
     @Output() onSort: EventEmitter<CategoryDisplayOptions> = new EventEmitter();
+    @Input() options: CategoryDisplayOptions = new CategoryDisplayOptions();
 
-    @Input()
-    set options (options: CategoryDisplayOptions) {
-        this._options = options;
-    }
+    sortedByOptions: Array<{ label: string, value: string }> = [];
+    sortOrderOptions: Array<{ label: string, value: string }> = [];
+    fromTheOptions: Array<{ label: string, value: string }> = [];
+    tabs: Array<TitleTab> = [
+        new TitleTab({ title: 'Show Threads' })
+    ];
 
-    get options (): CategoryDisplayOptions {
-        return this._options;
-    }
-
-    get sortedByOptions (): Array<string> {
-        return Object.keys(CATEGORY_SORT_BY);
-    }
-
-    get sortOrderOptions (): Array<string> {
-        return Object.keys(SORT_ORDER);
-    }
-
-    get fromTheOptions (): Array<{ label: string, value: string }> {
-        return Object.keys(TIME_CONSTRAINTS).map(key => {
+    constructor () {
+        this.sortedByOptions = Object.keys(CATEGORY_SORT_BY).map(key => ({
+            label: StringHelper.prettifyString(key),
+            value: key
+        }));
+        this.sortOrderOptions = Object.keys(SORT_ORDER).map(key => ({
+            label: StringHelper.prettifyString(key),
+            value: key
+        }));
+        this.fromTheOptions = Object.keys(TIME_CONSTRAINTS).map(key => {
             return {
                 label: TIME_CONSTRAINTS[key],
                 value: key
@@ -42,11 +36,7 @@ export class SortingComponent {
         });
     }
 
-    prettifyString (item: string): string {
-        return StringHelper.prettifyString(item);
-    }
-
     sortThreads (): void {
-        this.onSort.emit(this._options);
+        this.onSort.emit(this.options);
     }
 }

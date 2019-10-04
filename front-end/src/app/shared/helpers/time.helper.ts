@@ -10,7 +10,7 @@ export interface Hour {
 }
 
 export class TimeHelper {
-    static readonly ABBR_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    static readonly ABBR_MONTHS = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ];
     static readonly FULL_MONTHS = [
         'January',
         'February',
@@ -26,13 +26,13 @@ export class TimeHelper {
         'December'
     ];
     static readonly DAYS: Array<Day> = [
-        {label: 'Monday', abbr: 'Mon', number: 1},
-        {label: 'Tuesday', abbr: 'Tue', number: 2},
-        {label: 'Wednesday', abbr: 'Wed', number: 3},
-        {label: 'Thursday', abbr: 'Thu', number: 4},
-        {label: 'Friday', abbr: 'Fri', number: 5},
-        {label: 'Saturday', abbr: 'Sat', number: 6},
-        {label: 'Sunday', abbr: 'Sun', number: 7}
+        { label: 'Monday', abbr: 'Mon', number: 1 },
+        { label: 'Tuesday', abbr: 'Tue', number: 2 },
+        { label: 'Wednesday', abbr: 'Wed', number: 3 },
+        { label: 'Thursday', abbr: 'Thu', number: 4 },
+        { label: 'Friday', abbr: 'Fri', number: 5 },
+        { label: 'Saturday', abbr: 'Sat', number: 6 },
+        { label: 'Sunday', abbr: 'Sun', number: 7 }
     ];
 
     static getDay (number: number): Day {
@@ -150,6 +150,11 @@ export class TimeHelper {
 
         hour = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
         return `${hour}:${minutes} PM`;
+    }
+
+    static toDateString (value: number): string {
+        const date = value ? new Date(value * 1000) : new Date();
+        return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
     }
 
     static getTime (time: number): string {

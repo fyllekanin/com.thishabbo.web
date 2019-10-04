@@ -9,3 +9,7 @@
 .bug {
     color: #e06666;
 }
+
+pre {
+    white-space: normal;
+}

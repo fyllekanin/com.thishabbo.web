@@ -15,7 +15,7 @@ import {
     ViewChild,
     ViewEncapsulation
 } from '@angular/core';
-import { SlimUser, User } from 'core/services/auth/auth.model';
+import { SlimUser } from 'core/services/auth/auth.model';
 import { PostService } from '../services/post.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { ReportComponent } from './report/report.component';
@@ -28,29 +28,31 @@ import { AutoSaveHelper } from 'shared/helpers/auto-save.helper';
 @Component({
     selector: 'app-forum-post',
     templateUrl: 'post.component.html',
-    styleUrls: ['post.component.css'],
+    styleUrls: [ 'post.component.css' ],
     encapsulation: ViewEncapsulation.None
 })
 
 export class PostComponent extends Page implements OnDestroy {
-    private _postModel: PostModel = new PostModel();
-    private _forumPermission: ForumPermissions = new ForumPermissions();
-    private _isInEditMode = false;
-    private _isMultiQuoted = false;
+    private _forumPermission = new ForumPermissions();
     private _quoteRegex = /\[quotepost([\s\S]*)quotepost\]/g;
 
-    @ViewChild('editor', {static: false}) editor: EditorComponent;
+    @ViewChild('editor', { static: false }) editor: EditorComponent;
     @Input() canPost: boolean;
     @Output() onUpdatePost: EventEmitter<PostModel> = new EventEmitter();
     @Output() onQuotePost: EventEmitter<string> = new EventEmitter();
     @Output() onMultiQuotePost: EventEmitter<PostModel> = new EventEmitter();
 
 
+    post = new PostModel();
+    isInEditMode = false;
+    isMultiQuoted = false;
+    canGiveInfraction = false;
+    moreLikerNames: string;
     visibleLikers: Array<SlimUser> = [];
-    moreLikerNames: Array<SlimUser> = [];
+    moreLikers: Array<SlimUser> = [];
     editorButtons: Array<EditorAction> = [
-        new EditorAction({title: 'Save', value: PostActions.SAVE, saveCallback: this.onSave.bind(this)}),
-        new EditorAction({title: 'Back', value: PostActions.BACK})
+        new EditorAction({ title: 'Save', value: PostActions.SAVE, saveCallback: this.onSave.bind(this) }),
+        new EditorAction({ title: 'Back', value: PostActions.BACK })
     ];
 
     constructor (
@@ -70,63 +72,63 @@ export class PostComponent extends Page implements OnDestroy {
     }
 
     filterPosts (): void {
-        this._router.navigateByUrl(`/forum/thread/${this._postModel.threadId}/page/1/${this._postModel.user.nickname}`);
+        this._router.navigateByUrl(`/forum/thread/${this.post.threadId}/page/1/${this.post.user.nickname}`);
     }
 
     infract (): void {
-        this._infractionService.infract(this._postModel.user.userId, InfractionType.POST, this._postModel.content);
+        this._infractionService.infract(this.post.user.userId, InfractionType.POST, this.post.content);
     }
 
     reportPost (): void {
         this._dialogService.openDialog({
-            title: `Reporting post by: ${this.user.nickname}`,
+            title: `Reporting post by: ${this.post.user.nickname}`,
             component: this._componentFactory.resolveComponentFactory(ReportComponent),
             buttons: [
                 new DialogCloseButton('Close'),
-                new DialogButton({title: 'Report', callback: this.onReport.bind(this)})
+                new DialogButton({ title: 'Report', callback: this.onReport.bind(this) })
             ]
         });
     }
 
     likePost (): void {
-        this._service.likePost(this._postModel.postId).subscribe(data => {
-            this._postModel.likers = data;
+        this._service.likePost(this.post.postId).subscribe(data => {
+            this.post.likers = data;
             this.setLikers();
         });
 
     }
 
     unlikePost (): void {
-        this._service.unlikePost(this._postModel.postId).subscribe(data => {
-            this._postModel.likers = data;
+        this._service.unlikePost(this.post.postId).subscribe(data => {
+            this.post.likers = data;
             this.setLikers();
         });
     }
 
     editPost (): void {
-        this._isInEditMode = true;
+        this.isInEditMode = true;
     }
 
     quotePost (): void {
-        const content = this._postModel.content.replace(this._quoteRegex, '');
-        this.onQuotePost.emit(`[quotepost=${this._postModel.postId}]Originally Posted by [b]${this.user.nickname}[/b]
+        const content = this.post.content.replace(this._quoteRegex, '');
+        this.onQuotePost.emit(`[quotepost=${this.post.postId}]Originally Posted by [b]${this.post.user.nickname}[/b]
 ${content}[/quotepost]\n\r`);
     }
 
     multiQuotePost (): void {
-        this.onMultiQuotePost.emit(this._postModel);
-        this._isMultiQuoted = true;
+        this.onMultiQuotePost.emit(this.post);
+        this.isMultiQuoted = true;
     }
 
     unMultiQuotePost (): void {
-        this.onMultiQuotePost.emit(this._postModel);
-        this._isMultiQuoted = false;
+        this.onMultiQuotePost.emit(this.post);
+        this.isMultiQuoted = false;
     }
 
     onButtonClick (button: EditorAction): void {
         switch (button.value) {
             case PostActions.BACK:
-                this._isInEditMode = false;
+                this.isInEditMode = false;
                 break;
             case PostActions.SAVE:
                 this.onSave();
@@ -137,12 +139,6 @@ ${content}[/quotepost]\n\r`);
         }
     }
 
-    getMoreLikerNames (): string {
-        return this.moreLikerNames.reduce((prev, curr) => {
-            return prev + (prev.length === 0 ? curr.nickname : `, ${curr.nickname}`);
-        }, '');
-    }
-
     onKeyUp (content: string): void {
         if (!content) {
             return;
@@ -150,17 +146,22 @@ ${content}[/quotepost]\n\r`);
 
         AutoSaveHelper.save({
             type: AutoSave.POST_EDIT,
-            contentId: this._postModel.postId,
+            contentId: this.post.postId,
             content: content
         });
     }
 
     @Input()
     set postModel (postModel: PostModel) {
-        this._postModel = postModel || new PostModel();
+        this.post = postModel || new PostModel();
         this.setLikers();
 
-        if (AutoSaveHelper.exists(AutoSave.POST_EDIT, this._postModel.postId) &&
+        this.canGiveInfraction = this._authService.sitecpPermissions.canDoInfractions &&
+            this.post.user.userId !== this._authService.authUser.userId;
+        this.moreLikerNames = this.moreLikers.reduce((prev, curr) => {
+            return prev + (prev.length === 0 ? curr.nickname : `, ${curr.nickname}`);
+        }, '');
+        if (AutoSaveHelper.exists(AutoSave.POST_EDIT, this.post.postId) &&
             this.editorButtons.findIndex(button => button.value === PostActions.AUTO_SAVE) === -1) {
             this.editorButtons.push(new EditorAction({
                 title: 'Open Auto-Save',
@@ -171,84 +172,54 @@ ${content}[/quotepost]\n\r`);
 
     @Input()
     set forumPermissions (forumPermissions: ForumPermissions) {
-        this._forumPermission = forumPermissions || new ForumPermissions();
-    }
-
-    get canGiveInfraction (): boolean {
-        return this._authService.sitecpPermissions.canDoInfractions &&
-            this._postModel.user.userId !== this._authService.authUser.userId;
+        if (!forumPermissions) {
+            return;
+        }
+        this._forumPermission = forumPermissions;
     }
 
     get ignoreSignatures (): boolean {
         return Boolean(localStorage.getItem(LOCAL_STORAGE.IGNORE_SIGNATURES));
     }
 
-    get signature (): string {
-        return this.user.signature;
-    }
-
     get haveLikers (): boolean {
-        return this._postModel.likers.length > 0;
+        return this.post.likers.length > 0;
     }
 
     get canEditPost (): boolean {
         return (this._forumPermission.canEditOthersPosts ||
-            (this._authService.isLoggedIn() && this._authService.authUser.userId === this.user.userId)) && !this._isInEditMode;
+            (this._authService.isLoggedIn() && this._authService.authUser.userId === this.post.user.userId)) && !this.isInEditMode;
     }
 
     get haveLiked (): boolean {
-        return this._postModel.likers.findIndex(liker => liker.userId === this._authService.authUser.userId) > -1;
+        return this.post.likers.findIndex(liker => liker.userId === this._authService.authUser.userId) > -1;
     }
 
     get canInteractWithPost (): boolean {
-        return (this._authService.isLoggedIn() && this._authService.authUser.userId !== this.user.userId);
-    }
-
-    get user (): User {
-        return this._postModel.user;
-    }
-
-    get content (): string {
-        return this._postModel.content;
-    }
-
-    get parsedContent (): string {
-        return this._postModel.parsedContent;
-    }
-
-    get isInEditMode (): boolean {
-        return this._isInEditMode;
-    }
-
-    get postId (): number {
-        return this._postModel.postId;
-    }
-
-    get isMultiQuoted (): boolean {
-        return this._isMultiQuoted;
+        return (this._authService.isLoggedIn() && this._authService.authUser.userId !== this.post.user.userId);
     }
 
     private onOpenAutoSave (): void {
-        const autoSave = AutoSaveHelper.get(AutoSave.POST_EDIT, this._postModel.postId);
+        const autoSave = AutoSaveHelper.get(AutoSave.POST_EDIT, this.post.postId);
         this.editor.content = autoSave.content;
-        AutoSaveHelper.remove(AutoSave.POST_EDIT, this._postModel.postId);
+        AutoSaveHelper.remove(AutoSave.POST_EDIT, this.post.postId);
         this.editorButtons = this.editorButtons.filter(button => button.value !== PostActions.AUTO_SAVE);
     }
 
     private setLikers (): void {
-        this.visibleLikers = this._postModel.likers.slice(0, 4);
-        this.moreLikerNames = this._postModel.likers.slice(4, this._postModel.likers.length);
+        this.visibleLikers = this.post.likers.slice(0, 4);
+        this.moreLikers = this.post.likers.slice(4, this.post.likers.length);
     }
 
     private onReport (message: string): void {
-        this._service.reportPost(this._postModel.postId, message).subscribe(() => {
+        this._service.reportPost(this.post.postId, message).subscribe(() => {
             this._dialogService.closeDialog();
         });
     }
 
     private onSave (): void {
-        this._postModel.content = this.editor.getEditorValue();
-        this._isInEditMode = false;
-        this.onUpdatePost.emit(this._postModel);
+        this.post.content = this.editor.getEditorValue();
+        this.isInEditMode = false;
+        this.onUpdatePost.emit(this.post);
     }
 }

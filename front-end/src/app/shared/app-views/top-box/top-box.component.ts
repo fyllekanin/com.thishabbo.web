@@ -6,12 +6,11 @@ import { ContinuesInformationService } from 'core/services/continues-information
 import { MainItem } from 'shared/app-views/navigation/navigation.model';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { XP_PER_LEVEL } from 'shared/constants/user.constants';
-import { ThemeHelper } from 'shared/helpers/theme.helper';
 
 @Component({
     selector: 'app-top-box',
     templateUrl: 'top-box.component.html',
-    styleUrls: ['top-box.component.css']
+    styleUrls: [ 'top-box.component.css' ]
 })
 export class TopBoxComponent {
     private _user: AuthUser;
@@ -67,6 +66,7 @@ export class TopBoxComponent {
         this.showMenu = !this.showMenu;
         this.updateMenuClasses();
     }
+
     get credits (): number {
         return this._authService.authUser.credits;
     }
@@ -107,10 +107,6 @@ export class TopBoxComponent {
     get homePage (): string {
         return this.isLoggedIn && this._authService.authUser.homePage ?
             this._authService.authUser.homePage : 'home';
-    }
-
-    get isMobile (): boolean {
-        return ThemeHelper.isMobile();
     }
 
     private setUser (): void {
