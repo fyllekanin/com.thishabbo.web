@@ -3,20 +3,20 @@
 <app-content>
     <div class="grid-container full">
         <div class="grid-x grid-margin-x">
-            <div class="cell small-12 latest-thread-page" *ngFor="let item of items"
-                [ngClass]="!isSingleRow ? 'medium-6' : ''">
+            <div class="cell small-12 latest-thread-page" *ngFor="let item of data.items"
+                 [ngClass]="!isSingleRow ? 'medium-6' : ''">
                 <div appUserProfile [float]="'left'"
-                    [style.backgroundImage]="'url(/rest/resources/images/users/' + item.user.userId + '.gif)' | safeStyle">
+                     [style.backgroundImage]="'url(/rest/resources/images/users/' + item.user.userId + '.gif)' | safeStyle">
                 </div>
                 <div class="latest-thread-info truncate">
                     <a [routerLink]="['/forum', 'thread', item.threadId, 'page', 1]"
-                        [ngClass]="item.isRead ? '' : 'bold'">
+                       [ngClass]="item.isRead ? '' : 'bold'">
                         <span *ngIf="item.text" [style]="item.style | safeStyle">{{item.text}} »</span> {{item.title}}
                     </a>
-                    <br />
+                    <br/>
                     By
                     <app-user-link [user]="item.user"></app-user-link>
-                    <br />
+                    <br/>
                     {{item.time}}
                 </div>
             </div>

@@ -5,17 +5,16 @@ import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { FORUM_BREADCRUM_ITEM } from '../forum.constants';
-import { LatestThread, LatestThreadsPage } from './latest-threads.model';
+import { LatestThreadsPage } from './latest-threads.model';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 
 @Component({
     selector: 'app-forum-latest-threads',
     templateUrl: 'latest-threads.component.html',
-    styleUrls: ['latest-threads.component.css']
+    styleUrls: [ 'latest-threads.component.css' ]
 })
 export class LatestThreadsComponent extends Page implements OnDestroy {
-    private _data: LatestThreadsPage;
-
+    data = new LatestThreadsPage(null);
     pagination: PaginationModel;
     isSingleRow = false;
 
@@ -39,16 +38,12 @@ export class LatestThreadsComponent extends Page implements OnDestroy {
         super.destroy();
     }
 
-    get items (): Array<LatestThread> {
-        return this._data.items;
-    }
-
     private onPage (data: { data: LatestThreadsPage }): void {
-        this._data = data.data;
+        this.data = data.data;
 
         this.pagination = new PaginationModel({
-            page: this._data.page,
-            total: this._data.total,
+            page: this.data.page,
+            total: this.data.total,
             url: '/forum/latest-threads/page/:page'
         });
     }
