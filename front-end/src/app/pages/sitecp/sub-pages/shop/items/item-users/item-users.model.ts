@@ -1,4 +1,4 @@
-import { arrayOf, ClassHelper, objectOf, primitive, time } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, objectOf, primitive, dateAndTime } from 'shared/helpers/class.helper';
 import { SlimUser } from 'core/services/auth/auth.model';
 
 export class ItemUserModel {
@@ -6,7 +6,7 @@ export class ItemUserModel {
     userItemId: number;
     @objectOf(SlimUser)
     user: SlimUser;
-    @time()
+    @dateAndTime()
     createdAt: string;
 
     constructor (source: Partial<ItemUserModel>) {

@@ -1,4 +1,4 @@
-import { ClassHelper, objectOf, primitive, time } from 'shared/helpers/class.helper';
+import { ClassHelper, objectOf, primitive, dateAndTime } from 'shared/helpers/class.helper';
 import { SlimUser } from 'core/services/auth/auth.model';
 
 export class ThreadBan {
@@ -8,7 +8,7 @@ export class ThreadBan {
     user: SlimUser;
     @objectOf(SlimUser)
     bannedBy: SlimUser;
-    @time()
+    @dateAndTime()
     bannedAt: string;
 
     constructor (source: Partial<ThreadBan>) {

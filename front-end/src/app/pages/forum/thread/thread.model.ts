@@ -1,6 +1,6 @@
 import { ForumPermissions, ThreadPrefix } from '../forum.model';
 import { CategoryParent } from '../category/category.model';
-import { arrayOf, ClassHelper, objectOf, primitive, time } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, objectOf, primitive, dateAndTime } from 'shared/helpers/class.helper';
 import { PostModel } from '../post/post.model';
 import { SlimUser, User } from 'core/services/auth/auth.model';
 import { ThreadPoll } from './thread-poll/thread-poll.model';
@@ -12,7 +12,7 @@ import { CategoryTemplates } from 'shared/constants/templates.constants';
 export class ThreadReader {
     @objectOf(SlimUser)
     user: SlimUser;
-    @time()
+    @dateAndTime()
     time: string;
     @primitive()
     currentlyViewing: boolean;

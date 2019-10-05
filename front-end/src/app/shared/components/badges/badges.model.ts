@@ -1,4 +1,4 @@
-import { ClassHelper, primitive, time } from 'shared/helpers/class.helper';
+import { ClassHelper, primitive, dateAndTime } from 'shared/helpers/class.helper';
 
 export class BadgeModel {
     @primitive()
@@ -7,7 +7,7 @@ export class BadgeModel {
     description: string;
     @primitive()
     isNew: boolean;
-    @time()
+    @dateAndTime()
     createdAt: string;
 
     notFound = false;

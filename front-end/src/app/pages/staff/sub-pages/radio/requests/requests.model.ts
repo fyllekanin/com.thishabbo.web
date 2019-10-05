@@ -1,4 +1,4 @@
-import { arrayOf, ClassHelper, primitive, time } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, primitive, dateAndTime } from 'shared/helpers/class.helper';
 
 export class RequestModel {
     @primitive()
@@ -9,7 +9,7 @@ export class RequestModel {
     content: string;
     @primitive()
     ip: string;
-    @time()
+    @dateAndTime()
     createdAt: string;
 
     constructor (source: Partial<RequestModel>) {

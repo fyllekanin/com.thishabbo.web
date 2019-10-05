@@ -1,4 +1,4 @@
-import {arrayOf, ClassHelper, objectOf, primitive, primitiveOf, time} from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, date, objectOf, primitive, primitiveOf } from 'shared/helpers/class.helper';
 import { UserHelper } from 'shared/helpers/user.helper';
 import { TabModel } from 'shared/app-views/header/tabs/tabs.model';
 
@@ -67,7 +67,7 @@ export class SlimUser {
     posts: number;
     @primitive()
     likes: number;
-    @time()
+    @date()
     createdAt: number;
 
     avatarUrl: string;

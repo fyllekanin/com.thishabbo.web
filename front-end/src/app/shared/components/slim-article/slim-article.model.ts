@@ -1,4 +1,4 @@
-import { arrayOf, ClassHelper, objectOf, primitive, time } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, objectOf, primitive, dateAndTime } from 'shared/helpers/class.helper';
 import { SlimUser } from 'core/services/auth/auth.model';
 import { Prefix } from '../../../pages/sitecp/sub-pages/forum/prefixes/prefix.model';
 
@@ -23,7 +23,7 @@ export class SlimArticle {
     tags: Array<string> = [];
     @objectOf(SlimUser)
     user: SlimUser;
-    @time()
+    @dateAndTime()
     createdAt: string;
     @primitive()
     updatedAt: number;

@@ -1,4 +1,4 @@
-import { ClassHelper, objectOf, primitive, primitiveOf, time } from 'shared/helpers/class.helper';
+import { ClassHelper, objectOf, primitive, primitiveOf, dateAndTime } from 'shared/helpers/class.helper';
 
 export class SubscriptionOptions {
     @primitive()
@@ -30,7 +30,7 @@ export class SubscriptionItem {
     pounds = 0;
     @objectOf(SubscriptionOptions)
     options = new SubscriptionOptions();
-    @time()
+    @dateAndTime()
     createdAt: string;
 
     constructor (source: Partial<SubscriptionItem>) {

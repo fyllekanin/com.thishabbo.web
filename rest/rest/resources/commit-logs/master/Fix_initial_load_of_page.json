@@ -1,0 +1,1 @@
+{"topic":"Fix initial load of page","type":"Bug","body":"The users lists did not fetch searchType on initial load"}

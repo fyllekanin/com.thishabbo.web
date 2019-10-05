@@ -1,4 +1,4 @@
-import { arrayOf, ClassHelper, objectOf, primitive, time } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, dateAndTime, objectOf, primitive } from 'shared/helpers/class.helper';
 import { SlimUser } from 'core/services/auth/auth.model';
 
 export class LatestThread {
@@ -14,7 +14,7 @@ export class LatestThread {
     title: string;
     @objectOf(SlimUser)
     user: SlimUser;
-    @time()
+    @dateAndTime()
     createdAt: string;
     @primitive()
     isRead: boolean;

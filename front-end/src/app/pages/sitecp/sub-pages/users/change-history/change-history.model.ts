@@ -1,4 +1,4 @@
-import { arrayOf, ClassHelper, objectOf, primitive, time } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, objectOf, primitive, dateAndTime } from 'shared/helpers/class.helper';
 import { LOG_DICTIONARY } from 'shared/constants/log-dictionary.constants';
 import { SlimUser } from 'core/services/auth/auth.model';
 
@@ -13,7 +13,7 @@ export class ChangeHistoryItem {
     oldValue: string;
     @primitive()
     newValue: string;
-    @time()
+    @dateAndTime()
     createdAt: string;
 
     constructor (source: Partial<ChangeHistoryItem>) {

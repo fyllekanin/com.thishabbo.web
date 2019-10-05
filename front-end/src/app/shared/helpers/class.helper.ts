@@ -8,7 +8,8 @@ const objectMapperSymbol = Symbol('objectMapperSymbol');
 const arraySymbol = Symbol('arraySymbol');
 const arrayMapperSymbol = Symbol('arrayMapperSymbol');
 const valueSymbol = Symbol('valueSymbol');
-const timeSymbol = Symbol('timeSymbol');
+const dateAndTimeSymbol = Symbol('dateAndTimeSymbol');
+const dateSymbol = Symbol('dateSymbol');
 
 export class ClassHelper {
     private static readonly TYPES = {
@@ -17,7 +18,8 @@ export class ClassHelper {
         VAL: 'val',
         TYPED_ARR: 'typed_arr',
         MAPPED_ARR: 'mapped_arr',
-        TIME: 'time'
+        DATE_AND_DATE: 'dateAndTime',
+        DATE: 'date'
     };
 
     private static isType (symbol, target, prop: string) {
@@ -44,7 +46,7 @@ export class ClassHelper {
     }
 
     private static getType (isPrim: boolean, isObj: boolean, isVal: boolean, isTypedArr: boolean,
-                            isMappedArr: boolean, isTime: boolean): string {
+                            isMappedArr: boolean, isDateAndTime: boolean, isDate): string {
         if (isPrim) {
             return this.TYPES.PRIM;
         } else if (isObj) {
@@ -55,8 +57,10 @@ export class ClassHelper {
             return this.TYPES.TYPED_ARR;
         } else if (isMappedArr) {
             return this.TYPES.MAPPED_ARR;
-        } else if (isTime) {
-            return this.TYPES.TIME;
+        } else if (isDateAndTime) {
+            return this.TYPES.DATE_AND_DATE;
+        } else if (isDate) {
+            return this.TYPES.DATE;
         }
         return null;
     }
@@ -71,13 +75,14 @@ export class ClassHelper {
             }
 
             const isPrim = this.isType(primitiveSymbol, target, prop);
-            const isTime = this.isType(timeSymbol, target, prop);
+            const isDateAndTime = this.isType(dateAndTimeSymbol, target, prop);
+            const isDate = this.isType(dateSymbol, target, prop);
             const isObj = this.isType(objectSymbol, target, prop) ||
                 this.isType(objectMapperSymbol, target, prop) && typeof source[prop] === 'object';
             const isVal = this.isType(valueSymbol, target, prop) && typeof source[prop] === 'string';
             const isTypedArr = this.isType(arraySymbol, target, prop) && Array.isArray(source[prop]);
             const isMappedArr = this.isType(arrayMapperSymbol, target, prop) && Array.isArray(source[prop]);
-            const type: string = this.getType(isPrim, isObj, isVal, isTypedArr, isMappedArr, isTime);
+            const type: string = this.getType(isPrim, isObj, isVal, isTypedArr, isMappedArr, isDateAndTime, isDate);
             let arrayType;
 
             switch (type) {
@@ -85,8 +90,11 @@ export class ClassHelper {
                     const primitiveType = this.getMetadata(primitiveSymbol, target, prop);
                     target[prop] = primitiveType(source[prop]);
                     break;
-                case this.TYPES.TIME:
+                case this.TYPES.DATE_AND_DATE:
                     target[prop] = TimeHelper.getTime(source[prop]);
+                    break;
+                case this.TYPES.DATE:
+                    target[prop] = TimeHelper.getLongDate(source[prop]);
                     break;
                 case this.TYPES.OBJ:
                     const objectType = this.isType(objectSymbol, target, prop) ?
@@ -129,8 +137,12 @@ export function primitive<T> (type?: Type<T>) {
     return Reflect.metadata(primitiveSymbol, type || true);
 }
 
-export function time () {
-    return Reflect.metadata(timeSymbol, true);
+export function dateAndTime () {
+    return Reflect.metadata(dateAndTimeSymbol, true);
+}
+
+export function date () {
+    return Reflect.metadata(dateSymbol, true);
 }
 
 export function primitiveOf<T> (type: Type<T>) {

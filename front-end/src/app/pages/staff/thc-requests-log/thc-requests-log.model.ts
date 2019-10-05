@@ -1,4 +1,4 @@
-import { primitive, ClassHelper, time, arrayOf } from 'shared/helpers/class.helper';
+import { primitive, ClassHelper, dateAndTime, arrayOf } from 'shared/helpers/class.helper';
 
 export class ThcRequestLog {
     @primitive()
@@ -11,7 +11,7 @@ export class ThcRequestLog {
     isPending: boolean;
     @primitive()
     isApproved: boolean;
-    @time()
+    @dateAndTime()
     updatedAt: string;
 
     constructor(source: Partial<ThcRequestLog>) {

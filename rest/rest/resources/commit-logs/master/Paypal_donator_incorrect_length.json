@@ -1,0 +1,1 @@
+{"topic":"Paypal donator incorrect length","type":"Bug","body":"When buying donator with paypal you got 27 or something days instead of 30. This is fixed and compenstation is added to users that have bought with paypal"}

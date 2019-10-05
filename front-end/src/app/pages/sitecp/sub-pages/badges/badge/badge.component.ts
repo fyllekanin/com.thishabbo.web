@@ -18,7 +18,7 @@ import { Badge, BadgeActions } from '../badges.model';
 export class BadgeComponent extends Page implements OnDestroy {
     private _badge: Badge = new Badge();
 
-    @ViewChild('file', {static: true}) fileInput;
+    @ViewChild('file', { static: true }) fileInput;
     tabs: Array<TitleTab> = [];
 
     constructor (
@@ -70,7 +70,6 @@ export class BadgeComponent extends Page implements OnDestroy {
                     title: 'Success',
                     message: `${this._badge.name} was updated!`
                 }));
-                this.cancel();
             }, this._notificationService.failureNotification.bind(this._notificationService));
         } else {
             this._httpClient.post('rest/api/sitecp/badges', form).subscribe(() => {
@@ -78,7 +77,6 @@ export class BadgeComponent extends Page implements OnDestroy {
                     title: 'Success',
                     message: `${this._badge.name} was created!`
                 }));
-                this.cancel();
             }, this._notificationService.failureNotification.bind(this._notificationService));
         }
     }
@@ -128,9 +126,9 @@ export class BadgeComponent extends Page implements OnDestroy {
         this._badge = data.data;
 
         const tabs = [
-            {title: 'Save', value: BadgeActions.SAVE, condition: true},
-            {title: 'Back', value: BadgeActions.BACK, condition: true},
-            {title: 'Delete', value: BadgeActions.DELETE, condition: this._badge.createdAt}
+            { title: 'Save', value: BadgeActions.SAVE, condition: true },
+            { title: 'Back', value: BadgeActions.BACK, condition: true },
+            { title: 'Delete', value: BadgeActions.DELETE, condition: this._badge.createdAt }
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));

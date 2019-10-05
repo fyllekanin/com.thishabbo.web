@@ -20,9 +20,14 @@ export class UsersListService implements Resolve<UsersListPage> {
     resolve (route: ActivatedRouteSnapshot): Observable<UsersListPage> {
         const pageNr = route.params['page'];
         const nickname = route.queryParams['nickname'];
+        const searchType = route.queryParams['searchType'];
         const habbo = route.queryParams['habbo'];
 
-        return this._httpService.get(`sitecp/users/list/page/${pageNr}`, {nickname: nickname, habbo: habbo})
+        return this._httpService.get(`sitecp/users/list/page/${pageNr}`, {
+            nickname: nickname,
+            habbo: habbo,
+            searchType: searchType
+        })
             .pipe(map(res => new UsersListPage(res)));
     }
 
@@ -30,7 +35,7 @@ export class UsersListService implements Resolve<UsersListPage> {
         return this._httpService.get(`sitecp/users/list/page/1`, filter)
             .pipe(map(data => {
                 const page = new UsersListPage(data);
-                return {data: page};
+                return { data: page };
             }));
     }
 
