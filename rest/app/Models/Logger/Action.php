@@ -13,13 +13,13 @@ use ReflectionClass;
  */
 class Action {
 
-    public static function getAction($action) {
+    public static function getAction ($action) {
         return $action['id'];
     }
 
-    public static function getActionFromId($actionId) {
+    public static function getActionFromId ($actionId) {
         try {
-            return Iterables::find(self::getAllConstants(), function ($action) use ($actionId) {
+            return Iterables::find (self::getAllConstants (), function ($action) use ($actionId) {
                 return $action['id'] == $actionId;
             });
         } catch (\ReflectionException $e) {
@@ -27,9 +27,9 @@ class Action {
         }
     }
 
-    public static function getActionsByLog($log) {
+    public static function getActionsByLog ($log) {
         try {
-            return Iterables::filter(self::getAllConstants(), function ($action) use ($log) {
+            return Iterables::filter (self::getAllConstants (), function ($action) use ($log) {
                 return $action['log'] == $log;
             });
         } catch (\ReflectionException $e) {
@@ -41,8 +41,8 @@ class Action {
      * @return array
      * @throws \ReflectionException
      */
-    public static function getAllConstants() {
-        return (new ReflectionClass(get_class()))->getConstants();
+    public static function getAllConstants () {
+        return (new ReflectionClass(get_class ()))->getConstants ();
     }
 
     const WON_ROULETTE = [
@@ -2300,5 +2300,15 @@ class Action {
         'contentId' => 'userId',
         'contentTable' => 'users',
         'contentSelect' => 'nickname'
+    ];
+
+    const QUEST_ARTICLE_MESSAGE = [
+        'id' => 202,
+        'description' => 'The system created a site message from a quest article',
+        'data' => [],
+        'log' => 'log_mod',
+        'contentId' => 'threadId',
+        'contentTable' => 'threads',
+        'contentSelect' => 'title'
     ];
 }

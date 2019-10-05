@@ -82,6 +82,11 @@ export class TimeHelper {
         return convertedHour;
     }
 
+    static getHourOffsetRounded (): number {
+        const offset = new Date().getTimezoneOffset() / 60;
+        return offset > 0 ? Math.floor(offset) : Math.round(offset);
+    }
+
     static getTimeOffset (): number {
         const offset = new Date().getTimezoneOffset();
         return offset > 0 ? -offset : Math.abs(offset);

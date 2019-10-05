@@ -66,6 +66,11 @@ a {
     color: #159cfc;
 }
 
+app-info-box a {
+    color: #ffffff !important;
+    text-decoration: underline;
+}
+
 h2 {
     margin-bottom: 10px;
     margin-top: 0;

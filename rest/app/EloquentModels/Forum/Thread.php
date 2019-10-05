@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\App;
  * @property mixed category
  * @property mixed firstPost
  * @property mixed templateData
+ * @property mixed isApproved
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  * @method static isApproved()
  */
@@ -29,120 +30,120 @@ class Thread extends DeletableModel {
     protected $appends = ['parents', 'categoryIsOpen', 'user'];
     protected $hidden = ['firstPost', 'templateData', 'category'];
 
-    public function __construct(array $attributes = []) {
-        parent::__construct($attributes);
-        $this->forumService = App::make('App\Services\ForumService');
+    public function __construct (array $attributes = []) {
+        parent::__construct ($attributes);
+        $this->forumService = App::make ('App\Services\ForumService');
     }
 
-    public function firstPost() {
-        return $this->hasOne('App\EloquentModels\Forum\Post', 'postId', 'firstPostId');
+    public function firstPost () {
+        return $this->hasOne ('App\EloquentModels\Forum\Post', 'postId', 'firstPostId');
     }
 
-    public function latestPost() {
-        return $this->hasOne('App\EloquentModels\Forum\Post', 'postId', 'lastPostId');
+    public function latestPost () {
+        return $this->hasOne ('App\EloquentModels\Forum\Post', 'postId', 'lastPostId');
     }
 
-    public function poll() {
-        return $this->hasOne('App\EloquentModels\Forum\ThreadPoll', 'threadId');
+    public function poll () {
+        return $this->hasOne ('App\EloquentModels\Forum\ThreadPoll', 'threadId');
     }
 
-    public function threadPosts() {
-        return $this->hasMany('App\EloquentModels\Forum\Post', 'threadId');
+    public function threadPosts () {
+        return $this->hasMany ('App\EloquentModels\Forum\Post', 'threadId');
     }
 
-    public function prefix() {
-        return $this->hasOne('App\EloquentModels\Forum\Prefix', 'prefixId', 'prefixId');
+    public function prefix () {
+        return $this->hasOne ('App\EloquentModels\Forum\Prefix', 'prefixId', 'prefixId');
     }
 
-    public function user() {
-        return $this->belongsTo('App\EloquentModels\User\User', 'userId');
+    public function user () {
+        return $this->belongsTo ('App\EloquentModels\User\User', 'userId');
     }
 
-    public function templateData() {
-        return $this->hasOne('App\EloquentModels\Forum\TemplateData', 'threadId');
+    public function templateData () {
+        return $this->hasOne ('App\EloquentModels\Forum\TemplateData', 'threadId');
     }
 
-    public function category() {
-        return $this->belongsTo('App\EloquentModels\Forum\Category', 'categoryId');
+    public function category () {
+        return $this->belongsTo ('App\EloquentModels\Forum\Category', 'categoryId');
     }
 
-    public function getPrefixAttribute() {
-        return $this->prefix()->first();
+    public function getPrefixAttribute () {
+        return $this->prefix ()->first ();
     }
 
-    public function getUserAttribute() {
-        return UserHelper::getSlimUser($this->userId);
+    public function getUserAttribute () {
+        return UserHelper::getSlimUser ($this->userId);
     }
 
-    public function getParentsAttribute() {
-        return $this->forumService->getCategoryParents($this);
+    public function getParentsAttribute () {
+        return $this->forumService->getCategoryParents ($this);
     }
 
-    public function getCategoryIsOpenAttribute() {
+    public function getCategoryIsOpenAttribute () {
         return $this->category->isOpen;
     }
 
-    public function getTemplateAttribute() {
+    public function getTemplateAttribute () {
         return $this->category->template;
     }
 
-    public function getContentAttribute() {
+    public function getContentAttribute () {
         return $this->firstPost->content;
     }
 
-    public function getLatestPostAttribute() {
-        return $this->latestPost()->first();
+    public function getLatestPostAttribute () {
+        return $this->latestPost ()->first ();
     }
 
-    public function getTagsAttribute() {
+    public function getTagsAttribute () {
         if (isset($this->templateData->tags)) {
-            return explode(',', $this->templateData->tags);
+            return explode (',', $this->templateData->tags);
         }
         return [];
     }
 
-    public function getBadgeAttribute() {
-        return Value::objectProperty($this->templateData, 'badge', '');
+    public function getBadgeAttribute () {
+        return Value::objectProperty ($this->templateData, 'badge', '');
     }
 
-    public function getRoomLinkAttribute() {
-        return Value::objectProperty($this->templateData, 'roomLink', '');
+    public function getRoomLinkAttribute () {
+        return Value::objectProperty ($this->templateData, 'roomLink', '');
     }
 
-    public function scopeWithNickname(Builder $query) {
-        return $query->leftJoin('users', 'users.userId', '=', 'threads.userId')
-            ->select('threads.*', 'users.nickname');
+    public function scopeWithNickname (Builder $query) {
+        return $query->leftJoin ('users', 'users.userId', '=', 'threads.userId')
+            ->select ('threads.*', 'users.nickname');
     }
 
-    public function scopeBelongsToUser(Builder $query, $userId) {
-        return $query->where('threads.userId', $userId);
+    public function scopeBelongsToUser (Builder $query, $userId) {
+        return $query->where ('threads.userId', $userId);
     }
 
-    public function scopeIsApproved(Builder $query, $canApprove = 0) {
-        return $query->where('threads.isApproved', ($canApprove ? '>=' : '>'), 0);
+    public function scopeIsApproved (Builder $query, $canApprove = 0) {
+        return $query->where ('threads.isApproved', ($canApprove ? '>=' : '>'), 0);
     }
 
-    public function scopeCreatedAfter(Builder $query, $createdAfter) {
-        return $query->where('threads.createdAt', '>', $createdAfter);
+    public function scopeCreatedAfter (Builder $query, $createdAfter) {
+        return $query->where ('threads.createdAt', '>', $createdAfter);
     }
 
-    public function scopeUnapproved(Builder $query) {
-        return $query->where('threads.isApproved', '<', 1);
+    public function scopeUnapproved (Builder $query) {
+        return $query->where ('threads.isApproved', '<', 1);
     }
 
-    public function scopeOpen(Builder $query) {
-        return $query->where('threads.isOpen', '>', 0);
+    public function scopeOpen (Builder $query) {
+        return $query->where ('threads.isOpen', '>', 0);
     }
 
-    public function scopeClosed(Builder $query) {
-        return $query->where('threads.isOpen', '<', 1);
+    public function scopeClosed (Builder $query) {
+        return $query->where ('threads.isOpen', '<', 1);
     }
 
-    public function scopeIsSticky(Builder $query) {
-        return $query->where('threads.isSticky', '>', 0);
+    public function scopeIsSticky (Builder $query) {
+        return $query->where ('threads.isSticky', '>', 0);
     }
 
-    public function scopeNonStickied(Builder $query) {
-        return $query->where('threads.isSticky', '<', 1);
+    public function scopeNonStickied (Builder $query) {
+        return $query->where ('threads.isSticky', '<', 1);
     }
 }

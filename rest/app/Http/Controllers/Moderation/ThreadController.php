@@ -33,38 +33,38 @@ class ThreadController extends Controller {
      *
      * @param ForumService $forumService
      */
-    public function __construct(ForumService $forumService) {
-        parent::__construct();
+    public function __construct (ForumService $forumService) {
+        parent::__construct ();
         $this->forumService = $forumService;
     }
 
-    public function getThreadBans(Request $request, $threadId) {
-        $user = $request->get('auth');
-        $thread = Thread::find($threadId);
+    public function getThreadBans (Request $request, $threadId) {
+        $user = $request->get ('auth');
+        $thread = Thread::find ($threadId);
 
-        Condition::precondition(!$thread, 404, 'No thread with that ID');
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canThreadBan, $thread->categoryId,
+        Condition::precondition (!$thread, 404, 'No thread with that ID');
+        PermissionHelper::haveForumPermissionWithException ($user->userId, ConfigHelper::getForumPermissions ()->canThreadBan, $thread->categoryId,
             'You do not have permission to thread ban here!');
 
-        return response()->json(ThreadBan::where('threadId', $thread->threadId)->orderBy('createdAt', 'DESC')->get()->map(function ($ban) {
+        return response ()->json (ThreadBan::where ('threadId', $thread->threadId)->orderBy ('createdAt', 'DESC')->get ()->map (function ($ban) {
             return [
                 'threadBanId' => $ban->threadBanId,
-                'user' => UserHelper::getSlimUser($ban->userId),
-                'bannedBy' => UserHelper::getSlimUser($ban->bannedById),
+                'user' => UserHelper::getSlimUser ($ban->userId),
+                'bannedBy' => UserHelper::getSlimUser ($ban->bannedById),
                 'bannedAt' => $ban->createdAt->timestamp
             ];
         }));
     }
 
-    public function createThreadBan(Request $request, $threadId) {
-        $user = $request->get('auth');
-        $banned = User::withNickname($request->input('nickname'))->first();
-        $thread = Thread::find($threadId);
+    public function createThreadBan (Request $request, $threadId) {
+        $user = $request->get ('auth');
+        $banned = User::withNickname ($request->input ('nickname'))->first ();
+        $thread = Thread::find ($threadId);
 
-        Condition::precondition(!$thread, 404, 'No thread with that ID');
-        Condition::precondition(!$banned, 404, 'No user with that nickname');
-        Condition::precondition(!UserHelper::canManageUser($user, $banned->userId), 400, 'You can not ban this user');
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canThreadBan, $thread->categoryId,
+        Condition::precondition (!$thread, 404, 'No thread with that ID');
+        Condition::precondition (!$banned, 404, 'No user with that nickname');
+        Condition::precondition (!UserHelper::canManageUser ($user, $banned->userId), 400, 'You can not ban this user');
+        PermissionHelper::haveForumPermissionWithException ($user->userId, ConfigHelper::getForumPermissions ()->canThreadBan, $thread->categoryId,
             'You do not have permission to thread ban here!');
 
         $threadBan = new ThreadBan([
@@ -72,71 +72,71 @@ class ThreadController extends Controller {
             'bannedById' => $user->userId,
             'threadId' => $thread->threadId
         ]);
-        $threadBan->save();
+        $threadBan->save ();
 
-        Logger::mod($user->userId, $request->ip(), Action::THREAD_BANNED, ['thread' => $thread->title], $banned->userId);
-        return $this->getThreadBans($request, $threadId);
+        Logger::mod ($user->userId, $request->ip (), Action::THREAD_BANNED, ['thread' => $thread->title], $banned->userId);
+        return $this->getThreadBans ($request, $threadId);
     }
 
-    public function deleteThreadBan(Request $request, $threadBanId) {
-        $user = $request->get('auth');
-        $threadBan = ThreadBan::find($threadBanId);
-        $thread = Thread::find($threadBan->threadId);
+    public function deleteThreadBan (Request $request, $threadBanId) {
+        $user = $request->get ('auth');
+        $threadBan = ThreadBan::find ($threadBanId);
+        $thread = Thread::find ($threadBan->threadId);
 
-        Condition::precondition(!$thread, 404, 'No thread with that ID');
-        Condition::precondition(!$threadBan, 404, 'No thread ban with that ID');
-        Condition::precondition(!UserHelper::canManageUser($user, $threadBan->userId), 400, 'You can not unban this user');
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canThreadBan, $thread->categoryId,
+        Condition::precondition (!$thread, 404, 'No thread with that ID');
+        Condition::precondition (!$threadBan, 404, 'No thread ban with that ID');
+        Condition::precondition (!UserHelper::canManageUser ($user, $threadBan->userId), 400, 'You can not unban this user');
+        PermissionHelper::haveForumPermissionWithException ($user->userId, ConfigHelper::getForumPermissions ()->canThreadBan, $thread->categoryId,
             'You do not have permission to thread ban here!');
 
         $threadBan->isDeleted = true;
-        $threadBan->save();
+        $threadBan->save ();
 
-        Logger::mod($user->userId, $request->ip(), Action::THREAD_UNBANNED, ['thread' => $thread->title], $threadBan->userId);
-        return $this->getThreadBans($request, $threadBan->threadId);
+        Logger::mod ($user->userId, $request->ip (), Action::THREAD_UNBANNED, ['thread' => $thread->title], $threadBan->userId);
+        return $this->getThreadBans ($request, $threadBan->threadId);
     }
 
-    public function mergeThreads(Request $request, $srcThreadId) {
-        $user = $request->get('auth');
-        $destThreadId = $request->input('destThreadId');
-        $forumPermissions = ConfigHelper::getForumPermissions();
+    public function mergeThreads (Request $request, $srcThreadId) {
+        $user = $request->get ('auth');
+        $destThreadId = $request->input ('destThreadId');
+        $forumPermissions = ConfigHelper::getForumPermissions ();
 
-        $srcThread = Thread::find($srcThreadId);
-        $destThread = Thread::find($destThreadId);
-        Condition::precondition(!$srcThread, 404, 'Source thread do not exist');
-        Condition::precondition(!$destThread, 404, 'Destination thread do not exist');
+        $srcThread = Thread::find ($srcThreadId);
+        $destThread = Thread::find ($destThreadId);
+        Condition::precondition (!$srcThread, 404, 'Source thread do not exist');
+        Condition::precondition (!$destThread, 404, 'Destination thread do not exist');
 
-        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, $forumPermissions->canRead, $srcThread->categoryId), 400,
+        Condition::precondition (!PermissionHelper::haveForumPermission ($user->userId, $forumPermissions->canRead, $srcThread->categoryId), 400,
             'You don\'t have access to the source category');
-        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, $forumPermissions->canRead, $destThread->categoryId), 400,
+        Condition::precondition (!PermissionHelper::haveForumPermission ($user->userId, $forumPermissions->canRead, $destThread->categoryId), 400,
             'You don\'t have access to the destination category');
-        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, $forumPermissions->canMergeThreadsAndPosts, $srcThread->categoryId), 400,
+        Condition::precondition (!PermissionHelper::haveForumPermission ($user->userId, $forumPermissions->canMergeThreadsAndPosts, $srcThread->categoryId), 400,
             'You don\'t have access to merge thread in the source category');
-        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, $forumPermissions->canMergeThreadsAndPosts, $destThread->categoryId), 400,
+        Condition::precondition (!PermissionHelper::haveForumPermission ($user->userId, $forumPermissions->canMergeThreadsAndPosts, $destThread->categoryId), 400,
             'You don\'t have access to merge thread in the destination category');
 
         $destThread->firstPost->content .= "
 --------------------------------------------
 " . $srcThread->firstPost->content;
-        $destThread->firstPost->save();
+        $destThread->firstPost->save ();
         $destThread->posts += $srcThread->posts;
-        $destThread->save();
+        $destThread->save ();
         $srcThread->firstPost->isDeleted = true;
-        $srcThread->firstPost->save();
-        Post::where('threadId', $srcThread->threadId)->update(['threadId' => $destThread->threadId]);
+        $srcThread->firstPost->save ();
+        Post::where ('threadId', $srcThread->threadId)->update (['threadId' => $destThread->threadId]);
         $srcThread->isDeleted = true;
-        $srcThread->save();
+        $srcThread->save ();
 
-        $this->forumService->updateLastPostIdOnCategory($srcThread->categoryId);
-        $this->forumService->updateLastPostIdOnCategory($destThread->categoryId);
+        $this->forumService->updateLastPostIdOnCategory ($srcThread->categoryId);
+        $this->forumService->updateLastPostIdOnCategory ($destThread->categoryId);
 
-        Logger::mod($user->userId, $request->ip(), Action::MERGED_THREAD, [
+        Logger::mod ($user->userId, $request->ip (), Action::MERGED_THREAD, [
             'sourceThread' => $srcThread->title,
             'destinationThread' => $destThread->title,
             'sourceThreadId' => $srcThread->threadId,
             'destinationThreadId' => $destThread->threadId
         ], $srcThread->threadId);
-        return response()->json();
+        return response ()->json ();
     }
 
     /**
@@ -145,41 +145,41 @@ class ThreadController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function moveThreads(Request $request, $categoryId) {
-        $user = $request->get('auth');
-        $threadIds = $request->input('threadIds');
-        Condition::precondition(count($threadIds) < 1, 400, 'No threads selected!');
-        $category = Category::find($categoryId);
+    public function moveThreads (Request $request, $categoryId) {
+        $user = $request->get ('auth');
+        $threadIds = $request->input ('threadIds');
+        Condition::precondition (count ($threadIds) < 1, 400, 'No threads selected!');
+        $category = Category::find ($categoryId);
 
-        $forumPermissions = ConfigHelper::getForumPermissions();
+        $forumPermissions = ConfigHelper::getForumPermissions ();
 
-        Condition::precondition(!$category, 404, 'Category with that ID do not exist');
-        Condition::precondition($category->parentId <= 0, 400, 'You can not choose a top level category');
-        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, $forumPermissions->canRead, $category->categoryId), 400,
+        Condition::precondition (!$category, 404, 'Category with that ID do not exist');
+        Condition::precondition ($category->parentId <= 0, 400, 'You can not choose a top level category');
+        Condition::precondition (!PermissionHelper::haveForumPermission ($user->userId, $forumPermissions->canRead, $category->categoryId), 400,
             'You don\'t have access to the destination category');
 
-        $threadsSql = Thread::whereIn('threadId', $threadIds);
-        $threads = $threadsSql->get();
-        Condition::precondition(count($threads) != count($threadIds), 404, 'One or more of the threads do not exist!');
+        $threadsSql = Thread::whereIn ('threadId', $threadIds);
+        $threads = $threadsSql->get ();
+        Condition::precondition (count ($threads) != count ($threadIds), 404, 'One or more of the threads do not exist!');
 
 
-        $oldCategoryId = $threads->get(0)->categoryId;
-        $sameCategoryId = Iterables::every($threads, function ($thread) use ($oldCategoryId) {
+        $oldCategoryId = $threads->get (0)->categoryId;
+        $sameCategoryId = Iterables::every ($threads, function ($thread) use ($oldCategoryId) {
             return $thread->categoryId == $oldCategoryId;
         });
 
-        Condition::precondition(!$sameCategoryId, 400, 'You are trying to move threads from different categories');
-        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, $forumPermissions->canMoveThreads, $oldCategoryId), 400,
+        Condition::precondition (!$sameCategoryId, 400, 'You are trying to move threads from different categories');
+        Condition::precondition (!PermissionHelper::haveForumPermission ($user->userId, $forumPermissions->canMoveThreads, $oldCategoryId), 400,
             'You don\'t have access to move threads from this category!');
 
-        $threadsSql->update([
+        $threadsSql->update ([
             'categoryId' => $category->categoryId
         ]);
 
-        $this->forumService->updateLastPostIdOnCategory($oldCategoryId);
-        $this->forumService->updateLastPostIdOnCategory($category->categoryId);
+        $this->forumService->updateLastPostIdOnCategory ($oldCategoryId);
+        $this->forumService->updateLastPostIdOnCategory ($category->categoryId);
 
-        $logData = array_map(function ($threadId) use ($oldCategoryId, $category) {
+        $logData = array_map (function ($threadId) use ($oldCategoryId, $category) {
             return [
                 'threadId' => $threadId,
                 'sourceId' => $oldCategoryId,
@@ -187,8 +187,8 @@ class ThreadController extends Controller {
             ];
         }, $threadIds);
 
-        Logger::modMultiple($user->userId, $request->ip(), Action::MOVE_THREADS, $logData);
-        return response()->json();
+        Logger::modMultiple ($user->userId, $request->ip (), Action::MOVE_THREADS, $logData);
+        return response ()->json ();
     }
 
     /**
@@ -196,70 +196,70 @@ class ThreadController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function changeOwner(Request $request) {
-        $user = $request->get('auth');
-        $threadIds = $request->input('threadIds');
+    public function changeOwner (Request $request) {
+        $user = $request->get ('auth');
+        $threadIds = $request->input ('threadIds');
 
-        $forumPermissions = ConfigHelper::getForumPermissions();
+        $forumPermissions = ConfigHelper::getForumPermissions ();
 
-        $newOwner = User::withNickname($request->input('nickname'))->first();
-        Condition::precondition(!$newOwner, 404, 'No user with that nickname');
+        $newOwner = User::withNickname ($request->input ('nickname'))->first ();
+        Condition::precondition (!$newOwner, 404, 'No user with that nickname');
 
-        $threadsSql = Thread::whereIn('threadId', $threadIds);
-        $threads = $threadsSql->get();
-        Condition::precondition(count($threads) != count($threadIds), 404, 'One or more of the threads do not exist!');
+        $threadsSql = Thread::whereIn ('threadId', $threadIds);
+        $threads = $threadsSql->get ();
+        Condition::precondition (count ($threads) != count ($threadIds), 404, 'One or more of the threads do not exist!');
 
-        $threads = $threads->filter(function ($thread) use ($newOwner) {
+        $threads = $threads->filter (function ($thread) use ($newOwner) {
             return $thread->userId != $newOwner->userId;
         });
-        Condition::precondition(count($threads) < 1, 400, 'No threads selected!');
+        Condition::precondition (count ($threads) < 1, 400, 'No threads selected!');
 
-        $categoryId = $threads->get(0)->categoryId;
-        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, $forumPermissions->canChangeOwner, $categoryId),
+        $categoryId = $threads->get (0)->categoryId;
+        Condition::precondition (!PermissionHelper::haveForumPermission ($user->userId, $forumPermissions->canChangeOwner, $categoryId),
             400, 'You do not have permission to change thread owner');
 
-        $sameCategoryId = Iterables::every($threads, function ($thread) use ($categoryId) {
+        $sameCategoryId = Iterables::every ($threads, function ($thread) use ($categoryId) {
             return $thread->categoryId == $categoryId;
         });
-        Condition::precondition(!$sameCategoryId, 400, 'You are trying to change owners of threads from different categories');
+        Condition::precondition (!$sameCategoryId, 400, 'You are trying to change owners of threads from different categories');
 
-        $logData = $threads->map(function ($thread) use ($newOwner) {
+        $logData = $threads->map (function ($thread) use ($newOwner) {
             return [
                 'threadId' => $thread->threadId,
                 'originalOwnerId' => $thread->userId,
                 'newOwner' => $newOwner->userId
             ];
-        })->toArray();
+        })->toArray ();
 
-        $originalOwnerIds = $threads->map(function ($thread) {
+        $originalOwnerIds = $threads->map (function ($thread) {
             return $thread->userId;
-        })->toArray();
+        })->toArray ();
 
-        $originalOwnerFreq = array_count_values($originalOwnerIds);
+        $originalOwnerFreq = array_count_values ($originalOwnerIds);
 
-        $threadsSql->update([
+        $threadsSql->update ([
             'userId' => $newOwner->userId
         ]);
 
-        $firstPostIds = $threads->map(function ($thread) {
+        $firstPostIds = $threads->map (function ($thread) {
             return $thread->firstPostId;
         });
 
-        Post::whereIn('postId', $firstPostIds)->update([
+        Post::whereIn ('postId', $firstPostIds)->update ([
             'userId' => $newOwner->userId
         ]);
 
         foreach ($originalOwnerFreq as $key => $value) {
-            User::where('userId', $key)->first()->update([
-                'threads' => DB::raw('threads - ' . $value)
+            User::where ('userId', $key)->first ()->update ([
+                'threads' => DB::raw ('threads - ' . $value)
             ]);
         }
 
-        $newOwner->threads += count($threads);
-        $newOwner->save();
+        $newOwner->threads += count ($threads);
+        $newOwner->save ();
 
-        Logger::modMultiple($user->userId, $request->ip(), Action::CHANGE_THREAD_OWNER, $logData);
-        return response()->json(UserHelper::getUser($newOwner->userId));
+        Logger::modMultiple ($user->userId, $request->ip (), Action::CHANGE_THREAD_OWNER, $logData);
+        return response ()->json (UserHelper::getUser ($newOwner->userId));
     }
 
     /**
@@ -268,22 +268,22 @@ class ThreadController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function closeThread(Request $request, $threadId) {
-        $user = $request->get('auth');
-        $thread = Thread::find($threadId);
+    public function closeThread (Request $request, $threadId) {
+        $user = $request->get ('auth');
+        $thread = Thread::find ($threadId);
 
-        Condition::precondition(!$thread, 404, 'Thread do not exist');
-        Condition::precondition(!$thread->isOpen, 400, 'Thread is already closed');
+        Condition::precondition (!$thread, 404, 'Thread do not exist');
+        Condition::precondition (!$thread->isOpen, 400, 'Thread is already closed');
 
-        $canClose = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canCloseOpenThread, $thread->categoryId) ||
-            (PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canOpenCloseOwnThread, $thread->categoryId) && $user->userId == $thread->userId);
-        Condition::precondition(!$canClose, 400, 'You do not have permission to close/open threads here');
+        $canClose = PermissionHelper::haveForumPermission ($user->userId, ConfigHelper::getForumPermissions ()->canCloseOpenThread, $thread->categoryId) ||
+            (PermissionHelper::haveForumPermission ($user->userId, ConfigHelper::getForumPermissions ()->canOpenCloseOwnThread, $thread->categoryId) && $user->userId == $thread->userId);
+        Condition::precondition (!$canClose, 400, 'You do not have permission to close/open threads here');
 
         $thread->isOpen = false;
-        $thread->save();
+        $thread->save ();
 
-        Logger::mod($user->userId, $request->ip(), Action::CLOSED_THREAD, ['thread' => $thread->title], $thread->threadId);
-        return response()->json();
+        Logger::mod ($user->userId, $request->ip (), Action::CLOSED_THREAD, ['thread' => $thread->title], $thread->threadId);
+        return response ()->json ();
     }
 
     /**
@@ -292,22 +292,22 @@ class ThreadController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function openThread(Request $request, $threadId) {
-        $user = $request->get('auth');
-        $thread = Thread::find($threadId);
+    public function openThread (Request $request, $threadId) {
+        $user = $request->get ('auth');
+        $thread = Thread::find ($threadId);
 
-        Condition::precondition(!$thread, 404, 'Thread do not exist');
-        Condition::precondition($thread->isOpen, 400, 'Thread is already open');
+        Condition::precondition (!$thread, 404, 'Thread do not exist');
+        Condition::precondition ($thread->isOpen, 400, 'Thread is already open');
 
-        $canOpen = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canCloseOpenThread, $thread->categoryId) ||
-            (PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canOpenCloseOwnThread, $thread->categoryId) && $user->userId == $thread->userId);
-        Condition::precondition(!$canOpen, 400, 'You do not have permission to close/open threads here');
+        $canOpen = PermissionHelper::haveForumPermission ($user->userId, ConfigHelper::getForumPermissions ()->canCloseOpenThread, $thread->categoryId) ||
+            (PermissionHelper::haveForumPermission ($user->userId, ConfigHelper::getForumPermissions ()->canOpenCloseOwnThread, $thread->categoryId) && $user->userId == $thread->userId);
+        Condition::precondition (!$canOpen, 400, 'You do not have permission to close/open threads here');
 
         $thread->isOpen = true;
-        $thread->save();
+        $thread->save ();
 
-        Logger::mod($user->userId, $request->ip(), Action::OPEN_THREAD, ['thread' => $thread->title], $thread->threadId);
-        return response()->json();
+        Logger::mod ($user->userId, $request->ip (), Action::OPEN_THREAD, ['thread' => $thread->title], $thread->threadId);
+        return response ()->json ();
     }
 
     /**
@@ -318,18 +318,18 @@ class ThreadController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function stickyThread(Request $request, $threadId) {
-        $user = $request->get('auth');
-        $thread = Thread::find($threadId);
-        Condition::precondition(!$thread, 404, 'Thread does not exist');
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canStickyThread, $thread->categoryId,
+    public function stickyThread (Request $request, $threadId) {
+        $user = $request->get ('auth');
+        $thread = Thread::find ($threadId);
+        Condition::precondition (!$thread, 404, 'Thread does not exist');
+        PermissionHelper::haveForumPermissionWithException ($user->userId, ConfigHelper::getForumPermissions ()->canStickyThread, $thread->categoryId,
             'You do not have permission to sticky threads here');
 
         $thread->isSticky = true;
-        $thread->save();
+        $thread->save ();
 
-        Logger::mod($user->userId, $request->ip(), Action::STICKIED_THREAD, [], $thread->threadId);
-        return response()->json();
+        Logger::mod ($user->userId, $request->ip (), Action::STICKIED_THREAD, [], $thread->threadId);
+        return response ()->json ();
     }
 
     /**
@@ -340,18 +340,18 @@ class ThreadController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function unstickyThread(Request $request, $threadId) {
-        $user = $request->get('auth');
-        $thread = Thread::find($threadId);
-        Condition::precondition(!$thread, 404, 'Thread does not exist');
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canStickyThread, $thread->categoryId,
+    public function unstickyThread (Request $request, $threadId) {
+        $user = $request->get ('auth');
+        $thread = Thread::find ($threadId);
+        Condition::precondition (!$thread, 404, 'Thread does not exist');
+        PermissionHelper::haveForumPermissionWithException ($user->userId, ConfigHelper::getForumPermissions ()->canStickyThread, $thread->categoryId,
             'You do not have permission to unsticky threads here');
 
         $thread->isSticky = 0;
-        $thread->save();
+        $thread->save ();
 
-        Logger::mod($user->userId, $request->ip(), Action::UNSTICKIED_THREAD, [], $thread->threadId);
-        return response()->json();
+        Logger::mod ($user->userId, $request->ip (), Action::UNSTICKIED_THREAD, [], $thread->threadId);
+        return response ()->json ();
     }
 
     /**
@@ -362,28 +362,28 @@ class ThreadController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function unapproveThread(Request $request, $threadId) {
-        $user = $request->get('auth');
-        $thread = Thread::find($threadId);
-        Condition::precondition(!$thread, 404, 'Thread does not exist!');
-        Condition::precondition(!$thread->isApproved, 400, 'Thread is already unapproved');
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canApproveThreads, $thread->categoryId,
+    public function unapproveThread (Request $request, $threadId) {
+        $user = $request->get ('auth');
+        $thread = Thread::find ($threadId);
+        Condition::precondition (!$thread, 404, 'Thread does not exist!');
+        Condition::precondition (!$thread->isApproved, 400, 'Thread is already unapproved');
+        PermissionHelper::haveForumPermissionWithException ($user->userId, ConfigHelper::getForumPermissions ()->canApproveThreads, $thread->categoryId,
             'You dont have permission to unapprove this thread');
 
         $thread->isApproved = false;
-        $thread->save();
-        Post::where('threadId', $thread->threadId)->update(['isApproved' => false]);
+        $thread->save ();
+        Post::where ('threadId', $thread->threadId)->update (['isApproved' => false]);
 
-        if (!($thread->category->options & ConfigHelper::getForumOptionsConfig()->postsDontCount)) {
-            $posts = Post::where('threadId', $thread->threadId)->where('isApproved', '<', 1)->get();
+        if (!($thread->category->options & ConfigHelper::getForumOptionsConfig ()->postsDontCount)) {
+            $posts = Post::where ('threadId', $thread->threadId)->where ('isApproved', '<', 1)->get ();
             foreach ($posts as $post) {
-                User::where('userId', $post->userId)->update(['posts' => DB::raw('posts - 1 ')]);
+                User::where ('userId', $post->userId)->update (['posts' => DB::raw ('posts - 1 ')]);
             }
         }
 
-        $this->forumService->updateLastPostIdOnCategory($thread->categoryId);
-        Logger::mod($user->userId, $request->ip(), Action::UNAPPROVED_THREAD, [], $thread->threadId);
-        return response()->json();
+        $this->forumService->updateLastPostIdOnCategory ($thread->categoryId);
+        Logger::mod ($user->userId, $request->ip (), Action::UNAPPROVED_THREAD, [], $thread->threadId);
+        return response ()->json ();
     }
 
     /**
@@ -394,28 +394,29 @@ class ThreadController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function approveThread(Request $request, $threadId) {
-        $user = $request->get('auth');
-        $thread = Thread::find($threadId);
-        Condition::precondition(!$thread, 404, 'Thread does not exist!');
-        Condition::precondition($thread->isApproved, 400, 'Thread is already approved');
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canApproveThreads, $thread->categoryId,
+    public function approveThread (Request $request, $threadId) {
+        $user = $request->get ('auth');
+        $thread = Thread::find ($threadId);
+        Condition::precondition (!$thread, 404, 'Thread does not exist!');
+        Condition::precondition ($thread->isApproved, 400, 'Thread is already approved');
+        PermissionHelper::haveForumPermissionWithException ($user->userId, ConfigHelper::getForumPermissions ()->canApproveThreads, $thread->categoryId,
             'You dont have permission to unapprove this thread');
 
         $thread->isApproved = true;
-        $thread->save();
-        Post::where('threadId', $thread->threadId)->update(['isApproved' => true]);
+        $thread->save ();
+        Post::where ('threadId', $thread->threadId)->update (['isApproved' => true]);
 
-        if (!($thread->category->options & ConfigHelper::getForumOptionsConfig()->postsDontCount)) {
-            $posts = Post::where('isApproved', true)->where('threadId', $thread->threadId)->get();
+        if (!($thread->category->options & ConfigHelper::getForumOptionsConfig ()->postsDontCount)) {
+            $posts = Post::where ('isApproved', true)->where ('threadId', $thread->threadId)->get ();
             foreach ($posts as $post) {
-                User::where('userId', $post->userId)->update(['posts' => DB::raw('posts + 1 ')]);
+                User::where ('userId', $post->userId)->update (['posts' => DB::raw ('posts + 1 ')]);
             }
         }
 
-        $this->forumService->updateLastPostIdOnCategory($thread->categoryId);
-        Logger::mod($user->userId, $request->ip(), Action::APPROVED_THREAD, [], $thread->threadId);
-        return response()->json();
+        $this->forumService->postSiteMessageIfApplicable ($thread);
+        $this->forumService->updateLastPostIdOnCategory ($thread->categoryId);
+        Logger::mod ($user->userId, $request->ip (), Action::APPROVED_THREAD, [], $thread->threadId);
+        return response ()->json ();
     }
 
     /**
@@ -426,30 +427,30 @@ class ThreadController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteThread(Request $request, $threadId) {
-        $user = $request->get('auth');
-        $thread = Thread::find($threadId);
+    public function deleteThread (Request $request, $threadId) {
+        $user = $request->get ('auth');
+        $thread = Thread::find ($threadId);
 
-        Condition::precondition(!$thread, 404, 'Thread does not exist!');
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canDeletePosts, $thread->categoryId,
+        Condition::precondition (!$thread, 404, 'Thread does not exist!');
+        PermissionHelper::haveForumPermissionWithException ($user->userId, ConfigHelper::getForumPermissions ()->canDeletePosts, $thread->categoryId,
             'You dont have permission to delete this thread');
 
-        $posts = Post::where('threadId', $thread->threadId)->where('isApproved', '>', 0)->get();
+        $posts = Post::where ('threadId', $thread->threadId)->where ('isApproved', '>', 0)->get ();
 
         foreach ($posts as $post) {
             if ($post->isApproved && $post->postId != $thread->firstPostId) {
-                User::where('userId', $post->userId)->update(['posts' => DB::raw('posts - 1')]);
+                User::where ('userId', $post->userId)->update (['posts' => DB::raw ('posts - 1')]);
             }
-            Post::where('postId', $post->postId)->update(['isDeleted' => true, 'isApproved' => true]);
+            Post::where ('postId', $post->postId)->update (['isDeleted' => true, 'isApproved' => true]);
         }
 
-        User::where('userId', $thread->userId)->update(['threads' => DB::raw('threads - 1')]);
+        User::where ('userId', $thread->userId)->update (['threads' => DB::raw ('threads - 1')]);
         $thread->isApproved = true;
         $thread->isDeleted = true;
-        $thread->save();
+        $thread->save ();
 
-        $this->forumService->updateLastPostIdOnCategory($thread->categoryId);
-        Logger::mod($user->userId, $request->ip(), Action::DELETED_THREAD, [], $thread->threadId);
-        return response()->json();
+        $this->forumService->updateLastPostIdOnCategory ($thread->categoryId);
+        Logger::mod ($user->userId, $request->ip (), Action::DELETED_THREAD, [], $thread->threadId);
+        return response ()->json ();
     }
 }

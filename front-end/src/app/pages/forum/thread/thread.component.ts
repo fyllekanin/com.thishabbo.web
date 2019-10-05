@@ -31,7 +31,7 @@ import { INFO_BOX_TYPE, InfoBoxModel } from 'shared/app-views/info-box/info-box.
 @Component({
     selector: 'app-forum-thread',
     templateUrl: 'thread.component.html',
-    styleUrls: ['thread.component.css']
+    styleUrls: [ 'thread.component.css' ]
 })
 export class ThreadComponent extends Page implements OnDestroy {
     private _threadPage: ThreadPage = new ThreadPage();
@@ -59,7 +59,7 @@ export class ThreadComponent extends Page implements OnDestroy {
         content: 'You are banned from viewing this thread'
     };
 
-    constructor(
+    constructor (
         private _dialogService: DialogService,
         private _httpService: HttpService,
         private _activatedRoute: ActivatedRoute,
@@ -78,15 +78,15 @@ export class ThreadComponent extends Page implements OnDestroy {
         this._multiQuotedPosts = [];
     }
 
-    trackPosts(_index: number, item: PostModel): number {
+    trackPosts (_index: number, item: PostModel): number {
         return item.updatedAt;
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onKeyUp(content: string): void {
+    onKeyUp (content: string): void {
         if (!content) {
             return;
         }
@@ -98,7 +98,7 @@ export class ThreadComponent extends Page implements OnDestroy {
         });
     }
 
-    onButtonClick(button: EditorAction): void {
+    onButtonClick (button: EditorAction): void {
         switch (button.value) {
             case ThreadActions.AUTO_SAVE:
                 this.onOpenAutoSave();
@@ -120,7 +120,7 @@ export class ThreadComponent extends Page implements OnDestroy {
         }
     }
 
-    onAction(action: number): void {
+    onAction (action: number): void {
         ThreadActionExecutor.newBuilder()
             .withAction(action)
             .withNotificationService(this._notificationService)
@@ -133,7 +133,7 @@ export class ThreadComponent extends Page implements OnDestroy {
             .execute();
     }
 
-    onUpdatePost(postModel: PostModel): void {
+    onUpdatePost (postModel: PostModel): void {
         this._httpService.put(`forum/thread/post/${postModel.postId}`, { post: postModel })
             .subscribe(res => {
                 this.onSuccessUpdate(res);
@@ -143,7 +143,7 @@ export class ThreadComponent extends Page implements OnDestroy {
             });
     }
 
-    onQuotePost(content: string): void {
+    onQuotePost (content: string): void {
         const editorValue = this.editor.getEditorValue();
 
         const quotes = this._multiQuotedPosts.reduce((prev, curr) => {
@@ -158,7 +158,7 @@ ${postContent}[/quotepost]\n\r`;
         this._multiQuotedPosts = [];
     }
 
-    onMultiQuotePost(post: PostModel): void {
+    onMultiQuotePost (post: PostModel): void {
         if (this._multiQuotedPosts.findIndex(item => item.postId === post.postId) > -1) {
             this._multiQuotedPosts = this._multiQuotedPosts.filter(item => item.postId !== post.postId);
         } else {
@@ -166,17 +166,17 @@ ${postContent}[/quotepost]\n\r`;
         }
     }
 
-    getPostTitle(post: PostModel, index: number): string {
+    getPostTitle (post: PostModel, index: number): string {
         let title = TimeHelper.getLongDateWithTime(post.createdAt);
 
         if (!post.isApproved) {
             title += ' | unapproved';
         }
-        const prefix = this._threadPage.page > 1 ? this._threadPage.page - 1 : '';
-        return `#${prefix + '' + (index + 1)} - ${title}`;
+        const prefix = this._threadPage.page > 1 ? this._threadPage.page - 1 : 0;
+        return index === 10 ? `${this._threadPage.page + `0`}` : `#${prefix + '' + (index + 1)} - ${title}`;
     }
 
-    onTabClick(action: number): void {
+    onTabClick (action: number): void {
         switch (action) {
             case ThreadActions.SUBSCRIBE:
             case ThreadActions.UNSUBSCRIBE:
@@ -196,7 +196,7 @@ ${postContent}[/quotepost]\n\r`;
         }
     }
 
-    onIgnoreToggle(): void {
+    onIgnoreToggle (): void {
         this._service.toggleIgnore(this._threadPage)
             .subscribe(isIgnored => {
                 this._threadPage.isIgnored = isIgnored;
@@ -204,7 +204,7 @@ ${postContent}[/quotepost]\n\r`;
             });
     }
 
-    onSubscribeToggle(): void {
+    onSubscribeToggle (): void {
         this._service.toggleSubscription(this._threadPage)
             .subscribe(isSubscribed => {
                 this._threadPage.isSubscribed = isSubscribed;
@@ -212,7 +212,7 @@ ${postContent}[/quotepost]\n\r`;
             });
     }
 
-    onCheckboxChange(post: PostModel): void {
+    onCheckboxChange (post: PostModel): void {
         post.isSelected = !post.isSelected;
 
         if (this.posts.some(item => item.isSelected)) {
@@ -226,7 +226,7 @@ ${postContent}[/quotepost]\n\r`;
         }
     }
 
-    get canPost(): boolean {
+    get canPost (): boolean {
         return this._authService.isLoggedIn() &&
             (this._threadPage.isOpen || this._threadPage.forumPermissions.canCloseOpenThread) &&
             this._threadPage.categoryIsOpen &&
@@ -234,7 +234,7 @@ ${postContent}[/quotepost]\n\r`;
                 this._threadPage.forumPermissions.canPostInOthersThreads);
     }
 
-    get cantPostReason(): string {
+    get cantPostReason (): string {
         if (!this._authService.isLoggedIn()) {
             return 'You need to be logged in to post!';
         } else if (!this._threadPage.isOpen) {
@@ -248,23 +248,23 @@ ${postContent}[/quotepost]\n\r`;
         return '';
     }
 
-    get posts(): Array<PostModel> {
+    get posts (): Array<PostModel> {
         return this._threadPage.threadPosts;
     }
 
-    get forumPermissions(): ForumPermissions {
+    get forumPermissions (): ForumPermissions {
         return this._threadPage.forumPermissions;
     }
 
-    get thread(): ThreadPage {
+    get thread (): ThreadPage {
         return this._threadPage;
     }
 
-    get currentReadersTitle(): string {
+    get currentReadersTitle (): string {
         return `${this._threadPage.currentReaders.length} Currently Viewing This Thread`;
     }
 
-    private doPost(toggleThread: boolean): void {
+    private doPost (toggleThread: boolean): void {
         const threadId = this._threadPage ? this._threadPage.threadId : 0;
         const content = this.editor ? this.editor.getEditorValue() : '';
 
@@ -275,14 +275,14 @@ ${postContent}[/quotepost]\n\r`;
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private onOpenAutoSave(): void {
+    private onOpenAutoSave (): void {
         const autoSave = AutoSaveHelper.get(AutoSave.POST, this._threadPage.threadId);
         this.editor.content = autoSave.content;
         AutoSaveHelper.remove(AutoSave.POST, this._threadPage.threadId);
         this.editorButtons = this.editorButtons.filter(button => button.value !== ThreadActions.AUTO_SAVE);
     }
 
-    private scrollToEditor(): void {
+    private scrollToEditor (): void {
         const elements = this._elementRef.nativeElement.getElementsByClassName('new-post-editor');
         if (elements.length > 0) {
             const top = elements[elements.length - 1].offsetTop;
@@ -290,7 +290,7 @@ ${postContent}[/quotepost]\n\r`;
         }
     }
 
-    private onSuccessUpdate(postModel: PostModel): void {
+    private onSuccessUpdate (postModel: PostModel): void {
         this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'Post updated!'
@@ -300,7 +300,7 @@ ${postContent}[/quotepost]\n\r`;
         });
     }
 
-    private onSuccessPost(toggleThread: boolean, post: PostModel): void {
+    private onSuccessPost (toggleThread: boolean, post: PostModel): void {
         this.editor.content = '';
         AutoSaveHelper.remove(AutoSave.POST, this._threadPage.threadId);
         if (this._threadPage.contentApproval) {
@@ -308,7 +308,7 @@ ${postContent}[/quotepost]\n\r`;
                 title: 'Your post is awaiting approval!',
                 content: `Your post is placed under the category of "unapproved" posts,
                     it will be waiting approval from a moderator before it isvisible.`,
-                buttons: [new DialogCloseButton('Close')]
+                buttons: [ new DialogCloseButton('Close') ]
             });
         } else {
             if (this._threadPage.page < this._threadPage.total) {
@@ -322,7 +322,7 @@ ${postContent}[/quotepost]\n\r`;
         }
     }
 
-    private onData(data: { data: ThreadPage }): void {
+    private onData (data: { data: ThreadPage }): void {
         this._threadPage = data.data;
         this._threadPage.parents.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'displayOrder'));
         this._threadPage.threadPosts.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'postId'));
@@ -341,7 +341,7 @@ ${postContent}[/quotepost]\n\r`;
         }
     }
 
-    private createOrUpdateTabs(): void {
+    private createOrUpdateTabs (): void {
         if (!this._authService.isLoggedIn()) {
             this.tabs = [];
             return;
@@ -369,7 +369,7 @@ ${postContent}[/quotepost]\n\r`;
         }
     }
 
-    private setPrefix(): void {
+    private setPrefix (): void {
         if (!this._threadPage || !this._threadPage.title) {
             return;
         }
@@ -380,14 +380,14 @@ ${postContent}[/quotepost]\n\r`;
 
         this._breadcrumbService.breadcrumb = new Breadcrumb({
             current: `${prefix} ${title}`,
-            items: [FORUM_BREADCRUM_ITEM].concat(this._threadPage.parents.map(parent => new BreadcrumbItem({
+            items: [ FORUM_BREADCRUM_ITEM ].concat(this._threadPage.parents.map(parent => new BreadcrumbItem({
                 title: parent.title,
                 url: `/forum/category/${parent.categoryId}/page/1`
             })))
         });
     }
 
-    private buildModerationTools(): void {
+    private buildModerationTools (): void {
         if (!this._isToolsVisible) {
             this.fixedTools = null;
             return;
@@ -410,13 +410,13 @@ ${postContent}[/quotepost]\n\r`;
         });
     }
 
-    private haveAnyTools(): boolean {
+    private haveAnyTools (): boolean {
         return getPostTools(this.forumPermissions).filter(item => item.condition).length > 0 ||
             getThreadTools(this._authService.authUser.userId, this._threadPage, this.forumPermissions)
                 .filter(item => item.condition).length > 0;
     }
 
-    private buildEditorButtons(): void {
+    private buildEditorButtons (): void {
         const buttons = [
             new EditorAction({
                 title: 'Post',
@@ -447,7 +447,7 @@ ${postContent}[/quotepost]\n\r`;
         this.editorButtons = buttons;
     }
 
-    private showThreadPosters(): void {
+    private showThreadPosters (): void {
         this._dialogService.openDialog({
             title: 'Thread Posters',
             buttons: [

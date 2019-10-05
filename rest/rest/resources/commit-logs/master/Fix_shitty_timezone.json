@@ -1,0 +1,1 @@
+{"topic":"Fix shitty timezone","type":"Bug","body":"Some users have half an hour difference to UTC except from the whole hours, this caused the timetable to book the slot one hour up/down"}

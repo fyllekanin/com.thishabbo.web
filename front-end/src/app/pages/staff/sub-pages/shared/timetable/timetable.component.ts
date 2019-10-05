@@ -23,7 +23,7 @@ import { TimetableHelper } from 'shared/helpers/timetable.helper';
 @Component({
     selector: 'app-staff-timetable',
     templateUrl: 'timetable.component.html',
-    styleUrls: ['timetable.component.css']
+    styleUrls: [ 'timetable.component.css' ]
 })
 export class TimetableComponent extends Page implements OnDestroy {
     private readonly _type;
@@ -178,7 +178,7 @@ export class TimetableComponent extends Page implements OnDestroy {
     private onBook (hour: number, res: { nickname: string, eventId: number, link: string }): void {
         const currentDay = this.getCurrentDay();
 
-        const offsetInHours = hour + (new Date().getTimezoneOffset() / 60);
+        const offsetInHours = hour + TimeHelper.getHourOffsetRounded();
         const convertedHour = TimeHelper.getConvertedHour(offsetInHours);
         const convertedDay = TimeHelper.getConvertedDay(offsetInHours, currentDay);
 

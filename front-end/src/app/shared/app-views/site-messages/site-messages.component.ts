@@ -8,10 +8,9 @@ import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
     templateUrl: 'site-messages.component.html'
 })
 export class SiteMessagesComponent {
-
     siteMessages: Array<InfoBoxModel> = [];
 
-    constructor(continuesInformationService: ContinuesInformationService) {
+    constructor (continuesInformationService: ContinuesInformationService) {
         continuesInformationService.onContinuesInformation.subscribe(information => {
             this.siteMessages = information.siteMessages
                 .filter(item => !Boolean(localStorage.getItem(`${LOCAL_STORAGE.READ_SITE_MESSAGE}-${item.siteMessageId}`)))
@@ -26,7 +25,7 @@ export class SiteMessagesComponent {
         });
     }
 
-    read(id: any): void {
+    read (id: any): void {
         if (Boolean(localStorage.getItem(`${LOCAL_STORAGE.READ_SITE_MESSAGE}-${id}`))) {
             return;
         }
