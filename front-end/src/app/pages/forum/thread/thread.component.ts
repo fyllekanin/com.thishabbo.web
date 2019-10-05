@@ -172,8 +172,12 @@ ${postContent}[/quotepost]\n\r`;
         if (!post.isApproved) {
             title += ' | unapproved';
         }
-        const prefix = this._threadPage.page > 1 ? this._threadPage.page - 1 : 0;
-        return index === 10 ? `${this._threadPage.page + `0`}` : `#${prefix + '' + (index + 1)} - ${title}`;
+        if (index >= 9) {
+            return `#${this._threadPage.page}${(index + 1) - 10} - ${title}`;
+        } else if (this._threadPage.page > 1) {
+            return `#${(this._threadPage.page - 1)}${index + 1} - ${title}`;
+        }
+        return `#${index + 1} - ${title}`;
     }
 
     onTabClick (action: number): void {

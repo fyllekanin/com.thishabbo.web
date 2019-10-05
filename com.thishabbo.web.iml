@@ -7,6 +7,7 @@
       <sourceFolder url="file://$MODULE_DIR$/rest/tests" isTestSource="true" packagePrefix="Tests\" />
       <excludeFolder url="file://$MODULE_DIR$/front-end/dist" />
       <excludeFolder url="file://$MODULE_DIR$/front-end/tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/braintree/braintreehttp" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/dnoegel/php-xdg-base-dir" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/doctrine/cache" />
@@ -44,6 +45,8 @@
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/orangehill/iseed" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/overtrue/phplint" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/paragonie/random_compat" />
+      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/paypal/paypal-checkout-sdk" />
+      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/paypal/rest-api-sdk-php" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/pdepend/pdepend" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/phar-io/manifest" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/phar-io/version" />
