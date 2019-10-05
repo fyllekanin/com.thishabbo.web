@@ -1,7 +1,7 @@
 <div class="nickname nickname-top-outside for-mobile">
     <app-user-link [user]="user"></app-user-link>
 </div>
-<div class="nickname nickname-top-outside" *ngIf="isTopOutside">
+<div class="nickname nickname-top-outside for-desktop" *ngIf="isTopOutside">
     <app-user-link [user]="user"></app-user-link>
 </div>
 <div class="avatar for-desktop">
@@ -14,7 +14,7 @@
         <app-user-link [user]="user"></app-user-link>
     </div>
 </div>
-<div class="nickname nickname-bottom-outside" *ngIf="isBottomOutside">
+<div class="nickname nickname-bottom-outside for-desktop" *ngIf="isBottomOutside">
     <app-user-link [user]="user"></app-user-link>
 </div>
 <div class="default for-desktop" *ngIf="!useAvatarImage">
