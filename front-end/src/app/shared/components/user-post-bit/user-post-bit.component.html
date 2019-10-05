@@ -1,4 +1,7 @@
-<div class="nickname nickname-top-outside for-mobile" *ngIf="isTopOutside">
+<div class="nickname nickname-top-outside for-mobile">
+    <app-user-link [user]="user"></app-user-link>
+</div>
+<div class="nickname nickname-top-outside" *ngIf="isTopOutside">
     <app-user-link [user]="user"></app-user-link>
 </div>
 <div class="avatar for-desktop">

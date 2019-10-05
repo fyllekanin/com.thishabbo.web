@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { User } from 'core/services/auth/auth.model';
-import { TimeHelper } from 'shared/helpers/time.helper';
 import { StringHelper } from 'shared/helpers/string.helper';
 import { NAME_POSITIONS } from 'shared/constants/name-positions.constants';
 import { AvatarModel } from '../../../pages/user/usercp/essentials/avatar/avatar.model';
@@ -23,10 +22,6 @@ export class UserPostBitComponent {
 
     onAvatarError (): void {
         this.useAvatarImage = false;
-    }
-
-    longDay (time: number): string {
-        return TimeHelper.getLongDate(time);
     }
 
     getBarColors (): string {
