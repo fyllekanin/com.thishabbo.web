@@ -1,0 +1,1 @@
+{"topic":"Fix personal request log","type":"Bug","body":"The personal request log for THC was never showing if a request was approved or not, it always return false and showed \"no\""}

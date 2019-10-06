@@ -2,28 +2,28 @@
 
 namespace App\Http\Controllers\Staff;
 
+use App\EloquentModels\Log\LogSitecp;
 use App\EloquentModels\RequestThc;
 use App\EloquentModels\Staff\RadioRequest;
 use App\EloquentModels\Staff\Timetable;
 use App\EloquentModels\User\User;
+use App\Helpers\DataHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
 use App\Models\Logger\Action;
 use App\Utils\Condition;
 use App\Utils\Value;
 use Illuminate\Http\Request;
-use App\EloquentModels\Log\LogSitecp;
-use App\Helpers\DataHelper;
 
 class StaffController extends Controller {
 
     /**
      * @param Request $request
-     * @param $startOfWeek
+     * @param         $startOfWeek
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getDashboardStats(Request $request, $startOfWeek) {
+    public function getDashboardStats (Request $request, $startOfWeek) {
         $user = $request->get('auth');
 
         return response()->json([
@@ -42,27 +42,30 @@ class StaffController extends Controller {
 
     /**
      * @param Request $request
-     * @param Number $page
+     * @param Number  $page
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function getThcRequestsLog(Request $request, $page) {
+    public function getThcRequestsLog (Request $request, $page) {
         $user = $request->get('auth');
 
         $logSql = RequestThc::where('requesterId', $user->userId)
-        ->withoutGlobalScope('nonHardDeleted');
+            ->withoutGlobalScope('nonHardDeleted');
         $total = $logSql->count();
         $items = $logSql->orderBy('createdAt', 'DESC')
             ->skip(DataHelper::getOffset($page))
             ->take($this->perPage)
             ->get()
-            ->map(function($item) {
-                $log = LogSitecp::where('contentId', $item->requestThcId)->first();
-
+            ->map(function ($item) {
+                $log = LogSitecp::where('action', Action::getAction(Action::MANAGED_THC_REQUESTS))
+                    ->where('contentId', $item->requestThcId)->first();
+                $data = $log ? json_decode($log->data) : new \stdClass();
                 return [
                     'nickname' => $item->receiver->nickname,
                     'habbo' => $item->receiver->habbo,
                     'amount' => $item->amount,
                     'isPending' => !$item->isDeleted,
-                    'isApproved' => Value::objectJsonProperty($log, 'wasApproved', false),
+                    'isApproved' => Value::objectJsonProperty($data, 'wasApproved', false),
                     'updatedAt' => $item->updatedAt->timestamp
                 ];
             });
@@ -79,7 +82,7 @@ class StaffController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createRequestThc(Request $request) {
+    public function createRequestThc (Request $request) {
         $user = $request->get('auth');
         $requests = $request->input('requests');
         $this->validateRequests($requests);
@@ -110,7 +113,7 @@ class StaffController extends Controller {
      *
      * @return null|object
      */
-    private function findAccount($nickname, $habbo) {
+    private function findAccount ($nickname, $habbo) {
         $account = User::withNickname($nickname)->first();
         if ($account) {
             return $account;
@@ -123,7 +126,7 @@ class StaffController extends Controller {
      *
      * @param $requests
      */
-    private function validateRequests($requests) {
+    private function validateRequests ($requests) {
         foreach ($requests as $request) {
             Condition::precondition(!isset($request['nickname']) && !isset($request['habbo']),
                 400, 'A nickname or habbo needs to be set!');
@@ -141,7 +144,7 @@ class StaffController extends Controller {
         }
     }
 
-    private function getNextEventsSlot($user) {
+    private function getNextEventsSlot ($user) {
         $slots = Timetable::isActive()
             ->where('day', '>=', date('N'))
             ->where('userId', $user->userId)
@@ -172,7 +175,7 @@ class StaffController extends Controller {
         ];
     }
 
-    private function getNextRadioSlot($user) {
+    private function getNextRadioSlot ($user) {
         $slots = Timetable::isActive()
             ->where('day', '>=', date('N'))
             ->where('userId', $user->userId)
