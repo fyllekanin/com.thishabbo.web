@@ -145,6 +145,8 @@ export class SlimThread {
     @objectOf(SlimUser)
     user: SlimUser;
 
+    isSelected: boolean;
+
     constructor (source?: Partial<SlimThread>) {
         ClassHelper.assign(this, source);
     }

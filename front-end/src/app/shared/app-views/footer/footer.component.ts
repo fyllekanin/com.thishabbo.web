@@ -10,43 +10,37 @@ import { Router } from '@angular/router';
 @Component({
     selector: 'app-footer',
     templateUrl: 'footer.component.html',
-    styleUrls: ['footer.component.css']
+    styleUrls: [ 'footer.component.css' ]
 })
 
 export class FooterComponent {
     private _info: ContinuesInformationModel;
 
-    constructor(
+    constructor (
         private _router: Router,
         continuesInformationService: ContinuesInformationService
     ) {
-        continuesInformationService.onContinuesInformation.subscribe(continuesInformation => {
-            this._info = continuesInformation;
-        });
+        continuesInformationService.onContinuesInformation
+            .subscribe(continuesInformation => this._info = continuesInformation);
     }
 
-    get activeUsers(): Array<ActiveUser> {
+    get activeUsers (): Array<ActiveUser> {
         return this._info ? this._info.footer.activeUsers : null;
     }
 
-    get month(): MonthInformation {
+    get month (): MonthInformation {
         return this._info ? this._info.footer.month : null;
     }
 
-    trackUsers(_index: number, item: ActiveUser): number {
+    trackUsers (_index: number, item: ActiveUser): number {
         return item.userId;
     }
 
-    getAvatarUrl(activeUser: ActiveUser): string {
-        return `url('/rest/resources/images/users/` +
-            `${activeUser.userId}.gif${activeUser.avatarUpdatedAt ? `?updatedAt=${activeUser.avatarUpdatedAt}` : ''}')`;
-    }
-
-    goToProfile(nickname: string) {
+    goToProfile (nickname: string) {
         this._router.navigateByUrl(`user/profile/${nickname}`);
     }
 
-    clearUserCache(): void {
+    clearUserCache (): void {
         localStorage.clear();
         location.reload();
     }

@@ -50,7 +50,9 @@ export class LogsComponent extends Page implements OnDestroy {
         activatedRoute: ActivatedRoute
     ) {
         super(elementRef);
-        this.logType = activatedRoute.snapshot.params['type'];
+        this.addSubscription(activatedRoute.params, (data: { type: string }) => {
+            this.logType = data.type;
+        });
         this.addSubscription(activatedRoute.data, this.onData.bind(this));
         breadcrumbService.breadcrumb = new Breadcrumb({
             current: 'Logs',
@@ -59,7 +61,7 @@ export class LogsComponent extends Page implements OnDestroy {
             ]
         });
         this.options = Object.keys(LOG_TYPES).map(key => {
-            return {value: LOG_TYPES[key], label: StringHelper.firstCharUpperCase(LOG_TYPES[key])};
+            return { value: LOG_TYPES[key], label: StringHelper.firstCharUpperCase(LOG_TYPES[key]) };
         });
     }
 
@@ -78,7 +80,7 @@ export class LogsComponent extends Page implements OnDestroy {
         this._filterTimer = setTimeout(() => {
             this._httpService.get(`sitecp/logs/${this.logType}/page/1`, filter)
                 .subscribe(res => {
-                    this.onData({data: new LogPage(res)});
+                    this.onData({ data: new LogPage(res) });
                 });
         }, 200);
     }
@@ -111,7 +113,8 @@ export class LogsComponent extends Page implements OnDestroy {
     private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
-            this.tableConfig.filterConfigs = this.getTableFilters();
+            this.tableConfig.title = `${StringHelper.firstCharUpperCase(this.logType)} log`;
+            this.updateTableFilters();
             return;
         }
         this.tableConfig = new TableConfig({
@@ -120,6 +123,14 @@ export class LogsComponent extends Page implements OnDestroy {
             rows: this.getTableRows(),
             filterConfigs: this.getTableFilters()
         });
+    }
+
+    private updateTableFilters (): void {
+        const filter = this.tableConfig.filterConfigs.find(config => config.title === 'Action');
+        filter.items = this._data.actions.map(action => new FilterConfigItem({
+            label: action.description,
+            value: String(action.id)
+        }));
     }
 
     private getTableFilters (): Array<FilterConfig> {
@@ -149,33 +160,33 @@ export class LogsComponent extends Page implements OnDestroy {
 
     private getFilterValueByKey (key: string): string {
         if (!this.tableConfig || !this.tableConfig.filterConfigs) {
-            return undefined;
+            return '';
         }
         const filter = this.tableConfig.filterConfigs.find(item => item.key === key);
-        return filter ? filter.value : undefined;
+        return filter ? filter.value : '';
     }
 
     private getTableRows (): Array<TableRow> {
         return this._data.items.map(item => new TableRow({
             id: String(item.logId),
             cells: [
-                new TableCell({title: item.user.nickname}),
-                new TableCell({title: item.action}),
-                new TableCell({title: item.content}),
-                new TableCell({title: TimeHelper.getTime(item.createdAt)})
+                new TableCell({ title: item.user.nickname }),
+                new TableCell({ title: item.action }),
+                new TableCell({ title: item.content }),
+                new TableCell({ title: TimeHelper.getTime(item.createdAt) })
             ],
             actions: [
-                new TableAction({title: 'View Details'})
+                new TableAction({ title: 'View Details' })
             ]
         }));
     }
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'User'}),
-            new TableHeader({title: 'Action'}),
-            new TableHeader({title: 'Content'}),
-            new TableHeader({title: 'When'})
+            new TableHeader({ title: 'User' }),
+            new TableHeader({ title: 'Action' }),
+            new TableHeader({ title: 'Content' }),
+            new TableHeader({ title: 'When' })
         ];
     }
 }

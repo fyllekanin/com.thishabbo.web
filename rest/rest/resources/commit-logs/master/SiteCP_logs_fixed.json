@@ -1,0 +1,1 @@
+{"topic":"SiteCP logs fixed","type":"Bug","body":"When using the SiteCP logs the user search input would un-focus when searching which was annoying. Also the title was wrong after you switched from example mod to staff logs"}

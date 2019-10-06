@@ -22,7 +22,7 @@
             <app-forum-slim-thread *ngFor="let stickyThread of categoryPage.stickyThreads"
                                    [thread]="stickyThread"
                                    [forumPermissions]="categoryPage.forumPermissions"
-                                   [isChecked]="isChecked(stickyThread)"
+                                   [isChecked]="stickyThread.isSelected"
                                    (onCheckChanged)="onCheckChanged($event)">
             </app-forum-slim-thread>
         </app-content>
@@ -38,7 +38,7 @@
             <app-forum-slim-thread *ngFor="let thread of categoryPage.threads"
                                    [thread]="thread"
                                    [forumPermissions]="categoryPage.forumPermissions"
-                                   [isChecked]="isChecked(thread)"
+                                   [isChecked]="thread.isSelected"
                                    (onCheckChanged)="onCheckChanged($event)">
             </app-forum-slim-thread>
         </app-content>

@@ -12,17 +12,22 @@ export class SiteMessagesComponent {
 
     constructor (continuesInformationService: ContinuesInformationService) {
         continuesInformationService.onContinuesInformation.subscribe(information => {
-            this.siteMessages = information.siteMessages
+            information.siteMessages
+                .filter(item => this.siteMessages.findIndex(message => message.id === item.siteMessageId) === -1)
                 .filter(item => !Boolean(localStorage.getItem(`${LOCAL_STORAGE.READ_SITE_MESSAGE}-${item.siteMessageId}`)))
-                .map(item => {
-                    return {
+                .forEach(item => {
+                    this.siteMessages.push({
                         type: item.getType(),
                         title: item.title,
                         content: item.content,
                         id: item.siteMessageId
-                    };
+                    });
                 });
         });
+    }
+
+    trackSiteMessages (_index: number, message: InfoBoxModel): number {
+        return message.id;
     }
 
     read (id: any): void {

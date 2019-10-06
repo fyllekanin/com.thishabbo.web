@@ -1,6 +1,6 @@
 <div class="grid-container full">
     <div class="grid-x grid-margin-x">
-        <div class="cell small-12" *ngFor="let item of siteMessages">
+        <div class="cell small-12" *ngFor="let item of siteMessages; trackBy: trackSiteMessages">
             <app-info-box [model]="item" [isClosable]="true" (onClick)="read($event)"></app-info-box>
         </div>
     </div>

@@ -4,7 +4,7 @@
             <app-title [title]="'Media Articles'"></app-title>
             <app-content>
                 <div class="wrapper" *ngFor="let item of articles">
-                    <div class="image" [style.backgroundImage]="getBackgroundImage(item) | safeStyle"></div>
+                    <div class="image" [style.backgroundImage]="item.backgroundUrl | safeStyle"></div>
                     <div class="content">
                         <a class="title" [routerLink]="['/forum', 'thread', item.threadId, 'page', 1]">
                             <span *ngIf="item.prefix" [style]="item.prefix.style | safeStyle">{{item.prefix.text}}

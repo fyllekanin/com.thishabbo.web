@@ -15,7 +15,7 @@ export abstract class Page implements OnDestroy {
         return TimeHelper.getTime(time);
     }
 
-    addSubscription (method: { subscribe: (callback: () => void) => Subscription }, callback: () => void): void {
+    addSubscription (method: { subscribe: (callback: () => void) => Subscription }, callback: (data?) => void): void {
         this._subscriptions.push(method.subscribe(callback));
     }
 

@@ -1,4 +1,4 @@
-import { arrayOf, ClassHelper, objectOf, primitive, dateAndTime } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, dateAndTime, objectOf, primitive } from 'shared/helpers/class.helper';
 import { SlimUser } from 'core/services/auth/auth.model';
 import { Prefix } from '../../../pages/sitecp/sub-pages/forum/prefixes/prefix.model';
 
@@ -30,7 +30,10 @@ export class SlimArticle {
     @objectOf(Prefix)
     prefix: Prefix;
 
+    backgroundUrl: string;
+
     constructor (source?: Partial<SlimArticle>) {
         ClassHelper.assign(this, source);
+        this.backgroundUrl = `url(/rest/resources/images/thumbnails/${this.threadId}.gif?updatedAt=${this.updatedAt})`;
     }
 }

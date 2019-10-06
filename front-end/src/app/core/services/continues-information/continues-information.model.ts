@@ -1,4 +1,4 @@
-import { arrayOf, ClassHelper, objectOf, primitive, dateAndTime } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, dateAndTime, objectOf, primitive } from 'shared/helpers/class.helper';
 import { EventsModel, RadioModel } from 'shared/components/radio/radio.model';
 import { INFO_BOX_TYPE } from 'shared/app-views/info-box/info-box.model';
 import { SlimUser } from 'core/services/auth/auth.model';
@@ -38,8 +38,12 @@ export class ActiveUser {
     @primitive()
     avatarUpdatedAt: number;
 
+    avatarUrl: string;
+
     constructor (source: Partial<ActiveUser>) {
         ClassHelper.assign(this, source);
+        this.avatarUrl = `url('/rest/resources/images/users/` +
+            `${this.userId}.gif${this.avatarUpdatedAt ? `?updatedAt=${this.avatarUpdatedAt}` : ''}')`;
     }
 }
 

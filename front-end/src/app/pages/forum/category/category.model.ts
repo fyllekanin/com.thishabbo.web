@@ -1,6 +1,5 @@
-import { ClassHelper, objectOf } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
 import { ForumPermissions, SlimCategory, SlimThread } from '../forum.model';
-import { primitive, arrayOf } from 'shared/helpers/class.helper';
 
 export enum CATEGORY_SORT_BY {
     THREAD_TITLE = 'THREAD_TITLE',
@@ -37,7 +36,7 @@ export class CategoryDisplayOptions {
     @primitive()
     fromThe: string;
 
-    constructor(source?: Partial<CategoryDisplayOptions>) {
+    constructor (source?: Partial<CategoryDisplayOptions>) {
         ClassHelper.assign(this, source);
         this.sortedBy = this.sortedBy || CATEGORY_SORT_BY.LAST_POST_TIME;
         this.sortOrder = this.sortOrder || SORT_ORDER.DESC;
@@ -55,7 +54,7 @@ export class CategoryParent {
     @primitive()
     displayOrder: number;
 
-    constructor(source: Partial<CategoryParent>) {
+    constructor (source: Partial<CategoryParent>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -88,8 +87,12 @@ export class CategoryPage {
     @primitive()
     isIgnored: boolean;
 
-    constructor(source?: Partial<CategoryPage>) {
+    constructor (source?: Partial<CategoryPage>) {
         ClassHelper.assign(this, source);
+    }
+
+    getAllThreads (): Array<SlimThread> {
+        return this.threads.concat(this.stickyThreads);
     }
 }
 
