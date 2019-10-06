@@ -138,7 +138,7 @@ export class CategoryComponent extends Page implements OnDestroy {
     }
 
     onCheckChanged (threadId: number) {
-        const thread = this.categoryPage.getAllThreads().find(thread => thread.threadId === threadId);
+        const thread = this.categoryPage.getAllThreads().find(item => item.threadId === threadId);
         thread.isSelected = !thread.isSelected;
 
         if (this.getSelectedThreadIds().length > 0) {
