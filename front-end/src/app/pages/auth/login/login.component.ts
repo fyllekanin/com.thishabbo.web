@@ -6,12 +6,11 @@ import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { LoginAction } from './login.model';
 import { Router } from '@angular/router';
-import { StringHelper } from 'shared/helpers/string.helper';
 
 @Component({
     selector: 'app-auth-login',
     templateUrl: 'login.component.html',
-    styleUrls: ['login.component.css']
+    styleUrls: [ 'login.component.css' ]
 })
 
 export class LoginComponent extends Page implements OnDestroy {
@@ -20,9 +19,9 @@ export class LoginComponent extends Page implements OnDestroy {
     password = '';
 
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Login', value: LoginAction.LOGIN}),
-        new TitleTab({title: 'Register', value: LoginAction.REGISTER}),
-        new TitleTab({title: 'Forgotten Password', value: LoginAction.FORGOTTEN_PASSWORD})
+        new TitleTab({ title: 'Login', value: LoginAction.LOGIN }),
+        new TitleTab({ title: 'Register', value: LoginAction.REGISTER }),
+        new TitleTab({ title: 'Forgotten Password', value: LoginAction.FORGOTTEN_PASSWORD })
     ];
 
     constructor (
@@ -32,7 +31,7 @@ export class LoginComponent extends Page implements OnDestroy {
         elementRef: ElementRef
     ) {
         super(elementRef);
-        breadcrumbService.breadcrumb = new Breadcrumb({current: 'Login'});
+        breadcrumbService.breadcrumb = new Breadcrumb({ current: 'Login' });
     }
 
     ngOnDestroy (): void {
@@ -50,12 +49,6 @@ export class LoginComponent extends Page implements OnDestroy {
             case LoginAction.FORGOTTEN_PASSWORD:
                 this._router.navigateByUrl('auth/forgot-password');
                 break;
-        }
-    }
-
-    keyDownFunction (event): void {
-        if (StringHelper.isKey(event, 'enter')) {
-            this.doLogin();
         }
     }
 
