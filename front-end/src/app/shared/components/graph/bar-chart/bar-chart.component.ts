@@ -97,10 +97,6 @@ export class BarChartComponent implements AfterViewInit {
             .data(this._data.items)
             .enter()
             .append('rect')
-            .attr('tooltip', item => {
-                return item.yItem;
-            })
-            .attr('tooltip-position', 'right')
             .attr('class', 'bar')
             .attr('x', item => {
                 return this._scaleBand(item.xItem);
