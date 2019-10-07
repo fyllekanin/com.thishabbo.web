@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\EloquentModels\Badge;
 use App\EloquentModels\Shop\Subscription;
 use App\EloquentModels\Shop\UserSubscription;
 use App\EloquentModels\User\User;
@@ -14,7 +15,7 @@ use stdClass;
 
 class UserHelper {
 
-    public static function isUserLoggedIn($user) {
+    public static function isUserLoggedIn ($user) {
         return $user && $user->userId > 0;
     }
 
@@ -23,7 +24,7 @@ class UserHelper {
      *
      * @return mixed|null
      */
-    public static function getSlimUser($userId) {
+    public static function getSlimUser ($userId) {
         if (!$userId && !is_int($userId)) {
             return null;
         }
@@ -59,7 +60,7 @@ class UserHelper {
      *
      * @return null|\stdClass
      */
-    public static function getUser($userId) {
+    public static function getUser ($userId) {
         if (!$userId) {
             return null;
         }
@@ -86,7 +87,12 @@ class UserHelper {
         $user->posts = $userObj->posts;
         $user->likes = $userObj->likes;
         $user->postBitSettings = $postBit;
-        $user->badgeIds = Value::objectJsonProperty($userdata, 'activeBadges', []);
+        $user->badges = array_map(function ($badgeId) {
+            return [
+                'badgeId' => $badgeId,
+                'name' => Badge::where('badgeId', $badgeId)->value('name')
+            ];
+        }, Value::objectJsonProperty($userdata, 'activeBadges', []));
 
         if (isset($userdata->nameColor)) {
             $user->nameColor = $userdata->nameColor;
@@ -107,7 +113,7 @@ class UserHelper {
      *
      * @return object
      */
-    public static function getUserFromId($userId) {
+    public static function getUserFromId ($userId) {
         $defaultUser = (object)[
             'userId' => 0,
             'groupIds' => [0],
@@ -146,7 +152,7 @@ class UserHelper {
      *
      * @return UserData
      */
-    public static function getUserDataOrCreate($userId) {
+    public static function getUserDataOrCreate ($userId) {
         $userData = UserData::userId($userId)->first();
 
         if ($userData) {
@@ -165,7 +171,7 @@ class UserHelper {
      *
      * @return array
      */
-    public static function getUserPostBit($userdata) {
+    public static function getUserPostBit ($userdata) {
         $obj = [];
         $postBitOptions = ConfigHelper::getPostBitConfig();
 
@@ -177,25 +183,25 @@ class UserHelper {
     }
 
     /**
-     * @param $user - Logged in user
+     * @param $user      - Logged in user
      * @param $currentId - user to be managed
      *
      * @return bool
      */
-    public static function canManageUser($user, $currentId) {
+    public static function canManageUser ($user, $currentId) {
         return $user->userId == $currentId ||
             User::getImmunity($user->userId) > User::getImmunity($currentId);
     }
 
 
-    public static function hasSubscriptionFeature($userId, $feature) {
+    public static function hasSubscriptionFeature ($userId, $feature) {
         $userSubscriptionIds = UserSubscription::where('userId', $userId)->pluck('subscriptionId');
         return Subscription::whereIn('subscriptionId', $userSubscriptionIds)
                 ->whereRaw('(options & ' . $feature . ')')
                 ->count() > 0;
     }
 
-    private static function getUserBars($userId) {
+    private static function getUserBars ($userId) {
         return UserGroup::where('userId', $userId)->where('isBarActive', 1)->get()->map(function ($userGroup) {
             return [
                 'name' => !empty($userGroup->group->nickname) ? $userGroup->group->nickname : $userGroup->group->name,
@@ -204,7 +210,7 @@ class UserHelper {
         });
     }
 
-    private static function setUserDataFields($user, $userdata, $postBit) {
+    private static function setUserDataFields ($user, $userdata, $postBit) {
         $user->signature = BBcodeUtil::bbcodeParser($userdata->signature);
         $user->avatarUpdatedAt = $userdata->avatarUpdatedAt;
         $user->namePosition = $userdata->namePosition;

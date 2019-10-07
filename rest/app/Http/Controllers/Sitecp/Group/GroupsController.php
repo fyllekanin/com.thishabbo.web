@@ -26,7 +26,7 @@ class GroupsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function approveGroupApplication(Request $request) {
+    public function approveGroupApplication (Request $request) {
         $user = $request->get('auth');
         $groupRequestId = $request->input('groupRequestId');
 
@@ -59,7 +59,7 @@ class GroupsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function denyGroupApplication(Request $request, $groupRequestId) {
+    public function denyGroupApplication (Request $request, $groupRequestId) {
         $user = $request->get('auth');
 
         $groupRequest = GroupRequest::find($groupRequestId);
@@ -85,7 +85,7 @@ class GroupsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getGroupApplications() {
+    public function getGroupApplications () {
         return response()->json(GroupRequest::all());
     }
 
@@ -97,7 +97,7 @@ class GroupsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteGroup(Request $request, $groupId) {
+    public function deleteGroup (Request $request, $groupId) {
         $user = $request->get('auth');
         $immunity = User::getImmunity($user->userId);
 
@@ -121,7 +121,7 @@ class GroupsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createGroup(Request $request) {
+    public function createGroup (Request $request) {
         $user = $request->get('auth');
         $group = (object)$request->input('group');
         $immunity = User::getImmunity($user->userId);
@@ -166,7 +166,7 @@ class GroupsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateGroup(Request $request, $groupId) {
+    public function updateGroup (Request $request, $groupId) {
         $user = $request->get('auth');
         $newGroup = (object)$request->input('group');
         $immunity = User::getImmunity($user->userId);
@@ -223,7 +223,7 @@ class GroupsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getGroup(Request $request, $groupId) {
+    public function getGroup (Request $request, $groupId) {
         $user = $request->get('auth');
         $immunity = User::getImmunity($user->userId);
         $group = Group::find($groupId);
@@ -249,7 +249,7 @@ class GroupsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getGroups(Request $request, $page) {
+    public function getGroups (Request $request, $page) {
         $filter = $request->input('filter');
         $user = $request->get('auth');
         $immunity = User::getImmunity($user->userId);
@@ -258,7 +258,7 @@ class GroupsController extends Controller {
             ->where('name', 'LIKE', Value::getFilterValue($request, $filter))
             ->orderBy('name', 'ASC');
 
-        $total = DataHelper::getPage($getGroupSql->count('groupId'));
+        $total = DataHelper::getTotal($getGroupSql->count('groupId'));
         $groups = $getGroupSql->take($this->perPage)->skip(DataHelper::getOffset($page))->get();
 
         foreach ($groups as $group) {
@@ -279,7 +279,7 @@ class GroupsController extends Controller {
      *
      * @return int
      */
-    private function convertGroupOptions($group) {
+    private function convertGroupOptions ($group) {
         $options = 0;
         $groupOptions = (array)$group->options;
 
@@ -298,7 +298,7 @@ class GroupsController extends Controller {
      *
      * @return int
      */
-    private function convertSitecpPermissions($group) {
+    private function convertSitecpPermissions ($group) {
         $options = 0;
         $groupSitecpPerm = (array)$group->sitecpPermissions;
 
@@ -317,7 +317,7 @@ class GroupsController extends Controller {
      *
      * @return int
      */
-    private function convertStaffPermissions($group) {
+    private function convertStaffPermissions ($group) {
         $options = 0;
         $groupStaffPerm = (array)$group->staffPermissions;
 
@@ -336,7 +336,7 @@ class GroupsController extends Controller {
      *
      * @return array
      */
-    private function buildGroupOptions($group) {
+    private function buildGroupOptions ($group) {
         $obj = [];
 
         foreach (ConfigHelper::getGroupOptionsConfig() as $key => $value) {
@@ -353,7 +353,7 @@ class GroupsController extends Controller {
      *
      * @return array
      */
-    private function buildSitecpPermissions($group) {
+    private function buildSitecpPermissions ($group) {
         $obj = [];
 
         foreach (ConfigHelper::getSitecpConfig() as $key => $value) {
@@ -370,7 +370,7 @@ class GroupsController extends Controller {
      *
      * @return array
      */
-    private function buildStaffPermissions($group) {
+    private function buildStaffPermissions ($group) {
         $obj = [];
 
         foreach (ConfigHelper::getStaffConfig() as $key => $value) {
@@ -380,7 +380,7 @@ class GroupsController extends Controller {
         return $obj;
     }
 
-    private function getDefaultGroup($immunity) {
+    private function getDefaultGroup ($immunity) {
         return (object)[
             'immunity' => 0,
             'sitecpPermissions' => 0,

@@ -21,12 +21,12 @@ use Illuminate\Http\Request;
 class ItemsController extends Controller {
     private $myImpl;
 
-    public function __construct(ItemsControllerImpl $impl) {
+    public function __construct (ItemsControllerImpl $impl) {
         parent::__construct();
         $this->myImpl = $impl;
     }
 
-    public function deleteUserItem(Request $request, $userItemId) {
+    public function deleteUserItem (Request $request, $userItemId) {
         $user = $request->get('auth');
         $userItem = UserItem::find($userItemId);
         Condition::precondition(!$userItem, 404, 'No user item with that ID');
@@ -46,7 +46,7 @@ class ItemsController extends Controller {
         return response()->json();
     }
 
-    public function createUserItem(Request $request, $itemId) {
+    public function createUserItem (Request $request, $itemId) {
         $user = $request->get('auth');
         $nickname = $request->input('nickname');
         $shopItem = ShopItem::find($itemId);
@@ -75,7 +75,7 @@ class ItemsController extends Controller {
         ]);
     }
 
-    public function getItemUsers($itemId) {
+    public function getItemUsers ($itemId) {
         $shopItem = ShopItem::find($itemId);
         Condition::precondition(!$shopItem, 404, 'No shop item with that ID');
         $userItems = UserItem::where('itemId', $itemId)->where('type', $shopItem->type)->get();
@@ -92,14 +92,14 @@ class ItemsController extends Controller {
         ]);
     }
 
-    public function getBadges(Request $request, $page) {
+    public function getBadges (Request $request, $page) {
         $badges = Badge::orderBy('name', 'ASC')->where('isSystem', false);
         $filter = $request->input('filter');
 
         if ($filter) {
             $badges->where('name', 'LIKE', Value::getFilterValue($request, $filter));
         }
-        $total = DataHelper::getPage($badges->count());
+        $total = DataHelper::getTotal($badges->count());
 
         return response()->json([
             'total' => $total,
@@ -109,7 +109,7 @@ class ItemsController extends Controller {
         ]);
     }
 
-    public function deleteItem(Request $request, $shopItemId) {
+    public function deleteItem (Request $request, $shopItemId) {
         $user = $request->get('auth');
         $item = ShopItem::find($shopItemId);
         Condition::precondition(!$item, 404, 'No shop item with that ID');
@@ -121,7 +121,7 @@ class ItemsController extends Controller {
         return response()->json();
     }
 
-    public function updateItem(Request $request, $shopItemId) {
+    public function updateItem (Request $request, $shopItemId) {
         $user = $request->get('auth');
         $data = json_decode($request->input('data'), false);
         $item = ShopItem::find($shopItemId);
@@ -141,7 +141,7 @@ class ItemsController extends Controller {
         return $this->getItem($shopItemId);
     }
 
-    public function createItem(Request $request) {
+    public function createItem (Request $request) {
         $user = $request->get('auth');
         $data = json_decode($request->input('data'), false);
 
@@ -175,7 +175,7 @@ class ItemsController extends Controller {
         return $this->getItem($item->shopItemId);
     }
 
-    public function getItem($itemId) {
+    public function getItem ($itemId) {
         $item = ShopItem::find($itemId);
 
         Condition::precondition($itemId !== 'new' && !$item, 404,
@@ -194,7 +194,7 @@ class ItemsController extends Controller {
         ]);
     }
 
-    public function getItems(Request $request, $page) {
+    public function getItems (Request $request, $page) {
         $title = $request->input('filter');
         $type = $request->input('type');
         $items = ShopItem::orderBy('title', 'ASC');
@@ -208,7 +208,7 @@ class ItemsController extends Controller {
         }
 
         return response()->json([
-            'total' => DataHelper::getPage($items->count(), $this->bigPerPage),
+            'total' => DataHelper::getTotal($items->count(), $this->bigPerPage),
             'page' => $page,
             'items' => $items->take($this->bigPerPage)->skip(DataHelper::getOffset($page, $this->bigPerPage))->get()->map(function ($item) {
                 return [

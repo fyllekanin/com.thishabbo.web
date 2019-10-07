@@ -19,14 +19,14 @@ class AutoBanController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getAutoBans(Request $request, $page) {
+    public function getAutoBans (Request $request, $page) {
         $filter = $request->input('filter');
         $autoBansSql = AutoBan::where('title', 'LIKE', Value::getFilterValue($request, $filter))
             ->orderBy('title', 'ASC')
             ->skip(DataHelper::getOffset($page))
             ->take($this->perPage);
 
-        $total = DataHelper::getPage($autoBansSql->count('autoBanId'));
+        $total = DataHelper::getTotal($autoBansSql->count('autoBanId'));
         $items = $autoBansSql->get()->map(function ($item) {
             return [
                 'autoBanId' => $item->autoBanId,
@@ -49,7 +49,7 @@ class AutoBanController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getAutoBan($autoBanId) {
+    public function getAutoBan ($autoBanId) {
         $autoBan = AutoBan::find($autoBanId);
         Condition::precondition(!$autoBan, 404, 'No autoban with this ID exist');
 
@@ -68,7 +68,7 @@ class AutoBanController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createAutoBan(Request $request) {
+    public function createAutoBan (Request $request) {
         $user = $request->get('auth');
         $autoBan = (object)$request->input('autoBan');
         $this->validateAutoBanInput($autoBan);
@@ -93,7 +93,7 @@ class AutoBanController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateAutoBan(Request $request, $autoBanId) {
+    public function updateAutoBan (Request $request, $autoBanId) {
         $user = $request->get('auth');
         $newAutoBan = (object)$request->input('autoBan');
         $autoBan = AutoBan::find($autoBanId);
@@ -118,7 +118,7 @@ class AutoBanController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteAutoBan(Request $request, $autoBanId) {
+    public function deleteAutoBan (Request $request, $autoBanId) {
         $user = $request->get('auth');
         $autoBan = AutoBan::find($autoBanId);
 
@@ -132,7 +132,7 @@ class AutoBanController extends Controller {
         return response()->json();
     }
 
-    private function validateAutoBanInput($autoBan) {
+    private function validateAutoBanInput ($autoBan) {
         Condition::precondition(!isset($autoBan->title) || empty($autoBan->title), 400, 'Title needs to be set');
         Condition::precondition(!isset($autoBan->amount) || empty($autoBan->amount) || !is_numeric($autoBan->amount),
             400, 'Amount needs to be set');

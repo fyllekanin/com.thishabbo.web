@@ -13,12 +13,12 @@ class ThreadView {
     /**
      * @param $notification
      */
-    public function __construct($notification) {
+    public function __construct ($notification) {
         $this->user = UserHelper::getSlimUser($notification->senderId);
         $this->thread = $this->getThread($notification);
     }
 
-    private function getThread($notification) {
+    private function getThread ($notification) {
         $post = Post::find($notification->contentId);
         if (!$post) {
             return null;
@@ -28,7 +28,7 @@ class ThreadView {
             'threadId' => $post->thread->threadId,
             'title' => $post->thread->title,
             'postId' => $notification->contentId,
-            'page' => DataHelper::getPage(Post::where('threadId', $post->threadId)
+            'page' => DataHelper::getTotal(Post::where('threadId', $post->threadId)
                 ->where('postId', '<=', $notification->contentId)
                 ->count('postId'))
         ];

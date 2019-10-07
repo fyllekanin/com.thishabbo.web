@@ -8,11 +8,14 @@ import { Page } from 'shared/page/page.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { ArrayHelper } from 'shared/helpers/array.helper';
+import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
+import { PREFIX_LIST, SITECP_BREADCRUMB_ITEM } from '../../../../sitecp.constants';
+import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 
 @Component({
     selector: 'app-sitecp-forum-prefix',
     templateUrl: 'prefix.component.html',
-    styleUrls: ['prefix.component.css']
+    styleUrls: [ 'prefix.component.css' ]
 })
 export class PrefixComponent extends Page implements OnDestroy {
     private _prefix: Prefix = new Prefix();
@@ -26,10 +29,18 @@ export class PrefixComponent extends Page implements OnDestroy {
         private _httpService: HttpService,
         private _router: Router,
         activatedRoute: ActivatedRoute,
-        elementRef: ElementRef
+        elementRef: ElementRef,
+        breadcrumbService: BreadcrumbService
     ) {
         super(elementRef);
         this.addSubscription(activatedRoute.data, this.onData.bind(this));
+        breadcrumbService.breadcrumb = new Breadcrumb({
+            current: 'Prefix',
+            items: [
+                SITECP_BREADCRUMB_ITEM,
+                PREFIX_LIST
+            ]
+        });
     }
 
     ngOnDestroy (): void {
@@ -39,26 +50,26 @@ export class PrefixComponent extends Page implements OnDestroy {
     onTabClick (value: number): void {
         switch (value) {
             case PrefixActions.BACK:
-                this._router.navigateByUrl('/sitecp/forum/prefixes');
+                this._router.navigateByUrl('/sitecp/forum/prefixes/page/1');
                 break;
             case PrefixActions.SAVE:
                 if (this._prefix.createdAt) {
-                    this._httpService.put(`sitecp/prefixes/${this._prefix.prefixId}`, {prefix: this._prefix})
+                    this._httpService.put(`sitecp/prefixes/${this._prefix.prefixId}`, { prefix: this._prefix })
                         .subscribe(res => {
                             this._notificationService.sendNotification(new NotificationMessage({
                                 title: 'Success',
                                 message: 'Prefix updated'
                             }));
-                            this.onData({data: new Prefix(res)});
+                            this.onData({ data: new Prefix(res) });
                         }, this._notificationService.failureNotification.bind(this._notificationService));
                 } else {
-                    this._httpService.post('sitecp/prefixes', {prefix: this._prefix})
+                    this._httpService.post('sitecp/prefixes', { prefix: this._prefix })
                         .subscribe(res => {
                             this._notificationService.sendNotification(new NotificationMessage({
                                 title: 'Success',
                                 message: 'Prefix created'
                             }));
-                            this.onData({data: new Prefix(res)});
+                            this.onData({ data: new Prefix(res) });
                         }, this._notificationService.failureNotification.bind(this._notificationService));
                 }
                 break;
@@ -116,13 +127,13 @@ export class PrefixComponent extends Page implements OnDestroy {
 
     private onData (data: { data: Prefix }): void {
         this._prefix = data.data;
-        const categories = [new PrefixCategory({title: 'All', categoryId: -1})];
+        const categories = [ new PrefixCategory({ title: 'All', categoryId: -1 }) ];
         this._categories = categories.concat(ArrayHelper.flat(this._prefix.categories, '--'));
 
         const tabs = [
-            {title: 'Save', value: PrefixActions.SAVE, condition: true},
-            {title: 'Back', value: PrefixActions.BACK, condition: true},
-            {title: 'Delete', value: PrefixActions.DELETE, condition: this._prefix.createdAt}
+            { title: 'Save', value: PrefixActions.SAVE, condition: true },
+            { title: 'Back', value: PrefixActions.BACK, condition: true },
+            { title: 'Delete', value: PrefixActions.DELETE, condition: this._prefix.createdAt }
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));

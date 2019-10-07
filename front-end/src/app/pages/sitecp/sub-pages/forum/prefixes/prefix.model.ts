@@ -32,6 +32,19 @@ export class Prefix {
     }
 }
 
+export class PrefixListPage {
+    @primitive()
+    total: number;
+    @primitive()
+    page: number;
+    @arrayOf(Prefix)
+    items: Array<Prefix> = [];
+
+    constructor (source?: Partial<PrefixListPage>) {
+        ClassHelper.assign(this, source);
+    }
+}
+
 export enum PrefixActions {
     EDIT_PREFIX,
     DELETE_PREFIX,

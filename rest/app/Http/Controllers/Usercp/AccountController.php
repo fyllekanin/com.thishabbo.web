@@ -41,11 +41,11 @@ class AccountController extends Controller {
     /**
      * AccountController constructor.
      *
-     * @param AuthService $authService
-     * @param HabboService $habboService
+     * @param AuthService    $authService
+     * @param HabboService   $habboService
      * @param CreditsService $creditsService
      */
-    public function __construct(AuthService $authService, HabboService $habboService, CreditsService $creditsService) {
+    public function __construct (AuthService $authService, HabboService $habboService, CreditsService $creditsService) {
         parent::__construct();
         $this->authService = $authService;
         $this->habboService = $habboService;
@@ -54,20 +54,20 @@ class AccountController extends Controller {
     }
 
     /**
-     * @param Request $request
+     * @param Request             $request
      * @param NotificationService $notificationService
-     * @param $page
+     * @param                     $page
      *
      * @return array
      */
-    public function getNotifications(Request $request, NotificationService $notificationService, $page) {
+    public function getNotifications (Request $request, NotificationService $notificationService, $page) {
         $user = $request->get('auth');
 
         $notificationsSql = DB::table('notifications')
             ->where('userId', $user->userId)
             ->orderBy('createdAt', 'DESC');
 
-        $total = DataHelper::getPage($notificationsSql->count('notificationId'));
+        $total = DataHelper::getTotal($notificationsSql->count('notificationId'));
         $notifications = $notificationsSql->take($this->perPage)->skip(DataHelper::getOffset($page))->get()->toArray();
 
         $items = array_map(function ($notification) {
@@ -88,7 +88,7 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function claimVoucherCode(Request $request) {
+    public function claimVoucherCode (Request $request) {
         $user = $request->get('auth');
         $code = $request->input('code');
 
@@ -110,7 +110,7 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getThemes(Request $request) {
+    public function getThemes (Request $request) {
         $user = $request->get('auth');
 
         return response()->json(Theme::get()->map(function ($item) use ($user) {
@@ -128,7 +128,7 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateTheme(Request $request) {
+    public function updateTheme (Request $request) {
         $user = $request->get('auth');
         $themeId = $request->input('themeId');
         $theme = $themeId == 0 || $themeId == -1 ? (object)['title' => 'Default'] : Theme::find($themeId);
@@ -148,7 +148,7 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getHabbo(Request $request) {
+    public function getHabbo (Request $request) {
         $user = $request->get('auth');
         return response()->json([
             'habbo' => $user->habbo
@@ -164,7 +164,7 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateHabbo(Request $request) {
+    public function updateHabbo (Request $request) {
         $user = $request->get('auth');
         $requiredMotto = 'thishabbo-' . $user->userId;
 
@@ -191,7 +191,7 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateNickname(Request $request) {
+    public function updateNickname (Request $request) {
         $user = $request->get('auth');
         $nickname = $request->input('nickname');
         $oneWeek = 604800;
@@ -237,7 +237,7 @@ class AccountController extends Controller {
      *
      * @return mixed
      */
-    public function getIgnoredThreads(Request $request) {
+    public function getIgnoredThreads (Request $request) {
         $user = $request->get('auth');
         return IgnoredThread::where('userId', $user->userId)->get()->map(function ($ignoredThread) {
             return ['threadId' => $ignoredThread->threadId, 'title' => $ignoredThread->thread->title];
@@ -249,7 +249,7 @@ class AccountController extends Controller {
      *
      * @return mixed
      */
-    public function getIgnoredCategories(Request $request) {
+    public function getIgnoredCategories (Request $request) {
         $user = $request->get('auth');
         return IgnoredCategory::where('userId', $user->userId)->get()->map(function ($ignoredCategory) {
             return ['categoryId' => $ignoredCategory->categoryId, 'title' => $ignoredCategory->category->title];
@@ -261,7 +261,7 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getNotificationSettings(Request $request) {
+    public function getNotificationSettings (Request $request) {
         $user = $request->get('auth');
 
         return response()->json($this->buildIgnoredNotificationTypes($user));
@@ -272,7 +272,7 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateNotificationSettings(Request $request) {
+    public function updateNotificationSettings (Request $request) {
         $user = $request->get('auth');
         $ignoredNotifications = $this->convertIgnoredNotificationTypes($request->input('ignoredNotificationTypes'));
 
@@ -288,7 +288,7 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateHomePage(Request $request) {
+    public function updateHomePage (Request $request) {
         $user = $request->get('auth');
         $homePage = $request->input('homePage');
 
@@ -308,7 +308,7 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updatePassword(Request $request) {
+    public function updatePassword (Request $request) {
         $user = $request->get('auth');
         $password = $request->input('password');
         $repassword = $request->input('repassword');
@@ -336,7 +336,7 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPostBit(Request $request) {
+    public function getPostBit (Request $request) {
         $user = $request->get('auth');
 
         return response()->json([
@@ -357,7 +357,7 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getAvailableBadges(Request $request) {
+    public function getAvailableBadges (Request $request) {
         $user = $request->get('auth');
         $availableBadgeIds = UserItem::where('userId', $user->userId)->badge()->pluck('itemId');
         $userdata = UserHelper::getUserDataOrCreate($user->userId);
@@ -376,7 +376,7 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updatePostBit(Request $request) {
+    public function updatePostBit (Request $request) {
         $user = $request->get('auth');
         $data = json_decode(json_encode($request->input('data')));
         $namePosition = (object)$data->namePosition;
@@ -414,7 +414,7 @@ class AccountController extends Controller {
      *
      * @return mixed
      */
-    public function getThreadSubscriptions(Request $request) {
+    public function getThreadSubscriptions (Request $request) {
         $user = $request->get('auth');
 
         return ThreadSubscription::with('thread')->where('userId', $user->userId)->get()
@@ -434,7 +434,7 @@ class AccountController extends Controller {
      *
      * @return mixed
      */
-    public function getCategorySubscriptions(Request $request) {
+    public function getCategorySubscriptions (Request $request) {
         $user = $request->get('auth');
 
         return CategorySubscription::with('category')->where('userId', $user->userId)->get()
@@ -456,7 +456,7 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getDashboard(Request $request) {
+    public function getDashboard (Request $request) {
         $user = $request->get('auth');
 
         return response()->json([
@@ -481,7 +481,7 @@ class AccountController extends Controller {
      *
      * @return int
      */
-    private function convertPostBitOptions($postBitOptions) {
+    private function convertPostBitOptions ($postBitOptions) {
         $options = 0;
         $config = ConfigHelper::getPostBitConfig();
 
@@ -500,7 +500,7 @@ class AccountController extends Controller {
      *
      * @return array
      */
-    private function buildPostBitOptions($user) {
+    private function buildPostBitOptions ($user) {
         $userdata = UserHelper::getUserDataOrCreate($user->userId);
         $postBit = UserHelper::getUserPostBit($userdata);
 
@@ -516,7 +516,7 @@ class AccountController extends Controller {
      *
      * @return int
      */
-    private function convertIgnoredNotificationTypes($ignoredNotifications) {
+    private function convertIgnoredNotificationTypes ($ignoredNotifications) {
         $options = 0;
         $configOptions = ConfigHelper::getIgnoredNotificationsConfig();
 
@@ -535,7 +535,7 @@ class AccountController extends Controller {
      *
      * @return array
      */
-    private function buildIgnoredNotificationTypes($user) {
+    private function buildIgnoredNotificationTypes ($user) {
         $obj = [];
         $ignoredNotifications = ConfigHelper::getIgnoredNotificationsConfig();
 
@@ -551,7 +551,7 @@ class AccountController extends Controller {
      *
      * @return string
      */
-    private function generateString() {
+    private function generateString () {
         $token = openssl_random_pseudo_bytes(8);
         $token = bin2hex($token);
         return implode('', str_split($token, 4));

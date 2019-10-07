@@ -33,13 +33,13 @@ class PageController extends Controller {
      *
      * @param PageControllerImpl $impl
      */
-    public function __construct(PageControllerImpl $impl) {
+    public function __construct (PageControllerImpl $impl) {
         parent::__construct();
         $this->myImpl = $impl;
         $this->categoryTemplates = ConfigHelper::getCategoryTemplatesConfig();
     }
 
-    public function getVersions($page) {
+    public function getVersions ($page) {
         $folderNames = Iterables::filter(scandir(SettingsHelper::getResourcesPath('commit-logs')), function ($folder) {
             return preg_match('/[0-9]+.[0-9]+.[0-9]+/', $folder);
         });
@@ -57,7 +57,7 @@ class PageController extends Controller {
             return count($version->changes) > 0;
         });
 
-        $total = DataHelper::getPage(count($versions));
+        $total = DataHelper::getTotal(count($versions));
         $offset = DataHelper::getOffset($page);
         $items = array_slice($versions, $offset, $this->perPage);
 
@@ -71,7 +71,7 @@ class PageController extends Controller {
     /**
      * @return JsonResponse
      */
-    public function getGroupList() {
+    public function getGroupList () {
         return response()->json(GroupList::orderBy('displayOrder', 'ASC')->get()->map(function ($item) {
             return [
                 'name' => $item->group->nickname ? $item->group->nickname : $item->group->name,
@@ -92,7 +92,7 @@ class PageController extends Controller {
      *
      * @return JsonResponse
      */
-    public function getCustomPage($path) {
+    public function getCustomPage ($path) {
         $page = Page::whereRaw('lower(path) = ?', [strtolower($path)])->first();
 
         return response()->json([
@@ -104,7 +104,7 @@ class PageController extends Controller {
     /**
      * @return JsonResponse
      */
-    public function getEmojis() {
+    public function getEmojis () {
         return response()->json(BBcode::where('isEmoji', true)->orderByRaw("RAND()")->get());
     }
 
@@ -113,7 +113,7 @@ class PageController extends Controller {
      *
      * @return JsonResponse
      */
-    public function parseContent(Request $request) {
+    public function parseContent (Request $request) {
         $content = $request->input('content');
 
         return response()->json(BBcodeUtil::bbcodeParser($content));
@@ -124,7 +124,7 @@ class PageController extends Controller {
      *
      * @return JsonResponse
      */
-    public function getPing() {
+    public function getPing () {
         return response()->json();
     }
 
@@ -133,18 +133,18 @@ class PageController extends Controller {
      *
      * @return JsonResponse
      */
-    public function getMaintenanceMessage() {
+    public function getMaintenanceMessage () {
         $settingKeys = ConfigHelper::getKeyConfig();
         return response()->json([
             'content' => BBcodeUtil::bbcodeParser(SettingsHelper::getSettingValue($settingKeys->maintenanceContent))
         ]);
     }
 
-    public function getBadges($page) {
+    public function getBadges ($page) {
         $threeDays = 259200;
 
         return response()->json([
-            'total' => DataHelper::getPage(HabboBadge::count()),
+            'total' => DataHelper::getTotal(HabboBadge::count()),
             'page' => $page,
             'items' => HabboBadge::orderBy('createdAt', 'DESC')->skip(DataHelper::getOffset($page, 72))->take(72)->get()->map(function ($item) use ($threeDays) {
                 return [
@@ -164,7 +164,7 @@ class PageController extends Controller {
      *
      * @return JsonResponse
      */
-    public function getHomePage(Request $request) {
+    public function getHomePage (Request $request) {
         $user = $request->get('auth');
         $threeDays = 259200;
 
@@ -191,7 +191,7 @@ class PageController extends Controller {
      *
      * @return JsonResponse
      */
-    public function getRegisterPage() {
+    public function getRegisterPage () {
         return response()->json([
             'names' => User::getQuery()->get(['nickname'])
         ]);
@@ -199,11 +199,11 @@ class PageController extends Controller {
 
     /**
      * @param Request $request
-     * @param $page
+     * @param         $page
      *
      * @return JsonResponse
      */
-    public function getBadgeGuides(Request $request, $page) {
+    public function getBadgeGuides (Request $request, $page) {
         $user = $request->get('auth');
         $perPage = 12;
 
@@ -211,7 +211,7 @@ class PageController extends Controller {
         $categoryIds = $this->myImpl->getFilteredCategoryIds($questCategoryIds, $user);
 
         $threadsSql = Thread::isApproved()->orderBy('threadId', 'DESC')->whereIn('categoryId', $categoryIds);
-        $total = DataHelper::getPage($threadsSql->count('threadId'), $perPage);
+        $total = DataHelper::getTotal($threadsSql->count('threadId'), $perPage);
 
         $items = $threadsSql->take($perPage)->skip(DataHelper::getOffset($page, $perPage))->get()->map(function ($item) {
             return $this->mapArticle($item);
@@ -224,7 +224,7 @@ class PageController extends Controller {
         ]);
     }
 
-    private function getLatestThreads($user) {
+    private function getLatestThreads ($user) {
         $homePageCategoryIds = json_decode(SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->homePageThreads));
         if (!is_array($homePageCategoryIds)) {
             return [];
@@ -247,7 +247,7 @@ class PageController extends Controller {
      *
      * @return Notice[]|Collection
      */
-    private function getNotices() {
+    private function getNotices () {
         return Notice::orderBy('order', 'ASC')->get()->map(function ($notice) {
             $notice->makeHidden(['createdAt', 'updatedAt', 'userId', 'isDeleted']);
             $notice->text = nl2br(stripcslashes($notice->text));
@@ -264,7 +264,7 @@ class PageController extends Controller {
      *
      * @return array
      */
-    private function getArticles($user, $amount, $type) {
+    private function getArticles ($user, $amount, $type) {
         $templateCategoryIds = Category::where('template', $type)
             ->pluck('categoryId')->toArray();
 
@@ -279,7 +279,7 @@ class PageController extends Controller {
      *
      * @return array
      */
-    private function mapArticle($thread) {
+    private function mapArticle ($thread) {
         $tags = isset($thread->templateData) ? (strpos($thread->templateData->tags, ',') !== false ?
             explode(',', $thread->templateData->tags) :
             [$thread->templateData->tags]) : null;

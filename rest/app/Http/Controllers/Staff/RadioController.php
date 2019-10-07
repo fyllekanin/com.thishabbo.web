@@ -30,7 +30,7 @@ class RadioController extends Controller {
      *
      * @return mixed
      */
-    public function getBookingLog($page) {
+    public function getBookingLog ($page) {
         $bookAction = Action::getAction(Action::BOOKED_RADIO_SLOT);
         $unbookAction = Action::getAction(Action::UNBOOKED_RADIO_SLOT);
         $editedAction = Action::getAction(Action::EDITED_RADIO_TIMETABLE_SLOT);
@@ -39,7 +39,7 @@ class RadioController extends Controller {
 
         $logSql = LogStaff::whereIn('action', [$bookAction, $unbookAction, $bookedPermAction, $deletedPermAction, $editedAction]);
 
-        $total = DataHelper::getPage($logSql->count('logId'));
+        $total = DataHelper::getTotal($logSql->count('logId'));
         $items = $logSql->orderBy('logId', 'DESC')
             ->take($this->perPage)
             ->skip(DataHelper::getOffset($page))
@@ -72,7 +72,7 @@ class RadioController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getConnectionInformation(Request $request) {
+    public function getConnectionInformation (Request $request) {
         $user = $request->get('auth');
         $settingKeys = ConfigHelper::getKeyConfig();
         $radio = new RadioSettings(SettingsHelper::getSettingValue($settingKeys->radio));
@@ -89,7 +89,7 @@ class RadioController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getSitecpConnectionInformation() {
+    public function getSitecpConnectionInformation () {
         return response()->json(SettingsHelper::getRadioConnectionInformation(true));
     }
 
@@ -98,7 +98,7 @@ class RadioController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getDjSays(Request $request) {
+    public function getDjSays (Request $request) {
         $user = $request->get('auth');
         $settingKeys = ConfigHelper::getKeyConfig();
 
@@ -116,7 +116,7 @@ class RadioController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateDjSays(Request $request) {
+    public function updateDjSays (Request $request) {
         $user = $request->get('auth');
         $says = $request->input('says');
         $settingKeys = ConfigHelper::getKeyConfig();
@@ -139,7 +139,7 @@ class RadioController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function kickOffDj(Request $request) {
+    public function kickOffDj (Request $request) {
         $user = $request->get('auth');
 
         $settingKeys = ConfigHelper::getKeyConfig();
@@ -168,7 +168,7 @@ class RadioController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createDjLike(Request $request) {
+    public function createDjLike (Request $request) {
         $user = $request->get('auth');
         $nowMinus30Min = time() - 1800;
         $settings = ConfigHelper::getKeyConfig();
@@ -208,7 +208,7 @@ class RadioController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createRequest(Request $request) {
+    public function createRequest (Request $request) {
         $user = $request->get('auth');
         $nickname = $user ? $user->nickname : $request->input('nickname');
         $content = $request->input('content');
@@ -236,7 +236,7 @@ class RadioController extends Controller {
         return response()->json();
     }
 
-    public function deleteRequest(Request $request, $requestId) {
+    public function deleteRequest (Request $request, $requestId) {
         $user = $request->get('auth');
         $radioRequest = RadioRequest::find($requestId);
         Condition::precondition(!$radioRequest, 404, 'No request with that ID');
@@ -259,7 +259,7 @@ class RadioController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getRequests(Request $request) {
+    public function getRequests (Request $request) {
         $user = $request->get('auth');
         $canSeeRequestIp = PermissionHelper::haveStaffPermission($user->userId, ConfigHelper::getStaffConfig()->canSeeIpsAndDeleteRequests);
 
@@ -283,7 +283,7 @@ class RadioController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getTimetable() {
+    public function getTimetable () {
         return response()->json([
             'timetable' => Timetable::radio()->isActive()->get(),
             'events' => [],
@@ -299,7 +299,7 @@ class RadioController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteBooking(Request $request, $timetableId) {
+    public function deleteBooking (Request $request, $timetableId) {
         $user = $request->get('auth');
 
         $booking = Timetable::find($timetableId);
@@ -318,7 +318,7 @@ class RadioController extends Controller {
         return response()->json();
     }
 
-    public function updateBooking(Request $request, $timetableId) {
+    public function updateBooking (Request $request, $timetableId) {
         $user = $request->get('auth');
         $data = (object)$request->input('data');
 
@@ -355,7 +355,7 @@ class RadioController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createBooking(Request $request) {
+    public function createBooking (Request $request) {
         $user = $request->get('auth');
         $booking = (object)$request->input('booking');
 
@@ -397,7 +397,7 @@ class RadioController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
 
-    public function updateConnectionInfo(Request $request) {
+    public function updateConnectionInfo (Request $request) {
         $user = $request->get('auth');
         $information = (object)$request->input('information');
         $settingKeys = ConfigHelper::getKeyConfig();
@@ -426,7 +426,7 @@ class RadioController extends Controller {
         return response()->json();
     }
 
-    private function canUserDeleteRequests($user) {
+    private function canUserDeleteRequests ($user) {
         $radio = new RadioSettings(SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->radio));
         $isCurrentDj = $user->userId == $radio->userId;
         $canDelete = PermissionHelper::haveStaffPermission($user->userId, ConfigHelper::getStaffConfig()->canAlwaysSeeConnectionInformation);
@@ -434,7 +434,7 @@ class RadioController extends Controller {
         return $isCurrentDj || $canDelete;
     }
 
-    private function getCurrentDjId() {
+    private function getCurrentDjId () {
         $day = date('N');
         $hour = date('G');
 

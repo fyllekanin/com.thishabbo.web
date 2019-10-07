@@ -23,7 +23,7 @@ class LogsController extends Controller {
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getServerLogs() {
+    public function getServerLogs () {
         $files = array_map(function ($file) {
             return $file->getFilename();
         }, File::files(storage_path('logs')));
@@ -36,7 +36,7 @@ class LogsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getServerLog($fileName) {
+    public function getServerLog ($fileName) {
         Condition::precondition(!File::exists(storage_path('logs/' . $fileName)), 404, 'Log do not exist');
 
         $content = BBcodeUtil::arrowsToEntry(File::get(storage_path('logs/' . $fileName)));
@@ -45,12 +45,12 @@ class LogsController extends Controller {
 
     /**
      * @param Request $request
-     * @param $type
-     * @param $page
+     * @param         $type
+     * @param         $page
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getLogs(Request $request, $type, $page) {
+    public function getLogs (Request $request, $type, $page) {
         $nickname = $request->input('user');
         $action = $request->input('action');
 
@@ -88,7 +88,7 @@ class LogsController extends Controller {
             $log->whereIn('userId', $userIds);
         }
 
-        $total = DataHelper::getPage($log->count('logId'));
+        $total = DataHelper::getTotal($log->count('logId'));
         $items = $log->take($this->perPage)->skip(DataHelper::getOffset($page))->get()->map(function ($item) {
             $data = null;
             try {
@@ -96,7 +96,7 @@ class LogsController extends Controller {
             } catch (Exception $e) {
                 // Left empty intentionally
             }
-            
+
             return (object)[
                 'logId' => $item->logId,
                 'user' => UserHelper::getSlimUser($item->userId),
@@ -117,7 +117,7 @@ class LogsController extends Controller {
         ]);
     }
 
-    private function getContentFromLog($item) {
+    private function getContentFromLog ($item) {
         $action = Action::getActionFromId($item->action);
         if ($action && isset($action['contentId']) && $action['contentId']) {
             return DB::table($action['contentTable'])->where($action['contentId'], $item->contentId)->value($action['contentSelect']);

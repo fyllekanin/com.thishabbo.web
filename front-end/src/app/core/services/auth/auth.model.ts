@@ -103,6 +103,17 @@ export class UserPostBitSettings {
     }
 }
 
+export class UserBadge {
+    @primitive()
+    badgeId: number;
+    @primitive()
+    name: string;
+
+    constructor (source?: Partial<UserBadge>) {
+        ClassHelper.assign(this, source);
+    }
+}
+
 export class User extends SlimUser {
     @arrayOf(UserBar)
     userBars: Array<UserBar> = [];
@@ -118,8 +129,8 @@ export class User extends SlimUser {
     namePosition: number;
     @arrayOf(String)
     barColor: Array<string> = [];
-    @arrayOf(Number)
-    badgeIds: Array<number> = [];
+    @arrayOf(UserBadge)
+    badges: Array<UserBadge> = [];
     @objectOf(UserPostBitSettings)
     postBitSettings: UserPostBitSettings = new UserPostBitSettings();
 

@@ -17,7 +17,7 @@ use Illuminate\Http\Request;
 
 class LootBoxesController extends Controller {
 
-    public function createLootBox(Request $request) {
+    public function createLootBox (Request $request) {
         $user = $request->get('auth');
         $data = (object)$request->input('lootBox');
         $this->validateLootBox($data);
@@ -37,7 +37,7 @@ class LootBoxesController extends Controller {
         return response()->json();
     }
 
-    public function updateLootBox(Request $request, $lootBoxId) {
+    public function updateLootBox (Request $request, $lootBoxId) {
         $user = $request->get('auth');
         $data = (object)$request->input('lootBox');
         $lootBox = LootBox::find($lootBoxId);
@@ -57,7 +57,7 @@ class LootBoxesController extends Controller {
         return response()->json();
     }
 
-    public function deleteLootBox(Request $request, $lootBoxId) {
+    public function deleteLootBox (Request $request, $lootBoxId) {
         $user = $request->get('auth');
         $lootBox = LootBox::find($lootBoxId);
         Condition::precondition(!$lootBox, 404, 'No loot box with that ID');
@@ -70,7 +70,7 @@ class LootBoxesController extends Controller {
         return response()->json();
     }
 
-    public function getItem($lootBoxId) {
+    public function getItem ($lootBoxId) {
         $lootBox = null;
 
         if ($lootBoxId == 'new') {
@@ -96,14 +96,14 @@ class LootBoxesController extends Controller {
         ]);
     }
 
-    public function getItems(Request $request, $page) {
+    public function getItems (Request $request, $page) {
         $title = $request->input('filter');
         $items = LootBox::orderBy('title', 'ASC');
 
         if ($title) {
             $items->where('title', 'LIKE', Value::getFilterValue($request, $title));
         }
-        $total = DataHelper::getPage($items->count(), $this->bigPerPage);
+        $total = DataHelper::getTotal($items->count(), $this->bigPerPage);
 
         return response()->json([
             'total' => $total,
@@ -120,7 +120,7 @@ class LootBoxesController extends Controller {
         ]);
     }
 
-    public function getShopItems(Request $request, $page) {
+    public function getShopItems (Request $request, $page) {
         $title = $request->input('title');
         $type = $request->input('type');
         $rarity = $request->input('rarity');
@@ -145,7 +145,7 @@ class LootBoxesController extends Controller {
         if ($rarity) {
             $items->where('rarity', $rarity);
         }
-        $total = DataHelper::getPage($items->count());
+        $total = DataHelper::getTotal($items->count());
 
         return response()->json([
             'total' => $total,
@@ -162,7 +162,7 @@ class LootBoxesController extends Controller {
         ]);
     }
 
-    private function validateLootBox($lootBox) {
+    private function validateLootBox ($lootBox) {
         Condition::precondition(!isset($lootBox->title) || empty($lootBox->title),
             400, 'Title needs to be set');
         Condition::precondition(!is_numeric($lootBox->boxId) || $lootBox->boxId < 1,

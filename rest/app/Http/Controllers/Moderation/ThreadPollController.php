@@ -25,7 +25,7 @@ class ThreadPollController extends Controller {
      *
      * @param ForumService $forumService
      */
-    public function __construct(ForumService $forumService) {
+    public function __construct (ForumService $forumService) {
         parent::__construct();
         $this->forumService = $forumService;
     }
@@ -36,7 +36,7 @@ class ThreadPollController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPoll(Request $request, $threadId) {
+    public function getPoll (Request $request, $threadId) {
         $user = $request->get('auth');
         $thread = Thread::find($threadId);
         $permission = ConfigHelper::getForumPermissions()->canManagePolls;
@@ -68,7 +68,7 @@ class ThreadPollController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPolls(Request $request, $page) {
+    public function getPolls (Request $request, $page) {
         $filter = $request->input('filter');
         $user = $request->get('auth');
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId, ConfigHelper::getForumPermissions()->canManagePolls);
@@ -79,7 +79,7 @@ class ThreadPollController extends Controller {
             ->orderBy('threads.title', 'ASC')
             ->select('threads.title', 'threads.threadId', 'thread_polls.*', 'threads.categoryId');
 
-        $total = DataHelper::getPage($getPollsSql->count('thread_polls.threadPollId'));
+        $total = DataHelper::getTotal($getPollsSql->count('thread_polls.threadPollId'));
         $polls = $getPollsSql->take($this->perPage)->skip(DataHelper::getOffset($page))->get()->map(function ($poll) {
             return [
                 'threadPollId' => $poll->threadPollId,
@@ -104,7 +104,7 @@ class ThreadPollController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deletePoll(Request $request, $threadId) {
+    public function deletePoll (Request $request, $threadId) {
         $user = $request->get('auth');
         $thread = Thread::find($threadId);
         $threadPoll = ThreadPoll::where('threadId', $thread->threadId)->first();

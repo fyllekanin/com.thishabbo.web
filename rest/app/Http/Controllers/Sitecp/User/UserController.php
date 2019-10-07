@@ -34,7 +34,7 @@ class UserController extends Controller {
      *
      * @param AuthService $authService
      */
-    public function __construct(AuthService $authService) {
+    public function __construct (AuthService $authService) {
         parent::__construct();
         $this->authService = $authService;
     }
@@ -48,7 +48,7 @@ class UserController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function mergeUsers(Request $request, $srcNickname, $destNickname) {
+    public function mergeUsers (Request $request, $srcNickname, $destNickname) {
         $user = $request->get('auth');
 
         Condition::precondition(!PermissionHelper::haveSitecpPermission($user->userId, ConfigHelper::getSitecpConfig()->canMergeUsers), 400, 'You do not have permission!');
@@ -107,7 +107,7 @@ class UserController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getUsers(Request $request, $page) {
+    public function getUsers (Request $request, $page) {
         $nickname = $request->input('nickname');
         $habbo = $request->input('habbo');
         $user = $request->get('auth');
@@ -123,7 +123,7 @@ class UserController extends Controller {
             $getUserSql->where('habbo', 'LIKE', Value::getFilterValue($request, $habbo));
         }
 
-        $total = DataHelper::getPage($getUserSql->count('userId'), $this->bigPerPage);
+        $total = DataHelper::getTotal($getUserSql->count('userId'), $this->bigPerPage);
         $users = array_map(function ($user) {
             $user['credits'] = UserHelper::getUserDataOrCreate($user['userId'])->credits;
             return $user;
@@ -146,7 +146,7 @@ class UserController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getUserBasic(Request $request, $userId) {
+    public function getUserBasic (Request $request, $userId) {
         $user = $request->get('auth');
         $current = UserHelper::getUserFromId($userId);
 
@@ -174,7 +174,7 @@ class UserController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateUserBasic(Request $request, $userId) {
+    public function updateUserBasic (Request $request, $userId) {
         $user = $request->get('auth');
         $current = User::find($userId);
         $userData = UserHelper::getUserDataOrCreate($userId);
@@ -225,7 +225,7 @@ class UserController extends Controller {
      * @param $newUser
      * @param $shouldCheckPassword
      */
-    private function basicUserConditionCollection($user, $newUser, $shouldCheckPassword) {
+    private function basicUserConditionCollection ($user, $newUser, $shouldCheckPassword) {
         if (!PermissionHelper::haveSitecpPermission($user->userId, ConfigHelper::getSitecpConfig()->canEditUserBasic)) {
             return;
         }

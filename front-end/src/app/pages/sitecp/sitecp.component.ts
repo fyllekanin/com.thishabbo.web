@@ -29,7 +29,7 @@ export class SitecpComponent extends Page implements OnDestroy, OnInit {
         elementRef: ElementRef
     ) {
         super(elementRef);
-        breadcrumbService.breadcrumb = new Breadcrumb({current: 'SiteCP'});
+        breadcrumbService.breadcrumb = new Breadcrumb({ current: 'SiteCP' });
     }
 
     ngOnInit (): void {
@@ -108,7 +108,7 @@ export class SitecpComponent extends Page implements OnDestroy, OnInit {
                     }),
                     new SideMenuItem({
                         title: 'Manage Prefixes',
-                        link: '/sitecp/forum/prefixes',
+                        link: '/sitecp/forum/prefixes/page/1',
                         isApplicable: this._authService.sitecpPermissions.canManagePrefixes
                     })
                 ]

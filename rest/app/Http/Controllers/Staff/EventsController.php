@@ -28,7 +28,7 @@ class EventsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getBanOnSightList() {
+    public function getBanOnSightList () {
         $settingKeys = ConfigHelper::getKeyConfig();
         $items = json_decode(SettingsHelper::getSettingValue($settingKeys->banOnSight));
 
@@ -50,7 +50,7 @@ class EventsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createHostLike(Request $request) {
+    public function createHostLike (Request $request) {
         $user = $request->get('auth');
         $nowMinus30Min = time() - 1800;
 
@@ -93,7 +93,7 @@ class EventsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getBanOnSight($entryId) {
+    public function getBanOnSight ($entryId) {
         $settingKeys = ConfigHelper::getKeyConfig();
         $entries = json_decode(SettingsHelper::getSettingValue($settingKeys->banOnSight));
 
@@ -108,11 +108,11 @@ class EventsController extends Controller {
      * Put request for Ban on Sight Entry
      *
      * @param Request $request
-     * @param $entryId
+     * @param         $entryId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateBanOnSight(Request $request, $entryId) {
+    public function updateBanOnSight (Request $request, $entryId) {
         $settingKeys = ConfigHelper::getKeyConfig();
         $user = $request->get('auth');
         $information = (object)$request->input('information');
@@ -146,7 +146,7 @@ class EventsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createBanOnSight(Request $request) {
+    public function createBanOnSight (Request $request) {
         $settingKeys = ConfigHelper::getKeyConfig();
         $user = $request->get('auth');
         $information = (object)$request->input('information');
@@ -174,11 +174,11 @@ class EventsController extends Controller {
      * Deleter Ban on Sight List Item
      *
      * @param Request $request
-     * @param $entryId
+     * @param         $entryId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteBanOnSight(Request $request, $entryId) {
+    public function deleteBanOnSight (Request $request, $entryId) {
         $settingKeys = ConfigHelper::getKeyConfig();
         $user = $request->get('auth');
         $oldEntries = json_decode(SettingsHelper::getSettingValue($settingKeys->banOnSight));
@@ -200,14 +200,14 @@ class EventsController extends Controller {
      *
      * @return mixed
      */
-    public function getBookingLog($page) {
+    public function getBookingLog ($page) {
         $bookAction = Action::getAction(Action::BOOKED_EVENT_SLOT);
         $unbookAction = Action::getAction(Action::UNBOOKED_EVENT_SLOT);
         $editedAction = Action::getAction(Action::EDITED_EVENTS_TIMETABLE_SLOT);
 
         $logSql = LogStaff::whereIn('action', [$bookAction, $unbookAction, $editedAction]);
 
-        $total = DataHelper::getPage($logSql->count('logId'));
+        $total = DataHelper::getTotal($logSql->count('logId'));
         $items = $logSql->orderBy('logId', 'DESC')
             ->take($this->perPage)
             ->skip(DataHelper::getOffset($page))
@@ -243,13 +243,13 @@ class EventsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getEventTypes(Request $request, $page) {
+    public function getEventTypes (Request $request, $page) {
         $filter = $request->input('filter');
 
         $eventsSql = Event::where('name', 'LIKE', Value::getFilterValue($request, $filter))
             ->orderBy('name', 'ASC');
 
-        $total = DataHelper::getPage($eventsSql->count('eventId'));
+        $total = DataHelper::getTotal($eventsSql->count('eventId'));
         $events = $eventsSql->take($this->perPage)->skip(DataHelper::getOffset($page))->get();
 
         return response()->json([
@@ -266,7 +266,7 @@ class EventsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createEventType(Request $request) {
+    public function createEventType (Request $request) {
         $user = $request->get('auth');
         $newEvent = (object)$request->input('event');
 
@@ -295,7 +295,7 @@ class EventsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateEventType(Request $request, $eventId) {
+    public function updateEventType (Request $request, $eventId) {
         $user = $request->get('auth');
         $newEvent = (object)$request->input('event');
         $event = Event::find($eventId);
@@ -321,7 +321,7 @@ class EventsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteEventType(Request $request, $eventId) {
+    public function deleteEventType (Request $request, $eventId) {
         $user = $request->get('auth');
         $event = Event::find($eventId);
 
@@ -341,7 +341,7 @@ class EventsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getTimetable() {
+    public function getTimetable () {
         return response()->json([
             'timetable' => Timetable::events()->isActive()->get(),
             'events' => Event::orderBy('name', 'ASC')->get(),
@@ -357,7 +357,7 @@ class EventsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteBooking(Request $request, $timetableId) {
+    public function deleteBooking (Request $request, $timetableId) {
         $user = $request->get('auth');
 
         $booking = Timetable::find($timetableId);
@@ -376,7 +376,7 @@ class EventsController extends Controller {
         return response()->json();
     }
 
-    public function updateBooking(Request $request, $timetableId) {
+    public function updateBooking (Request $request, $timetableId) {
         $user = $request->get('auth');
         $data = (object)$request->input('data');
 
@@ -426,7 +426,7 @@ class EventsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createBooking(Request $request) {
+    public function createBooking (Request $request) {
         $user = $request->get('auth');
         $booking = (object)$request->input('booking');
 

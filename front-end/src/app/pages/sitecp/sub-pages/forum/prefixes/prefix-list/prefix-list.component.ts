@@ -1,4 +1,4 @@
-import { Prefix, PrefixActions } from '../prefix.model';
+import { Prefix, PrefixActions, PrefixListPage } from '../prefix.model';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, ElementRef, OnDestroy } from '@angular/core';
@@ -15,6 +15,10 @@ import { NotificationService } from 'core/services/notification/notification.ser
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
+import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
+import { SITECP_BREADCRUMB_ITEM } from '../../../../sitecp.constants';
+import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
+import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 
 
 @Component({
@@ -22,11 +26,12 @@ import { TitleTab } from 'shared/app-views/title/title.model';
     templateUrl: 'prefix-list.component.html'
 })
 export class PrefixListComponent extends Page implements OnDestroy {
-    private _prefixes: Array<Prefix> = [];
+    private _data = new PrefixListPage();
 
     tableConfig: TableConfig;
+    pagination: PaginationModel;
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'New Prefix', link: '/sitecp/forum/prefixes/new'})
+        new TitleTab({ title: 'New Prefix', link: '/sitecp/forum/prefixes/new' })
     ];
 
     constructor (
@@ -35,10 +40,17 @@ export class PrefixListComponent extends Page implements OnDestroy {
         private _dialogService: DialogService,
         private _httpService: HttpService,
         activatedRoute: ActivatedRoute,
-        elementRef: ElementRef
+        elementRef: ElementRef,
+        breadcrumbService: BreadcrumbService
     ) {
         super(elementRef);
         this.addSubscription(activatedRoute.data, this.onData.bind(this));
+        breadcrumbService.breadcrumb = new Breadcrumb({
+            current: 'Prefixes',
+            items: [
+                SITECP_BREADCRUMB_ITEM
+            ]
+        });
     }
 
     ngOnDestroy (): void {
@@ -46,7 +58,7 @@ export class PrefixListComponent extends Page implements OnDestroy {
     }
 
     onAction (action: Action): void {
-        const prefix = this._prefixes.find(item => item.prefixId === Number(action.rowId));
+        const prefix = this._data.items.find(item => item.prefixId === Number(action.rowId));
         switch (action.value) {
             case PrefixActions.EDIT_PREFIX:
                 this._router.navigateByUrl(`/sitecp/forum/prefixes/${action.rowId}`);
@@ -64,7 +76,7 @@ export class PrefixListComponent extends Page implements OnDestroy {
     private onDelete (prefix: Prefix): void {
         this._httpService.delete(`sitecp/prefixes/${prefix.prefixId}`)
             .subscribe(() => {
-                this._prefixes = this._prefixes.filter(pre => pre.prefixId !== prefix.prefixId);
+                this._data.items = this._data.items.filter(pre => pre.prefixId !== prefix.prefixId);
                 this.createOrUpdateTable();
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
@@ -74,9 +86,15 @@ export class PrefixListComponent extends Page implements OnDestroy {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private onData (data: { data: Array<Prefix> }): void {
-        this._prefixes = data.data;
+    private onData (data: { data: PrefixListPage }): void {
+        this._data = data.data;
         this.createOrUpdateTable();
+
+        this.pagination = new PaginationModel({
+            total: this._data.total,
+            page: this._data.page,
+            url: '/sitecp/forum/prefixes/page/:page'
+        });
     }
 
     private createOrUpdateTable (): void {
@@ -93,14 +111,14 @@ export class PrefixListComponent extends Page implements OnDestroy {
 
     private getTableRows (): Array<TableRow> {
         const actions = [
-            new TableAction({title: 'Edit Prefix', value: PrefixActions.EDIT_PREFIX}),
-            new TableAction({title: 'Delete Prefix', value: PrefixActions.DELETE_PREFIX})
+            new TableAction({ title: 'Edit Prefix', value: PrefixActions.EDIT_PREFIX }),
+            new TableAction({ title: 'Delete Prefix', value: PrefixActions.DELETE_PREFIX })
         ];
-        return this._prefixes.map(prefix => {
+        return this._data.items.map(prefix => {
             return new TableRow({
                 id: String(prefix.prefixId),
                 cells: [
-                    new TableCell({title: `<span style="${prefix.style}">${prefix.text}</span>`, innerHTML: true})
+                    new TableCell({ title: `<span style="${prefix.style}">${prefix.text}</span>`, innerHTML: true })
                 ],
                 actions: actions
             });
@@ -109,7 +127,7 @@ export class PrefixListComponent extends Page implements OnDestroy {
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Text'})
+            new TableHeader({ title: 'Text' })
         ];
     }
 }

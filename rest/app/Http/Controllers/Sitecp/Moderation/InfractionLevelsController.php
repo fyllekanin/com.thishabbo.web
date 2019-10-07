@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 class InfractionLevelsController extends Controller {
     private $forumService;
 
-    public function __construct(ForumService $forumService) {
+    public function __construct (ForumService $forumService) {
         parent::__construct();
         $this->forumService = $forumService;
     }
@@ -27,13 +27,13 @@ class InfractionLevelsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getInfractionLevels(Request $request, $page) {
+    public function getInfractionLevels (Request $request, $page) {
         $filter = $request->input('filter');
         $infractionLevelsSql = InfractionLevel::where('title', 'LIKE', Value::getFilterValue($request, $filter));
 
         return response()->json([
             'page' => $page,
-            'total' => DataHelper::getPage($infractionLevelsSql->count('infractionLevelId')),
+            'total' => DataHelper::getTotal($infractionLevelsSql->count('infractionLevelId')),
             'items' => $infractionLevelsSql->take($this->perPage)
                 ->skip(DataHelper::getOffset($page))
                 ->get()
@@ -46,7 +46,7 @@ class InfractionLevelsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getInfractionLevel(Request $request, $infractionLevelId) {
+    public function getInfractionLevel (Request $request, $infractionLevelId) {
         $user = $request->get('auth');
         $infractionLevel = InfractionLevel::find($infractionLevelId);
         $isNew = $infractionLevelId == 'new';
@@ -73,7 +73,7 @@ class InfractionLevelsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateInfractionLevel(Request $request, $infractionLevelId) {
+    public function updateInfractionLevel (Request $request, $infractionLevelId) {
         $user = $request->get('auth');
         $newInfractionLevel = (object)$request->input('infractionLevel');
         $infractionLevel = InfractionLevel::find($infractionLevelId);
@@ -100,7 +100,7 @@ class InfractionLevelsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteInfractionLevel(Request $request, $infractionLevelId) {
+    public function deleteInfractionLevel (Request $request, $infractionLevelId) {
         $user = $request->get('auth');
 
         $infractionLevel = InfractionLevel::find($infractionLevelId);
@@ -120,7 +120,7 @@ class InfractionLevelsController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createInfractionLevel(Request $request) {
+    public function createInfractionLevel (Request $request) {
         $user = $request->get('auth');
         $newInfractionLevel = (object)$request->input('infractionLevel');
         $this->validateInfractionLevel($newInfractionLevel);
@@ -143,7 +143,7 @@ class InfractionLevelsController extends Controller {
     /**
      * @param $infractionLevel
      */
-    private function validateInfractionLevel($infractionLevel) {
+    private function validateInfractionLevel ($infractionLevel) {
         Condition::precondition(!isset($infractionLevel->title) || empty($infractionLevel->title),
             400, 'Title needs to be set');
         Condition::precondition(!isset($infractionLevel->points) || !is_numeric($infractionLevel->points),

@@ -15,12 +15,12 @@ class VisitorMessageView {
     /**
      * @param $notification
      */
-    public function __construct($notification) {
+    public function __construct ($notification) {
         $this->user = UserHelper::getSlimUser($notification->senderId);
         $this->page = $this->getVisitorMessagePage($notification->contentId);
     }
 
-    private function getVisitorMessagePage($visitorMessageId) {
+    private function getVisitorMessagePage ($visitorMessageId) {
         $visitorMessage = VisitorMessage::find($visitorMessageId);
         if (!$visitorMessage) {
             $this->host = null;
@@ -30,7 +30,7 @@ class VisitorMessageView {
         $this->host = UserHelper::getSlimUser($visitorMessage->hostId);
 
         $this->subjectId = $visitorMessage->isComment() ? $visitorMessage->parentId : $visitorMessage->visitorMessageId;
-        return DataHelper::getPage(VisitorMessage::isSubject()
+        return DataHelper::getTotal(VisitorMessage::isSubject()
             ->where('visitorMessageId', '>', $this->subjectId)
             ->where('hostId', $visitorMessage->hostId)
             ->count('visitorMessageId'));

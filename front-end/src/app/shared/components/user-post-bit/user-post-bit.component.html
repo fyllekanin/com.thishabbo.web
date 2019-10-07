@@ -68,6 +68,8 @@
         </div>
     </div>
 </div>
-<div class="post-bit badges" *ngIf="user.badgeIds && user.badgeIds.length > 0">
-    <img *ngFor="let badgeId of user.badgeIds" [src]="'/rest/resources/images/badges/' + badgeId + '.gif'"/>
+<div class="badges" *ngIf="user.badges && user.badges.length > 0">
+    <span *ngFor="let badge of user.badges" [attr.tooltip]="badge.name">
+        <img [src]="'/rest/resources/images/badges/' + badge.badgeId + '.gif'"/>
+    </span>
 </div>

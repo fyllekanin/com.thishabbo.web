@@ -24,7 +24,7 @@ class BadgesController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getUsersWithBadge($badgeId) {
+    public function getUsersWithBadge ($badgeId) {
         $badge = Badge::find($badgeId);
         Condition::precondition(!$badge, 404, 'Badge do not exist');
 
@@ -49,7 +49,7 @@ class BadgesController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateUsersWithBadge(Request $request, $badgeId) {
+    public function updateUsersWithBadge (Request $request, $badgeId) {
         $user = $request->get('auth');
         $badge = Badge::find($badgeId);
         $userIds = $request->input('userIds');
@@ -72,7 +72,7 @@ class BadgesController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteBadge(Request $request, $badgeId) {
+    public function deleteBadge (Request $request, $badgeId) {
         $user = $request->get('auth');
         $badge = Badge::find($badgeId);
 
@@ -94,7 +94,7 @@ class BadgesController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createBadge(Request $request) {
+    public function createBadge (Request $request) {
         $user = $request->get('auth');
         $badge = (object)json_decode($request->input('badge'));
         $badgeImage = $request->file('badgeImage');
@@ -131,7 +131,7 @@ class BadgesController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateBadge(Request $request, $badgeId) {
+    public function updateBadge (Request $request, $badgeId) {
         $user = $request->get('auth');
         $newBadge = (object)json_decode($request->input('badge'));
         $badgeImage = $request->file('badgeImage');
@@ -174,7 +174,7 @@ class BadgesController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getBadge($badgeId) {
+    public function getBadge ($badgeId) {
         $badge = Badge::find($badgeId);
         Condition::precondition(!$badge, 404, 'No badge with that ID exist');
 
@@ -189,13 +189,13 @@ class BadgesController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getBadges(Request $request, $page) {
+    public function getBadges (Request $request, $page) {
         $filter = $request->input('filter');
 
         $getBadgeSql = Badge::where('name', 'LIKE', Value::getFilterValue($request, $filter))
             ->orderBy('name', 'ASC');
 
-        $total = DataHelper::getPage($getBadgeSql->count('badgeId'));
+        $total = DataHelper::getTotal($getBadgeSql->count('badgeId'));
         $badges = $getBadgeSql->take($this->perPage)
             ->skip(DataHelper::getOffset($page))
             ->get();
@@ -207,7 +207,7 @@ class BadgesController extends Controller {
         ]);
     }
 
-    private function addBadgeToUsers($userIds, $badgeId) {
+    private function addBadgeToUsers ($userIds, $badgeId) {
         $notifications = [];
         $itemTypes = ConfigHelper::getTypesConfig();
         foreach ($userIds as $userId) {

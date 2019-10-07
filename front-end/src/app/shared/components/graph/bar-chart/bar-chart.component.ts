@@ -5,7 +5,7 @@ import * as d3 from 'd3';
 @Component({
     selector: 'app-graph-bar-chart',
     templateUrl: 'bar-chart.component.html',
-    styleUrls: ['bar-chart.component.css']
+    styleUrls: [ 'bar-chart.component.css' ]
 })
 export class BarChartComponent implements AfterViewInit {
     private _data: BarChartModel;
@@ -26,10 +26,10 @@ export class BarChartComponent implements AfterViewInit {
 
     @ViewChild('container', { static: true }) container;
 
-    constructor(private _elementRef: ElementRef) {
+    constructor (private _elementRef: ElementRef) {
     }
 
-    ngAfterViewInit() {
+    ngAfterViewInit () {
         this._size.width = this._elementRef.nativeElement.offsetWidth;
         this._size.height = 500;
         this._svg = d3.select(this.container.nativeElement);
@@ -41,7 +41,7 @@ export class BarChartComponent implements AfterViewInit {
     }
 
     @Input()
-    set data(data: BarChartModel) {
+    set data (data: BarChartModel) {
         this._data = data;
         if (this._svg) {
             this.updateGraph();
@@ -49,14 +49,14 @@ export class BarChartComponent implements AfterViewInit {
     }
 
 
-    private getWidthAndHeight(): void {
+    private getWidthAndHeight (): void {
         this._width = +this._svg.attr('width') - this._size.left - this._size.right;
         this._height = +this._svg.attr('height') - this._size.top - this._size.bottom;
     }
 
-    private setScales(): void {
+    private setScales (): void {
         this._scaleBand = d3.scaleBand()
-            .rangeRound([0, this._width])
+            .rangeRound([ 0, this._width ])
             .padding(0.1);
 
         this._scaleBand.domain(this._data.items.map(function (d) {
@@ -64,14 +64,14 @@ export class BarChartComponent implements AfterViewInit {
         }));
 
         this._scaleLinear = d3.scaleLinear()
-            .rangeRound([this._height, 0]);
+            .rangeRound([ this._height, 0 ]);
 
-        this._scaleLinear.domain([0, d3.max(this._data.items, function (d) {
+        this._scaleLinear.domain([ 0, d3.max(this._data.items, function (d) {
             return Number(d.yItem);
-        })]);
+        }) ]);
     }
 
-    private updateGraph(): void {
+    private updateGraph (): void {
         this.getWidthAndHeight();
         this.setScales();
 
@@ -97,6 +97,10 @@ export class BarChartComponent implements AfterViewInit {
             .data(this._data.items)
             .enter()
             .append('rect')
+            .attr('tooltip', item => {
+                return item.yItem;
+            })
+            .attr('tooltip-position', 'right')
             .attr('class', 'bar')
             .attr('x', item => {
                 return this._scaleBand(item.xItem);

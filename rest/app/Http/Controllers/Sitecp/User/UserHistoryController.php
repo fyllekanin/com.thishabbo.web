@@ -22,7 +22,7 @@ use App\Http\Impl\Sitecp\Shop\UserHistoryControllerImpl;
 class UserHistoryController extends Controller {
     private $myImpl;
 
-    public function __construct(UserHistoryControllerImpl $impl) {
+    public function __construct (UserHistoryControllerImpl $impl) {
         parent::__construct();
         $this->myImpl = $impl;
     }
@@ -35,9 +35,9 @@ class UserHistoryController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getHistory($userId, $page) {
+    public function getHistory ($userId, $page) {
         $logsSql = LogSitecp::where('contentId', $userId)->whereIn('action', $this->myImpl->getSupportedActionIds());
-        $total = DataHelper::getPage($logsSql->count());
+        $total = DataHelper::getTotal($logsSql->count());
         $items = $logsSql->orderBy('createdAt', 'DESC')->take($this->perPage)->skip(DataHelper::getOffset($page))->get();
 
         return response()->json([

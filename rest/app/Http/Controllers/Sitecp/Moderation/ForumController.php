@@ -22,7 +22,7 @@ class ForumController extends Controller {
      *
      * @param ForumService $forumService
      */
-    public function __construct(ForumService $forumService) {
+    public function __construct (ForumService $forumService) {
         parent::__construct();
         $this->forumService = $forumService;
     }
@@ -33,14 +33,14 @@ class ForumController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getAutoBans(Request $request, $page) {
+    public function getAutoBans (Request $request, $page) {
         $filter = $request->input('filter');
         $autoBansSql = AutoBan::where('title', 'LIKE', Value::getFilterValue($request, $filter))
             ->orderBy('title', 'ASC')
             ->skip(DataHelper::getOffset($page))
             ->take($this->perPage);
 
-        $total = DataHelper::getPage($autoBansSql->count('autoBanId'));
+        $total = DataHelper::getTotal($autoBansSql->count('autoBanId'));
         $items = $autoBansSql->map(function ($item) {
             return [
                 'autoBanId' => $item->autoBanId,
@@ -65,7 +65,7 @@ class ForumController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getModeratePosts(Request $request) {
+    public function getModeratePosts (Request $request) {
         $user = $request->get('auth');
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
 
@@ -95,7 +95,7 @@ class ForumController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getModerateThreads(Request $request) {
+    public function getModerateThreads (Request $request) {
         $user = $request->get('auth');
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
 

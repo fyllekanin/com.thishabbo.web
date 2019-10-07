@@ -20,7 +20,7 @@ class BettingController extends Controller {
      *
      * @param CreditsService $creditsService
      */
-    public function __construct(CreditsService $creditsService) {
+    public function __construct (CreditsService $creditsService) {
         parent::__construct();
         $this->creditsService = $creditsService;
     }
@@ -30,7 +30,7 @@ class BettingController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getRoulette(Request $request) {
+    public function getRoulette (Request $request) {
         $user = $request->get('auth');
 
         return response()->json([
@@ -43,7 +43,7 @@ class BettingController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createRoulette(Request $request) {
+    public function createRoulette (Request $request) {
         $user = $request->get('auth');
         $color = $request->input('color');
         $amount = $request->input('amount');
@@ -98,7 +98,7 @@ class BettingController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createPlaceBet(Request $request, $betId) {
+    public function createPlaceBet (Request $request, $betId) {
         $user = $request->get('auth');
         $amount = $request->input('amount');
         $bet = Bet::find($betId);
@@ -129,7 +129,7 @@ class BettingController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getBettingStats(Request $request) {
+    public function getBettingStats (Request $request) {
         $user = $request->get('auth');
 
         return response()->json($this->getStats($user));
@@ -140,7 +140,7 @@ class BettingController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getDashboardPage(Request $request) {
+    public function getDashboardPage (Request $request) {
         $user = $request->get('auth');
 
         return response()->json([
@@ -155,7 +155,7 @@ class BettingController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getMyActiveBets(Request $request) {
+    public function getMyActiveBets (Request $request) {
         $user = $request->get('auth');
 
         $bets = UserBet::where('userId', $user->userId)
@@ -183,7 +183,7 @@ class BettingController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getHistoryPage(Request $request, $page) {
+    public function getHistoryPage (Request $request, $page) {
         $user = $request->get('auth');
 
         $betsSql = UserBet::where('userId', $user->userId)
@@ -193,7 +193,7 @@ class BettingController extends Controller {
             ->where('bets.isFinished', 1)
             ->select('user_bets.*', 'bets.name', 'bets.isFinished', 'bets.result');
 
-        $total = DataHelper::getPage($betsSql->count('userBetId'));
+        $total = DataHelper::getTotal($betsSql->count('userBetId'));
         $bets = $betsSql->orderBy('user_bets.userBetId', 'DESC')->get()->map(function ($bet) {
             return [
                 'name' => $bet->name,
@@ -218,7 +218,7 @@ class BettingController extends Controller {
      *
      * @return float|int
      */
-    private function getExpected($amount, $leftSide, $rightSide) {
+    private function getExpected ($amount, $leftSide, $rightSide) {
         $rightSide = round($amount / $rightSide);
         $profit = $leftSide * $rightSide;
 
@@ -230,7 +230,7 @@ class BettingController extends Controller {
      *
      * @return array
      */
-    private function getStats($user) {
+    private function getStats ($user) {
         $betsWon = UserBet::where('userId', $user->userId)
             ->join('bets', 'bets.betId', '=', 'user_bets.betId')
             ->where('bets.isFinished', 1)
@@ -256,7 +256,7 @@ class BettingController extends Controller {
      *
      * @return array
      */
-    private function getTrendingBets() {
+    private function getTrendingBets () {
         $bets = Bet::where('isFinished', false)->where('isDeleted', '<', 1)->getQuery()->get()->map(function ($bet) {
             $bet->backersCount = UserBet::where('betId', $bet->betId)->count('userBetId');
             return $bet;
@@ -269,7 +269,7 @@ class BettingController extends Controller {
      *
      * @return array
      */
-    private function getActiveBets() {
+    private function getActiveBets () {
         return BetCategory::orderBy('displayOrder')->get()->map(function ($category) {
             $category->append('activeBets');
             return $category;

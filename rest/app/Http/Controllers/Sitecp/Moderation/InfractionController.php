@@ -37,12 +37,12 @@ class InfractionController extends Controller {
     /**
      * InfractionController constructor.
      *
-     * @param ForumService $forumService
+     * @param ForumService          $forumService
      * @param ForumValidatorService $validatorService
-     * @param CreditsService $creditsService
-     * @param PointsService $pointsService
+     * @param CreditsService        $creditsService
+     * @param PointsService         $pointsService
      */
-    public function __construct(ForumService $forumService, ForumValidatorService $validatorService, CreditsService $creditsService, PointsService $pointsService) {
+    public function __construct (ForumService $forumService, ForumValidatorService $validatorService, CreditsService $creditsService, PointsService $pointsService) {
         parent::__construct();
         $this->forumService = $forumService;
         $this->validatorService = $validatorService;
@@ -56,7 +56,7 @@ class InfractionController extends Controller {
      *
      * @return JsonResponse
      */
-    public function getInfractions(Request $request, $page) {
+    public function getInfractions (Request $request, $page) {
         $filter = $request->input('filter');
 
         $userIds = User::withNicknameLike($filter)->pluck('userId');
@@ -64,7 +64,7 @@ class InfractionController extends Controller {
             ->withoutGlobalScope('nonHardDeleted')
             ->orderBy('createdAt', 'DESC');
 
-        $total = DataHelper::getPage($infractionsSql->count('infractionId'));
+        $total = DataHelper::getTotal($infractionsSql->count('infractionId'));
         $items = $infractionsSql->take($this->perPage)->skip(DataHelper::getOffset($page))
             ->get()->map(function ($infraction) {
                 return [
@@ -91,7 +91,7 @@ class InfractionController extends Controller {
      *
      * @return JsonResponse
      */
-    public function deleteInfraction(Request $request, $infractionId) {
+    public function deleteInfraction (Request $request, $infractionId) {
         $user = $request->get('auth');
         $infraction = Infraction::find($infractionId);
 
@@ -106,13 +106,13 @@ class InfractionController extends Controller {
     }
 
     /**
-     * @param Request $request
+     * @param Request              $request
      *
      * @param ThreadCrudController $threadCrudController
      *
      * @return JsonResponse
      */
-    public function createInfraction(Request $request, ThreadCrudController $threadCrudController) {
+    public function createInfraction (Request $request, ThreadCrudController $threadCrudController) {
         $user = $request->get('auth');
         $data = (object)$request->input('infraction');
         $this->validateInfraction($data);
@@ -149,7 +149,7 @@ class InfractionController extends Controller {
      *
      * @return JsonResponse
      */
-    public function getInfractionContext($userId) {
+    public function getInfractionContext ($userId) {
         $user = UserHelper::getSlimUser($userId);
         Condition::precondition(!$user, 404, 'No user with that ID');
 
@@ -168,11 +168,11 @@ class InfractionController extends Controller {
 
     /**
      * @param ThreadCrudController $threadCrudController
-     * @param $infractionLevel
-     * @param $infraction
+     * @param                      $infractionLevel
+     * @param                      $infraction
      *
      */
-    private function createInfractionThread(ThreadCrudController $threadCrudController, $infractionLevel, $infraction, $type, $content) {
+    private function createInfractionThread (ThreadCrudController $threadCrudController, $infractionLevel, $infraction, $type, $content) {
         $threadSkeleton = new stdClass();
         $infracted = UserHelper::getUserFromId($infraction->infractedId);
         $points = Infraction::isActive()
@@ -224,11 +224,11 @@ Current Infraction/Warning Points: " . $points . "
         $threadCrudController->doThread($infracted, null, $threadSkeleton, null, true);
     }
 
-    private function botAccountExists() {
+    private function botAccountExists () {
         return UserHelper::getUserFromId(SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->botUserId));
     }
 
-    private function validateInfraction($infraction) {
+    private function validateInfraction ($infraction) {
         Condition::precondition(!isset($infraction->reason) || empty($infraction->reason), 400,
             'Reason needs to be set');
 
@@ -242,7 +242,7 @@ Current Infraction/Warning Points: " . $points . "
             'User do not exist');
     }
 
-    private function checkAutomaticBan($user, $userId) {
+    private function checkAutomaticBan ($user, $userId) {
         $points = Infraction::isActive()
             ->where('infractedId', $userId)
             ->get()

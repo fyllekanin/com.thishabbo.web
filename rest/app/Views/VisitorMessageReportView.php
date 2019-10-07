@@ -9,11 +9,11 @@ use stdClass;
 
 class VisitorMessageReportView {
 
-    public static function of(User $user, VisitorMessage $visitorMessage, $message) {
+    public static function of (User $user, VisitorMessage $visitorMessage, $message) {
         $threadSkeleton = new stdClass();
 
         $subjectId = $visitorMessage->isComment() ? $visitorMessage->parentId : $visitorMessage->visitorMessageId;
-        $page = DataHelper::getPage(VisitorMessage::where('hostId', $visitorMessage->hostId)
+        $page = DataHelper::getTotal(VisitorMessage::where('hostId', $visitorMessage->hostId)
             ->isSubject()
             ->where('visitorMessageId', '<', $subjectId)
             ->where('hostId', $visitorMessage->hostId)

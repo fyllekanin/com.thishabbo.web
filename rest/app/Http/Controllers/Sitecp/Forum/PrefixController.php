@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Sitecp\Forum;
 use App\EloquentModels\Forum\Category;
 use App\EloquentModels\Forum\Prefix;
 use App\Helpers\ConfigHelper;
+use App\Helpers\DataHelper;
 use App\Helpers\PermissionHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
@@ -22,7 +23,7 @@ class PrefixController extends Controller {
      *
      * @param ForumService $forumService
      */
-    public function __construct(ForumService $forumService) {
+    public function __construct (ForumService $forumService) {
         parent::__construct();
         $this->forumService = $forumService;
     }
@@ -35,7 +36,7 @@ class PrefixController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPrefix(Request $request, $prefixId) {
+    public function getPrefix (Request $request, $prefixId) {
         $user = $request->get('auth');
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
         $prefix = null;
@@ -68,7 +69,7 @@ class PrefixController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createPrefix(Request $request) {
+    public function createPrefix (Request $request) {
         $user = $request->get('auth');
         $prefix = (object)$request->input('prefix');
         $categoryIds = isset($prefix->categoryIds) ? $prefix->categoryIds : [];
@@ -102,7 +103,7 @@ class PrefixController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updatePrefix(Request $request, $prefixId) {
+    public function updatePrefix (Request $request, $prefixId) {
         $user = $request->get('auth');
         $prefix = (object)$request->input('prefix');
         $categoryIds = isset($prefix->categoryIds) ? $prefix->categoryIds : [];
@@ -137,7 +138,7 @@ class PrefixController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deletePrefix(Request $request, $prefixId) {
+    public function deletePrefix (Request $request, $prefixId) {
         $user = $request->get('auth');
 
         $prefix = Prefix::find($prefixId);
@@ -153,9 +154,16 @@ class PrefixController extends Controller {
     /**
      * Get request to fetch all available prefixes
      *
+     * @param $page
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPrefixes() {
-        return response()->json(Prefix::all());
+    public function getPrefixes ($page) {
+
+        return response()->json([
+            'page' => $page,
+            'total' => DataHelper::getTotal(Prefix::count()),
+            'items' => Prefix::take($this->perPage)->skip(DataHelper::getOffset($page))->get()
+        ]);
     }
 }

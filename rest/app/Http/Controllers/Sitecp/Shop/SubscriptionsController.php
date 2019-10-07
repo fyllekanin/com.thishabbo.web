@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 
 class SubscriptionsController extends Controller {
 
-    public function getSubscriptions(Request $request, $page) {
+    public function getSubscriptions (Request $request, $page) {
         $title = $request->input('filter');
         $items = Subscription::orderBy('title', 'ASC');
 
@@ -26,7 +26,7 @@ class SubscriptionsController extends Controller {
 
         return response()->json([
             'page' => $page,
-            'total' => DataHelper::getPage($items->count()),
+            'total' => DataHelper::getTotal($items->count()),
             'items' => $items->take($this->perPage)->skip(DataHelper::getOffset($page))->get()->map(function ($subscription) {
                 return [
                     'subscriptionId' => $subscription->subscriptionId,
@@ -38,7 +38,7 @@ class SubscriptionsController extends Controller {
         ]);
     }
 
-    public function getSubscription($subscriptionId) {
+    public function getSubscription ($subscriptionId) {
         $subscription = Subscription::find($subscriptionId);
         Condition::precondition(!$subscription, 404, 'No subscription with that ID');
 
@@ -54,7 +54,7 @@ class SubscriptionsController extends Controller {
         ]);
     }
 
-    public function createSubscription(Request $request) {
+    public function createSubscription (Request $request) {
         $user = $request->get('auth');
         $data = (object)$request->input('data');
         $this->validateSubscription($data);
@@ -73,7 +73,7 @@ class SubscriptionsController extends Controller {
         return $this->getSubscription($subscription->subscriptionId);
     }
 
-    public function updateSubscription(Request $request, $subscriptionId) {
+    public function updateSubscription (Request $request, $subscriptionId) {
         $user = $request->get('auth');
         $data = (object)$request->input('data');
         $subscription = Subscription::find($subscriptionId);
@@ -95,7 +95,7 @@ class SubscriptionsController extends Controller {
         return $this->getSubscription($subscription->subscriptionId);
     }
 
-    public function deleteSubscription(Request $request, $subscriptionId) {
+    public function deleteSubscription (Request $request, $subscriptionId) {
         $user = $request->get('auth');
         $subscription = Subscription::find($subscriptionId);
 
@@ -109,7 +109,7 @@ class SubscriptionsController extends Controller {
         return response()->json();
     }
 
-    private function validateSubscription($subscription) {
+    private function validateSubscription ($subscription) {
         Condition::precondition(!isset($subscription->title) || empty($subscription->title), 400,
             'Title can not be empty');
         Condition::precondition(!is_numeric($subscription->avatarWidth),
@@ -123,7 +123,7 @@ class SubscriptionsController extends Controller {
             400, 'Pounds needs to numeric');
     }
 
-    private function convertBooleansToOptions($subscription) {
+    private function convertBooleansToOptions ($subscription) {
         $options = 0;
         foreach (ConfigHelper::getSubscriptionOptions() as $key => $option) {
             if (isset($subscription->options[$key]) && $subscription->options[$key]) {
@@ -133,7 +133,7 @@ class SubscriptionsController extends Controller {
         return $options;
     }
 
-    private function convertOptionsToBooleans($subscription) {
+    private function convertOptionsToBooleans ($subscription) {
         $options = [];
         foreach (ConfigHelper::getSubscriptionOptions() as $key => $option) {
             $options[$key] = (boolean)($subscription->options & $option);

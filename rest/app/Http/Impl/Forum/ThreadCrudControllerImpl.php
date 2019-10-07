@@ -14,7 +14,7 @@ use App\Utils\Condition;
 
 class ThreadCrudControllerImpl {
 
-    public function createOrUpdatePoll($thread, $threadSkeleton) {
+    public function createOrUpdatePoll ($thread, $threadSkeleton) {
         if (!$thread->poll) {
             $this->createThreadPoll($thread, $threadSkeleton);
         }
@@ -24,7 +24,7 @@ class ThreadCrudControllerImpl {
         }
     }
 
-    public function createThreadPoll($thread, $threadSkeleton) {
+    public function createThreadPoll ($thread, $threadSkeleton) {
         if (!isset($threadSkeleton->poll)) {
             return;
         }
@@ -37,13 +37,13 @@ class ThreadCrudControllerImpl {
         $threadPoll->save();
     }
 
-    public function getThreadPostTotalByUser($threadId, $userId, $canApprovePosts) {
-        return DataHelper::getPage(Post::where('userId', $userId)->where('threadId', $threadId)
+    public function getThreadPostTotalByUser ($threadId, $userId, $canApprovePosts) {
+        return DataHelper::getTotal(Post::where('userId', $userId)->where('threadId', $threadId)
             ->isApproved($canApprovePosts)
             ->count('postId'));
     }
 
-    public function canUserAccessThread($user, $thread) {
+    public function canUserAccessThread ($user, $thread) {
         $canAccessCategory = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canRead, $thread->categoryId)
             && (ForumHelper::isCategoryAuthOnly($thread->categoryId) ? $user->userId > 0 : true);
         $cantAccessUnapproved = !$thread->isApproved &&
@@ -52,7 +52,7 @@ class ThreadCrudControllerImpl {
         Condition::precondition($user->userId != $thread->userId && $cantAccessUnapproved, 400, 'You cant access a unapproved thread');
     }
 
-    public function getThreadReaders($threadId, $lastRead) {
+    public function getThreadReaders ($threadId, $lastRead) {
         return ThreadRead::where('threadId', $threadId)->where('updatedAt', '>', $lastRead)
             ->orderBy('updatedAt', 'DESC')
             ->get(['userId', 'updatedAt'])->map(function ($read) {

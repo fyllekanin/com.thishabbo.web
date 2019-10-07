@@ -20,7 +20,7 @@ class BansController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getUserBans(Request $request, $userId) {
+    public function getUserBans (Request $request, $userId) {
         $user = $request->get('auth');
         $current = UserHelper::getSlimUser($userId);
 
@@ -42,7 +42,7 @@ class BansController extends Controller {
      *
      * @return array
      */
-    public function createUserBan(Request $request, $userId) {
+    public function createUserBan (Request $request, $userId) {
         $user = $request->get('auth');
         $current = UserHelper::getUser($userId);
         $banData = (object)$request->input('reason');
@@ -74,7 +74,7 @@ class BansController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function liftUserBan(Request $request, $userId, $banId) {
+    public function liftUserBan (Request $request, $userId, $banId) {
         $user = $request->get('auth');
         $current = UserHelper::getUser($userId);
         $ban = Ban::find($banId);
@@ -101,10 +101,10 @@ class BansController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getBannedUsers(Request $request, $page) {
+    public function getBannedUsers (Request $request, $page) {
         $filter = $request->input('nickname');
         $bansSql = Ban::active()->withNicknameLike($filter);
-        $total = DataHelper::getPage($bansSql->count('banId'));
+        $total = DataHelper::getTotal($bansSql->count('banId'));
         $bans = $bansSql->take($this->perPage)->skip(DataHelper::getOffset($page))->get()->map(function ($ban) {
             return $this->mapBan($ban);
         });
@@ -116,7 +116,7 @@ class BansController extends Controller {
         ]);
     }
 
-    private function mapBan($ban) {
+    private function mapBan ($ban) {
         return [
             'banId' => $ban->banId,
             'banner' => UserHelper::getSlimUser($ban->userId),

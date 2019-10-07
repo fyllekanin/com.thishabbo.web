@@ -16,11 +16,11 @@ class FollowersController extends Controller {
     /**
      * @param Request $request
      *
-     * @param $followerId
+     * @param         $followerId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function approveFollower(Request $request, $followerId) {
+    public function approveFollower (Request $request, $followerId) {
         $user = $request->get('auth');
         $follower = Follower::find($followerId);
         Condition::precondition(!$follower, 404, 'Follower data could not be found');
@@ -35,11 +35,11 @@ class FollowersController extends Controller {
 
     /**
      * @param Request $request
-     * @param $followerId
+     * @param         $followerId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function denyFollower(Request $request, $followerId) {
+    public function denyFollower (Request $request, $followerId) {
         $user = $request->get('auth');
         $follower = Follower::find($followerId);
         Condition::precondition(!$follower, 404, 'Follower data could not be found');
@@ -54,11 +54,11 @@ class FollowersController extends Controller {
 
     /**
      * @param Request $request
-     * @param $followerId
+     * @param         $followerId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function removeFollower(Request $request, $followerId) {
+    public function removeFollower (Request $request, $followerId) {
         $user = $request->get('auth');
         $follower = Follower::find($followerId);
         Condition::precondition(!$follower, 404, 'Follower data could not be found');
@@ -73,14 +73,14 @@ class FollowersController extends Controller {
 
     /**
      * @param Request $request
-     * @param $page
+     * @param         $page
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getFollowers(Request $request, $page) {
+    public function getFollowers (Request $request, $page) {
         $user = $request->get('auth');
         $followersSql = Follower::isApproved()->where('targetId', $user->userId);
-        $total = DataHelper::getPage($followersSql->count('followerId'));
+        $total = DataHelper::getTotal($followersSql->count('followerId'));
 
         return response()->json([
             'total' => $total,

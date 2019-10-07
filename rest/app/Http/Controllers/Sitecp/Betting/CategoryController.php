@@ -21,7 +21,7 @@ class CategoryController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getBetCategory($bettingCategoryId) {
+    public function getBetCategory ($bettingCategoryId) {
         $bettingCategory = BetCategory::find($bettingCategoryId);
 
         return response()->json($bettingCategory);
@@ -35,12 +35,12 @@ class CategoryController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getBetCategories(Request $request, $page) {
+    public function getBetCategories (Request $request, $page) {
         $filter = $request->input('filter');
 
         $getBetCategorySql = BetCategory::where('name', 'LIKE', Value::getFilterValue($request, $filter))
             ->orderBy('displayOrder', 'ASC');
-        $total = DataHelper::getPage($getBetCategorySql->count('betCategoryId'));
+        $total = DataHelper::getTotal($getBetCategorySql->count('betCategoryId'));
 
         return response()->json([
             'betCategories' => $getBetCategorySql->take($this->perPage)->skip(DataHelper::getOffset($page))->get(),
@@ -56,7 +56,7 @@ class CategoryController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createBetCategory(Request $request) {
+    public function createBetCategory (Request $request) {
         $user = $request->get('auth');
         $betCategory = (object)$request->input('betCategory');
 
@@ -80,7 +80,7 @@ class CategoryController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateBetCategory(Request $request, $betCategoryId) {
+    public function updateBetCategory (Request $request, $betCategoryId) {
         $user = $request->get('auth');
         $newBetCategory = (object)$request->input('betCategory');
 
@@ -105,7 +105,7 @@ class CategoryController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteBetCategory(Request $request, $betCategoryId) {
+    public function deleteBetCategory (Request $request, $betCategoryId) {
         $user = $request->get('auth');
         $betCategory = BetCategory::find($betCategoryId);
         Condition::precondition(!$betCategory, 404, 'Bet category do not exist');
@@ -126,7 +126,7 @@ class CategoryController extends Controller {
      *
      * @param $betCategory
      */
-    private function betCategoryConditionCollection($betCategory) {
+    private function betCategoryConditionCollection ($betCategory) {
         Condition::precondition(!$betCategory, 400, 'Stupid developer');
         Condition::precondition(!isset($betCategory->name) || empty($betCategory->name),
             400, 'Name needs to be set');

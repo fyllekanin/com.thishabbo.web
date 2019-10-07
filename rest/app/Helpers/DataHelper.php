@@ -8,12 +8,12 @@ use App\Models\Radio\RadioSettings;
 class DataHelper {
 
     /**
-     * @param $count
+     * @param     $count
      * @param int $perPage
      *
      * @return float|int
      */
-    public static function getPage($count, $perPage = 0) {
+    public static function getTotal ($count, $perPage = 0) {
         if ($perPage == 0) {
             $perPage = Controller::$perPageStatic;
         }
@@ -21,14 +21,14 @@ class DataHelper {
         return $page > 0 ? $page : 1;
     }
 
-    public static function getOffset($page, $perPage = 0) {
+    public static function getOffset ($page, $perPage = 0) {
         if ($perPage == 0) {
             $perPage = Controller::$perPageStatic;
         }
         return $page >= 2 ? ($perPage * $page) - $perPage : 0;
     }
 
-    public static function getShoutCastV1Stats() {
+    public static function getShoutCastV1Stats () {
         $radio = new RadioSettings(SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->radio));
 
         $curl = self::getBasicCurl($radio->ip . ':' . $radio->port . '/admin.cgi?mode=viewxml');
@@ -40,7 +40,7 @@ class DataHelper {
         return simplexml_load_string(utf8_encode($data));
     }
 
-    public static function getShoutCastV2Stats() {
+    public static function getShoutCastV2Stats () {
         $radio = new RadioSettings(SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->radio));
 
         $curl = self::getBasicCurl($radio->ip . ':' . $radio->port . '/stats?sid=1&json=1');
@@ -52,7 +52,7 @@ class DataHelper {
         return json_decode($data);
     }
 
-    public static function getBasicCurl($url) {
+    public static function getBasicCurl ($url) {
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type: text/html; charset=utf-8']);
@@ -65,7 +65,7 @@ class DataHelper {
         return $curl;
     }
 
-    private static function setCurlOptionsForRadio($curl, $adminPassword) {
+    private static function setCurlOptionsForRadio ($curl, $adminPassword) {
         curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         curl_setopt($curl, CURLOPT_USERPWD, 'admin:' . $adminPassword);
     }

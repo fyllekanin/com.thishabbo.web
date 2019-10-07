@@ -1,0 +1,1 @@
+{"topic":"Fix quote spacing","type":"Bug","body":"When quoting a user the spacing between the message and quote was huge, this because of a double line break"}

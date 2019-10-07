@@ -26,12 +26,12 @@ use stdClass;
 class ManagementController extends Controller {
     private $settingKeys;
 
-    public function __construct() {
+    public function __construct () {
         parent::__construct();
         $this->settingKeys = ConfigHelper::getKeyConfig();
     }
 
-    public function getEventStats(Request $request) {
+    public function getEventStats (Request $request) {
         $region = $request->input('region');
         $hours = [];
 
@@ -58,7 +58,7 @@ class ManagementController extends Controller {
     /**
      * @return array
      */
-    public function getCurrentListeners() {
+    public function getCurrentListeners () {
         $listeners = Iterables::unique($this->getListenersFromServer(), 'hostname');
         return array_map(function ($listener) {
             $userId = Login::where('ip', $listener->hostname)->value('userId');
@@ -74,7 +74,7 @@ class ManagementController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getDoNotHireList() {
+    public function getDoNotHireList () {
         $items = json_decode(SettingsHelper::getSettingValue($this->settingKeys->doNotHire));
 
         if (!$items) {
@@ -97,7 +97,7 @@ class ManagementController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getDoNotHire($nickname) {
+    public function getDoNotHire ($nickname) {
         $entries = json_decode(SettingsHelper::getSettingValue($this->settingKeys->doNotHire));
         $entryInfo = new stdClass();
 
@@ -122,7 +122,7 @@ class ManagementController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateDoNotHire(Request $request, $nickname) {
+    public function updateDoNotHire (Request $request, $nickname) {
         $user = $request->get('auth');
 
         $information = (object)$request->input('information');
@@ -163,7 +163,7 @@ class ManagementController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createDoNotHire(Request $request) {
+    public function createDoNotHire (Request $request) {
         $user = $request->get('auth');
 
         $information = (object)$request->input('information');
@@ -190,11 +190,11 @@ class ManagementController extends Controller {
      * Delete request for do not hire entry
      *
      * @param Request $request
-     * @param $nickname
+     * @param         $nickname
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteDoNotHire(Request $request, $nickname) {
+    public function deleteDoNotHire (Request $request, $nickname) {
         $user = $request->get('auth');
         $oldEntries = json_decode(SettingsHelper::getSettingValue($this->settingKeys->doNotHire));
 
@@ -216,7 +216,7 @@ class ManagementController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createPermShow(Request $request) {
+    public function createPermShow (Request $request) {
         $user = $request->get('auth');
         $booking = (object)$request->input('booking');
 
@@ -272,7 +272,7 @@ class ManagementController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updatePermShow(Request $request, $timetableId) {
+    public function updatePermShow (Request $request, $timetableId) {
         $user = $request->get('auth');
 
         $booking = (object)$request->input('booking');
@@ -326,11 +326,11 @@ class ManagementController extends Controller {
      * Delete request for removing a perm show
      *
      * @param Request $request
-     * @param $timetableId
+     * @param         $timetableId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deletePermShow(Request $request, $timetableId) {
+    public function deletePermShow (Request $request, $timetableId) {
         $user = $request->get('auth');
         $booking = Timetable::find($timetableId);
         Condition::precondition(!$booking, 404, 'Booking does not exist');
@@ -351,9 +351,9 @@ class ManagementController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPermShows($page) {
+    public function getPermShows ($page) {
         $permShows = Timetable::isPerm()->take($this->perPage)->skip(DataHelper::getOffset($page))->get();
-        $total = DataHelper::getPage(Timetable::isPerm()->count('timetableId'));
+        $total = DataHelper::getTotal(Timetable::isPerm()->count('timetableId'));
 
         return response()->json([
             'permShows' => $permShows->map(function ($show) {
@@ -371,12 +371,12 @@ class ManagementController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPermShow($timetableId) {
+    public function getPermShow ($timetableId) {
         $permShow = $timetableId == 'new' ? new stdClass() : Timetable::find($timetableId)->permShow;
         return response()->json($permShow);
     }
 
-    private function getListenersFromServer() {
+    private function getListenersFromServer () {
         $radio = new RadioSettings(SettingsHelper::getSettingValue($this->settingKeys->radio));
 
         switch ($radio->serverType) {
@@ -388,7 +388,7 @@ class ManagementController extends Controller {
         }
     }
 
-    private function getShoutCastV2Listeners($radio) {
+    private function getShoutCastV2Listeners ($radio) {
         $url = $radio->ip . ':' . $radio->port . '/sitecp.cgi?sid=1&mode=viewjson&page=3';
 
         $curl = DataHelper::getBasicCurl($url);
@@ -401,7 +401,7 @@ class ManagementController extends Controller {
         return $listeners ? $listeners : [];
     }
 
-    private function getShoutCastV1Listeners() {
+    private function getShoutCastV1Listeners () {
         $data = DataHelper::getShoutCastV1Stats();
         if ($data == null || $data == false) {
             return [];

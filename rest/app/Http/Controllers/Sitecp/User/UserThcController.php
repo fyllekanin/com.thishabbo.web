@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Sitecp\User;
 
 use App\EloquentModels\Log\LogUser;
-use App\EloquentModels\User\User;
 use App\EloquentModels\RequestThc;
+use App\EloquentModels\User\User;
 use App\EloquentModels\User\VoucherCode;
 use App\Helpers\DataHelper;
 use App\Helpers\UserHelper;
@@ -24,7 +24,7 @@ class UserThcController extends Controller {
      *
      * @param CreditsService $creditsService
      */
-    public function __construct(CreditsService $creditsService) {
+    public function __construct (CreditsService $creditsService) {
         parent::__construct();
         $this->creditsService = $creditsService;
     }
@@ -34,7 +34,7 @@ class UserThcController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getThcRequests() {
+    public function getThcRequests () {
         return response()->json(RequestThc::all()->map(function ($request) {
             return [
                 'requestThcId' => $request->requestThcId,
@@ -51,7 +51,7 @@ class UserThcController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateThcRequests(Request $request) {
+    public function updateThcRequests (Request $request) {
         $user = $request->get('auth');
         $requests = $request->input('requests');
 
@@ -66,7 +66,7 @@ class UserThcController extends Controller {
             }
             $requestThc->isDeleted = true;
             $requestThc->save();
-            
+
             Logger::sitecp($user->userId, $request->ip(), Action::MANAGED_THC_REQUESTS, [
                 'byUser' => User::where('userId', $requestThc->requesterId)->value('nickname'),
                 'forUser' => User::where('userId', $requestThc->receiverId)->value('nickname'),
@@ -79,11 +79,11 @@ class UserThcController extends Controller {
 
     /**
      * @param Request $request
-     * @param $page
+     * @param         $page
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getVoucherCodes(Request $request, $page) {
+    public function getVoucherCodes (Request $request, $page) {
         $filter = $request->input('filter');
         $voucherCodeSql = VoucherCode::orderBy('createdAt', 'ASC');
 
@@ -94,7 +94,7 @@ class UserThcController extends Controller {
         $total = $voucherCodeSql->count('voucherCodeId');
 
         return response()->json([
-            'total' => DataHelper::getPage($total),
+            'total' => DataHelper::getTotal($total),
             'page' => $page,
             'items' => $voucherCodeSql->orderBy('createdAt', 'ASC')->take($this->perPage)->skip(DataHelper::getOffset($page))
                 ->get()->map(function ($item) {
@@ -114,11 +114,11 @@ class UserThcController extends Controller {
 
     /**
      * @param Request $request
-     * @param $voucherCodeId
+     * @param         $voucherCodeId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteVoucherCode(Request $request, $voucherCodeId) {
+    public function deleteVoucherCode (Request $request, $voucherCodeId) {
         $user = $request->get('auth');
         $voucherCode = VoucherCode::find($voucherCodeId);
 
@@ -137,7 +137,7 @@ class UserThcController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createVoucherCode(Request $request) {
+    public function createVoucherCode (Request $request) {
         $user = $request->get('auth');
 
         $note = $request->input('note');
@@ -170,7 +170,7 @@ class UserThcController extends Controller {
      *
      * @return string
      */
-    private function generateCode() {
+    private function generateCode () {
         $token = openssl_random_pseudo_bytes(8);
         $token = bin2hex($token);
         return implode('', str_split($token, 4));

@@ -79,3 +79,8 @@ export const SHOP_LOOT_BOXES_BREADCRUMB_ITEMS = new BreadcrumbItem({
     title: 'Shop Loot Boxes',
     url: '/sitecp/shop/loot-boxes/page/1'
 });
+
+export const PREFIX_LIST = new BreadcrumbItem({
+    title: 'Prefixes',
+    url: '/sitecp/forum/prefixes/page/1'
+});

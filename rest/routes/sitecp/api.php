@@ -218,7 +218,7 @@ Route::prefix('content')->group(function () use ($permissions) {
 });
 
 Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canManagePrefixes)], function () {
-    Route::get('/prefixes', 'Sitecp\Forum\PrefixController@getPrefixes');
+    Route::get('/prefixes/page/{page}', 'Sitecp\Forum\PrefixController@getPrefixes');
     Route::post('/prefixes', 'Sitecp\Forum\PrefixController@createPrefix');
     Route::get('/prefixes/{prefixId}', 'Sitecp\Forum\PrefixController@getPrefix');
     Route::delete('/prefixes/{prefixId}', 'Sitecp\Forum\PrefixController@deletePrefix');

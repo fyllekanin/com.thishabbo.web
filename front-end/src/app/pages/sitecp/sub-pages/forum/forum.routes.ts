@@ -44,7 +44,7 @@ export const forumRoutes: Routes = [
                 }
             },
             {
-                path: 'prefixes',
+                path: 'prefixes/page/:page',
                 component: PrefixListComponent,
                 resolve: {
                     data: PrefixListResolver

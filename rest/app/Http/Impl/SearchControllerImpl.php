@@ -25,7 +25,7 @@ class SearchControllerImpl {
      *
      * @param ForumService $forumService
      */
-    public function __construct(ForumService $forumService) {
+    public function __construct (ForumService $forumService) {
         $this->forumService = $forumService;
     }
 
@@ -38,7 +38,7 @@ class SearchControllerImpl {
      *
      * @return object
      */
-    public function getResult($request, $type, $page, $user) {
+    public function getResult ($request, $type, $page, $user) {
         switch ($type) {
             case $this->TYPES[0]:
                 return $this->getThreadsResult($request, $page, $user);
@@ -52,12 +52,12 @@ class SearchControllerImpl {
         }
     }
 
-    private function getUsersResult($request, $page) {
+    private function getUsersResult ($request, $page) {
         $usersSql = User::where('nickname', 'LIKE', Value::getFilterValue($request, $request->input('text')));
         $usersSql = $this->applyFilters($request, $usersSql, 'users');
 
         return (object)[
-            'total' => DataHelper::getPage($usersSql->count('userId')),
+            'total' => DataHelper::getTotal($usersSql->count('userId')),
             'items' => $usersSql->take(Controller::$perPageStatic)->offset(DataHelper::getOffset($page))->get()->map(function ($item) {
                 return [
                     'id' => $item->userId,
@@ -70,7 +70,7 @@ class SearchControllerImpl {
         ];
     }
 
-    private function getPostsResult($request, $page, $user) {
+    private function getPostsResult ($request, $page, $user) {
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
         $postsSql = Post::where('content', 'LIKE', Value::getFilterValue($request, $request->input('text')))
             ->leftJoin('threads', 'threads.threadId', '=', 'posts.threadId')
@@ -90,13 +90,13 @@ class SearchControllerImpl {
             $postsSql->where('threads.categoryId', $request->input('categoryId'));
         }
 
-        $total = DataHelper::getPage($postsSql->count('postId'));
+        $total = DataHelper::getTotal($postsSql->count('postId'));
         $items = $postsSql->take(Controller::$perPageStatic)->offset(DataHelper::getOffset($page))->get()->map(function ($item) {
             return (object)[
                 'id' => $item->postId,
                 'parentId' => $item->threadId,
                 'categoryId' => $item->categoryId,
-                'page' => DataHelper::getPage(Post::where('postId', '<', $item->postId)->where('threadId', $item->threadId)
+                'page' => DataHelper::getTotal(Post::where('postId', '<', $item->postId)->where('threadId', $item->threadId)
                     ->isApproved()->count('postId')),
                 'user' => UserHelper::getSlimUser($item->userId),
                 'title' => $item->title,
@@ -114,7 +114,7 @@ class SearchControllerImpl {
         ];
     }
 
-    private function getThreadsResult($request, $page, $user) {
+    private function getThreadsResult ($request, $page, $user) {
         $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
         $threadsSql = Thread::where('title', 'LIKE', Value::getFilterValue($request, $request->input('text')))->whereIn('categoryId', $categoryIds);
         $threadsSql = $this->applyFilters($request, $threadsSql, 'threads');
@@ -123,7 +123,7 @@ class SearchControllerImpl {
             $threadsSql->where('categoryId', $request->input('categoryId'));
         }
 
-        $total = DataHelper::getPage($threadsSql->count('threadId'));
+        $total = DataHelper::getTotal($threadsSql->count('threadId'));
         $items = $threadsSql->take(Controller::$perPageStatic)->offset(DataHelper::getOffset($page))->get()->map(function ($item) {
             return (object)[
                 'id' => $item->threadId,
@@ -144,7 +144,7 @@ class SearchControllerImpl {
         ];
     }
 
-    private function applyFilters($request, $sqlObj, $table) {
+    private function applyFilters ($request, $sqlObj, $table) {
         if ($request->input('byUser')) {
             $userIds = User::withNicknameLike($request->input('byUser'))->pluck('userId');
             if ($userIds) {

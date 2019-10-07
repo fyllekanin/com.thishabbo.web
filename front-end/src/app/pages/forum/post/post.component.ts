@@ -112,7 +112,7 @@ export class PostComponent extends Page implements OnDestroy {
     quotePost (): void {
         const content = this.post.content.replace(this._quoteRegex, '');
         this.onQuotePost.emit(`[quotepost=${this.post.postId}]Originally Posted by [b]${this.post.user.nickname}[/b]
-${content}[/quotepost]\n\r`);
+${content}[/quotepost]\n`);
     }
 
     multiQuotePost (): void {
