@@ -315,13 +315,13 @@ class AuthController extends Controller {
             400, 'The passwords entered do not match');
         Condition::precondition(!isset($data->habbo) || empty($data->habbo), 400, 'A Habbo name needs to be set!');
 
-        /*$habbo = $this->habboService->getHabboByName($data->habbo);
+        $habbo = $this->habboService->getHabboByName($data->habbo);
         Condition::precondition(!$habbo, 404, 'There is no Habbo with that name!');
         Condition::precondition($habbo->motto != 'thishabbo-register', 400, 'Your motto needs to be "thishabbo-register"');
         Condition::precondition(User::withHabbo($data->habbo)->count('userId') > 0, 400, 'The Habbo Name is already taken. Contact Support!');
 
         $threeDaysAgo = time() - 259200;
-        Condition::precondition(strtotime($habbo->memberSince) > $threeDaysAgo, 400, 'Your Habbo needs to be at least three days old! Contact Support!');*/
+        Condition::precondition(strtotime($habbo->memberSince) > $threeDaysAgo, 400, 'Your Habbo needs to be at least three days old! Contact Support!');
     }
 
     private function getAuthUser($user, $accessToken, $refreshToken) {
