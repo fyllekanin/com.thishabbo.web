@@ -44,4 +44,5 @@ import { TableModule } from 'shared/components/table/table.module';
         RouterModule
     ]
 })
-export class SubscriptionsModule {}
+export class SubscriptionsModule {
+}

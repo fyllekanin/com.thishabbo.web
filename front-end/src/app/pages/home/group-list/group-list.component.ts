@@ -8,7 +8,7 @@ import { GroupList } from './group-list.model';
 @Component({
     selector: 'app-home-group-list',
     templateUrl: 'group-list.component.html',
-    styleUrls: ['group-list.component.css']
+    styleUrls: [ 'group-list.component.css' ]
 })
 export class GroupListComponent extends Page implements OnDestroy {
     private _data: Array<GroupList> = [];

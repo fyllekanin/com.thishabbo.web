@@ -34,11 +34,11 @@ export class GroupsListComponent extends Page implements OnDestroy {
     selectableGroups: Array<SelectItem> = [];
     tableConfig: TableConfig;
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Save', value: GroupsActions.SAVE}),
-        new TitleTab({title: 'Add Group', value: GroupsActions.ADD})
+        new TitleTab({ title: 'Save', value: GroupsActions.SAVE }),
+        new TitleTab({ title: 'Add Group', value: GroupsActions.ADD })
     ];
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService,
         activatedRoute: ActivatedRoute,
@@ -53,15 +53,15 @@ export class GroupsListComponent extends Page implements OnDestroy {
         }));
         breadcrumbService.breadcrumb = new Breadcrumb({
             current: 'Manage Staff List',
-            items: [SITECP_BREADCRUMB_ITEM]
+            items: [ SITECP_BREADCRUMB_ITEM ]
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onTabClick(value: number): void {
+    onTabClick (value: number): void {
         switch (value) {
             case GroupsActions.SAVE:
                 this.onSave();
@@ -72,13 +72,13 @@ export class GroupsListComponent extends Page implements OnDestroy {
         }
     }
 
-    onSave(): void {
+    onSave (): void {
         const groups = this.tableConfig.rows.map(row => {
             const group = this._groupsList.find(item => item.groupId === Number(row.id));
             group.displayOrder = Number(row.cells.find(cell => cell.isEditable).value);
             return group;
         });
-        this._httpService.put('sitecp/content/groupslist', {groups: groups})
+        this._httpService.put('sitecp/content/groupslist', { groups: groups })
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
@@ -88,7 +88,7 @@ export class GroupsListComponent extends Page implements OnDestroy {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    addGroup(): void {
+    addGroup (): void {
         const group = this._groupsList
             .filter(grp => grp.displayOrder === -1)
             .find(grp => grp.groupId === Number(this.selectedGroup && this.selectedGroup.value));
@@ -122,7 +122,7 @@ export class GroupsListComponent extends Page implements OnDestroy {
         this.createOrUpdateTable();
     }
 
-    onRemove(action: Action): void {
+    onRemove (action: Action): void {
         const grp = this._groupsList.find(g => g.groupId === Number(action.rowId));
         if (grp) {
             grp.displayOrder = -1;
@@ -131,11 +131,11 @@ export class GroupsListComponent extends Page implements OnDestroy {
         this.createOrUpdateTable();
     }
 
-    get possibleColors(): Array<{ label: string, color: string }> {
+    get possibleColors (): Array<{ label: string, color: string }> {
         return this._possibleColors;
     }
 
-    get addedGroups(): Array<GroupList> {
+    get addedGroups (): Array<GroupList> {
         return this._groupsList
             .filter(group => group.displayOrder >= 0)
             .sort((a, b) => {
@@ -148,19 +148,19 @@ export class GroupsListComponent extends Page implements OnDestroy {
             });
     }
 
-    private onData(data: { data: Array<GroupList> }): void {
+    private onData (data: { data: Array<GroupList> }): void {
         this._groupsList = data.data;
         this.updateSelectableGroups();
         this.createOrUpdateTable();
     }
 
-    private updateSelectableGroups(): void {
+    private updateSelectableGroups (): void {
         this.selectableGroups = this._groupsList.filter(item => item.displayOrder === -1).map(item => {
-            return {label: item.name, value: item.groupId};
+            return { label: item.name, value: item.groupId };
         });
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -172,25 +172,25 @@ export class GroupsListComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         return this.addedGroups.map(item => new TableRow({
             id: String(item.groupId),
             cells: [
-                new TableCell({title: item.name}),
-                new TableCell({title: 'Display Order', isEditable: true, value: item.displayOrder.toString()}),
-                new TableCell({title: StringHelper.prettifyString(item.color)})
+                new TableCell({ title: item.name }),
+                new TableCell({ title: 'Display Order', isEditable: true, value: item.displayOrder.toString() }),
+                new TableCell({ title: StringHelper.prettifyString(item.color) })
             ],
             actions: [
-                new TableAction({title: 'Remove'})
+                new TableAction({ title: 'Remove' })
             ]
         }));
     }
 
-    private getTableHeaders(): Array<TableHeader> {
+    private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Group'}),
-            new TableHeader({title: 'Display Order'}),
-            new TableHeader({title: 'Color'})
+            new TableHeader({ title: 'Group' }),
+            new TableHeader({ title: 'Display Order' }),
+            new TableHeader({ title: 'Color' })
         ];
     }
 }

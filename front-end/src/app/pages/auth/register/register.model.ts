@@ -9,7 +9,7 @@ export class RegisterModel {
     gdpr: boolean;
     habbo: string;
 
-    constructor(source?: Partial<RegisterModel>) {
+    constructor (source?: Partial<RegisterModel>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -22,7 +22,7 @@ export class RegisterPage {
     @arrayOf(String)
     takenHabbos: Array<string> = [];
 
-    constructor(source: Partial<RegisterPage>) {
+    constructor (source: Partial<RegisterPage>) {
         ClassHelper.assign(this, source);
     }
 }

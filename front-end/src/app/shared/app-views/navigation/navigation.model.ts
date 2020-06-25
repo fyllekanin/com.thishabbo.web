@@ -1,5 +1,5 @@
 import { arrayOf, ClassHelper, primitive, primitiveOf } from 'shared/helpers/class.helper';
-import {IdHelper} from 'shared/helpers/id.helper';
+import { IdHelper } from 'shared/helpers/id.helper';
 
 export abstract class NavigationItem {
     @primitiveOf(String)
@@ -21,7 +21,7 @@ export abstract class NavigationItem {
 }
 
 export class ChildItem extends NavigationItem {
-    constructor(source: Partial<ChildItem>) {
+    constructor (source: Partial<ChildItem>) {
         super();
         ClassHelper.assign(this, source);
 
@@ -39,12 +39,12 @@ export class MainItem extends NavigationItem {
     @primitive()
     icon: string;
 
-    constructor(source: Partial<MainItem>) {
+    constructor (source: Partial<MainItem>) {
         super();
         ClassHelper.assign(this, source);
     }
 
-    get haveChildren(): boolean {
+    get haveChildren (): boolean {
         return this.children.length > 0;
     }
 }

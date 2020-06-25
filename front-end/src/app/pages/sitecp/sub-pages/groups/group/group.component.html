@@ -66,15 +66,19 @@
                 <div>
                     <label class="checkbox-container">
                         Access to manage BBCodes
-                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canManageBBcodes">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="sitecpPermissions.canManageBBcodes.isDisabled"
+                               [(ngModel)]="sitecpPermissions.canManageBBcodes.isActive">
+                        <span class="checkmark"
+                              [ngClass]="sitecpPermissions.canManageBBcodes.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
                     <label class="checkbox-container">
                         Access to manage Staff List
-                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canManageGroupsList">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="sitecpPermissions.canManageGroupsList.isDisabled"
+                               [(ngModel)]="sitecpPermissions.canManageGroupsList.isActive">
+                        <span class="checkmark"
+                              [ngClass]="sitecpPermissions.canManageGroupsList.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
@@ -83,15 +87,19 @@
                         <span tooltip="Tick this to grant access to edit Maintenance and pages." class="checkbox-info">
                             <em class="fas fa-question-circle"></em>
                         </span>
-                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canEditWebsiteSettings">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="sitecpPermissions.canEditWebsiteSettings.isDisabled"
+                               [(ngModel)]="sitecpPermissions.canEditWebsiteSettings.isActive">
+                        <span class="checkmark"
+                              [ngClass]="sitecpPermissions.canEditWebsiteSettings.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
                     <label class="checkbox-container">
                         Access to manage Prefixes
-                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canManagePrefixes">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="sitecpPermissions.canManagePrefixes.isDisabled"
+                               [(ngModel)]="sitecpPermissions.canManagePrefixes.isActive">
+                        <span class="checkmark"
+                              [ngClass]="sitecpPermissions.canManagePrefixes.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
@@ -101,8 +109,10 @@
                               class="checkbox-info">
                             <em class="fas fa-question-circle"></em>
                         </span>
-                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canManageBetting">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="sitecpPermissions.canManageBetting.isDisabled"
+                               [(ngModel)]="sitecpPermissions.canManageBetting.isActive">
+                        <span class="checkmark"
+                              [ngClass]="sitecpPermissions.canManageBetting.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
@@ -112,8 +122,10 @@
                               class="checkbox-info">
                             <em class="fas fa-question-circle"></em>
                         </span>
-                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canManageShop">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="sitecpPermissions.canManageShop.isDisabled"
+                               [(ngModel)]="sitecpPermissions.canManageShop.isActive">
+                        <span class="checkmark"
+                              [ngClass]="sitecpPermissions.canManageShop.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
@@ -122,29 +134,37 @@
                         <span tooltip="Tick this to grant access to manage Badges" class="checkbox-info">
                             <em class="fas fa-question-circle"></em>
                         </span>
-                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canManageBadges">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="sitecpPermissions.canManageBadges.isDisabled"
+                               [(ngModel)]="sitecpPermissions.canManageBadges.isActive">
+                        <span class="checkmark"
+                              [ngClass]="sitecpPermissions.canManageBadges.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
                     <label class="checkbox-container">
                         Access to approve Group Requests from Public Groups
-                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canApprovePublicGroups">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="sitecpPermissions.canApprovePublicGroups.isDisabled"
+                               [(ngModel)]="sitecpPermissions.canApprovePublicGroups.isActive">
+                        <span class="checkmark"
+                              [ngClass]="sitecpPermissions.canApprovePublicGroups.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
                     <label class="checkbox-container">
                         Access to Ban/Unban a User
-                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canBanUser">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="sitecpPermissions.canBanUsers.isDisabled"
+                               [(ngModel)]="sitecpPermissions.canBanUsers.isActive">
+                        <span class="checkmark"
+                              [ngClass]="sitecpPermissions.canBanUsers.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
                     <label class="checkbox-container">
                         Access to pass Private Profiles?
-                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canPassPrivate">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="sitecpPermissions.canPassPrivateProfiles.isDisabled"
+                               [(ngModel)]="sitecpPermissions.canPassPrivateProfiles.isActive">
+                        <span class="checkmark"
+                              [ngClass]="sitecpPermissions.canPassPrivateProfiles.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
@@ -154,8 +174,10 @@
                               class="checkbox-info">
                             <em class="fas fa-question-circle"></em>
                         </span>
-                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canDoInfractions">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="sitecpPermissions.canDoInfractions.isDisabled"
+                               [(ngModel)]="sitecpPermissions.canDoInfractions.isActive">
+                        <span class="checkmark"
+                              [ngClass]="sitecpPermissions.canDoInfractions.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
@@ -165,15 +187,19 @@
                               class="checkbox-info">
                             <em class="fas fa-question-circle"></em>
                         </span>
-                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canRemoveEssentials">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="sitecpPermissions.canRemoveUsersEssentials.isDisabled"
+                               [(ngModel)]="sitecpPermissions.canRemoveUsersEssentials.isActive">
+                        <span class="checkmark"
+                              [ngClass]="sitecpPermissions.canRemoveUsersEssentials.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
                     <label class="checkbox-container">
                         Access to moderate Visitor Messages
-                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canModerateVisitorMessage">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="sitecpPermissions.canModerateVisitorMessages.isDisabled"
+                               [(ngModel)]="sitecpPermissions.canModerateVisitorMessages.isActive">
+                        <span class="checkmark"
+                              [ngClass]="sitecpPermissions.canModerateVisitorMessages.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
             </div>
@@ -181,8 +207,10 @@
                 <div>
                     <label class="checkbox-container">
                         Access to manage Forum
-                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canManageForum">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="sitecpPermissions.canManageCategories.isDisabled"
+                               [(ngModel)]="sitecpPermissions.canManageCategories.isActive">
+                        <span class="checkmark"
+                              [ngClass]="sitecpPermissions.canManageCategories.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
@@ -192,15 +220,19 @@
                               class="checkbox-info">
                             <em class="fas fa-question-circle"></em>
                         </span>
-                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canManageForumPermissions">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="sitecpPermissions.canManageCategoryPermissions.isDisabled"
+                               [(ngModel)]="sitecpPermissions.canManageCategoryPermissions.isActive">
+                        <span class="checkmark"
+                              [ngClass]="sitecpPermissions.canManageCategoryPermissions.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
                     <label class="checkbox-container">
                         Access to manage Usergroups
-                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canManageGroups">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="sitecpPermissions.canManageGroups.isDisabled"
+                               [(ngModel)]="sitecpPermissions.canManageGroups.isActive">
+                        <span class="checkmark"
+                              [ngClass]="sitecpPermissions.canManageGroups.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
@@ -209,8 +241,10 @@
                         <span tooltip="Tick this to grant access to editing Name & Verify Habbo." class="checkbox-info">
                             <em class="fas fa-question-circle"></em>
                         </span>
-                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canEditUserBasic">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="sitecpPermissions.canEditUsersBasic.isDisabled"
+                               [(ngModel)]="sitecpPermissions.canEditUsersBasic.isActive">
+                        <span class="checkmark"
+                              [ngClass]="sitecpPermissions.canEditUsersBasic.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
@@ -220,8 +254,10 @@
                               class="checkbox-info">
                             <em class="fas fa-question-circle"></em>
                         </span>
-                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canEditUserAdvanced">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="sitecpPermissions.canEditUsersAdvanced.isDisabled"
+                               [(ngModel)]="sitecpPermissions.canEditUsersAdvanced.isActive">
+                        <span class="checkmark"
+                              [ngClass]="sitecpPermissions.canEditUsersAdvanced.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
@@ -231,15 +267,19 @@
                               class="checkbox-info">
                             <em class="fas fa-question-circle"></em>
                         </span>
-                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canEditUsersGroups">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="sitecpPermissions.canEditUsersGroups.isDisabled"
+                               [(ngModel)]="sitecpPermissions.canEditUsersGroups.isActive">
+                        <span class="checkmark"
+                              [ngClass]="sitecpPermissions.canEditUsersGroups.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
                     <label class="checkbox-container">
                         Access to manage AutoBans & Infraction Levels
-                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canManageInfractions">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="sitecpPermissions.canManageInfractions.isDisabled"
+                               [(ngModel)]="sitecpPermissions.canManageInfractions.isActive">
+                        <span class="checkmark"
+                              [ngClass]="sitecpPermissions.canManageInfractions.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
@@ -249,8 +289,10 @@
                               class="checkbox-info">
                             <em class="fas fa-question-circle"></em>
                         </span>
-                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canManageSubscriptions">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="sitecpPermissions.canManageSubscriptions.isDisabled"
+                               [(ngModel)]="sitecpPermissions.canManageSubscriptions.isActive">
+                        <span class="checkmark"
+                              [ngClass]="sitecpPermissions.canManageSubscriptions.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
@@ -259,8 +301,10 @@
                         <span tooltip="Tick this to grant access to view the Site statistics." class="checkbox-info">
                             <em class="fas fa-question-circle"></em>
                         </span>
-                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canViewStatistics">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="sitecpPermissions.canViewStatistics.isDisabled"
+                               [(ngModel)]="sitecpPermissions.canViewStatistics.isActive">
+                        <span class="checkmark"
+                              [ngClass]="sitecpPermissions.canViewStatistics.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
@@ -270,8 +314,10 @@
                               class="checkbox-info">
                             <em class="fas fa-question-circle"></em>
                         </span>
-                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canManageTHC">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="sitecpPermissions.canManageCredits.isDisabled"
+                               [(ngModel)]="sitecpPermissions.canManageCredits.isActive">
+                        <span class="checkmark"
+                              [ngClass]="sitecpPermissions.canManageCredits.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
@@ -281,8 +327,10 @@
                               class="checkbox-info">
                             <em class="fas fa-question-circle"></em>
                         </span>
-                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canSeeIps">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="sitecpPermissions.canSeeIps.isDisabled"
+                               [(ngModel)]="sitecpPermissions.canSeeIps.isActive">
+                        <span class="checkmark"
+                              [ngClass]="sitecpPermissions.canSeeIps.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
@@ -291,8 +339,10 @@
                         <span tooltip="This should only be granted to the Forum Admin." class="checkbox-info">
                             <em class="fas fa-question-circle"></em>
                         </span>
-                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canMergeUsers">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="sitecpPermissions.canMergeUsers.isDisabled"
+                               [(ngModel)]="sitecpPermissions.canMergeUsers.isActive">
+                        <span class="checkmark"
+                              [ngClass]="sitecpPermissions.canMergeUsers.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
@@ -302,8 +352,10 @@
                               class="checkbox-info">
                             <em class="fas fa-question-circle"></em>
                         </span>
-                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canSeeLogs">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="sitecpPermissions.canSeeLogs.isDisabled"
+                               [(ngModel)]="sitecpPermissions.canSeeLogs.isActive">
+                        <span class="checkmark"
+                              [ngClass]="sitecpPermissions.canSeeLogs.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
@@ -312,8 +364,22 @@
                         <span tooltip="Tick this to grant access to view Laravel & Cron logs." class="checkbox-info">
                             <em class="fas fa-question-circle"></em>
                         </span>
-                        <input type="checkbox" [(ngModel)]="sitecpPermissions.canReadServerLogs">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="sitecpPermissions.canReadServerLogs.isDisabled"
+                               [(ngModel)]="sitecpPermissions.canReadServerLogs.isActive">
+                        <span class="checkmark"
+                              [ngClass]="sitecpPermissions.canReadServerLogs.isDisabled ? 'checkmark-disabled' : ''"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to Thread Templates?
+                        <span tooltip="Tick this to grant access to mange thread templates." class="checkbox-info">
+                            <em class="fas fa-question-circle"></em>
+                        </span>
+                        <input type="checkbox" [disabled]="sitecpPermissions.canManageThreadTemplates.isDisabled"
+                               [(ngModel)]="sitecpPermissions.canManageThreadTemplates.isActive">
+                        <span class="checkmark"
+                              [ngClass]="sitecpPermissions.canManageThreadTemplates.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
             </div>
@@ -331,58 +397,74 @@
                 <div>
                     <label class="checkbox-container">
                         Access to Radio (booking, radio info, requests etc)
-                        <input type="checkbox" [(ngModel)]="staffPermissions.canRadio">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="staffPermissions.canRadio.isDisabled"
+                               [(ngModel)]="staffPermissions.canRadio.isActive">
+                        <span class="checkmark"
+                              [ngClass]="staffPermissions.canRadio.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
                     <label class="checkbox-container">
                         Access to Book & Unbook other users on Radio Timetable
-                        <input type="checkbox" [(ngModel)]="staffPermissions.canBookRadioForOthers">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="staffPermissions.canBookRadioForOthers.isDisabled"
+                               [(ngModel)]="staffPermissions.canBookRadioForOthers.isActive">
+                        <span class="checkmark"
+                              [ngClass]="staffPermissions.canBookRadioForOthers.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
                     <label class="checkbox-container">
                         Access to override DJ Says without being on air
-                        <input type="checkbox" [(ngModel)]="staffPermissions.canOverrideDjSays">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="staffPermissions.canOverrideDjSays.isDisabled"
+                               [(ngModel)]="staffPermissions.canOverrideDjSays.isActive">
+                        <span class="checkmark"
+                              [ngClass]="staffPermissions.canOverrideDjSays.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
                     <label class="checkbox-container">
                         Access to Kick a DJ Off Air
-                        <input type="checkbox" [(ngModel)]="staffPermissions.canKickDjOffAir">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="staffPermissions.canKickDjOffAir.isDisabled"
+                               [(ngModel)]="staffPermissions.canKickDjOffAir.isActive">
+                        <span class="checkmark"
+                              [ngClass]="staffPermissions.canKickDjOffAir.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
                     <label class="checkbox-container">
                         Access to manage Connection Information
-                        <input type="checkbox" [(ngModel)]="staffPermissions.canEditRadioInfo">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="staffPermissions.canEditRadioInfo.isDisabled"
+                               [(ngModel)]="staffPermissions.canEditRadioInfo.isActive">
+                        <span class="checkmark"
+                              [ngClass]="staffPermissions.canEditRadioInfo.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <label>Events</label>
                 <div>
                     <label class="checkbox-container">
                         Access to Events (booking, ban on sight)
-                        <input type="checkbox" [(ngModel)]="staffPermissions.canEvent">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="staffPermissions.canEvent.isDisabled"
+                               [(ngModel)]="staffPermissions.canEvent.isActive">
+                        <span class="checkmark"
+                              [ngClass]="staffPermissions.canEvent.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
                     <label class="checkbox-container">
                         Access to Book & Unbook other users on Events Timetable
-                        <input type="checkbox" [(ngModel)]="staffPermissions.canBookEventForOthers">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="staffPermissions.canBookEventForOthers.isDisabled"
+                               [(ngModel)]="staffPermissions.canBookEventForOthers.isActive">
+                        <span class="checkmark"
+                              [ngClass]="staffPermissions.canBookEventForOthers.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
                     <label class="checkbox-container">
                         Access to Do Not Hire list
-                        <input type="checkbox" [(ngModel)]="staffPermissions.canSeeDoNotHire">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="staffPermissions.canSeeDoNotHire.isDisabled"
+                               [(ngModel)]="staffPermissions.canSeeDoNotHire.isActive">
+                        <span class="checkmark"
+                              [ngClass]="staffPermissions.canSeeDoNotHire.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
             </div>
@@ -391,29 +473,37 @@
                 <div>
                     <label class="checkbox-container">
                         Access to Events & Radio bookings logs
-                        <input type="checkbox" [(ngModel)]="staffPermissions.canSeeBookingLogs">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="staffPermissions.canSeeBookingLogs.isDisabled"
+                               [(ngModel)]="staffPermissions.canSeeBookingLogs.isActive">
+                        <span class="checkmark"
+                              [ngClass]="staffPermissions.canSeeBookingLogs.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
                     <label class="checkbox-container">
                         Access to manage Permanent Shows for Events & Radio
-                        <input type="checkbox" [(ngModel)]="staffPermissions.canManagePermShows">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="staffPermissions.canManagePermShows.isDisabled"
+                               [(ngModel)]="staffPermissions.canManagePermShows.isActive">
+                        <span class="checkmark"
+                              [ngClass]="staffPermissions.canManagePermShows.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
                     <label class="checkbox-container">
                         Access to manage Ban on Sight List
-                        <input type="checkbox" [(ngModel)]="staffPermissions.canManageBanOnSight">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="staffPermissions.canManageBanOnSight.isDisabled"
+                               [(ngModel)]="staffPermissions.canManageBanOnSight.isActive">
+                        <span class="checkmark"
+                              [ngClass]="staffPermissions.canManageBanOnSight.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
                     <label class="checkbox-container">
                         Access to Add & Remove Event Types
-                        <input type="checkbox" [(ngModel)]="staffPermissions.canManageEvents">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="staffPermissions.canManageEvents.isDisabled"
+                               [(ngModel)]="staffPermissions.canManageEvents.isActive">
+                        <span class="checkmark"
+                              [ngClass]="staffPermissions.canManageEvents.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
@@ -423,8 +513,10 @@
                               class="checkbox-info">
                             <em class="fas fa-question-circle"></em>
                         </span>
-                        <input type="checkbox" [(ngModel)]="staffPermissions.canSeeEventStats">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="staffPermissions.canSeeEventStats.isDisabled"
+                               [(ngModel)]="staffPermissions.canSeeEventStats.isActive">
+                        <span class="checkmark"
+                              [ngClass]="staffPermissions.canSeeEventStats.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <label>Administration Events & Radio</label>
@@ -435,8 +527,10 @@
                               class="checkbox-info">
                             <em class="fas fa-question-circle"></em>
                         </span>
-                        <input type="checkbox" [(ngModel)]="staffPermissions.canSeeListeners">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="staffPermissions.canSeeListeners.isDisabled"
+                               [(ngModel)]="staffPermissions.canSeeListeners.isActive">
+                        <span class="checkmark"
+                              [ngClass]="staffPermissions.canSeeListeners.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
@@ -446,15 +540,29 @@
                               class="checkbox-info">
                             <em class="fas fa-question-circle"></em>
                         </span>
-                        <input type="checkbox" [(ngModel)]="staffPermissions.canSeeIpsAndDeleteRequests">
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [disabled]="staffPermissions.canSeeIpsAndDeleteRequests.isDisabled"
+                               [(ngModel)]="staffPermissions.canSeeIpsAndDeleteRequests.isActive">
+                        <span class="checkmark"
+                              [ngClass]="staffPermissions.canSeeIpsAndDeleteRequests.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
                 <div>
                     <label class="checkbox-container">
                         Access to always see Connection Information
-                        <input type="checkbox" [(ngModel)]="staffPermissions.canAlwaysSeeConnectionInformation">
-                        <span class="checkmark"></span>
+                        <input type="checkbox"
+                               [disabled]="staffPermissions.canAlwaysSeeConnectionInformation.isDisabled"
+                               [(ngModel)]="staffPermissions.canAlwaysSeeConnectionInformation.isActive">
+                        <span class="checkmark"
+                              [ngClass]="staffPermissions.canAlwaysSeeConnectionInformation.isDisabled ? 'checkmark-disabled' : ''"></span>
+                    </label>
+                </div>
+                <div>
+                    <label class="checkbox-container">
+                        Access to start/stop the Auto DJ
+                        <input type="checkbox" [disabled]="staffPermissions.canManageAutoDJ.isDisabled"
+                               [(ngModel)]="staffPermissions.canManageAutoDJ.isActive">
+                        <span class="checkmark"
+                              [ngClass]="staffPermissions.canManageAutoDJ.isDisabled ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
             </div>
@@ -475,18 +583,6 @@
                     <span class="checkmark"></span>
                 </label>
             </div>
-            <div class="cell small-6">
-                <label class="checkbox-container">
-                    Usergroup can be tagged?<br> <em>If ticked, if somebody posts <strong>:usergroup:</strong> it
-                    will tag
-                    everyone within that user group. Useful for Sitecp groups - not useful for groups with tons of
-                    people
-                    as they will all be tagged and can be abused. Like @RegisteredUsers - that's a tag to 25,000+
-                    people!</em>
-                    <input type="checkbox" [(ngModel)]="options.canBeTagged">
-                    <span class="checkmark"></span>
-                </label>
-            </div>
         </div>
     </div>
 </app-content>
@@ -500,7 +596,7 @@
                 <input [(ngModel)]="group.nameColor" type="text"/>
 
                 <label>Preview</label>
-                <div [style]="nicknameStyle | safeStyle">nickname</div>
+                <div class="nickname-base" [ngStyle]="nicknameStyle">nickname</div>
             </div>
             <div class="cell small-6">
                 <label>
@@ -510,7 +606,7 @@
                           [(ngModel)]="group.userBarStyling"></textarea>
 
                 <label>Preview</label>
-                <div [style]="userBarStyle | safeStyle"
+                <div class="custom-user-bar-template" [style]="userBarStyle | safeStyle"
                      [style.text-align]="'center'">{{group.nickname || group.name}}</div>
             </div>
         </div>

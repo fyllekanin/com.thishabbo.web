@@ -2,9 +2,8 @@
 
 namespace App\Models\User;
 
-/**
- * @SuppressWarnings(PHPMD.ShortVariable)
- */
+use Exception;
+
 class CustomUserFields {
     public $role;
     public $tabs = [];
@@ -14,15 +13,8 @@ class CustomUserFields {
             $data = json_decode($data);
             $this->role = $data->role;
             $this->tabs = $data->tabs;
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->tabs = [];
         }
-    }
-
-    public function jsonSerialize() {
-        return (object)[
-            'role' => $this->role,
-            'tabs' => $this->tabs
-        ];
     }
 }

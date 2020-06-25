@@ -5,6 +5,7 @@ namespace App\EloquentModels\User;
 use App\EloquentModels\Models\UnixTimeModel;
 
 class UserGroup extends UnixTimeModel {
+
     protected $table = 'user_groups';
     protected $primaryKey = 'userGroupId';
     protected $fillable = ['userId', 'groupId', 'isBarActive'];

@@ -1,0 +1,50 @@
+<app-title [title]="'Updating Outstanding Staff'" [tabs]="topTabs" (onTabClick)="onTabClick($event)"></app-title>
+<app-content>
+    <div class="grid-container full">
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-12">
+                Keep in mind before you confirm you save later on. By saving this you are creating a thread, giving
+                users a
+                subscription etc <br/>
+                The replacer is used to find where to put the user in the thread. Be unique with the replacers as they
+                will
+                find all matching places in the text.
+            </div>
+            <div class="cell small-6">
+                <label>Category</label>
+                <app-form-select [value]="selectedCategoryItem" [items]="categories"
+                                 (valueChange)="onCategoryChange($event)"></app-form-select>
+            </div>
+            <div class="cell small-6">
+                <label>Subscription</label>
+                <app-form-select [value]="selectedSubscriptionItem" [items]="subscriptions"
+                                 (valueChange)="onSubscriptionChange($event)"></app-form-select>
+            </div>
+            <div class="cell small-12">
+                <label>Thread Title</label>
+                <input type="text" [(ngModel)]="model.title"/>
+            </div>
+        </div>
+    </div>
+</app-content>
+
+<app-editor #editorComponent [title]="'Content'" [content]="model.content"></app-editor>
+
+<app-title [title]="'Members'" [tabs]="bottomTabs" (onTabClick)="addNewRow()"></app-title>
+<app-content>
+
+    <div class="member" *ngFor="let member of model.members">
+        <div class="member-input">
+            <label>Nickname</label>
+            <input type="text" [(ngModel)]="member.nickname"/>
+        </div>
+        <div class="member-input">
+            <label>Replacer</label>
+            <input type="text" [(ngModel)]="member.replacer"/>
+        </div>
+        <div class="remove">
+            <em class="fas fa-trash" (click)="onRemove(member)"></em>
+        </div>
+    </div>
+
+</app-content>

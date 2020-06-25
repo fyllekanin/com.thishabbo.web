@@ -4,7 +4,7 @@
     <div class="user" *ngIf="isLoggedIn">
         <div (click)="goToProfile()">
             <img class="avatar" [style.backgroundImage]="'url(' + avatar + ')'"/>
-            <span class="mobile-nickname">{{username}}</span>
+            <span class="mobile-nickname">{{username}} | {{thc}} <em class="fas fa-coins"></em></span>
         </div>
         <div class="quick-links">
             <a *ngIf="isSitecp" [routerLink]="['/sitecp/dashboard']" (click)="closeMenu()">SiteCP</a>

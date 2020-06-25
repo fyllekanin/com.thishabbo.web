@@ -24,6 +24,7 @@ import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 import { UserPostBitModule } from 'shared/components/user-post-bit/user-post-bit.module';
 import { NameSettingsService } from './services/name-settings.service';
 import { NameSettingsComponent } from './name-settings/name-settings.component';
+import { UserLinkModule } from 'shared/components/user/user-link.module';
 
 @NgModule({
     imports: [
@@ -36,7 +37,8 @@ import { NameSettingsComponent } from './name-settings/name-settings.component';
         SafeStyleModule,
         SafeHtmlModule,
         InfoBoxModule,
-        UserPostBitModule
+        UserPostBitModule,
+        UserLinkModule
     ],
     declarations: [
         AvatarComponent,

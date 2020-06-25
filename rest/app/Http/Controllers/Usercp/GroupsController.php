@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Usercp;
 
+use App\Constants\LogType;
+use App\Constants\User\UserJobEventType;
 use App\EloquentModels\Group\Group;
 use App\EloquentModels\Group\GroupRequest;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserGroup;
-use App\Helpers\ConfigHelper;
 use App\Http\Controllers\Controller;
 use App\Jobs\UserUpdated;
 use App\Logger;
-use App\Models\Logger\Action;
 use App\Utils\Condition;
 use App\Utils\Iterables;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class GroupsController extends Controller {
@@ -25,7 +26,7 @@ class GroupsController extends Controller {
         $userGroup->isBarActive = 1;
         $userGroup->save();
 
-        Logger::user($user->userId, $request->ip(), Action::SHOWED_USER_BAR, [], $userGroup->groupId);
+        Logger::user($user->userId, $request->ip(), LogType::SHOWED_USER_BAR, [], $userGroup->groupId);
         return response()->json();
     }
 
@@ -37,16 +38,16 @@ class GroupsController extends Controller {
         $userGroup->isBarActive = 0;
         $userGroup->save();
 
-        Logger::user($user->userId, $request->ip(), Action::HIDDEN_USER_BAR, [], $userGroup->groupId);
+        Logger::user($user->userId, $request->ip(), LogType::HIDDEN_USER_BAR, [], $userGroup->groupId);
         return response()->json();
     }
 
     /**
      * Post request to perform a application for a public user group
      *
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function applyForGroup(Request $request) {
         $user = $request->get('auth');
@@ -58,24 +59,26 @@ class GroupsController extends Controller {
         $haveApplied = GroupRequest::where('userId', $user->userId)->where('groupId', $groupId)->count('groupRequestId') > 0;
         Condition::precondition($haveApplied, 400, 'You have already have a pending application');
 
-        $groupRequest = new GroupRequest([
-            'userId' => $user->userId,
-            'groupId' => $groupId
-        ]);
+        $groupRequest = new GroupRequest(
+            [
+                'userId' => $user->userId,
+                'groupId' => $groupId
+            ]
+        );
 
         $groupRequest->save();
 
-        Logger::user($user->userId, $request->ip(), Action::APPLIED_FOR_GROUP, ['name' => $group->name], $group->groupId);
+        Logger::user($user->userId, $request->ip(), LogType::APPLIED_FOR_GROUP, ['name' => $group->name], $group->groupId);
         return response()->json();
     }
 
     /**
      * Delete request for leaving user group which the user is a part of
      *
-     * @param Request $request
-     * @param         $groupId
+     * @param  Request  $request
+     * @param $groupId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function leaveGroup(Request $request, $groupId) {
         $user = $request->get('auth');
@@ -86,22 +89,24 @@ class GroupsController extends Controller {
         Condition::precondition(!$group->isPublic, 400, 'You can only leave public groups');
 
         UserGroup::where('groupId', $groupId)->where('userId', $user->userId)->delete();
-        User::where('userId', $user->userId)->update([
-            'displayGroupId' => $user->displayGroupId == $groupId ? 0 : $user->displayGroupId
-        ]);
+        User::where('userId', $user->userId)->update(
+            [
+                'displayGroupId' => $user->displayGroupId == $groupId ? 0 : $user->displayGroupId
+            ]
+        );
 
-        UserUpdated::dispatch($user->userId, ConfigHelper::getUserUpdateTypes()->CLEAR_GROUP);
+        UserUpdated::dispatch($user->userId, UserJobEventType::CLEAR_GROUP);
 
-        Logger::user($user->userId, $request->ip(), Action::LEFT_GROUP, ['name' => $group->name], $group->groupId);
+        Logger::user($user->userId, $request->ip(), LogType::LEFT_GROUP, ['name' => $group->name], $group->groupId);
         return response()->json();
     }
 
     /**
      * Get an array of all the public user groups the user is a part of
      *
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getGroups(Request $request) {
         $user = $request->get('auth');
@@ -115,18 +120,23 @@ class GroupsController extends Controller {
             $group->isBarActive = UserGroup::where('groupId', $group->groupId)->where('userId', $user->userId)->value('isBarActive');
         }
 
-        return response()->json([
-            'displayGroup' => Iterables::find($groups, function ($group) use ($user) {
-                return $group->groupId == $user->displayGroupId;
-            }),
-            'groups' => $groups
-        ]);
+        return response()->json(
+            [
+                'displayGroup' => Iterables::find(
+                    $groups,
+                    function ($group) use ($user) {
+                        return $group->groupId == $user->displayGroupId;
+                    }
+                ),
+                'groups' => $groups
+            ]
+        );
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function updateDisplayGroup(Request $request) {
         $user = $request->get('auth');
@@ -139,7 +149,12 @@ class GroupsController extends Controller {
         $user->displayGroupId = $groupId;
         $user->save();
 
-        Logger::user($user->userId, $request->ip(), Action::UPDATED_DISPLAY_GROUP, ['group' => $groupId != 0 ? $group->name : 'No Display Group']);
+        Logger::user(
+            $user->userId,
+            $request->ip(),
+            LogType::UPDATED_DISPLAY_GROUP,
+            ['group' => $groupId != 0 ? $group->name : 'No Display Group']
+        );
         return response()->json();
     }
 }

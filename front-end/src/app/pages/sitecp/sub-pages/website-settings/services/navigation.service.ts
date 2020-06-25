@@ -8,9 +8,10 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class NavigationService implements Resolve<Array<MainItem>> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
-    resolve(): Observable<Array<MainItem>> {
+    resolve (): Observable<Array<MainItem>> {
         return this._httpService.get('sitecp/content/navigation')
             .pipe(map(res => res.map(item => new MainItem(item))));
     }

@@ -8,7 +8,7 @@ import { AuthService } from 'core/services/auth/auth.service';
 @Component({
     selector: 'app-breadcrumb',
     templateUrl: 'breadcrumb.component.html',
-    styleUrls: ['breadcrumb.component.css']
+    styleUrls: [ 'breadcrumb.component.css' ]
 })
 
 export class BreadcrumbComponent {
@@ -30,7 +30,7 @@ export class BreadcrumbComponent {
     get homePage (): Array<string> {
         const homePage = this._authService.isLoggedIn() && this._authService.authUser.homePage ?
             this._authService.authUser.homePage : '/home';
-        return [homePage];
+        return [ homePage ];
     }
 
     get breadcrumbItems (): Array<BreadcrumbItem> {

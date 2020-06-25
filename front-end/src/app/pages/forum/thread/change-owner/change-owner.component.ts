@@ -5,12 +5,14 @@ import { InnerDialogComponent } from 'shared/app-views/dialog/dialog.model';
     selector: 'app-forum-thread-change-owner',
     templateUrl: 'change-owner.component.html'
 })
-export class ChangeOwnerComponent implements InnerDialogComponent {
+export class ChangeOwnerComponent extends InnerDialogComponent {
     nickname: string;
 
-    getData(): string {
+    getData (): string {
         return this.nickname;
     }
 
-    setData(): void {}
+    setData (): void {
+        // Empty
+    }
 }

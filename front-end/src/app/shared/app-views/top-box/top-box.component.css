@@ -39,7 +39,7 @@
 }
 
 .experience-percentage {
-    background: #51a6e4 url(/assets/images/bargradient.png);
+    background: url(/assets/images/bargradient.png) #be6d6d;
     width: 40%;
     height: 29px;
     box-shadow: rgba(255, 255, 255, 0.87) 0 0 0 1px inset, rgba(255, 255, 255, 0.15) 0 0 0 2px inset, rgba(0, 0, 0, 0) 0 2px 0;

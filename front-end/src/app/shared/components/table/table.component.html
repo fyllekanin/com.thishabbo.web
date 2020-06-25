@@ -11,13 +11,23 @@
                 <div class="cell" [ngClass]="filterConfigs.length > 1 ? 'small-6' : 'small-12'"
                      *ngFor="let filterConfig of filterConfigs">
                     <div *ngIf="!filterConfig.isSelect()">
-                        <label *ngIf="filterConfig.title">{{filterConfig.title}}</label>
+                        <label *ngIf="filterConfig.title">
+                            {{filterConfig.title}}
+                            <span *ngIf="filterConfig.help" [attr.tooltip]="filterConfig.help">
+                                <em class="fas fa-question-circle"></em>
+                            </span>
+                        </label>
                         <input type="text" name="filter" placeholder="{{filterConfig.placeholder}}"
                                [(ngModel)]="filterConfig.value"
                                (input)="onFilterChange()"/>
                     </div>
                     <div *ngIf="filterConfig.isSelect()">
-                        <label *ngIf="filterConfig.title">{{filterConfig.title}}</label>
+                        <label *ngIf="filterConfig.title">
+                            {{filterConfig.title}}
+                            <span *ngIf="filterConfig.help" [attr.tooltip]="filterConfig.help">
+                                <em class="fas fa-question-circle"></em>
+                            </span>
+                        </label>
                         <app-form-select [value]="filterConfig.selectedValue"
                                          [items]="filterConfig.items"
                                          (valueChange)="onSelectChange(filterConfig, $event)"></app-form-select>

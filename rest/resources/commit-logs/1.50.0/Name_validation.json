@@ -1,0 +1,1 @@
+{"topic":"Name validation","type":"Bug","body":"Both the nickname change and the SiteCP panel could edit someones nickname to not follow the nickname validation rules"}

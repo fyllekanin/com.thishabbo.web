@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
 @Component({
     selector: 'app-betting-nav',
     templateUrl: 'betting-nav.component.html',
-    styleUrls: ['betting-nav.component.css']
+    styleUrls: [ 'betting-nav.component.css' ]
 })
 export class BettingNavComponent {
     topBorderRed = TitleTopBorder.RED;

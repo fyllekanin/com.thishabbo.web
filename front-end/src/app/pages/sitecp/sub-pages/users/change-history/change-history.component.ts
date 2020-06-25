@@ -65,22 +65,22 @@ export class ChangeHistoryComponent extends Page implements OnDestroy {
         return this._data.items.map(item => new TableRow({
             id: item.logId.toString(),
             cells: [
-                new TableCell({title: item.type}),
-                new TableCell({title: item.user.nickname}),
-                new TableCell({title: item.oldValue}),
-                new TableCell({title: item.newValue}),
-                new TableCell({title: item.createdAt})
+                new TableCell({ title: item.type }),
+                new TableCell({ title: item.user.nickname }),
+                new TableCell({ title: item.oldValue }),
+                new TableCell({ title: item.newValue }),
+                new TableCell({ title: item.createdAt })
             ]
         }));
     }
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Type'}),
-            new TableHeader({title: 'User'}),
-            new TableHeader({title: 'Old Value'}),
-            new TableHeader({title: 'New Value'}),
-            new TableHeader({title: 'Time'})
+            new TableHeader({ title: 'Type' }),
+            new TableHeader({ title: 'User' }),
+            new TableHeader({ title: 'Old Value' }),
+            new TableHeader({ title: 'New Value' }),
+            new TableHeader({ title: 'Time' })
         ];
     }
 }

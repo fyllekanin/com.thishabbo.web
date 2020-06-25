@@ -15,8 +15,7 @@ export class NavigationComponent {
 
     constructor (private _authService: AuthService) {
         const navigation = localStorage.getItem(LOCAL_STORAGE.NAVIGATION);
-        this._navigation = (navigation ? JSON.parse(localStorage.getItem(LOCAL_STORAGE.NAVIGATION)) : [])
-            .map(item => new MainItem(item));
+        this._navigation = this.getNavigation(navigation);
         this.routes = this.getRoutes();
         this._authService.onUserChange.subscribe(() => {
             this.routes = this.getRoutes();
@@ -33,6 +32,19 @@ export class NavigationComponent {
 
     get homePage (): string {
         return this.isLoggedIn ? this._authService.authUser.homePage || 'home' : 'home';
+    }
+
+    private getNavigation (json: string): Array<MainItem> {
+        if (!json) {
+            return [];
+        }
+        try {
+            const navigation = JSON.parse(json);
+            return Array.isArray(navigation) ? navigation.map(item => new MainItem(item)) : [];
+        } catch (_e) {
+            // Do nothing
+        }
+        return [];
     }
 
     private getRoutes (): Array<MainItem> {

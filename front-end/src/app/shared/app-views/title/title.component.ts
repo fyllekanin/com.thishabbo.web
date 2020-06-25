@@ -5,9 +5,8 @@ import { TitleTab, TitleTopBorder } from 'shared/app-views/title/title.model';
 @Component({
     selector: 'app-title',
     templateUrl: 'title.component.html',
-    styleUrls: ['title.component.css']
+    styleUrls: [ 'title.component.css' ]
 })
-
 export class TitleComponent {
     private _tabs: Array<TitleTab> = [];
     private _lastClick = 0;
@@ -22,6 +21,7 @@ export class TitleComponent {
     @Input() checkbox: boolean;
     @Input() checkboxDisabled: boolean;
     @Input() checkboxValue = false;
+    @Input() isStandalone = false;
 
     topBorder: TitleTopBorder = TitleTopBorder.BLUE;
     selectValue = null;
@@ -37,7 +37,7 @@ export class TitleComponent {
 
     @Input()
     set top (top: TitleTopBorder) {
-        this.topBorder = top || TitleTopBorder.BLUE;
+        this.topBorder = top;
     }
 
     onTabSelect (): void {

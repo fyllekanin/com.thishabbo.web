@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 @Component({
     selector: 'app-top-bar-thread-view',
     templateUrl: 'thread-view.component.html',
-    styleUrls: ['../notification.views.css']
+    styleUrls: [ '../notification.views.css' ]
 })
 export class ThreadViewComponent implements NotificationView {
     private _notification: NotificationModel<ThreadView>;
@@ -28,7 +28,7 @@ export class ThreadViewComponent implements NotificationView {
     }
 
     get imagePath (): string {
-        return `/rest/resources/images/users/${this.user.userId}.gif?${this.user.avatarUpdatedAt}`;
+        return `/resources/images/users/${this.user.userId}.gif?${this.user.avatarUpdatedAt}`;
     }
 
     get user (): SlimUser {
@@ -57,7 +57,7 @@ export class ThreadViewComponent implements NotificationView {
         return this._notification.createdAt;
     }
 
-    @HostListener('click', ['$event.target'])
+    @HostListener('click', [ '$event.target' ])
     click (event): void {
         this.onClick.next(this._notification.notificationId);
 

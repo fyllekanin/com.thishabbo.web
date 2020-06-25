@@ -4,7 +4,7 @@ import { Activity } from 'core/services/continues-information/continues-informat
 @Component({
     selector: 'app-user-profile-activities',
     templateUrl: 'activities.component.html',
-    styleUrls: ['activities.component.css']
+    styleUrls: [ 'activities.component.css' ]
 })
 export class ActivitiesComponent {
     @Input() activities: Array<Activity> = [];

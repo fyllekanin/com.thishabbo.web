@@ -9,15 +9,15 @@ import { BetModel } from '../../bets.model';
 export class ResultComponent extends InnerDialogComponent {
     private _bet: BetModel;
 
-    get bet(): BetModel {
+    get bet (): BetModel {
         return this._bet;
     }
 
-    getData() {
+    getData () {
         return this._bet;
     }
 
-    setData(bet: BetModel) {
+    setData (bet: BetModel) {
         this._bet = bet;
     }
 }

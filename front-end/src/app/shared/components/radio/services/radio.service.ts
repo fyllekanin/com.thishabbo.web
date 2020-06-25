@@ -21,11 +21,15 @@ export class RadioService {
     }
 
     openRequest (): void {
+        if (!this._authService.isLoggedIn()) {
+            this._notificationService.sendErrorNotification('You need to be logged in when requesting to a DJ');
+            return;
+        }
         this._dialogService.openDialog({
             title: 'Request',
             buttons: [
                 new DialogCloseButton('Close'),
-                new DialogButton({title: 'Send', callback: this.onRequest.bind(this)})
+                new DialogButton({ title: 'Send', callback: this.onRequest.bind(this) })
             ],
             component: this._componentResolver.resolveComponentFactory(RequestComponent),
             data: this._authService.isLoggedIn()
@@ -74,7 +78,7 @@ export class RadioService {
     }
 
     private onRequest (request: { content: string, nickname: string }): void {
-        this._httpService.post('radio/request', {content: request.content, nickname: request.nickname})
+        this._httpService.post('radio/request', { content: request.content, nickname: request.nickname })
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',

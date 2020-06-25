@@ -8,10 +8,10 @@ import { RegisterPage } from '../register/register.model';
 @Injectable()
 export class RegisterResolver implements Resolve<RegisterPage> {
 
-    constructor(private _httpService: HttpService) {
+    constructor (private _httpService: HttpService) {
     }
 
-    resolve(): Observable<RegisterPage> {
+    resolve (): Observable<RegisterPage> {
         return this._httpService.get('auth/register').pipe(map(res => new RegisterPage(res)));
     }
 }

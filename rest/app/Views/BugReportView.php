@@ -7,26 +7,27 @@ use stdClass;
 
 class BugReportView {
 
+
     public static function of(User $user, $data) {
         $reportData = new stdClass();
 
-        $reportData->title = $data->title . ' - ' . $user->username;
+        $reportData->title = $data->title.' - '.$user->username;
 
         $reportData->body = "#### Issue description
-- " . $data->description . "
+- ".$data->description."
 
 #### Steps to reproduce the issue
-" . $data->steps . "
+".$data->steps."
 
 #### What's the expected result?
-- " . $data->expected . "
+- ".$data->expected."
 
 #### What's the actual result?
-- " . $data->actual . "
+- ".$data->actual."
 
 #### Additional details / screenshot
-- " . $data->additional . "
-- " . $data->screenshot;
+- ".$data->additional."
+- ".$data->screenshot;
 
         return $reportData;
     }

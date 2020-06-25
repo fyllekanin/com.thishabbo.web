@@ -2,14 +2,16 @@
 
 namespace App\Jobs;
 
-use App\EloquentModels\Forum\ThreadSubscription;
-use App\Models\Notification\Type;
+use App\Constants\NotificationTypes;
+use App\Repositories\Repository\ForumListenerRepository;
+use App\Repositories\Repository\NotificationRepository;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class NotifyThreadSubscribers
@@ -20,48 +22,54 @@ use Illuminate\Support\Facades\DB;
  * @package App\Jobs
  */
 class NotifyThreadSubscribers implements ShouldQueue {
-    private $threadId;
-    private $userId;
-    private $postId;
+    private $myThreadId;
+    private $myUserId;
+    private $myPostId;
 
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /**
-     * NotifyThreadSubscribers constructor.
-     *
-     * @param $threadId
-     * @param $userId
-     * @param $postId
-     */
     public function __construct($threadId, $userId, $postId) {
-        $this->threadId = $threadId;
-        $this->userId = $userId;
-        $this->postId = $postId;
+        $this->myThreadId = $threadId;
+        $this->myUserId = $userId;
+        $this->myPostId = $postId;
     }
 
     /**
-     * Executes the job
+     * @param  NotificationRepository  $notificationRepository
+     * @param  ForumListenerRepository  $forumListenerRepository
      */
-    public function handle() {
-        $subscribeType = Type::getType(Type::THREAD_SUBSCRIPTION);
+    public function handle(NotificationRepository $notificationRepository, ForumListenerRepository $forumListenerRepository) {
+        $notifiedUserIds = $notificationRepository
+            ->getNotifiedUserIdsForTypeAndContent(NotificationTypes::THREAD_SUBSCRIPTION, $this->myPostId);
+        $notifiedUserIds->push($this->myUserId);
 
-        $alreadyNotified = DB::table('notifications')->where('type', $subscribeType)->where('contentId', $this->postId)->pluck('userId');
-        $userIds = ThreadSubscription::where('threadId', $this->threadId)->whereNotIn('userId', $alreadyNotified)->pluck('userId');
-
-        $inserts = [];
-        foreach ($userIds as $userId) {
-            if ($userId == $this->userId) {
-                continue;
+        $forumListenerRepository->getUserIdsSubscribedToThreadId($this->myThreadId, $notifiedUserIds)->each(
+            function ($userId) use ($notificationRepository) {
+                $notificationRepository->createNotification(
+                    $userId,
+                    $this->myUserId,
+                    NotificationTypes::THREAD_SUBSCRIPTION,
+                    $this->myPostId
+                );
             }
-            $inserts[] = [
-                'userId' => $userId,
-                'senderId' => $this->userId,
-                'type' => $subscribeType,
-                'contentId' => $this->postId,
-                'createdAt' => time()
-            ];
-        }
+        );
+    }
 
-        DB::table('notifications')->insert($inserts);
+    /**
+     * The job failed to process.
+     *
+     * @param  Exception  $exception
+     *
+     * @return void
+     */
+    public function failed(Exception $exception) {
+        Log::channel('que')->error(
+            '
+        [b]File:[/b] '.$exception->getFile().'#'.$exception->getLine().'
+        
+        [b]Message:[/b]
+'.$exception->getMessage().'
+        '
+        );
     }
 }

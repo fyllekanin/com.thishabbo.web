@@ -8,9 +8,10 @@ import { ThreadsStatisticsModel } from '../threads-statistics/threads-statistics
 @Injectable()
 export class ThreadsStatisticsResolver implements Resolve<ThreadsStatisticsModel> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
-    resolve(route: ActivatedRouteSnapshot): Observable<ThreadsStatisticsModel> {
+    resolve (route: ActivatedRouteSnapshot): Observable<ThreadsStatisticsModel> {
         const year = route.params['year'];
         const month = route.params['month'];
         return this._httpService.get(`sitecp/statistics/threads/${year}/${month}`)

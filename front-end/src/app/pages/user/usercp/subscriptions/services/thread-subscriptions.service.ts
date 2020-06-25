@@ -9,17 +9,18 @@ import { NotificationService } from 'core/services/notification/notification.ser
 @Injectable()
 export class ThreadSubscriptionsService implements Resolve<Array<ThreadSubscription>> {
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService
-    ) {}
+    ) {
+    }
 
-    unsubscribe(threadId: number): Observable<void> {
+    unsubscribe (threadId: number): Observable<void> {
         return this._httpService.delete(`forum/thread/unsubscribe/${threadId}`)
             .pipe(catchError(this._notificationService.failureNotification.bind(this._notificationService)));
     }
 
-    resolve(): Observable<Array<ThreadSubscription>> {
+    resolve (): Observable<Array<ThreadSubscription>> {
         return this._httpService.get('usercp/thread-subscriptions')
             .pipe(map(res => {
                 return res.map(item => new ThreadSubscription(item));

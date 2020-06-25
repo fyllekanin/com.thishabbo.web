@@ -11,7 +11,7 @@ import { UserView } from 'shared/components/notification-views/user-view/user-vi
 @Component({
     selector: 'app-top-bar-user-view',
     templateUrl: 'user-view.component.html',
-    styleUrls: ['../notification.views.css']
+    styleUrls: [ '../notification.views.css' ]
 })
 export class UserViewComponent implements NotificationView {
     private _notification: NotificationModel<UserView>;
@@ -32,7 +32,7 @@ export class UserViewComponent implements NotificationView {
     }
 
     get imagePath (): string {
-        return `/rest/resources/images/users/${this.user.userId}.gif?${this.user.avatarUpdatedAt}`;
+        return `/resources/images/users/${this.user.userId}.gif?${this.user.avatarUpdatedAt}`;
     }
 
     get user (): SlimUser {
@@ -63,7 +63,7 @@ export class UserViewComponent implements NotificationView {
         return this._notification.item.customData;
     }
 
-    @HostListener('click', ['$event.target'])
+    @HostListener('click', [ '$event.target' ])
     click (event): void {
         this.onClick.next(this._notification.notificationId);
         if (shouldPerformClickOnNotification(event)) {

@@ -1,13 +1,24 @@
 <app-title
-    [title]="title"
-    [subTitle]="subTitle"
-    [tabs]="tabs"
-    (onTabClick)="onClick($event)">
+        [title]="title"
+        [subTitle]="subTitle"
+        [tabs]="tabs"
+        (onTabClick)="onClick($event)">
 </app-title>
 <app-content>
     <textarea #editor></textarea>
 
-    <button *ngFor="let button of bottomButtons" appButton [float]="'right'" [color]="button.buttonColor" (onClick)="onClick(button.value)">
+    <button *ngFor="let button of bottomButtons" appButton [float]="'right'" [color]="button.buttonColor"
+            (onClick)="onClick(button.value)">
         {{button.title}}
     </button>
+
+    <div *ngIf="matches.length > 0" class="matches">
+        <strong>Matching users: </strong>
+        <div class="match"
+             *ngFor="let match of matches; let index = index;"
+             (keydown)="onMatchKey($event)"
+             [tabIndex]="index">
+            {{match}}
+        </div>
+    </div>
 </app-content>

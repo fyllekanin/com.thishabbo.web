@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Sitecp\User;
 
+use App\Constants\LogType;
+use App\Constants\Permission\SiteCpPermissions;
 use App\EloquentModels\Forum\Post;
 use App\EloquentModels\Forum\PostLike;
 use App\EloquentModels\Forum\Thread;
@@ -11,90 +13,99 @@ use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserGroup;
 use App\EloquentModels\User\UserItem;
 use App\EloquentModels\User\VisitorMessage;
-use App\Helpers\ConfigHelper;
-use App\Helpers\DataHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
-use App\Models\Logger\Action;
 use App\Models\User\CustomUserFields;
-use App\Services\AuthService;
+use App\Providers\Service\AuthService;
 use App\Utils\Condition;
 use App\Utils\Iterables;
+use App\Utils\PaginationUtil;
 use App\Utils\Value;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller {
-    private $authService;
+    private $myAuthService;
 
-    /**
-     * UserController constructor.
-     *
-     * @param AuthService $authService
-     */
-    public function __construct (AuthService $authService) {
+    public function __construct(AuthService $authService) {
         parent::__construct();
-        $this->authService = $authService;
+        $this->myAuthService = $authService;
     }
 
     /**
      * Method for merging users
      *
-     * @param Request $request
-     * @param         $srcNickname
-     * @param         $destNickname
+     * @param  Request  $request
+     * @param $sourceNickname
+     * @param $targetNickname
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function mergeUsers (Request $request, $srcNickname, $destNickname) {
+    public function mergeUsers(Request $request, $sourceNickname, $targetNickname) {
         $user = $request->get('auth');
 
-        Condition::precondition(!PermissionHelper::haveSitecpPermission($user->userId, ConfigHelper::getSitecpConfig()->canMergeUsers), 400, 'You do not have permission!');
+        Condition::precondition(
+            !PermissionHelper::haveSitecpPermission($user->userId, SiteCpPermissions::CAN_MERGE_USERS),
+            400,
+            'You do not have permission!'
+        );
 
-        $srcUser = User::withNickname($srcNickname)->first();
-        $destUser = User::withNickname($destNickname)->first();
+        $sourceUser = User::withNickname($sourceNickname)->first();
+        $targetUser = User::withNickname($targetNickname)->first();
 
-        Condition::precondition(!$srcUser, 404, 'Source user does not exist!');
-        Condition::precondition(!$destUser, 404, 'Destination user does not exist!');
+        Condition::precondition(!$sourceUser, 404, 'Source user does not exist!');
+        Condition::precondition(!$targetUser, 404, 'Target user does not exist!');
 
-        $sourceUser = $srcUser;
-        $destinationUser = $destUser;
+        Thread::where('userId', $sourceUser->userId)->update(
+            [
+                'userId' => $targetUser->userId
+            ]
+        );
 
-        Thread::where('userId', $srcUser->userId)->update([
-            'userId' => $destUser->userId
+        Post::where('userId', $sourceUser->userId)->update(
+            [
+                'userId' => $targetUser->userId
+            ]
+        );
+
+        PostLike::where('userId', $sourceUser->userId)->update(
+            [
+                'userId' => $targetUser->userId
+            ]
+        );
+        Timetable::where('userId', $sourceUser->userId)->update(['userId' => $targetUser->userId]);
+        UserItem::where('userId', $sourceUser->userId)->update(['userId' => $targetUser->userId]);
+        User::where('referralId', $sourceUser->userId)->update(['referralId' => $targetUser->userId]);
+        VisitorMessage::where('userId', $sourceUser->userId)->orWhere('hostId', $sourceUser->userId)->update([
+            'userId' => $targetUser->userId,
+            'hostId' => $targetUser->userId
         ]);
+        UserGroup::where('userId', $sourceUser->userId)->delete();
 
-        Post::where('userId', $srcUser->userId)->update([
-            'userId' => $destUser->userId
-        ]);
+        $targetUser->posts += $sourceUser->posts;
+        $targetUser->threads += $sourceUser->threads;
+        $targetUser->likes += $sourceUser->likes;
+        $targetUser->userdata->credits += $sourceUser->userdata->credits;
+        $targetUser->userdata->xp += $sourceUser->userdata->xp;
+        $targetUser->userdata->save();
+        $sourceUser->userdata->delete();
 
-        PostLike::where('userId', $srcUser->userId)->update([
-            'userId' => $destUser->userId
-        ]);
-        Timetable::where('userId', $srcUser->userId)->update(['userId' => $destUser->userId]);
-        UserItem::where('userId', $srcUser->userId)->update(['userId' => $destUser->userId]);
-        User::where('referralId', $srcUser->userId)->update(['referralId' => $destUser->userId]);
-        VisitorMessage::where('userID', $srcUser->userId)->update(['userId' => $destUser->userId]);
-        UserGroup::where('userId', $srcUser->userId)->delete();
+        $targetUser->lastActivity = max($sourceUser->lastActivity, $targetUser->lastActivity);
+        $targetUser->save();
+        $sourceUser->delete();
 
-        $destUser->posts += $srcUser->posts;
-        $destUser->threads += $srcUser->threads;
-        $destUser->likes += $srcUser->likes;
-        $destUser->userdata->credits += $srcUser->userdata->credits;
-        $destUser->userdata->xp += $srcUser->userdata->xp;
-        $destUser->userdata->save();
-        $srcUser->userdata->delete();
-
-        $destUser->lastActivity = max($srcUser->lastActivity, $destUser->lastActivity);
-        $destUser->save();
-        $srcUser->delete();
-
-        Logger::sitecp($user->userId, $request->ip(), Action::MERGED_USERS, [
-            'sourceUser' => $sourceUser->toJson(),
-            'destinationUser' => $destinationUser->toJson()
-        ]);
+        Logger::sitecp(
+            $user->userId,
+            $request->ip(),
+            LogType::MERGED_USERS,
+            [
+                'sourceUser' => $sourceUser->toJson(),
+                'targetUser' => $targetUser->toJson()
+            ]
+        );
 
         return response()->json();
     }
@@ -102,90 +113,110 @@ class UserController extends Controller {
     /**
      * Get request to get all available users
      *
-     * @param Request $request
-     * @param         $page
+     * @param  Request  $request
+     * @param $page
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getUsers (Request $request, $page) {
+    public function getUsers(Request $request, $page) {
         $nickname = $request->input('nickname');
         $habbo = $request->input('habbo');
         $user = $request->get('auth');
+        $sortBy = $request->has('sortBy') ? $request->input('sortBy') : 'nickname';
+        $sortOrder = $request->has('sortOrder') ? $request->input('sortOrder') : 'ASC';
 
-        $getUserSql = User::select('nickname', 'userId', 'updatedAt', 'habbo')
-            ->orderBy('nickname', 'ASC');
+        $getUserSql = User::select('users.nickname', 'users.userId', 'users.updatedAt', 'users.habbo', 'userdata.credits as credits')
+            ->leftJoin('userdata', 'userdata.userId', '=', 'users.userId')
+            ->orderBy($sortBy, $sortOrder);
 
         if ($nickname) {
-            $getUserSql->where('nickname', 'LIKE', Value::getFilterValue($request, $nickname));
+            $getUserSql->where('users.nickname', 'LIKE', Value::getFilterValue($request, $nickname));
         }
 
         if ($habbo) {
-            $getUserSql->where('habbo', 'LIKE', Value::getFilterValue($request, $habbo));
+            $getUserSql->where('users.habbo', 'LIKE', Value::getFilterValue($request, $habbo));
         }
 
-        $total = DataHelper::getTotal($getUserSql->count('userId'), $this->bigPerPage);
-        $users = array_map(function ($user) {
-            $user['credits'] = UserHelper::getUserDataOrCreate($user['userId'])->credits;
-            return $user;
-        }, Iterables::filter($getUserSql->take($this->bigPerPage)->skip(DataHelper::getOffset($page, $this->bigPerPage))->get()->toArray(), function ($item) use ($user) {
-            return UserHelper::canManageUser($user, $item['userId']);
-        }));
+        $total = PaginationUtil::getTotalPages($getUserSql->count('users.userId'), $this->bigPerPage);
+        $canManageCredits = PermissionHelper::haveSitecpPermission($user->userId, SiteCpPermissions::CAN_MANAGE_CREDITS);
+        $users = array_map(
+            function ($user) use ($canManageCredits) {
+                $user['credits'] = $canManageCredits && $user['credits'] ? $user['credits'] : 0;
+                return $user;
+            },
+            Iterables::filter(
+                $getUserSql->take($this->bigPerPage)->skip(PaginationUtil::getOffset($page, $this->bigPerPage))->get()->toArray(),
+                function ($item) use ($user) {
+                    return UserHelper::canManageUser($user, $item['userId']);
+                }
+            )
+        );
 
-        return response()->json([
-            'users' => $users,
-            'page' => $page,
-            'total' => $total
-        ]);
+        return response()->json(
+            [
+                'users' => $users,
+                'page' => $page,
+                'total' => $total
+            ]
+        );
     }
 
     /**
      * Get request to fetch the given user
      *
-     * @param Request $request
-     * @param         $userId
+     * @param  Request  $request
+     * @param $userId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getUserBasic (Request $request, $userId) {
+    public function getUserBasic(Request $request, $userId) {
         $user = $request->get('auth');
-        $current = UserHelper::getUserFromId($userId);
+        $current = User::find($userId);
 
-        Condition::precondition(!UserHelper::canManageUser($user, $userId),
-            400, 'You can not edit this user');
+        Condition::precondition(
+            !UserHelper::canManageUser($user, $userId),
+            400,
+            'You can not edit this user'
+        );
 
         $customFields = new CustomUserFields(UserHelper::getUserDataOrCreate($userId)->customFields);
-        return response()->json([
-            'user' => [
-                'userId' => $current->userId,
-                'nickname' => $current->nickname,
-                'habbo' => $current->habbo
-            ],
-            'customFields' => [
-                'role' => $customFields->role
+        return response()->json(
+            [
+                'user' => [
+                    'userId' => $current->userId,
+                    'nickname' => $current->nickname,
+                    'habbo' => $current->habbo
+                ],
+                'customFields' => [
+                    'role' => $customFields->role
+                ]
             ]
-        ]);
+        );
     }
 
     /**
      * Update request to update basic user
      *
-     * @param Request $request
-     * @param         $userId
+     * @param  Request  $request
+     * @param $userId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function updateUserBasic (Request $request, $userId) {
+    public function updateUserBasic(Request $request, $userId) {
         $user = $request->get('auth');
         $current = User::find($userId);
         $userData = UserHelper::getUserDataOrCreate($userId);
-        $newUser = (object)$request->input('user');
+        $newUser = (object) $request->input('user');
         $role = $request->input('role');
 
-        Condition::precondition(!UserHelper::canManageUser($user, $userId),
-            400, 'You do not have high enough immunity!');
+        Condition::precondition(
+            !UserHelper::canManageUser($user, $userId),
+            400,
+            'You do not have high enough immunity!'
+        );
 
         $shouldCheckPassword = isset($newUser->password) && strlen($newUser->password) > 0 && isset($newUser->repassword) &&
-            PermissionHelper::haveSitecpPermission($user->userId, ConfigHelper::getSitecpConfig()->canEditUserAdvanced);
+            PermissionHelper::haveSitecpPermission($user->userId, SiteCpPermissions::CAN_EDIT_USER_ADVANCED);
         $this->basicUserConditionCollection($current, $newUser, $shouldCheckPassword);
 
         $beforeHabbo = $current->habbo;
@@ -194,7 +225,7 @@ class UserController extends Controller {
             $current->password = Hash::make($newUser->password);
         }
 
-        if (PermissionHelper::haveSitecpPermission($user->userId, ConfigHelper::getSitecpConfig()->canEditUserBasic)) {
+        if (PermissionHelper::haveSitecpPermission($user->userId, SiteCpPermissions::CAN_EDIT_USER_BASICS)) {
             $current->nickname = $newUser->nickname;
             $current->habbo = $newUser->habbo;
 
@@ -209,12 +240,18 @@ class UserController extends Controller {
             Token::where('userId', $current->userId)->delete();
         }
 
-        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_USERS_BASIC_SETTINGS, [
-            'beforeNickname' => $beforeNickname,
-            'afterNickname' => $current->nickname,
-            'beforeHabbo' => $beforeHabbo,
-            'afterHabbo' => $current->habbo
-        ], $current->userId);
+        Logger::sitecp(
+            $user->userId,
+            $request->ip(),
+            LogType::UPDATED_USERS_BASIC_SETTINGS,
+            [
+                'beforeNickname' => $beforeNickname,
+                'afterNickname' => $current->nickname,
+                'beforeHabbo' => $beforeHabbo,
+                'afterHabbo' => $current->habbo
+            ],
+            $current->userId
+        );
         return response()->json();
     }
 
@@ -225,21 +262,36 @@ class UserController extends Controller {
      * @param $newUser
      * @param $shouldCheckPassword
      */
-    private function basicUserConditionCollection ($user, $newUser, $shouldCheckPassword) {
-        if (!PermissionHelper::haveSitecpPermission($user->userId, ConfigHelper::getSitecpConfig()->canEditUserBasic)) {
+    private function basicUserConditionCollection($user, $newUser, $shouldCheckPassword) {
+        if (!PermissionHelper::haveSitecpPermission($user->userId, SiteCpPermissions::CAN_EDIT_USER_BASICS)) {
             return;
         }
 
         Condition::precondition(!$user, 404, 'Given user do not exist!');
         Condition::precondition(!$newUser, 404, 'No data supplied!');
 
-        Condition::precondition(!isset($newUser->nickname) || ($user->nickname != $newUser->nickname && !$this->authService->isNicknameValid($newUser->nickname)),
-            400, 'Nickname is not valid!');
+        $isNickNameSame = isset($newUser->nickname) && $user->nickname == $newUser->nickname;
+        Condition::precondition(
+            !$isNickNameSame && !$this->myAuthService->isNicknameValid($newUser->nickname, $user),
+            400,
+            'Nickname is not valid or i!'
+        );
 
-        Condition::precondition($shouldCheckPassword && !$this->authService->isPasswordValid($newUser->password),
-            400, 'Password not valid');
-        Condition::precondition($shouldCheckPassword && !$this->authService->isRePasswordValid($newUser->repassword, $newUser->password),
-            400, 'Re-password not valid');
+        Condition::precondition(
+            $shouldCheckPassword && !$this->myAuthService->isPasswordValid($newUser->password),
+            400,
+            'Password not valid'
+        );
+        Condition::precondition(
+            $shouldCheckPassword && !$this->myAuthService->isRePasswordValid($newUser->repassword, $newUser->password),
+            400,
+            'Re-password not valid'
+        );
         Condition::precondition(!isset($newUser->habbo) || empty($newUser->habbo), 400, 'A Habbo needs to be set!');
+        Condition::precondition(
+            User::withHabbo($newUser->habbo)->where('userId', '!=', $user->userId)->count() > 0,
+            400,
+            'Habbo is already taken'
+        );
     }
 }

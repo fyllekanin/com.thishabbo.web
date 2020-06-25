@@ -100,6 +100,18 @@
             </span>
         </label>
     </div>
+
+    <div>
+        <label class="checkbox-container">
+            Turn off mention suggestions while typing a post, vm etc?
+            <input type="checkbox" [(ngModel)]="showMentionSuggestions">
+            <span class="checkmark"></span>
+            <span tooltip="Will turn off the mention suggestions and not show them"
+                  class="checkbox-info">
+                <em class="fas fa-question-circle"></em>
+            </span>
+        </label>
+    </div>
 </app-content>
 
 <app-table [config]="tabsTableConfig" (onAction)="onAction($event)"></app-table>

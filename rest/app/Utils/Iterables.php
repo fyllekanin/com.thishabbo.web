@@ -4,12 +4,13 @@ namespace App\Utils;
 
 class Iterables {
 
-    public static function unique ($list, $property) {
+
+    public static function unique($list, $property) {
         $arr = [];
         $keys = [];
         $index = 0;
 
-        foreach($list as $val) {
+        foreach ($list as $val) {
             if (!in_array($val->$property, $keys)) {
                 $keys[$index] = $val->$property;
                 $arr[$index] = $val;
@@ -19,7 +20,7 @@ class Iterables {
         return $arr;
     }
 
-    public static function find ($list, $callback) {
+    public static function find($list, $callback) {
         foreach ($list as $item) {
             if (call_user_func($callback, $item)) {
                 return $item;
@@ -28,11 +29,11 @@ class Iterables {
         return null;
     }
 
-    public static function filter ($list, $callback) {
+    public static function filter($list, $callback) {
         return array_values(array_filter($list, $callback));
     }
 
-    public static function sortByPropertyAsc ($list, $property) {
+    public static function sortByPropertyAsc($list, $property) {
 
         if (count($list) < 1) {
             return $list;
@@ -41,7 +42,7 @@ class Iterables {
         $arr = function ($aItem, $bItem) use ($property) {
             if ($aItem[$property] > $bItem[$property]) {
                 return 1;
-            } else if ($bItem[$property] > $aItem[$property]) {
+            } elseif ($bItem[$property] > $aItem[$property]) {
                 return -1;
             }
             return 0;
@@ -50,7 +51,7 @@ class Iterables {
         $obj = function ($aItem, $bItem) use ($property) {
             if ($aItem->$property > $bItem->$property) {
                 return 1;
-            } else if ($bItem->$property > $aItem->$property) {
+            } elseif ($bItem->$property > $aItem->$property) {
                 return -1;
             }
             return 0;
@@ -62,7 +63,7 @@ class Iterables {
         return $list;
     }
 
-    public static function sortByPropertyDesc ($list, $property) {
+    public static function sortByPropertyDesc($list, $property) {
 
         if (count($list) < 1) {
             return $list;
@@ -71,7 +72,7 @@ class Iterables {
         $arr = function ($aItem, $bItem) use ($property) {
             if ($aItem[$property] > $bItem[$property]) {
                 return -1;
-            } else if ($bItem[$property] > $aItem[$property]) {
+            } elseif ($bItem[$property] > $aItem[$property]) {
                 return 1;
             }
             return 0;
@@ -80,7 +81,7 @@ class Iterables {
         $obj = function ($aItem, $bItem) use ($property) {
             if ($aItem->$property > $bItem->$property) {
                 return -1;
-            } else if ($bItem->$property > $aItem->$property) {
+            } elseif ($bItem->$property > $aItem->$property) {
                 return 1;
             }
             return 0;
@@ -95,7 +96,7 @@ class Iterables {
     public static function every($list, $callback) {
         foreach ($list as $item) {
             if (!call_user_func($callback, $item)) {
-                 return false;
+                return false;
             }
         }
         return true;

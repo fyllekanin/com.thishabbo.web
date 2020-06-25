@@ -3,7 +3,7 @@ import { Component, ElementRef, OnDestroy } from '@angular/core';
 
 @Component({
     selector: 'app-page',
-    styles: [':host { display: block; }'],
+    styles: [ ':host { display: block; }' ],
     template: `
         <router-outlet></router-outlet>
     `
@@ -11,11 +11,11 @@ import { Component, ElementRef, OnDestroy } from '@angular/core';
 
 export class PageComponent extends Page implements OnDestroy {
 
-    constructor(elementRef: ElementRef) {
+    constructor (elementRef: ElementRef) {
         super(elementRef);
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 }

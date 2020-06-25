@@ -1,6 +1,11 @@
 <div>
     <strong><em class="fas fa-exclamation-triangle"></em> {{title}}</strong>
 </div>
-<div [innerHTML]="content"></div>
+<div *ngIf="template; else native">
+    <ng-container *ngTemplateOutlet="template"></ng-container>
+</div>
+<ng-template #native>
+    <div [innerHTML]="content | safeHtml"></div>
+</ng-template>
 
 <em class="fas fa-times-circle closable" *ngIf="isClosable" (click)="click()"></em>

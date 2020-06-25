@@ -7,7 +7,7 @@ export class ThreadPoster {
     @primitive()
     posts: number;
 
-    constructor(source: Partial<ThreadPoster>) {
+    constructor (source: Partial<ThreadPoster>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -20,7 +20,7 @@ export class ThreadPostersModel {
     @arrayOf(ThreadPoster)
     items: Array<ThreadPoster> = [];
 
-    constructor(source: Partial<ThreadPostersModel>) {
+    constructor (source: Partial<ThreadPostersModel>) {
         ClassHelper.assign(this, source);
     }
 }

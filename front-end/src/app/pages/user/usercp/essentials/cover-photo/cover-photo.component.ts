@@ -19,7 +19,7 @@ export class CoverPhotoComponent extends Page implements OnDestroy {
         new TitleTab({ title: 'Save' })
     ];
 
-    constructor(
+    constructor (
         private _httpClient: HttpClient,
         private _notificationService: NotificationService,
         private _previewService: UsercpAvatarCoverPreviewService,
@@ -36,16 +36,16 @@ export class CoverPhotoComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
         this._previewService.hide();
     }
 
-    onSave(): void {
+    onSave (): void {
         const form = new FormData();
         const file = this.coverInput.nativeElement.files ? this.coverInput.nativeElement.files[0] : null;
         form.append('cover', file);
-        this._httpClient.post('rest/api/usercp/cover', form)
+        this._httpClient.post('api/usercp/cover', form)
             .subscribe(() => {
                 this._previewService.update();
                 this._notificationService.sendNotification(new NotificationMessage({

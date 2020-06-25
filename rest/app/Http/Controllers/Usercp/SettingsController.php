@@ -2,23 +2,16 @@
 
 namespace App\Http\Controllers\Usercp;
 
+use App\Constants\LogType;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
-use App\Models\Logger\Action;
 use App\Models\User\CustomUserFields;
 use App\Utils\Condition;
 use App\Utils\Iterables;
 use Illuminate\Http\Request;
 
 class SettingsController extends Controller {
-
-    /**
-     * AccountController constructor.
-     */
-    public function __construct() {
-        parent::__construct();
-    }
 
     public function updateTabs(Request $request) {
         $user = $request->get('auth');
@@ -29,7 +22,7 @@ class SettingsController extends Controller {
         $userData->customFields = json_encode($customFields);
         $userData->save();
 
-        Logger::user($user->userId, $request->ip(), Action::UPDATED_TABS);
+        Logger::user($user->userId, $request->ip(), LogType::UPDATED_TABS);
         return response()->json();
     }
 
@@ -38,14 +31,17 @@ class SettingsController extends Controller {
         $userData = UserHelper::getUserDataOrCreate($user->userId);
         $customFields = new CustomUserFields($userData->customFields);
 
-        $customFields->tabs = Iterables::filter($customFields->tabs, function ($tab) use ($tabId) {
-            return $tab->tabId != $tabId;
-        });
+        $customFields->tabs = Iterables::filter(
+            $customFields->tabs,
+            function ($tab) use ($tabId) {
+                return $tab->tabId != $tabId;
+            }
+        );
 
         $userData->customFields = json_encode($customFields);
         $userData->save();
 
-        Logger::user($user->userId, $request->ip(), Action::DELETED_TAB);
+        Logger::user($user->userId, $request->ip(), LogType::DELETED_TAB);
         return response()->json();
     }
 
@@ -62,7 +58,7 @@ class SettingsController extends Controller {
         $userData->customFields = json_encode($customFields);
         $userData->save();
 
-        Logger::user($user->userId, $request->ip(), Action::ADDED_TAB);
+        Logger::user($user->userId, $request->ip(), LogType::ADDED_TAB);
         return response()->json();
     }
 }

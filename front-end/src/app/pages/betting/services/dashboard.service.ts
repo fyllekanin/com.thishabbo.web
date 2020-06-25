@@ -10,26 +10,30 @@ import { NotificationMessage, NotificationType } from 'shared/app-views/global-n
 @Injectable()
 export class DashboardService {
 
-    constructor(
+    constructor (
         private _notificationService: NotificationService,
         private _dialogService: DialogService,
         private _componentFactory: ComponentFactoryResolver
-    ) {}
+    ) {
+    }
 
-    openBetDialog(bet: Bet, maxThcAmount: number): Observable<number> {
+    openBetDialog (bet: Bet, maxThcAmount: number): Observable<number> {
         return new Observable(observer => {
             this._dialogService.openDialog({
                 title: `Betting on: ${bet.name}`,
                 component: this._componentFactory.resolveComponentFactory(PlaceBetComponent),
                 buttons: [
                     new DialogCloseButton('Close'),
-                    new DialogButton({ title: 'Place Bet', callback: this.onPlaceBet.bind(this, observer, maxThcAmount) })
+                    new DialogButton({
+                        title: 'Place Bet',
+                        callback: this.onPlaceBet.bind(this, observer, maxThcAmount)
+                    })
                 ]
             });
         });
     }
 
-    private onPlaceBet(observer, maxThcAmount, data): void {
+    private onPlaceBet (observer, maxThcAmount, data): void {
         if (!Number(data) || data <= 0) {
             this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',

@@ -18,7 +18,7 @@ export class ClassHelper {
         VAL: 'val',
         TYPED_ARR: 'typed_arr',
         MAPPED_ARR: 'mapped_arr',
-        DATE_AND_DATE: 'dateAndTime',
+        DATE_AND_TIME: 'dateAndTime',
         DATE: 'date'
     };
 
@@ -58,7 +58,7 @@ export class ClassHelper {
         } else if (isMappedArr) {
             return this.TYPES.MAPPED_ARR;
         } else if (isDateAndTime) {
-            return this.TYPES.DATE_AND_DATE;
+            return this.TYPES.DATE_AND_TIME;
         } else if (isDate) {
             return this.TYPES.DATE;
         }
@@ -66,7 +66,10 @@ export class ClassHelper {
     }
 
     static assign<T> (target: T, source?): T {
-        for (const prop in source) {
+        if (!source) {
+            return target;
+        }
+        for (const prop of Object.keys(source)) {
             if (!source.hasOwnProperty(prop) && source[prop] === undefined) {
                 continue;
             } else if (source[prop] === null) {
@@ -90,7 +93,7 @@ export class ClassHelper {
                     const primitiveType = this.getMetadata(primitiveSymbol, target, prop);
                     target[prop] = primitiveType(source[prop]);
                     break;
-                case this.TYPES.DATE_AND_DATE:
+                case this.TYPES.DATE_AND_TIME:
                     target[prop] = TimeHelper.getTime(source[prop]);
                     break;
                 case this.TYPES.DATE:

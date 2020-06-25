@@ -1,4 +1,4 @@
-import { ClassHelper, objectOf, primitive, dateAndTime } from 'shared/helpers/class.helper';
+import { ClassHelper, dateAndTime, objectOf, primitive } from 'shared/helpers/class.helper';
 import { SlimUser } from 'core/services/auth/auth.model';
 
 export class ThreadBan {

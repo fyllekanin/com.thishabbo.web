@@ -8,9 +8,10 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class CustomPageResolver implements Resolve<PageModel> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
-    resolve(route: ActivatedRouteSnapshot): Observable<PageModel> {
+    resolve (route: ActivatedRouteSnapshot): Observable<PageModel> {
         const page = route.params['page'];
         return this._httpService.get(`page/custom/${page}`)
             .pipe(map(res => new PageModel(res)));

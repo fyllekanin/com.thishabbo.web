@@ -23,7 +23,7 @@ import { NotificationMessage } from 'shared/app-views/global-notification/global
 export class PageComponent extends Page implements OnDestroy {
     private _data: PageModel = new PageModel();
 
-    @ViewChild('editor', {static: true}) editor: EditorComponent;
+    @ViewChild('editor', { static: true }) editor: EditorComponent;
 
     tabs: Array<TitleTab> = [];
 
@@ -69,7 +69,7 @@ export class PageComponent extends Page implements OnDestroy {
     onSave (): void {
         this._data.content = this.editor.getEditorValue();
         if (this._data.createdAt) {
-            this._httpService.put(`sitecp/content/pages/${this._data.pageId}`, {data: this._data})
+            this._httpService.put(`sitecp/content/pages/${this._data.pageId}`, { data: this._data })
                 .subscribe(() => {
                     this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
@@ -77,7 +77,7 @@ export class PageComponent extends Page implements OnDestroy {
                     }));
                 });
         } else {
-            this._httpService.post(`sitecp/content/pages`, {data: this._data})
+            this._httpService.post(`sitecp/content/pages`, { data: this._data })
                 .subscribe(res => {
                     this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
@@ -121,9 +121,9 @@ export class PageComponent extends Page implements OnDestroy {
 
     private updateTabs (): void {
         const tabs = [
-            {title: 'Save', value: PageActions.SAVE, condition: true},
-            {title: 'Back', value: PageActions.BACK, condition: true},
-            {title: 'Delete', value: PageActions.DELETE, condition: this._data.createdAt && !this._data.isSystem}
+            { title: 'Save', value: PageActions.SAVE, condition: true },
+            { title: 'Back', value: PageActions.BACK, condition: true },
+            { title: 'Delete', value: PageActions.DELETE, condition: this._data.createdAt && !this._data.isSystem }
         ];
         this.tabs = tabs.filter(item => item.condition).map(item => new TitleTab(item));
     }

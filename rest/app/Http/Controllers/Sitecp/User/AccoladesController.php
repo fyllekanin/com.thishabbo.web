@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Sitecp\User;
 
+use App\Constants\LogType;
 use App\EloquentModels\User\Accolade;
 use App\EloquentModels\User\User;
 use App\Helpers\ConfigHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
-use App\Models\Logger\Action;
 use App\Utils\Condition;
 use App\Utils\Iterables;
 use Illuminate\Http\Request;
@@ -19,40 +19,52 @@ class AccoladesController extends Controller {
         $user = $request->get('auth');
         Condition::precondition(!UserHelper::canManageUser($user, $userId), 400, 'You are not able to edit this user');
 
-        return response()->json([
-            'user' => UserHelper::getSlimUser($userId),
-            'items' => Accolade::where('userId', $userId)->orderBy('start', 'ASC')->get([
-                'accoladeId', 'role', 'start', 'end', 'type'
-            ]),
-            'types' => ConfigHelper::getAccoladeTypes()
-        ]);
+        return response()->json(
+            [
+                'user' => UserHelper::getSlimUser($userId),
+                'items' => Accolade::where('userId', $userId)->orderBy('start', 'ASC')->get(
+                    [
+                        'accoladeId', 'role', 'start', 'end', 'type'
+                    ]
+                ),
+                'types' => ConfigHelper::getAccoladeTypes()
+            ]
+        );
     }
 
     public function createAccolade(Request $request, $userId) {
-        $data = (object)$request->input('data');
+        $data = (object) $request->input('data');
         $user = $request->get('auth');
 
         Condition::precondition(!UserHelper::canManageUser($user, $userId), 400, 'You are not able to edit this user');
         Condition::precondition(User::where('userId', $userId)->count() == 0, 404, 'User with that ID do not exist');
         $this->validateAccolade($data);
 
-        $accolade = new Accolade([
-            'userId' => $userId,
-            'role' => $data->role,
-            'start' => $data->start,
-            'end' => $data->end,
-            'type' => $data->type
-        ]);
+        $accolade = new Accolade(
+            [
+                'userId' => $userId,
+                'role' => $data->role,
+                'start' => $data->start,
+                'end' => $data->end,
+                'type' => $data->type
+            ]
+        );
         $accolade->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_ACCOLADE, [
-            'accoladeId' => $accolade->accoladeId
-        ], $userId);
+        Logger::sitecp(
+            $user->userId,
+            $request->ip(),
+            LogType::CREATED_ACCOLADE,
+            [
+                'accoladeId' => $accolade->accoladeId
+            ],
+            $userId
+        );
         return response()->json($accolade);
     }
 
     public function updateAccolade(Request $request, $userId, $accoladeId) {
-        $data = (object)$request->input('data');
+        $data = (object) $request->input('data');
         $user = $request->get('auth');
         $accolade = Accolade::find($accoladeId);
 
@@ -66,9 +78,15 @@ class AccoladesController extends Controller {
         $accolade->type = $data->type;
         $accolade->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_ACCOLADE, [
-            'accoladeId' => $accolade->accoladeId
-        ], $userId);
+        Logger::sitecp(
+            $user->userId,
+            $request->ip(),
+            LogType::UPDATED_ACCOLADE,
+            [
+                'accoladeId' => $accolade->accoladeId
+            ],
+            $userId
+        );
         return response()->json($accolade);
     }
 
@@ -81,9 +99,15 @@ class AccoladesController extends Controller {
         $accolade->isDeleted = true;
         $accolade->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_ACCOLADE, [
-            'accoladeId' => $accolade->accoladeId
-        ], $userId);
+        Logger::sitecp(
+            $user->userId,
+            $request->ip(),
+            LogType::DELETED_ACCOLADE,
+            [
+                'accoladeId' => $accolade->accoladeId
+            ],
+            $userId
+        );
         return response()->json();
     }
 
@@ -94,9 +118,12 @@ class AccoladesController extends Controller {
         Condition::precondition(!is_numeric($accolade->start), 400, 'Start date needs to be numeric');
         Condition::precondition(isset($accolade->end) && !is_numeric($accolade->end), 400, 'End date needs to be numeric');
 
-        $type = Iterables::find((array)ConfigHelper::getAccoladeTypes(), function ($type) use ($accolade) {
-            return $type['id'] == $accolade->type;
-        });
+        $type = Iterables::find(
+            (array) ConfigHelper::getAccoladeTypes(),
+            function ($type) use ($accolade) {
+                return $type['id'] == $accolade->type;
+            }
+        );
         Condition::precondition(!$type, 400, 'Provided type do not exist');
     }
 }

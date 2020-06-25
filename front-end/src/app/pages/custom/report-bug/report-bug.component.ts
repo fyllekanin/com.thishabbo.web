@@ -6,7 +6,7 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { ReportBugModel } from './report-bug.model';
 import { AuthService } from 'core/services/auth/auth.service';
-import { InfoBoxModel, INFO_BOX_TYPE } from 'shared/app-views/info-box/info-box.model';
+import { INFO_BOX_TYPE, InfoBoxModel } from 'shared/app-views/info-box/info-box.model';
 import { HttpService } from 'core/services/http/http.service';
 
 @Component({
@@ -22,7 +22,7 @@ export class ReportBugComponent extends Page implements OnDestroy {
         content: 'You need to be logged in to report a bug!'
     };
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Report'})
+        new TitleTab({ title: 'Report' })
     ];
 
     constructor (
@@ -38,7 +38,7 @@ export class ReportBugComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy() {
+    ngOnDestroy () {
         super.destroy();
     }
 

@@ -1,6 +1,5 @@
 import { ClassHelper, primitive } from 'shared/helpers/class.helper';
 import { ButtonColor } from 'shared/directives/button/button.model';
-import { BBcodeModel } from '../../../pages/sitecp/sub-pages/content/bbcodes/bbcode.model';
 
 export class EditorAction {
     @primitive()
@@ -17,7 +16,7 @@ export class EditorAction {
     }
 }
 
-export function getEditorSettings (emojis: Array<BBcodeModel>, isSlim: boolean, id: string) {
+export function getEditorSettings (isSlim: boolean, id: string) {
     return {
         id: id,
         debug: false,
@@ -42,13 +41,6 @@ export function getEditorSettings (emojis: Array<BBcodeModel>, isSlim: boolean, 
                     '<div class="quote">{SELTEXT}</div>': '[quote]{SELTEXT}[/quote]'
                 }
             }
-        },
-        smileList: emojis.map(item => {
-            return {
-                title: item.name,
-                img: `<img src="/rest/resources/images/emojis/${item.bbcodeId}.gif" class="sm" />`,
-                bbcode: item.pattern
-            };
-        })
+        }
     };
 }

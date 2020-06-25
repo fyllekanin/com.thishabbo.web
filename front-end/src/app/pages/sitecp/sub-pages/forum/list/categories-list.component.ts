@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy } from '@angular/core';
+import { Component, ComponentFactoryResolver, ElementRef, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'core/services/auth/auth.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
@@ -21,6 +21,8 @@ import { Page } from 'shared/page/page.model';
 import { CATEGORY_LIST_BREADCRUMB_ITEM, SITECP_BREADCRUMB_ITEM } from '../../../sitecp.constants';
 import { CategoryListActions, ListCategory } from './categories-list.model';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
+import { MergeCategoryComponent } from './merge-category/merge-category.component';
+import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
 
 @Component({
     selector: 'app-sitecp-categories-list',
@@ -35,18 +37,19 @@ export class CategoriesListComponent extends Page implements OnDestroy {
         value: CategoryListActions.EDIT_PERMISSIONS
     });
     private _actions: Array<TableAction> = [
-        new TableAction({title: 'Edit Category', value: CategoryListActions.EDIT_CATEGORY}),
-        new TableAction({title: 'Group Tree', value: CategoryListActions.GROUP_TREE}),
-        new TableAction({title: 'Delete Category', value: CategoryListActions.DELETE_CATEGORY})
+        new TableAction({ title: 'Edit Category', value: CategoryListActions.EDIT_CATEGORY }),
+        new TableAction({ title: 'Group Tree', value: CategoryListActions.GROUP_TREE }),
+        new TableAction({ title: 'Merge Category', value: CategoryListActions.MERGE }),
+        new TableAction({ title: 'Delete Category', value: CategoryListActions.DELETE_CATEGORY })
     ];
 
     mainTabs: Array<TitleTab> = [
-        new TitleTab({title: 'Toggle', value: CategoryListActions.TOGGLE_CATEGORY}),
-        new TitleTab({title: 'Save Order', value: CategoryListActions.SAVE_ORDER}),
-        new TitleTab({title: 'New Category', link: '/sitecp/forum/categories/new'})
+        new TitleTab({ title: 'Toggle', value: CategoryListActions.TOGGLE_CATEGORY }),
+        new TitleTab({ title: 'Save Order', value: CategoryListActions.SAVE_ORDER }),
+        new TitleTab({ title: 'New Category', link: '/sitecp/forum/categories/new' })
     ];
     contractTabs: Array<TitleTab> = [
-        new TitleTab({title: 'Toggle', value: CategoryListActions.TOGGLE_CATEGORY})
+        new TitleTab({ title: 'Toggle', value: CategoryListActions.TOGGLE_CATEGORY })
     ];
 
     constructor (
@@ -55,6 +58,7 @@ export class CategoriesListComponent extends Page implements OnDestroy {
         private _httpService: HttpService,
         private _router: Router,
         private _authService: AuthService,
+        private _componentFactoryResolver: ComponentFactoryResolver,
         breadcrumbService: BreadcrumbService,
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute
@@ -63,7 +67,7 @@ export class CategoriesListComponent extends Page implements OnDestroy {
         this.addSubscription(activatedRoute.data, this.onPage.bind(this));
         breadcrumbService.breadcrumb = new Breadcrumb({
             current: CATEGORY_LIST_BREADCRUMB_ITEM.title,
-            items: [SITECP_BREADCRUMB_ITEM]
+            items: [ SITECP_BREADCRUMB_ITEM ]
         });
     }
 
@@ -80,7 +84,7 @@ export class CategoriesListComponent extends Page implements OnDestroy {
             return prev.concat(curr.rows);
         }, []).map(row => {
             const cell = row.cells.find(c => c.title === 'displayOrder');
-            return {categoryId: row.id, order: cell.value};
+            return { categoryId: row.id, order: cell.value };
         });
         this.updateCategoryDisplayOrder(data);
     }
@@ -107,6 +111,29 @@ export class CategoriesListComponent extends Page implements OnDestroy {
             case CategoryListActions.GROUP_TREE:
                 this._router.navigateByUrl(`/sitecp/forum/categories/${action.rowId}/groups`);
                 break;
+            case CategoryListActions.MERGE:
+                const categories = ArrayHelper.flatCategories(this._categories, '', true);
+                const category = categories.find(item => item.categoryId === Number(action.rowId));
+                this._dialogService.openDialog({
+                    title: `Merge ${category.title}`,
+                    component: this._componentFactoryResolver.resolveComponentFactory(MergeCategoryComponent),
+                    data: { category: category, categories: categories },
+                    buttons: [
+                        new DialogCloseButton('Close'),
+                        new DialogButton({
+                            title: 'Merge',
+                            callback: targetId => {
+                                this._httpService.put(`sitecp/categories/merge/${category.categoryId}/${targetId}`)
+                                    .subscribe(res => {
+                                        this.onPage({ data: res.map(item => new ListCategory(item)) });
+                                        this._notificationService.sendInfoNotification('Categories merged');
+                                        this._dialogService.closeDialog();
+                                    }, this._notificationService.failureNotification.bind(this._notificationService));
+                            }
+                        })
+                    ]
+                });
+                break;
             case CategoryListActions.DELETE_CATEGORY:
                 this._dialogService.confirm({
                     title: `Deleting category`,
@@ -129,14 +156,14 @@ export class CategoriesListComponent extends Page implements OnDestroy {
     }
 
     private updateCategoryDisplayOrder (data): void {
-        this._httpService.put(`sitecp/categories/orders/update`, {updates: data})
+        this._httpService.put(`sitecp/categories/orders/update`, { updates: data })
             .subscribe(res => {
                 const categories = res.map(item => new ListCategory(item));
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Orders updated!'
                 }));
-                this.onPage({data: categories});
+                this.onPage({ data: categories });
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
@@ -151,24 +178,12 @@ export class CategoriesListComponent extends Page implements OnDestroy {
 
     private onDelete (categoryId: number): void {
         this._httpService.delete(`sitecp/categories/${categoryId}`)
-            .subscribe(() => {
+            .subscribe(res => {
+                this.onPage({ data: res.map(item => new ListCategory(item)) });
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Category deleted!'
                 }));
-
-                const categories = ArrayHelper.flatCategories(this._categories, '', false);
-                const parent = categories.find(category => {
-                    const ids = category.children.map(child => child.categoryId);
-                    return ids.indexOf(categoryId) > -1;
-                });
-
-                if (parent) {
-                    parent.children = parent.children.filter(child => child.categoryId !== categoryId);
-                } else {
-                    this._categories = this._categories.filter(category => category.categoryId !== categoryId);
-                }
-                this.onPage({data: this._categories});
             }, error => {
                 this._notificationService.failureNotification(error);
             }, () => {
@@ -191,14 +206,14 @@ export class CategoriesListComponent extends Page implements OnDestroy {
     private getTableRows (item: ListCategory): Array<TableRow> {
         const actions = [].concat(this._actions);
 
-        if (this._authService.sitecpPermissions.canManageForumPermissions) {
+        if (this._authService.sitecpPermissions.canManageCategoryPermissions) {
             actions.splice(1, 0, this._permissionAction);
         }
 
         const main = new TableRow({
             id: String(item.categoryId),
             cells: [
-                new TableCell({title: item.title}),
+                new TableCell({ title: item.title }),
                 new TableCell({
                     title: item.isHidden ? 'Hidden' : 'Visible'
                 }),
@@ -206,7 +221,7 @@ export class CategoriesListComponent extends Page implements OnDestroy {
                     title: 'displayOrder',
                     isEditable: true,
                     value: item.displayOrder.toString()
-                })],
+                }) ],
             actions: actions
         });
 
@@ -231,14 +246,14 @@ export class CategoriesListComponent extends Page implements OnDestroy {
             });
         });
 
-        return [main].concat(childRows);
+        return [ main ].concat(childRows);
     }
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Category', width: '20rem'}),
-            new TableHeader({title: 'Hidden', width: '5rem'}),
-            new TableHeader({title: 'Display Order', width: '10rem'})
+            new TableHeader({ title: 'Category', width: '20rem' }),
+            new TableHeader({ title: 'Hidden', width: '5rem' }),
+            new TableHeader({ title: 'Display Order', width: '10rem' })
         ];
     }
 

@@ -5,7 +5,7 @@ export class RouletteModel {
     @objectOf(StatsModel)
     stats: StatsModel;
 
-    constructor(source?: Partial<RouletteModel>) {
+    constructor (source?: Partial<RouletteModel>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -16,7 +16,7 @@ export class RouletteNumber {
     @primitive()
     color: string;
 
-    constructor(source: Partial<RouletteNumber>) {
+    constructor (source: Partial<RouletteNumber>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -33,7 +33,7 @@ export class Roulette {
     @primitive()
     boxNumber: number;
 
-    constructor(source: Partial<Roulette>) {
+    constructor (source: Partial<Roulette>) {
         ClassHelper.assign(this, source);
     }
 }

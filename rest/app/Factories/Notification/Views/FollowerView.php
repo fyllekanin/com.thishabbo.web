@@ -6,6 +6,7 @@ use App\EloquentModels\User\Follower;
 use App\Helpers\UserHelper;
 
 class FollowerView {
+
     public $user;
     public $isApproved;
 

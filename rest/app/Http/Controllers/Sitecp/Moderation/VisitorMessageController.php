@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers\Sitecp\Moderation;
 
+use App\Constants\LogType;
 use App\EloquentModels\User\VisitorMessage;
 use App\Http\Controllers\Controller;
 use App\Logger;
-use App\Models\Logger\Action;
 use App\Utils\Condition;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class VisitorMessageController extends Controller {
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @param $visitorMessageId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function deleteVisitorMessage(Request $request, $visitorMessageId) {
         $user = $request->get('auth');
@@ -29,7 +30,7 @@ class VisitorMessageController extends Controller {
             VisitorMessage::withParent($visitorMessage->visitorMessageId)->update(['isDeleted' => true]);
         }
 
-        Logger::mod($user->userId, $request->ip(), Action::DELETED_VISITOR_MESSAGE, [], $visitorMessage->visitorMessageId);
+        Logger::mod($user->userId, $request->ip(), LogType::DELETED_VISITOR_MESSAGE, [], $visitorMessage->visitorMessageId);
         return response()->json();
     }
 }

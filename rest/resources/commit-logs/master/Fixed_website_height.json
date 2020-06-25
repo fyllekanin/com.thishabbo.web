@@ -1,0 +1,1 @@
+{"topic":"Fixed website height","type":"Refactor / Improvement","body":"The website could sometimes geta scroller and some times now... was annoying... so now the minimum height of the website is always 101% of your view"}

@@ -107,6 +107,8 @@ export class BarChartComponent implements AfterViewInit {
             .attr('width', this._scaleBand.bandwidth())
             .attr('height', item => {
                 return this._height - this._scaleLinear(Number(item.yItem));
-            });
+            })
+            .append('title')
+            .text(item => item.yItem);
     }
 }

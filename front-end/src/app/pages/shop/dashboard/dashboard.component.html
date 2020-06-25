@@ -1,5 +1,11 @@
 <div class="grid-container full">
     <div class="grid-x grid-margin-x">
+        <div class="cell small-12" *ngIf="rotatedItem.length > 0">
+            <h2>Rotated Items - <em>{{rotatedItemsCountdown}} until rotation</em></h2>
+        </div>
+        <div class="cell small-6 medium-4" *ngFor="let item of rotatedItem">
+            <app-shop-rotated-item [item]="item"></app-shop-rotated-item>
+        </div>
         <div class="cell small-12">
             <h2>Latest Loot Boxes</h2>
         </div>

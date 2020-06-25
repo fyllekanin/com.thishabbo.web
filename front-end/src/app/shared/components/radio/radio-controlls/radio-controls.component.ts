@@ -8,13 +8,13 @@ import { NotificationService } from 'core/services/notification/notification.ser
 @Component({
     selector: 'app-radio-controls',
     templateUrl: 'radio-controls.component.html',
-    styleUrls: ['radio-controls.component.css']
+    styleUrls: [ 'radio-controls.component.css' ]
 })
 export class RadioControlsComponent implements AfterViewInit {
     private _data: RadioModel;
     private _radioUrl = '';
 
-    @ViewChild('player', {static: true}) player: ElementRef<HTMLAudioElement>;
+    @ViewChild('player', { static: true }) player: ElementRef<HTMLAudioElement>;
     isPlaying = false;
     volume = 100;
 
@@ -26,7 +26,9 @@ export class RadioControlsComponent implements AfterViewInit {
         this.volume = Number(localStorage.getItem(LOCAL_STORAGE.VOLUME)) || 1;
         _continuesInformationService.onContinuesInformation.subscribe(continuesInformation => {
             this._data = continuesInformation.radio;
-            this._radioUrl = `${this._data.ip}:${this._data.port}/;stream.nsv`;
+            if (!this.isPlaying) {
+                this._radioUrl = this._data.radioUrl;
+            }
         });
     }
 
@@ -46,6 +48,18 @@ export class RadioControlsComponent implements AfterViewInit {
         this.volume = Number(event.target.value);
         localStorage.setItem(LOCAL_STORAGE.VOLUME, String(this.volume));
         this.setVolume();
+    }
+
+    onEnded (): void {
+        if (!this.isPlaying) {
+            return;
+        }
+
+        this.player.nativeElement.pause();
+        setTimeout(() => {
+            this.player.nativeElement.src = this.url;
+            this.player.nativeElement.play();
+        }, 1000);
     }
 
     toggleAudio (): void {

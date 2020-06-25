@@ -40,7 +40,7 @@ export class AccoladesService implements Resolve<AccoladesPage> {
             this._dialogService.openDialog({
                 title: 'Create Accolade',
                 component: this._componentFactory.resolveComponentFactory(AccoladeComponent),
-                data: {data: page, accolade: page.items.find(item => item.accoladeId === accoladeId)},
+                data: { data: page, accolade: page.items.find(item => item.accoladeId === accoladeId) },
                 buttons: [
                     new DialogCloseButton('Close'),
                     new DialogButton({
@@ -57,7 +57,7 @@ export class AccoladesService implements Resolve<AccoladesPage> {
             this._dialogService.openDialog({
                 title: 'Create Accolade',
                 component: this._componentFactory.resolveComponentFactory(AccoladeComponent),
-                data: {data: page},
+                data: { data: page },
                 buttons: [
                     new DialogCloseButton('Close'),
                     new DialogButton({
@@ -70,7 +70,7 @@ export class AccoladesService implements Resolve<AccoladesPage> {
     }
 
     private createAccolade (page: AccoladesPage, data: AccoladeItem, res): void {
-        this._httpService.post(`sitecp/users/${page.user.userId}/accolades`, {data: data})
+        this._httpService.post(`sitecp/users/${page.user.userId}/accolades`, { data: data })
             .subscribe(item => {
                 res(new AccoladeItem(item));
                 this._dialogService.closeDialog();
@@ -79,7 +79,7 @@ export class AccoladesService implements Resolve<AccoladesPage> {
     }
 
     private updateAccolade (page: AccoladesPage, data: AccoladeItem, res): void {
-        this._httpService.put(`sitecp/users/${page.user.userId}/accolades/${data.accoladeId}`, {data: data})
+        this._httpService.put(`sitecp/users/${page.user.userId}/accolades/${data.accoladeId}`, { data: data })
             .subscribe(item => {
                 res(new AccoladeItem(item));
                 this._dialogService.closeDialog();

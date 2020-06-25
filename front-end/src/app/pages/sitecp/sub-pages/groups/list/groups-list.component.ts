@@ -32,12 +32,12 @@ export class GroupsListComponent extends Page implements OnDestroy {
     private _filterTimer;
     private _filter: QueryParameters;
     private _actions: Array<TableAction> = [
-        new TableAction({title: 'Edit Group', value: GroupListActions.EDIT_GROUP}),
-        new TableAction({title: 'View Forum Permissions', value: GroupListActions.VIEW_FORUM_PERMISSIONS}),
-        new TableAction({title: 'Delete Group', value: GroupListActions.DELETE_GROUP})
+        new TableAction({ title: 'Edit Group', value: GroupListActions.EDIT_GROUP }),
+        new TableAction({ title: 'View Forum Permissions', value: GroupListActions.VIEW_FORUM_PERMISSIONS }),
+        new TableAction({ title: 'Delete Group', value: GroupListActions.DELETE_GROUP })
     ];
 
-    tabs: Array<TitleTab> = [new TitleTab({title: 'New Group', link: '/sitecp/groups/new'})];
+    tabs: Array<TitleTab> = [ new TitleTab({ title: 'New Group', link: '/sitecp/groups/new' }) ];
     tableConfig: TableConfig;
     pagination: PaginationModel;
 
@@ -54,7 +54,7 @@ export class GroupsListComponent extends Page implements OnDestroy {
         this.addSubscription(activatedRoute.data, this.onPage.bind(this));
         breadcrumbService.breadcrumb = new Breadcrumb({
             current: CATEGORY_LIST_BREADCRUMB_ITEM.title,
-            items: [SITECP_BREADCRUMB_ITEM]
+            items: [ SITECP_BREADCRUMB_ITEM ]
         });
     }
 
@@ -88,7 +88,7 @@ export class GroupsListComponent extends Page implements OnDestroy {
         this._filterTimer = setTimeout(() => {
             this._httpService.get(`sitecp/groups/list/page/1`, filter)
                 .pipe(map(data => {
-                    return {data: new GroupsListPage(data)};
+                    return { data: new GroupsListPage(data) };
                 })).subscribe(this.onPage.bind(this));
         }, 200);
     }
@@ -130,11 +130,11 @@ export class GroupsListComponent extends Page implements OnDestroy {
             title: 'Usergroups',
             headers: GroupsListComponent.getTableHeaders(),
             rows: this.getTableRows(),
-            filterConfigs: [new FilterConfig({
+            filterConfigs: [ new FilterConfig({
                 title: 'Filter',
                 placeholder: 'Search for usergroup...',
                 key: 'filter'
-            })]
+            }) ]
         });
     }
 
@@ -143,9 +143,9 @@ export class GroupsListComponent extends Page implements OnDestroy {
             return new TableRow({
                 id: String(group.groupId),
                 cells: [
-                    new TableCell({title: group.name}),
-                    new TableCell({title: (group.immunity || 0).toString()}),
-                    new TableCell({title: this.timeAgo(group.updatedAt)})
+                    new TableCell({ title: group.name }),
+                    new TableCell({ title: (group.immunity || 0).toString() }),
+                    new TableCell({ title: this.timeAgo(group.updatedAt) })
                 ],
                 actions: this._actions
             });
@@ -154,9 +154,9 @@ export class GroupsListComponent extends Page implements OnDestroy {
 
     private static getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Name'}),
-            new TableHeader({title: 'Immunity'}),
-            new TableHeader({title: 'Last modified'})
+            new TableHeader({ title: 'Name' }),
+            new TableHeader({ title: 'Immunity' }),
+            new TableHeader({ title: 'Last modified' })
         ];
     }
 }

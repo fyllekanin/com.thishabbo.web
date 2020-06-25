@@ -1,0 +1,1 @@
+{"topic":"Fix thread poll percentage","type":"Bug","body":"The percentage showing for the answers contained decimals. This is now changed and the actual percentage added up equals 100%"}

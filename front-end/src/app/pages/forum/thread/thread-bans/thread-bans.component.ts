@@ -34,7 +34,7 @@ export class ThreadBansComponent extends InnerDialogComponent {
     }
 
     onBan (): void {
-        this._httpService.post(`forum/moderation/thread/bans/${this._data.threadId}`, {nickname: this.nickname})
+        this._httpService.post(`forum/moderation/thread/bans/${this._data.threadId}`, { nickname: this.nickname })
             .pipe(map(res => res.map(item => new ThreadBan(item))))
             .subscribe(bans => {
                 this._notificationService.sendInfoNotification('Ban added!');
@@ -76,21 +76,21 @@ export class ThreadBansComponent extends InnerDialogComponent {
         return bans.map(item => new TableRow({
             id: String(item.threadBanId),
             cells: [
-                new TableCell({title: item.user.nickname}),
-                new TableCell({title: item.bannedBy.nickname}),
-                new TableCell({title: item.bannedAt})
+                new TableCell({ title: item.user.nickname }),
+                new TableCell({ title: item.bannedBy.nickname }),
+                new TableCell({ title: item.bannedAt })
             ],
             actions: [
-                new TableAction({title: 'Unban'})
+                new TableAction({ title: 'Unban' })
             ]
         }));
     }
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Nickname'}),
-            new TableHeader({title: 'Banned By'}),
-            new TableHeader({title: 'Banned At'})
+            new TableHeader({ title: 'Nickname' }),
+            new TableHeader({ title: 'Banned By' }),
+            new TableHeader({ title: 'Banned At' })
         ];
     }
 }

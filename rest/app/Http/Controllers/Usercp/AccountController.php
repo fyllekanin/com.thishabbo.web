@@ -2,6 +2,12 @@
 
 namespace App\Http\Controllers\Usercp;
 
+use App\Constants\LogType;
+use App\Constants\Prices;
+use App\Constants\Shop\NamePositions;
+use App\Constants\Shop\SubscriptionOptions;
+use App\Constants\User\PostBit;
+use App\Constants\User\UserIgnoredNotifications;
 use App\EloquentModels\Badge;
 use App\EloquentModels\Forum\CategorySubscription;
 use App\EloquentModels\Forum\IgnoredCategory;
@@ -11,84 +17,85 @@ use App\EloquentModels\Log\LogUser;
 use App\EloquentModels\Shop\UserSubscription;
 use App\EloquentModels\Theme;
 use App\EloquentModels\User\User;
+use App\EloquentModels\User\UserBadgeCompleted;
 use App\EloquentModels\User\UserItem;
 use App\EloquentModels\User\VoucherCode;
 use App\Factories\Notification\NotificationView;
-use App\Helpers\ConfigHelper;
-use App\Helpers\DataHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
-use App\Models\Logger\Action;
-use App\Services\AuthService;
-use App\Services\CreditsService;
-use App\Services\HabboService;
-use App\Services\NotificationService;
+use App\Providers\Service\AuthService;
+use App\Providers\Service\CreditsService;
+use App\Providers\Service\HabboService;
+use App\Providers\Service\NotificationService;
 use App\Utils\Condition;
 use App\Utils\Iterables;
+use App\Utils\PaginationUtil;
 use App\Utils\Value;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class AccountController extends Controller {
-    private $authService;
-    private $habboService;
-    private $creditsService;
+    private $myAuthService;
+    private $myHabboService;
+    private $myCreditsService;
 
     private $threeDaysAgo;
 
-    /**
-     * AccountController constructor.
-     *
-     * @param AuthService    $authService
-     * @param HabboService   $habboService
-     * @param CreditsService $creditsService
-     */
-    public function __construct (AuthService $authService, HabboService $habboService, CreditsService $creditsService) {
+    public function __construct(AuthService $authService, HabboService $habboService, CreditsService $creditsService) {
         parent::__construct();
-        $this->authService = $authService;
-        $this->habboService = $habboService;
-        $this->creditsService = $creditsService;
+        $this->myAuthService = $authService;
+        $this->myHabboService = $habboService;
+        $this->myCreditsService = $creditsService;
         $this->threeDaysAgo = time() - 259200;
     }
 
     /**
-     * @param Request             $request
-     * @param NotificationService $notificationService
-     * @param                     $page
+     * @param  Request  $request
+     * @param  NotificationService  $notificationService
+     * @param  int  $page
      *
      * @return array
      */
-    public function getNotifications (Request $request, NotificationService $notificationService, $page) {
+    public function getNotifications(Request $request, NotificationService $notificationService, $page) {
         $user = $request->get('auth');
 
         $notificationsSql = DB::table('notifications')
             ->where('userId', $user->userId)
             ->orderBy('createdAt', 'DESC');
 
-        $total = DataHelper::getTotal($notificationsSql->count('notificationId'));
-        $notifications = $notificationsSql->take($this->perPage)->skip(DataHelper::getOffset($page))->get()->toArray();
+        $total = PaginationUtil::getTotalPages($notificationsSql->count('notificationId'));
+        $notifications = $notificationsSql->take($this->perPage)->skip(PaginationUtil::getOffset($page))->get()->toArray();
 
-        $items = array_map(function ($notification) {
-            return new NotificationView($notification);
-        }, Iterables::filter($notifications, function ($notification) use ($user, $notificationService) {
-            return $notificationService->isNotificationValid($notification->contentId, $notification->type, $user);
-        }));
+        $items = array_map(
+            function ($notification) use ($user) {
+                return new NotificationView($notification, $user);
+            },
+            Iterables::filter(
+                $notifications,
+                function ($notification) use ($user, $notificationService) {
+                    return $notificationService->isNotificationValid($notification->contentId, $notification->type, $user);
+                }
+            )
+        );
 
-        return response()->json([
-            'total' => $total,
-            'page' => $page,
-            'items' => $items
-        ]);
+        return response()->json(
+            [
+                'total' => $total,
+                'page' => $page,
+                'items' => $items
+            ]
+        );
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function claimVoucherCode (Request $request) {
+    public function claimVoucherCode(Request $request) {
         $user = $request->get('auth');
         $code = $request->input('code');
 
@@ -99,60 +106,103 @@ class AccountController extends Controller {
         $voucherCode->isActive = false;
         $voucherCode->save();
 
-        $this->creditsService->giveCredits($user->userId, $voucherCode->value);
+        $this->myCreditsService->giveCredits($user->userId, $voucherCode->value);
 
-        Logger::user($user->userId, $request->ip(), Action::CLAIMED_VOUCHER_CODE, [], $voucherCode->voucherCodeId);
+        Logger::user($user->userId, $request->ip(), LogType::CLAIMED_VOUCHER_CODE, [], $voucherCode->voucherCodeId);
         return response()->json($voucherCode->value);
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getThemes (Request $request) {
+    public function markBadgeCompleted(Request $request) {
         $user = $request->get('auth');
+        $habboBadgeIds = $request->input('habboBadgeIds');
 
-        return response()->json(Theme::get()->map(function ($item) use ($user) {
-            return [
-                'themeId' => $item->themeId,
-                'title' => $item->title,
-                'minified' => $item->minified,
-                'isSelected' => $user->theme ? $item->themeId == $user->theme : $item->isDefault
-            ];
-        }));
+        Condition::precondition(count($habboBadgeIds) == 0, 400, 'There is no badges to claim');
+        $habboUser = $this->myHabboService->getHabboByName($user->habbo);
+
+        Condition::precondition(!$habboUser, 400, 'You do not have a valid habbo set');
+        Condition::precondition(!$habboUser->profileVisible, 400, 'Your habbo profile is private, it needs to be public');
+        $habboBadges = $this->myHabboService->getHabboBadges($habboUser->uniqueId);
+
+        foreach ($habboBadgeIds as $badgeId) {
+            $badge = Iterables::find(
+                $habboBadges,
+                function ($badge) use ($badgeId) {
+                    return $badge->code == $badgeId;
+                }
+            );
+            Condition::precondition(!$badge, 404, 'You need to have all badges on habbo to complete the guide');
+
+            $userBadgeCompleted = new UserBadgeCompleted(
+                [
+                    'userId' => $user->userId,
+                    'habboBadgeId' => $badgeId
+                ]
+            );
+            $userBadgeCompleted->save();
+        }
+
+        return response()->json();
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function updateTheme (Request $request) {
+    public function getThemes(Request $request) {
+        $user = $request->get('auth');
+
+        return response()->json(
+            Theme::get()->map(
+                function ($item) use ($user) {
+                    return [
+                        'themeId' => $item->themeId,
+                        'title' => $item->title,
+                        'minified' => $item->minified,
+                        'isSelected' => $user->theme ? $item->themeId == $user->theme : $item->isDefault
+                    ];
+                }
+            )
+        );
+    }
+
+    /**
+     * @param  Request  $request
+     *
+     * @return JsonResponse
+     */
+    public function updateTheme(Request $request) {
         $user = $request->get('auth');
         $themeId = $request->input('themeId');
-        $theme = $themeId == 0 || $themeId == -1 ? (object)['title' => 'Default'] : Theme::find($themeId);
+        $theme = $themeId == 0 || $themeId == -1 ? (object) ['title' => 'Default'] : Theme::find($themeId);
         Condition::precondition(!$theme, 404, 'No theme with that ID');
 
         $user->theme = $themeId;
         $user->save();
 
-        Logger::user($user->userId, $request->ip(), Action::SELECTED_THEME, ['theme' => $theme->title]);
+        Logger::user($user->userId, $request->ip(), LogType::SELECTED_THEME, ['theme' => $theme->title]);
         return response()->json();
     }
 
     /**
      * Get request for fetching users current verified habbo
      *
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getHabbo (Request $request) {
+    public function getHabbo(Request $request) {
         $user = $request->get('auth');
-        return response()->json([
-            'habbo' => $user->habbo
-        ]);
+        return response()->json(
+            [
+                'habbo' => $user->habbo
+            ]
+        );
     }
 
     /**
@@ -160,135 +210,157 @@ class AccountController extends Controller {
      * with the supplied string used in FE. "thishabbo-{userId}"
      * Validation for one month at least since creation date is in place
      *
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function updateHabbo (Request $request) {
+    public function updateHabbo(Request $request) {
         $user = $request->get('auth');
-        $requiredMotto = 'thishabbo-' . $user->userId;
+        $requiredMotto = 'thishabbo-'.$user->userId;
 
         $name = $request->input('habbo');
         Condition::precondition(!$name, 400, 'You did not fill anything in');
         Condition::precondition(User::withHabbo($name)->count('userId') > 0, 400, 'Habbo already taken');
 
-        $habbo = $this->habboService->getHabboByName($name);
+        $habbo = $this->myHabboService->getHabboByName($name);
         Condition::precondition(!$habbo, 404, 'No habbo with that name');
         Condition::precondition(strtotime($habbo->memberSince) > $this->threeDaysAgo, 400, 'Your habbo is to young!');
-        Condition::precondition($habbo->motto != $requiredMotto, 400,
-            'Incorrect motto, you current motto is "' . $habbo->motto . '" but it needs to be "' . $requiredMotto . '"');
+        Condition::precondition(
+            $habbo->motto != $requiredMotto,
+            400,
+            'Incorrect motto, you current motto is "'.$habbo->motto.'" but it needs to be "'.$requiredMotto.'"'
+        );
 
         $oldHabbo = $user->habbo;
         $user->habbo = $name;
         $user->save();
 
-        Logger::user($user->userId, $request->ip(), Action::UPDATED_HABBO, ['from' => $oldHabbo, 'to' => $name]);
+        Logger::user($user->userId, $request->ip(), LogType::UPDATED_HABBO, ['from' => $oldHabbo, 'to' => $name]);
         return response()->json();
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function updateNickname (Request $request) {
+    public function updateNickname(Request $request) {
         $user = $request->get('auth');
         $nickname = $request->input('nickname');
         $oneWeek = 604800;
         $oneMonth = 2419200;
 
-        $gotTimeout = LogUser::where('action', Action::getAction(Action::CHANGED_NICKNAME))->where('userId', $user->userId)
+        $gotTimeout = LogUser::where('action', LogType::getAction(LogType::CHANGED_NICKNAME))->where('userId', $user->userId)
                 ->where('createdAt', '>', (time() - $oneWeek))->count('logId') > 0;
         Condition::precondition($gotTimeout, 400, 'You need to wait one week until you can change nickname again');
-        Condition::precondition(!$this->creditsService->haveEnoughCredits($user->userId, ConfigHelper::getCostSettings()->nickname), 400, 'You do not have enough credits');
-        Condition::precondition(!isset($nickname) || empty($nickname) || strlen($nickname) < 3, 400,
-            'Nickname is not valid');
+        Condition::precondition(
+            !$this->myCreditsService->haveEnoughCredits($user->userId, Prices::NICKNAME_CHANGE),
+            400,
+            'You do not have enough credits'
+        );
+        Condition::precondition(
+            !isset($nickname) || empty($nickname) || strlen($nickname) < 3 || !ctype_alnum($nickname),
+            400,
+            'Nickname is not valid'
+        );
 
         $userWithNickname = User::withNickname($nickname)->first();
         $stolenFromOld = null;
         $stolenFromNew = null;
         if ($userWithNickname) {
-            Condition::precondition($userWithNickname->lastActivity > (time() - ($oneMonth * 4)), 400,
-                'Nickname is already taken and user is not inactive');
+            Condition::precondition(
+                $userWithNickname->lastActivity > (time() - ($oneMonth * 4)),
+                400,
+                'Nickname is already taken and user is not inactive'
+            );
             $stolenFromOld = $userWithNickname->nickname;
             $stolenFromNew = $this->generateString();
             $userWithNickname->nickname = $stolenFromNew;
             $userWithNickname->save();
         }
 
-        $this->creditsService->takeCredits($user->userId, ConfigHelper::getCostSettings()->nickname);
+        $this->myCreditsService->takeCredits($user->userId, Prices::NICKNAME_CHANGE);
         $oldNickname = $user->nickname;
         $user->nickname = $nickname;
         $user->save();
 
 
-        Logger::user($user->userId, $request->ip(), Action::CHANGED_NICKNAME, [
-            'old' => $oldNickname,
-            'new' => $nickname,
-            'stolenFromOld' => $stolenFromOld,
-            'stolenFromNew' => $stolenFromNew
-        ]);
+        Logger::user(
+            $user->userId,
+            $request->ip(),
+            LogType::CHANGED_NICKNAME,
+            [
+                'old' => $oldNickname,
+                'new' => $nickname,
+                'stolenFromOld' => $stolenFromOld,
+                'stolenFromNew' => $stolenFromNew
+            ]
+        );
 
         return response()->json();
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return mixed
      */
-    public function getIgnoredThreads (Request $request) {
+    public function getIgnoredThreads(Request $request) {
         $user = $request->get('auth');
-        return IgnoredThread::where('userId', $user->userId)->get()->map(function ($ignoredThread) {
-            return ['threadId' => $ignoredThread->threadId, 'title' => $ignoredThread->thread->title];
-        });
+        return IgnoredThread::where('userId', $user->userId)->get()->map(
+            function ($ignoredThread) {
+                return ['threadId' => $ignoredThread->threadId, 'title' => $ignoredThread->thread->title];
+            }
+        );
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return mixed
      */
-    public function getIgnoredCategories (Request $request) {
+    public function getIgnoredCategories(Request $request) {
         $user = $request->get('auth');
-        return IgnoredCategory::where('userId', $user->userId)->get()->map(function ($ignoredCategory) {
-            return ['categoryId' => $ignoredCategory->categoryId, 'title' => $ignoredCategory->category->title];
-        });
+        return IgnoredCategory::where('userId', $user->userId)->get()->map(
+            function ($ignoredCategory) {
+                return ['categoryId' => $ignoredCategory->categoryId, 'title' => $ignoredCategory->category->title];
+            }
+        );
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getNotificationSettings (Request $request) {
+    public function getNotificationSettings(Request $request) {
         $user = $request->get('auth');
 
         return response()->json($this->buildIgnoredNotificationTypes($user));
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function updateNotificationSettings (Request $request) {
+    public function updateNotificationSettings(Request $request) {
         $user = $request->get('auth');
         $ignoredNotifications = $this->convertIgnoredNotificationTypes($request->input('ignoredNotificationTypes'));
 
         $user->ignoredNotifications = $ignoredNotifications;
         $user->save();
 
-        Logger::user($user->userId, $request->ip(), Action::UPDATED_IGNORED_NOTIFICATIONS);
+        Logger::user($user->userId, $request->ip(), LogType::UPDATED_IGNORED_NOTIFICATIONS);
         return response()->json();
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function updateHomePage (Request $request) {
+    public function updateHomePage(Request $request) {
         $user = $request->get('auth');
         $homePage = $request->input('homePage');
 
@@ -296,7 +368,7 @@ class AccountController extends Controller {
         $userData->homePage = $homePage;
         $userData->save();
 
-        Logger::user($user->userId, $request->ip(), Action::UPDATED_HOMEPAGE, ['homepage' => $homePage]);
+        Logger::user($user->userId, $request->ip(), LogType::UPDATED_HOMEPAGE, ['homepage' => $homePage]);
         return response()->json();
     }
 
@@ -304,11 +376,11 @@ class AccountController extends Controller {
      * Update request to update the users password, validation for length and being
      * able to type it twice is in place.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function updatePassword (Request $request) {
+    public function updatePassword(Request $request) {
         $user = $request->get('auth');
         $password = $request->input('password');
         $repassword = $request->input('repassword');
@@ -318,160 +390,198 @@ class AccountController extends Controller {
         Condition::precondition(!$repassword, 400, 'Repassword needs to be set');
         Condition::precondition(strlen($password) < 8, 400, 'Password needs to be at least 8 characters long');
         Condition::precondition($password != $repassword, 400, 'Password and repassword needs to be equal');
-        Condition::precondition(!Hash::check($currentPassword, $user->password), 400,
-            'Incorrect current password');
+        Condition::precondition(
+            !Hash::check($currentPassword, $user->password),
+            400,
+            'Incorrect current password'
+        );
 
-        User::where('userId', $user->userId)->update([
-            'password' => Hash::make($password)
-        ]);
+        User::where('userId', $user->userId)->update(
+            [
+                'password' => Hash::make($password)
+            ]
+        );
 
-        Logger::user($user->userId, $request->ip(), Action::UPDATED_PASSWORD);
+        Logger::user($user->userId, $request->ip(), LogType::UPDATED_PASSWORD);
         return response()->json();
     }
 
     /**
      * Get request for fetching users current post bit option
      *
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getPostBit (Request $request) {
+    public function getPostBit(Request $request) {
         $user = $request->get('auth');
 
-        return response()->json([
-            'information' => $this->buildPostBitOptions($user),
-            'namePosition' => [
-                'isAvailable' => UserHelper::hasSubscriptionFeature($user->userId, ConfigHelper::getSubscriptionOptions()->canMoveNamePosition),
-                'position' => UserHelper::getUserDataOrCreate($user->userId)->namePosition
-            ],
-            'barColor' => [
-                'isAvailable' => UserHelper::hasSubscriptionFeature($user->userId, ConfigHelper::getSubscriptionOptions()->canHaveCustomBar),
-                'color' => Value::objectJsonProperty(UserHelper::getUserDataOrCreate($user->userId), 'barColor', null)
+        return response()->json(
+            [
+                'information' => $this->buildPostBitOptions($user),
+                'namePosition' => [
+                    'isAvailable' => UserHelper::hasSubscriptionFeature($user->userId, SubscriptionOptions::NAME_POSITION),
+                    'position' => UserHelper::getUserDataOrCreate($user->userId)->namePosition
+                ],
+                'barColor' => [
+                    'isAvailable' => UserHelper::hasSubscriptionFeature($user->userId, SubscriptionOptions::CUSTOM_BAR),
+                    'color' => Value::objectJsonProperty(UserHelper::getUserDataOrCreate($user->userId), 'barColor', null)
+                ]
             ]
-        ]);
+        );
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getAvailableBadges (Request $request) {
+    public function getAvailableBadges(Request $request) {
         $user = $request->get('auth');
         $availableBadgeIds = UserItem::where('userId', $user->userId)->badge()->pluck('itemId');
         $userdata = UserHelper::getUserDataOrCreate($user->userId);
         $activeBadges = Value::objectJsonProperty($userdata, 'activeBadges', []);
 
-        return response()->json(Badge::whereIn('badgeId', $availableBadgeIds)->get(['badgeId', 'name', 'updatedAt'])->map(function ($badge) use ($activeBadges) {
-            $badge->isActive = in_array($badge->badgeId, $activeBadges);
-            return $badge;
-        }));
+        return response()->json(
+            Badge::whereIn('badgeId', $availableBadgeIds)->get(['badgeId', 'name', 'updatedAt'])->map(
+                function ($badge) use ($activeBadges) {
+                    $badge->isActive = in_array($badge->badgeId, $activeBadges);
+                    return $badge;
+                }
+            )
+        );
     }
 
     /**
      * Put request to update the users post bit options
      *
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function updatePostBit (Request $request) {
+    public function updatePostBit(Request $request) {
         $user = $request->get('auth');
         $data = json_decode(json_encode($request->input('data')));
-        $namePosition = (object)$data->namePosition;
-        $barColor = (object)$data->barColor;
-        $badgeIds = array_map(function ($badge) {
-            return $badge->badgeId;
-        }, $data->information->badges);
+        $namePosition = (object) $data->namePosition;
+        $barColor = (object) $data->barColor;
+        $badgeIds = array_map(
+            function ($badge) {
+                return $badge->badgeId;
+            },
+            $data->information->badges
+        );
 
         Condition::precondition(count($badgeIds) > 3, 400, 'You can not have more then 3 badges selected!');
 
-        Condition::precondition($barColor->isAvailable && !UserHelper::hasSubscriptionFeature($user->userId, ConfigHelper::getSubscriptionOptions()->canHaveCustomBar),
-            400, 'You can not have a custom bar');
-        Condition::precondition($barColor->isAvailable && is_array($barColor->color) && !Value::validateHexColors($barColor->color),
-            400, 'One or more bar colors are invalid');
-        Condition::precondition($namePosition->isAvailable && !UserHelper::hasSubscriptionFeature($user->userId, ConfigHelper::getSubscriptionOptions()->canMoveNamePosition),
-            400, 'You can not choose name position');
-        $position = Iterables::find((array)ConfigHelper::getNamePositionOptions(), function ($position) use ($namePosition) {
-            return $position == $namePosition->position;
-        });
-        Condition::precondition($namePosition->isAvailable && !is_numeric($position), 400, 'Not a valid position');
+        Condition::precondition(
+            $barColor->isAvailable && !UserHelper::hasSubscriptionFeature($user->userId, SubscriptionOptions::CUSTOM_BAR),
+            400,
+            'You can not have a custom bar'
+        );
+        Condition::precondition(
+            $barColor->isAvailable && is_array($barColor->color) && !Value::validateHexColors($barColor->color),
+            400,
+            'One or more bar colors are invalid'
+        );
+        Condition::precondition(
+            $namePosition->isAvailable && !UserHelper::hasSubscriptionFeature($user->userId, SubscriptionOptions::NAME_POSITION),
+            400,
+            'You can not choose name position'
+        );
+        Condition::precondition(
+            $namePosition->isAvailable && !NamePositions::isValid($namePosition->position),
+            400,
+            'Not a valid position'
+        );
 
         $userData = UserHelper::getUserDataOrCreate($user->userId);
         $userData->postBit = $this->convertPostBitOptions($data->information);
         $userData->namePosition = $namePosition->position;
-        $userData->barColor = $barColor->isAvailable && is_array($barColor->color) ? json_encode($barColor->color) : 0;
+        $userData->barColor = $barColor->isAvailable && is_array($barColor->color) ? json_encode($barColor->color) : null;
         $userData->activeBadges = json_encode($badgeIds);
         $userData->save();
 
-        Logger::user($user->userId, $request->ip(), Action::UPDATED_POSTBIT);
+        Logger::user($user->userId, $request->ip(), LogType::UPDATED_POSTBIT);
         return response()->json();
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return mixed
      */
-    public function getThreadSubscriptions (Request $request) {
+    public function getThreadSubscriptions(Request $request) {
         $user = $request->get('auth');
 
-        return ThreadSubscription::with('thread')->where('userId', $user->userId)->get()
-            ->filter(function ($subscription) {
-                return $subscription->thread;
-            })
-            ->map(function ($subscription) {
+        return ThreadSubscription::with('thread')->where('userId', $user->userId)->get()->filter(
+            function ($item) {
+                return $item->thread;
+            }
+        )->map(
+            function ($item) {
                 return [
-                    'threadId' => $subscription->thread->threadId,
-                    'title' => $subscription->thread->title
+                    'threadId' => $item->thread->threadId,
+                    'title' => $item->thread->title
                 ];
-            });
+            }
+        );
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return mixed
      */
-    public function getCategorySubscriptions (Request $request) {
+    public function getCategorySubscriptions(Request $request) {
         $user = $request->get('auth');
 
         return CategorySubscription::with('category')->where('userId', $user->userId)->get()
-            ->filter(function ($subscription) {
-                return $subscription->category;
-            })
-            ->map(function ($subscription) {
-                return [
-                    'categoryId' => $subscription->category->categoryId,
-                    'title' => $subscription->category->title
-                ];
-            });
+            ->filter(
+                function ($subscription) {
+                    return $subscription->category;
+                }
+            )
+            ->map(
+                function ($subscription) {
+                    return [
+                        'categoryId' => $subscription->category->categoryId,
+                        'title' => $subscription->category->title
+                    ];
+                }
+            );
     }
 
     /**
      * Returns the statistics for UserCP dashboard
      *
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getDashboard (Request $request) {
+    public function getDashboard(Request $request) {
         $user = $request->get('auth');
 
-        return response()->json([
-            'xp' => UserHelper::getUserDataOrCreate($user->userId)->xp,
-            'registerTimestamp' => $user->createdAt->timestamp,
-            'itemsOwned' => UserItem::where('userId', $user->userId)->count(),
-            'likes' => $user->likes,
-            'subscriptions' => UserSubscription::where('userId', $user->userId)->where('expiresAt', '>', time())->orderBy('expiresAt', 'ASC')
-                ->with('subscription')->get()->map(function ($userSubscription) {
-                    return [
-                        'title' => $userSubscription->subscription->title,
-                        'expiresAt' => $userSubscription->expiresAt
-                    ];
-                })
-        ]);
+        return response()->json(
+            [
+                'xp' => UserHelper::getUserDataOrCreate($user->userId)->xp,
+                'registerTimestamp' => $user->createdAt->timestamp,
+                'itemsOwned' => UserItem::where('userId', $user->userId)->count(),
+                'likes' => $user->likes,
+                'subscriptions' => UserSubscription::where('userId', $user->userId)
+                    ->where('expiresAt', '>', time())
+                    ->orderBy('expiresAt', 'ASC')
+                    ->with('subscription')
+                    ->get()
+                    ->map(
+                        function ($userSubscription) {
+                            return [
+                                'title' => $userSubscription->subscription->title,
+                                'expiresAt' => $userSubscription->expiresAt
+                            ];
+                        }
+                    )
+            ]
+        );
     }
 
     /**
@@ -481,13 +591,11 @@ class AccountController extends Controller {
      *
      * @return int
      */
-    private function convertPostBitOptions ($postBitOptions) {
+    private function convertPostBitOptions($postBitOptions) {
         $options = 0;
-        $config = ConfigHelper::getPostBitConfig();
-
-        foreach ($postBitOptions as $key => $value) {
-            if ($value && isset($config->$key)) {
-                $options += $config->$key;
+        foreach (PostBit::getAsOptions() as $key => $value) {
+            if (isset($postBitOptions->$key) && $postBitOptions->$key) {
+                $options += $value;
             }
         }
         return $options;
@@ -500,12 +608,14 @@ class AccountController extends Controller {
      *
      * @return array
      */
-    private function buildPostBitOptions ($user) {
+    private function buildPostBitOptions($user) {
         $userdata = UserHelper::getUserDataOrCreate($user->userId);
         $postBit = UserHelper::getUserPostBit($userdata);
 
         $badges = Value::objectJsonProperty($userdata, 'activeBadges', []);
-        $postBit['badges'] = Badge::whereIn('badgeId', $badges)->orderBy('updatedAt', 'ASC')->get(['badgeId', 'name', 'description', 'updatedAt']);
+        $postBit['badges'] = Badge::whereIn('badgeId', $badges)->orderBy('updatedAt', 'ASC')->get([
+            'badgeId', 'name', 'description', 'updatedAt'
+        ]);
 
         return $postBit;
     }
@@ -516,13 +626,11 @@ class AccountController extends Controller {
      *
      * @return int
      */
-    private function convertIgnoredNotificationTypes ($ignoredNotifications) {
+    private function convertIgnoredNotificationTypes($ignoredNotifications) {
         $options = 0;
-        $configOptions = ConfigHelper::getIgnoredNotificationsConfig();
-
-        foreach ($ignoredNotifications as $key => $value) {
+        foreach (UserIgnoredNotifications::getAsOptions() as $key => $value) {
             if (isset($ignoredNotifications[$key]) && $value) {
-                $options += $configOptions->$key;
+                $options += $value;
             }
         }
         return $options;
@@ -535,11 +643,9 @@ class AccountController extends Controller {
      *
      * @return array
      */
-    private function buildIgnoredNotificationTypes ($user) {
+    private function buildIgnoredNotificationTypes($user) {
         $obj = [];
-        $ignoredNotifications = ConfigHelper::getIgnoredNotificationsConfig();
-
-        foreach ($ignoredNotifications as $key => $value) {
+        foreach (UserIgnoredNotifications::getAsOptions() as $key => $value) {
             $obj[$key] = $user->ignoredNotifications & $value;
         }
 
@@ -551,7 +657,7 @@ class AccountController extends Controller {
      *
      * @return string
      */
-    private function generateString () {
+    private function generateString() {
         $token = openssl_random_pseudo_bytes(8);
         $token = bin2hex($token);
         return implode('', str_split($token, 4));

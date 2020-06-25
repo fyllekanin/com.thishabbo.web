@@ -15,7 +15,7 @@ export class NotificationMessage {
     timeout = 5000;
     type = NotificationType.INFO;
 
-    constructor(source: Partial<NotificationMessage>) {
+    constructor (source: Partial<NotificationMessage>) {
         ClassHelper.assign(this, source);
     }
 }

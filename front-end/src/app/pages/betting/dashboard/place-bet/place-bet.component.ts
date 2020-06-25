@@ -9,9 +9,11 @@ export class PlaceBetComponent extends InnerDialogComponent {
 
     amount: number;
 
-    getData() {
+    getData () {
         return Number(this.amount);
     }
 
-    setData() {}
+    setData () {
+        // Empty
+    }
 }

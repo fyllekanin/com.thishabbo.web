@@ -19,10 +19,10 @@ export class CreateNoticeComponent {
     private _notice: Notice = new Notice();
     private _previewNotice: Notice;
 
-    @ViewChild('file', {static: true}) fileInput;
+    @ViewChild('file', { static: true }) fileInput;
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Save', value: NoticeBoardActions.SAVE}),
-        new TitleTab({title: 'Back', value: NoticeBoardActions.BACK})
+        new TitleTab({ title: 'Save', value: NoticeBoardActions.SAVE }),
+        new TitleTab({ title: 'Back', value: NoticeBoardActions.BACK })
     ];
 
     constructor (
@@ -61,7 +61,7 @@ export class CreateNoticeComponent {
         form.append('backgroundImage', file);
         form.append('notice', JSON.stringify(this._notice));
 
-        this._httpClient.post('rest/api/sitecp/content/notices', form).subscribe(() => {
+        this._httpClient.post('api/sitecp/content/notices', form).subscribe(() => {
             this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Success',
                 message: `${this._notice.title} was created!`

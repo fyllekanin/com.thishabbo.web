@@ -11,7 +11,7 @@ import { HttpService } from 'core/services/http/http.service';
 @Component({
     selector: 'app-header-tabs',
     templateUrl: 'tabs.component.html',
-    styleUrls: ['tabs.component.css']
+    styleUrls: [ 'tabs.component.css' ]
 })
 export class TabsComponent {
 
@@ -66,7 +66,7 @@ export class TabsComponent {
             return;
         }
 
-        this._httpService.post('usercp/tab', {tab: tab}).subscribe(() => {
+        this._httpService.post('usercp/tab', { tab: tab }).subscribe(() => {
             this._dialogService.closeDialog();
             this._authService.tabs.push(tab);
         }, this._notificationService.failureNotification.bind(this._notificationService));

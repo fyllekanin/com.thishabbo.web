@@ -1,6 +1,4 @@
 /node_modules
-/public/hot
-/public/storage
 /storage/*.key
 /vendor
 /.idea
@@ -14,6 +12,4 @@ yarn-error.log
 thishabbo-job.pid
 thishabbo-job.log
 .env
-constants.php
-cache
 phpd.log

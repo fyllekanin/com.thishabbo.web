@@ -5,8 +5,7 @@
         <div class="grid-x grid-margin-x">
             <div class="cell small-12 latest-thread-page" *ngFor="let item of data.items"
                  [ngClass]="!isSingleRow ? 'medium-6' : ''">
-                <div appUserProfile [float]="'left'"
-                     [style.backgroundImage]="'url(/rest/resources/images/users/' + item.user.userId + '.gif)' | safeStyle">
+                <div appUserProfile [float]="'left'" [info]="item.user">
                 </div>
                 <div class="latest-thread-info truncate">
                     <a [routerLink]="['/forum', 'thread', item.threadId, 'page', 1]"
@@ -17,7 +16,7 @@
                     By
                     <app-user-link [user]="item.user"></app-user-link>
                     <br/>
-                    {{item.time}}
+                    {{item.createdAt}}
                 </div>
             </div>
         </div>

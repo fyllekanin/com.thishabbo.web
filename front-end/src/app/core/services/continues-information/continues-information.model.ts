@@ -42,8 +42,7 @@ export class ActiveUser {
 
     constructor (source: Partial<ActiveUser>) {
         ClassHelper.assign(this, source);
-        this.avatarUrl = `url('/rest/resources/images/users/` +
-            `${this.userId}.gif${this.avatarUpdatedAt ? `?updatedAt=${this.avatarUpdatedAt}` : ''}')`;
+        this.avatarUrl = `/resources/images/users/${this.userId}.gif${this.avatarUpdatedAt ? `?updatedAt=${this.avatarUpdatedAt}` : ''}`;
     }
 }
 

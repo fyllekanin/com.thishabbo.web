@@ -30,14 +30,14 @@ import { TimetableModel } from 'shared/models/timetable.model';
 @Component({
     selector: 'app-user-profile',
     templateUrl: 'profile.component.html',
-    styleUrls: ['profile.component.css']
+    styleUrls: [ 'profile.component.css' ]
 })
 export class ProfileComponent extends Page implements OnDestroy {
     private _data: ProfileModel;
 
-    @ViewChild('editor', {static: false}) editor: EditorComponent;
+    @ViewChild('editor') editor: EditorComponent;
     sendButton: Array<EditorAction> = [
-        new EditorAction({title: 'Send Message', saveCallback: this.onPost.bind(this)})
+        new EditorAction({ title: 'Send Message', saveCallback: this.onPost.bind(this) })
     ];
     followerTabs: Array<TitleTab> = [];
     pagination: PaginationModel;
@@ -130,11 +130,11 @@ export class ProfileComponent extends Page implements OnDestroy {
     }
 
     get coverPhotoData (): { userId: number, version: number } {
-        return {userId: this._data.user.userId, version: this._data.user.avatarUpdatedAt};
+        return { userId: this._data.user.userId, version: this._data.user.avatarUpdatedAt };
     }
 
     get avatar (): string {
-        return `/rest/resources/images/users/${this._data.user.userId}.gif?${this._data.user.avatarUpdatedAt}`;
+        return `/resources/images/users/${this._data.user.userId}.gif?${this._data.user.avatarUpdatedAt}`;
     }
 
     get stats (): ProfileStats {
@@ -177,8 +177,8 @@ export class ProfileComponent extends Page implements OnDestroy {
         this.setFollowerTabs();
 
         this.pagination = new PaginationModel({
-            total: data.data.visitorMessages.total,
-            page: data.data.visitorMessages.page,
+            total: data.data.visitorMessages ? data.data.visitorMessages.total : 1,
+            page: data.data.visitorMessages ? data.data.visitorMessages.page : 1,
             url: `/user/profile/${this._data.user.nickname}/page/:page`
         });
     }
@@ -190,11 +190,11 @@ export class ProfileComponent extends Page implements OnDestroy {
 
         if (this._data.followers.isFollowing) {
             this.followerTabs = this._data.followers.isApproved ?
-                [new TitleTab({title: 'Unfollow', value: ProfileActions.UNFOLLOW})] :
-                [new TitleTab({title: 'Pending..'})];
+                [ new TitleTab({ title: 'Unfollow', value: ProfileActions.UNFOLLOW }) ] :
+                [ new TitleTab({ title: 'Pending..' }) ];
         } else {
             this.followerTabs = [
-                new TitleTab({title: 'Follow', value: ProfileActions.FOLLOW})
+                new TitleTab({ title: 'Follow', value: ProfileActions.FOLLOW })
             ];
         }
     }

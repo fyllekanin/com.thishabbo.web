@@ -4,7 +4,14 @@ namespace App\EloquentModels\Forum;
 
 use App\EloquentModels\Models\DeletableModel;
 
+/**
+ * @property mixed threadPollId
+ * @property mixed options
+ * @property mixed isResultPublic
+ * @property mixed question
+ */
 class ThreadPoll extends DeletableModel {
+
     protected $table = 'thread_polls';
     protected $primaryKey = 'threadPollId';
     protected $fillable = ['threadId', 'question', 'options', 'isResultPublic'];

@@ -10,7 +10,7 @@ export class GroupList {
     @primitive()
     color = 'BLUE';
 
-    constructor(source: Partial<GroupList>) {
+    constructor (source: Partial<GroupList>) {
         ClassHelper.assign(this, source);
         this.displayOrder = this.displayOrder || -1;
     }

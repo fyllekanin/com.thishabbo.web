@@ -1,5 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { User } from 'core/services/auth/auth.model';
@@ -8,7 +8,7 @@ import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { DialogService } from 'core/services/dialog/dialog.service';
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { Subject, throwError } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { EditorAction } from 'shared/components/editor/editor.model';
 import { AutoSaveHelper } from 'shared/helpers/auto-save.helper';
 import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
@@ -17,27 +17,33 @@ import { PostModel } from '../post/post.model';
 import { ThreadService } from '../services/thread.service';
 import { ThreadComponent } from './thread.component';
 import { ThreadActions, ThreadPage } from './thread.model';
+import { EditorComponent } from 'shared/components/editor/editor.component';
 
 describe('ThreadComponent', () => {
 
     class HttpServiceMock {
-        post() {
+        post () {
             return null;
         }
     }
 
     class AuthServiceMock {
-        isLoggedIn() {
+        isLoggedIn () {
             return true;
         }
 
-        get authUser() {
+        get authUser () {
             return { userId: 1 };
         }
     }
 
     class NotificationServiceMock {
-        failureNotification() {
+        failureNotification () {
+            // Empty
+        }
+
+        sendInfoNotification () {
+            // Empty
         }
     }
 
@@ -46,9 +52,11 @@ describe('ThreadComponent', () => {
     let httpService: HttpServiceMock;
     let authService: AuthServiceMock;
     let notificationService: NotificationServiceMock;
+    let threadService: ThreadService;
     const sendThread: Subject<{ data: ThreadPage }> = new Subject();
 
     beforeEach(() => {
+        threadService = <ThreadService><unknown>{ createPost: () => ({ subscribe: () => null }) };
         httpService = new HttpServiceMock();
         authService = new AuthServiceMock();
         notificationService = new NotificationServiceMock();
@@ -65,21 +73,23 @@ describe('ThreadComponent', () => {
                 { provide: HttpService, useValue: httpService },
                 { provide: AuthService, useValue: authService },
                 { provide: NotificationService, useValue: notificationService },
-                { provide: ActivatedRoute, useValue: { data: sendThread.asObservable() } },
+                { provide: ActivatedRoute, useValue: { data: sendThread.asObservable(), params: {} } },
                 {
                     provide: BreadcrumbService, useValue: {
-                        set breadcrumb(_val) {
+                        set breadcrumb (_val) {
+                            // Empty
                         }
                     }
                 },
                 { provide: DialogService, useValue: {} },
-                { provide: ThreadService, useValue: {} }
+                { provide: ThreadService, useValue: threadService }
             ],
-            schemas: [NO_ERRORS_SCHEMA]
+            schemas: [ NO_ERRORS_SCHEMA ]
         });
 
         fixture = TestBed.createComponent(ThreadComponent);
         component = fixture.componentInstance;
+        component.editor = <EditorComponent><unknown>{ content: '', getEditorValue: () => '' };
     });
 
     it('trackPosts should return the updatedAt from the postModel', () => {
@@ -121,17 +131,18 @@ describe('ThreadComponent', () => {
     });
 
     describe('onButtonClick', () => {
-        it('should call failureNotification on failed POST', () => {
+        it('should call createPost on the thread service with threadId and content', done => {
             // Given
-            spyOn(notificationService, 'failureNotification');
-            spyOn(httpService, 'post').and.returnValue(throwError({ error: { message: 'Message' } }));
+            spyOn(TestBed.inject(ThreadService), 'createPost').and.callFake((threadId: number, content: string, toggleThread: boolean) => {
+                expect(threadId).toBeUndefined();
+                expect(content).toEqual('');
+                expect(toggleThread).toBeFalsy();
+                done();
+                return of(new PostModel({ isApproved: true }));
+            });
 
             // When
             component.onButtonClick(new EditorAction({ title: 'test', value: ThreadActions.POST }));
-
-            // Then
-            expect(httpService.post).toHaveBeenCalledTimes(1);
-            expect(notificationService.failureNotification).toHaveBeenCalled();
         });
     });
 

@@ -31,4 +31,5 @@ import { TableModule } from 'shared/components/table/table.module';
         BookingLogComponent
     ]
 })
-export class BookingLogModule {}
+export class BookingLogModule {
+}

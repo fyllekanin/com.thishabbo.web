@@ -21,6 +21,8 @@ import { DjSaysComponent } from './dj-says/dj-says.component';
 import { DjSaysResolver } from './services/dj-says.resolver';
 import { BookingLogModule } from '../shared/booking-log/booking-log.module';
 import { TimetableResolver } from 'shared/services/timetable.resolver';
+import { AutoDjComponent } from './auto-dj/auto-dj.component';
+import { ButtonModule } from 'shared/directives/button/button.module';
 
 @NgModule({
     imports: [
@@ -34,14 +36,16 @@ import { TimetableResolver } from 'shared/services/timetable.resolver';
         InfoBoxModule,
         TableModule,
         PaginationModule,
-        BookingLogModule
+        BookingLogModule,
+        ButtonModule
     ],
     declarations: [
         RequestsComponent,
         ConnectionComponent,
         KickDjComponent,
         ManageConnectionComponent,
-        DjSaysComponent
+        DjSaysComponent,
+        AutoDjComponent
     ],
     providers: [
         TimetableResolver,

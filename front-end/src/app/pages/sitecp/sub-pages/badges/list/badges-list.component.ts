@@ -31,12 +31,12 @@ export class BadgesListComponent extends Page implements OnDestroy {
     private _filterTimer: NodeJS.Timer = null;
     private _filter: QueryParameters;
     private _actions: Array<TableAction> = [
-        new TableAction({title: 'Edit Badge', value: BadgeListActions.EDIT_BADGE}),
-        new TableAction({title: 'Manage Users', value: BadgeListActions.MANAGE_USERS}),
-        new TableAction({title: 'Delete Badge', value: BadgeListActions.DELETE_BADGE})
+        new TableAction({ title: 'Edit Badge', value: BadgeListActions.EDIT_BADGE }),
+        new TableAction({ title: 'Manage Users', value: BadgeListActions.MANAGE_USERS }),
+        new TableAction({ title: 'Delete Badge', value: BadgeListActions.DELETE_BADGE })
     ];
 
-    tabs: Array<TitleTab> = [new TitleTab({title: 'New Badge', link: '/sitecp/badges/new'})];
+    tabs: Array<TitleTab> = [ new TitleTab({ title: 'New Badge', link: '/sitecp/badges/new' }) ];
     tableConfig: TableConfig;
     pagination: PaginationModel;
 
@@ -53,7 +53,7 @@ export class BadgesListComponent extends Page implements OnDestroy {
         this.addSubscription(activatedRoute.data, this.onPage.bind(this));
         breadcrumbService.breadcrumb = new Breadcrumb({
             current: 'Manage Badges',
-            items: [SITECP_BREADCRUMB_ITEM]
+            items: [ SITECP_BREADCRUMB_ITEM ]
         });
     }
 
@@ -87,7 +87,7 @@ export class BadgesListComponent extends Page implements OnDestroy {
         this._filterTimer = setTimeout(() => {
             this._httpService.get(`sitecp/badges/list/page/1`, filter)
                 .subscribe(data => {
-                    this.onPage({data: new BadgesListPage(data)});
+                    this.onPage({ data: new BadgesListPage(data) });
                 });
         }, 200);
     }
@@ -129,11 +129,11 @@ export class BadgesListComponent extends Page implements OnDestroy {
             title: 'Badges',
             headers: this.getTableHeaders(),
             rows: this.getTableRows(),
-            filterConfigs: [new FilterConfig({
+            filterConfigs: [ new FilterConfig({
                 title: 'Filter',
                 placeholder: 'Search for badge...',
                 key: 'filter'
-            })]
+            }) ]
         });
     }
 
@@ -143,11 +143,11 @@ export class BadgesListComponent extends Page implements OnDestroy {
                 id: badge.badgeId,
                 cells: [
                     new TableCell({
-                        title: `<img src="/rest/resources/images/badges/${badge.badgeId}.gif?${badge.updatedAt}" />`
+                        title: `<img src="/resources/images/badges/${badge.badgeId}.gif?${badge.updatedAt}" />`
                     }),
-                    new TableCell({title: badge.name}),
-                    new TableCell({title: badge.description}),
-                    new TableCell({title: this.timeAgo(badge.updatedAt)})
+                    new TableCell({ title: badge.name }),
+                    new TableCell({ title: badge.description }),
+                    new TableCell({ title: this.timeAgo(badge.updatedAt) })
                 ],
                 actions: this._actions
             });
@@ -156,10 +156,10 @@ export class BadgesListComponent extends Page implements OnDestroy {
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Icon'}),
-            new TableHeader({title: 'Name'}),
-            new TableHeader({title: 'Description'}),
-            new TableHeader({title: 'Last modified'})
+            new TableHeader({ title: 'Icon' }),
+            new TableHeader({ title: 'Name' }),
+            new TableHeader({ title: 'Description' }),
+            new TableHeader({ title: 'Last modified' })
         ];
     }
 }

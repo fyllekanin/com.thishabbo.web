@@ -4,7 +4,7 @@ import { BadgeModel } from 'shared/components/badges/badges.model';
 @Component({
     selector: 'app-badges',
     templateUrl: 'badges.component.html',
-    styleUrls: ['badges.component.css']
+    styleUrls: [ 'badges.component.css' ]
 })
 export class BadgesComponent {
 

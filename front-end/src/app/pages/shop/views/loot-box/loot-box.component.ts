@@ -7,7 +7,7 @@ import { DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
 @Component({
     selector: 'app-shop-loot-box',
     templateUrl: 'loot-box.component.html',
-    styleUrls: ['loot-box.component.css']
+    styleUrls: [ 'loot-box.component.css' ]
 })
 export class LootBoxComponent {
     @Input() box = new ShopLootBox(null);

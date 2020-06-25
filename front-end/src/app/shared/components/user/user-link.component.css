@@ -75,17 +75,13 @@
     background-size: cover;
     background-position: center;
     padding: 5px;
-    margin: -29px 0px 0px 17px;
+    margin: -29px 0 0 17px;
     -webkit-box-shadow: rgba(0, 0, 0, 0.14) 0 3px 5px;
 }
 
-.mini-username {
-    left: 117px;
-    top: 25px;
-    font-size: 12px;
-    padding: 7.5px 12px 7.5px 12px;
-    background: rgba(0, 0, 0, 0.32);
-    border-radius: .1em;
+.mini-nickname {
+    font-weight: bold;
+    color: #ffffff;
 }
 
 .mini-info {

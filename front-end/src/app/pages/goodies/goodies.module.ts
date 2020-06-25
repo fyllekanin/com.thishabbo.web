@@ -25,4 +25,5 @@ import { FormsModule } from '@angular/forms';
         RouterModule
     ]
 })
-export class GoodiesModule {}
+export class GoodiesModule {
+}

@@ -1,12 +1,12 @@
 import { SlimCategory, SlimPost } from '../forum.model';
 import { Component, ElementRef, Input, OnDestroy } from '@angular/core';
 import { Page } from 'shared/page/page.model';
-import { IUserProfile } from 'shared/directives/user-profile.directive';
+import { IUserProfile } from 'shared/directives/user-profile/user-profile.directive';
 
 @Component({
     selector: 'app-forum-slim-category',
     templateUrl: 'slim-category.component.html',
-    styleUrls: ['slim-category.component.css']
+    styleUrls: [ 'slim-category.component.css' ]
 })
 
 export class SlimCategoryComponent extends Page implements OnDestroy {
@@ -28,7 +28,7 @@ export class SlimCategoryComponent extends Page implements OnDestroy {
     set category (category: SlimCategory) {
         this._slimCategory = category || new SlimCategory();
         this.lastPostInfo = this.lastPost ?
-            {userId: this.lastPost.user.userId, avatarUpdatedAt: this.lastPost.user.avatarUpdatedAt} : null;
+            { userId: this.lastPost.user.userId, avatarUpdatedAt: this.lastPost.user.avatarUpdatedAt } : null;
     }
 
     get categoryId (): number {

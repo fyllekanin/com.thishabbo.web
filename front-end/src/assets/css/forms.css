@@ -14,12 +14,14 @@ form {
     user-select: none;
     line-height: 17px;
     font-weight: normal;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .checkbox-container input {
     position: absolute;
     opacity: 0;
     cursor: pointer;
+    outline: none;
 }
 
 .checkbox-align-with-input {
@@ -44,6 +46,13 @@ form {
     cursor: pointer;
     text-align: center;
     background: #f6f6f6;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .checkbox-container:hover input ~ .checkmark {
@@ -131,7 +140,7 @@ input, select, textarea {
     border-bottom-left-radius: 2px;
     height: 35px;
     box-shadow: 0 2px 0 rgba(179, 179, 179, 0.14);
-    color: #a2a2a2;
+    color: #be6d6d;
     font-size: 16px;
 }
 

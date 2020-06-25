@@ -5,6 +5,7 @@ namespace App\EloquentModels\Group;
 use App\EloquentModels\Models\UnixTimeModel;
 
 class GroupRequest extends UnixTimeModel {
+
     protected $table = 'group_requests';
     protected $primaryKey = 'groupRequestId';
     protected $fillable = ['userId', 'groupId'];

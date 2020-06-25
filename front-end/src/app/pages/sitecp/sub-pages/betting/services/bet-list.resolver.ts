@@ -8,13 +8,12 @@ import { BetsListPage } from '../bets/bets.model';
 @Injectable()
 export class BetListResolver implements Resolve<BetsListPage> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
-    resolve(route: ActivatedRouteSnapshot): Observable<BetsListPage> {
+    resolve (route: ActivatedRouteSnapshot): Observable<BetsListPage> {
         const page = route.params['page'];
-        const filterQuery = route.queryParams['filter'];
-
-        return this._httpService.get(`sitecp/betting/bets/${page}`, { filter: filterQuery })
+        return this._httpService.get(`sitecp/betting/bets/${page}`, route.queryParams)
             .pipe(map(res => new BetsListPage(res)));
     }
 }

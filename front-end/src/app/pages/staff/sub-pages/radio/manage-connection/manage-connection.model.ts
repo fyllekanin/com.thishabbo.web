@@ -1,4 +1,4 @@
-import { ClassHelper, primitive } from 'shared/helpers/class.helper';
+import { ClassHelper, primitive, primitiveOf } from 'shared/helpers/class.helper';
 
 export class ManageConnectionModel {
     @primitive()
@@ -10,9 +10,19 @@ export class ManageConnectionModel {
     @primitive()
     adminPassword: string;
     @primitive()
+    connectionPort: number;
+    @primitiveOf(String)
+    mountPoint = '';
+    @primitive()
     serverType: string;
+    @primitiveOf(String)
+    azuracastApiKey = '';
+    @primitiveOf(Number)
+    azuracastStationId = 0;
+    @primitiveOf(Boolean)
+    isAzuracast = false;
 
-    constructor(source?: Partial<ManageConnectionModel>) {
+    constructor (source?: Partial<ManageConnectionModel>) {
         ClassHelper.assign(this, source);
     }
 }

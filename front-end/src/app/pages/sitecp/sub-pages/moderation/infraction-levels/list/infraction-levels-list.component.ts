@@ -73,7 +73,7 @@ export class InfractionLevelsListComponent extends Page implements OnDestroy {
         this._filterTimer = setTimeout(() => {
             this._service.getData(filter, 1)
                 .subscribe(data => {
-                    this.onData({data: data});
+                    this.onData({ data: data });
                 });
         }, 200);
     }
@@ -127,26 +127,26 @@ export class InfractionLevelsListComponent extends Page implements OnDestroy {
             title: 'Infraction Levels',
             headers: InfractionLevelsListComponent.getTableHeaders(),
             rows: this.getTableRows(),
-            filterConfigs: [new FilterConfig({
+            filterConfigs: [ new FilterConfig({
                 title: 'Filter',
                 placeholder: 'Search for automatic bans...',
                 key: 'filter'
-            })]
+            }) ]
         });
     }
 
     private getTableRows (): Array<TableRow> {
         const actions = [
-            new TableAction({title: 'Edit', value: InfractionLevelsActions.EDIT}),
-            new TableAction({title: 'Delete', value: InfractionLevelsActions.DELETE})
+            new TableAction({ title: 'Edit', value: InfractionLevelsActions.EDIT }),
+            new TableAction({ title: 'Delete', value: InfractionLevelsActions.DELETE })
         ];
         return this._data.items.map(item => new TableRow({
             id: String(item.infractionLevelId),
             cells: [
-                new TableCell({title: item.title}),
-                new TableCell({title: String(item.points)}),
-                new TableCell({title: InfractionLevelsListComponent.getTime(item.lifeTime)}),
-                new TableCell({title: item.categoryId ? 'Thread' : 'Notification Only'})
+                new TableCell({ title: item.title }),
+                new TableCell({ title: String(item.points) }),
+                new TableCell({ title: InfractionLevelsListComponent.getTime(item.lifeTime) }),
+                new TableCell({ title: item.categoryId ? 'Thread' : 'Notification Only' })
             ],
             actions: actions
         }));
@@ -168,10 +168,10 @@ export class InfractionLevelsListComponent extends Page implements OnDestroy {
 
     private static getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Title'}),
-            new TableHeader({title: 'Points'}),
-            new TableHeader({title: 'Life Time'}),
-            new TableHeader({title: 'Type'})
+            new TableHeader({ title: 'Title' }),
+            new TableHeader({ title: 'Points' }),
+            new TableHeader({ title: 'Life Time' }),
+            new TableHeader({ title: 'Type' })
         ];
     }
 }

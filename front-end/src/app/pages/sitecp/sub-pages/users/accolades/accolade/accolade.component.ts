@@ -22,7 +22,7 @@ export class AccoladeComponent extends InnerDialogComponent {
     }
 
     setData (data: { data: AccoladesPage, accolade: AccoladeItem }) {
-        this.months = TimeHelper.FULL_MONTHS.map((month, index) => ({label: month, number: index + 1}));
+        this.months = TimeHelper.FULL_MONTHS.map((month, index) => ({ label: month, number: index }));
         this._data = data.data;
         this._accolade = data.accolade || new AccoladeItem(null);
         this.setStartAndEnd();
@@ -44,15 +44,23 @@ export class AccoladeComponent extends InnerDialogComponent {
         return this._accolade;
     }
 
-    private getTime(year: number, month: number): number {
-        return new Date(Date.UTC(year, month, 1)).getTime() / 1000;
+    private getTime (year: number, month: number): number {
+        const date = new Date();
+        date.setUTCFullYear(year);
+        date.setUTCMonth(month);
+        date.setUTCDate(1);
+        date.setUTCHours(0);
+        date.setUTCMinutes(0);
+        date.setUTCSeconds(0);
+        date.setUTCMilliseconds(0);
+        return Math.round(date.getTime() / 1000);
     }
 
     private setStartAndEnd (): void {
         if (this._accolade.start) {
             const date = new Date(this._accolade.start * 1000);
             this.start = {
-                month: date.getMonth() + 1,
+                month: date.getUTCMonth(),
                 year: date.getFullYear()
             };
         }
@@ -60,7 +68,7 @@ export class AccoladeComponent extends InnerDialogComponent {
         if (this._accolade.end) {
             const date = new Date(this._accolade.end * 1000);
             this.end = {
-                month: date.getMonth() + 1,
+                month: date.getUTCMonth(),
                 year: date.getFullYear()
             };
         }

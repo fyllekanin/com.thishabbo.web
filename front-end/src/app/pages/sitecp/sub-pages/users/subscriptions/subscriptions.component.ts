@@ -27,17 +27,17 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 export class SubscriptionsComponent extends Page implements OnDestroy {
     private _data: UserSubscriptionsPage;
     private _actions: Array<TableAction> = [
-        new TableAction({title: 'Update', value: UserSubscriptionsAction.UPDATE}),
-        new TableAction({title: 'Delete', value: UserSubscriptionsAction.DELETE})
+        new TableAction({ title: 'Update', value: UserSubscriptionsAction.UPDATE }),
+        new TableAction({ title: 'Delete', value: UserSubscriptionsAction.DELETE })
     ];
 
     tableConfig: TableConfig;
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Create Subscription'}),
-        new TitleTab({title: 'Back', link: '/sitecp/users/page/1'})
+        new TitleTab({ title: 'Create Subscription' }),
+        new TitleTab({ title: 'Back', link: '/sitecp/users/page/1' })
     ];
 
-    constructor(
+    constructor (
         private _service: SubscriptionsService,
         private _dialogService: DialogService,
         private _componentFactory: ComponentFactoryResolver,
@@ -56,15 +56,15 @@ export class SubscriptionsComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy() {
+    ngOnDestroy () {
         super.destroy();
     }
 
-    create(): void {
+    create (): void {
         this.onCreate();
     }
 
-    onAction(action: Action): void {
+    onAction (action: Action): void {
         switch (action.value) {
             case UserSubscriptionsAction.UPDATE:
                 this.onUpdate(Number(action.rowId));
@@ -75,12 +75,12 @@ export class SubscriptionsComponent extends Page implements OnDestroy {
         }
     }
 
-    private onData(data: { data: UserSubscriptionsPage }) {
+    private onData (data: { data: UserSubscriptionsPage }) {
         this._data = data.data;
         this.createOrUpdateConfig();
     }
 
-    private createOrUpdateConfig(): void {
+    private createOrUpdateConfig (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -92,29 +92,29 @@ export class SubscriptionsComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         return this._data.userSubscriptions.map(item => new TableRow({
             id: item.userSubscriptionId.toString(),
             cells: [
-                new TableCell({title: item.title}),
-                new TableCell({title: TimeHelper.getLongDate(item.expiresAt)})
+                new TableCell({ title: item.title }),
+                new TableCell({ title: TimeHelper.getLongDate(item.expiresAt) })
             ],
             actions: this._actions
         }));
     }
 
-    private getTableHeaders(): Array<TableHeader> {
+    private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Subscription'}),
-            new TableHeader({title: 'Expires At'})
+            new TableHeader({ title: 'Subscription' }),
+            new TableHeader({ title: 'Expires At' })
         ];
     }
 
-    private onCreate(): void {
+    private onCreate (): void {
         this._dialogService.openDialog({
             title: 'Create Subscription',
             component: this._componentFactory.resolveComponentFactory(SubscriptionComponent),
-            data: {subscription: new UserSubscriptionItem(null), subscriptions: this._data.subscriptions},
+            data: { subscription: new UserSubscriptionItem(null), subscriptions: this._data.subscriptions },
             buttons: [
                 new DialogCloseButton('Close'),
                 new DialogButton({
@@ -134,18 +134,18 @@ export class SubscriptionsComponent extends Page implements OnDestroy {
         });
     }
 
-    private onUpdate(userSubscriptionId: number): void {
+    private onUpdate (userSubscriptionId: number): void {
         const subscription = this._data.userSubscriptions.find(item => item.userSubscriptionId === userSubscriptionId);
         this._dialogService.openDialog({
             title: 'Editing subscription',
             component: this._componentFactory.resolveComponentFactory(SubscriptionComponent),
-            data: {subscription: subscription, subscriptions: this._data.subscriptions},
+            data: { subscription: subscription, subscriptions: this._data.subscriptions },
             buttons: [
                 new DialogCloseButton('Close'),
                 new DialogButton({
                     title: 'Save',
                     callback: data => {
-                        this._service.update({userSubscriptionId: userSubscriptionId, expiresAt: data.expiresAt});
+                        this._service.update({ userSubscriptionId: userSubscriptionId, expiresAt: data.expiresAt });
                         subscription.expiresAt = data.expiresAt;
                         this.createOrUpdateConfig();
                         this._dialogService.closeDialog();
@@ -155,7 +155,7 @@ export class SubscriptionsComponent extends Page implements OnDestroy {
         });
     }
 
-    private onDelete(userSubscriptionId: number): void {
+    private onDelete (userSubscriptionId: number): void {
         this._service.delete(userSubscriptionId).then(() => {
             this._data.userSubscriptions = this._data.userSubscriptions.filter(item => item.userSubscriptionId !== userSubscriptionId);
             this.createOrUpdateConfig();

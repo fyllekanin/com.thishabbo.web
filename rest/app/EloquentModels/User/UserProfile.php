@@ -11,6 +11,7 @@ use App\EloquentModels\Models\UnixTimeModel;
  * @property mixed updatedAt
  */
 class UserProfile extends UnixTimeModel {
+
     protected $table = 'user_profile';
     protected $primaryKey = 'userProfileId';
     protected $fillable = [

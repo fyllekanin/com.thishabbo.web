@@ -40,12 +40,16 @@ export class ConnectionComponent extends Page implements OnDestroy {
         return Boolean(this._connectionModel.ip);
     }
 
-    get port (): number {
-        return this._connectionModel.port;
+    get connectionPort (): number {
+        return this._connectionModel.connectionPort;
     }
 
     get ip (): string {
         return StringHelper.removeURL(this._connectionModel.ip);
+    }
+
+    get mountPoint (): string {
+        return this._connectionModel.mountPoint;
     }
 
     get password (): string {
@@ -54,6 +58,10 @@ export class ConnectionComponent extends Page implements OnDestroy {
 
     get serverType (): string {
         return StringHelper.prettifyString(this._connectionModel.serverType);
+    }
+
+    get isIceCastV2 (): boolean {
+        return this._connectionModel.serverType === 'iceCastV2';
     }
 
     get nickname (): string {

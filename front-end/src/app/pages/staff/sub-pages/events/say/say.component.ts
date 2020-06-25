@@ -16,7 +16,7 @@ export class SayComponent extends Page implements OnDestroy {
     say: string;
 
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Save'})
+        new TitleTab({ title: 'Save' })
     ];
 
     constructor (
@@ -41,7 +41,7 @@ export class SayComponent extends Page implements OnDestroy {
     }
 
     onSave (): void {
-        this._httpService.put('staff/events/say', {say: this.say})
+        this._httpService.put('staff/events/say', { say: this.say })
             .subscribe(() => {
                 this._notificationService.sendInfoNotification('Events say updated!');
             }, this._notificationService.failureNotification.bind(this._notificationService));

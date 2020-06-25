@@ -8,9 +8,10 @@ import { UserCpDashboardModel } from './dashboard.model';
 @Injectable()
 export class DashboardResolver implements Resolve<UserCpDashboardModel> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
-    resolve(): Observable<UserCpDashboardModel> {
+    resolve (): Observable<UserCpDashboardModel> {
         return this._httpService.get('usercp/dashboard')
             .pipe(map(item => new UserCpDashboardModel(item)));
     }

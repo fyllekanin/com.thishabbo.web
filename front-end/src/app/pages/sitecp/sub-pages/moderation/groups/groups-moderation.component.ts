@@ -65,7 +65,10 @@ export class GroupsModerationComponent extends Page implements OnDestroy {
                     content: `You sure you want to deny ${groupRequest.nickname} to join ${groupRequest.name}?`,
                     buttons: [
                         new DialogCloseButton('Close'),
-                        new DialogButton({title: 'Yes', callback: this.onDeny.bind(this, groupRequest.groupRequestId)})
+                        new DialogButton({
+                            title: 'Yes',
+                            callback: this.onDeny.bind(this, groupRequest.groupRequestId)
+                        })
                     ]
                 });
                 break;
@@ -73,7 +76,7 @@ export class GroupsModerationComponent extends Page implements OnDestroy {
     }
 
     private onApprove (groupRequestId: number): void {
-        this._httpService.post('sitecp/moderation/groups/approve', {groupRequestId: groupRequestId})
+        this._httpService.post('sitecp/moderation/groups/approve', { groupRequestId: groupRequestId })
             .subscribe(() => {
                 this._groups = this._groups.filter(group => group.groupRequestId !== groupRequestId);
                 this._notificationService.sendNotification(new NotificationMessage({
@@ -117,16 +120,16 @@ export class GroupsModerationComponent extends Page implements OnDestroy {
 
     private getTableRows (): Array<TableRow> {
         const actions = [
-            {title: 'Approve', value: GroupModerationActions.APPROVE_REQUEST},
-            {title: 'Deny', value: GroupModerationActions.DENY_REQUEST}
+            { title: 'Approve', value: GroupModerationActions.APPROVE_REQUEST },
+            { title: 'Deny', value: GroupModerationActions.DENY_REQUEST }
         ];
         return this._groups.map(group => {
             return new TableRow({
                 id: String(group.groupRequestId),
                 cells: [
-                    new TableCell({title: group.nickname}),
-                    new TableCell({title: group.name}),
-                    new TableCell({title: this.timeAgo(group.createdAt)})
+                    new TableCell({ title: group.nickname }),
+                    new TableCell({ title: group.name }),
+                    new TableCell({ title: this.timeAgo(group.createdAt) })
                 ],
                 actions: actions
             });
@@ -135,9 +138,9 @@ export class GroupsModerationComponent extends Page implements OnDestroy {
 
     private static getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'User'}),
-            new TableHeader({title: 'Usergroup'}),
-            new TableHeader({title: 'Time ago'})
+            new TableHeader({ title: 'User' }),
+            new TableHeader({ title: 'Usergroup' }),
+            new TableHeader({ title: 'Time ago' })
         ];
     }
 }

@@ -50,7 +50,7 @@ export class InfractionService {
             this.invalidInfractData();
             return;
         }
-        this._httpService.post('sitecp/moderation/infract', {infraction: data, type: type, content: content})
+        this._httpService.post('sitecp/moderation/infract', { infraction: data, type: type, content: content })
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',

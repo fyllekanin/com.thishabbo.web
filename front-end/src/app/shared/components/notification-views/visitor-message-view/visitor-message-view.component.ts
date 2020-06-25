@@ -12,7 +12,7 @@ import { AuthService } from 'core/services/auth/auth.service';
 @Component({
     selector: 'app-top-bar-visitor-message-view',
     templateUrl: 'visitor-message-view.component.html',
-    styleUrls: ['../notification.views.css']
+    styleUrls: [ '../notification.views.css' ]
 })
 export class VisitorMessageViewComponent implements NotificationView {
     private _notification: NotificationModel<VisitorMessageView>;
@@ -45,14 +45,14 @@ export class VisitorMessageViewComponent implements NotificationView {
     }
 
     get imagePath (): string {
-        return `/rest/resources/images/users/${this.user.userId}.gif?${this.user.avatarUpdatedAt}`;
+        return `/resources/images/users/${this.user.userId}.gif?${this.user.avatarUpdatedAt}`;
     }
 
     get user (): SlimUser {
         return this._notification.item.user;
     }
 
-    @HostListener('click', ['$event.target'])
+    @HostListener('click', [ '$event.target' ])
     click (event): void {
         this.onClick.next(this._notification.notificationId);
 

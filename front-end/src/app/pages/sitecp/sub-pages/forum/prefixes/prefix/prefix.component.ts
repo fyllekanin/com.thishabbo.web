@@ -2,7 +2,7 @@ import { DialogService } from 'core/services/dialog/dialog.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { HttpService } from 'core/services/http/http.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Prefix, PrefixActions, PrefixCategory } from '../prefix.model';
+import { Prefix, PrefixActions } from '../prefix.model';
 import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
@@ -11,6 +11,7 @@ import { ArrayHelper } from 'shared/helpers/array.helper';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { PREFIX_LIST, SITECP_BREADCRUMB_ITEM } from '../../../../sitecp.constants';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
+import { CategoryLeaf } from '../../category/category.model';
 
 @Component({
     selector: 'app-sitecp-forum-prefix',
@@ -19,7 +20,7 @@ import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 })
 export class PrefixComponent extends Page implements OnDestroy {
     private _prefix: Prefix = new Prefix();
-    private _categories: Array<PrefixCategory> = [];
+    private _categories: Array<CategoryLeaf> = [];
 
     tabs: Array<TitleTab> = [];
 
@@ -95,7 +96,7 @@ export class PrefixComponent extends Page implements OnDestroy {
         return this._prefix.categoryIds.indexOf(categoryId) > -1;
     }
 
-    get categories (): Array<PrefixCategory> {
+    get categories (): Array<CategoryLeaf> {
         return this._categories;
     }
 
@@ -120,14 +121,14 @@ export class PrefixComponent extends Page implements OnDestroy {
                     title: 'Success',
                     message: 'Prefix deleted'
                 }));
-                this._router.navigateByUrl('/sitecp/forum/prefixes');
+                this._router.navigateByUrl('/sitecp/forum/prefixes/page/1');
                 this._dialogService.closeDialog();
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
     private onData (data: { data: Prefix }): void {
         this._prefix = data.data;
-        const categories = [ new PrefixCategory({ title: 'All', categoryId: -1 }) ];
+        const categories = [ new CategoryLeaf({ title: 'All', categoryId: -1 }) ];
         this._categories = categories.concat(ArrayHelper.flat(this._prefix.categories, '--'));
 
         const tabs = [

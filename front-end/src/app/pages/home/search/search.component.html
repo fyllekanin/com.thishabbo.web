@@ -47,7 +47,7 @@
             <em>Clicking enter in any field will also trigger the search</em>
             <div>
                 <label>What are you looking for?</label>
-                <select [(ngModel)]="parameters.type" (keyup)="onKeyUp($event)">
+                <select [(ngModel)]="parameters.type" (ngModelChange)="onSearch()">
                     <option [value]="'threads'">Threads</option>
                     <option [value]="'posts'">Posts</option>
                     <option [value]="'users'">Users</option>
@@ -65,6 +65,13 @@
             <div *ngIf="type !== 'users'">
                 <label>By User:</label>
                 <input [(ngModel)]="parameters.byUser" (keyup)="onKeyUp($event)"/>
+
+                <label>User search type</label>
+                <select [(ngModel)]="parameters.userSearchType">
+                    <option [ngValue]="undefined">Partial</option>
+                    <option [ngValue]="'exact'">Exact</option>
+                    <option [ngValue]="'fromStart'">From start</option>
+                </select>
             </div>
             <div>
                 <label>Created after:</label>

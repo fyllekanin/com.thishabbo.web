@@ -10,14 +10,14 @@ export class MergeUsersComponent extends InnerDialogComponent {
     otherNickname: string;
     swapUsers: boolean;
 
-    getData() {
+    getData () {
         return {
             otherNickname: this.otherNickname,
             swapUsers: this.swapUsers
         };
     }
 
-    setData(nickname: string) {
+    setData (nickname: string) {
         this.nickname = nickname;
     }
 }

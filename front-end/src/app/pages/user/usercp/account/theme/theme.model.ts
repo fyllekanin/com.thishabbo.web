@@ -10,7 +10,7 @@ export class ThemeModel {
     @primitive()
     minified: string;
 
-    constructor(source: Partial<ThemeModel>) {
+    constructor (source: Partial<ThemeModel>) {
         ClassHelper.assign(this, source);
     }
 }

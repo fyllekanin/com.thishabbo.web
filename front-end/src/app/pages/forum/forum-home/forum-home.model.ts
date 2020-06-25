@@ -8,7 +8,7 @@ export class ForumTopPoster {
     @primitive()
     posts: number;
 
-    constructor(source: Partial<ForumTopPoster>) {
+    constructor (source: Partial<ForumTopPoster>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -25,7 +25,7 @@ export class ForumStats {
     @arrayOf(SlimUser)
     activeToday: Array<SlimUser> = [];
 
-    constructor(source?: Partial<ForumStats>) {
+    constructor (source?: Partial<ForumStats>) {
         ClassHelper.assign(this, source);
     }
 }

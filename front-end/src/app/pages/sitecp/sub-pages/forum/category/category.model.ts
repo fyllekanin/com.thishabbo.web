@@ -30,6 +30,8 @@ export class CategoryOptions {
     jobApplicationsGoHere: boolean;
     @primitive()
     contactPostsGoHere: boolean;
+    @primitive()
+    isStandaloneLeaderboard: boolean;
 
     constructor (source?: Partial<CategoryOptions>) {
         ClassHelper.assign(this, source);
@@ -81,7 +83,7 @@ export class Category {
 
 export class CategoryPage {
     @arrayOf(CategoryLeaf)
-    forumTree: Array<CategoryLeaf> = [];
+    categories: Array<CategoryLeaf> = [];
     @objectOf(Category)
     category: Category = new Category();
 

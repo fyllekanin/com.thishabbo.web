@@ -6,6 +6,7 @@ export class DialogButton {
     title: string;
     type: ButtonColor = Button.BLUE;
     callback: (data?) => void;
+    triggerOnSubmit = false;
 
     constructor (source: Partial<DialogButton>) {
         ClassHelper.assign(this, source);
@@ -25,6 +26,10 @@ export abstract class InnerDialogComponent {
     abstract getData ();
 
     abstract setData (data);
+
+    onSubmit (): void {
+        // To be overriden
+    }
 }
 
 export interface DialogConfirm {

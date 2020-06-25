@@ -8,6 +8,7 @@
                 <app-editor *ngIf="isInEditMode" #editor
                             [buttons]="editorButtons"
                             [content]="post.content"
+                            [showMentionSuggestions]="true"
                             (onKeyUp)="onKeyUp($event)"
                             (onTabClick)="onButtonClick($event)">
                 </app-editor>

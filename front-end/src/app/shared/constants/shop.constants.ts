@@ -1,15 +1,15 @@
 export const SHOP_ITEM_TYPES = {
-    badge: {label: 'Badge', value: 1},
-    nameIcon: {label: 'Name Icon', value: 2},
-    nameEffect: {label: 'Name Effect', value: 3},
-    subscription: {label: 'Subscription', value: 4}
+    badge: { label: 'Badge', value: 1 },
+    nameIcon: { label: 'Name Icon', value: 2 },
+    nameEffect: { label: 'Name Effect', value: 3 },
+    subscription: { label: 'Subscription', value: 4 }
 };
 
 export const SHOP_ITEM_RARITIES = {
-    common: {label: 'Common', value: 80, color: '#000000'},
-    rare: {label: 'Rare', value: 50, color: '#3682b9'},
-    epic: {label: 'Epic', value: 30, color: '#925779'},
-    legendary: {label: 'Legendary', value: 10, color: '#e49606'}
+    common: { label: 'Common', value: 80, color: '#000000' },
+    rare: { label: 'Rare', value: 50, color: '#3682b9' },
+    epic: { label: 'Epic', value: 30, color: '#925779' },
+    legendary: { label: 'Legendary', value: 10, color: '#e49606' }
 };
 
 export const CONFIGURABLE_ITEMS = [

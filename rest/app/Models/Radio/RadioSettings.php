@@ -2,38 +2,10 @@
 
 namespace App\Models\Radio;
 
+use App\Constants\RadioServerTypes;
 use App\Utils\Value;
-use ReflectionClass;
+use Exception;
 
-class RadioServerTypes {
-    const SHOUT_CAST_V1 = 'shoutCastV1';
-    const SHOUT_CAST_V2 = 'shoutCastV2';
-
-    public static function isValidType($type) {
-        try {
-            foreach (self::getAllConstants() as $serverType) {
-                if ($serverType == $type) {
-                    return true;
-                }
-            }
-            return false;
-        } catch (\ReflectionException $e) {
-            return false;
-        }
-    }
-
-    /**
-     * @return array
-     * @throws \ReflectionException
-     */
-    public static function getAllConstants() {
-        return (new ReflectionClass(get_class()))->getConstants();
-    }
-}
-
-/**
- * @SuppressWarnings(PHPMD.ShortVariable)
- */
 class RadioSettings {
     public $ip = '127.0.0.1';
     public $port = 8080;
@@ -46,13 +18,19 @@ class RadioSettings {
     public $albumArt = '';
     public $djSays = '';
     public $nextDjId = '';
+    public $radioUrl = '';
+    public $mountPoint = '';
+    public $connectionPort = 8005;
     public $serverType = RadioServerTypes::SHOUT_CAST_V1;
+    public $isAzuracast = false;
+    public $azuracastApiKey = '';
+    public $azuracastStationId = 0;
 
     public function __construct($data) {
         try {
             $data = json_decode($data);
-        } catch (\Exception $exception) {
-            $data = (object)[];
+        } catch (Exception $exception) {
+            $data = (object) [];
         }
 
         $this->ip = Value::objectProperty($data, 'ip', '');
@@ -66,23 +44,17 @@ class RadioSettings {
         $this->song = Value::objectProperty($data, 'song', '');
         $this->albumArt = Value::objectProperty($data, 'albumArt', '');
         $this->djSays = Value::objectProperty($data, 'djSays', '');
+        $this->mountPoint = Value::objectProperty($data, 'mountPoint', '');
+        $this->connectionPort = Value::objectProperty($data, 'connectionPort', '');
         $this->serverType = Value::objectProperty($data, 'serverType', '');
-    }
+        $this->azuracastApiKey = Value::objectProperty($data, 'azuracastApiKey', '');
+        $this->azuracastStationId = Value::objectProperty($data, 'azuracastStationId', '');
+        $this->isAzuracast = Value::objectProperty($data, 'isAzuracast', false);
 
-    public function jsonSerialize() {
-        return (object)[
-            'ip' => $this->ip,
-            'port' => $this->port,
-            'password' => $this->password,
-            'adminPassword' => $this->adminPassword,
-            'likes' => $this->likes,
-            'userId' => $this->userId,
-            'listeners' => $this->listeners,
-            'song' => $this->song,
-            'albumArt' => $this->albumArt,
-            'djSays' => $this->djSays,
-            'nextDjId' => $this->nextDjId,
-            'serverType' => $this->serverType
-        ];
+        if ($this->serverType == RadioServerTypes::ICE_CAST_V2) {
+            $this->radioUrl = $this->isAzuracast ? $this->ip.'/radio/'.$this->port.'/live' : $this->ip.':'.$this->port.'/live';
+        } else {
+            $this->radioUrl = $this->ip.':'.$this->port.'/;stream.nsv';
+        }
     }
 }

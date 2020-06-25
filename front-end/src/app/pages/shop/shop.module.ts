@@ -25,6 +25,7 @@ import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 import { NgxPayPalModule } from 'ngx-paypal';
 import { SubscriptionPaymentComponent } from './views/subscription/subscription-payment/subscription-payment.component';
 import { SendThcComponent } from './send-thc/send-thc.component';
+import { RotatedItemComponent } from './views/rotated-item/rotated-item.component';
 
 @NgModule({
     imports: [
@@ -52,11 +53,13 @@ import { SendThcComponent } from './send-thc/send-thc.component';
         SubscriptionsComponent,
         LootBoxDetailsComponent,
         SubscriptionPaymentComponent,
-        SendThcComponent
+        SendThcComponent,
+        RotatedItemComponent
     ],
     entryComponents: [
         LootBoxDetailsComponent,
-        SubscriptionPaymentComponent
+        SubscriptionPaymentComponent,
+        RotatedItemComponent
     ],
     providers: [
         DashboardResolver,

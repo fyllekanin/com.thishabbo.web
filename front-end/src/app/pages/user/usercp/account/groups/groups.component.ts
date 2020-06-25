@@ -15,13 +15,13 @@ import { HttpService } from 'core/services/http/http.service';
 @Component({
     selector: 'app-usercp-groups',
     templateUrl: 'groups.component.html',
-    styleUrls: ['groups.component.css']
+    styleUrls: [ 'groups.component.css' ]
 })
 export class GroupsComponent extends Page implements OnDestroy {
     private _data: UserCpGroupsPage;
 
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Save'})
+        new TitleTab({ title: 'Save' })
     ];
 
     constructor (

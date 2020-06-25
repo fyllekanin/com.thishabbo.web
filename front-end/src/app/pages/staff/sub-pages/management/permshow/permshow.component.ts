@@ -84,7 +84,7 @@ export class PermShowComponent extends Page implements OnDestroy {
 
         if (this._data.createdAt) {
             this._httpService.put(`staff/management/permanent-shows/${this._data.timetableId}`,
-                {booking: booking})
+                { booking: booking })
                 .subscribe(() => {
                         this.onSuccessUpdate();
                     },
@@ -92,7 +92,7 @@ export class PermShowComponent extends Page implements OnDestroy {
                         this._notificationService.failureNotification(error);
                     });
         } else {
-            this._httpService.post('staff/management/permanent-shows', {booking: booking})
+            this._httpService.post('staff/management/permanent-shows', { booking: booking })
                 .subscribe(() => {
                         this.onSuccessCreate();
                     },
@@ -166,9 +166,9 @@ export class PermShowComponent extends Page implements OnDestroy {
 
     private setTabs (): void {
         const tabs = [
-            {title: 'Save', value: PermShowActions.SAVE, condition: true},
-            {title: 'Back', value: PermShowActions.BACK, condition: true},
-            {title: 'Delete', value: PermShowActions.DELETE, condition: this._data.createdAt}
+            { title: 'Save', value: PermShowActions.SAVE, condition: true },
+            { title: 'Back', value: PermShowActions.BACK, condition: true },
+            { title: 'Delete', value: PermShowActions.DELETE, condition: this._data.createdAt }
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));

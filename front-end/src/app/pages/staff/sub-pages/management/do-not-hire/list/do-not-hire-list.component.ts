@@ -23,17 +23,17 @@ import { NotificationMessage } from 'shared/app-views/global-notification/global
 @Component({
     selector: 'app-staff-management-do-not-hire-list',
     templateUrl: 'do-not-hire-list.component.html',
-    styleUrls: ['do-not-hire-list.component.css']
+    styleUrls: [ 'do-not-hire-list.component.css' ]
 })
 export class DoNotHireListComponent extends Page implements OnDestroy {
     private _data = new DoNotHireModel();
     private _actions: Array<TableAction> = [
-        new TableAction({title: 'Edit', value: DoNotHireActions.EDIT_DNH_ENTRY}),
-        new TableAction({title: 'Delete', value: DoNotHireActions.DELETE_DNH_ENTRY})
+        new TableAction({ title: 'Edit', value: DoNotHireActions.EDIT_DNH_ENTRY }),
+        new TableAction({ title: 'Delete', value: DoNotHireActions.DELETE_DNH_ENTRY })
     ];
 
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'New Entry', link: '/staff/management/do-not-hire/new'})
+        new TitleTab({ title: 'New Entry', link: '/staff/management/do-not-hire/new' })
     ];
     tableConfig: TableConfig;
 
@@ -120,10 +120,10 @@ export class DoNotHireListComponent extends Page implements OnDestroy {
             return new TableRow({
                 id: item.nickname,
                 cells: [
-                    new TableCell({title: item.nickname}),
-                    new TableCell({title: item.reason}),
-                    new TableCell({title: item.addedBy}),
-                    new TableCell({title: TimeHelper.getLongDateWithTime(item.createdAt)})
+                    new TableCell({ title: item.nickname }),
+                    new TableCell({ title: item.reason }),
+                    new TableCell({ title: item.addedBy }),
+                    new TableCell({ title: TimeHelper.getLongDateWithTime(item.createdAt) })
                 ],
                 actions: actions
             });
@@ -132,10 +132,10 @@ export class DoNotHireListComponent extends Page implements OnDestroy {
 
     private static getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Name'}),
-            new TableHeader({title: 'Reason'}),
-            new TableHeader({title: 'Added By'}),
-            new TableHeader({title: 'Added On'})
+            new TableHeader({ title: 'Name' }),
+            new TableHeader({ title: 'Reason' }),
+            new TableHeader({ title: 'Added By' }),
+            new TableHeader({ title: 'Added On' })
         ];
     }
 }

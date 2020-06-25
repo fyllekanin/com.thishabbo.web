@@ -7,7 +7,7 @@ export class CurrentListener {
     @primitive()
     time: number;
 
-    constructor(source: Partial<CurrentListener>) {
+    constructor (source: Partial<CurrentListener>) {
         ClassHelper.assign(this, source);
     }
 }

@@ -9,17 +9,18 @@ import { CategorySubscription } from '../category-subscriptions/category-subscri
 @Injectable()
 export class CategorySubscriptionsService implements Resolve<Array<CategorySubscription>> {
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService
-    ) {}
+    ) {
+    }
 
-    unsubscribe(categoryId: number): Observable<void> {
+    unsubscribe (categoryId: number): Observable<void> {
         return this._httpService.delete(`forum/category/${categoryId}/unsubscribe`)
             .pipe(catchError(this._notificationService.failureNotification.bind(this._notificationService)));
     }
 
-    resolve(): Observable<Array<CategorySubscription>> {
+    resolve (): Observable<Array<CategorySubscription>> {
         return this._httpService.get('usercp/category-subscriptions')
             .pipe(map(res => {
                 return res.map(item => new CategorySubscription(item));

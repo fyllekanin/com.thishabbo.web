@@ -1,4 +1,4 @@
-import { ClassHelper, arrayOf, primitive } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, primitive } from 'shared/helpers/class.helper';
 
 export class BreadcrumbItem {
     @primitive()
@@ -6,7 +6,7 @@ export class BreadcrumbItem {
     @primitive()
     url: string;
 
-    constructor(source: {
+    constructor (source: {
         title: string,
         url: string
     }) {
@@ -20,7 +20,7 @@ export class Breadcrumb {
     @arrayOf(BreadcrumbItem)
     items: Array<BreadcrumbItem> = [];
 
-    constructor(source: {
+    constructor (source: {
         current: string,
         items?: Array<BreadcrumbItem>
     }) {

@@ -1,4 +1,4 @@
-import { isPresent, isAbsent } from 'shared/helpers/class.helper';
+import { isAbsent, isPresent } from 'shared/helpers/class.helper';
 
 describe('Class Helper', () => {
 

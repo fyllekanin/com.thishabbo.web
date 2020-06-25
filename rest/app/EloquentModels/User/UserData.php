@@ -3,7 +3,9 @@
 namespace App\EloquentModels\User;
 
 use App\EloquentModels\Models\UnixTimeModel;
+use App\Providers\Service\ContentService;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\App;
 
 /**
  * @property mixed userdataId
@@ -29,6 +31,14 @@ use Illuminate\Database\Eloquent\Builder;
  * @property array|string|null iconPosition
  */
 class UserData extends UnixTimeModel {
+
+    /**
+     *
+     *
+     * @var ContentService
+     */
+    private $myContentService;
+
     protected $table = 'userdata';
     protected $primaryKey = 'userdataId';
     protected $fillable = [
@@ -51,11 +61,20 @@ class UserData extends UnixTimeModel {
         'customFields'
     ];
 
+    public function __construct(array $attributes = []) {
+        parent::__construct($attributes);
+        $this->myContentService = App::make(ContentService::class);
+    }
+
     public function user() {
         return $this->belongsTo('App\EloquentModels\User\User', 'userId', 'userId');
     }
 
     public function scopeUserId(Builder $query, $userId) {
         return $query->where('userId', $userId);
+    }
+
+    public function getParsedSignature() {
+        return $this->myContentService->getParsedContent($this->signature);
     }
 }

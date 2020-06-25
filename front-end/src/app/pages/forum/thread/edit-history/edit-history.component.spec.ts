@@ -17,7 +17,7 @@ describe('EditHistoryComponent', () => {
             declarations: [
                 EditHistoryComponent
             ],
-            schemas: [NO_ERRORS_SCHEMA]
+            schemas: [ NO_ERRORS_SCHEMA ]
         });
         component = TestBed.createComponent(EditHistoryComponent).componentInstance;
     });
@@ -36,12 +36,12 @@ describe('EditHistoryComponent', () => {
         it('should return the history if historyTimestamp is set', () => {
             // Given
             component.historyTimestamp = 123;
-            component.setData([new PostHistoryModel({
+            component.setData([ new PostHistoryModel({
                 createdAt: 123,
                 user: new User({
                     nickname: 'test'
                 })
-            })]);
+            }) ]);
 
             // When
             const result = component.edit;
@@ -57,11 +57,11 @@ describe('EditHistoryComponent', () => {
         component.setData([
             new PostHistoryModel({
                 createdAt: 1558624980,
-                user: new User({nickname: 'Tovven'})
+                user: new User({ nickname: 'Tovven' })
             }),
             new PostHistoryModel({
                 createdAt: 1558624980,
-                user: new User({nickname: 'Test'})
+                user: new User({ nickname: 'Test' })
             })
         ]);
 

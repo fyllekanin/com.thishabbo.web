@@ -27,10 +27,10 @@ export class WebsiteSettingsComponent extends Page implements OnDestroy, OnInit 
             description: 'Handle maintenance'
         },
         {
-            id: 'welcome-bot',
-            path: '/sitecp/website-settings/welcome-bot',
-            name: 'Welcome Bot',
-            description: 'Manage the welcome bot'
+            id: 'bot-settings',
+            path: '/sitecp/website-settings/bot-settings',
+            name: 'Bot Settings',
+            description: 'Manage the bot settings'
         },
         {
             id: 'notices',
@@ -39,10 +39,10 @@ export class WebsiteSettingsComponent extends Page implements OnDestroy, OnInit 
             description: 'Manage the notice board'
         },
         {
-            id: 'staff-of-the-week',
-            path: '/sitecp/website-settings/staff-of-the-week',
-            name: 'SOTW',
-            description: 'Manage the SOTW'
+            id: 'outstanding-staff',
+            path: '/sitecp/website-settings/outstanding-staff',
+            name: 'Outstanding Staff',
+            description: 'Manage the OS'
         },
         {
             id: 'staff-of-the-month',
@@ -84,7 +84,7 @@ export class WebsiteSettingsComponent extends Page implements OnDestroy, OnInit 
 
     tableConfig: TableConfig;
 
-    constructor(
+    constructor (
         private _router: Router,
         breadcrumbService: BreadcrumbService,
         elementRef: ElementRef
@@ -98,7 +98,7 @@ export class WebsiteSettingsComponent extends Page implements OnDestroy, OnInit 
         });
     }
 
-    onAction(action: Action): void {
+    onAction (action: Action): void {
         const page = this.PAGES
             .find(item => item.id === action.rowId);
         if (page) {
@@ -106,7 +106,7 @@ export class WebsiteSettingsComponent extends Page implements OnDestroy, OnInit 
         }
     }
 
-    ngOnInit(): void {
+    ngOnInit (): void {
         this.tableConfig = new TableConfig({
             title: 'Website Settings',
             headers: WebsiteSettingsComponent.getTableHeaders(),
@@ -123,11 +123,11 @@ export class WebsiteSettingsComponent extends Page implements OnDestroy, OnInit 
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    static getTableHeaders(): Array<TableHeader> {
+    static getTableHeaders (): Array<TableHeader> {
         return [
             new TableHeader({ title: 'Page' }),
             new TableHeader({ title: 'Description' })

@@ -1,0 +1,1 @@
+{"topic":"Reset log filters on type switch","type":"Bug","body":"When the user switched the type of logs they wanted to see the name filter was not resetted"}

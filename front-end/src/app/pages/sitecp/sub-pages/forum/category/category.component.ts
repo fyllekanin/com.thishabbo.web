@@ -17,7 +17,7 @@ import { SelectItem } from 'shared/components/form/select/select.model';
 @Component({
     selector: 'app-sitecp-forum-category',
     templateUrl: 'category.component.html',
-    styleUrls: ['category.component.css']
+    styleUrls: [ 'category.component.css' ]
 })
 export class CategoryComponent extends Page implements OnDestroy {
     private _categoryPage: CategoryPage = new CategoryPage();
@@ -110,7 +110,7 @@ export class CategoryComponent extends Page implements OnDestroy {
                     this._notificationService.failureNotification(error);
                 });
         } else {
-            this._httpService.post('sitecp/categories', {category: this._categoryPage.category})
+            this._httpService.post('sitecp/categories', { category: this._categoryPage.category })
                 .subscribe(res => {
                     this.onSuccessCreate(res);
                 }, error => {
@@ -149,7 +149,7 @@ export class CategoryComponent extends Page implements OnDestroy {
     }
 
     private onSuccessCreate (category: CategoryPage): void {
-        this.onPage({data: new CategoryPage(category)});
+        this.onPage({ data: new CategoryPage(category) });
         this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'Category Created!'
@@ -157,7 +157,7 @@ export class CategoryComponent extends Page implements OnDestroy {
     }
 
     private onSuccessUpdate (category: CategoryPage): void {
-        this.onPage({data: new CategoryPage(category)});
+        this.onPage({ data: new CategoryPage(category) });
         this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'Category Updated!'
@@ -172,17 +172,17 @@ export class CategoryComponent extends Page implements OnDestroy {
 
         this.setTabs();
         this.setSelectItems();
-        this.categories = ArrayHelper.flatCategories(this._categoryPage.forumTree, '');
+        this.categories = ArrayHelper.flatCategories(this._categoryPage.categories, '');
 
         const selected = this.selectableCategories.find(item => item.value === this._categoryPage.category.parentId);
         this.selectedCategory = selected || this.selectableCategories[0];
     }
 
     private setSelectItems (): void {
-        this.selectableCategories = [{
+        this.selectableCategories = [ {
             label: 'None',
             value: -1
-        }].concat(ArrayHelper.flatCategories(this._categoryPage.forumTree, '').map(item => ({
+        } ].concat(ArrayHelper.flatCategories(this._categoryPage.categories, '').map(item => ({
             label: item.title,
             value: item.categoryId
         })));
@@ -190,14 +190,14 @@ export class CategoryComponent extends Page implements OnDestroy {
 
     private setTabs (): void {
         const tabs = [
-            {title: 'Save', value: CategoryActions.SAVE, condition: true},
+            { title: 'Save', value: CategoryActions.SAVE, condition: true },
             {
                 title: 'Save & Cascade Options',
                 value: CategoryActions.SAVE_AND_CASCADE,
                 condition: this._categoryPage.category.createdAt
             },
-            {title: 'Back', value: CategoryActions.BACK, condition: true},
-            {title: 'Delete', value: CategoryActions.DELETE, condition: this._categoryPage.category.createdAt}
+            { title: 'Back', value: CategoryActions.BACK, condition: true },
+            { title: 'Delete', value: CategoryActions.DELETE, condition: this._categoryPage.category.createdAt }
         ];
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));
     }

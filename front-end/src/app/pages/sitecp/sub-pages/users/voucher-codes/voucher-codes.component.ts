@@ -33,13 +33,13 @@ export class VoucherCodesComponent extends Page implements OnDestroy {
     private _filterTimer = null;
     private _filter: QueryParameters;
     private _actions: Array<TableAction> = [
-        new TableAction({title: 'Delete'})
+        new TableAction({ title: 'Delete' })
     ];
 
     tableConfig: TableConfig;
     pagination: PaginationModel;
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Create New'})
+        new TitleTab({ title: 'Create New' })
     ];
 
     constructor (
@@ -73,7 +73,7 @@ export class VoucherCodesComponent extends Page implements OnDestroy {
         this._filterTimer = setTimeout(() => {
             this._httpService.get(`sitecp/voucher-codes/page/1`, filter)
                 .subscribe(data => {
-                    this.onData({data: new VoucherCodesPage(data)});
+                    this.onData({ data: new VoucherCodesPage(data) });
                 });
         }, 200);
     }
@@ -84,7 +84,7 @@ export class VoucherCodesComponent extends Page implements OnDestroy {
             component: this._componentResolver.resolveComponentFactory(VoucherCodeComponent),
             buttons: [
                 new DialogCloseButton('Cancel'),
-                new DialogButton({title: 'Create', callback: this.onCreateCode.bind(this)})
+                new DialogButton({ title: 'Create', callback: this.onCreateCode.bind(this) })
             ]
         });
     }
@@ -118,7 +118,7 @@ export class VoucherCodesComponent extends Page implements OnDestroy {
             return;
         }
 
-        this._httpService.post('sitecp/voucher-codes', {note: data.note, value: data.value})
+        this._httpService.post('sitecp/voucher-codes', { note: data.note, value: data.value })
             .subscribe(res => {
                 this._data.items.push(new VoucherCode(res));
                 this._dialogService.closeDialog();
@@ -164,10 +164,10 @@ export class VoucherCodesComponent extends Page implements OnDestroy {
         return this._data.items.map(item => new TableRow({
             id: String(item.voucherCodeId),
             cells: [
-                new TableCell({title: item.code}),
-                new TableCell({title: item.note}),
-                new TableCell({title: item.claimer ? `Claimed by: ${item.claimer.nickname}` : 'Not Claimed'}),
-                new TableCell({title: String(item.value)})
+                new TableCell({ title: item.code }),
+                new TableCell({ title: item.note }),
+                new TableCell({ title: item.claimer ? `Claimed by: ${item.claimer.nickname}` : 'Not Claimed' }),
+                new TableCell({ title: String(item.value) })
             ],
             actions: this._actions
         }));
@@ -175,10 +175,10 @@ export class VoucherCodesComponent extends Page implements OnDestroy {
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Code'}),
-            new TableHeader({title: 'Note'}),
-            new TableHeader({title: 'Status'}),
-            new TableHeader({title: 'Value'})
+            new TableHeader({ title: 'Code' }),
+            new TableHeader({ title: 'Note' }),
+            new TableHeader({ title: 'Status' }),
+            new TableHeader({ title: 'Value' })
         ];
     }
 }

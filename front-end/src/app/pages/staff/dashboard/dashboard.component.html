@@ -1,14 +1,56 @@
 <app-stats-boxes [stats]="stats"></app-stats-boxes>
 
 <app-title
-    [title]="'Dashboard'"
-    [tabs]="tabs"
-    (onTabClick)="onTabClick($event)">
+        [title]="'Dashboard'"
+        [tabs]="tabs"
+        (onTabClick)="onTabClick($event)">
 </app-title>
 <app-content>
-        Welcome to the brand new ThisHabbo VX Staff Panel. Everything you have access to has been in development for over a year and has been completely recoded and has no connection to the previous version. You may see things that that certain things have been removed, while other things have been added. We hope you enjoy the new look panel. This is a permission ran panel and therefore, if you don't have access to the forums, you don't have access to the panel!<br />
-        <br>
-        If you're new - Welcome!<br>
-        <br>
-        <b>ThisHabbo Admins</b>
+    <div class="grid-container">
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-6">
+                <label>Year</label>
+                <select [(ngModel)]="selectedYear" (ngModelChange)="onDateChange()">
+                    <option *ngFor="let year of possibleYears" [ngValue]="year">{{year}}</option>
+                </select>
+            </div>
+            <div class="cell small-6">
+                <label>Month</label>
+                <select [(ngModel)]="selectedMonth" (ngModelChange)="onDateChange()">
+                    <option *ngFor="let month of possibleMonths" [ngValue]="month.value">{{month.label}}</option>
+                </select>
+            </div>
+
+            <div class="cell small-4 align-center position" *ngIf="result">
+                <img src="/assets/images/gold-medal.gif"/>
+                <div><strong>{{result.gold.label}} with {{result.gold.points}} points</strong></div>
+            </div>
+            <div class="cell small-4 align-center position" *ngIf="result">
+                <img src="/assets/images/silver-medal.gif"/>
+                <div><strong>{{result.silver.label}} with {{result.silver.points}} points</strong></div>
+            </div>
+            <div class="cell small-4 align-center position" *ngIf="result">
+                <img src="/assets/images/bronze-medal.gif"/>
+                <div><strong>{{result.bronze.label}} with {{result.bronze.points}} points</strong></div>
+            </div>
+        </div>
+    </div>
+</app-content>
+
+<app-title
+        [title]="'Timetable Clear'">
+</app-title>
+<app-content>
+    <div class="grid-container">
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-12 medium-6">
+                <label>Time left until mon-fri is cleared</label>
+                <h3>{{untilWeekDays}}</h3>
+            </div>
+            <div class="cell small-12 medium-6">
+                <label>Time left until sat & sun is cleared</label>
+                <h3>{{untilWeekend}}</h3>
+            </div>
+        </div>
+    </div>
 </app-content>

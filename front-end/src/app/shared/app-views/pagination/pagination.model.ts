@@ -1,5 +1,4 @@
-import {ClassHelper, primitiveOf} from 'shared/helpers/class.helper';
-import { primitive } from 'shared/helpers/class.helper';
+import { ClassHelper, primitive, primitiveOf } from 'shared/helpers/class.helper';
 import { QueryParameters } from 'core/services/http/http.model';
 
 export class PaginationModel {
@@ -11,7 +10,7 @@ export class PaginationModel {
     url = '';
     params: QueryParameters;
 
-    constructor(source?: Partial<PaginationModel>) {
+    constructor (source?: Partial<PaginationModel>) {
         ClassHelper.assign(this, source);
     }
 }

@@ -3,8 +3,9 @@ import { FooterComponent } from './footer.component';
 import { RouterModule } from '@angular/router';
 import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
 import { CommonModule } from '@angular/common';
-import { UserProfileModule } from 'shared/directives/user-profile.module';
+import { UserProfileModule } from 'shared/directives/user-profile/user-profile.module';
 import { UserLinkModule } from 'shared/components/user/user-link.module';
+import { ImageLazyLoadModule } from 'shared/directives/image-lazy-load/image-lazy-load.module';
 
 @NgModule({
     imports: [
@@ -12,7 +13,8 @@ import { UserLinkModule } from 'shared/components/user/user-link.module';
         RouterModule,
         SafeStyleModule,
         UserProfileModule,
-        UserLinkModule
+        UserLinkModule,
+        ImageLazyLoadModule
     ],
     declarations: [
         FooterComponent

@@ -36,7 +36,7 @@ export class AuthService {
     }
 
     login (loginName: string, password: string, stay = false, onFailure?: () => void): Subscription {
-        return this._httpService.post('auth/login', {loginName: loginName, password: password})
+        return this._httpService.post('auth/login', { loginName: loginName, password: password })
             .subscribe(res => {
                 this.doLogin(res, stay);
             }, error => {

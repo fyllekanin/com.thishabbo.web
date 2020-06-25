@@ -25,11 +25,11 @@ export class SnakeComponent extends Page implements AfterViewInit, OnDestroy {
     private _context: CanvasRenderingContext2D;
     private _gameValues: SnakeGameValues;
     private _defaultTabs: Array<TitleTab> = [
-        new TitleTab({title: 'Start Game '})
+        new TitleTab({ title: 'Start Game ' })
     ];
 
     tabs: Array<TitleTab> = [];
-    @ViewChild('game', {static: true}) gameArea: ElementRef;
+    @ViewChild('game', { static: true }) gameArea: ElementRef;
 
     constructor (
         private _notificationService: NotificationService,
@@ -43,7 +43,7 @@ export class SnakeComponent extends Page implements AfterViewInit, OnDestroy {
         this.addSubscription(activatedRoute.data, this.onData.bind(this));
         breadcrumbService.breadcrumb = new Breadcrumb({
             current: 'Snake',
-            items: [ARCADE_BREADCRUM_ITEM]
+            items: [ ARCADE_BREADCRUM_ITEM ]
         });
     }
 
@@ -129,7 +129,7 @@ export class SnakeComponent extends Page implements AfterViewInit, OnDestroy {
         }
 
         while (!this._gameValues.candy || this._gameValues.getSnakeObject()[SnakeSettings.stringifyCoord(this._gameValues.candy)]) {
-            this._gameValues.candy = {x: SnakeSettings.randomOffset(), y: SnakeSettings.randomOffset()};
+            this._gameValues.candy = { x: SnakeSettings.randomOffset(), y: SnakeSettings.randomOffset() };
         }
 
         this._context.fillStyle = '#c37070';
@@ -137,7 +137,7 @@ export class SnakeComponent extends Page implements AfterViewInit, OnDestroy {
     }
 
     private saveScore (): void {
-        this._httpService.post('arcade/snake', {result: {gameId: this._gameId, score: this._gameValues.score}})
+        this._httpService.post('arcade/snake', { result: { gameId: this._gameId, score: this._gameValues.score } })
             .subscribe(res => {
                 this._highscore = res.highscore.map(item => new HighScoreModel(item));
                 this._notificationService.sendNotification(new NotificationMessage({

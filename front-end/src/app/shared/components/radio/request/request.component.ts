@@ -11,18 +11,18 @@ export class RequestComponent extends InnerDialogComponent {
     content = '';
     nickname = '';
 
-    setData(isLoggedIn: boolean) {
+    setData (isLoggedIn: boolean) {
         this._isLoggedIn = isLoggedIn;
     }
 
-    getData() {
+    getData () {
         return {
             content: this.content,
             nickname: this.nickname
         };
     }
 
-    get isLoggedIn(): boolean {
+    get isLoggedIn (): boolean {
         return this._isLoggedIn;
     }
 }

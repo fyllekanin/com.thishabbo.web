@@ -11,7 +11,7 @@ import { SubscriptionsPage } from './subscriptions.model';
 @Component({
     selector: 'app-shop-subscriptions',
     templateUrl: 'subscriptions.component.html',
-    styleUrls: ['subscriptions.component.css']
+    styleUrls: [ 'subscriptions.component.css' ]
 })
 export class SubscriptionsComponent extends Page implements OnDestroy {
     private _data: SubscriptionsPage;

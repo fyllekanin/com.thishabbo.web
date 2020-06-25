@@ -26,7 +26,7 @@ export class BettingComponent extends Page implements OnInit, OnDestroy {
 
     constructor (breadcrumbService: BreadcrumbService, elementRef: ElementRef) {
         super(elementRef);
-        breadcrumbService.breadcrumb = new Breadcrumb({current: BETTING_HUB.title});
+        breadcrumbService.breadcrumb = new Breadcrumb({ current: BETTING_HUB.title });
     }
 
     ngOnInit (): void {

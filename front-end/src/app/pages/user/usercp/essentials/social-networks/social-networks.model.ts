@@ -6,7 +6,7 @@ export class SocialNetworksModel {
     @primitive()
     twitter: string;
 
-    constructor(source?: Partial<SocialNetworksModel>) {
+    constructor (source?: Partial<SocialNetworksModel>) {
         ClassHelper.assign(this, source);
     }
 }

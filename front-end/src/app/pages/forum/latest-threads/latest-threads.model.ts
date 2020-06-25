@@ -22,10 +22,6 @@ export class LatestThread {
     constructor (source: Partial<LatestThread>) {
         ClassHelper.assign(this, source);
     }
-
-    get time (): string {
-        return this.createdAt;
-    }
 }
 
 export class LatestThreadsPage {

@@ -8,7 +8,7 @@ import { EditorComponent } from 'shared/components/editor/editor.component';
 import { EditorAction } from 'shared/components/editor/editor.model';
 import { Page } from 'shared/page/page.model';
 import { USERCP_BREADCRUM_ITEM } from '../../usercp.constants';
-import { Signature } from './signature.model';
+import { Signature, SignatureActions } from './signature.model';
 import { SignatureService } from '../services/signature.service';
 
 @Component({
@@ -20,9 +20,13 @@ export class SignatureComponent extends Page implements OnDestroy {
 
     @ViewChild('editor', { static: true }) editor: EditorComponent;
 
-    saveButton: EditorAction = new EditorAction({ title: 'Save' });
+    tabs: Array<EditorAction> = [
+        new EditorAction({ title: 'Save', value: SignatureActions.SAVE }),
+        new EditorAction({ title: 'Preview', value: SignatureActions.PREVIEW })
+    ];
+    preview = '<em>Nothing to preview...</em>';
 
-    constructor(
+    constructor (
         private _notificationService: NotificationService,
         private _service: SignatureService,
         activatedRoute: ActivatedRoute,
@@ -39,11 +43,22 @@ export class SignatureComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onSave(): void {
+    onAction (action: EditorAction): void {
+        switch (action.value) {
+            case SignatureActions.SAVE:
+                this.onSave();
+                break;
+            case SignatureActions.PREVIEW:
+                this.onPreview();
+                break;
+        }
+    }
+
+    onSave (): void {
         this._service.save(this.editor.getEditorValue()).subscribe(res => {
             this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Success',
@@ -53,21 +68,18 @@ export class SignatureComponent extends Page implements OnDestroy {
         });
     }
 
-    onKeyUp(content: string): void {
-        this._service.parse(content).subscribe(parsed => {
-            this._signature.parsedSignature = parsed;
-        });
-    }
-
-    get signature(): string {
+    get signature (): string {
         return this._signature.signature;
     }
 
-    get parsedSignature(): string {
-        return this._signature.parsedSignature;
-    }
-
-    private onData(data: { data: Signature }): void {
+    private onData (data: { data: Signature }): void {
         this._signature = data.data;
     }
+
+    private onPreview (): void {
+        this.preview = '<em>Loading...</em>';
+        this._service.parse(this.editor.getEditorValue())
+            .subscribe(parsed => this.preview = parsed);
+    }
+
 }

@@ -5,9 +5,9 @@ export interface NotificationView {
     notification: NotificationModel<any>;
     onClick: EventEmitter<number>;
 
-    getTime(): string;
+    getTime (): string;
 }
 
-export function shouldPerformClickOnNotification(event) {
+export function shouldPerformClickOnNotification (event) {
     return event && event.className.indexOf('readOnly') === -1 && event.nodeName !== 'A' && event.nodeName !== 'app-user-link';
 }

@@ -1,7 +1,7 @@
 <div class="mini-profile" [ngClass]="isMiniProfileDisabled ? 'disabled' : ''">
     <div class="mini-cover" [style.background-image]="user.coverUrl">
-        <div class="mini-username">
-            <span [style]="user.nameStyling | safeStyle">{{ user ? user.nickname : '' }}</span>
+        <div class="mini-nickname">
+            <span>{{ user ? user.nickname : '' }}</span>
         </div>
     </div>
     <div [style.background-image]="user.avatarUrl" class="mini-av"></div>
@@ -18,7 +18,9 @@
     </div>
 </div>
 <span [style.background]="user.effectUrl">
-    <a class="nickname" [routerLink]="['/user/profile/', user.nickname]" [style]="user.nameStyling | safeStyle">
+    <a class="nickname-base"
+       [routerLink]="['/user/profile/', user.nickname]"
+       [ngStyle]="nameStyle">
         <img *ngIf="user.iconUrl" [ngClass]="user.iconPosition + '-icon'" [src]="user.iconUrl" alt="Icon"/>
         {{user.nickname}}
     </a>

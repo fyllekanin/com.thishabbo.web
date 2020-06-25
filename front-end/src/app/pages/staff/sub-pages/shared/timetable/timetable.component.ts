@@ -31,6 +31,7 @@ export class TimetableComponent extends Page implements OnDestroy {
     private _timezones: Array<string> = [];
 
     tabs: Array<TitleTab> = [];
+    isEvents: boolean;
 
     constructor (
         private _dialogService: DialogService,
@@ -45,6 +46,7 @@ export class TimetableComponent extends Page implements OnDestroy {
     ) {
         super(elementRef);
         this._type = activatedRoute.snapshot.data['type'];
+        this.isEvents = this._type === 'events';
         this.addSubscription(activatedRoute.data, this.onData.bind(this));
         this.addSubscription(activatedRoute.params, this.onDayChange.bind(this));
         breadcrumbService.breadcrumb = new Breadcrumb({
@@ -70,7 +72,7 @@ export class TimetableComponent extends Page implements OnDestroy {
 
     getNickname (hour: number): string {
         const timetable = this.getTimetableByHour(hour);
-        const linkIcon = this.isEvents() ? (timetable.link ? '<i class="far fa-thumbs-up"></i>' :
+        const linkIcon = this.isEvents ? (timetable.link ? '<i class="far fa-thumbs-up"></i>' :
             '<i class="far fa-thumbs-down"></i>') : '';
         const name = this.getEventName(timetable);
         const postFix = `<br /> ${name ? '(' + name + ')' : ''} ${linkIcon}`;
@@ -84,8 +86,8 @@ export class TimetableComponent extends Page implements OnDestroy {
             return;
         }
 
-        if ((this.isEvents() && this._authService.staffPermissions.canBookEventForOthers) ||
-            (!this.isEvents() && this._authService.staffPermissions.canBookRadioForOthers)) {
+        if ((this.isEvents && this._authService.staffPermissions.canBookEventForOthers) ||
+            (!this.isEvents && this._authService.staffPermissions.canBookRadioForOthers)) {
             this.editBooking(timetable);
         } else {
             this.unbook(timetable);
@@ -101,7 +103,7 @@ export class TimetableComponent extends Page implements OnDestroy {
     }
 
     private getEventName (timetable: TimetableModel): string {
-        return TimetableHelper.getEventName(timetable, this.isEvents());
+        return TimetableHelper.getEventName(timetable, this.isEvents);
     }
 
     private editBooking (timetableModel: TimetableModel): void {
@@ -135,7 +137,7 @@ export class TimetableComponent extends Page implements OnDestroy {
                 events: this._data.events,
                 canBookRadioForOther: this.canBookRadioForOther(),
                 canBookEventForOther: this.canBookEventForOther(),
-                isEvents: this.isEvents(),
+                isEvents: this.isEvents,
                 slot: timetableModel
             }
         });
@@ -151,14 +153,14 @@ export class TimetableComponent extends Page implements OnDestroy {
                     callback: (res: { nickname: string, eventId: number, link: string }) => this.onBook(hour, res)
                 })
             ],
-            component: this.isEvents() || this.canBookRadioForOther() ?
+            component: this.isEvents || this.canBookRadioForOther() ?
                 this._componentFactory.resolveComponentFactory(SelectionComponent) : null,
             content: 'Are you sure you want to book this slot?',
             data: {
                 events: this._data.events,
                 canBookRadioForOther: this.canBookRadioForOther(),
                 canBookEventForOther: this.canBookEventForOther(),
-                isEvents: this.isEvents()
+                isEvents: this.isEvents
             }
         });
     }
@@ -169,10 +171,6 @@ export class TimetableComponent extends Page implements OnDestroy {
 
     private canBookRadioForOther (): boolean {
         return this._authService.staffPermissions.canBookRadioForOthers;
-    }
-
-    private isEvents (): boolean {
-        return this._type === 'events';
     }
 
     private onBook (hour: number, res: { nickname: string, eventId: number, link: string }): void {
@@ -223,7 +221,7 @@ export class TimetableComponent extends Page implements OnDestroy {
     }
 
     private unbook (timetable: TimetableModel): void {
-        const permission = this.isEvents() ? this._authService.staffPermissions.canBookEventForOthers :
+        const permission = this.isEvents ? this._authService.staffPermissions.canBookEventForOthers :
             this._authService.staffPermissions.canBookRadioForOthers;
         if (timetable.user.userId !== this._authService.authUser.userId && !permission) {
             this._notificationService.sendNotification(new NotificationMessage({

@@ -20,7 +20,7 @@ export class NavigationItemComponent extends InnerDialogComponent {
         isHomePage: false
     };
 
-    setData(data: { isMainItem: boolean, item: MainItem | ChildItem}): void {
+    setData (data: { isMainItem: boolean, item: MainItem | ChildItem }): void {
         this.isMainItem = data.isMainItem;
         if (data.item) {
             this.data = {
@@ -36,7 +36,7 @@ export class NavigationItemComponent extends InnerDialogComponent {
         }
     }
 
-    getData(): MainItem | ChildItem {
+    getData (): MainItem | ChildItem {
         if (this.data.isDivider) {
             return new ChildItem({ label: IdHelper.newUuid(), isDivider: true });
         }

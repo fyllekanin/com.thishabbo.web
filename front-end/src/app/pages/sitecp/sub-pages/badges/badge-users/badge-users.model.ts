@@ -1,4 +1,4 @@
-import { arrayOf, ClassHelper, objectOf, primitive, dateAndTime } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, dateAndTime, objectOf, primitive } from 'shared/helpers/class.helper';
 import { Badge } from '../badges.model';
 
 export class BadgeUser {

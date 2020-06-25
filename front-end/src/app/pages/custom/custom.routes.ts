@@ -2,7 +2,7 @@ import { PageComponent } from 'shared/page/page.component';
 import { Routes } from '@angular/router';
 import { CustomPageComponent } from './custom-page/custom-page.component';
 import { CustomPageResolver } from './services/custom-page.resolver';
-import { LeaderBoardComponent } from './leader-board/leader-board.component';
+import { SeasonsComponent } from './seasons/seasons.component';
 import { BadgeArticlesComponent } from './badge-articles/badge-articles.component';
 import { BadgeArticlesResolver } from './services/badge-articles.resolver';
 import { ContactComponent } from './contact/contact.component';
@@ -24,7 +24,7 @@ export const customRoutes: Routes = [
             },
             {
                 path: 'leader-board',
-                component: LeaderBoardComponent
+                component: SeasonsComponent
             },
             {
                 path: 'contact',
@@ -48,7 +48,7 @@ export const customRoutes: Routes = [
             {
                 path: 'radio-timetable',
                 component: TimetableComponent,
-                data: {type: 'radio'},
+                data: { type: 'radio' },
                 resolve: {
                     data: TimetableResolver
                 }
@@ -56,7 +56,7 @@ export const customRoutes: Routes = [
             {
                 path: 'events-timetable',
                 component: TimetableComponent,
-                data: {type: 'events'},
+                data: { type: 'events' },
                 resolve: {
                     data: TimetableResolver
                 }

@@ -1,4 +1,4 @@
-import { arrayOf, ClassHelper, objectOf, primitive, dateAndTime } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, dateAndTime, objectOf, primitive } from 'shared/helpers/class.helper';
 import { SlimUser } from 'core/services/auth/auth.model';
 
 export class ItemUserModel {

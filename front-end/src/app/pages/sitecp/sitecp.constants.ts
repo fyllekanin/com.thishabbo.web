@@ -84,3 +84,8 @@ export const PREFIX_LIST = new BreadcrumbItem({
     title: 'Prefixes',
     url: '/sitecp/forum/prefixes/page/1'
 });
+
+export const THREAD_TEMPLATES_LIST = new BreadcrumbItem({
+    title: 'Thread Templates',
+    url: '/sitecp/forum/thread-templates/page/1'
+});

@@ -19,7 +19,10 @@
     height: 100%;
     float: left;
     padding: 3px 13px 0 0;
-    color: #159cfc;
+    color: #be6d6d;
+
+    min-width: 60px;
+    text-align: center;
 }
 
 .read-icon {

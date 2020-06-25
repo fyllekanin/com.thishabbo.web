@@ -25,7 +25,7 @@ export class ItemService implements Resolve<ShopItem> {
     }
 
     create (formData: FormData): Observable<ShopItem> {
-        return this._httpClient.post('rest/api/sitecp/shop/items', formData)
+        return this._httpClient.post('api/sitecp/shop/items', formData)
             .pipe(map(res => {
                 this._notificationService.sendInfoNotification('Item created');
                 return new ShopItem(res);
@@ -33,7 +33,7 @@ export class ItemService implements Resolve<ShopItem> {
     }
 
     update (formData: FormData, shopItemId: number): Observable<ShopItem> {
-        return this._httpClient.post(`rest/api/sitecp/shop/items/${shopItemId}`, formData)
+        return this._httpClient.post(`api/sitecp/shop/items/${shopItemId}`, formData)
             .pipe(map(res => {
                 this._notificationService.sendInfoNotification('Item updated');
                 return new ShopItem(res);

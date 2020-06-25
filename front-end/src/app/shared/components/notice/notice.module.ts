@@ -10,4 +10,5 @@ import { NgModule } from '@angular/core';
         NoticeComponent
     ]
 })
-export class NoticeModule {}
+export class NoticeModule {
+}

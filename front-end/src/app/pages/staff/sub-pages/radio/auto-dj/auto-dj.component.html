@@ -1,0 +1,18 @@
+<app-title [title]="'Auto DJ'"></app-title>
+<app-content>
+    <em>The Auto DJ will block any other DJ from connecting to the radio. If you turn Auto DJ on you must make sure
+        that either youself or someone else with the correct permissions will be present for when the next DJ is due
+        to go on air so that the Auto DJ can be stopped.</em>
+    <br>
+    <br>
+    <div class="grid-container full">
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-6 align-center">
+                <button appButton [color]="startButton" (onClick)="onStart()">Start</button>
+            </div>
+            <div class="cell small-6 align-center">
+                <button appButton [color]="stopButton" (onClick)="onStop()">Stop</button>
+            </div>
+        </div>
+    </div>
+</app-content>

@@ -6,7 +6,7 @@ import { TimetableModel } from 'shared/models/timetable.model';
 @Component({
     selector: 'app-staff-radio-timetable-selection',
     templateUrl: 'selection.component.html',
-    styleUrls: ['selection.component.css']
+    styleUrls: [ 'selection.component.css' ]
 })
 export class SelectionComponent extends InnerDialogComponent {
     private _data: {
@@ -33,7 +33,7 @@ export class SelectionComponent extends InnerDialogComponent {
         this._data = data;
         if (this._data.slot) {
             this.nickname = this._data.slot.user.nickname;
-            this.eventId = this._data.isEvents ? this._data.slot.event.eventId : null;
+            this.eventId = this._data.isEvents && !this._data.slot.isPerm ? this._data.slot.event.eventId : null;
             this.link = this._data.isEvents ? this._data.slot.link : null;
         }
     }
@@ -43,7 +43,7 @@ export class SelectionComponent extends InnerDialogComponent {
     }
 
     get canSelectEvent (): boolean {
-        return this._data.isEvents;
+        return this._data.isEvents && (this._data.slot ? !this._data.slot.isPerm : true);
     }
 
     get events (): Array<EventType> {

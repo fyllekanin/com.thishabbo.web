@@ -22,6 +22,11 @@ html, body {
     color: #7d7d7d;
     overflow-x: hidden;
     scroll-behavior: smooth;
+    min-height: 100vh;
+}
+
+html {
+    overflow-y: scroll;
 }
 
 .quotepost {
@@ -63,7 +68,7 @@ html, body {
 a {
     text-decoration: none;
     cursor: pointer;
-    color: #159cfc;
+    color: #be6d6d;
 }
 
 app-info-box a {
@@ -242,6 +247,10 @@ summary {
     cursor: pointer;
 }
 
+.cursor-pointer {
+    cursor: pointer;
+}
+
 .gray-content-wrapper {
     margin: 0 0 2px 0;
     padding: 8.56px;
@@ -318,9 +327,8 @@ summary {
 }
 
 .custom-user-bar-template {
-    text-shadow: rgba(93, 79, 79, 0.51) 0px 1px;
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 0px 1px inset, rgba(255, 255, 255, 0.12) 0px 0px 0px 2px inset, rgba(0, 0, 0, 0.17) 0px 2px 0px;
-    background-image: url(/assets/images/bargradient.png);
+    text-shadow: rgba(93, 79, 79, 0.51) 0 1px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0 0 0 1px inset, rgba(255, 255, 255, 0.12) 0 0 0 2px inset, rgba(0, 0, 0, 0.17) 0 2px 0;
     width: 200px;
     text-align: center;
     color: white;
@@ -368,4 +376,67 @@ table td {
     .for-desktop {
         display: none;
     }
+}
+
+.quick-pagination {
+    color: #159cfc;
+    display: inline-block;
+    margin-left: 10px;
+    top: -3px;
+    position: relative;
+}
+
+.quick-pagination a {
+    display: inline-block !important;
+    margin: 0 2px;
+}
+
+@-webkit-keyframes shake {
+    0% {
+        -webkit-transform: translate(2px, 1px) rotate(0deg);
+    }
+
+    10% {
+        -webkit-transform: translate(-1px, -2px) rotate(-1deg);
+    }
+
+    20% {
+        -webkit-transform: translate(-3px, 0px) rotate(1deg);
+    }
+
+    30% {
+        -webkit-transform: translate(0px, 2px) rotate(0deg);
+    }
+
+    40% {
+        -webkit-transform: translate(1px, -1px) rotate(1deg);
+    }
+
+    50% {
+        -webkit-transform: translate(-1px, 2px) rotate(-1deg);
+    }
+
+    60% {
+        -webkit-transform: translate(-3px, 1px) rotate(0deg);
+    }
+
+    70% {
+        -webkit-transform: translate(2px, 1px) rotate(-1deg);
+    }
+
+    80% {
+        -webkit-transform: translate(-1px, -1px) rotate(1deg);
+    }
+
+    90% {
+        -webkit-transform: translate(2px, 2px) rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: translate(1px, -2px) rotate(-1deg);
+    }
+}
+
+.nickname-base {
+    -webkit-background-clip: text !important;
 }

@@ -6,6 +6,7 @@ use App\EloquentModels\Models\UnixTimeModel;
 use Illuminate\Database\Eloquent\Builder;
 
 class ForumPermission extends UnixTimeModel {
+
     protected $table = 'forum_permissions';
     protected $primaryKey = 'forumPermissionId';
     protected $fillable = ['categoryId', 'groupId', 'permissions', 'isAuthOnly'];
@@ -15,6 +16,6 @@ class ForumPermission extends UnixTimeModel {
     }
 
     public function scopeWithPermission(Builder $query, $permission) {
-        return $query->whereRaw('(permissions & ' . $permission . ')');
+        return $query->whereRaw('(permissions & '.$permission.')');
     }
 }

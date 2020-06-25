@@ -17,10 +17,12 @@ export class LogsService implements Resolve<LogPage> {
 
         const action = route.queryParams['action'];
         const user = route.queryParams['user'];
+        const target = route.queryParams['target'];
 
         return this._httpService.get(`sitecp/logs/${type}/page/${pageNr}`, {
             action: action,
-            user: user
+            user: user,
+            target: target
         })
             .pipe(map(res => new LogPage(res)));
     }

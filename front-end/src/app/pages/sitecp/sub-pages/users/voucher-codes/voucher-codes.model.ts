@@ -15,7 +15,7 @@ export class VoucherCode {
     @primitive()
     createdAt: number;
 
-    constructor(source: Partial<VoucherCode>) {
+    constructor (source: Partial<VoucherCode>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -28,7 +28,7 @@ export class VoucherCodesPage {
     @arrayOf(VoucherCode)
     items: Array<VoucherCode> = [];
 
-    constructor(source: Partial<VoucherCodesPage>) {
+    constructor (source: Partial<VoucherCodesPage>) {
         ClassHelper.assign(this, source);
     }
 }

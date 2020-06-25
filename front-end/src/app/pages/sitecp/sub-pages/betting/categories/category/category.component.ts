@@ -70,22 +70,22 @@ export class CategoryComponent extends Page implements OnDestroy {
 
     private onSave (): void {
         if (this._data.createdAt) {
-            this._httpService.put(`sitecp/betting/category/${this._data.betCategoryId}`, {betCategory: this._data})
+            this._httpService.put(`sitecp/betting/category/${this._data.betCategoryId}`, { betCategory: this._data })
                 .subscribe(res => {
                     this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: `${this._data.name} updated!`
                     }));
-                    this.onData({data: new BetCategoryModel(res)});
+                    this.onData({ data: new BetCategoryModel(res) });
                 }, this._notificationService.failureNotification.bind(this._notificationService));
         } else {
-            this._httpService.post(`sitecp/betting/category`, {betCategory: this._data})
+            this._httpService.post(`sitecp/betting/category`, { betCategory: this._data })
                 .subscribe(res => {
                     this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: `${this._data.name} created!`
                     }));
-                    this.onData({data: new BetCategoryModel(res)});
+                    this.onData({ data: new BetCategoryModel(res) });
                 }, this._notificationService.failureNotification.bind(this._notificationService));
         }
     }
@@ -113,9 +113,9 @@ export class CategoryComponent extends Page implements OnDestroy {
         this._data = data.data;
 
         const tabs = [
-            {title: 'Save', value: BetCategoryActions.SAVE, condition: true},
-            {title: 'Back', value: BetCategoryActions.BACK, condition: true},
-            {title: 'Delete', value: BetCategoryActions.DELETE, condition: this._data.createdAt}
+            { title: 'Save', value: BetCategoryActions.SAVE, condition: true },
+            { title: 'Back', value: BetCategoryActions.BACK, condition: true },
+            { title: 'Delete', value: BetCategoryActions.DELETE, condition: this._data.createdAt }
         ];
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));
     }

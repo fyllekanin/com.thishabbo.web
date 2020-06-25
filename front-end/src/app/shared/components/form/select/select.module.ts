@@ -13,4 +13,5 @@ import { SelectComponent } from 'shared/components/form/select/select.component'
         SelectComponent
     ]
 })
-export class SelectModule {}
+export class SelectModule {
+}

@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { Page } from 'shared/page/page.model';
-import { BetActions, BetPage } from '../bets.model';
+import { BetActions, BetModel, BetPage } from '../bets.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { HttpService } from 'core/services/http/http.service';
@@ -11,7 +11,7 @@ import { NotificationMessage } from 'shared/app-views/global-notification/global
 @Component({
     selector: 'app-betting-bet',
     templateUrl: 'bet.component.html',
-    styleUrls: ['bet.component.css']
+    styleUrls: [ 'bet.component.css' ]
 })
 export class BetComponent extends Page implements OnDestroy {
     private _data: BetPage = new BetPage(null);
@@ -37,7 +37,8 @@ export class BetComponent extends Page implements OnDestroy {
     onTabClick (value: number): void {
         switch (value) {
             case BetActions.SAVE:
-                this.onSave();
+            case BetActions.SAVE_AND_CREATE_NEW:
+                this.onSave(BetActions.SAVE_AND_CREATE_NEW === value);
                 break;
             case BetActions.BACK:
                 this._router.navigateByUrl('/sitecp/betting/bets/page/1');
@@ -83,24 +84,25 @@ export class BetComponent extends Page implements OnDestroy {
             });
     }
 
-    private onSave (): void {
+    private onSave (reload: boolean): void {
+        const emptyBet = new BetPage({ categories: this._data.categories, bet: new BetModel({}) });
         if (this._data.bet.createdAt) {
-            this._httpService.put(`sitecp/betting/bet/${this._data.bet.betId}`, {bet: this._data.bet})
+            this._httpService.put(`sitecp/betting/bet/${this._data.bet.betId}`, { bet: this._data.bet })
                 .subscribe(res => {
                     this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: `${this._data.bet.name} is updated!`
                     }));
-                    this.onData({data: new BetPage(res)});
+                    this.onData({ data: reload ? emptyBet : new BetPage(res) });
                 }, this._notificationService.failureNotification.bind(this._notificationService));
         } else {
-            this._httpService.post('sitecp/betting/bet', {bet: this._data.bet})
+            this._httpService.post('sitecp/betting/bet', { bet: this._data.bet })
                 .subscribe(res => {
                     this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: `${this._data.bet.name} is created!`
                     }));
-                    this.onData({data: new BetPage(res)});
+                    this.onData({ data: reload ? emptyBet : new BetPage(res) });
                 }, this._notificationService.failureNotification.bind(this._notificationService));
         }
     }
@@ -109,9 +111,10 @@ export class BetComponent extends Page implements OnDestroy {
         this._data = data.data;
 
         const tabs = [
-            {title: 'Save', value: BetActions.SAVE, condition: true},
-            {title: 'Back', value: BetActions.BACK, condition: true},
-            {title: 'Delete', value: BetActions.DELETE, condition: this._data.bet.createdAt}
+            { title: 'Save', value: BetActions.SAVE, condition: true },
+            { title: 'Save & Create New', value: BetActions.SAVE_AND_CREATE_NEW, condition: true },
+            { title: 'Back', value: BetActions.BACK, condition: true },
+            { title: 'Delete', value: BetActions.DELETE, condition: this._data.bet.createdAt }
         ];
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));
     }

@@ -8,7 +8,7 @@ export class PostStatisticsModel {
     @primitive()
     posts: number;
 
-    constructor(source: Partial<PostStatisticsModel>) {
+    constructor (source: Partial<PostStatisticsModel>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -25,7 +25,7 @@ export class PostsStatisticsModel {
     @primitive()
     month: number;
 
-    constructor(source: Partial<PostsStatisticsModel>) {
+    constructor (source: Partial<PostsStatisticsModel>) {
         ClassHelper.assign(this, source);
     }
 }

@@ -8,9 +8,10 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class CurrentListenersResolver implements Resolve<Array<CurrentListener>> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
-    resolve(): Observable<Array<CurrentListener>> {
+    resolve (): Observable<Array<CurrentListener>> {
         return this._httpService.get('staff/radio/current-listeners')
             .pipe(map(res => res.map(item => new CurrentListener(item))));
     }

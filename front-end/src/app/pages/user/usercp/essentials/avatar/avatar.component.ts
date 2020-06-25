@@ -16,16 +16,16 @@ import { User } from 'core/services/auth/auth.model';
 @Component({
     selector: 'app-usercp-avatar',
     templateUrl: 'avatar.component.html',
-    styleUrls: ['avatar.component.css']
+    styleUrls: [ 'avatar.component.css' ]
 })
 export class AvatarComponent extends Page implements OnDestroy {
     private _avatarSize = new AvatarModel(null);
 
     preview: string | ArrayBuffer;
 
-    @ViewChild('avatar', {static: true}) avatarInput;
+    @ViewChild('avatar', { static: true }) avatarInput;
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Save'})
+        new TitleTab({ title: 'Save' })
     ];
 
     constructor (
@@ -73,7 +73,7 @@ export class AvatarComponent extends Page implements OnDestroy {
         }
         this._service.save(form)
             .subscribe(res => {
-                this.onData({data: res});
+                this.onData({ data: res });
                 this.preview = null;
                 this.user.avatarUpdatedAt = new Date().getTime() / 1000;
                 this._previewService.update();
@@ -95,7 +95,7 @@ export class AvatarComponent extends Page implements OnDestroy {
     }
 
     getOldAvatarUrl (id: number): string {
-        return `background-image: url('/rest/resources/images/old-avatars/${id}.gif')`;
+        return `background-image: url('/resources/images/old-avatars/${id}.gif')`;
     }
 
     get model (): AvatarModel {
@@ -109,7 +109,7 @@ export class AvatarComponent extends Page implements OnDestroy {
     private onSwitchBack (id: number): void {
         this._dialogService.closeDialog();
         this._service.switchBack(id).subscribe(res => {
-            this.onData({data: res});
+            this.onData({ data: res });
             this._previewService.update();
         });
     }

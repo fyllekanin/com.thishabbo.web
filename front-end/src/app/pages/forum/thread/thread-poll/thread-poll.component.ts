@@ -9,7 +9,7 @@ import { AuthService } from 'core/services/auth/auth.service';
 @Component({
     selector: 'app-forum-thread-poll',
     templateUrl: 'thread-poll.component.html',
-    styleUrls: ['thread-poll.component.css']
+    styleUrls: [ 'thread-poll.component.css' ]
 })
 export class ThreadPollComponent implements OnInit {
     private _poll: ThreadPoll;
@@ -32,12 +32,12 @@ export class ThreadPollComponent implements OnInit {
             return;
         }
         this.tabs = [
-            new TitleTab({title: 'Vote'})
+            new TitleTab({ title: 'Vote' })
         ];
     }
 
     vote (): void {
-        this._httpService.post(`forum/thread/${this._threadId}/vote`, {answerId: this.answerId})
+        this._httpService.post(`forum/thread/${this._threadId}/vote`, { answerId: this.answerId })
             .subscribe(poll => {
                 this._poll = new ThreadPoll(poll);
                 this.setAnswers();
@@ -82,7 +82,7 @@ export class ThreadPollComponent implements OnInit {
         this.answers = this._poll.answers.map(answer => {
             return {
                 label: answer.label,
-                percentage: answer.answers / total * 100,
+                percentage: Math.round(answer.answers / total * 100),
                 votes: answer.answers
             };
         });

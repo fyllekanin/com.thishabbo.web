@@ -40,9 +40,9 @@ describe('DialogComponent', () => {
                 DialogComponent
             ],
             providers: [
-                {provide: DialogService, useValue: service}
+                { provide: DialogService, useValue: service }
             ],
-            schemas: [NO_ERRORS_SCHEMA]
+            schemas: [ NO_ERRORS_SCHEMA ]
         });
 
         component = TestBed.createComponent(DialogComponent).componentInstance;
@@ -52,8 +52,7 @@ describe('DialogComponent', () => {
         // Given
         const button = new DialogButton({
             title: 'something',
-            callback: () => {
-            }
+            callback: () => null
         });
         spyOn(button, 'callback');
 
@@ -67,7 +66,7 @@ describe('DialogComponent', () => {
     describe('title', () => {
         it('should return title from config', () => {
             // Given
-            service.open({title: 'test', content: 'no', buttons: []});
+            service.open({ title: 'test', content: 'no', buttons: [] });
             // When
             const result = component.title;
 
@@ -86,7 +85,7 @@ describe('DialogComponent', () => {
     describe('content', () => {
         it('should return content from config', () => {
             // Given
-            service.open({title: 'test', content: 'no', buttons: []});
+            service.open({ title: 'test', content: 'no', buttons: [] });
             // When
             const result = component.content;
 
@@ -107,7 +106,7 @@ describe('DialogComponent', () => {
             // Given
             service.open({
                 title: 'test', content: 'no', buttons: [
-                    new DialogButton({title: 'test'})
+                    new DialogButton({ title: 'test' })
                 ]
             });
             // When
@@ -128,7 +127,7 @@ describe('DialogComponent', () => {
             service.open({
                 title: 'test', content: '', buttons: [
                     new DialogCloseButton('Close'),
-                    new DialogButton({title: 'test'})
+                    new DialogButton({ title: 'test' })
                 ]
             });
 

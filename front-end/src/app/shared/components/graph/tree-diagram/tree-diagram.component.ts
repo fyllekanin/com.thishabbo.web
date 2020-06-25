@@ -5,7 +5,7 @@ import { exampleData, TreeDiagram, TreeDiagramSize } from 'shared/components/gra
 @Component({
     selector: 'app-tree-diagram',
     templateUrl: 'tree-diagram.component.html',
-    styleUrls: ['tree-diagram.component.css'],
+    styleUrls: [ 'tree-diagram.component.css' ],
     encapsulation: ViewEncapsulation.None
 })
 export class TreeDiagramComponent implements AfterViewInit {
@@ -34,7 +34,7 @@ export class TreeDiagramComponent implements AfterViewInit {
 
         this.setZoom();
         this.setSvgAttributes();
-        this._tree = d3.tree().size([this._size.height, this._size.width]);
+        this._tree = d3.tree().size([ this._size.height, this._size.width ]);
 
         if (this._data) {
             this.updateTree();
@@ -110,7 +110,7 @@ export class TreeDiagramComponent implements AfterViewInit {
         const linkEnter = link.enter().insert('path', 'g')
             .attr('class', 'link')
             .attr('d', () => {
-                const o = {x: source.x0, y: source.y0};
+                const o = { x: source.x0, y: source.y0 };
                 return this.diagonal(o, o);
             });
 
@@ -122,7 +122,7 @@ export class TreeDiagramComponent implements AfterViewInit {
         link.exit().transition()
             .duration(this._duration)
             .attr('d', () => {
-                const o = {x: source.x, y: source.y};
+                const o = { x: source.x, y: source.y };
                 return this.diagonal(o, o);
             })
             .remove();
@@ -141,8 +141,8 @@ export class TreeDiagramComponent implements AfterViewInit {
 
     private setZoom (): void {
         this._zoom = d3.zoom()
-            .extent([[this._size.left, this._size.top], [this._size.width, this._size.height]])
-            .scaleExtent([1, 1])
+            .extent([ [ this._size.left, this._size.top ], [ this._size.width, this._size.height ] ])
+            .scaleExtent([ 1, 1 ])
             .on('zoom', this.zoomed.bind(this));
     }
 

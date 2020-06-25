@@ -15,6 +15,7 @@ import { BookingLogResolver } from '../shared/booking-log/booking-log.resolver';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 import { PING_TYPES } from 'core/services/continues-information/continues-information.model';
 import { TimetableResolver } from 'shared/services/timetable.resolver';
+import { AutoDjComponent } from './auto-dj/auto-dj.component';
 
 
 export const radioRoutes: Routes = [
@@ -62,6 +63,16 @@ export const radioRoutes: Routes = [
             {
                 path: 'kick-dj',
                 component: KickDjComponent,
+                resolve: {
+                    ping: ContinuesInformationService
+                },
+                data: {
+                    type: PING_TYPES.STAFF
+                }
+            },
+            {
+                path: 'auto-dj',
+                component: AutoDjComponent,
                 resolve: {
                     ping: ContinuesInformationService
                 },

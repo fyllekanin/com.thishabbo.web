@@ -3,10 +3,12 @@
     <div class="grid-container fluid">
         <div class="grid-x">
             <div class="cell small-12">
-                <em>New users to get the item, write their name and click add</em>
+                <em>New users to get the item, write their name and click add (comma between for multiple users)</em>
             </div>
             <div class="cell small-12">
-                <input [(ngModel)]="nickname" type="text" placeholder="New User"/>
+                <form (submit)="onAdd()">
+                    <input name="nicknames" [(ngModel)]="nicknames" type="text" placeholder="New Users"/>
+                </form>
             </div>
         </div>
     </div>

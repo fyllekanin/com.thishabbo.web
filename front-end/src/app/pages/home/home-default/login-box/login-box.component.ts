@@ -7,7 +7,7 @@ import { StringHelper } from 'shared/helpers/string.helper';
 @Component({
     selector: 'app-home-login-box',
     templateUrl: 'login-box.component.html',
-    styleUrls: ['login-box.component.css']
+    styleUrls: [ 'login-box.component.css' ]
 })
 export class LoginBoxComponent {
 
@@ -15,8 +15,8 @@ export class LoginBoxComponent {
     loginName: string;
     password: string;
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Login'}),
-        new TitleTab({title: 'Register', link: '/auth/register'})
+        new TitleTab({ title: 'Login' }),
+        new TitleTab({ title: 'Register', link: '/auth/register' })
     ];
 
     infoModel: InfoBoxModel = {

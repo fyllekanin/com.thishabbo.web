@@ -10,18 +10,18 @@ import { NotificationService } from 'core/services/notification/notification.ser
 @Injectable()
 export class NotificationSettingsService implements Resolve<NotificationSettingsModel> {
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService
     ) {
     }
 
-    resolve(): Observable<NotificationSettingsModel> {
+    resolve (): Observable<NotificationSettingsModel> {
         return this._httpService.get('usercp/notification-settings')
             .pipe(map(res => new NotificationSettingsModel(res)));
     }
 
-    save(data: NotificationSettingsModel): void {
+    save (data: NotificationSettingsModel): void {
         this._httpService.put('usercp/notification-settings', { ignoredNotificationTypes: data })
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({

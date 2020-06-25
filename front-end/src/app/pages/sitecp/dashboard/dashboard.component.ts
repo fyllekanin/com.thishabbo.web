@@ -30,7 +30,7 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
         this.addSubscription(activatedRoute.data, this.onData.bind(this));
         breadcrumbService.breadcrumb = new Breadcrumb({
             current: 'Dashboard',
-            items: [SITECP_BREADCRUMB_ITEM]
+            items: [ SITECP_BREADCRUMB_ITEM ]
         });
     }
 
@@ -38,8 +38,8 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
         this.tableConfig = new TableConfig({
             title: 'Dashboard',
             headers: [
-                new TableHeader({title: 'Title'}),
-                new TableHeader({title: 'Value'})
+                new TableHeader({ title: 'Title' }),
+                new TableHeader({ title: 'Value' })
             ]
         });
     }

@@ -1,0 +1,1 @@
+{"topic":"Fix byUser in thread pagination","type":"Bug","body":"When you search in a thread by a specific user the pagination do not work"}

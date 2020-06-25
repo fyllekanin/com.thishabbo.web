@@ -4,31 +4,37 @@ namespace App\Views;
 
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\VisitorMessage;
-use App\Helpers\DataHelper;
+use App\Utils\PaginationUtil;
 use stdClass;
 
 class VisitorMessageReportView {
 
-    public static function of (User $user, VisitorMessage $visitorMessage, $message) {
+    public static function of(User $user, VisitorMessage $visitorMessage, $message) {
         $threadSkeleton = new stdClass();
 
         $subjectId = $visitorMessage->isComment() ? $visitorMessage->parentId : $visitorMessage->visitorMessageId;
-        $page = DataHelper::getTotal(VisitorMessage::where('hostId', $visitorMessage->hostId)
-            ->isSubject()
-            ->where('visitorMessageId', '<', $subjectId)
-            ->where('hostId', $visitorMessage->hostId)
-            ->count('visitorMessageId'));
-        $threadSkeleton->content = "[mention]@" . $user->nickname . "[/mention] reported a visitor message.
+        $page = PaginationUtil::getTotalPages(
+            VisitorMessage::where('hostId', $visitorMessage->hostId)
+                ->isSubject()
+                ->where('visitorMessageId', '<', $subjectId)
+                ->where('hostId', $visitorMessage->hostId)
+                ->count('visitorMessageId')
+        );
+        $threadSkeleton->content = "[mention]@".$user->nickname."[/mention] reported a visitor message.
 
-        [b]User reported:[/b] [mention]@" . $visitorMessage->user->nickname . "[/mention]
-        [b]Message:[/b] [url=/user/profile/" . $visitorMessage->host->nickname . "/page/" . $page . "?scrollTo=vmId-" . $visitorMessage->visitorMessageId . "]Click here to go to message.[/url]
+        [b]User reported:[/b] [mention]@".$visitorMessage->user->nickname."[/mention]
+        [b]Message:[/b] [url=/user/profile/".
+            $visitorMessage->host->nickname
+            ."/page/".$page."?scrollTo=vmId-".
+            $visitorMessage->visitorMessageId
+            ."]Click here to go to message.[/url]
         
         [b]Reason:[/b]
-        [quote]" . $message . "[/quote]
+        [quote]".$message."[/quote]
         
         [b]Original message:[/b]
-        [quote]" . $visitorMessage->content . "[/quote]";
-        $threadSkeleton->title = 'Report by ' . $user->nickname;
+        [quote]".$visitorMessage->content."[/quote]";
+        $threadSkeleton->title = 'Report by '.$user->nickname;
 
         return $threadSkeleton;
     }

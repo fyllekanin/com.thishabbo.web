@@ -1,5 +1,5 @@
 <div class="bulletin-details" [ngClass]="isMinimalistic ? 'minimalistic' : ''">
-    <div class="bulletin-board" *ngFor="let activity of activities" [ngSwitch]="activity.type">
+    <div class="bulletin-board" *ngFor="let activity of activities; trackBy: trackLogs;" [ngSwitch]="activity.type">
         <div *ngSwitchCase="40">
             <em class="fas fa-comment"></em>
             <app-user-link [user]="activity.user" [isMiniProfileDisabled]="true"></app-user-link>

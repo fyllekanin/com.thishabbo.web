@@ -8,7 +8,8 @@ import { NotificationsPage } from '../notifications/notifications.model';
 @Injectable()
 export class NotificationsService implements Resolve<NotificationsPage> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
     resolve (route: ActivatedRouteSnapshot): Observable<NotificationsPage> {
         const page = route.params['page'];

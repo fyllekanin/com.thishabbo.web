@@ -36,7 +36,7 @@ export class PostComponent extends Page implements OnDestroy {
     private _forumPermission = new ForumPermissions();
     private _quoteRegex = /\[quotepost([\s\S]*)quotepost\]/g;
 
-    @ViewChild('editor', { static: false }) editor: EditorComponent;
+    @ViewChild('editor') editor: EditorComponent;
     @Input() canPost: boolean;
     @Output() onUpdatePost: EventEmitter<PostModel> = new EventEmitter();
     @Output() onQuotePost: EventEmitter<string> = new EventEmitter();

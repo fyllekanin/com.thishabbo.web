@@ -12,15 +12,15 @@ import { HttpService } from 'core/services/http/http.service';
 @Component({
     selector: 'app-staff-request-thc',
     templateUrl: 'request-thc.component.html',
-    styleUrls: ['request-thc.component.css']
+    styleUrls: [ 'request-thc.component.css' ]
 })
 
 export class RequestThcComponent extends Page implements OnDestroy {
     private _rows: Array<RequestThcModel> = [];
 
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Send Request', value: RequestThcActions.SEND_REQUEST}),
-        new TitleTab({title: 'Add Row', value: RequestThcActions.ADD_ROW})
+        new TitleTab({ title: 'Send Request', value: RequestThcActions.SEND_REQUEST }),
+        new TitleTab({ title: 'Add Row', value: RequestThcActions.ADD_ROW })
     ];
 
     constructor (
@@ -33,7 +33,7 @@ export class RequestThcComponent extends Page implements OnDestroy {
         this._rows.push(new RequestThcModel());
         breadcrumbService.breadcrumb = new Breadcrumb({
             current: 'Request THC',
-            items: [STAFFCP_BREADCRUM_ITEM]
+            items: [ STAFFCP_BREADCRUM_ITEM ]
         });
     }
 
@@ -70,9 +70,9 @@ export class RequestThcComponent extends Page implements OnDestroy {
             return;
         }
 
-        this._httpService.post('staff/request-thc', {requests: this._rows})
+        this._httpService.post('staff/request-thc', { requests: this._rows })
             .subscribe(() => {
-                this._rows = [new RequestThcModel()];
+                this._rows = [ new RequestThcModel() ];
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Requests are sent!'

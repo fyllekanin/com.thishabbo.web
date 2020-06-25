@@ -19,7 +19,7 @@ export class VoucherCodeComponent extends Page implements OnDestroy {
     ];
     code: string;
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService,
         elementRef: ElementRef,
@@ -34,11 +34,11 @@ export class VoucherCodeComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy() {
+    ngOnDestroy () {
         super.destroy();
     }
 
-    onClaim(): void {
+    onClaim (): void {
         this._httpService.post('usercp/voucher-code', { code: this.code })
             .subscribe(amount => {
                 this._notificationService.sendNotification(new NotificationMessage({

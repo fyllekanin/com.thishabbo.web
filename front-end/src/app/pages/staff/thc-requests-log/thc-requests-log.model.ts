@@ -1,4 +1,4 @@
-import { primitive, ClassHelper, dateAndTime, arrayOf } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, dateAndTime, primitive } from 'shared/helpers/class.helper';
 
 export class ThcRequestLog {
     @primitive()
@@ -14,7 +14,7 @@ export class ThcRequestLog {
     @dateAndTime()
     updatedAt: string;
 
-    constructor(source: Partial<ThcRequestLog>) {
+    constructor (source: Partial<ThcRequestLog>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -27,7 +27,7 @@ export class ThcRequestLogPage {
     @arrayOf(ThcRequestLog)
     items: Array<ThcRequestLog> = [];
 
-    constructor(source: Partial<ThcRequestLogPage>) {
+    constructor (source: Partial<ThcRequestLogPage>) {
         ClassHelper.assign(this, source);
     }
 }

@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Sitecp\User;
 
 use App\EloquentModels\Log\LogSitecp;
-use App\Helpers\DataHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Impl\Sitecp\Shop\UserHistoryControllerImpl;
+use App\Utils\PaginationUtil;
+use Illuminate\Http\JsonResponse;
 
 /**
  * Handles all of the history reading of a user, when stuff changed on them etc
@@ -20,9 +21,10 @@ use App\Http\Impl\Sitecp\Shop\UserHistoryControllerImpl;
  * - Cover photo deleted (When cover photo deleted)
  */
 class UserHistoryController extends Controller {
+
     private $myImpl;
 
-    public function __construct (UserHistoryControllerImpl $impl) {
+    public function __construct(UserHistoryControllerImpl $impl) {
         parent::__construct();
         $this->myImpl = $impl;
     }
@@ -33,20 +35,24 @@ class UserHistoryController extends Controller {
      * @param $userId
      * @param $page
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getHistory ($userId, $page) {
+    public function getHistory($userId, $page) {
         $logsSql = LogSitecp::where('contentId', $userId)->whereIn('action', $this->myImpl->getSupportedActionIds());
-        $total = DataHelper::getTotal($logsSql->count());
-        $items = $logsSql->orderBy('createdAt', 'DESC')->take($this->perPage)->skip(DataHelper::getOffset($page))->get();
+        $total = PaginationUtil::getTotalPages($logsSql->count());
+        $items = $logsSql->orderBy('createdAt', 'DESC')->take($this->perPage)->skip(PaginationUtil::getOffset($page))->get();
 
-        return response()->json([
-            'total' => $total,
-            'page' => $page,
-            'userId' => $userId,
-            'items' => $items->map(function ($item) {
-                return $this->myImpl->mapItem($item);
-            })
-        ]);
+        return response()->json(
+            [
+                'total' => $total,
+                'page' => $page,
+                'userId' => $userId,
+                'items' => $items->map(
+                    function ($item) {
+                        return $this->myImpl->mapItem($item);
+                    }
+                )
+            ]
+        );
     }
 }

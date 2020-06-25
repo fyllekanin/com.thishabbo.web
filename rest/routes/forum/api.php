@@ -57,4 +57,7 @@ Route::prefix('moderation')->group(function () {
     Route::get('/thread/bans/{threadId}', 'Moderation\ThreadController@getThreadBans');
     Route::post('/thread/bans/{threadId}', 'Moderation\ThreadController@createThreadBan');
     Route::delete('/thread/bans/{threadBanId}', 'Moderation\ThreadController@deleteThreadBan');
+
+    Route::put('/threads/sticky', 'Moderation\ThreadController@stickyThreads');
+    Route::put('/threads/unsticky', 'Moderation\ThreadController@unstickyThreads');
 });

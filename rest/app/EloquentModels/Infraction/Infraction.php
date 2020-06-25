@@ -15,14 +15,18 @@ use Illuminate\Database\Eloquent\Builder;
  * @property mixed isDeleted
  */
 class Infraction extends DeletableModel {
+
     protected $table = 'infractions';
     protected $primaryKey = 'infractionId';
     protected $fillable = ['infractionLevelId', 'infractedId', 'reason', 'userId', 'expiresAt'];
     protected $hidden = ['expiresAt'];
 
     public function level() {
-        return $this->hasOne('App\EloquentModels\Infraction\InfractionLevel',
-            'infractionLevelId', 'infractionLevelId')
+        return $this->hasOne(
+            'App\EloquentModels\Infraction\InfractionLevel',
+            'infractionLevelId',
+            'infractionLevelId'
+        )
             ->withoutGlobalScope('nonHardDeleted');
     }
 

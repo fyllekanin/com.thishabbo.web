@@ -88,9 +88,9 @@ export class IpSearchComponent extends Page implements OnDestroy {
         return this._data.map(item => {
             return new TableRow({
                 cells: [
-                    new TableCell({title: item.nickname}),
-                    new TableCell({title: item.ip}),
-                    new TableCell({title: TimeHelper.getLongDateWithTime(item.createdAt)})
+                    new TableCell({ title: item.nickname }),
+                    new TableCell({ title: item.ip }),
+                    new TableCell({ title: TimeHelper.getLongDateWithTime(item.createdAt) })
                 ]
             });
         });
@@ -98,9 +98,9 @@ export class IpSearchComponent extends Page implements OnDestroy {
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Nickname'}),
-            new TableHeader({title: 'IP'}),
-            new TableHeader({title: 'Date'})
+            new TableHeader({ title: 'Nickname' }),
+            new TableHeader({ title: 'IP' }),
+            new TableHeader({ title: 'Date' })
         ];
     }
 }

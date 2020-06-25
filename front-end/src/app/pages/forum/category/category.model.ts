@@ -94,6 +94,10 @@ export class CategoryPage {
     getAllThreads (): Array<SlimThread> {
         return this.threads.concat(this.stickyThreads);
     }
+
+    getSelectedThreadIds (): Array<number> {
+        return this.getAllThreads().filter(thread => thread.isSelected).map(thread => thread.threadId);
+    }
 }
 
 export enum CategoryActions {
@@ -101,5 +105,7 @@ export enum CategoryActions {
     UNSUBSCRIBE,
     IGNORE,
     UNIGNORE,
-    TOGGLE_TOOLS
+    TOGGLE_TOOLS,
+    STICKY,
+    UNSTICKY
 }

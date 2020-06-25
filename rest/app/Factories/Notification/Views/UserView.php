@@ -2,11 +2,12 @@
 
 namespace App\Factories\Notification\Views;
 
+use App\Constants\NotificationTypes;
 use App\EloquentModels\Staff\RadioRequest;
 use App\Helpers\UserHelper;
-use App\Models\Notification\Type;
 
 class UserView {
+
     public $user;
     public $customData;
     public $nickname;
@@ -18,10 +19,10 @@ class UserView {
         $this->user = UserHelper::getSlimUser($notification->senderId);
 
         switch ($notification->type) {
-            case Type::getType(Type::SENT_THC):
+            case NotificationTypes::SENT_CREDITS:
                 $this->customData = $notification->contentId;
                 break;
-            case Type::getType(Type::RADIO_REQUEST):
+            case NotificationTypes::RADIO_REQUEST:
                 $this->customData = RadioRequest::where('requestId', $notification->contentId)->value('nickname');
                 break;
             default:

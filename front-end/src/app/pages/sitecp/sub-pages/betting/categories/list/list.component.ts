@@ -34,7 +34,7 @@ export class ListComponent extends Page implements OnDestroy {
     tableConfig: TableConfig;
     pagination: PaginationModel;
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Create Category', link: '/sitecp/betting/categories/new'})
+        new TitleTab({ title: 'Create Category', link: '/sitecp/betting/categories/new' })
     ];
 
     constructor (
@@ -63,7 +63,7 @@ export class ListComponent extends Page implements OnDestroy {
         this._filterTimer = setTimeout(() => {
             this._httpService.get(`sitecp/betting/categories/1`, filter)
                 .subscribe(res => {
-                    this.onData({data: new CategoriesListPage(res)});
+                    this.onData({ data: new CategoriesListPage(res) });
                 });
         }, 200);
     }
@@ -127,11 +127,11 @@ export class ListComponent extends Page implements OnDestroy {
             title: 'Betting Categories',
             headers: ListComponent.getTableHeaders(),
             rows: this.getTableRows(),
-            filterConfigs: [new FilterConfig({
+            filterConfigs: [ new FilterConfig({
                 title: 'Search',
                 placeholder: 'Filter on Category Name...',
                 key: 'filter'
-            })]
+            }) ]
         });
     }
 
@@ -140,12 +140,12 @@ export class ListComponent extends Page implements OnDestroy {
             return new TableRow({
                 id: String(category.betCategoryId),
                 cells: [
-                    new TableCell({title: category.name}),
-                    new TableCell({title: category.displayOrder.toString()})
+                    new TableCell({ title: category.name }),
+                    new TableCell({ title: category.displayOrder.toString() })
                 ],
                 actions: [
-                    new TableAction({title: 'Edit', value: BetCategoryActions.EDIT_CATEGORY}),
-                    new TableAction({title: 'Delete', value: BetCategoryActions.DELETE_CATEGORY})
+                    new TableAction({ title: 'Edit', value: BetCategoryActions.EDIT_CATEGORY }),
+                    new TableAction({ title: 'Delete', value: BetCategoryActions.DELETE_CATEGORY })
                 ]
             });
         });
@@ -153,8 +153,8 @@ export class ListComponent extends Page implements OnDestroy {
 
     private static getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Name'}),
-            new TableHeader({title: 'Display Order'})
+            new TableHeader({ title: 'Name' }),
+            new TableHeader({ title: 'Display Order' })
         ];
     }
 }

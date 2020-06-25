@@ -115,15 +115,15 @@ export class ThreadsModerationComponent extends Page implements OnDestroy {
     private getTableRows (): Array<TableRow> {
         return this._threads.map(thread => {
             const actions = [
-                {title: 'Approve', value: ThreadModerationActions.APPROVE_THREAD, condition: thread.canApprove},
-                {title: 'Delete', value: ThreadModerationActions.DELETE_THREAD, condition: thread.canDelete}
+                { title: 'Approve', value: ThreadModerationActions.APPROVE_THREAD, condition: thread.canApprove },
+                { title: 'Delete', value: ThreadModerationActions.DELETE_THREAD, condition: thread.canDelete }
             ];
             return new TableRow({
                 id: String(thread.threadId),
                 cells: [
-                    new TableCell({title: thread.title}),
-                    new TableCell({title: thread.user.nickname}),
-                    new TableCell({title: thread.categoryTitle})
+                    new TableCell({ title: thread.title }),
+                    new TableCell({ title: thread.user.nickname }),
+                    new TableCell({ title: thread.categoryTitle })
                 ],
                 actions: actions.filter(action => action.condition).map(action => new TableAction(action))
             });
@@ -132,9 +132,9 @@ export class ThreadsModerationComponent extends Page implements OnDestroy {
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Thread'}),
-            new TableHeader({title: 'User'}),
-            new TableHeader({title: 'Category'})
+            new TableHeader({ title: 'Thread' }),
+            new TableHeader({ title: 'User' }),
+            new TableHeader({ title: 'Category' })
         ];
     }
 }

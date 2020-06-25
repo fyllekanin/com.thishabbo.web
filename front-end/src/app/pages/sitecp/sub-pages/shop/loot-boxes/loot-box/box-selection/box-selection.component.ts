@@ -5,7 +5,7 @@ import { LOOT_BOXES } from 'shared/constants/shop.constants';
 @Component({
     selector: 'app-sitecp-shop-loot-boxes-box',
     templateUrl: 'box-selection.component.html',
-    styleUrls: ['box-selection.component.css']
+    styleUrls: [ 'box-selection.component.css' ]
 })
 export class BoxSelectionComponent extends InnerDialogComponent {
     boxId: number;

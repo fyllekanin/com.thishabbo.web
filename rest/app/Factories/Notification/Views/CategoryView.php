@@ -6,6 +6,7 @@ use App\EloquentModels\Forum\Thread;
 use App\Helpers\UserHelper;
 
 class CategoryView {
+
     public $user;
     public $thread;
 
@@ -23,7 +24,7 @@ class CategoryView {
             return null;
         }
 
-        return (object)[
+        return (object) [
             'categoryTitle' => $thread->category->title,
             'threadId' => $thread->threadId,
             'title' => $thread->title

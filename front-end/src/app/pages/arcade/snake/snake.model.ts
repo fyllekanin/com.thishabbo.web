@@ -21,7 +21,7 @@ export class SnakeSettings {
     }
 
     static stringifyCoord (cord: Coordinates): string {
-        return [cord.x, cord.y].join(',');
+        return [ cord.x, cord.y ].join(',');
     }
 }
 
@@ -30,7 +30,7 @@ export class SnakeGameValues {
     direction = this.newDirection;
 
     length = 3;
-    snake: Array<Coordinates> = [{x: SnakeSettings.SIZE / 2, y: SnakeSettings.SIZE / 2}];
+    snake: Array<Coordinates> = [ { x: SnakeSettings.SIZE / 2, y: SnakeSettings.SIZE / 2 } ];
 
     candy: Coordinates = null;
     end = false;
@@ -47,9 +47,8 @@ export class SnakeGameValues {
     }
 
     paintSnake (context: CanvasRenderingContext2D): void {
-        for (let i = 0; i < this.snake.length; i++) {
-            const a = this.snake[i];
-            context.fillRect(a.x, a.y, SnakeSettings.GRID_SIZE, SnakeSettings.GRID_SIZE);
+        for (const position of this.snake) {
+            context.fillRect(position.x, position.y, SnakeSettings.GRID_SIZE, SnakeSettings.GRID_SIZE);
         }
     }
 

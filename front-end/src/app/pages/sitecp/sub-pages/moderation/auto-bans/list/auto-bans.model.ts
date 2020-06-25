@@ -9,7 +9,7 @@ export class AutoBansListPage {
     @primitive()
     total: number;
 
-    constructor(source: Partial<AutoBansListPage>) {
+    constructor (source: Partial<AutoBansListPage>) {
         ClassHelper.assign(this, source);
     }
 }

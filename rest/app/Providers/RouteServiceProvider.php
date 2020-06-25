@@ -6,6 +6,7 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider {
+
     /**
      * This namespace is applied to your controller routes.
      *
@@ -14,15 +15,6 @@ class RouteServiceProvider extends ServiceProvider {
      * @var string
      */
     protected $namespace = 'App\Http\Controllers';
-
-    /**
-     * Define your route model bindings, pattern filters, etc.
-     *
-     * @return void
-     */
-    public function boot() {
-        parent::boot();
-    }
 
     /**
      * Define the routes for the application.
@@ -43,6 +35,12 @@ class RouteServiceProvider extends ServiceProvider {
         $this->mapApiUsercpRoutes();
 
         $this->mapApiArcadeRoutes();
+
+        $this->mapApiSchoolRoutes();
+
+        Route::prefix('/')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/base-route.php'));
     }
 
     /**
@@ -54,7 +52,7 @@ class RouteServiceProvider extends ServiceProvider {
      */
     protected function mapApiRoutes() {
         Route::prefix('api')
-            ->middleware(['api', 'version.check', 'user.check'])
+            ->middleware(['api', 'user.check'])
             ->namespace($this->namespace)
             ->group(base_path('routes/api.php'));
     }
@@ -68,7 +66,7 @@ class RouteServiceProvider extends ServiceProvider {
      */
     protected function mapApiSitecpRoutes() {
         Route::prefix('api/sitecp')
-            ->middleware(['api', 'version.check', 'user.check', 'auth.check', 'gdpr.check', 'maintenance'])
+            ->middleware(['api', 'user.check', 'auth.check', 'gdpr.check', 'maintenance'])
             ->namespace($this->namespace)
             ->group(base_path('routes/sitecp/api.php'));
     }
@@ -82,14 +80,14 @@ class RouteServiceProvider extends ServiceProvider {
      */
     protected function mapApiForumRoutes() {
         Route::prefix('api/forum')
-            ->middleware(['api', 'version.check', 'user.check', 'maintenance', 'habbo_verify.check', 'gdpr.check'])
+            ->middleware(['api', 'user.check', 'maintenance', 'habbo_verify.check', 'gdpr.check'])
             ->namespace($this->namespace)
             ->group(base_path('routes/forum/api.php'));
     }
 
     protected function mapApiShopRoutes() {
         Route::prefix('api/shop')
-            ->middleware(['api', 'version.check', 'user.check', 'auth.check', 'maintenance', 'habbo_verify.check', 'gdpr.check'])
+            ->middleware(['api', 'user.check', 'auth.check', 'maintenance', 'habbo_verify.check', 'gdpr.check'])
             ->namespace($this->namespace)
             ->group(base_path('routes/shop/api.php'));
     }
@@ -103,7 +101,7 @@ class RouteServiceProvider extends ServiceProvider {
      */
     protected function mapApiStaffRoutes() {
         Route::prefix('api/staff')
-            ->middleware(['api', 'version.check', 'user.check', 'auth.check', 'maintenance', 'gdpr.check'])
+            ->middleware(['api', 'user.check', 'auth.check', 'maintenance', 'gdpr.check'])
             ->namespace($this->namespace)
             ->group(base_path('routes/staff/api.php'));
     }
@@ -117,7 +115,7 @@ class RouteServiceProvider extends ServiceProvider {
      */
     protected function mapApiUsercpRoutes() {
         Route::prefix('api/usercp')
-            ->middleware(['api', 'version.check', 'user.check', 'auth.check', 'maintenance', 'gdpr.check'])
+            ->middleware(['api', 'user.check', 'auth.check', 'maintenance', 'gdpr.check'])
             ->namespace($this->namespace)
             ->group(base_path('routes/usercp/api.php'));
     }
@@ -131,8 +129,22 @@ class RouteServiceProvider extends ServiceProvider {
      */
     protected function mapApiArcadeRoutes() {
         Route::prefix('api/arcade')
-            ->middleware(['api', 'version.check', 'user.check', 'maintenance', 'gdpr.check'])
+            ->middleware(['api', 'user.check', 'maintenance', 'gdpr.check'])
             ->namespace($this->namespace)
             ->group(base_path('routes/arcade/api.php'));
+    }
+
+    /**
+     * Define the "api" routes for the application.
+     *
+     * These routes are typically stateless.
+     *
+     * @return void
+     */
+    protected function mapApiSchoolRoutes() {
+        Route::prefix('api/school')
+            ->middleware(['api'])
+            ->namespace($this->namespace)
+            ->group(base_path('routes/school/api.php'));
     }
 }

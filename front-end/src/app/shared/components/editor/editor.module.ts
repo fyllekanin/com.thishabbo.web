@@ -21,4 +21,5 @@ import { ButtonModule } from 'shared/directives/button/button.module';
     ]
 })
 
-export class EditorModule {}
+export class EditorModule {
+}

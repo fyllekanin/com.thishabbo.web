@@ -9,7 +9,7 @@ export class Follower {
     @primitive()
     createdAt: number;
 
-    constructor(source: Partial<Follower>) {
+    constructor (source: Partial<Follower>) {
         ClassHelper.assign(this, source);
     }
 }

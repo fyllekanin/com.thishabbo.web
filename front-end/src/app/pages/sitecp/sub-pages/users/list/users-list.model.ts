@@ -6,11 +6,11 @@ export class ListUser {
     @primitive()
     habbo: string;
     @primitive()
+    credits: number;
+    @primitive()
     userId: number;
     @primitive()
     updatedAt: number;
-    @primitive()
-    credits: number;
 
     constructor (source: Partial<ListUser>) {
         ClassHelper.assign(this, source);
@@ -39,5 +39,6 @@ export enum UserListAction {
     GIVE_INFRACTION,
     EDIT_ACCOLADES,
     MANAGE_SUBSCRIPTIONS,
-    CHANGE_HISTORY
+    CHANGE_HISTORY,
+    MANAGE_CREDITS
 }

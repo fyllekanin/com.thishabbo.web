@@ -6,7 +6,7 @@ export class ThreadSubscription {
     @primitive()
     title: string;
 
-    constructor(source: Partial<ThreadSubscription>) {
+    constructor (source: Partial<ThreadSubscription>) {
         ClassHelper.assign(this, source);
     }
 }

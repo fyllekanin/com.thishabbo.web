@@ -17,7 +17,7 @@ export class Bet {
     @primitive()
     isSuspended: boolean;
 
-    constructor(source: Partial<Bet>) {
+    constructor (source: Partial<Bet>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -36,7 +36,7 @@ export class BetCategory {
     @primitive()
     updatedAt: number;
 
-    constructor(source: Partial<BetCategory>) {
+    constructor (source: Partial<BetCategory>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -49,7 +49,7 @@ export class DashboardModel {
     @arrayOf(BetCategory)
     activeBets: Array<BetCategory> = [];
 
-    constructor(source?: Partial<DashboardModel>) {
+    constructor (source?: Partial<DashboardModel>) {
         ClassHelper.assign(this, source);
     }
 }

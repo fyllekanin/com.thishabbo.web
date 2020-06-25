@@ -6,7 +6,7 @@ export class CategorySubscription {
     @primitive()
     title: string;
 
-    constructor(source: Partial<CategorySubscription>) {
+    constructor (source: Partial<CategorySubscription>) {
         ClassHelper.assign(this, source);
     }
 }

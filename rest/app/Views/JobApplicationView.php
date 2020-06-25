@@ -10,20 +10,20 @@ class JobApplicationView {
         $threadSkeleton = new stdClass();
 
         $threadSkeleton->content = "[b]Habbo[/b]
-        " . $data->habbo . "
+        ".$data->habbo."
         
         [b]Discord[/b]
-        " . $data->discord . "
+        ".$data->discord."
         
         [b]Job/Interested in[/b]
-        " . $data->job . "
+        ".$data->job."
         
         [b]Country[/b]
-        " . $data->country . "
+        ".$data->country."
         
         [b]About me[/b]
-        [quote]" . $data->content . "[/quote]";
-        $threadSkeleton->title = 'Application: ' . $data->job;
+        [quote]".$data->content."[/quote]";
+        $threadSkeleton->title = 'Application: '.$data->job;
 
         return $threadSkeleton;
     }

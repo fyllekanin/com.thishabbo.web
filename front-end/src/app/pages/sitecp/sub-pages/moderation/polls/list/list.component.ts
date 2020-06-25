@@ -77,7 +77,7 @@ export class ListComponent extends Page implements OnDestroy {
         this._filterTimer = setTimeout(() => {
             this._service.getPolls(filter, 1)
                 .subscribe(data => {
-                    this.onData({data: data});
+                    this.onData({ data: data });
                 });
         }, 200);
     }
@@ -129,27 +129,27 @@ export class ListComponent extends Page implements OnDestroy {
             title: 'Polls',
             headers: this.getTableHeaders(),
             rows: this.getTableRows(),
-            filterConfigs: [new FilterConfig({
+            filterConfigs: [ new FilterConfig({
                 title: 'Filter',
                 placeholder: 'Search...',
                 key: 'filter'
-            })]
+            }) ]
         });
     }
 
     private getTableRows (): Array<TableRow> {
         const actions = [
-            new TableAction({title: 'View', value: PollsActions.VIEW}),
-            new TableAction({title: 'View Thread', value: PollsActions.VIEW_THREAD}),
-            new TableAction({title: 'Delete', value: PollsActions.DELETE})
+            new TableAction({ title: 'View', value: PollsActions.VIEW }),
+            new TableAction({ title: 'View Thread', value: PollsActions.VIEW_THREAD }),
+            new TableAction({ title: 'Delete', value: PollsActions.DELETE })
         ];
         return this._data.polls.map(poll => {
             return new TableRow({
                 id: String(poll.threadPollId),
                 cells: [
-                    new TableCell({title: poll.thread}),
-                    new TableCell({title: poll.question}),
-                    new TableCell({title: String(poll.votes)})
+                    new TableCell({ title: poll.thread }),
+                    new TableCell({ title: poll.question }),
+                    new TableCell({ title: String(poll.votes) })
                 ],
                 actions: actions
             });
@@ -158,9 +158,9 @@ export class ListComponent extends Page implements OnDestroy {
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Thread'}),
-            new TableHeader({title: 'Question'}),
-            new TableHeader({title: 'Votes'})
+            new TableHeader({ title: 'Thread' }),
+            new TableHeader({ title: 'Question' }),
+            new TableHeader({ title: 'Votes' })
         ];
     }
 }

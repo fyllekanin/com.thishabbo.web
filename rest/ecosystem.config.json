@@ -2,18 +2,20 @@
   "apps": [
     {
       "name": "worker",
-      "script": "job/worker.sh",
+      "script": "artisan",
+      "args": "queue:work",
+      "exec_mode": "fork",
       "cwd": "",
-      "watch": true,
+      "watch": false,
       "log_file": "storage/logs/worker.log",
       "instances": 1,
-      "interpreter": "bash"
+      "interpreter": "php"
     },
     {
       "name": "radio",
       "script": "job/radio.sh",
       "cwd": "",
-      "watch": true,
+      "watch": false,
       "log_file": "storage/logs/radio.log",
       "instances": 1,
       "interpreter": "bash"
@@ -22,14 +24,10 @@
       "name": "cron",
       "script": "job/cron.sh",
       "cwd": "",
-      "watch": true,
+      "watch": false,
       "log_file": "storage/logs/cron.log",
       "instances": 1,
       "interpreter": "bash"
-    },
-    {
-      "name": "discord-logger",
-      "script": "job/discord/logger.js"
     }
   ]
 }

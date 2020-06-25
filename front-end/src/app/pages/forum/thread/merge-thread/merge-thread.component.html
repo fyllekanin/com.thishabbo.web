@@ -5,4 +5,6 @@
         <em class="fas fa-question-circle"></em>
     </span>
 </label>
-<input [(ngModel)]="thread" placeholder="Id or link to the thread to merge with"/>
+<form (ngSubmit)="onSubmit()">
+    <input name="thread" [(ngModel)]="thread" placeholder="Id or link to the thread to merge with"/>
+</form>

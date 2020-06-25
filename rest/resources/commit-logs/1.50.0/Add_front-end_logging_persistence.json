@@ -1,0 +1,1 @@
+{"topic":"Add front-end logging persistence","type":"Feature","body":"Whenever a user now stumble upon an error in the UI it will be persisted for a developer to look at without needing the user"}

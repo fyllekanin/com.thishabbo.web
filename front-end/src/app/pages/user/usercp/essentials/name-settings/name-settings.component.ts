@@ -7,22 +7,21 @@ import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { USERCP_BREADCRUM_ITEM } from '../../usercp.constants';
 import { NameSettings } from './name-settings.model';
 import { ActivatedRoute } from '@angular/router';
-import { UserHelper } from 'shared/helpers/user.helper';
-import { AuthService } from 'core/services/auth/auth.service';
 import { INFO_BOX_TYPE, InfoBoxModel } from 'shared/app-views/info-box/info-box.model';
 import { ShopItem } from 'app/pages/sitecp/sub-pages/shop/items/items.model';
 import { NameSettingsService } from '../services/name-settings.service';
+import { SlimUser } from 'core/services/auth/auth.model';
 
 @Component({
     selector: 'app-usercp-name-settings',
     templateUrl: 'name-settings.component.html',
-    styleUrls: ['name-settings.component.css']
+    styleUrls: [ 'name-settings.component.css' ]
 })
 export class NameSettingsComponent extends Page implements OnDestroy {
     private _data: NameSettings = new NameSettings();
 
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Save'})
+        new TitleTab({ title: 'Save' })
     ];
 
     colorInfoModel: InfoBoxModel = {
@@ -43,10 +42,11 @@ export class NameSettingsComponent extends Page implements OnDestroy {
         content: 'You do not own any name effects!'
     };
 
+    tempUser: SlimUser;
+
     constructor (
         private _service: NameSettingsService,
         private _notificationService: NotificationService,
-        private _authService: AuthService,
         activatedRoute: ActivatedRoute,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService
@@ -73,6 +73,8 @@ export class NameSettingsComponent extends Page implements OnDestroy {
 
     onNameIconToggle (icon: ShopItem): void {
         this._data.iconId = this._data.iconId === icon.shopItemId ? 0 : icon.shopItemId;
+        this.tempUser = new SlimUser(this.tempUser);
+        this.onDataChange();
     }
 
     isCurrentIcon (icon: ShopItem): boolean {
@@ -80,15 +82,15 @@ export class NameSettingsComponent extends Page implements OnDestroy {
     }
 
     nameEffectStyle (effect: ShopItem): string {
-        return `url(/rest/resources/images/shop/${effect.shopItemId}.gif)`;
+        return `url(/resources/images/shop/${effect.shopItemId}.gif)`;
     }
 
-    get name (): string {
-        return this._authService.authUser.nickname;
-    }
-
-    get nameStyle (): string {
-        return UserHelper.getNameColor(this._data.colors);
+    onDataChange (): void {
+        this.tempUser.iconId = this._data.iconId;
+        this.tempUser.iconPosition = this._data.iconPosition;
+        this.tempUser.nameColor = this._data.colors;
+        this.tempUser.effectId = this._data.effectId;
+        this.tempUser = new SlimUser(this.tempUser);
     }
 
     get colors (): string {
@@ -131,5 +133,6 @@ export class NameSettingsComponent extends Page implements OnDestroy {
 
     private onData (data: { data: NameSettings }): void {
         this._data = data.data;
+        this.tempUser = new SlimUser(this._data.user);
     }
 }

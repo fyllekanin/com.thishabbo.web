@@ -5,8 +5,10 @@ export class Group {
     name: string;
     @primitive()
     groupId: number;
+    @primitive()
+    isPublic: boolean;
 
-    constructor(source: Partial<Group>) {
+    constructor (source: Partial<Group>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -23,7 +25,7 @@ export class GroupsModel {
     @arrayOf(Group)
     possibleGroups: Array<Group> = [];
 
-    constructor(source?: Partial<GroupsModel>) {
+    constructor (source?: Partial<GroupsModel>) {
         ClassHelper.assign(this, source);
     }
 }

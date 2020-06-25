@@ -11,7 +11,7 @@ import { NotificationService } from 'core/services/notification/notification.ser
 @Component({
     selector: 'app-shop-loot-box-details',
     templateUrl: 'loot-box-details.component.html',
-    styleUrls: ['loot-box-details.component.css']
+    styleUrls: [ 'loot-box-details.component.css' ]
 })
 export class LootBoxDetailsComponent extends InnerDialogComponent {
     box = new ShopLootBox(null);
@@ -119,10 +119,10 @@ export class LootBoxDetailsComponent extends InnerDialogComponent {
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Resource'}),
-            new TableHeader({title: 'Item'}),
-            new TableHeader({title: 'Details'}),
-            new TableHeader({title: 'Owns'})
+            new TableHeader({ title: 'Resource' }),
+            new TableHeader({ title: 'Item' }),
+            new TableHeader({ title: 'Details' }),
+            new TableHeader({ title: 'Owns' })
         ];
     }
 }

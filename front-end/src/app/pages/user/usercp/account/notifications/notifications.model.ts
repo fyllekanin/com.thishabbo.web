@@ -9,7 +9,7 @@ export class NotificationsPage {
     @arrayOf(NotificationModel)
     items: Array<NotificationModel<any>> = [];
 
-    constructor(source: Partial<NotificationsPage>) {
+    constructor (source: Partial<NotificationsPage>) {
         ClassHelper.assign(this, source);
     }
 }

@@ -6,7 +6,7 @@ export class IgnoredThread {
     @primitive()
     title: string;
 
-    constructor(source: Partial<IgnoredThread>) {
+    constructor (source: Partial<IgnoredThread>) {
         ClassHelper.assign(this, source);
     }
 }

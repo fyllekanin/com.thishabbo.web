@@ -37,7 +37,7 @@ export class TypesComponent extends Page implements OnDestroy {
     tableConfig: TableConfig;
     pagination: PaginationModel;
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Create New'})
+        new TitleTab({ title: 'Create New' })
     ];
 
     constructor (
@@ -67,7 +67,7 @@ export class TypesComponent extends Page implements OnDestroy {
         this._filterTimer = setTimeout(() => {
             this._httpService.get(`staff/events/types/page/1`, filter)
                 .subscribe(res => {
-                    this.onData({data: new EventTypesPage(res)});
+                    this.onData({ data: new EventTypesPage(res) });
                 });
         }, 200);
     }
@@ -77,7 +77,7 @@ export class TypesComponent extends Page implements OnDestroy {
             title: 'Creating Event',
             buttons: [
                 new DialogCloseButton('Close'),
-                new DialogButton({title: 'Create', callback: this.createEvent.bind(this)})
+                new DialogButton({ title: 'Create', callback: this.createEvent.bind(this) })
             ],
             component: this._componentFactory.resolveComponentFactory(TypeComponent),
             data: new EventType()
@@ -134,7 +134,7 @@ export class TypesComponent extends Page implements OnDestroy {
     }
 
     private saveEvent (event: EventType): void {
-        this._httpService.put(`staff/events/types/${event.eventId}`, {event: event})
+        this._httpService.put(`staff/events/types/${event.eventId}`, { event: event })
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
@@ -148,7 +148,7 @@ export class TypesComponent extends Page implements OnDestroy {
     }
 
     private createEvent (event: EventType): void {
-        this._httpService.post('staff/events/types', {event: event})
+        this._httpService.post('staff/events/types', { event: event })
             .subscribe(res => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
@@ -181,11 +181,11 @@ export class TypesComponent extends Page implements OnDestroy {
             title: 'Event Types',
             headers: this.getTableHeaders(),
             rows: this.getTableRows(),
-            filterConfigs: [new FilterConfig({
+            filterConfigs: [ new FilterConfig({
                 title: 'Filter',
                 placeholder: 'Search for Event Types...',
                 key: 'filter'
-            })]
+            }) ]
         });
     }
 
@@ -193,20 +193,20 @@ export class TypesComponent extends Page implements OnDestroy {
         return this._data.events.map(event => new TableRow({
             id: String(event.eventId),
             cells: [
-                new TableCell({title: event.name, value: 'Name'}),
-                new TableCell({title: TimeHelper.getTime(event.createdAt), value: 'Created At'})
+                new TableCell({ title: event.name, value: 'Name' }),
+                new TableCell({ title: TimeHelper.getTime(event.createdAt), value: 'Created At' })
             ],
             actions: [
-                new TableAction({title: 'Edit', value: EventTypesListActions.EDIT_TYPE}),
-                new TableAction({title: 'Delete', value: EventTypesListActions.DELETE_TYPE})
+                new TableAction({ title: 'Edit', value: EventTypesListActions.EDIT_TYPE }),
+                new TableAction({ title: 'Delete', value: EventTypesListActions.DELETE_TYPE })
             ]
         }));
     }
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Name'}),
-            new TableHeader({title: 'Created At'})
+            new TableHeader({ title: 'Name' }),
+            new TableHeader({ title: 'Created At' })
         ];
     }
 }

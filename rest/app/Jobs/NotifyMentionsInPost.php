@@ -2,18 +2,18 @@
 
 namespace App\Jobs;
 
-use App\EloquentModels\Group\Group;
+use App\Constants\NotificationTypes;
+use App\Constants\User\UserIgnoredNotifications;
+use App\EloquentModels\Forum\Post;
 use App\EloquentModels\User\User;
-use App\EloquentModels\User\UserGroup;
-use App\Helpers\ConfigHelper;
-use App\Models\Notification\Type;
-use App\Utils\Iterables;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class NotifyMentionsInPost
@@ -21,139 +21,130 @@ use Illuminate\Support\Facades\DB;
  * Purpose of this job is to send notifications to all users  which were mentioned
  * in the provided post/thread.
  *
- *
  * @package App\Jobs
  */
 class NotifyMentionsInPost implements ShouldQueue {
-    private $quoteRegex = '/\[quotepost=(.*?)\](.*?)\[\/quotepost\]/si';
-    private $mentionRegex = '/@([a-zA-Z0-9]+)/si';
-    private $groupRegex = '/:([a-zA-Z0-9_]+):/si';
+    private $myQuoteRegex = '/\[quotepost=(.*?)\](.*?)\[\/quotepost\]/si';
+    private $myMentionRegex = '/@([a-zA-Z0-9]+)/si';
+    private $myMentionTypeUser = 'user';
 
-    private $mentionTypeUser = 'user';
-    private $mentionTypeGroup = 'group';
-
-    private $ignoredTypes;
-    private $content;
-    private $postId;
-    private $userId;
+    private $myContent;
+    private $myPostId;
+    private $myUserId;
 
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /**
-     * NotifyMentionsInPost constructor.
-     *
-     * @param $content
-     * @param $postId
-     * @param $userId
-     */
     public function __construct($content, $postId, $userId) {
-        $this->content = $content;
-        $this->postId = $postId;
-        $this->userId = $userId;
-        $this->ignoredTypes = ConfigHelper::getIgnoredNotificationsConfig();
+        $this->myContent = $content;
+        $this->myPostId = $postId;
+        $this->myUserId = $userId;
     }
 
     /**
      * Executes the job
      */
     public function handle() {
-        $quotedPostIds = $this->getQuotedUserIds($this->content);
-        $content = preg_replace($this->quoteRegex, '', $this->content);
-        $mentionedIds = $this->getUserIds($content, $this->mentionTypeUser);
-        $groupTags = $this->getUserIds($content, $this->mentionTypeGroup, $mentionedIds);
+        $quotedPostIds = $this->getQuotedPostIds($this->myContent);
+        $mentionedIds = $this->getUserIds($this->myContent);
+        $quotedUserIds = Post::whereIn('postId', $quotedPostIds)->pluck('userId')->toArray();
 
-        $quotedPosts = DB::table('posts')->select('userId')->whereIn('postId', $quotedPostIds)->get()->toArray();
-        $quotedUserIds = array_map(function ($post) {
-            return $post->userId;
-        }, $quotedPosts);
-
-        $mentionType = Type::getType(Type::MENTION);
-        $quoteType = Type::getType(Type::QUOTE);
-        $notifiedUsers = DB::table('notifications')
-            ->select('userId', 'type')
-            ->where('contentId', $this->postId)
-            ->whereIn('type', [$mentionType, $quoteType])
-            ->get()->toArray();
-
-        $mentionedFromEarlier = array_map(function ($notification) {
-            return $notification->userId;
-        }, Iterables::filter($notifiedUsers, function ($notification) use ($mentionType) {
-            return $notification->type == $mentionType;
-        }));
-
-        $quotedFromEarlier = array_map(function ($notification) {
-            return $notification->userId;
-        }, Iterables::filter($notifiedUsers, function ($notification) use ($quoteType) {
-            return $notification->type == $quoteType;
-        }));
-
-        $quoteInserts = $this->createNotificationInserts($quotedUserIds, $this->userId, $quoteType, $this->postId, $quotedFromEarlier);
-        $mentionInserts = $this->createNotificationInserts($mentionedIds, $this->userId, $mentionType, $this->postId, $mentionedFromEarlier);
-        $groupInserts = $this->createNotificationInserts($groupTags, $this->userId, $mentionType, $this->postId, $mentionedFromEarlier);
-        $inserts = array_merge($quoteInserts, array_merge($mentionInserts, $groupInserts));
-
-        DB::table('notifications')->insert($inserts);
-    }
-
-    private function createNotificationInserts($userIds, $senderId, $type, $postId, $earlier) {
-        $inserts = [];
-        foreach ($userIds as $mentionedId) {
-            $ignoredNotifications = $this->isUserIgnoringNotification($mentionedId, $type);
-            if (!in_array($mentionedId, $earlier) && $mentionedId != $senderId && !$ignoredNotifications) {
-                $inserts[] = [
-                    'userId' => $mentionedId,
-                    'senderId' => $senderId,
-                    'type' => $type,
-                    'contentId' => $postId,
-                    'createdAt' => time()
-                ];
+        foreach ($mentionedIds as $userId) {
+            if ($this->myUserId == $userId ||
+                $this->isUserIgnoringNotification($userId, NotificationTypes::MENTION) ||
+                $this->haveGottenNotification($userId, NotificationTypes::MENTION)
+            ) {
+                continue;
             }
+
+            DB::table('notifications')->insert(
+                [
+                    'userId' => $userId,
+                    'senderId' => $this->myUserId,
+                    'type' => NotificationTypes::MENTION,
+                    'contentId' => $this->myPostId,
+                    'createdAt' => time()
+                ]
+            );
         }
-        return $inserts;
+
+        foreach ($quotedUserIds as $userId) {
+            if ($this->myUserId == $userId ||
+                $this->isUserIgnoringNotification($userId, NotificationTypes::QUOTE) ||
+                $this->haveGottenNotification($userId, NotificationTypes::QUOTE)
+            ) {
+                continue;
+            }
+
+            DB::table('notifications')->insert(
+                [
+                    'userId' => $userId,
+                    'senderId' => $this->myUserId,
+                    'type' => NotificationTypes::QUOTE,
+                    'contentId' => $this->myPostId,
+                    'createdAt' => time()
+                ]
+            );
+        }
     }
+
+    /**
+     * The job failed to process.
+     *
+     * @param  Exception  $exception
+     *
+     * @return void
+     */
+    public function failed(Exception $exception) {
+        Log::channel('que')->error(
+            '
+        [b]File:[/b] '.$exception->getFile().'#'.$exception->getLine().'
+        
+        [b]Message:[/b]
+'.$exception->getMessage().'
+        '
+        );
+    }
+
+
+    private function haveGottenNotification($userId, $type) {
+        return DB::table('notifications')
+                ->where('userId', $userId)
+                ->where('contentId', $this->myPostId)
+                ->where('type', $type)
+                ->count() > 0;
+    }
+
 
     private function isUserIgnoringNotification($userId, $type) {
-        $notificationType = $type == Type::getType(Type::MENTION) ?
-            $this->ignoredTypes->MENTION_NOTIFICATIONS :
-            $this->ignoredTypes->QUOTE_NOTIFICATIONS;
+        $isMention = $type == NotificationTypes::MENTION;
+        $notificationType = $isMention ? UserIgnoredNotifications::MENTION_NOTIFICATIONS : UserIgnoredNotifications::QUOTE_NOTIFICATIONS;
         return User::where('userId', $userId)
-                ->whereRaw('(ignoredNotifications & ' . $notificationType . ')')->count('userId') > 0;
+                ->whereRaw('(ignoredNotifications & '.$notificationType.')')->count('userId') > 0;
     }
 
-    private function getQuotedUserIds($content) {
-        if (preg_match_all($this->quoteRegex, $content, $matches)) {
+    private function getQuotedPostIds($content) {
+        $matches = [];
+        if (preg_match_all($this->myQuoteRegex, $content, $matches)) {
             return $matches[1];
         }
         return [];
     }
 
-    private function getUserIds($content, $mentionType, $ignoreIds = []) {
+    private function getUserIds($content) {
         $userIds = [];
-        if ($mentionType == $this->mentionTypeUser) {
-            preg_match_all($this->mentionRegex, $content, $matches);
-            if ($matches && count($matches) > 0 && count($matches[1]) > 0) {
-                $results = array_map(function ($match) {
-                    return "'" . strtolower(str_replace('_', ' ', $match)) . "'";
-                }, $matches[1]);
+        $matches = [];
+        $content = preg_replace($this->myQuoteRegex, '', $content);
+        preg_match_all($this->myMentionRegex, $content, $matches);
+        if ($matches && count($matches) > 0 && count($matches[1]) > 0) {
+            $results = array_map(
+                function ($match) {
+                    return "'".strtolower(str_replace('_', ' ', $match))."'";
+                },
+                $matches[1]
+            );
 
-                $userIds = User::whereRaw('lower(nickname) IN (' . join(',', $results) . ')')
-                    ->whereNotIn('userId', $ignoreIds)->pluck('userId')->toArray();
-            }
-        }
-
-        if ($mentionType == $this->mentionTypeGroup) {
-            preg_match_all($this->groupRegex, $content, $matches);
-            if ($matches && count($matches) > 0 && count($matches[1]) > 0) {
-                $results = array_map(function ($match) {
-                    return "'" . strtolower(str_replace('_', ' ', $match)) . "'";
-                }, $matches[1]);
-
-                $groupIds = Group::whereRaw('lower(nickname) IN (' . join(',', $results) . ')')
-                    ->whereRaw('(options & ' . ConfigHelper::getGroupOptionsConfig()->canBeTagged . ')')
-                    ->pluck('groupId');
-                $userIds = array_merge($userIds, UserGroup::whereIn('groupId', $groupIds)
-                    ->whereNotIn('userId', $ignoreIds)->pluck('userId')->toArray());
-            }
+            $userIds = User::whereRaw('lower(nickname) IN ('.join(',', $results).')')
+                ->pluck('userId')->toArray();
         }
 
         return $userIds;

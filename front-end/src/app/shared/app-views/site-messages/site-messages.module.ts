@@ -15,4 +15,5 @@ import { InfoBoxModule } from 'shared/app-views/info-box/info-box.module';
         SiteMessagesComponent
     ]
 })
-export class SiteMessagesModule {}
+export class SiteMessagesModule {
+}

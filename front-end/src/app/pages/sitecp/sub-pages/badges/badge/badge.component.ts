@@ -65,14 +65,14 @@ export class BadgeComponent extends Page implements OnDestroy {
         form.append('badgeImage', file);
         form.append('badge', JSON.stringify(this._badge));
         if (this._badge.badgeId) {
-            this._httpClient.post(`rest/api/sitecp/badges/${this._badge.badgeId}`, form).subscribe(() => {
+            this._httpClient.post(`api/sitecp/badges/${this._badge.badgeId}`, form).subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: `${this._badge.name} was updated!`
                 }));
             }, this._notificationService.failureNotification.bind(this._notificationService));
         } else {
-            this._httpClient.post('rest/api/sitecp/badges', form).subscribe(() => {
+            this._httpClient.post('api/sitecp/badges', form).subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: `${this._badge.name} was created!`
@@ -108,7 +108,7 @@ export class BadgeComponent extends Page implements OnDestroy {
     }
 
     private onDelete (): void {
-        this._httpClient.delete(`rest/api/sitecp/badges/${this._badge.badgeId}`)
+        this._httpClient.delete(`api/sitecp/badges/${this._badge.badgeId}`)
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',

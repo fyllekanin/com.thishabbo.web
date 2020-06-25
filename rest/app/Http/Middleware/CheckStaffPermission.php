@@ -4,14 +4,16 @@ namespace App\Http\Middleware;
 
 use App\Helpers\PermissionHelper;
 use Closure;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class CheckStaffPermission {
+
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Closure $next
+     * @param  Request  $request
+     * @param  Closure  $next
      * @param $permission
      *
      * @return mixed

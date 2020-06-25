@@ -23,24 +23,21 @@ describe('RadioComponent', () => {
             declarations: [
                 RadioComponent
             ],
-            schemas: [NO_ERRORS_SCHEMA],
+            schemas: [ NO_ERRORS_SCHEMA ],
             providers: [
                 {
                     provide: RadioService, useValue: {
-                        openRequest: () => {
-                        }, likeDj: () => {
-                        }
+                        openRequest: () => null,
+                        likeDj: () => null
                     }
                 },
                 {
                     provide: ContinuesInformationService, useValue: {
                         onDeviceSettingsUpdated: {
-                            subscribe: () => {
-                            }
+                            subscribe: () => null
                         },
                         onRadioPlayerToggle: {
-                            subscribe: () => {
-                            }
+                            subscribe: () => null
                         }
                     }
                 }
@@ -52,7 +49,7 @@ describe('RadioComponent', () => {
 
     it('openRequest should proxy to radio service', () => {
         // Given
-        const radioService: RadioService = TestBed.get(RadioService);
+        const radioService: RadioService = TestBed.inject(RadioService);
         spyOn(radioService, 'openRequest');
 
         // When
@@ -64,7 +61,7 @@ describe('RadioComponent', () => {
 
     it('likeDj should proxy to radio service', () => {
         // Given
-        const radioService: RadioService = TestBed.get(RadioService);
+        const radioService: RadioService = TestBed.inject(RadioService);
         spyOn(radioService, 'likeDj');
 
         // When
@@ -78,7 +75,7 @@ describe('RadioComponent', () => {
         it('should return the nickname if stats are set', () => {
             // Given
             component.stats = new RadioModel({
-                currentDj: new SlimUser({nickname: 'test'})
+                currentDj: new SlimUser({ nickname: 'test' })
             });
 
             // When
@@ -103,7 +100,7 @@ describe('RadioComponent', () => {
         it('should return the song if stats are set and radio is playing', () => {
             // Given
             component['_isPlaying'] = true;
-            component.stats = new RadioModel({song: 'test'});
+            component.stats = new RadioModel({ song: 'test' });
 
             // When
             const result = component.song;
@@ -114,7 +111,7 @@ describe('RadioComponent', () => {
         it('should return string tell user to tune in if radio is not playing', () => {
             // Given
             component['_isPlaying'] = false;
-            component.stats = new RadioModel({song: 'test'});
+            component.stats = new RadioModel({ song: 'test' });
 
             // When
             const result = component.song;
@@ -137,7 +134,7 @@ describe('RadioComponent', () => {
     describe('likes', () => {
         it('should return the likes if stats are set', () => {
             // Given
-            component.stats = new RadioModel({likes: 25});
+            component.stats = new RadioModel({ likes: 25 });
 
             // When
             const result = component.likes;
@@ -160,7 +157,7 @@ describe('RadioComponent', () => {
     describe('albumArt', () => {
         it('should return the the full URL if stats are set', () => {
             // Given
-            component.stats = new RadioModel({albumArt: 'http://test.com/test.gif'});
+            component.stats = new RadioModel({ albumArt: 'http://test.com/test.gif' });
 
             // When
             const result = component.albumArt;

@@ -10,7 +10,7 @@ import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 @Component({
     selector: 'app-custom-badge-articles',
     templateUrl: 'badge-articles.component.html',
-    styleUrls: ['badge-articles.component.css']
+    styleUrls: [ 'badge-articles.component.css' ]
 })
 export class BadgeArticlesComponent extends Page implements OnDestroy {
     private _data: BadgeArticlesPage;

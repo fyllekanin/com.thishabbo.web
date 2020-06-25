@@ -3,11 +3,11 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/rest/app" isTestSource="false" packagePrefix="App\" />
       <sourceFolder url="file://$MODULE_DIR$/rest/tests" isTestSource="true" packagePrefix="Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/rest/app" isTestSource="false" packagePrefix="App\" />
       <excludeFolder url="file://$MODULE_DIR$/front-end/dist" />
       <excludeFolder url="file://$MODULE_DIR$/front-end/tmp" />
-      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/braintree/braintreehttp" />
+      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/brick/math" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/dnoegel/php-xdg-base-dir" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/doctrine/cache" />
@@ -18,20 +18,19 @@
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/doctrine/lexer" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/dragonmantank/cron-expression" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/egulias/email-validator" />
-      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/erusev/parsedown" />
-      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/fideloper/proxy" />
+      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/facade/flare-client-php" />
+      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/facade/ignition" />
+      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/facade/ignition-contracts" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/filp/whoops" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/fzaninotto/faker" />
-      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/genealabs/laravel-model-caching" />
-      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/genealabs/laravel-pivot-events" />
+      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/guzzlehttp/guzzle" />
+      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/guzzlehttp/promises" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/guzzlehttp/psr7" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/hamcrest/hamcrest-php" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/intervention/image" />
-      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/jakub-onderka/php-console-color" />
-      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/jakub-onderka/php-console-highlighter" />
-      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/lanin/laravel-api-debugger" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/laravel/framework" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/laravel/tinker" />
+      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/league/commonmark" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/league/flysystem" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/matthiasmullie/minify" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/matthiasmullie/path-converter" />
@@ -43,17 +42,14 @@
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/nunomaduro/collision" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/opis/closure" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/orangehill/iseed" />
-      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/overtrue/phplint" />
-      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/paragonie/random_compat" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/paypal/paypal-checkout-sdk" />
+      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/paypal/paypalhttp" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/paypal/rest-api-sdk-php" />
-      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/pdepend/pdepend" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/phar-io/manifest" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/phar-io/version" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/phpdocumentor/reflection-common" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/phpdocumentor/reflection-docblock" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/phpdocumentor/type-resolver" />
-      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/phpmd/phpmd" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/phpoption/phpoption" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/phpspec/prophecy" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/phpunit/php-code-coverage" />
@@ -63,12 +59,15 @@
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/phpunit/php-token-stream" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/phpunit/phpunit" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/psr/container" />
+      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/psr/event-dispatcher" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/psr/http-message" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/psr/log" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/psr/simple-cache" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/psy/psysh" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/ralouphie/getallheaders" />
+      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/ramsey/collection" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/ramsey/uuid" />
+      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/scrivo/highlight.php" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/sebastian/code-unit-reverse-lookup" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/sebastian/comparator" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/sebastian/diff" />
@@ -79,16 +78,15 @@
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/sebastian/object-reflector" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/sebastian/recursion-context" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/sebastian/resource-operations" />
+      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/sebastian/type" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/sebastian/version" />
+      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/squizlabs/php_codesniffer" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/swiftmailer/swiftmailer" />
-      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/symfony/config" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/symfony/console" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/symfony/css-selector" />
-      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/symfony/debug" />
-      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/symfony/dependency-injection" />
+      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/symfony/error-handler" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/symfony/event-dispatcher" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/symfony/event-dispatcher-contracts" />
-      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/symfony/filesystem" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/symfony/finder" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/symfony/http-foundation" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/symfony/http-kernel" />
@@ -105,10 +103,10 @@
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/symfony/translation" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/symfony/translation-contracts" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/symfony/var-dumper" />
-      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/symfony/yaml" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/theseer/tokenizer" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/tijsverkoyen/css-to-inline-styles" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/vlucas/phpdotenv" />
+      <excludeFolder url="file://$MODULE_DIR$/rest/vendor/voku/portable-ascii" />
       <excludeFolder url="file://$MODULE_DIR$/rest/vendor/webmozart/assert" />
     </content>
     <orderEntry type="inheritedJdk" />

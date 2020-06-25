@@ -12,7 +12,7 @@ import { Page } from 'shared/page/page.model';
 export class MaintenanceComponent extends Page implements OnDestroy {
     private _content: string;
 
-    constructor(
+    constructor (
         breadcrumbService: BreadcrumbService,
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute
@@ -22,15 +22,15 @@ export class MaintenanceComponent extends Page implements OnDestroy {
         breadcrumbService.breadcrumb = new Breadcrumb({ current: 'Maintenance mode' });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    get content(): string {
+    get content (): string {
         return this._content;
     }
 
-    private onData(data: { data: string }): void {
+    private onData (data: { data: string }): void {
         this._content = data.data;
     }
 }

@@ -2,13 +2,14 @@
 
 namespace App\Http\Impl;
 
+use App\Constants\Permission\SiteCpPermissions;
 use App\EloquentModels\User\Follower;
 use App\EloquentModels\User\User;
-use App\Helpers\ConfigHelper;
 use App\Helpers\PermissionHelper;
 use App\Utils\Condition;
 
 class ProfileControllerImpl {
+
 
     public function getUser($request) {
         $target = User::find($request->input('userId'));
@@ -17,24 +18,24 @@ class ProfileControllerImpl {
     }
 
     public function throwIfFollowing($user, $target) {
-        $isFollowing = Follower::where('userId', $user->userId)->where('targetId', $target->userId)->count('followerId') > 0;
+        $isFollowing = Follower::userId($user->userId)->targetId($target->userId)->count('followerId') > 0;
         Condition::precondition($isFollowing, 400, 'You are already following this user');
     }
 
     public function getFollow($user, $targetId) {
-        $follow = Follower::where('userId', $user->userId)->where('targetId', $targetId)->first();
+        $follow = Follower::userId($user->userId)->targetId($targetId)->first();
         Condition::precondition(!$follow, 404, 'You are not following this user');
         return $follow;
     }
 
     public function getNewFollow($user, $target) {
-        $follow = new Follower([
-            'userId' => $user->userId,
-            'targetId' => $target->userId,
-            'isApproved' => !($target->profile && $target->profile->isPrivate)
-        ]);
-        $follow->save();
-        return $follow;
+        $follower = new Follower();
+        $follower->userId = $user->userId;
+        $follower->targetId = $target->userId;
+        $follower->isApproved = !($target->profile && $target->profile->isPrivate);
+
+        $follower->save();
+        return $follower;
     }
 
     public function canPostVisitorMessage($user, $profile, $parentMessage, $data) {
@@ -55,7 +56,7 @@ class ProfileControllerImpl {
             return false;
         }
 
-        if (PermissionHelper::haveSitecpPermission($user->userId, ConfigHelper::getSitecpConfig()->canPassPrivate)) {
+        if (PermissionHelper::haveSitecpPermission($user->userId, SiteCpPermissions::CAN_PASS_PRIVATE_PROFILES)) {
             return false;
         }
 
@@ -63,6 +64,6 @@ class ProfileControllerImpl {
             return false;
         }
 
-        return Follower::where('userId', $user->userId)->where('targetId', $profile->userId)->isApproved()->count('followerId') === 0;
+        return Follower::userId($user->userId)->targetId($profile->userId)->isApproved()->count('followerId') === 0;
     }
 }

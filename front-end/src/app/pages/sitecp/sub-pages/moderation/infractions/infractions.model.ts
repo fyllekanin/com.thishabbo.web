@@ -17,7 +17,7 @@ export class InfractionItem {
     @primitive()
     createdAt: number;
 
-    constructor(source: Partial<InfractionItem>) {
+    constructor (source: Partial<InfractionItem>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -30,7 +30,7 @@ export class InfractionsPage {
     @arrayOf(InfractionItem)
     items: Array<InfractionItem> = [];
 
-    constructor(source: Partial<InfractionsPage>) {
+    constructor (source: Partial<InfractionsPage>) {
         ClassHelper.assign(this, source);
     }
 }

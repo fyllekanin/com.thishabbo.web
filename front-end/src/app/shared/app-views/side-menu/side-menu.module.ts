@@ -19,4 +19,5 @@ import { SideMenuComponent } from 'shared/app-views/side-menu/side-menu.componen
         SideMenuComponent
     ]
 })
-export class SideMenuModule {}
+export class SideMenuModule {
+}

@@ -4,6 +4,8 @@ export class MemberOfTheMonthModel {
     @primitive()
     month: string;
     @primitive()
+    year: number;
+    @primitive()
     member: string;
     @primitive()
     photo: string;

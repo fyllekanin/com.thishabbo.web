@@ -14,7 +14,7 @@ export class GroupModerate {
     @primitive()
     createdAt: number;
 
-    constructor(source: Partial<GroupModerate>) {
+    constructor (source: Partial<GroupModerate>) {
         ClassHelper.assign(this, source);
     }
 }

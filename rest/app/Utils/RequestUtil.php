@@ -3,7 +3,8 @@
 namespace App\Utils;
 
 class RequestUtil {
-    public static function getAccessToken ($request) {
+
+    public static function getAccessToken($request) {
         $authorization = $request->header('Authorization');
         $parts = explode(' ', $authorization);
         if (count($parts) < 2) {
@@ -12,7 +13,7 @@ class RequestUtil {
         return $parts[1];
     }
 
-    public static function getRefreshToken ($request) {
+    public static function getRefreshToken($request) {
         return $request->header('RefreshAuthorization');
     }
 

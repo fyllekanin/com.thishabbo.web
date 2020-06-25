@@ -5,7 +5,7 @@ fi
 
 ## Lint PHP
 cd rest
-./vendor/bin/phpmd  . text rules/ruleset.xml --exclude vendor,database
+./vendor/bin/phpcs ./app --standard=rules/ruleset.xml
 
 ## Lint FE
 cd ..

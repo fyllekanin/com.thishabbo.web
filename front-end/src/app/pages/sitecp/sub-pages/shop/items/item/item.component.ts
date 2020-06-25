@@ -17,17 +17,17 @@ import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.
 @Component({
     selector: 'app-sitecp-shop-item',
     templateUrl: 'item.component.html',
-    styleUrls: ['item.component.css']
+    styleUrls: [ 'item.component.css' ]
 })
 export class ItemComponent extends Page implements OnDestroy {
     private _data: ShopItem;
     private readonly _configurableRarities: Array<{ label: string, value: number }> = [];
 
-    @ViewChild('icon', {static: false}) icon;
-    @ViewChild('effect', {static: false}) effect;
+    @ViewChild('icon') icon;
+    @ViewChild('effect') effect;
     tabs: Array<TitleTab> = [];
     selectBadgeTabs: Array<TitleTab> = [
-        new TitleTab({title: 'Select Badge'})
+        new TitleTab({ title: 'Select Badge' })
     ];
 
     constructor (
@@ -95,9 +95,9 @@ export class ItemComponent extends Page implements OnDestroy {
 
     get currentImage (): string {
         if (this._data.isBadge) {
-            return `/rest/resources/images/badges/${this._data.data.badgeId}.gif?${this._data.createdAt}`;
+            return `/resources/images/badges/${this._data.data.badgeId}.gif?${this._data.createdAt}`;
         }
-        return `/rest/resources/images/shop/${this._data.shopItemId}.gif?${this._data.createdAt}`;
+        return `/resources/images/shop/${this._data.shopItemId}.gif?${this._data.createdAt}`;
     }
 
     get title (): string {
@@ -180,9 +180,9 @@ export class ItemComponent extends Page implements OnDestroy {
 
     private setTabs (): void {
         const tabs = [
-            {title: 'Save', value: ShopItemActions.SAVE, condition: true},
-            {title: 'Back', value: ShopItemActions.BACK, condition: true},
-            {title: 'Delete', value: ShopItemActions.DELETE, condition: this._data.createdAt}
+            { title: 'Save', value: ShopItemActions.SAVE, condition: true },
+            { title: 'Back', value: ShopItemActions.BACK, condition: true },
+            { title: 'Delete', value: ShopItemActions.DELETE, condition: this._data.createdAt }
         ];
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));
     }

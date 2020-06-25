@@ -1,10 +1,10 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { FixedTools, FixedToolItem } from 'shared/components/fixed-tools/fixed-tools.model';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FixedToolItem, FixedTools } from 'shared/components/fixed-tools/fixed-tools.model';
 
 @Component({
     selector: 'app-fixed-tools',
     templateUrl: 'fixed-tools.component.html',
-    styleUrls: ['fixed-tools.component.css']
+    styleUrls: [ 'fixed-tools.component.css' ]
 })
 export class FixedToolsComponent {
     private _currentItem: FixedToolItem = null;
@@ -15,12 +15,12 @@ export class FixedToolsComponent {
     @Output() onAction: EventEmitter<number> = new EventEmitter();
 
     @Input()
-    set tools(tools: FixedTools) {
+    set tools (tools: FixedTools) {
         this._tools = tools;
         this.setItems();
     }
 
-    onClick(item: FixedToolItem): void {
+    onClick (item: FixedToolItem): void {
         if (item.value === this._BACK) {
             this._currentItem = this.findParent();
         } else if (item.children.length > 0) {
@@ -32,11 +32,11 @@ export class FixedToolsComponent {
         this.setItems();
     }
 
-    get items(): Array<FixedToolItem> {
+    get items (): Array<FixedToolItem> {
         return this._items;
     }
 
-    private setItems(): void {
+    private setItems (): void {
         if (!this._tools) {
             this._items = [];
             this._currentItem = null;
@@ -52,9 +52,9 @@ export class FixedToolsComponent {
         this._items = this._tools.items;
     }
 
-    private findParent(): FixedToolItem {
+    private findParent (): FixedToolItem {
         const flatDeep = (arr: Array<FixedToolItem>): Array<FixedToolItem> => {
-            return arr.reduce((acc, val) => Array.isArray(val) ? acc.concat(flatDeep(val)) : acc.concat([val]), []);
+            return arr.reduce((acc, val) => Array.isArray(val) ? acc.concat(flatDeep(val)) : acc.concat([ val ]), []);
         };
         const items = flatDeep(this._tools.items);
         return items.find(item => {

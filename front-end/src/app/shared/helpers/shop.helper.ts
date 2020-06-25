@@ -16,12 +16,17 @@ export class ShopHelper {
         return rarityKey ? SHOP_ITEM_RARITIES[rarityKey].label : '';
     }
 
-    static getItemResource (itemId: number, type: number): string {
+    static getItemResourceUrl (itemId: number, type: number): string {
         if (type === SHOP_ITEM_TYPES.nameEffect.value || type === SHOP_ITEM_TYPES.nameIcon.value) {
-            return `<img src="/rest/resources/images/shop/${itemId}.gif" />`;
+            return `/resources/images/shop/${itemId}.gif`;
         } else if (type === SHOP_ITEM_TYPES.badge.value) {
-            return `<img src="/rest/resources/images/badges/${itemId}.gif" />`;
+            return `/resources/images/badges/${itemId}.gif`;
         }
-        return '<em class="far fa-address-card" style="font-size: 14px;"></em>';
+        return '';
+    }
+
+    static getItemResource (itemId: number, type: number): string {
+        const resourceUrl = ShopHelper.getItemResourceUrl(itemId, type);
+        return resourceUrl ? `<img src="${resourceUrl}" />` : '<em class="far fa-address-card" style="font-size: 14px;"></em>';
     }
 }

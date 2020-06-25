@@ -5,11 +5,13 @@
 <input type="text" [(ngModel)]="data.url" [disabled]="data.isHomePage"/>
 
 <div *ngIf="isMainItem">
-    <label>Icon <em>(full font-awesome class)</em></label>
+    <label>Icon
+        <em>(full font-awesome class)</em>
+    </label>
     <input type="text" [(ngModel)]="data.icon" />
 </div>
 
-<br />
+<br/>
 
 <div>
     <label class="checkbox-container">
@@ -37,7 +39,8 @@
 
 <div>
     <label class="checkbox-container">
-        Goes to home page? <em>(If user is logged out it goes to /home)</em>
+        Goes to home page?
+        <em>(If user is logged out it goes to /home)</em>
         <input type="checkbox" [(ngModel)]="data.isHomePage">
         <span class="checkmark"></span>
     </label>

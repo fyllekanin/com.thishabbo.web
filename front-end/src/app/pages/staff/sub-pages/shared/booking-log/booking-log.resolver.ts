@@ -8,9 +8,10 @@ import { BookingLogModel } from './booking-log.model';
 @Injectable()
 export class BookingLogResolver implements Resolve<BookingLogModel> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
-    resolve(activatedRoute: ActivatedRouteSnapshot): Observable<BookingLogModel> {
+    resolve (activatedRoute: ActivatedRouteSnapshot): Observable<BookingLogModel> {
         const type = activatedRoute.data['type'];
         const page = activatedRoute.params['page'];
         return this._httpService.get(`staff/${type}/booking/page/${page}`)

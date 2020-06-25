@@ -32,15 +32,15 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
     private _contractedSections: Array<number> = [];
     private _sectionTables: Array<TableConfig> = [];
     private _placeBet: Array<TableAction> = [
-        new TableAction({title: 'Place Bet', value: BetDashboardListActions.PLACE_BET})
+        new TableAction({ title: 'Place Bet', value: BetDashboardListActions.PLACE_BET })
     ];
     private _betSuspended: Array<TableAction> = [
-        new TableAction({title: 'Suspended', isDisabled: true})
+        new TableAction({ title: 'Suspended', isDisabled: true })
     ];
 
     trendingTable: TableConfig;
     toggleTab: Array<TitleTab> = [
-        new TitleTab({title: 'Toggle'})
+        new TitleTab({ title: 'Toggle' })
     ];
 
     stats: Array<StatsBoxModel> = [];
@@ -113,7 +113,7 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
             return;
         }
 
-        this._httpService.post(`betting/bet/${bet.betId}`, {amount: credits})
+        this._httpService.post(`betting/bet/${bet.betId}`, { amount: credits })
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
@@ -167,9 +167,9 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
                 return new TableRow({
                     id: String(bet.betId),
                     cells: [
-                        new TableCell({title: bet.name}),
-                        new TableCell({title: `${bet.leftSide}/${bet.rightSide}`}),
-                        new TableCell({title: String(bet.backersCount)})
+                        new TableCell({ title: bet.name }),
+                        new TableCell({ title: `${bet.leftSide}/${bet.rightSide}` }),
+                        new TableCell({ title: String(bet.backersCount) })
                     ],
                     actions: bet.isSuspended ? this._betSuspended : this._placeBet
                 });
@@ -188,9 +188,9 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
                     return new TableRow({
                         id: String(bet.betId),
                         cells: [
-                            new TableCell({title: bet.name}),
-                            new TableCell({title: `${bet.leftSide}/${bet.rightSide}`}),
-                            new TableCell({title: String(bet.backersCount)})
+                            new TableCell({ title: bet.name }),
+                            new TableCell({ title: `${bet.leftSide}/${bet.rightSide}` }),
+                            new TableCell({ title: String(bet.backersCount) })
                         ],
                         actions: bet.isSuspended ? this._betSuspended : this._placeBet
                     });
@@ -201,9 +201,9 @@ export class DashboardComponent extends Page implements OnInit, OnDestroy {
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Bet', width: '70%'}),
-            new TableHeader({title: 'Odds', width: '15%'}),
-            new TableHeader({title: 'Backers', width: '15%'})
+            new TableHeader({ title: 'Bet', width: '70%' }),
+            new TableHeader({ title: 'Odds', width: '15%' }),
+            new TableHeader({ title: 'Backers', width: '15%' })
         ];
     }
 

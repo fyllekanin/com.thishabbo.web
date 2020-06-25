@@ -10,18 +10,18 @@ import { NotificationMessage } from 'shared/app-views/global-notification/global
 @Injectable()
 export class SocialNetworksService implements Resolve<SocialNetworksModel> {
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService
     ) {
     }
 
-    resolve(): Observable<SocialNetworksModel> {
+    resolve (): Observable<SocialNetworksModel> {
         return this._httpService.get('usercp/social-networks')
             .pipe(map((res => new SocialNetworksModel(res))));
     }
 
-    save(data: SocialNetworksModel): Subscription {
+    save (data: SocialNetworksModel): Subscription {
         return this._httpService.put('usercp/social-networks', data)
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({

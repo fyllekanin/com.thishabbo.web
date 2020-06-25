@@ -4,12 +4,29 @@ import { DomSanitizer, SafeHtml, SafeResourceUrl, SafeScript, SafeStyle, SafeUrl
 describe('SafeStylePipe', () => {
 
     class Sanitizer implements DomSanitizer {
-        sanitize(): string { return ''; }
-        bypassSecurityTrustHtml(): SafeHtml { return ''; }
-        bypassSecurityTrustStyle(): SafeStyle { return 'test'; }
-        bypassSecurityTrustScript(): SafeScript { return ''; }
-        bypassSecurityTrustUrl(): SafeUrl { return ''; }
-        bypassSecurityTrustResourceUrl(): SafeResourceUrl { return ''; }
+        sanitize (): string {
+            return '';
+        }
+
+        bypassSecurityTrustHtml (): SafeHtml {
+            return '';
+        }
+
+        bypassSecurityTrustStyle (): SafeStyle {
+            return 'test';
+        }
+
+        bypassSecurityTrustScript (): SafeScript {
+            return '';
+        }
+
+        bypassSecurityTrustUrl (): SafeUrl {
+            return '';
+        }
+
+        bypassSecurityTrustResourceUrl (): SafeResourceUrl {
+            return '';
+        }
     }
 
     let pipe: SafeStylePipe;

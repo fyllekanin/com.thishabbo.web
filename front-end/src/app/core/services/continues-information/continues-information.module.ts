@@ -12,7 +12,7 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 })
 
 export class ContinuesInformationModule {
-    static forRoot(): ModuleWithProviders {
+    static forRoot (): ModuleWithProviders<ContinuesInformationModule> {
         return {
             ngModule: ContinuesInformationModule,
             providers: [

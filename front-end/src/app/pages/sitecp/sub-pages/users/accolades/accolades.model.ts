@@ -3,12 +3,12 @@ import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.
 import { TimeHelper } from 'shared/helpers/time.helper';
 
 export const ACCOLADE_LABEL_MAP = new Map<number, string>([
-    [1, 'Award'],
-    [2, 'Admin'],
-    [3, 'Management'],
-    [4, 'Moderator'],
-    [5, 'Veteran'],
-    [6, 'Developer']
+    [ 1, 'Award' ],
+    [ 2, 'Admin' ],
+    [ 3, 'Management' ],
+    [ 4, 'Moderator' ],
+    [ 5, 'Veteran' ],
+    [ 6, 'Developer' ]
 ]);
 
 export class AccoladeItem {

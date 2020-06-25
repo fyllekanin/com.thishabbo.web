@@ -15,4 +15,5 @@ import { NgModule } from '@angular/core';
     ]
 })
 
-export class PageModule {}
+export class PageModule {
+}

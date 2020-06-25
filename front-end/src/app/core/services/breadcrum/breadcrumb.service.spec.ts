@@ -17,6 +17,6 @@ describe('BreadcrumbService', () => {
         });
 
         // When
-        service.breadcrumb = new Breadcrumb({current: 'current'});
+        service.breadcrumb = new Breadcrumb({ current: 'current' });
     });
 });

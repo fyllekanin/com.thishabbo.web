@@ -9,7 +9,7 @@ export class BansPage {
     @arrayOf(Ban)
     bans: Array<Ban> = [];
 
-    constructor(source?: Partial<Ban>) {
+    constructor (source?: Partial<Ban>) {
         ClassHelper.assign(this, source);
     }
 }

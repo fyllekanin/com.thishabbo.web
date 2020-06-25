@@ -13,7 +13,7 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 })
 export class ForumPermissionsComponent extends Page implements OnDestroy {
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Back', link: '/sitecp/groups/page/1'})
+        new TitleTab({ title: 'Back', link: '/sitecp/groups/page/1' })
     ];
     data: TreeDiagram;
 

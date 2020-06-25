@@ -31,8 +31,8 @@ export class InfractionsComponent extends Page implements OnDestroy {
     private _data: InfractionsPage;
     private _filterTimer = null;
     private _filter: QueryParameters;
-    private _detailsAction = new TableAction({title: 'Details', value: InfractionsPageActions.DETAILS});
-    private _reverseAction = new TableAction({title: 'Reverse', value: InfractionsPageActions.REVERSE});
+    private _detailsAction = new TableAction({ title: 'Details', value: InfractionsPageActions.DETAILS });
+    private _reverseAction = new TableAction({ title: 'Reverse', value: InfractionsPageActions.REVERSE });
 
     tableConfig: TableConfig;
     pagination: PaginationModel;
@@ -73,7 +73,7 @@ export class InfractionsComponent extends Page implements OnDestroy {
         this._filterTimer = setTimeout(() => {
             this._httpService.get(`sitecp/moderation/infractions/page/1`, filter)
                 .subscribe(res => {
-                    this.onPage({data: new InfractionsPage(res)});
+                    this.onPage({ data: new InfractionsPage(res) });
                 });
         }, 200);
     }
@@ -103,11 +103,11 @@ export class InfractionsComponent extends Page implements OnDestroy {
             title: 'Infractions',
             headers: InfractionsComponent.getTableHeaders(),
             rows: this.getTableRows(),
-            filterConfigs: [new FilterConfig({
+            filterConfigs: [ new FilterConfig({
                 title: 'Search Nickname',
                 placeholder: 'Search for Nickname...',
                 key: 'filter'
-            })]
+            }) ]
         });
     }
 
@@ -115,21 +115,21 @@ export class InfractionsComponent extends Page implements OnDestroy {
         return this._data.items.map(item => new TableRow({
             id: String(item.infractionId),
             cells: [
-                new TableCell({title: item.user.nickname}),
-                new TableCell({title: TimeHelper.getLongDateWithTime(item.createdAt)}),
-                new TableCell({title: item.by.nickname}),
-                new TableCell({title: item.isDeleted ? 'Yes' : 'No'})
+                new TableCell({ title: item.user.nickname }),
+                new TableCell({ title: TimeHelper.getLongDateWithTime(item.createdAt) }),
+                new TableCell({ title: item.by.nickname }),
+                new TableCell({ title: item.isDeleted ? 'Yes' : 'No' })
             ],
-            actions: item.isDeleted ? [this._detailsAction] : [this._detailsAction, this._reverseAction]
+            actions: item.isDeleted ? [ this._detailsAction ] : [ this._detailsAction, this._reverseAction ]
         }));
     }
 
     private static getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'User'}),
-            new TableHeader({title: 'At'}),
-            new TableHeader({title: 'By'}),
-            new TableHeader({title: 'Is Reversed'})
+            new TableHeader({ title: 'User' }),
+            new TableHeader({ title: 'At' }),
+            new TableHeader({ title: 'By' }),
+            new TableHeader({ title: 'Is Reversed' })
         ];
     }
 

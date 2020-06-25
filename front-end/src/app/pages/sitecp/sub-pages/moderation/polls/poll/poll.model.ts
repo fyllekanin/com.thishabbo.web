@@ -6,7 +6,7 @@ export class PollAnswerUser {
     @primitive()
     nickname: string;
 
-    constructor(source: Partial<PollAnswerUser>) {
+    constructor (source: Partial<PollAnswerUser>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -17,7 +17,7 @@ export class PollAnswerModel {
     @arrayOf(PollAnswerUser)
     users: Array<PollAnswerUser> = [];
 
-    constructor(source: Partial<PollAnswerModel>) {
+    constructor (source: Partial<PollAnswerModel>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -30,7 +30,7 @@ export class PollModel {
     @arrayOf(PollAnswerModel)
     answers: Array<PollAnswerModel> = [];
 
-    constructor(source: Partial<PollModel>) {
+    constructor (source: Partial<PollModel>) {
         ClassHelper.assign(this, source);
     }
 }

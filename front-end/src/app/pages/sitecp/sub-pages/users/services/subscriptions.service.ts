@@ -29,7 +29,7 @@ export class SubscriptionsService implements Resolve<UserSubscriptionsPage> {
 
     create (userId: number, userSubscription: UserSubscriptionPayload): Promise<UserSubscriptionItem> {
         return new Promise(res => {
-            this._httpService.post(`sitecp/users/${userId}/subscriptions`, {data: userSubscription})
+            this._httpService.post(`sitecp/users/${userId}/subscriptions`, { data: userSubscription })
                 .subscribe(response => {
                     this._notificationService.sendInfoNotification('User subscription updated');
                     res(new UserSubscriptionItem(response));
@@ -38,7 +38,7 @@ export class SubscriptionsService implements Resolve<UserSubscriptionsPage> {
     }
 
     update (userSubscription: UserSubscriptionPayload): void {
-        this._httpService.put(`sitecp/users/subscriptions/${userSubscription.userSubscriptionId}`, {data: userSubscription})
+        this._httpService.put(`sitecp/users/subscriptions/${userSubscription.userSubscriptionId}`, { data: userSubscription })
             .subscribe(() => {
                 this._notificationService.sendInfoNotification('User subscription updated');
             }, this._notificationService.failureNotification.bind(this._notificationService));

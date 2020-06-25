@@ -22,7 +22,7 @@ export class DialogService {
             forced: config.forced,
             buttons: [
                 new DialogCloseButton('Close'),
-                new DialogButton({title: 'Yes', callback: config.callback})
+                new DialogButton({ title: 'Yes', callback: config.callback })
             ]
         });
     }

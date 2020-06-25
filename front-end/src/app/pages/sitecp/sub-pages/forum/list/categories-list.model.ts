@@ -25,5 +25,6 @@ export enum CategoryListActions {
     EDIT_PERMISSIONS,
     SAVE_ORDER,
     TOGGLE_CATEGORY,
-    GROUP_TREE
+    GROUP_TREE,
+    MERGE
 }

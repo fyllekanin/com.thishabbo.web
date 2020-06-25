@@ -17,18 +17,17 @@ Route::get('/ping', 'PageController@getPing');
 Route::get('/load/initial', 'Auth\AuthController@getInitialLoad');
 
 Route::get('/puller/pull', 'Puller\StreamController@getPull');
-Route::post('/radio/request', 'Staff\RadioController@createRequest');
 Route::post('/auth/login', 'Auth\AuthController@login');
 Route::post('/auth/logout', 'Auth\AuthController@logout');
 Route::get('/auth/refresh', 'Auth\AuthController@refresh');
 Route::put('/auth/accept/gdpr', 'Auth\AuthController@acceptGdpr');
 
 Route::get('/maintenance/content', 'PageController@getMaintenanceMessage');
+Route::post('/error', 'PageController@createErrorEntry');
 
 Route::group(['middleware' => ['maintenance']], function () {
 
     Route::post('/bbcode/parse', 'PageController@parseContent');
-    Route::get('/bbcode/emojis', 'PageController@getEmojis');
     Route::get('/search/type/{type}/page/{page}', 'SearchController@getSearch');
     Route::get('/group-list', 'PageController@getGroupList');
 
@@ -53,12 +52,14 @@ Route::group(['middleware' => ['maintenance']], function () {
     Route::get('/page/forum/latest-posts/page/{page}', 'Forum\Post\PostCrudController@getLatestPosts');
     Route::get('/page/forum/latest-threads/page/{page}', 'Forum\Thread\ThreadCrudController@getLatestThreads');
 
-    Route::get('puller/notifications/unread', 'Puller\NotificationController@getUnreadNotifications');
+    Route::get('/page/seasons/{season}', 'PageController@getSeason');
 
     Route::get('radio/timetable', 'Staff\RadioController@getTimetable');
     Route::get('events/timetable', 'Staff\EventsController@getTimetable');
 
     Route::group(['middleware' => ['auth.check']], function () {
+        Route::get('puller/notifications/unread', 'Puller\NotificationController@getUnreadNotifications');
+        Route::post('/radio/request', 'Staff\RadioController@createRequest');
         Route::get('/auth/user', 'Auth\AuthController@getUser');
         Route::post('/radio/like', 'Staff\RadioController@createDjLike');
         Route::post('/event/like', 'Staff\EventsController@createHostLike');

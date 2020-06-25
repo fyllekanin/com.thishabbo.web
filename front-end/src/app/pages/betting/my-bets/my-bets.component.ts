@@ -19,7 +19,7 @@ export class MyBetsComponent extends Page implements OnDestroy {
     tableConfig: TableConfig;
     stats: Array<StatsBoxModel> = [];
 
-    constructor(
+    constructor (
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute,
         breadcrumbService: BreadcrumbService
@@ -34,17 +34,17 @@ export class MyBetsComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    private onData(data: { data: MyBetsModel }): void {
+    private onData (data: { data: MyBetsModel }): void {
         this._data = data.data;
         this.createOrUpdateTable();
         this.stats = getBettingStats(this._data.stats);
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -56,7 +56,7 @@ export class MyBetsComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         return this._data.bets.map(bet => new TableRow({
             cells: [
                 new TableCell({ title: bet.name }),
@@ -67,7 +67,7 @@ export class MyBetsComponent extends Page implements OnDestroy {
         }));
     }
 
-    private getTableHeaders(): Array<TableHeader> {
+    private getTableHeaders (): Array<TableHeader> {
         return [
             new TableHeader({ title: 'Bet', width: '50%' }),
             new TableHeader({ title: 'Odds', width: '15%' }),

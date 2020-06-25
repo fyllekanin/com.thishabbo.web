@@ -8,9 +8,10 @@ import { ThcRequestLogPage } from './thc-requests-log.model';
 @Injectable()
 export class ThcRequestsResolver implements Resolve<ThcRequestLogPage> {
 
-    constructor(private _httpService: HttpService) { }
+    constructor (private _httpService: HttpService) {
+    }
 
-    resolve(activatedRoute: ActivatedRouteSnapshot): Observable<ThcRequestLogPage> {
+    resolve (activatedRoute: ActivatedRouteSnapshot): Observable<ThcRequestLogPage> {
         const page = activatedRoute.params['page'];
 
         return this._httpService.get(`staff/thc-requests-log/page/${page}`)

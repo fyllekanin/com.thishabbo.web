@@ -10,9 +10,12 @@ use Illuminate\Database\Eloquent\Builder;
  * @property mixed name
  */
 class Group extends DeletableModel {
+
     protected $primaryKey = 'groupId';
-    protected $fillable = ['name', 'nickname', 'nameColor', 'userBarStyling', 'immunity', 'sitecpPermissions', 'staffPermissions',
-        'options', 'isPublic', 'avatarHeight', 'avatarWidth'];
+    protected $fillable = [
+        'name', 'nickname', 'nameColor', 'userBarStyling', 'immunity', 'sitecpPermissions', 'staffPermissions',
+        'options', 'isPublic', 'avatarHeight', 'avatarWidth'
+    ];
 
     public function scopeWithName(Builder $query, $name) {
         return $query->whereRaw('lower(name) = ?', [strtolower($name)]);

@@ -1,6 +1,6 @@
 import { AutoSaveHelper } from 'shared/helpers/auto-save.helper';
 import { AutoSave } from '../../pages/forum/forum.model';
-import { tick, fakeAsync } from '@angular/core/testing';
+import { fakeAsync, tick } from '@angular/core/testing';
 
 describe('AutoSaveHelper', () => {
 

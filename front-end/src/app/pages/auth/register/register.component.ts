@@ -18,9 +18,9 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 export class RegisterComponent extends Page implements OnDestroy {
     private _data: RegisterPage;
     registerModel: RegisterModel = new RegisterModel();
-    tabs: Array<TitleTab> = [new TitleTab({title: 'Register'})];
+    tabs: Array<TitleTab> = [ new TitleTab({ title: 'Register' }) ];
 
-    constructor(
+    constructor (
         private _notificationService: NotificationService,
         private _httpService: HttpService,
         private _authService: AuthService,
@@ -33,11 +33,11 @@ export class RegisterComponent extends Page implements OnDestroy {
         this.addSubscription(activatedRoute.data, this.onData.bind(this));
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    register(): void {
+    register (): void {
         if (!this.isUserValid()) {
             return;
         }
@@ -50,7 +50,7 @@ export class RegisterComponent extends Page implements OnDestroy {
         }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private isUserValid(): boolean {
+    private isUserValid (): boolean {
         if (this.isNicknameTaken()) {
             this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
@@ -70,7 +70,7 @@ export class RegisterComponent extends Page implements OnDestroy {
         return true;
     }
 
-    private isNicknameTaken(): boolean {
+    private isNicknameTaken (): boolean {
         if (!this.registerModel.nickname) {
             return true;
         }
@@ -78,7 +78,7 @@ export class RegisterComponent extends Page implements OnDestroy {
             .findIndex(item => item.toLowerCase() === this.registerModel.nickname.toLowerCase()) > -1;
     }
 
-    private isReferredByValid(): boolean {
+    private isReferredByValid (): boolean {
         if (!this.registerModel.referredBy) {
             return true;
         }
@@ -86,7 +86,7 @@ export class RegisterComponent extends Page implements OnDestroy {
             .some(item => item.toLowerCase() === this.registerModel.referredBy.toLowerCase());
     }
 
-    private onData(data: { data: RegisterPage }): void {
+    private onData (data: { data: RegisterPage }): void {
         this._data = data.data;
     }
 }

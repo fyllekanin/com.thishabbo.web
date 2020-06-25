@@ -33,4 +33,5 @@ import { SearchBarModule } from '../search-bar/search-bar.module';
     ]
 })
 
-export class HeaderModule {}
+export class HeaderModule {
+}

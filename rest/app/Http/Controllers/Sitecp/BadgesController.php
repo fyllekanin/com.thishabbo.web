@@ -2,54 +2,65 @@
 
 namespace App\Http\Controllers\Sitecp;
 
+use App\Constants\LogType;
+use App\Constants\NotificationTypes;
+use App\Constants\Shop\ShopItemTypes;
 use App\EloquentModels\Badge;
 use App\EloquentModels\User\User;
 use App\EloquentModels\User\UserItem;
-use App\Helpers\ConfigHelper;
-use App\Helpers\DataHelper;
-use App\Helpers\SettingsHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
-use App\Models\Logger\Action;
-use App\Models\Notification\Type;
+use App\Repositories\Repository\SettingRepository;
 use App\Utils\Condition;
+use App\Utils\PaginationUtil;
 use App\Utils\Value;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class BadgesController extends Controller {
+    private $mySettingRepository;
+
+    public function __construct(SettingRepository $settingRepository) {
+        parent::__construct();
+        $this->mySettingRepository = $settingRepository;
+    }
 
     /**
      * @param $badgeId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getUsersWithBadge ($badgeId) {
+    public function getUsersWithBadge($badgeId) {
         $badge = Badge::find($badgeId);
         Condition::precondition(!$badge, 404, 'Badge do not exist');
 
-        $users = UserItem::badge()->where('itemId', $badgeId)->get()->map(function ($userItem) {
-            return [
-                'nickname' => $userItem->user->nickname,
-                'userId' => $userItem->userId,
-                'createdAt' => $userItem->createdAt->timestamp
-            ];
-        });
+        $users = UserItem::badge()->where('itemId', $badgeId)->get()->map(
+            function ($userItem) {
+                return [
+                    'nickname' => $userItem->user->nickname,
+                    'userId' => $userItem->userId,
+                    'createdAt' => $userItem->createdAt->timestamp
+                ];
+            }
+        );
 
-        return response()->json([
-            'users' => $users,
-            'availableUsers' => User::get(['nickname', 'userId']),
-            'badge' => $badge
-        ]);
+        return response()->json(
+            [
+                'users' => $users,
+                'availableUsers' => User::get(['nickname', 'userId']),
+                'badge' => $badge
+            ]
+        );
     }
 
     /**
-     * @param Request $request
-     * @param         $badgeId
+     * @param  Request  $request
+     * @param $badgeId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function updateUsersWithBadge (Request $request, $badgeId) {
+    public function updateUsersWithBadge(Request $request, $badgeId) {
         $user = $request->get('auth');
         $badge = Badge::find($badgeId);
         $userIds = $request->input('userIds');
@@ -60,19 +71,19 @@ class BadgesController extends Controller {
         UserItem::badge()->where('itemId', $badgeId)->whereNotIn('userId', $userIds)->delete();
         $this->addBadgeToUsers($userIds, $badgeId);
 
-        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_USERS_WITH_BADGE, ['badge' => $badge->name]);
+        Logger::sitecp($user->userId, $request->ip(), LogType::UPDATED_USERS_WITH_BADGE, ['badge' => $badge->name]);
         return response()->json();
     }
 
     /**
      * Delete request to delete given badge
      *
-     * @param Request $request
-     * @param         $badgeId
+     * @param  Request  $request
+     * @param $badgeId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function deleteBadge (Request $request, $badgeId) {
+    public function deleteBadge(Request $request, $badgeId) {
         $user = $request->get('auth');
         $badge = Badge::find($badgeId);
 
@@ -82,7 +93,7 @@ class BadgesController extends Controller {
         $badge->isDeleted = 1;
         $badge->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_BADGE, ['badge' => $badge->name], $badge->badgeId);
+        Logger::sitecp($user->userId, $request->ip(), LogType::DELETED_BADGE, ['badge' => $badge->name], $badge->badgeId);
 
         return response()->json();
     }
@@ -90,13 +101,13 @@ class BadgesController extends Controller {
     /**
      * Post request to create a new user Badge
      *
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function createBadge (Request $request) {
+    public function createBadge(Request $request) {
         $user = $request->get('auth');
-        $badge = (object)json_decode($request->input('badge'));
+        $badge = (object) json_decode($request->input('badge'));
         $badgeImage = $request->file('badgeImage');
 
         Condition::precondition(empty($badge->name), 400, 'A badge needs to have a name!');
@@ -105,35 +116,39 @@ class BadgesController extends Controller {
         $nameIsUnique = Badge::withName($badge->name)->count('badgeId') == 0;
         Condition::precondition(!$nameIsUnique, 400, 'Name needs to be unique');
 
-        $request->validate([
-            'badgeImage' => 'required|mimes:jpg,jpeg,bmp,png,gif',
-        ]);
+        $request->validate(
+            [
+                'badgeImage' => 'required|mimes:jpg,jpeg,bmp,png,gif',
+            ]
+        );
 
-        $badge = new Badge([
-            'name' => $badge->name,
-            'description' => $badge->description,
-            'points' => Value::objectProperty($badge, 'points', 0),
-        ]);
+        $badge = new Badge(
+            [
+                'name' => $badge->name,
+                'description' => $badge->description,
+                'points' => Value::objectProperty($badge, 'points', 0),
+            ]
+        );
         $badge->save();
 
-        $fileName = $badge->badgeId . '.gif';
-        $destination = SettingsHelper::getResourcesPath('images/badges');
-        $badgeImage->move($destination, $fileName);
+        $fileName = $badge->badgeId.'.gif';
+        $target = $this->mySettingRepository->getResourcePath('images/badges');
+        $badgeImage->move($target, $fileName);
 
-        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_BADGE, ['badge' => $badge->name], $badge->badgeId);
+        Logger::sitecp($user->userId, $request->ip(), LogType::CREATED_BADGE, ['badge' => $badge->name], $badge->badgeId);
 
         return $this->getBadge($badge->badgeId);
     }
 
     /**
-     * @param Request $request
-     * @param         $badgeId
+     * @param  Request  $request
+     * @param $badgeId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function updateBadge (Request $request, $badgeId) {
+    public function updateBadge(Request $request, $badgeId) {
         $user = $request->get('auth');
-        $newBadge = (object)json_decode($request->input('badge'));
+        $newBadge = (object) json_decode($request->input('badge'));
         $badgeImage = $request->file('badgeImage');
 
         $badge = Badge::find($badgeId);
@@ -142,28 +157,34 @@ class BadgesController extends Controller {
         Condition::precondition(empty($newBadge->name), 400, 'A badge needs to have a name!');
         Condition::precondition(empty($newBadge->description), 400, 'A badge needs to have a description!');
         Condition::precondition($newBadge->points < 0, 400, 'A badge must have 0 or more points!');
-        $nameIsUnique = Badge::whereRaw('lower(name) LIKE ?', [strtolower($newBadge->name)])->where('badgeId', '!=', $badgeId)->count('badgeId') == 0;
+        $nameIsUnique = Badge::whereRaw('lower(name) LIKE ?', [strtolower($newBadge->name)])
+                ->where('badgeId', '!=', $badgeId)
+                ->count('badgeId') == 0;
         Condition::precondition(!$nameIsUnique, 400, 'Name needs to be unique');
 
         if ($badgeImage) {
-            $request->validate([
-                'badgeImage' => 'required|mimes:jpg,jpeg,bmp,png,gif',
-            ]);
+            $request->validate(
+                [
+                    'badgeImage' => 'required|mimes:jpg,jpeg,bmp,png,gif',
+                ]
+            );
         }
 
-        Badge::where('badgeId', $badgeId)->update([
-            'name' => $newBadge->name,
-            'description' => $newBadge->description,
-            'points' => Value::objectProperty($newBadge, 'points', 0),
-        ]);
+        Badge::where('badgeId', $badgeId)->update(
+            [
+                'name' => $newBadge->name,
+                'description' => $newBadge->description,
+                'points' => Value::objectProperty($newBadge, 'points', 0),
+            ]
+        );
 
         if ($badgeImage) {
-            $fileName = $badge->badgeId . '.gif';
-            $destination = SettingsHelper::getResourcesPath('images/badges');
-            $badgeImage->move($destination, $fileName);
+            $fileName = $badge->badgeId.'.gif';
+            $target = $this->mySettingRepository->getResourcePath('images/badges');
+            $badgeImage->move($target, $fileName);
         }
 
-        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_BADGE, ['badge' => $badge->name]);
+        Logger::sitecp($user->userId, $request->ip(), LogType::UPDATED_BADGE, ['badge' => $badge->name]);
         return $this->getBadge($badgeId);
     }
 
@@ -172,9 +193,9 @@ class BadgesController extends Controller {
      *
      * @param $badgeId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getBadge ($badgeId) {
+    public function getBadge($badgeId) {
         $badge = Badge::find($badgeId);
         Condition::precondition(!$badge, 404, 'No badge with that ID exist');
 
@@ -184,47 +205,50 @@ class BadgesController extends Controller {
     /**
      * Get request to fetch array of all badges
      *
-     * @param Request $request
-     * @param         $page
+     * @param  Request  $request
+     * @param $page
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getBadges (Request $request, $page) {
+    public function getBadges(Request $request, $page) {
         $filter = $request->input('filter');
 
         $getBadgeSql = Badge::where('name', 'LIKE', Value::getFilterValue($request, $filter))
             ->orderBy('name', 'ASC');
 
-        $total = DataHelper::getTotal($getBadgeSql->count('badgeId'));
+        $total = PaginationUtil::getTotalPages($getBadgeSql->count('badgeId'));
         $badges = $getBadgeSql->take($this->perPage)
-            ->skip(DataHelper::getOffset($page))
+            ->skip(PaginationUtil::getOffset($page))
             ->get();
 
-        return response()->json([
-            'badges' => $badges,
-            'page' => $page,
-            'total' => $total
-        ]);
+        return response()->json(
+            [
+                'badges' => $badges,
+                'page' => $page,
+                'total' => $total
+            ]
+        );
     }
 
-    private function addBadgeToUsers ($userIds, $badgeId) {
+    private function addBadgeToUsers($userIds, $badgeId) {
         $notifications = [];
-        $itemTypes = ConfigHelper::getTypesConfig();
         foreach ($userIds as $userId) {
             $haveItem = UserItem::badge()->where('itemId', $badgeId)->where('userId', $userId)->count('userItemId') > 0;
             if ($haveItem) {
                 continue;
             }
-            $item = new UserItem([
-                'type' => $itemTypes->badge,
-                'itemId' => $badgeId,
-                'userId' => $userId
-            ]);
+            $item = new UserItem(
+                [
+                    'type' => ShopItemTypes::BADGE,
+                    'itemId' => $badgeId,
+                    'userId' => $userId
+                ]
+            );
             $item->save();
             $notifications[] = [
                 'userId' => $userId,
                 'senderId' => 0,
-                'type' => Type::getType(Type::BADGE),
+                'type' => NotificationTypes::BADGE,
                 'contentId' => $badgeId,
                 'createdAt' => time()
             ];

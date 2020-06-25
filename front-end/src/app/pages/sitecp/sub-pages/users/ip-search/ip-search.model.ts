@@ -10,7 +10,7 @@ export class IpSearchModel {
     @primitive()
     createdAt: number;
 
-    constructor(source: Partial<IpSearchModel>) {
+    constructor (source: Partial<IpSearchModel>) {
         ClassHelper.assign(this, source);
     }
 }

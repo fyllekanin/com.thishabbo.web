@@ -7,12 +7,18 @@ The requirements with software to developing this is project is as follow
 ### Webserver
 
 A webserver is needed which includes Apache, PHP and MySQL server
-- Xampp is a good choice for this, works on all operating systems (windows, linux and MacOS)
+- Xampp is a good choice for this
+- For MAC you should use homebrew, follow:
+
+https://medium.com/@JanFaessler/setup-local-lamp-stack-on-mac-with-homebrew-47eb8d6d53ea
 
 ### Database
 
 You need either a MySQL (v5+) or MariaDB (10.2+)
 - If you are using xampp, the database will be included and no need to think about it.
+- For MAC you should use homebrew, follow:
+
+https://medium.com/@JanFaessler/setup-local-lamp-stack-on-mac-with-homebrew-47eb8d6d53ea
 
 ### NodeJS
 
@@ -68,6 +74,10 @@ you will have to change it.
 After this you will have to use your xampp or whatever web server you got, and point your http://localhost
 to (using the example) C:/users/{user}/Desktop/repos/com.thishabbo.web/rest
 
+Now it's time to also fix your port, you need to change your xampp or PHP server (whichever you choosed)
+to run on port 8000.
+So to access your server you should be able to run http://localhost:8000/rest and it should at least respond.
+
 And finally, you need the global angular CLI, so run "npm install -g @angular/cli"
 
 ### Starting it
@@ -95,23 +105,13 @@ We got 3 different types of tests in this project, we got:
 
 Look in the scripts/run_tests.sh file to see how they are ran
 
-
 ## Running the development
 If you have passed all the previous steps, what you have to do when you want to run
 the application is the following.
 
 1) Set the "localhost" of your webserver to the root of the project in the rest catalog
-2) Start the webserver
+2) Start the webserver now
 2.1) This will be the host for the back-end stuff (the REST API)
 3) Open front-end and run the following command "npm run start"
 
 Now you should be able to visit "http://localhost:4200" to see the application.
-
-## Jobs/Ques
-In scripts there is the file "job-runner.sh"
-This file will be present in the production produced code.
-
-After everything is setup the following steps should be taken on an update:
-- 1 bash -c "exec -a JobRunner nohup ./job-runner.sh &>/dev/null &"
-  - To start up the runner again
-  - It will kill the previous if exists

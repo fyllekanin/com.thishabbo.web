@@ -97,7 +97,9 @@
                     <option value="MEDIA">Media</option>
                 </select>
             </div>
-            <div class="cell small-12 medium-offset-6 medium-6">
+            <div class="cell small-12 medium-6">
+            </div>
+            <div class="cell small-12 medium-6">
                 <label class="checkbox-container">
                     Do Threads need approving before posting?
                     <span tooltip="If yes, threads need approving before being seen by users." class="checkbox-info">
@@ -164,6 +166,16 @@
                         <em class="fas fa-question-circle"></em>
                     </span>
                     <input type="checkbox" [(ngModel)]="options.contactPostsGoHere">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div class="cell small-12 medium-6">
+                <label class="checkbox-container">
+                    Do this category has it's own leaderboard?
+                    <span tooltip="If yes, it will show up as a leaderboard section by itself" class="checkbox-info">
+                        <em class="fas fa-question-circle"></em>
+                    </span>
+                    <input type="checkbox" [(ngModel)]="options.isStandaloneLeaderboard">
                     <span class="checkmark"></span>
                 </label>
             </div>

@@ -1,6 +1,6 @@
 import { ForumPermissions, ThreadPrefix } from '../forum.model';
 import { CategoryParent } from '../category/category.model';
-import { arrayOf, ClassHelper, objectOf, primitive, dateAndTime } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, dateAndTime, objectOf, primitive } from 'shared/helpers/class.helper';
 import { PostModel } from '../post/post.model';
 import { SlimUser, User } from 'core/services/auth/auth.model';
 import { ThreadPoll } from './thread-poll/thread-poll.model';
@@ -25,7 +25,6 @@ export class ThreadReader {
         return this.time;
     }
 }
-
 
 export class ThreadPage {
     @primitive()
@@ -56,8 +55,6 @@ export class ThreadPage {
     isApproved: boolean;
     @primitive()
     isSticky: boolean;
-    @primitive()
-    contentApproval: boolean;
     @objectOf(ThreadPrefix)
     prefix: ThreadPrefix;
     @primitive()
@@ -75,7 +72,9 @@ export class ThreadPage {
     @primitive()
     template: string;
     @primitive()
-    badge: string;
+    isBadgesCompleted: boolean;
+    @arrayOf(String)
+    badges: Array<string> = [];
     @arrayOf(String)
     tags: Array<string> = [];
     @primitive()
@@ -145,17 +144,20 @@ export class PostHistoryModel {
     }
 }
 
-export function getStatsBoxes (thread: ThreadPage): Array<StatsBoxModel> {
+export function getStatsBoxes (thread: ThreadPage, onMarkBadge: () => void): Array<StatsBoxModel> {
     if (thread.template !== CategoryTemplates.QUEST) {
         return [];
     }
+
     const items = [
         {
             borderColor: TitleTopBorder.GREEN,
-            externalIcon: `https://habboo-a.akamaihd.net/c_images/album1584/${thread.badge}.gif`,
-            title: 'Badge',
-            breadText: 'The badge earned from this guide',
-            condition: thread.badge
+            externalIconStyle: '',
+            innerHTML: !thread.isBadgesCompleted ? `<span class="tag PAID cursor-pointer">Not Completed</span>` : `<span class="tag EASY">Claim Completed</span>`,
+            innerHTMLCallback: thread.isBadgesCompleted ? null : onMarkBadge,
+            badges: thread.badges,
+            title: thread.badges.length > 1 ? 'Badges' : 'Badge',
+            condition: thread.badges && thread.badges.length > 0
         },
         {
             borderColor: TitleTopBorder.RED,
@@ -168,7 +170,7 @@ export function getStatsBoxes (thread: ThreadPage): Array<StatsBoxModel> {
         },
         {
             borderColor: TitleTopBorder.BLUE,
-            externalIcon: '/assets/images/room.gif',
+            externalIcons: [ '/assets/images/room.gif' ],
             externalIconStyle: thread.roomLink ? '' : '-webkit-filter: grayscale(100%); filter: grayscale(100%);',
             externalIconLink: thread.roomLink,
             title: 'Room Link',
@@ -181,12 +183,12 @@ export function getStatsBoxes (thread: ThreadPage): Array<StatsBoxModel> {
 
 export function getPostTools (forumPermissions: ForumPermissions) {
     return [
-        {title: 'Approve Posts', value: ThreadActions.APPROVE_POSTS, condition: forumPermissions.canApprovePosts},
-        {title: 'Unapprove Posts', value: ThreadActions.UNAPPROVE_POSTS, condition: forumPermissions.canApprovePosts},
-        {title: 'Merge Posts', value: ThreadActions.MERGE_POSTS, condition: forumPermissions.canMergeThreadsAndPosts},
-        {title: 'Change Owner', value: ThreadActions.CHANGE_POST_OWNER, condition: forumPermissions.canChangeOwner},
-        {title: 'Edit History', value: ThreadActions.POST_HISTORY, condition: forumPermissions.canEditOthersPosts},
-        {title: 'Delete Posts', value: ThreadActions.DELETE_POSTS, condition: forumPermissions.canDeletePosts}
+        { title: 'Approve Posts', value: ThreadActions.APPROVE_POSTS, condition: forumPermissions.canApprovePosts },
+        { title: 'Unapprove Posts', value: ThreadActions.UNAPPROVE_POSTS, condition: forumPermissions.canApprovePosts },
+        { title: 'Merge Posts', value: ThreadActions.MERGE_POSTS, condition: forumPermissions.canMergeThreadsAndPosts },
+        { title: 'Change Owner', value: ThreadActions.CHANGE_POST_OWNER, condition: forumPermissions.canChangeOwner },
+        { title: 'Edit History', value: ThreadActions.POST_HISTORY, condition: forumPermissions.canEditOthersPosts },
+        { title: 'Delete Posts', value: ThreadActions.DELETE_POSTS, condition: forumPermissions.canDeletePosts }
     ];
 }
 

@@ -1,8 +1,7 @@
-
 export class ThemeHelper {
     static readonly THEME_STYLE_ID = 'custom-theme-style-element';
 
-    static applyTheme(theme: string): void {
+    static applyTheme (theme: string): void {
         let element;
 
         if (this.isElementAdded()) {
@@ -22,11 +21,11 @@ export class ThemeHelper {
         return window.innerWidth < 600;
     }
 
-    private static isElementAdded(): boolean {
+    private static isElementAdded (): boolean {
         return Boolean(document.getElementById(ThemeHelper.THEME_STYLE_ID));
     }
 
-    private static createStyleElement(): HTMLStyleElement {
+    private static createStyleElement (): HTMLStyleElement {
         const css = document.createElement('style');
         css.id = ThemeHelper.THEME_STYLE_ID;
 

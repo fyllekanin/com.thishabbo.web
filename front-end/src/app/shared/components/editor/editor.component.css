@@ -1,3 +1,12 @@
 .wysibb {
     margin-bottom: 13px;
 }
+
+.matches {
+    list-style: none;
+}
+
+.match:focus {
+    color: #cccccc;
+    outline: none;
+}

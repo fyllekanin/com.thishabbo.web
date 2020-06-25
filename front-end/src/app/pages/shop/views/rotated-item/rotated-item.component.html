@@ -1,0 +1,23 @@
+<div class="wrapper">
+    <div class="inner-image" (click)="onBuy()">
+        <img [src]="item.assetUrl"/>
+    </div>
+    <div class="container">
+        <div class="prize float-right">
+            <em class="fas fa-coins"></em>
+            {{item.credits}}
+        </div>
+        <a class="title">
+            <em class="fas fa-box"></em>
+            {{item.title}}
+        </a>
+        <div class="content">
+            Buying this item adds it to your account.
+            <br/>
+            <br/>
+            <br/>
+            <strong>Rarity: </strong> <span
+                [ngStyle]="{ 'color': item.rarityItem.color }">{{item.rarityItem.label}}</span>
+        </div>
+    </div>
+</div>

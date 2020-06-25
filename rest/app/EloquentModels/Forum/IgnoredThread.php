@@ -5,7 +5,9 @@ namespace App\EloquentModels\Forum;
 use App\EloquentModels\Models\UnixTimeModel;
 
 class IgnoredThread extends UnixTimeModel {
+
     protected $table = 'ignored_threads';
+    protected $primaryKey = 'ignoredThreadId';
     protected $fillable = ['threadId', 'userId'];
 
     public function thread() {

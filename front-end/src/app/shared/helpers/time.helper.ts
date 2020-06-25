@@ -39,6 +39,14 @@ export class TimeHelper {
         return this.DAYS.find(day => day.number === number);
     }
 
+    static getCurrentWeek (): number {
+        const date = new Date();
+        date.setUTCDate(date.getUTCDate() + 4 - (date.getUTCDay() || 7));
+        const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+        // @ts-ignore
+        return Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+    }
+
     static getStartOfWeek (): number {
         const date = new Date();
         const day = date.getDay();
@@ -159,7 +167,20 @@ export class TimeHelper {
 
     static toDateString (value: number): string {
         const date = value ? new Date(value * 1000) : new Date();
-        return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+        const month = date.getMonth() + 1;
+        return `${date.getFullYear()}-${month < 10 ? `0${month}` : month}-${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}`;
+    }
+
+    static getUntil (toDate: Date): string {
+        const now = new Date();
+        const difference = toDate.getTime() - now.getTime();
+
+        const seconds = Math.floor(difference / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+        const days = Math.floor(hours / 24);
+
+        return `${days > 0 ? days + ' days' : ''} ${hours % 24} hours ${minutes % 60} minutes ${seconds % 60} seconds`;
     }
 
     static getTime (time: number): string {
@@ -187,6 +208,6 @@ export class TimeHelper {
         }
 
         interval = Math.floor(seconds);
-        return `${interval} second${interval > 1 ? 's' : ''} ago`;
+        return interval <= 0 ? 'now' : `${interval} second${interval > 1 ? 's' : ''} ago`;
     }
 }

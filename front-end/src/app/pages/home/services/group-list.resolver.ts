@@ -8,9 +8,10 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class GroupListResolver implements Resolve<Array<GroupList>> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
-    resolve(): Observable<Array<GroupList>> {
+    resolve (): Observable<Array<GroupList>> {
         return this._httpService.get('group-list')
             .pipe(map(res => res.map(item => new GroupList(item))));
     }

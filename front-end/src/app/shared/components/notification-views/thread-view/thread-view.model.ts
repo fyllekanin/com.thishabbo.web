@@ -11,7 +11,7 @@ export class ThreadViewThread {
     @primitive()
     postId: number;
 
-    constructor(source: Partial<ThreadView>) {
+    constructor (source: Partial<ThreadView>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -22,7 +22,7 @@ export class ThreadView {
     @objectOf(ThreadViewThread)
     thread: ThreadViewThread;
 
-    constructor(source: Partial<ThreadView>) {
+    constructor (source: Partial<ThreadView>) {
         ClassHelper.assign(this, source);
     }
 }

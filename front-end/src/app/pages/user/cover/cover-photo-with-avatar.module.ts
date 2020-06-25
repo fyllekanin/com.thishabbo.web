@@ -19,4 +19,5 @@ import { UsercpAvatarCoverPreviewService } from './usercp-avatar-cover-preview.s
         CoverPhotoWithAvatarComponent
     ]
 })
-export class CoverPhotoWithAvatarModule {}
+export class CoverPhotoWithAvatarModule {
+}

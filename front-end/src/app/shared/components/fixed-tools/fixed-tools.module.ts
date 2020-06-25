@@ -13,4 +13,5 @@ import { NgModule } from '@angular/core';
         FixedToolsComponent
     ]
 })
-export class FixedToolsModule {}
+export class FixedToolsModule {
+}

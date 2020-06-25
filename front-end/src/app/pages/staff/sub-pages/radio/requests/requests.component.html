@@ -1,11 +1,5 @@
-<div *ngIf="requests.length === 0">
-    <app-title [title]="'No Requests'"></app-title>
-    <app-content>
-        <app-info-box [model]="infoModel"></app-info-box>
-    </app-content>
-</div>
-<div *ngIf="requests.length > 0">
-    <app-title [title]="'Request Line'" [tabs]="reload" (onTabClick)="onReload()"></app-title>
+<div>
+    <app-title [title]="'Request Line'" [tabs]="tabs" (onTabClick)="onAction($event);"></app-title>
     <app-content>
         Below are all the current requests to the current Radio DJ. <br/>
         You can either choose to delete the requests that you have fulfilled to keep it clear you can let them <br/>
@@ -13,14 +7,15 @@
     </app-content>
 
     <div *ngFor="let item of requests; let first = first">
-        <app-title [title]="getTitle(item)" [tabs]="tabs" (onTabClick)="onDelete(item)"></app-title>
         <app-content>
+            <em class="fas fa-trash delete" *ngIf="canDeleteRequests" (click)="onDelete(item)"></em>
             <div class="quotepost">
                 {{item.nickname}} - {{item.createdAt}}
                 <br/>
                 <br/>
                 {{item.content}}
             </div>
+            <em *ngIf="item.ip">IP: {{item.ip}}</em>
         </app-content>
     </div>
 </div>

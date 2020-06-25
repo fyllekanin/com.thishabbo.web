@@ -50,6 +50,10 @@ export const appRoutes: Routes = [
         loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule)
     },
     {
+        path: 'school',
+        loadChildren: () => import('./pages/school/school.module').then(m => m.SchoolModule)
+    },
+    {
         path: '',
         pathMatch: 'full',
         redirectTo: 'home'

@@ -3,7 +3,7 @@ import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { ActivatedRoute } from '@angular/router';
 import { Page } from 'shared/page/page.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
-import { TimeHelper, Day, Hour } from 'shared/helpers/time.helper';
+import { Day, Hour, TimeHelper } from 'shared/helpers/time.helper';
 import { SlimUser } from 'core/services/auth/auth.model';
 import { TimetablePage } from 'shared/models/timetable.model';
 import { TimetableHelper } from 'shared/helpers/timetable.helper';
@@ -11,7 +11,7 @@ import { TimetableHelper } from 'shared/helpers/timetable.helper';
 @Component({
     selector: 'app-timetable',
     templateUrl: 'timetable.component.html',
-    styleUrls: ['timetable.component.css']
+    styleUrls: [ 'timetable.component.css' ]
 })
 export class TimetableComponent extends Page implements OnDestroy {
     private readonly _type;

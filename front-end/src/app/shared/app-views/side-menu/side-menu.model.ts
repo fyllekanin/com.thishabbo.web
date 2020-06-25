@@ -9,7 +9,7 @@ export class SideMenuItem {
     @primitiveOf(Boolean)
     isApplicable = true;
 
-    constructor(source: {
+    constructor (source: {
         title: string,
         link: string,
         isApplicable?: boolean
@@ -28,7 +28,7 @@ export class SideMenuBlock {
     @primitiveOf(String)
     color = '#179bfb';
 
-    constructor(source: {
+    constructor (source: {
         title: string,
         items: Array<SideMenuItem>,
         top?: string,

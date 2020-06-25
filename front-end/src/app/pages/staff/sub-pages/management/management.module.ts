@@ -13,11 +13,14 @@ import { DoNotHireComponent } from './do-not-hire/do-not-hire.component';
 import { DoNotHireResolver } from './services/do-not-hire.resolver';
 import { CurrentListenersResolver } from './services/current-listeners.resolver';
 import { CurrentListenersComponent } from './current-listeners/current-listeners.component';
-import {PermShowComponent} from './permshow/permshow.component';
-import {PermShowsListComponent} from './permshow/list/permshows-list.component';
-import {PermShowResolver} from './services/permshow.resolver';
-import {PermShowsListResolver} from './services/permshows-list.resolver';
-import {PaginationModule} from 'shared/app-views/pagination/pagination.module';
+import { PermShowComponent } from './permshow/permshow.component';
+import { PermShowsListComponent } from './permshow/list/permshows-list.component';
+import { PermShowResolver } from './services/permshow.resolver';
+import { PermShowsListResolver } from './services/permshows-list.resolver';
+import { PaginationModule } from 'shared/app-views/pagination/pagination.module';
+import { ListenerStatisticsResolver } from './services/listener-statistics.resolver';
+import { ListenerStatisticsComponent } from './listener-statistics/listener-statistics.component';
+import { BarChartModule } from 'shared/components/graph/bar-chart/bar-chart.module';
 
 @NgModule({
     imports: [
@@ -28,21 +31,24 @@ import {PaginationModule} from 'shared/app-views/pagination/pagination.module';
         CommonModule,
         FormsModule,
         TableModule,
-        PaginationModule
+        PaginationModule,
+        BarChartModule
     ],
     declarations: [
         DoNotHireListComponent,
         DoNotHireComponent,
         CurrentListenersComponent,
         PermShowComponent,
-        PermShowsListComponent
+        PermShowsListComponent,
+        ListenerStatisticsComponent
     ],
     providers: [
         DoNotHireListResolver,
         DoNotHireResolver,
         CurrentListenersResolver,
         PermShowResolver,
-        PermShowsListResolver
+        PermShowsListResolver,
+        ListenerStatisticsResolver
     ],
     exports: [
         RouterModule

@@ -24,10 +24,8 @@ describe('TableComponent', () => {
             providers: [
                 {
                     provide: Router, useValue: {
-                        navigateByUrl: () => {
-                        },
-                        createUrlTree: () => {
-                        }
+                        navigateByUrl: () => null,
+                        createUrlTree: () => null
                     }
                 },
                 {
@@ -38,7 +36,7 @@ describe('TableComponent', () => {
                     }
                 }
             ],
-            schemas: [NO_ERRORS_SCHEMA]
+            schemas: [ NO_ERRORS_SCHEMA ]
         });
 
         component = TestBed.createComponent(TableComponent).componentInstance;
@@ -58,8 +56,8 @@ describe('TableComponent', () => {
     it('onChange should emit the rowId and value from item', () => {
         // Given
         spyOn(component.onAction, 'emit');
-        const row = new TableRow({id: 'test'});
-        const item = {target: {value: 1}};
+        const row = new TableRow({ id: 'test' });
+        const item = { target: { value: 1 } };
 
 
         // When
@@ -75,8 +73,8 @@ describe('TableComponent', () => {
     it('onFilterChange should build QueryParameters and emit them', () => {
         // Given
         spyOnProperty(component, 'filterConfigs', 'get').and.returnValue([
-            new FilterConfig({key: 'test', value: 'apa'}),
-            new FilterConfig({key: 'lipsum', value: 'rawr'})
+            new FilterConfig({ key: 'test', value: 'apa' }),
+            new FilterConfig({ key: 'lipsum', value: 'rawr' })
         ]);
         spyOn(component.onFilter, 'emit');
 
@@ -107,8 +105,8 @@ describe('TableComponent', () => {
             // Given
             component.config = new TableConfig({
                 rows: [
-                    new TableRow({actions: []}),
-                    new TableRow({actions: [new TableAction({})]})
+                    new TableRow({ actions: [] }),
+                    new TableRow({ actions: [ new TableAction({}) ] })
                 ]
             });
 

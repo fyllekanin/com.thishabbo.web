@@ -19,7 +19,7 @@ export class ThemeComponent extends Page implements OnDestroy {
 
     themeId = -1;
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Save Selection'})
+        new TitleTab({ title: 'Save Selection' })
     ];
 
     constructor (
@@ -44,7 +44,7 @@ export class ThemeComponent extends Page implements OnDestroy {
     }
 
     onSave (): void {
-        this._httpService.put('usercp/themes', {themeId: this.themeId})
+        this._httpService.put('usercp/themes', { themeId: this.themeId })
             .subscribe(() => {
                 this._notificationService.sendInfoNotification('Themed saved!');
             }, this._notificationService.failureNotification.bind(this._notificationService));

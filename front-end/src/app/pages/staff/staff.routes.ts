@@ -25,6 +25,13 @@ export const staffRoutes: Routes = [
                 }
             },
             {
+                path: 'dashboard/:year/:month/points',
+                component: DashboardComponent,
+                resolve: {
+                    data: DashboardService
+                }
+            },
+            {
                 path: 'request-thc',
                 component: RequestThcComponent,
                 resolve: {

@@ -8,9 +8,10 @@ import { RouletteModel } from '../roulette/roulette.model';
 @Injectable()
 export class RouletteResolver implements Resolve<RouletteModel> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
-    resolve(): Observable<RouletteModel> {
+    resolve (): Observable<RouletteModel> {
         return this._httpService.get(`betting/roulette`)
             .pipe(map(res => new RouletteModel(res)));
     }

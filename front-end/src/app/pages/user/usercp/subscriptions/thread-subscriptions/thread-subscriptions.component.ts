@@ -26,7 +26,7 @@ export class ThreadSubscriptionsComponent extends Page implements OnDestroy {
 
     tableConfig: TableConfig;
 
-    constructor(
+    constructor (
         private _service: ThreadSubscriptionsService,
         private _notificationService: NotificationService,
         elementRef: ElementRef,
@@ -43,11 +43,11 @@ export class ThreadSubscriptionsComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onAction(action: Action): void {
+    onAction (action: Action): void {
         this._service.unsubscribe(Number(action.rowId))
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
@@ -59,12 +59,12 @@ export class ThreadSubscriptionsComponent extends Page implements OnDestroy {
             });
     }
 
-    private onData(data: { data: Array<ThreadSubscription> }): void {
+    private onData (data: { data: Array<ThreadSubscription> }): void {
         this._data = data.data;
         this.createOrUpdateTable();
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -76,7 +76,7 @@ export class ThreadSubscriptionsComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         return this._data.map((subscription, index) => {
             return new TableRow({
                 id: String(subscription.threadId),
@@ -84,15 +84,15 @@ export class ThreadSubscriptionsComponent extends Page implements OnDestroy {
                     new TableCell({ title: String(index + 1) }),
                     new TableCell({ title: subscription.title })
                 ],
-                actions: [new TableAction({
+                actions: [ new TableAction({
                     title: 'Unsubscribe',
-                    value:  ThreadSubscriptionActions.UNSUBSCRIBE
-                })]
+                    value: ThreadSubscriptionActions.UNSUBSCRIBE
+                }) ]
             });
         });
     }
 
-    private static getTableHeaders(): Array<TableHeader> {
+    private static getTableHeaders (): Array<TableHeader> {
         return [
             new TableHeader({ title: 'Number' }),
             new TableHeader({ title: 'Thread' })

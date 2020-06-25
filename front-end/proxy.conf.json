@@ -1,5 +1,9 @@
 {
-  "/rest": {
+  "/api": {
+    "target": "http://localhost:8000",
+    "secure": false
+  },
+  "/resources": {
     "target": "http://localhost:8000",
     "secure": false
   }

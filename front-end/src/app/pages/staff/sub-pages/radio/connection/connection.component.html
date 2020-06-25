@@ -3,53 +3,60 @@
     <app-content>
         <div class="grid-container">
             <div class="grid-x grid-margin-x">
-                <div class="cell small-3 breadcrum">
+                <div class="cell small-3">
                     <strong>Server Type</strong>
                 </div>
-                <div class="cell small-9 breadcrum">
+                <div class="cell small-9">
                     {{serverType}}
                 </div>
 
-                <div class="cell small-3 breadcrum">
+                <div class="cell small-3">
                     <strong>Bitrate</strong>
                 </div>
-                <div class="cell small-9 breadcrum">
+                <div class="cell small-9">
                     128kbps, 44100Hz
                 </div>
 
-                <div class="cell small-3 breadcrum">
+                <div class="cell small-3">
                     <strong>IP</strong>
                 </div>
-                <div name="info-ip" class="cell small-9 breadcrum">
+                <div name="info-ip" class="cell small-9">
                     {{ip}}
                 </div>
 
-                <div class="cell small-3 breadcrum">
+                <div class="cell small-3">
                     <strong>Port</strong>
                 </div>
-                <div name="info-port" class="cell small-9 breadcrum">
-                    {{port}}
+                <div name="info-port" class="cell small-9">
+                    {{connectionPort}}
                 </div>
 
-                <div class="cell small-3 breadcrum">
+                <div class="cell small-3">
                     <strong>Password</strong>
                 </div>
-                <div name="info-password" class="cell small-9 breadcrum">
+                <div name="info-password" class="cell small-9">
                     {{password}}
                 </div>
 
-                <div class="cell small-3 breadcrum">
+                <div class="cell small-3">
                     <strong>Station Name</strong>
                 </div>
-                <div class="cell small-9 breadcrum">
+                <div class="cell small-9">
                     Your stream name
                 </div>
 
-                <div class="cell small-3 breadcrum">
+                <div class="cell small-3">
                     <strong>Genre</strong>
                 </div>
-                <div class="cell small-9 breadcrum">
+                <div class="cell small-9">
                     {{nickname}}
+                </div>
+
+                <div class="cell small-3" *ngIf="isIceCastV2">
+                    <strong>Mountpoint</strong>
+                </div>
+                <div class="cell small-9" *ngIf="isIceCastV2">
+                    {{mountPoint}}
                 </div>
             </div>
         </div>

@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { HttpService } from 'core/services/http/http.service';
+import { UserCpGroup } from './groups.model';
 
 describe('GroupsComponent', () => {
 
@@ -33,24 +34,26 @@ describe('GroupsComponent', () => {
                 GroupsComponent
             ],
             providers: [
-                {provide: HttpService, useValue: {}},
-                {provide: NotificationService, useValue: {}},
-                {provide: DialogService, useValue: {}},
+                { provide: HttpService, useValue: {} },
+                { provide: NotificationService, useValue: {} },
+                { provide: DialogService, useValue: {} },
                 {
                     provide: GroupsService, useValue: {
                         updateDisplayGroup () {
+                            return null;
                         }
                     }
                 },
                 {
                     provide: BreadcrumbService, useValue: {
                         set breadcrum (_data) {
+                            this.data = _data;
                         }
                     }
                 },
-                {provide: ActivatedRoute, useValue: activatedRoute}
+                { provide: ActivatedRoute, useValue: activatedRoute }
             ],
-            schemas: [NO_ERRORS_SCHEMA]
+            schemas: [ NO_ERRORS_SCHEMA ]
         });
 
         component = TestBed.createComponent(GroupsComponent).componentInstance;
@@ -58,14 +61,15 @@ describe('GroupsComponent', () => {
 
     it('updateDisplayGroup should update it to back-end', done => {
         // Given
-        const service = TestBed.get(GroupsService);
+        const service = TestBed.inject(GroupsService);
+        const expectedGroup = new UserCpGroup(null);
         spyOn(service, 'updateDisplayGroup').and.callFake(displayGroup => {
-            expect(displayGroup).toEqual(1);
+            expect(displayGroup).toEqual(expectedGroup);
             done();
         });
         activatedRoute.subject.next({
             data: {
-                displayGroup: 1
+                displayGroup: expectedGroup
             }
         });
 
@@ -78,9 +82,9 @@ describe('GroupsComponent', () => {
         activatedRoute.subject.next({
             data: {
                 groups: [
-                    {isMember: true, isPublic: true},
-                    {isMember: false, isPublic: true},
-                    {isMember: true, isPublic: false}
+                    { isMember: true, isPublic: true },
+                    { isMember: false, isPublic: true },
+                    { isMember: true, isPublic: false }
                 ]
             }
         });
@@ -97,9 +101,9 @@ describe('GroupsComponent', () => {
         activatedRoute.subject.next({
             data: {
                 groups: [
-                    {isMember: true, isPublic: true},
-                    {isMember: false, isPublic: true},
-                    {isMember: true, isPublic: false}
+                    { isMember: true, isPublic: true },
+                    { isMember: false, isPublic: true },
+                    { isMember: true, isPublic: false }
                 ]
             }
         });
@@ -130,7 +134,7 @@ describe('GroupsComponent', () => {
             // Given
             activatedRoute.subject.next({
                 data: {
-                    displayGroup: {groupId: 5}
+                    displayGroup: { groupId: 5 }
                 }
             });
 
@@ -147,10 +151,10 @@ describe('GroupsComponent', () => {
         activatedRoute.subject.next({
             data: {
                 displayGroup: null,
-                groups: [{
+                groups: [ {
                     groupId: 2,
                     name: 'test'
-                }]
+                } ]
             }
         });
 

@@ -8,7 +8,8 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class SearchResolver implements Resolve<SearchPage> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
     resolve (route: ActivatedRouteSnapshot): Observable<SearchPage> {
         const page = route.params['page'];

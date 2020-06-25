@@ -14,7 +14,7 @@ import { StringHelper } from 'shared/helpers/string.helper';
 @Component({
     selector: 'app-home-search',
     templateUrl: 'search.component.html',
-    styleUrls: ['search.component.css']
+    styleUrls: [ 'search.component.css' ]
 })
 export class SearchComponent extends Page implements OnDestroy {
     private _data: SearchPage;
@@ -23,7 +23,7 @@ export class SearchComponent extends Page implements OnDestroy {
     categorySelectItems: Array<SelectItem> = [];
     pagination: PaginationModel;
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Search'})
+        new TitleTab({ title: 'Search' })
     ];
 
     constructor (
@@ -53,7 +53,7 @@ export class SearchComponent extends Page implements OnDestroy {
         const url = `/home/search/${this._data.parameters.type}/page/1`;
 
         this._router.navigateByUrl(this._router.createUrlTree(
-            [url], {queryParams: this.getQueryParameters()}
+            [ url ], { queryParams: this.getQueryParameters() }
         ));
     }
 
@@ -83,7 +83,7 @@ export class SearchComponent extends Page implements OnDestroy {
         this.type = this._data.parameters.type;
 
         this.categorySelectItems = ArrayHelper.flatCategories(this._data.categories, '', true)
-            .map(item => ({label: item.title, value: item.categoryId}));
+            .map(item => ({ label: item.title, value: item.categoryId }));
         this.pagination = new PaginationModel({
             page: this._data.page,
             total: this._data.total,

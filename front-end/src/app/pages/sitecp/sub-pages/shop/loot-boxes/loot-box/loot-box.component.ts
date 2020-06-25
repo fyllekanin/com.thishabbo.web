@@ -148,32 +148,32 @@ export class LootBoxComponent extends Page implements OnDestroy {
         return this._data.items.map(item => new TableRow({
             id: String(item.shopItemId),
             cells: [
-                new TableCell({title: this.getResource(item), innerHTML: true}),
-                new TableCell({title: item.title}),
-                new TableCell({title: ShopHelper.getTypeName(item.type)}),
-                new TableCell({title: ShopHelper.getRarityName(item.rarity)})
+                new TableCell({ title: this.getResource(item), innerHTML: true }),
+                new TableCell({ title: item.title }),
+                new TableCell({ title: ShopHelper.getTypeName(item.type) }),
+                new TableCell({ title: ShopHelper.getRarityName(item.rarity) })
             ],
             actions: [
-                new TableAction({title: 'Remove', value: LootBoxActions.REMOVE_ITEM})
+                new TableAction({ title: 'Remove', value: LootBoxActions.REMOVE_ITEM })
             ]
         }));
     }
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Resource'}),
-            new TableHeader({title: 'Title'}),
-            new TableHeader({title: 'Type'}),
-            new TableHeader({title: 'Rarity'})
+            new TableHeader({ title: 'Resource' }),
+            new TableHeader({ title: 'Title' }),
+            new TableHeader({ title: 'Type' }),
+            new TableHeader({ title: 'Rarity' })
         ];
     }
 
     private setTabs (): void {
         const tabs = [
-            {title: 'Save', value: LootBoxActions.SAVE, condition: true},
-            {title: 'Back', value: LootBoxActions.BACK, condition: true},
-            {title: 'Add Item', value: LootBoxActions.ADD_ITEM, condition: true},
-            {title: 'Delete', value: LootBoxActions.DELETE, condition: this._data.createdAt}
+            { title: 'Save', value: LootBoxActions.SAVE, condition: true },
+            { title: 'Back', value: LootBoxActions.BACK, condition: true },
+            { title: 'Add Item', value: LootBoxActions.ADD_ITEM, condition: true },
+            { title: 'Delete', value: LootBoxActions.DELETE, condition: this._data.createdAt }
         ];
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));
     }
@@ -189,11 +189,11 @@ export class LootBoxComponent extends Page implements OnDestroy {
         switch (item.type) {
             case SHOP_ITEM_TYPES.nameIcon.value:
             case SHOP_ITEM_TYPES.nameEffect.value:
-                return `<img src="/rest/resources/images/shop/${item.shopItemId}.gif" />`;
+                return `<img src="/resources/images/shop/${item.shopItemId}.gif" />`;
             case SHOP_ITEM_TYPES.subscription.value:
                 return '<em class="fas fa-id-card"></em>';
             case SHOP_ITEM_TYPES.badge.value:
-                return `<img src="/rest/resources/images/badges/${item.data.badgeId}.gif" />`;
+                return `<img src="/resources/images/badges/${item.data.badgeId}.gif" />`;
             default:
                 return '';
         }

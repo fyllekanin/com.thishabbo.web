@@ -8,9 +8,10 @@ import { ManageConnectionModel } from '../manage-connection/manage-connection.mo
 @Injectable()
 export class ManageConnectionResolver implements Resolve<ManageConnectionModel> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
-    resolve(): Observable<ManageConnectionModel> {
+    resolve (): Observable<ManageConnectionModel> {
         return this._httpService.get('staff/radio/manage-connection')
             .pipe(map(res => new ManageConnectionModel(res)));
     }

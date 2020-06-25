@@ -31,8 +31,8 @@ export class PagesComponent extends Page implements OnDestroy {
     private _data: Array<PageModel> = [];
 
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Create New', link: '/sitecp/website-settings/pages/new'}),
-        new TitleTab({title: 'Back', link: '/sitecp/website-settings'})
+        new TitleTab({ title: 'Create New', link: '/sitecp/website-settings/pages/new' }),
+        new TitleTab({ title: 'Back', link: '/sitecp/website-settings' })
     ];
     tableConfig: TableConfig;
 
@@ -108,22 +108,22 @@ export class PagesComponent extends Page implements OnDestroy {
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Title'}),
-            new TableHeader({title: 'Path'})
+            new TableHeader({ title: 'Title' }),
+            new TableHeader({ title: 'Path' })
         ];
     }
 
     private getTableRows (): Array<TableRow> {
-        const editAction = new TableAction({title: 'Edit', value: PageActions.EDIT});
-        const deleteAction = new TableAction({title: 'Delete', value: PageActions.DELETE});
+        const editAction = new TableAction({ title: 'Edit', value: PageActions.EDIT });
+        const deleteAction = new TableAction({ title: 'Delete', value: PageActions.DELETE });
 
         return this._data.map(item => new TableRow({
             id: item.pageId.toString(),
             cells: [
-                new TableCell({title: item.title}),
-                new TableCell({title: `/page/${item.path}`})
+                new TableCell({ title: item.title }),
+                new TableCell({ title: `/page/${item.path}` })
             ],
-            actions: item.canEdit ? item.isSystem ? [editAction] : [editAction, deleteAction] : []
+            actions: item.canEdit ? item.isSystem ? [ editAction ] : [ editAction, deleteAction ] : []
         }));
     }
 }

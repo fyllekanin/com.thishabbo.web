@@ -2,18 +2,17 @@ import { TopBoxComponent } from 'shared/app-views/top-box/top-box.component';
 import { TestBed } from '@angular/core/testing';
 import { AuthService } from 'core/services/auth/auth.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ContinuesInformationService } from 'core/services/continues-information/continues-information.service';
 
 describe('TopBoxComponent', () => {
 
-    class MockAuthService {
-        subject = new Subject<void>();
+    let userChangeCallback;
 
-        get onUserChange (): Observable<void> {
-            return this.subject.asObservable();
-        }
+    class MockAuthService {
+        onUserChange = {
+            subscribe: callback => userChangeCallback = callback
+        };
 
         get authUser () {
             return null;
@@ -22,14 +21,10 @@ describe('TopBoxComponent', () => {
         isLoggedIn () {
             return false;
         }
-
-        triggerUserChange (): void {
-            this.subject.next();
-        }
     }
 
     let component: TopBoxComponent;
-    let authService: MockAuthService;
+    let authService: AuthService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -40,12 +35,11 @@ describe('TopBoxComponent', () => {
                 TopBoxComponent
             ],
             providers: [
-                {provide: AuthService, useValue: new MockAuthService()},
+                { provide: AuthService, useValue: new MockAuthService() },
                 {
                     provide: ContinuesInformationService, useValue: {
                         onDeviceSettingsUpdated: {
-                            subscribe: () => {
-                            }
+                            subscribe: () => null
                         }
                     }
                 }
@@ -56,14 +50,14 @@ describe('TopBoxComponent', () => {
         });
 
         component = TestBed.createComponent(TopBoxComponent).componentInstance;
-        authService = TestBed.get(AuthService);
+        authService = TestBed.inject(AuthService);
     });
 
     describe('nickname', () => {
         it('should return default value User if not logged in', () => {
             // Given
             spyOn(authService, 'isLoggedIn').and.returnValue(false);
-            authService.triggerUserChange();
+            userChangeCallback();
 
             // When
             const result = component.nickname;
@@ -75,8 +69,8 @@ describe('TopBoxComponent', () => {
             // Given
             spyOn(authService, 'isLoggedIn').and.returnValue(true);
             spyOnProperty(authService, 'authUser', 'get')
-                .and.returnValue({nickname: 'Tovven'});
-            authService.triggerUserChange();
+                .and.returnValue({ nickname: 'Tovven' });
+            userChangeCallback();
 
             // When
             const result = component.nickname;
@@ -90,7 +84,7 @@ describe('TopBoxComponent', () => {
         it('should return false if user is not logged in', () => {
             // Given
             spyOn(authService, 'isLoggedIn').and.returnValue(false);
-            authService.triggerUserChange();
+            userChangeCallback();
 
             // When
             const result = component.isLoggedIn;
@@ -103,7 +97,7 @@ describe('TopBoxComponent', () => {
             spyOn(authService, 'isLoggedIn').and.returnValue(true);
             spyOnProperty(authService, 'authUser', 'get')
                 .and.returnValue({});
-            authService.triggerUserChange();
+            userChangeCallback();
 
             // When
             const result = component.isLoggedIn;

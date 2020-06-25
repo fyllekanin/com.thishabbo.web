@@ -7,7 +7,7 @@ export class FollowerView {
     @primitive()
     isApproved: boolean;
 
-    constructor(source: Partial<FollowerView>) {
+    constructor (source: Partial<FollowerView>) {
         ClassHelper.assign(this, source);
     }
 }

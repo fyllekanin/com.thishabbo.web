@@ -8,7 +8,8 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class VersionsResolver implements Resolve<VersionsPage> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
     resolve (activatedRouteSnapshot: ActivatedRouteSnapshot): Observable<VersionsPage> {
         const page = activatedRouteSnapshot.params['page'];

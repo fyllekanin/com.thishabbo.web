@@ -8,12 +8,14 @@
         <div class="cell small-10 numbers">
             <div class="items" *ngFor="let item of backwardItems"
                  [ngClass]="item.value < 0 ? 'page-no-click' : ''">
-                <a *ngIf="isUrlSet" [routerLink]="[getUrl(item)]" [queryParams]="queryParameters">{{item.title}}</a>
+                <a *ngIf="isUrlSet" [routerLink]="[getUrl(item)]"
+                   [queryParams]="queryParameters">{{item.title}}</a>
                 <a *ngIf="!isUrlSet" (click)="switchPage(item.value)">{{item.title}}</a>
             </div>
             <div class="items" *ngFor="let item of fillBackwardItems"
                  [ngClass]="item.value < 0 ? 'page-no-click' : ''">
-                <a *ngIf="isUrlSet" [routerLink]="[getUrl(item)]" [queryParams]="queryParameters">{{item.title}}</a>
+                <a *ngIf="isUrlSet" [routerLink]="[getUrl(item)]"
+                   [queryParams]="queryParameters">{{item.title}}</a>
                 <a *ngIf="!isUrlSet" (click)="switchPage(item.value)">{{item.title}}</a>
             </div>
             <div class="page-no-click current items">
@@ -21,12 +23,14 @@
             </div>
             <div class="items" *ngFor="let item of fillForwardItems"
                  [ngClass]="item.value < 0 ? 'page-no-click' : ''">
-                <a *ngIf="isUrlSet" [routerLink]="[getUrl(item)]" [queryParams]="queryParameters">{{item.title}}</a>
+                <a *ngIf="isUrlSet" [routerLink]="[getUrl(item)]"
+                   [queryParams]="queryParameters">{{item.title}}</a>
                 <a *ngIf="!isUrlSet" (click)="switchPage(item.value)">{{item.title}}</a>
             </div>
             <div class="items" *ngFor="let item of forwardItems"
                  [ngClass]="item.value < 0 ? 'page-no-click' : ''">
-                <a *ngIf="isUrlSet" [routerLink]="[getUrl(item)]" [queryParams]="queryParameters">{{item.title}}</a>
+                <a *ngIf="isUrlSet" [routerLink]="[getUrl(item)]"
+                   [queryParams]="queryParameters">{{item.title}}</a>
                 <a *ngIf="!isUrlSet" (click)="switchPage(item.value)">{{item.title}}</a>
             </div>
         </div>

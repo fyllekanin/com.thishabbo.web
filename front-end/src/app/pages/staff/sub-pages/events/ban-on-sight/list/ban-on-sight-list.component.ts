@@ -24,14 +24,14 @@ import { AuthService } from 'core/services/auth/auth.service';
 @Component({
     selector: 'app-staff-ban-on-sight-list',
     templateUrl: './ban-on-sight-list.component.html',
-    styleUrls: ['./ban-on-sight-list.component.css']
+    styleUrls: [ './ban-on-sight-list.component.css' ]
 })
 
 export class BanOnSightListComponent extends Page implements OnDestroy, OnInit {
     private _data: Array<BanOnSightItem> = [];
     private _actions: Array<TableAction> = [
-        new TableAction({title: 'Edit', value: BanOnSightActions.EDIT_BOS_ENTRY}),
-        new TableAction({title: 'Delete', value: BanOnSightActions.DELETE_BOS_ENTRY})
+        new TableAction({ title: 'Edit', value: BanOnSightActions.EDIT_BOS_ENTRY }),
+        new TableAction({ title: 'Delete', value: BanOnSightActions.DELETE_BOS_ENTRY })
     ];
     tabs: Array<TitleTab> = [];
     tableConfig: TableConfig;
@@ -59,7 +59,7 @@ export class BanOnSightListComponent extends Page implements OnDestroy, OnInit {
 
     ngOnInit (): void {
         this.tabs = !this._authService.staffPermissions.canManageBanOnSight ? [] : [
-            new TitleTab({title: 'New Entry', link: '/staff/events/ban-on-sight/new'})
+            new TitleTab({ title: 'New Entry', link: '/staff/events/ban-on-sight/new' })
         ];
     }
 
@@ -124,10 +124,10 @@ export class BanOnSightListComponent extends Page implements OnDestroy, OnInit {
             return new TableRow({
                 id: item.id.toString(),
                 cells: [
-                    new TableCell({title: item.name}),
-                    new TableCell({title: item.reason}),
-                    new TableCell({title: item.addedBy}),
-                    new TableCell({title: TimeHelper.getTime(item.createdAt)})
+                    new TableCell({ title: item.name }),
+                    new TableCell({ title: item.reason }),
+                    new TableCell({ title: item.addedBy }),
+                    new TableCell({ title: TimeHelper.getTime(item.createdAt) })
                 ],
                 actions: this._authService.staffPermissions.canManageBanOnSight ? this._actions : []
             });
@@ -136,10 +136,10 @@ export class BanOnSightListComponent extends Page implements OnDestroy, OnInit {
 
     private static getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Name'}),
-            new TableHeader({title: 'Reason'}),
-            new TableHeader({title: 'Added By'}),
-            new TableHeader({title: 'Added On'})
+            new TableHeader({ title: 'Name' }),
+            new TableHeader({ title: 'Reason' }),
+            new TableHeader({ title: 'Added By' }),
+            new TableHeader({ title: 'Added On' })
         ];
     }
 }

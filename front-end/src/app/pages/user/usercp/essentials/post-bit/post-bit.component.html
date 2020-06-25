@@ -84,7 +84,7 @@
                     <div class="grid-container">
                         <div class="grid-x grid-margin-x">
                             <div class="cell small-4 medium-2" *ngFor="let badge of badges">
-                                <img [src]="'/rest/resources/images/badges/' + badge.badgeId + '.gif?' + badge.updatedAt"
+                                <img [src]="'/resources/images/badges/' + badge.badgeId + '.gif?' + badge.updatedAt"
                                 />
                             </div>
                         </div>
@@ -112,7 +112,8 @@
                 <input type="text" [(ngModel)]="userBarColors" (ngModelChange)="onBarColorChange($event)">
                 <br/>
                 <label>Preview:</label>
-                <div class="custom-user-bar-template" [style]="getBarColors() | safeStyle">Donator</div>
+                <div *ngIf="userBarColors" class="custom-user-bar-template" [ngStyle]="getBarColors()">Donator</div>
+                <div *ngIf="!userBarColors">No userbar</div>
             </div>
         </div>
     </div>

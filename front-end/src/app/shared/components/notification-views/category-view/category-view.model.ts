@@ -9,7 +9,7 @@ export class CategoryViewThread {
     @primitive()
     title: string;
 
-    constructor(source: Partial<CategoryViewThread>) {
+    constructor (source: Partial<CategoryViewThread>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -20,7 +20,7 @@ export class CategoryView {
     @objectOf(CategoryViewThread)
     thread: CategoryViewThread;
 
-    constructor(source: Partial<CategoryView>) {
+    constructor (source: Partial<CategoryView>) {
         ClassHelper.assign(this, source);
     }
 }

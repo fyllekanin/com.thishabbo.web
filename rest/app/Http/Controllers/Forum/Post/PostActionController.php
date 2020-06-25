@@ -2,43 +2,38 @@
 
 namespace App\Http\Controllers\Forum\Post;
 
+use App\Constants\LogType;
+use App\Constants\Permission\CategoryPermissions;
 use App\EloquentModels\Forum\Post;
 use App\EloquentModels\Forum\PostLike;
-use App\Helpers\UserHelper;
 use App\Factories\Notification\NotificationFactory;
-use App\Helpers\ConfigHelper;
 use App\Helpers\PermissionHelper;
+use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
-use App\Models\Logger\Action;
-use App\Services\ForumService;
-use App\Services\ForumValidatorService;
+use App\Providers\Service\ForumService;
+use App\Providers\Service\ForumValidatorService;
 use App\Utils\Condition;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class PostActionController extends Controller {
-    private $forumService;
-    private $validatorService;
+    private $myForumService;
+    private $myValidatorService;
 
-    /**
-     * PostController constructor.
-     *
-     * @param ForumService $forumService
-     * @param ForumValidatorService $validatorService
-     */
     public function __construct(ForumService $forumService, ForumValidatorService $validatorService) {
         parent::__construct();
-        $this->forumService = $forumService;
-        $this->validatorService = $validatorService;
+        $this->myForumService = $forumService;
+        $this->myValidatorService = $validatorService;
     }
 
     /**
      * Post request to create a like on a post
      *
-     * @param Request $request
-     * @param         $postId
+     * @param  Request  $request
+     * @param $postId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function likePost(Request $request, $postId) {
         $user = $request->get('auth');
@@ -52,39 +47,53 @@ class PostActionController extends Controller {
 
         Condition::precondition($post->userId == $user->userId, 400, 'You can not like your own post');
         Condition::precondition($haveLiked, 400, 'You already liked this post');
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead, $post->thread->categoryId,
-            'You do not have access to like this post');
+        PermissionHelper::haveForumPermissionWithException(
+            $user->userId,
+            CategoryPermissions::CAN_READ,
+            $post->thread->categoryId,
+            'You do not have access to like this post'
+        );
 
         $postUser = $post->user()->first();
         $postUser->likes++;
         $postUser->save();
 
-        PostLike::create([
-            'postId' => $postId,
-            'userId' => $user->userId
-        ]);
+        PostLike::create(
+            [
+                'postId' => $postId,
+                'userId' => $user->userId
+            ]
+        );
 
         NotificationFactory::newLikePost($post->userId, $user->userId, $post->postId);
-        Logger::user($user->userId, $request->ip(), Action::LIKED_POST, [
-            'thread' => $post->thread->title,
-            'threadId' => $post->threadId,
-            'categoryId' => $post->thread->categoryId
-        ], $post->postId);
+        Logger::user(
+            $user->userId,
+            $request->ip(),
+            LogType::LIKED_POST,
+            [
+                'thread' => $post->thread->title,
+                'threadId' => $post->threadId,
+                'categoryId' => $post->thread->categoryId
+            ],
+            $post->postId
+        );
 
         $likerIds = PostLike::where('postId', $postId)->orderBy('createdAt', 'DESC')->pluck('userId');
-        $likers = $likerIds->map(function ($liker) {
-            return UserHelper::getSlimUser($liker);
-        });
+        $likers = $likerIds->map(
+            function ($liker) {
+                return UserHelper::getSlimUser($liker);
+            }
+        );
         return response()->json($likers);
     }
 
     /**
      * Delete request to remove like on given post
      *
-     * @param Request $request
-     * @param         $postId
+     * @param  Request  $request
+     * @param $postId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function unlikePost(Request $request, $postId) {
         $user = $request->get('auth');
@@ -99,8 +108,12 @@ class PostActionController extends Controller {
 
         Condition::precondition(!$haveLiked, '400', 'Can not unlike a post you havent liked');
         Condition::precondition($post->userId == $user->userId, 400, 'You can not unlike your own post');
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead, $post->thread->categoryId,
-            'You do not have access to unlike this post');
+        PermissionHelper::haveForumPermissionWithException(
+            $user->userId,
+            CategoryPermissions::CAN_READ,
+            $post->thread->categoryId,
+            'You do not have access to unlike this post'
+        );
 
         $postUser = $post->user()->first();
         $postUser->likes--;
@@ -110,12 +123,14 @@ class PostActionController extends Controller {
             ->where('userId', $user->userId)
             ->delete();
 
-        Logger::user($user->userId, $request->ip(), Action::UNLIKED_POST);
+        Logger::user($user->userId, $request->ip(), LogType::UNLIKED_POST);
 
         $likerIds = PostLike::where('postId', $postId)->orderBy('createdAt', 'DESC')->pluck('userId');
-        $likers = $likerIds->map(function ($liker) {
-            return UserHelper::getSlimUser($liker);
-        });
+        $likers = $likerIds->map(
+            function ($liker) {
+                return UserHelper::getSlimUser($liker);
+            }
+        );
         return response()->json($likers);
     }
 }

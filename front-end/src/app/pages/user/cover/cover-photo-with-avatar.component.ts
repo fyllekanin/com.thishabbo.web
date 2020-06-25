@@ -5,7 +5,7 @@ import { UsercpAvatarCoverPreviewService } from './usercp-avatar-cover-preview.s
 @Component({
     selector: 'app-cover-photo-with-avatar',
     templateUrl: 'cover-photo-with-avatar.component.html',
-    styleUrls: ['cover-photo-with-avatar.component.css']
+    styleUrls: [ 'cover-photo-with-avatar.component.css' ]
 })
 export class CoverPhotoWithAvatarComponent implements OnDestroy {
     private _subscriptions: Array<Subscription> = [];
@@ -34,10 +34,10 @@ export class CoverPhotoWithAvatarComponent implements OnDestroy {
     }
 
     get avatar (): string {
-        return `/rest/resources/images/users/${this.userId}.gif?${this.version}`;
+        return `/resources/images/users/${this.userId}.gif?${this.version}`;
     }
 
     get cover (): string {
-        return `/rest/resources/images/covers/${this.userId}.gif?${this.version}`;
+        return `/resources/images/covers/${this.userId}.gif?${this.version}`;
     }
 }

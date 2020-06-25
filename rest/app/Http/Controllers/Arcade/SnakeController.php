@@ -2,37 +2,29 @@
 
 namespace App\Http\Controllers\Arcade;
 
+use App\Constants\GameTypes;
+use App\Constants\LogType;
+use App\Constants\Prices;
 use App\EloquentModels\Game;
-use App\Helpers\ConfigHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
-use App\Models\Logger\Action;
-use App\Services\CreditsService;
+use App\Providers\Service\CreditsService;
 use App\Utils\Condition;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class SnakeController extends Controller {
-    private $gameTypes = null;
-
-    /**
-     * SnakeController constructor.
-     * Fetch the available game types and store in instance variable
-     */
-    public function __construct() {
-        parent::__construct();
-        $this->gameTypes = ConfigHelper::getGameTypesConfig();
-    }
 
     /**
      * Get request to get the highscore table for snake
      *
-     * @param bool $asJson
+     * @param  bool  $asJson
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getSnakeHighscoreTable($asJson = false) {
         $highScore = Game::orderBy('score', 'DESC')
-            ->where('gameType', $this->gameTypes->snake)
+            ->where('gameType', GameTypes::SNAKE)
             ->where('isFinished', '>', 0)
             ->take(10)
             ->get();
@@ -43,44 +35,48 @@ class SnakeController extends Controller {
     /**
      * Get request to start a new game
      *
-     * @param Request $request
-     * @param CreditsService $creditsService
+     * @param  Request  $request
+     * @param  CreditsService  $creditsService
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getSnakeGame(Request $request, CreditsService $creditsService) {
         $user = $request->get('auth');
 
-        Condition::precondition(!$creditsService->haveEnoughCredits($user->userId, ConfigHelper::getCostSettings()->arcade), 400,
-            'You need at least ' . ConfigHelper::getCostSettings()->arcade . ' credits to play');
-        $creditsService->takeCredits($user->userId, ConfigHelper::getCostSettings()->arcade);
+        Condition::precondition(
+            !$creditsService->haveEnoughCredits($user->userId, Prices::ARCADE_GAME), 400,
+            'You need at least '.Prices::ARCADE_GAME.' credits to play'
+        );
+        $creditsService->takeCredits($user->userId, Prices::ARCADE_GAME);
 
-        $game = new Game([
-            'userId' => $user->userId,
-            'gameType' => $this->gameTypes->snake
-        ]);
+        $game = new Game(
+            [
+                'userId' => $user->userId,
+                'gameType' => GameTypes::SNAKE
+            ]
+        );
         $game->save();
 
-        Logger::user($user->userId, $request->ip(), Action::STARTED_SNAKE_GAME);
+        Logger::user($user->userId, $request->ip(), LogType::STARTED_SNAKE_GAME);
         return response()->json(['gameId' => $game->gameId]);
     }
 
     /**
      * Post request when game finished, saving the score
      *
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @param CreditsService $creditsService
+     * @param  CreditsService  $creditsService
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function createSnakeScore(Request $request, CreditsService $creditsService) {
         $user = $request->get('auth');
-        $result = (object)$request->input('result');
+        $result = (object) $request->input('result');
         $game = Game::find($result->gameId);
 
         Condition::precondition(!$game, 404, 'Game do not exist');
-        Condition::precondition($game->gameType != $this->gameTypes->snake, 404, 'Game do not exist');
+        Condition::precondition($game->gameType != GameTypes::SNAKE, 404, 'Game do not exist');
         Condition::precondition($game->userId != $user->userId, 400, 'Not your game');
 
         $game->score = $result->score;
@@ -88,17 +84,19 @@ class SnakeController extends Controller {
         $game->save();
 
         $this->checkWinnings($game, $user, $creditsService);
-        Logger::user($user->userId, $request->ip(), Action::FINISHED_SNAKE_GAME, ['score' => $game->score]);
-        return response()->json([
-            'score' => $game->score,
-            'highscore' => $this->getSnakeHighscoreTable()
-        ]);
+        Logger::user($user->userId, $request->ip(), LogType::FINISHED_SNAKE_GAME, ['score' => $game->score]);
+        return response()->json(
+            [
+                'score' => $game->score,
+                'highscore' => $this->getSnakeHighscoreTable()
+            ]
+        );
     }
 
     /**
-     * @param $game
-     * @param $user
-     * @param $creditsService
+     * @param                                        $game
+     * @param                                        $user
+     * @param                                        $creditsService
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     private function checkWinnings($game, $user, $creditsService) {

@@ -1,4 +1,4 @@
-import { ClassHelper, objectOf, primitive, primitiveOf, dateAndTime } from 'shared/helpers/class.helper';
+import { ClassHelper, dateAndTime, objectOf, primitive, primitiveOf } from 'shared/helpers/class.helper';
 
 export class SubscriptionOptions {
     @primitive()

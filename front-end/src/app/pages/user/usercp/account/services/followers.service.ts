@@ -8,7 +8,8 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class FollowersService implements Resolve<FollowersPage> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
     resolve (route: ActivatedRouteSnapshot): Observable<FollowersPage> {
         const page = route.params['page'];

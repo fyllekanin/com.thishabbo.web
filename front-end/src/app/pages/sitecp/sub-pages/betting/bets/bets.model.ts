@@ -63,7 +63,8 @@ export enum BetActions {
     DELETE,
     BACK,
     SUSPEND_BET,
-    UNSUSPEND_BET
+    UNSUSPEND_BET,
+    SAVE_AND_CREATE_NEW
 }
 
 export enum BetStatuses {

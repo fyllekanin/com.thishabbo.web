@@ -10,18 +10,18 @@ import { NotificationService } from 'core/services/notification/notification.ser
 @Injectable()
 export class PostBitService implements Resolve<PostBitModel> {
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService
     ) {
     }
 
-    resolve(): Observable<PostBitModel> {
+    resolve (): Observable<PostBitModel> {
         return this._httpService.get('usercp/post-bit')
             .pipe(map((res => new PostBitModel(res))));
     }
 
-    save(data: PostBitModel): void {
+    save (data: PostBitModel): void {
         this._httpService.put('usercp/post-bit', { data: data })
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({

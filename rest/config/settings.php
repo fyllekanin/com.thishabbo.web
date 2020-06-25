@@ -1,33 +1,6 @@
 <?php
 
 return [
-    'USER_UPDATE_TYPES' => [
-        'CLEAR_SUBSCRIPTION' => 1,
-        'CLEAR_GROUP' => 2
-    ],
-    'KEYS' => [
-        'botUserId' => 'welcome_bot_userId',
-        'welcomeBotMessage' => 'welcome_bot_message',
-        'welcomeBotCategoryId' => 'welcome_bot_categoryId',
-        'isMaintenance' => 'is_maintenance',
-        'maintenanceContent' => 'maintenance_content',
-        'radio' => 'radio',
-        'navigation' => 'navigation',
-        'staffOfTheWeek' => 'staff_of_the_week',
-        'memberOfTheMonth' => 'member_of_the_month',
-        'banOnSight' => 'ban_on_sight',
-        'doNotHire' => 'no_not_hire',
-        'homePageThreads' => 'home_page_threads'
-    ],
-    'IGNORED_NOTIFICATIONS' => [
-        'QUOTE_NOTIFICATIONS' => 1,
-        'MENTION_NOTIFICATIONS' => 2,
-        'AUTO_SUBSCRIBE_THREAD' => 4,
-        'DEPRECATED_DO_NOT_USE' => 8
-    ],
-    'REGEX' => [
-        'HABBO_ROOM' => '/(http(s)?:\/\/)?(www.)?habbo\.com\/(hotel\?)?room(=|\/)([0-9]+|(http(s)?:\/\/)?(www.)?habbo\.com\/hotel\?room=[0-9]+)?/si'
-    ],
     'ACCOLADE_TYPES' => [
         [
             'id' => 1,
@@ -69,18 +42,18 @@ return [
         0 => 'NA',
         1 => 'NA',
         2 => 'NA',
-        3 => 'NA',
-        4 => 'NA',
-        5 => 'OC',
+        3 => 'NONE',
+        4 => 'NONE',
+        5 => 'NONE',
         6 => 'OC',
         7 => 'OC',
         8 => 'OC',
         9 => 'OC',
         10 => 'OC',
         11 => 'OC',
-        12 => 'OC',
-        13 => 'EU',
-        14 => 'EU',
+        12 => 'NONE',
+        13 => 'NONE',
+        14 => 'NONE',
         15 => 'EU',
         16 => 'EU',
         17 => 'EU',
@@ -90,14 +63,5 @@ return [
         21 => 'NA',
         22 => 'NA',
         23 => 'NA'
-    ],
-    'GITHUB' => [
-        'token' => 'f12c47a1a745b04ea2d7da500d407675265aaa16',
-        'owner' => 'fyllekanin',
-        'repository' => 'com.thishabbo.web'
-    ],
-    'COSTS' => [
-        'nickname' => 300,
-        'arcade' => 25
     ]
 ];

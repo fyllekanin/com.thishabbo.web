@@ -53,7 +53,7 @@ export class ProfileService implements Resolve<ProfileModel> {
                 new DialogButton({
                     title: 'Report',
                     callback: message => {
-                        this._httpService.post(`profile/visitor-message/${visitorMessage.visitorMessageId}/report`, {message: message})
+                        this._httpService.post(`profile/visitor-message/${visitorMessage.visitorMessageId}/report`, { message: message })
                             .subscribe(() => {
                                 this._notificationService.sendInfoNotification('Visitor message reported!');
                                 this._dialogService.closeDialog();
@@ -65,7 +65,7 @@ export class ProfileService implements Resolve<ProfileModel> {
     }
 
     follow (userId: number): Observable<Followers> {
-        return this._httpService.post('usercp/profile/follow', {userId: userId});
+        return this._httpService.post('usercp/profile/follow', { userId: userId });
     }
 
     unfollow (userId: number): Observable<Followers> {

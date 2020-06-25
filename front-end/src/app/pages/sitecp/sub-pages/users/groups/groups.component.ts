@@ -17,8 +17,8 @@ export class GroupsComponent extends Page implements OnDestroy {
     private _groupsModel: GroupsModel = new GroupsModel();
 
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Save'}),
-        new TitleTab({title: 'Back', link: '/sitecp/users/page/1'})
+        new TitleTab({ title: 'Save' }),
+        new TitleTab({ title: 'Back', link: '/sitecp/users/page/1' })
     ];
 
     constructor (

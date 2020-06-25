@@ -7,7 +7,7 @@ import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
 import { DashboardService } from '../services/dashboard.service';
 import { ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Bet, BetCategory, BetDashboardListActions, DashboardModel } from './dashboard.model';
 import { Action } from 'shared/components/table/table.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
@@ -19,12 +19,12 @@ describe('Dashboard Component', () => {
     class MockActivatedRoute extends ActivatedRoute {
         dataSubject: Subject<any> = new Subject<any>();
 
-        get data() {
+        get data () {
             return this.dataSubject.asObservable();
         }
 
-        set data(_val) {
-
+        set data (_val) {
+            // Empty
         }
     }
 
@@ -48,12 +48,13 @@ describe('Dashboard Component', () => {
                 {
                     provide: DashboardService, useValue: {
                         openBetDialog: () => {
+                            // Empty
                         }
                     }
                 },
                 { provide: ActivatedRoute, useValue: activatedRoute }
             ],
-            schemas: [NO_ERRORS_SCHEMA]
+            schemas: [ NO_ERRORS_SCHEMA ]
         });
 
         component = TestBed.createComponent(DashboardComponent).componentInstance;
@@ -61,7 +62,7 @@ describe('Dashboard Component', () => {
 
     it('ngOnInit should get the contracted sections from localstorage', () => {
         // Given
-        localStorage.setItem(LOCAL_STORAGE.CONTRACTED_SECTIONS, JSON.stringify([1]));
+        localStorage.setItem(LOCAL_STORAGE.CONTRACTED_SECTIONS, JSON.stringify([ 1 ]));
 
         // When
         component.ngOnInit();
@@ -73,15 +74,16 @@ describe('Dashboard Component', () => {
     describe('onAction', () => {
         it('should find the bet in trendingBets if betCategoryId is not set', () => {
             // Given
-            const dashboardService = TestBed.get(DashboardService);
+            const dashboardService = TestBed.inject(DashboardService);
             const bet = new Bet({ betId: 5, name: 'test' });
-            spyOn(dashboardService, 'openBetDialog').and.returnValue({
+            spyOn(dashboardService, 'openBetDialog').and.returnValue(<Observable<any>>{
                 subscribe: () => {
+                    // Empty
                 }
             });
             activatedRoute.dataSubject.next({
                 data: new DashboardModel({
-                    trendingBets: [bet],
+                    trendingBets: [ bet ],
                     stats: new StatsModel({ credits: 5 })
                 })
             });
@@ -94,10 +96,11 @@ describe('Dashboard Component', () => {
         });
         it('should find the bet in activeBets if betCategoryId is set', () => {
             // Given
-            const dashboardService = TestBed.get(DashboardService);
+            const dashboardService = TestBed.inject(DashboardService);
             const bet = new Bet({ betId: 6, name: 'test' });
-            spyOn(dashboardService, 'openBetDialog').and.returnValue({
+            spyOn(dashboardService, 'openBetDialog').and.returnValue(<Observable<any>>{
                 subscribe: () => {
+                    // Empty
                 }
             });
             activatedRoute.dataSubject.next({
@@ -106,7 +109,7 @@ describe('Dashboard Component', () => {
                     activeBets: [
                         new BetCategory({
                             betCategoryId: 2,
-                            activeBets: [bet]
+                            activeBets: [ bet ]
                         })
                     ],
                     stats: new StatsModel({ credits: 5 })
@@ -123,7 +126,7 @@ describe('Dashboard Component', () => {
 
     describe('onToggle', () => {
         beforeEach(() => {
-            localStorage.setItem(LOCAL_STORAGE.CONTRACTED_SECTIONS, JSON.stringify([1]));
+            localStorage.setItem(LOCAL_STORAGE.CONTRACTED_SECTIONS, JSON.stringify([ 1 ]));
             component.ngOnInit();
         });
         it('should remove the betCategoryId if it exists', () => {
@@ -159,7 +162,7 @@ describe('Dashboard Component', () => {
         });
         it('should return true if betCategoryId is contracted', () => {
             // Given
-            localStorage.setItem(LOCAL_STORAGE.CONTRACTED_SECTIONS, JSON.stringify([1]));
+            localStorage.setItem(LOCAL_STORAGE.CONTRACTED_SECTIONS, JSON.stringify([ 1 ]));
             component.ngOnInit();
 
             // When

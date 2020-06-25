@@ -9,16 +9,17 @@ import { AutoBansListPage } from '../auto-bans/list/auto-bans.model';
 @Injectable()
 export class AutoBansService implements Resolve<AutoBansListPage> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
-    resolve(route: ActivatedRouteSnapshot): Observable<AutoBansListPage> {
+    resolve (route: ActivatedRouteSnapshot): Observable<AutoBansListPage> {
         const pageNr = route.params['page'];
         const filterQuery = { filter: route.queryParams['filter'] };
 
         return this.getData(filterQuery, pageNr);
     }
 
-    getData(filter: QueryParameters, page: number): Observable<AutoBansListPage> {
+    getData (filter: QueryParameters, page: number): Observable<AutoBansListPage> {
         return this._httpService.get(`sitecp/moderation/auto-bans/page/${page}`, filter)
             .pipe(map(res => new AutoBansListPage(res)));
     }

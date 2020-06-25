@@ -1,0 +1,59 @@
+<app-title [title]="'Bot Settings'" [tabs]="tabs" (onTabClick)="onSave()"></app-title>
+<app-content>
+    <div class="grid-container full">
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-12">
+                <label>
+                    User Account <em>(Account to be the Bot)</em>
+                    <span tooltip="This account is also used for infraction threads, if not set it won't work!"
+                          class="checkbox-info">
+                        <em class="fas fa-question-circle"></em>
+                    </span>
+                </label>
+                <input name="bot-name" type="text" [(ngModel)]="user.nickname"/>
+            </div>
+            <div class="cell small-6">
+                <label>Welcome Category</label>
+                <select [(ngModel)]="welcomeCategory.categoryId">
+                    <option value="0">None</option>
+                    <option *ngFor="let category of categories" [value]="category.categoryId">
+                        {{category.title}}
+                    </option>
+                </select>
+            </div>
+            <div class="cell small-6">
+                <label>Multiple Account Detection Category</label>
+                <select [(ngModel)]="multipleAccountsCategory.categoryId">
+                    <option value="0">None</option>
+                    <option *ngFor="let category of categories" [value]="category.categoryId">
+                        {{category.title}}
+                    </option>
+                </select>
+            </div>
+            <div class="cell small-12">
+                <label>Content Supported</label>
+                <ul>
+                    <li><strong>:nickname:</strong> will be replaced with the users nickname and will tag the user if
+                        they can access the category.
+                    </li>
+                    <li><strong>:ip:</strong> will be replaced with the IP in question that logged in</li>
+                    <li><strong>:users:</strong> will be replaced with a list of all users that has logged in with the
+                        same IP
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</app-content>
+
+<app-editor #welcomeEditor
+            [title]="'Welcome Content'"
+            [content]="welcomeContent"
+            (onSave)="onSave()">
+</app-editor>
+
+<app-editor #multipleAccountsEditor
+            [title]="'Multiple Accounts Content'"
+            [content]="multipleAccountsContent"
+            (onSave)="onSave()">
+</app-editor>

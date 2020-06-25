@@ -10,7 +10,7 @@ export class EventType {
     @primitive()
     updatedAt: number;
 
-    constructor(source?: Partial<EventType>) {
+    constructor (source?: Partial<EventType>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -23,7 +23,7 @@ export class EventTypesPage {
     @primitive()
     total: number;
 
-    constructor(source: Partial<EventTypesPage>) {
+    constructor (source: Partial<EventTypesPage>) {
         ClassHelper.assign(this, source);
     }
 }

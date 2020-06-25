@@ -34,8 +34,8 @@ export class BansComponent extends Page implements OnDestroy {
     private _filterTimer = null;
     private _filter: QueryParameters;
     private _actions: Array<TableAction> = [
-        new TableAction({title: 'Lift Ban', value: BansPageAction.LIFT_BAN}),
-        new TableAction({title: 'View User Bans', value: BansPageAction.VIEW_BANS})
+        new TableAction({ title: 'Lift Ban', value: BansPageAction.LIFT_BAN }),
+        new TableAction({ title: 'View User Bans', value: BansPageAction.VIEW_BANS })
     ];
 
     tableConfig: TableConfig;
@@ -55,7 +55,7 @@ export class BansComponent extends Page implements OnDestroy {
         this.addSubscription(activatedRoute.data, this.onPage.bind(this));
         breadcrumbService.breadcrumb = new Breadcrumb({
             current: 'Banned Users',
-            items: [SITECP_BREADCRUMB_ITEM]
+            items: [ SITECP_BREADCRUMB_ITEM ]
         });
     }
 
@@ -70,7 +70,7 @@ export class BansComponent extends Page implements OnDestroy {
         this._filterTimer = setTimeout(() => {
             this._service.getBans(filter, 1)
                 .subscribe(data => {
-                    this.onPage({data: data});
+                    this.onPage({ data: data });
                 });
         }, 200);
     }
@@ -93,9 +93,9 @@ export class BansComponent extends Page implements OnDestroy {
             component: this._componentFactory.resolveComponentFactory(ReasonComponent),
             buttons: [
                 new DialogCloseButton('Close'),
-                new DialogButton({title: 'Lift', callback: this.doLift.bind(this, banId, user.userId)})
+                new DialogButton({ title: 'Lift', callback: this.doLift.bind(this, banId, user.userId) })
             ],
-            data: {isBanning: false}
+            data: { isBanning: false }
         });
     }
 
@@ -163,10 +163,10 @@ export class BansComponent extends Page implements OnDestroy {
             return new TableRow({
                 id: String(ban.banId),
                 cells: [
-                    new TableCell({title: ban.banned.nickname}),
-                    new TableCell({title: ban.banner.nickname}),
-                    new TableCell({title: ban.reason}),
-                    new TableCell({title: BansComponent.getTime(ban.expiresAt)})
+                    new TableCell({ title: ban.banned.nickname }),
+                    new TableCell({ title: ban.banner.nickname }),
+                    new TableCell({ title: ban.reason }),
+                    new TableCell({ title: BansComponent.getTime(ban.expiresAt) })
                 ],
                 actions: this._actions
             });
@@ -175,10 +175,10 @@ export class BansComponent extends Page implements OnDestroy {
 
     private static getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Banned'}),
-            new TableHeader({title: 'Banner'}),
-            new TableHeader({title: 'Reason'}),
-            new TableHeader({title: 'Expiry'})
+            new TableHeader({ title: 'Banned' }),
+            new TableHeader({ title: 'Banner' }),
+            new TableHeader({ title: 'Reason' }),
+            new TableHeader({ title: 'Expiry' })
         ];
     }
 

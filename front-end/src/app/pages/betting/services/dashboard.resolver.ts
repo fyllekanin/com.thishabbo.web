@@ -8,9 +8,10 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class DashboardResolver implements Resolve<DashboardModel> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
-    resolve(): Observable<DashboardModel> {
+    resolve (): Observable<DashboardModel> {
         return this._httpService.get('betting/dashboard')
             .pipe(map(res => new DashboardModel(res)));
     }

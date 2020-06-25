@@ -5,15 +5,15 @@
         <div class="grid-x grid-margin-x">
             <div class="cell small-12 medium-6">
                 <label>Name</label>
-                <input type="text" name="name" [(ngModel)]="badge.name" />
+                <input type="text" name="name" [(ngModel)]="badge.name"/>
             </div>
             <div class="cell small-12 medium-6">
                 <label>Description</label>
-                <input type="text" name="description" [(ngModel)]="badge.description" />
+                <input type="text" name="description" [(ngModel)]="badge.description"/>
             </div>
             <div class="cell small-12 medium-6">
                 <label>Points</label>
-                <input type="number" name="points" [(ngModel)]="badge.points" min="0" />
+                <input type="number" name="points" [(ngModel)]="badge.points" min="0"/>
             </div>
             <div class="cell small-12 medium-6">
                 <label>Badge Image</label>
@@ -21,7 +21,7 @@
             </div>
             <div class="cell small-12" *ngIf="badge.badgeId"><br>
                 <label>Preview:</label>
-                <img [style.backgroundImage]="'/rest/resources/images/badges/' + badgesImage | safeStyle" />
+                <img [style.backgroundImage]="'/resources/images/badges/' + badgesImage | safeStyle"/>
             </div>
         </div>
     </div>

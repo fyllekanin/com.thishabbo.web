@@ -13,7 +13,7 @@ import { HttpService } from 'core/services/http/http.service';
 @Component({
     selector: 'app-usercp-account-notifications',
     templateUrl: 'notifications.component.html',
-    styleUrls: ['notifications.component.css']
+    styleUrls: [ 'notifications.component.css' ]
 })
 export class NotificationsComponent extends Page implements OnDestroy {
     private _data: NotificationsPage;

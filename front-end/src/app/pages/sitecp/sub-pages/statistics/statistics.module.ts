@@ -38,4 +38,5 @@ import { ThreadsStatisticsResolver } from './services/threads-statistics.resolve
         RouterModule
     ]
 })
-export class StatisticsModule {}
+export class StatisticsModule {
+}

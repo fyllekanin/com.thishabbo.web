@@ -2,13 +2,15 @@
 
 namespace App\Jobs;
 
+use App\Repositories\Repository\AvatarRepository;
+use App\Repositories\Repository\GroupRepository;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use App\Helpers\AvatarHelper;
-use App\EloquentModels\User\UserGroup;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class SubscriptionUpdated
@@ -24,26 +26,55 @@ use App\EloquentModels\User\UserGroup;
  * @package App\Jobs
  */
 class GroupUpdated implements ShouldQueue {
-    private $groupId;
+    private $myAvatarRepository;
+    private $myGroupRepository;
+
+    private $myGroupId;
 
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /**
-     * SubscriptionUpdated constructor
-     *
-     * @param $subscriptionId
-     */
-    public function __construct($groupId) {
-        $this->groupId = $groupId;
+    public function __construct(int $groupId) {
+        $this->myGroupId = $groupId;
     }
 
     /**
      * Executes the job
+     *
+     * @param  AvatarRepository  $avatarRepository
+     * @param  GroupRepository  $groupRepository
      */
-    public function handle() {
-        $userIds = UserGroup::where('groupId', $this->groupId)->pluck('userId');
-        foreach ($userIds as $userId) {
-            AvatarHelper::clearAvatarIfInvalid($userId);
-        }
+    public function handle(AvatarRepository $avatarRepository, GroupRepository $groupRepository) {
+        $this->myAvatarRepository = $avatarRepository;
+        $this->myGroupRepository = $groupRepository;
+
+        $this->myGroupRepository->getUserIdsWithGroupId($this->myGroupId)
+            ->filter(
+                function ($userId) {
+                    return !$this->myAvatarRepository->isCurrentAvatarValidForUserId($userId);
+                }
+            )
+            ->each(
+                function ($userId) {
+                    $this->myAvatarRepository->makeCurrentAvatarValid($userId);
+                }
+            );
+    }
+
+    /**
+     * The job failed to process.
+     *
+     * @param  Exception  $exception
+     *
+     * @return void
+     */
+    public function failed(Exception $exception) {
+        Log::channel('que')->error(
+            '
+        [b]File:[/b] '.$exception->getFile().'#'.$exception->getLine().'
+        
+        [b]Message:[/b]
+'.$exception->getMessage().'
+        '
+        );
     }
 }

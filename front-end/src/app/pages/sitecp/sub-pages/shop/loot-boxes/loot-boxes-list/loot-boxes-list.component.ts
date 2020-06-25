@@ -32,7 +32,7 @@ export class LootBoxesListComponent extends Page implements OnDestroy {
     private _filter: QueryParameters;
 
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Create New', link: '/sitecp/shop/loot-boxes/new'})
+        new TitleTab({ title: 'Create New', link: '/sitecp/shop/loot-boxes/new' })
     ];
     tableConfig: TableConfig;
     pagination: PaginationModel;
@@ -61,7 +61,7 @@ export class LootBoxesListComponent extends Page implements OnDestroy {
         this._filter = params;
         this._filterTimer = setTimeout(() => {
             this._service.getPage(1, this._filter).subscribe(res => {
-                this.onData({data: res});
+                this.onData({ data: res });
             });
         }, 200);
     }
@@ -128,20 +128,20 @@ export class LootBoxesListComponent extends Page implements OnDestroy {
         return this._data.items.map(item => new TableRow({
             id: String(item.lootBoxId),
             cells: [
-                new TableCell({title: item.title}),
-                new TableCell({title: String(item.items)})
+                new TableCell({ title: item.title }),
+                new TableCell({ title: String(item.items) })
             ],
             actions: [
-                new TableAction({title: 'Edit', value: LootBoxesListActions.EDIT}),
-                new TableAction({title: 'Delete', value: LootBoxesListActions.DELETE})
+                new TableAction({ title: 'Edit', value: LootBoxesListActions.EDIT }),
+                new TableAction({ title: 'Delete', value: LootBoxesListActions.DELETE })
             ]
         }));
     }
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Title'}),
-            new TableHeader({title: 'Items'})
+            new TableHeader({ title: 'Title' }),
+            new TableHeader({ title: 'Items' })
         ];
     }
 }

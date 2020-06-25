@@ -28,8 +28,7 @@ export class TopBoxComponent {
     ) {
         this.setUser();
         const navigation = localStorage.getItem(LOCAL_STORAGE.NAVIGATION);
-        this._navigation = (navigation ? JSON.parse(localStorage.getItem(LOCAL_STORAGE.NAVIGATION)) : [])
-            .map(item => new MainItem(item));
+        this._navigation = this.getNavigation(navigation);
         this.routes = this._navigation
             .filter(item => item.loginRequired ? this._user : true);
 
@@ -55,11 +54,11 @@ export class TopBoxComponent {
 
     closeMenu (): void {
         this.showMenu = false;
+        this.updateMenuClasses();
         this._navigation = this._navigation.map(item => {
             item.isExpanded = false;
             return item;
         });
-        this.updateMenuClasses();
     }
 
     toggleMenu (): void {
@@ -72,11 +71,15 @@ export class TopBoxComponent {
     }
 
     get avatar (): string {
-        return `/rest/resources/images/users/${this._authService.authUser.userId}.gif?${this._authService.authUser.avatarUpdatedAt}`;
+        return `/resources/images/users/${this._authService.authUser.userId}.gif?${this._authService.authUser.avatarUpdatedAt}`;
     }
 
     get username (): string {
         return this._authService.authUser.nickname;
+    }
+
+    get thc (): number {
+        return this._authService.authUser.credits;
     }
 
     get isLoggedIn (): boolean {
@@ -107,6 +110,19 @@ export class TopBoxComponent {
     get homePage (): string {
         return this.isLoggedIn && this._authService.authUser.homePage ?
             this._authService.authUser.homePage : 'home';
+    }
+
+    private getNavigation (json: string): Array<MainItem> {
+        if (!json) {
+            return [];
+        }
+        try {
+            const navigation = JSON.parse(json);
+            return Array.isArray(navigation) ? navigation.map(item => new MainItem(item)) : [];
+        } catch (_e) {
+            // Do nothing
+        }
+        return [];
     }
 
     private setUser (): void {

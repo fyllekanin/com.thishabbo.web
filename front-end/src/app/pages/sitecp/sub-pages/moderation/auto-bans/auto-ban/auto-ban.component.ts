@@ -86,22 +86,22 @@ export class AutoBanComponent extends Page implements OnDestroy {
 
     private onSave (): void {
         if (this._data.updatedAt) {
-            this._httpService.put(`sitecp/moderation/auto-bans/${this._data.autoBanId}`, {autoBan: this._data})
+            this._httpService.put(`sitecp/moderation/auto-bans/${this._data.autoBanId}`, { autoBan: this._data })
                 .subscribe(res => {
                     this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: 'Autoban updated'
                     }));
-                    this.onData({data: new AutoBan(res)});
+                    this.onData({ data: new AutoBan(res) });
                 }, this._notificationService.failureNotification.bind(this._notificationService));
         } else {
-            this._httpService.post(`sitecp/moderation/auto-bans`, {autoBan: this._data})
+            this._httpService.post(`sitecp/moderation/auto-bans`, { autoBan: this._data })
                 .subscribe(res => {
                     this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: 'Autoban created'
                     }));
-                    this.onData({data: new AutoBan(res)});
+                    this.onData({ data: new AutoBan(res) });
                 }, this._notificationService.failureNotification.bind(this._notificationService));
         }
     }
@@ -110,9 +110,9 @@ export class AutoBanComponent extends Page implements OnDestroy {
         this._data = data.data;
 
         const tabs = [
-            {title: 'Save', value: AutoBanActions.SAVE, condition: true},
-            {title: 'Back', value: AutoBanActions.BACK, condition: true},
-            {title: 'Delete', value: AutoBanActions.DELETE, condition: this._data.updatedAt}
+            { title: 'Save', value: AutoBanActions.SAVE, condition: true },
+            { title: 'Back', value: AutoBanActions.BACK, condition: true },
+            { title: 'Delete', value: AutoBanActions.DELETE, condition: this._data.updatedAt }
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));

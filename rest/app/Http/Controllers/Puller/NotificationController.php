@@ -2,44 +2,45 @@
 
 namespace App\Http\Controllers\Puller;
 
+use App\Constants\NotificationTypes;
 use App\Factories\Notification\NotificationView;
 use App\Http\Controllers\Controller;
-use App\Models\Notification\Type;
-use App\Services\NotificationService;
+use App\Providers\Service\NotificationService;
 use App\Utils\Iterables;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class NotificationController extends Controller {
-    private $notificationService;
+    private $myNotificationService;
 
     public function __construct(NotificationService $notificationService) {
         parent::__construct();
-        $this->notificationService = $notificationService;
+        $this->myNotificationService = $notificationService;
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function readAllNotifications(Request $request) {
         $user = $request->get('auth');
         $types = [
-            Type::getType(Type::FOLLOWED),
-            Type::getType(Type::BADGE),
-            Type::getType(Type::CATEGORY_SUBSCRIPTION),
-            Type::getType(Type::INFRACTION_DELETED),
-            Type::getType(Type::INFRACTION_GIVEN),
-            Type::getType(Type::MENTION),
-            Type::getType(Type::QUOTE),
-            Type::getType(Type::THREAD_SUBSCRIPTION),
-            Type::getType(Type::LIKE_POST),
-            Type::getType(Type::LIKE_DJ),
-            Type::getType(Type::RADIO_REQUEST),
-            Type::getType(Type::LIKE_HOST),
-            Type::getType(Type::REFERRAL),
-            Type::getType(Type::SENT_THC)
+            NotificationTypes::FOLLOWED,
+            NotificationTypes::BADGE,
+            NotificationTypes::CATEGORY_SUBSCRIPTION,
+            NotificationTypes::INFRACTION_DELETED,
+            NotificationTypes::INFRACTION_GIVEN,
+            NotificationTypes::MENTION,
+            NotificationTypes::QUOTE,
+            NotificationTypes::THREAD_SUBSCRIPTION,
+            NotificationTypes::LIKE_POST,
+            NotificationTypes::LIKE_DJ,
+            NotificationTypes::RADIO_REQUEST,
+            NotificationTypes::LIKE_HOST,
+            NotificationTypes::REFERRAL,
+            NotificationTypes::SENT_CREDITS
         ];
 
         DB::table('notifications')
@@ -51,14 +52,14 @@ class NotificationController extends Controller {
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function readAllMessages(Request $request) {
         $user = $request->get('auth');
         $types = [
-            Type::getType(Type::VISITOR_MESSAGE)
+            NotificationTypes::VISITOR_MESSAGE
         ];
 
         DB::table('notifications')
@@ -73,10 +74,10 @@ class NotificationController extends Controller {
      * Performs a read action on the specific notification
      * and mark it as read.
      *
-     * @param Request $request
-     * @param         $notificationId
+     * @param  Request  $request
+     * @param $notificationId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function readNotification(Request $request, $notificationId) {
         $user = $request->get('auth');
@@ -92,7 +93,7 @@ class NotificationController extends Controller {
     /**
      * Get request for fetching unread notification
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return array NotificationView
      */
@@ -105,10 +106,16 @@ class NotificationController extends Controller {
             ->get()
             ->toArray();
 
-        return array_map(function ($notification) {
-            return new NotificationView($notification);
-        }, Iterables::filter($notifications, function ($notification) use ($user) {
-            return $this->notificationService->isNotificationValid($notification->contentId, $notification->type, $user);
-        }));
+        return array_map(
+            function ($notification) use ($user) {
+                return new NotificationView($notification, $user);
+            },
+            Iterables::filter(
+                $notifications,
+                function ($notification) use ($user) {
+                    return $this->myNotificationService->isNotificationValid($notification->contentId, $notification->type, $user);
+                }
+            )
+        );
     }
 }

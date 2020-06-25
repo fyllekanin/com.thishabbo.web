@@ -13,7 +13,7 @@ export class ThcRequestModel {
     @objectOf(User)
     requester: User;
 
-    constructor(source: Partial<ThcRequestModel>) {
+    constructor (source: Partial<ThcRequestModel>) {
         ClassHelper.assign(this, source);
     }
 }

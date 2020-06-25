@@ -10,27 +10,27 @@ import { NotificationMessage } from 'shared/app-views/global-notification/global
 @Injectable()
 export class GroupsService implements Resolve<UserCpGroupsPage> {
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService
     ) {
     }
 
-    resolve(): Observable<UserCpGroupsPage> {
+    resolve (): Observable<UserCpGroupsPage> {
         return this._httpService.get('usercp/groups').pipe(map(res => new UserCpGroupsPage(res)));
     }
 
-    apply(groupId: number): Observable<void> {
+    apply (groupId: number): Observable<void> {
         return this._httpService.post('usercp/groups/apply', { groupId: groupId })
             .pipe(catchError(this._notificationService.failureNotification.bind(this._notificationService)));
     }
 
-    leave(groupId: number): Observable<void> {
+    leave (groupId: number): Observable<void> {
         return this._httpService.delete(`usercp/groups/${groupId}`)
             .pipe(catchError(this._notificationService.failureNotification.bind(this._notificationService)));
     }
 
-    updateDisplayGroup(group: UserCpGroup): void {
+    updateDisplayGroup (group: UserCpGroup): void {
         this._httpService.put('usercp/groups/displaygroup', { groupId: group ? group.groupId : 0 })
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({

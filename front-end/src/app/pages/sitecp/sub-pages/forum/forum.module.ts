@@ -25,6 +25,12 @@ import { SelectModule } from 'shared/components/form/select/select.module';
 import { GroupTreeResolver } from './services/group-tree.resolver';
 import { GroupTreeComponent } from './group-tree/group-tree.component';
 import { TreeDiagramModule } from 'shared/components/graph/tree-diagram/tree-diagram.module';
+import { ThreadTemplateListComponent } from './thread-templates/thread-template-list/thread-template-list.component';
+import { ThreadTemplateComponent } from './thread-templates/thread-template/thread-template.component';
+import { EditorModule } from 'shared/components/editor/editor.module';
+import { ThreadTemplateService } from './services/thread-template.service';
+import { ThreadTemplateListResolver } from './services/thread-template-list.resolver';
+import { MergeCategoryComponent } from './list/merge-category/merge-category.component';
 
 @NgModule({
     imports: [
@@ -40,7 +46,8 @@ import { TreeDiagramModule } from 'shared/components/graph/tree-diagram/tree-dia
         ButtonModule,
         SafeHtmlModule,
         SelectModule,
-        TreeDiagramModule
+        TreeDiagramModule,
+        EditorModule
     ],
     declarations: [
         CategoriesListComponent,
@@ -48,7 +55,10 @@ import { TreeDiagramModule } from 'shared/components/graph/tree-diagram/tree-dia
         PermissionsComponent,
         PrefixListComponent,
         PrefixComponent,
-        GroupTreeComponent
+        GroupTreeComponent,
+        ThreadTemplateListComponent,
+        ThreadTemplateComponent,
+        MergeCategoryComponent
     ],
     providers: [
         CategoriesListResolver,
@@ -56,7 +66,12 @@ import { TreeDiagramModule } from 'shared/components/graph/tree-diagram/tree-dia
         PermissionsResolver,
         PrefixListResolver,
         PrefixService,
-        GroupTreeResolver
+        GroupTreeResolver,
+        ThreadTemplateService,
+        ThreadTemplateListResolver
+    ],
+    entryComponents: [
+        MergeCategoryComponent
     ],
     exports: [
         RouterModule

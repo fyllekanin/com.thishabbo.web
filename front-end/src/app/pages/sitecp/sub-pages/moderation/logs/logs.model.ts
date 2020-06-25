@@ -25,7 +25,7 @@ export class LogItem {
     constructor (source: Partial<LogItem>) {
         ClassHelper.assign(this, source);
         if (!this.user) {
-            this.user = new SlimUser({nickname: 'Unknown'});
+            this.user = new SlimUser({ nickname: 'Unknown' });
         }
     }
 }
@@ -42,6 +42,8 @@ export class LogAction {
 }
 
 export class LogPage {
+    @primitive()
+    type: string;
     @primitive()
     total: number;
     @arrayOf(LogAction)

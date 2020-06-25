@@ -12,7 +12,7 @@ import { StringHelper } from 'shared/helpers/string.helper';
 @Component({
     selector: 'app-user-profile-visitor-message',
     templateUrl: 'visitor-message.component.html',
-    styleUrls: ['visitor-message.component.css']
+    styleUrls: [ 'visitor-message.component.css' ]
 })
 export class VisitorMessageComponent implements AfterContentInit {
     private _visitorMessage: ProfileVisitorMessage;
@@ -20,7 +20,7 @@ export class VisitorMessageComponent implements AfterContentInit {
 
     @Input() hostId: number;
     @Output() onRemove: EventEmitter<void> = new EventEmitter();
-    @ViewChild('replies', {static: true}) repliesEle;
+    @ViewChild('replies', { static: true }) repliesEle;
     isRepliesOpen = false;
     redHeader = TitleTopBorder.RED;
     redButton = Button.RED;
@@ -58,7 +58,7 @@ export class VisitorMessageComponent implements AfterContentInit {
     }
 
     get canDeleteVisitorMessage (): boolean {
-        return this._authService.sitecpPermissions.canModerateVisitorMessage;
+        return this._authService.sitecpPermissions.canModerateVisitorMessages;
     }
 
     delete (event, visitorMessage: ProfileVisitorMessage): void {

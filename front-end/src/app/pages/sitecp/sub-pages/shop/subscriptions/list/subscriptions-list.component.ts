@@ -29,14 +29,14 @@ export class SubscriptionsListComponent extends Page implements OnDestroy {
     private _filterTimer: NodeJS.Timer;
 
     private _actions: Array<TableAction> = [
-        new TableAction({title: 'Edit', value: SubscriptionListAction.EDIT}),
-        new TableAction({title: 'Delete', value: SubscriptionListAction.DELETE})
+        new TableAction({ title: 'Edit', value: SubscriptionListAction.EDIT }),
+        new TableAction({ title: 'Delete', value: SubscriptionListAction.DELETE })
     ];
 
     tableConfig: TableConfig;
     pagination: PaginationModel;
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Create New', link: '/sitecp/shop/subscriptions/new'})
+        new TitleTab({ title: 'Create New', link: '/sitecp/shop/subscriptions/new' })
     ];
 
     constructor (
@@ -80,7 +80,7 @@ export class SubscriptionsListComponent extends Page implements OnDestroy {
         this._filter = params;
         this._filterTimer = setTimeout(() => {
             this._service.getPage(1, this._filter).subscribe(res => {
-                this.onData({data: res});
+                this.onData({ data: res });
             });
         }, 200);
     }
@@ -119,9 +119,9 @@ export class SubscriptionsListComponent extends Page implements OnDestroy {
         return this._data.items.map(item => new TableRow({
             id: item.subscriptionId.toString(),
             cells: [
-                new TableCell({title: item.title}),
-                new TableCell({title: item.membersCount.toString()}),
-                new TableCell({title: item.isListed ? 'Yes' : 'No'})
+                new TableCell({ title: item.title }),
+                new TableCell({ title: item.membersCount.toString() }),
+                new TableCell({ title: item.isListed ? 'Yes' : 'No' })
             ],
             actions: this._actions
         }));
@@ -129,9 +129,9 @@ export class SubscriptionsListComponent extends Page implements OnDestroy {
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Title'}),
-            new TableHeader({title: 'Subscribers'}),
-            new TableHeader({title: 'Is Listed'})
+            new TableHeader({ title: 'Title' }),
+            new TableHeader({ title: 'Subscribers' }),
+            new TableHeader({ title: 'Is Listed' })
         ];
     }
 }

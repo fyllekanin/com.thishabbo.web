@@ -8,9 +8,10 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class InfractionsResolver implements Resolve<InfractionsPage> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
-    resolve(route: ActivatedRouteSnapshot): Observable<InfractionsPage> {
+    resolve (route: ActivatedRouteSnapshot): Observable<InfractionsPage> {
         const pageNr = route.params['page'];
         const filterQuery = { filter: route.queryParams['filter'] };
 

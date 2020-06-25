@@ -8,7 +8,8 @@ import { NgModule } from '@angular/core';
         CommonModule,
         RouterModule
     ],
-    declarations: [PaginationComponent],
-    exports: [PaginationComponent]
+    declarations: [ PaginationComponent ],
+    exports: [ PaginationComponent ]
 })
-export class PaginationModule {}
+export class PaginationModule {
+}

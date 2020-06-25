@@ -123,5 +123,11 @@
                 <span *ngIf="isBooked(23)">11PM - <span [innerHTML]="getNickname(23) | safeHtml"></span> </span>
             </div>
         </div>
+        <br><b>Key Code</b>:<br>
+        - <span class="NONE"><b>This</b></span> colour signals that the hour is a Global hour. Anyone is allowed to book
+        it. <span *ngIf="!isEvents">Auto DJ and streaming is OK during these hours.</span> <br>
+        - <span class="EU"><b>This</b></span> colour signals that the slots is for <b>EU staff only</b>.<br>
+        - <span class="NA"><b>This</b></span> colour signals that the slots is for <b>NA staff only</b>.<br>
+        - <span class="OC"><b>This</b></span> colour signals that the slots is for <b>OC staff only</b>.
     </div>
 </app-content>

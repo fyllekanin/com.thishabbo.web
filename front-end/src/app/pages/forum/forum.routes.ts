@@ -2,7 +2,7 @@ import { ThreadControllerResolver } from './services/thread-controller.resolver'
 import { ThreadControllerComponent } from './category/thread-controller/thread-controller.component';
 import { ThreadService } from './services/thread.service';
 import { ThreadComponent } from './thread/thread.component';
-import { CategoryResolver } from './services/category.resolver';
+import { CategoryService } from './services/category.service';
 import { CategoryComponent } from './category/category.component';
 import { ForumHomeResolver } from './services/forum-home.resolver';
 import { ForumHomeComponent } from './forum-home/forum-home.component';
@@ -28,10 +28,10 @@ export const forumRoutes: Routes = [
             {
                 path: 'category/:id/page/:page',
                 resolve: {
-                    data: CategoryResolver
+                    data: CategoryService
                 },
                 component: CategoryComponent,
-                runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+                runGuardsAndResolvers: 'always'
             },
             {
                 path: 'thread/:id/page/:page',

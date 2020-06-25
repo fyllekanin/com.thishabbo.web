@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
 import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
-import { UserProfileModule } from 'shared/directives/user-profile.module';
+import { UserProfileModule } from 'shared/directives/user-profile/user-profile.module';
 import { VisitorMessageViewComponent } from 'shared/components/notification-views/visitor-message-view/visitor-message-view.component';
 import { UserViewComponent } from 'shared/components/notification-views/user-view/user-view.component';
 import { UserLinkModule } from 'shared/components/user/user-link.module';

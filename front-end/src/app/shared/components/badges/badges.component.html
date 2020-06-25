@@ -6,7 +6,7 @@
                 <div class="badge"
                      [attr.tooltip]="badge.description + '&#xa;' + badge.habboBadgeId + '&#xa;' + badge.createdAt">
                     <div class="new" *ngIf="badge.isNew">New</div>
-                    <img [src]="badge.url" (error)="badge.notFound = true;"/>
+                    <img appHabboBadge [code]="badge.habboBadgeId"/>
                 </div>
             </div>
         </div>

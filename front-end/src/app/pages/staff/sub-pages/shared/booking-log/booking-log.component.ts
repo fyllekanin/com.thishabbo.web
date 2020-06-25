@@ -78,11 +78,11 @@ export class BookingLogComponent extends Page implements OnDestroy {
         const day = TimeHelper.getConvertedDay(item.hour + TimeHelper.getTimeOffsetInHours(), item.day);
         return new TableRow({
             cells: [
-                new TableCell({title: item.user.nickname}),
-                new TableCell({title: item.affected.nickname}),
-                new TableCell({title: BookingLogComponent.getActionText(item)}),
-                new TableCell({title: `${TimeHelper.getDay(day).label} at ${hours[hour].label}`}),
-                new TableCell({title: TimeHelper.getTime(item.updatedAt)})
+                new TableCell({ title: item.user.nickname }),
+                new TableCell({ title: item.affected.nickname }),
+                new TableCell({ title: BookingLogComponent.getActionText(item) }),
+                new TableCell({ title: `${TimeHelper.getDay(day).label} at ${hours[hour].label}` }),
+                new TableCell({ title: TimeHelper.getTime(item.updatedAt) })
             ]
         });
     }
@@ -109,11 +109,11 @@ export class BookingLogComponent extends Page implements OnDestroy {
 
     private static getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'User'}),
-            new TableHeader({title: 'Affected'}),
-            new TableHeader({title: 'Action'}),
-            new TableHeader({title: 'Slot'}),
-            new TableHeader({title: 'Timestamp'})
+            new TableHeader({ title: 'User' }),
+            new TableHeader({ title: 'Affected' }),
+            new TableHeader({ title: 'Action' }),
+            new TableHeader({ title: 'Slot' }),
+            new TableHeader({ title: 'Timestamp' })
         ];
     }
 }

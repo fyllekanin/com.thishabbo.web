@@ -8,9 +8,10 @@ import { ListCategory } from '../list/categories-list.model';
 @Injectable()
 export class CategoriesListResolver implements Resolve<Array<ListCategory>> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
-    resolve(): Observable<Array<ListCategory>> {
+    resolve (): Observable<Array<ListCategory>> {
         return this._httpService.get(`sitecp/categories`)
             .pipe(map(data => {
                 return data.map(res => new ListCategory(res));

@@ -20,7 +20,7 @@ export class ProfileComponent extends Page implements OnDestroy {
         new TitleTab({ title: 'Save' })
     ];
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService,
         elementRef: ElementRef,
@@ -37,31 +37,31 @@ export class ProfileComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy() {
+    ngOnDestroy () {
         super.destroy();
     }
 
-    onSave(): void {
+    onSave (): void {
         this._httpService.put('usercp/profile', { data: this._data })
             .subscribe(() => {
                 this._notificationService.sendInfoNotification('Profile Updated!');
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    get model(): ProfileModel {
+    get model (): ProfileModel {
         return this._data;
     }
 
-    get relations(): ProfileRelations {
+    get relations (): ProfileRelations {
         return this._data.relations;
     }
 
-    get testForUrl(): Array<string> {
+    get testForUrl (): Array<string> {
         const regExp = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/;
         return this._data.youtube && this._data.youtube.match(regExp);
     }
 
-    private onData(data: { data: ProfileModel }): void {
+    private onData (data: { data: ProfileModel }): void {
         this._data = data.data;
     }
 }

@@ -31,15 +31,15 @@ import { NotificationMessage } from 'shared/app-views/global-notification/global
 export class ThemesComponent extends Page implements OnDestroy {
     private _data: Array<Theme> = [];
     private _actions: Array<TableAction> = [
-        new TableAction({title: 'Edit', value: ThemeActions.EDIT}),
-        new TableAction({title: 'Make Default', value: ThemeActions.DEFAULT}),
-        new TableAction({title: 'Delete', value: ThemeActions.DELETE})
+        new TableAction({ title: 'Edit', value: ThemeActions.EDIT }),
+        new TableAction({ title: 'Make Default', value: ThemeActions.DEFAULT }),
+        new TableAction({ title: 'Delete', value: ThemeActions.DELETE })
     ];
 
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Create New', link: '/sitecp/website-settings/themes/new'}),
-        new TitleTab({title: 'Clear Default', value: ThemeActions.CLEAR_DEFAULT}),
-        new TitleTab({title: 'Back', link: '/sitecp/website-settings'})
+        new TitleTab({ title: 'Create New', link: '/sitecp/website-settings/themes/new' }),
+        new TitleTab({ title: 'Clear Default', value: ThemeActions.CLEAR_DEFAULT }),
+        new TitleTab({ title: 'Back', link: '/sitecp/website-settings' })
     ];
     tableConfig: TableConfig;
 
@@ -159,10 +159,10 @@ export class ThemesComponent extends Page implements OnDestroy {
         return this._data.map(item => new TableRow({
             id: item.themeId.toString(),
             cells: [
-                new TableCell({title: item.title}),
-                new TableCell({title: String(item.users)}),
-                new TableCell({title: item.isDefault ? 'Yes' : 'No'}),
-                new TableCell({title: TimeHelper.getLongDateWithTime(item.updatedAt)})
+                new TableCell({ title: item.title }),
+                new TableCell({ title: String(item.users) }),
+                new TableCell({ title: item.isDefault ? 'Yes' : 'No' }),
+                new TableCell({ title: TimeHelper.getLongDateWithTime(item.updatedAt) })
             ],
             actions: this._actions
         }));
@@ -170,10 +170,10 @@ export class ThemesComponent extends Page implements OnDestroy {
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Title'}),
-            new TableHeader({title: 'Users'}),
-            new TableHeader({title: 'Is Default'}),
-            new TableHeader({title: 'Last Modified'})
+            new TableHeader({ title: 'Title' }),
+            new TableHeader({ title: 'Users' }),
+            new TableHeader({ title: 'Is Default' }),
+            new TableHeader({ title: 'Last Modified' })
         ];
     }
 }

@@ -21,7 +21,7 @@ export class Ban {
     @primitive()
     updatedAt: number;
 
-    constructor(source: Partial<Ban>) {
+    constructor (source: Partial<Ban>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -32,7 +32,7 @@ export class BanModel {
     @arrayOf(Ban)
     bans: Array<Ban> = [];
 
-    constructor(source?: Partial<BanModel>) {
+    constructor (source?: Partial<BanModel>) {
         ClassHelper.assign(this, source);
     }
 }

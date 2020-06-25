@@ -26,7 +26,7 @@ export class AvatarService implements Resolve<AvatarModel> {
     }
 
     save (data: FormData): Observable<AvatarModel> {
-        return this._httpClient.post('rest/api/usercp/avatar', data)
+        return this._httpClient.post('api/usercp/avatar', data)
             .pipe(map(res => {
                 this._authService.authUser.avatarUpdatedAt = new Date().getTime() / 1000;
                 this._notificationService.sendNotification(new NotificationMessage({
@@ -38,7 +38,7 @@ export class AvatarService implements Resolve<AvatarModel> {
     }
 
     switchBack (id: number): Observable<AvatarModel> {
-        return this._httpClient.put(`rest/api/usercp/avatar/${id}`, null)
+        return this._httpClient.put(`api/usercp/avatar/${id}`, null)
             .pipe(map(res => {
                 this._authService.authUser.avatarUpdatedAt = new Date().getTime() / 1000;
                 this._notificationService.sendNotification(new NotificationMessage({

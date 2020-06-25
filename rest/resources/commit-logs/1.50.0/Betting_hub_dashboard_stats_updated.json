@@ -1,0 +1,1 @@
+{"topic":"Betting hub dashboard stats updated","type":"Refactor / Improvement","body":"The stats were mentioning diamonds that no longer exists. It is now switched out to active bets available in the system"}

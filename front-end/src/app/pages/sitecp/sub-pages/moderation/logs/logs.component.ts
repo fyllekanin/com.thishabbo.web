@@ -98,6 +98,9 @@ export class LogsComponent extends Page implements OnDestroy {
     }
 
     private onData (data: { data: LogPage }): void {
+        if (this._data && data.data.type !== this._data.type) {
+            this.tableConfig = null;
+        }
         this._data = data.data;
         this._data.actions.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'description'));
         this.createOrUpdateTable();
@@ -136,7 +139,8 @@ export class LogsComponent extends Page implements OnDestroy {
     private getTableFilters (): Array<FilterConfig> {
         const values = {
             user: this.getFilterValueByKey('user'),
-            action: this.getFilterValueByKey('action')
+            action: this.getFilterValueByKey('action'),
+            target: this.getFilterValueByKey('target')
         };
         return [
             new FilterConfig({
@@ -154,7 +158,14 @@ export class LogsComponent extends Page implements OnDestroy {
                     value: String(action.id)
                 })),
                 value: values.action
-            })
+            }),
+            new FilterConfig({
+                title: 'Targeted User',
+                placeholder: 'Search for specific user...',
+                key: 'target',
+                help: 'Type exact nickname, in most cases logs know the targeted user.',
+                value: values.target
+            }),
         ];
     }
 

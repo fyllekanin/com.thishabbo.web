@@ -1,4 +1,4 @@
-import { primitive, ClassHelper, objectOf } from 'shared/helpers/class.helper';
+import { ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
 import { SlimUser } from 'core/services/auth/auth.model';
 
 export class HighScoreModel {
@@ -9,7 +9,7 @@ export class HighScoreModel {
     @primitive()
     createdAt: number;
 
-    constructor(source: Partial<HighScoreModel>) {
+    constructor (source: Partial<HighScoreModel>) {
         ClassHelper.assign(this, source);
     }
 }

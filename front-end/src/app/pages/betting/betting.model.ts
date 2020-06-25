@@ -6,30 +6,30 @@ export class StatsModel {
     @primitive()
     credits: number;
     @primitive()
-    diamonds: number;
+    activeBets: number;
     @primitive()
     betsWon: number;
     @primitive()
     betsLost: number;
 
-    constructor(source?: Partial<StatsModel>) {
+    constructor (source?: Partial<StatsModel>) {
         ClassHelper.assign(this, source);
     }
 }
 
-export function getBettingStats(stats: StatsModel): Array<StatsBoxModel> {
+export function getBettingStats (stats: StatsModel): Array<StatsBoxModel> {
     return [
         new StatsBoxModel({
             borderColor: TitleTopBorder.GREEN,
             title: String(stats.credits),
-            breadText: 'ThisHabboCredits',
+            breadText: 'THC',
             icon: 'fas fa-coins'
         }),
         new StatsBoxModel({
             borderColor: TitleTopBorder.BLUE,
-            title: String(stats.diamonds),
-            breadText: 'Diamonds',
-            icon: 'fas fa-gem'
+            title: String(stats.activeBets),
+            breadText: 'Active Bets',
+            icon: 'fas fa-ticket-alt'
         }),
         new StatsBoxModel({
             borderColor: TitleTopBorder.BLUE,

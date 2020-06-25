@@ -1,17 +1,5 @@
 import { arrayOf, ClassHelper, primitive } from 'shared/helpers/class.helper';
-
-export class PrefixCategory {
-    @primitive()
-    title: string;
-    @primitive()
-    categoryId: number;
-    @arrayOf(PrefixCategory)
-    children: Array<PrefixCategory> = [];
-
-    constructor (source: Partial<PrefixCategory>) {
-        ClassHelper.assign(this, source);
-    }
-}
+import { CategoryLeaf } from '../category/category.model';
 
 export class Prefix {
     @primitive()
@@ -20,8 +8,8 @@ export class Prefix {
     text: string;
     @primitive()
     style: string;
-    @arrayOf(PrefixCategory)
-    categories: Array<PrefixCategory> = [];
+    @arrayOf(CategoryLeaf)
+    categories: Array<CategoryLeaf> = [];
     @arrayOf(Number)
     categoryIds: Array<number> = [];
     @primitive()

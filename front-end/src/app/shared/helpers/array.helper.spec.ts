@@ -4,15 +4,15 @@ describe('ArrayHelper', () => {
 
     it('copyArray should copy the array and not the reference', () => {
         // Given
-        const arr1 = [1, 2, 3];
+        const arr1 = [ 1, 2, 3 ];
 
         // When
         const arr2 = ArrayHelper.copyArray(arr1);
         arr2.push(4);
 
         // Then
-        expect(arr1).toEqual([1, 2, 3]);
-        expect(arr2).toEqual([1, 2, 3, 4]);
+        expect(arr1).toEqual([ 1, 2, 3 ]);
+        expect(arr2).toEqual([ 1, 2, 3, 4 ]);
     });
 
     it('shortByPropertyDesc sorts an array of object by provided property', () => {

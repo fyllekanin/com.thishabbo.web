@@ -11,7 +11,7 @@ export class HistoryBet {
     @primitive()
     won: number;
 
-    constructor(source: Partial<HistoryBet>) {
+    constructor (source: Partial<HistoryBet>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -26,7 +26,7 @@ export class HistoryModel {
     @primitive()
     total: number;
 
-    constructor(source?: Partial<HistoryModel>) {
+    constructor (source?: Partial<HistoryModel>) {
         ClassHelper.assign(this, source);
     }
 }

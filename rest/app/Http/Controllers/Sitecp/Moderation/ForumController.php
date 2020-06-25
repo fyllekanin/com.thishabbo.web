@@ -2,72 +2,75 @@
 
 namespace App\Http\Controllers\Sitecp\Moderation;
 
+use App\Constants\Permission\CategoryPermissions;
 use App\EloquentModels\Forum\Post;
 use App\EloquentModels\Forum\Thread;
 use App\EloquentModels\Infraction\AutoBan;
-use App\Helpers\ConfigHelper;
-use App\Helpers\DataHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
-use App\Services\ForumService;
+use App\Providers\Service\ForumService;
+use App\Repositories\Repository\CategoryRepository;
+use App\Utils\PaginationUtil;
 use App\Utils\Value;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ForumController extends Controller {
-    private $forumService;
+    private $myForumService;
+    private $myCategoryRepository;
 
-    /**
-     * ForumController constructor.
-     *
-     * @param ForumService $forumService
-     */
-    public function __construct (ForumService $forumService) {
+    public function __construct(ForumService $forumService, CategoryRepository $categoryRepository) {
         parent::__construct();
-        $this->forumService = $forumService;
+        $this->myForumService = $forumService;
+        $this->myCategoryRepository = $categoryRepository;
     }
 
     /**
-     * @param Request $request
-     * @param         $page
+     * @param  Request  $request
+     * @param $page
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getAutoBans (Request $request, $page) {
+    public function getAutoBans(Request $request, $page) {
         $filter = $request->input('filter');
         $autoBansSql = AutoBan::where('title', 'LIKE', Value::getFilterValue($request, $filter))
             ->orderBy('title', 'ASC')
-            ->skip(DataHelper::getOffset($page))
+            ->skip(PaginationUtil::getOffset($page))
             ->take($this->perPage);
 
-        $total = DataHelper::getTotal($autoBansSql->count('autoBanId'));
-        $items = $autoBansSql->map(function ($item) {
-            return [
-                'autoBanId' => $item->autoBanId,
-                'title' => $item->title,
-                'amount' => $item->amount,
-                'banLength' => $item->banLength,
-                'updatedAt' => $item->updatedAt->timestamp
-            ];
-        });
+        $total = PaginationUtil::getTotalPages($autoBansSql->count('autoBanId'));
+        $items = $autoBansSql->map(
+            function ($item) {
+                return [
+                    'autoBanId' => $item->autoBanId,
+                    'title' => $item->title,
+                    'amount' => $item->amount,
+                    'banLength' => $item->banLength,
+                    'updatedAt' => $item->updatedAt->timestamp
+                ];
+            }
+        );
 
-        return response()->json([
-            'items' => $items,
-            'page' => $page,
-            'total' => $total
-        ]);
+        return response()->json(
+            [
+                'items' => $items,
+                'page' => $page,
+                'total' => $total
+            ]
+        );
     }
 
     /**
      * Get request to fetch all posts awaiting moderation
      *
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getModeratePosts (Request $request) {
+    public function getModeratePosts(Request $request) {
         $user = $request->get('auth');
-        $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
+        $categoryIds = $this->myCategoryRepository->getCategoryIdsWherePermission($user->userId, CategoryPermissions::CAN_READ);
 
         $posts = Post::withoutGlobalScope('nonHardDeleted')
             ->join('threads', 'threads.threadId', '=', 'posts.threadId')
@@ -75,14 +78,23 @@ class ForumController extends Controller {
             ->where('threads.firstPostId', '!=', 'posts.postId')
             ->where('threads.isApproved', 1)
             ->where('posts.isApproved', 0)
+            ->where('posts.createdAt', '>', strtotime('-1 week'))
             ->select('posts.*', 'threads.title as threadTitle', 'threads.categoryId')
             ->orderBy('posts.updatedAt', 'DESC')
             ->get();
 
         foreach ($posts as $post) {
             $post->user = UserHelper::getUser($post->userId);
-            $post->canApprove = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canApproveThreads, $post->categoryId);
-            $post->canDelete = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canDeletePosts, $post->categoryId);
+            $post->canApprove = PermissionHelper::haveForumPermission(
+                $user->userId,
+                CategoryPermissions::CAN_APPROVE_THREADS,
+                $post->categoryId
+            );
+            $post->canDelete = PermissionHelper::haveForumPermission(
+                $user->userId,
+                CategoryPermissions::CAN_DELETE_POSTS,
+                $post->categoryId
+            );
         }
 
         return response()->json($posts);
@@ -91,22 +103,18 @@ class ForumController extends Controller {
     /**
      * Get request to fetch all threads awaiting moderation
      *
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getModerateThreads (Request $request) {
+    public function getModerateThreads(Request $request) {
         $user = $request->get('auth');
-        $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
+        $categoryIds = $this->myCategoryRepository->getCategoryIdsWherePermission($user->userId, CategoryPermissions::CAN_READ)
+            ->filter(function ($categoryId) use ($user) {
+                return PermissionHelper::haveForumPermission($user->userId, CategoryPermissions::CAN_APPROVE_THREADS, $categoryId);
+            });
 
-        foreach ($categoryIds as $key => $value) {
-            if (!PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canApproveThreads, $value)) {
-                unset($categoryIds[$key]);
-            }
-        }
-
-        $threads = Thread::withoutGlobalScope('nonHardDeleted')
-            ->join('categories', 'categories.categoryId', '=', 'threads.categoryId')
+        $threads = Thread::join('categories', 'categories.categoryId', '=', 'threads.categoryId')
             ->select('threads.*', 'categories.title as categoryTitle', 'categories.categoryId')
             ->whereIn('threads.categoryId', $categoryIds)
             ->where('threads.isApproved', 0)
@@ -114,8 +122,16 @@ class ForumController extends Controller {
 
         foreach ($threads as $thread) {
             $thread->user = UserHelper::getUser($thread->userId);
-            $thread->canApprove = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canApproveThreads, $thread->categoryId);
-            $thread->canDelete = PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canDeletePosts, $thread->categoryId);
+            $thread->canApprove = PermissionHelper::haveForumPermission(
+                $user->userId,
+                CategoryPermissions::CAN_APPROVE_THREADS,
+                $thread->categoryId
+            );
+            $thread->canDelete = PermissionHelper::haveForumPermission(
+                $user->userId,
+                CategoryPermissions::CAN_DELETE_POSTS,
+                $thread->categoryId
+            );
         }
 
         return response()->json($threads);

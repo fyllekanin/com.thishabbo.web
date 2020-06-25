@@ -22,7 +22,7 @@ export class ManageConnectionComponent extends Page implements OnDestroy {
         new TitleTab({ title: 'Save', value: ManageConnectionActions.SAVE })
     ];
 
-    constructor(
+    constructor (
         private _notificationService: NotificationService,
         private _httpService: HttpService,
         breadcrumbService: BreadcrumbService,
@@ -40,52 +40,24 @@ export class ManageConnectionComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    toggleType(event, type: string): void {
+    toggleType (event, type: string): void {
         event.preventDefault();
         this._manageConnectionModel.serverType = type;
     }
 
-    isServerType(type: string): boolean {
+    isServerType (type: string): boolean {
         return this._manageConnectionModel.serverType === type;
     }
 
-    get port(): number {
-        return this._manageConnectionModel.port;
+    get model (): ManageConnectionModel {
+        return this._manageConnectionModel;
     }
 
-    get ip(): string {
-        return this._manageConnectionModel.ip;
-    }
-
-    get password(): string {
-        return this._manageConnectionModel.password;
-    }
-
-    get adminPassword(): string {
-        return this._manageConnectionModel.adminPassword;
-    }
-
-    set port(port: number) {
-        this._manageConnectionModel.port = port;
-    }
-
-    set ip(ip: string) {
-        this._manageConnectionModel.ip = ip;
-    }
-
-    set password(password: string) {
-        this._manageConnectionModel.password = password;
-    }
-
-    set adminPassword(adminPassword: string) {
-        this._manageConnectionModel.adminPassword = adminPassword;
-    }
-
-    onTabClick(value: number): void {
+    onTabClick (value: number): void {
         switch (value) {
             case ManageConnectionActions.SAVE:
                 this.save();
@@ -93,7 +65,7 @@ export class ManageConnectionComponent extends Page implements OnDestroy {
         }
     }
 
-    private save(): void {
+    private save (): void {
         this._httpService.put('staff/radio/manage-connection', { information: this._manageConnectionModel })
             .subscribe(() => {
                 this.onSuccessUpdate();
@@ -102,14 +74,14 @@ export class ManageConnectionComponent extends Page implements OnDestroy {
             });
     }
 
-    private onSuccessUpdate(): void {
+    private onSuccessUpdate (): void {
         this._notificationService.sendNotification(new NotificationMessage({
             title: 'Success',
             message: 'Information updated!'
         }));
     }
 
-    private onData(data: { data: ManageConnectionModel }): void {
+    private onData (data: { data: ManageConnectionModel }): void {
         this._manageConnectionModel = data.data;
     }
 }

@@ -6,7 +6,7 @@ import { InfractionView } from 'app/shared/components/notification-views/infract
 @Component({
     selector: 'app-top-bar-infraction-view',
     templateUrl: 'infraction-view.component.html',
-    styleUrls: ['../notification.views.css']
+    styleUrls: [ '../notification.views.css' ]
 })
 export class InfractionViewComponent implements NotificationView {
     private _notification: NotificationModel<InfractionView>;
@@ -36,7 +36,7 @@ export class InfractionViewComponent implements NotificationView {
         return this._notification.createdAt;
     }
 
-    @HostListener('click', ['$event.target'])
+    @HostListener('click', [ '$event.target' ])
     click (): void {
         this.onClick.next(this._notification.notificationId);
     }

@@ -7,7 +7,7 @@ import { NotificationMessage, NotificationType } from 'shared/app-views/global-n
 export class NotificationService {
     private _onNotificationSubject: Subject<NotificationMessage> = new Subject();
 
-    failureNotification(error: HttpErrorResponse): void {
+    failureNotification (error: HttpErrorResponse): void {
         this.sendNotification(new NotificationMessage({
             title: 'Error',
             message: error.error.message,
@@ -15,14 +15,14 @@ export class NotificationService {
         }));
     }
 
-    sendNotification(notification: NotificationMessage): void {
+    sendNotification (notification: NotificationMessage): void {
         if (!notification) {
             return;
         }
         this._onNotificationSubject.next(notification);
     }
 
-    sendInfoNotification(message: string): void {
+    sendInfoNotification (message: string): void {
         this._onNotificationSubject.next(new NotificationMessage({
             title: 'Success',
             message: message,
@@ -30,7 +30,7 @@ export class NotificationService {
         }));
     }
 
-    sendErrorNotification(message: string): void {
+    sendErrorNotification (message: string): void {
         this._onNotificationSubject.next(new NotificationMessage({
             title: 'Error',
             message: message,
@@ -38,7 +38,7 @@ export class NotificationService {
         }));
     }
 
-    get onNotification(): Observable<NotificationMessage> {
+    get onNotification (): Observable<NotificationMessage> {
         return this._onNotificationSubject.asObservable();
     }
 }

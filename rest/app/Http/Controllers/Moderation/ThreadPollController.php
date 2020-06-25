@@ -2,76 +2,81 @@
 
 namespace App\Http\Controllers\Moderation;
 
+use App\Constants\LogType;
+use App\Constants\Permission\CategoryPermissions;
 use App\EloquentModels\Forum\Thread;
 use App\EloquentModels\Forum\ThreadPoll;
 use App\EloquentModels\Forum\ThreadPollAnswer;
 use App\EloquentModels\User\User;
-use App\Helpers\ConfigHelper;
-use App\Helpers\DataHelper;
 use App\Helpers\PermissionHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
-use App\Models\Logger\Action;
-use App\Services\ForumService;
+use App\Repositories\Repository\CategoryRepository;
 use App\Utils\Condition;
+use App\Utils\PaginationUtil;
 use App\Utils\Value;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ThreadPollController extends Controller {
-    private $forumService;
+    private $myCategoryRepository;
 
-    /**
-     * ThreadPollController constructor.
-     *
-     * @param ForumService $forumService
-     */
-    public function __construct (ForumService $forumService) {
+    public function __construct(CategoryRepository $categoryRepository) {
         parent::__construct();
-        $this->forumService = $forumService;
+        $this->myCategoryRepository = $categoryRepository;
     }
 
     /**
-     * @param Request $request
-     * @param         $threadId
+     * @param  Request  $request
+     * @param $threadId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getPoll (Request $request, $threadId) {
+    public function getPoll(Request $request, $threadId) {
         $user = $request->get('auth');
         $thread = Thread::find($threadId);
-        $permission = ConfigHelper::getForumPermissions()->canManagePolls;
 
         Condition::precondition(!$thread, 404, 'No thread with that ID');
-        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, $thread->categoryId, $permission),
-            400, 'You do not have permission to view this poll');
+        Condition::precondition(
+            !PermissionHelper::haveForumPermission($user->userId, $thread->categoryId, CategoryPermissions::CAN_MANAGE_POLLS),
+            400,
+            'You do not have permission to view this poll'
+        );
 
-        return response()->json([
-            'thread' => $thread->title,
-            'question' => $thread->poll->question,
-            'answers' => array_map(function ($option) {
-                return [
-                    'answer' => $option->label,
-                    'users' => ThreadPollAnswer::where('answer', $option->id)->get()->map(function ($answer) {
+        return response()->json(
+            [
+                'thread' => $thread->title,
+                'question' => $thread->poll->question,
+                'answers' => array_map(
+                    function ($option) {
                         return [
-                            'userId' => $answer->userId,
-                            'nickname' => User::find($answer->userId)->nickname
+                            'answer' => $option->label,
+                            'users' => ThreadPollAnswer::where('answer', $option->id)->get()->map(
+                                function ($answer) {
+                                    return [
+                                        'userId' => $answer->userId,
+                                        'nickname' => User::find($answer->userId)->nickname
+                                    ];
+                                }
+                            )
                         ];
-                    })
-                ];
-            }, json_decode($thread->poll->options))
-        ]);
+                    },
+                    json_decode($thread->poll->options)
+                )
+            ]
+        );
     }
 
     /**
-     * @param Request $request
-     * @param         $page
+     * @param  Request  $request
+     * @param $page
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getPolls (Request $request, $page) {
+    public function getPolls(Request $request, $page) {
         $filter = $request->input('filter');
         $user = $request->get('auth');
-        $categoryIds = $this->forumService->getAccessibleCategories($user->userId, ConfigHelper::getForumPermissions()->canManagePolls);
+        $categoryIds = $this->myCategoryRepository->getCategoryIdsWherePermission($user->userId, CategoryPermissions::CAN_MANAGE_POLLS);
 
         $getPollsSql = ThreadPoll::join('threads', 'threads.threadId', '=', 'thread_polls.threadId')
             ->whereIn('threads.categoryId', $categoryIds)
@@ -79,47 +84,57 @@ class ThreadPollController extends Controller {
             ->orderBy('threads.title', 'ASC')
             ->select('threads.title', 'threads.threadId', 'thread_polls.*', 'threads.categoryId');
 
-        $total = DataHelper::getTotal($getPollsSql->count('thread_polls.threadPollId'));
-        $polls = $getPollsSql->take($this->perPage)->skip(DataHelper::getOffset($page))->get()->map(function ($poll) {
-            return [
-                'threadPollId' => $poll->threadPollId,
-                'thread' => $poll->thread->title,
-                'question' => $poll->question,
-                'threadId' => $poll->threadId,
-                'votes' => ThreadPollAnswer::where('threadPollId', $poll->threadPollId)->count('threadPollId')
-            ];
-        });
+        $total = PaginationUtil::getTotalPages($getPollsSql->count('thread_polls.threadPollId'));
+        $polls = $getPollsSql->take($this->perPage)->skip(PaginationUtil::getOffset($page))->get()->map(
+            function ($poll) {
+                return [
+                    'threadPollId' => $poll->threadPollId,
+                    'thread' => $poll->thread->title,
+                    'question' => $poll->question,
+                    'threadId' => $poll->threadId,
+                    'votes' => ThreadPollAnswer::where('threadPollId', $poll->threadPollId)->count('threadPollId')
+                ];
+            }
+        );
 
-        return response()->json([
-            'total' => $total,
-            'page' => $page,
-            'polls' => $polls
-        ]);
+        return response()->json(
+            [
+                'total' => $total,
+                'page' => $page,
+                'polls' => $polls
+            ]
+        );
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @param         $threadId
+     * @param $threadId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function deletePoll (Request $request, $threadId) {
+    public function deletePoll(Request $request, $threadId) {
         $user = $request->get('auth');
         $thread = Thread::find($threadId);
         $threadPoll = ThreadPoll::where('threadId', $thread->threadId)->first();
 
         Condition::precondition(!$threadPoll, 404, 'No thread poll exist with that ID');
-        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId,
-            ConfigHelper::getForumPermissions()->canManagePolls, $thread->categoryId),
-            400, 'You do not have permission to delete this poll');
+        Condition::precondition(
+            !PermissionHelper::haveForumPermission(
+                $user->userId,
+                CategoryPermissions::CAN_MANAGE_POLLS,
+                $thread->categoryId
+            ),
+            400,
+            'You do not have permission to delete this poll'
+        );
 
         $threadPoll->isDeleted = true;
         $threadPoll->save();
 
         ThreadPollAnswer::where('threadPollId', $threadPoll->threadPollId)->update(['isDeleted' => true]);
 
-        Logger::mod($user->userId, $request->ip(), Action::DELETED_POLL, ['poll' => $threadPoll->question], $threadPoll->threadPollId);
+        Logger::mod($user->userId, $request->ip(), LogType::DELETED_POLL, ['poll' => $threadPoll->question], $threadPoll->threadPollId);
         return response()->json();
     }
 }

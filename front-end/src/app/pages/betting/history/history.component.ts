@@ -21,7 +21,7 @@ export class HistoryComponent extends Page implements OnDestroy {
     paginationModel: PaginationModel;
     stats: Array<StatsBoxModel> = [];
 
-    constructor(
+    constructor (
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute,
         breadcrumbService: BreadcrumbService
@@ -36,11 +36,11 @@ export class HistoryComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    private onData(data: { data: HistoryModel }): void {
+    private onData (data: { data: HistoryModel }): void {
         this._data = data.data;
         this.createOrUpdateTable();
         this.stats = getBettingStats(this._data.stats);
@@ -52,7 +52,7 @@ export class HistoryComponent extends Page implements OnDestroy {
         });
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -64,18 +64,20 @@ export class HistoryComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         return this._data.history.map(bet => new TableRow({
             cells: [
                 new TableCell({ title: bet.name }),
                 new TableCell({ title: bet.result ? 'Won' : 'Lost' }),
-                new TableCell({ title: bet.result ?
-                        `Won ${bet.won} credits` : `Lost ${bet.placed} credits` })
+                new TableCell({
+                    title: bet.result ?
+                        `Won ${bet.won} credits` : `Lost ${bet.placed} credits`
+                })
             ]
         }));
     }
 
-    private getTableHeaders(): Array<TableHeader> {
+    private getTableHeaders (): Array<TableHeader> {
         return [
             new TableHeader({ title: 'Bet', width: '50%' }),
             new TableHeader({ title: 'Result', width: '15%' }),

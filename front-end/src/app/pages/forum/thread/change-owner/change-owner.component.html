@@ -1,1 +1,3 @@
-<input [(ngModel)]="nickname" placeholder="Nickname of new owner" />
+<form (ngSubmit)="onSubmit()">
+    <input name="nickname" [(ngModel)]="nickname" placeholder="Nickname of new owner"/>
+</form>

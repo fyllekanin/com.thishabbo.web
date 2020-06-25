@@ -15,7 +15,7 @@ export class MissingComponent extends Page implements OnDestroy {
         elementRef: ElementRef
     ) {
         super(elementRef);
-        breadcrumbService.breadcrumb = new Breadcrumb({current: 'Missing'});
+        breadcrumbService.breadcrumb = new Breadcrumb({ current: 'Missing' });
     }
 
     ngOnDestroy () {

@@ -26,8 +26,8 @@ export class AccoladesComponent extends Page implements OnDestroy {
 
     tableConfig: TableConfig;
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Create Accolade', value: AccoladeActions.CREATE}),
-        new TitleTab({title: 'Back', value: AccoladeActions.BACK})
+        new TitleTab({ title: 'Create Accolade', value: AccoladeActions.CREATE }),
+        new TitleTab({ title: 'Back', value: AccoladeActions.BACK })
     ];
 
     constructor (
@@ -130,13 +130,13 @@ export class AccoladesComponent extends Page implements OnDestroy {
         return this._data.items.map(item => new TableRow({
             id: item.accoladeId.toString(),
             cells: [
-                new TableCell({title: this.getRoleHtml(item), innerHTML: true}),
-                new TableCell({title: item.getStartLabel()}),
-                new TableCell({title: item.getEndLabel()})
+                new TableCell({ title: this.getRoleHtml(item), innerHTML: true }),
+                new TableCell({ title: item.getStartLabel() }),
+                new TableCell({ title: item.getEndLabel() })
             ],
             actions: [
-                new TableAction({title: 'Edit', value: AccoladeActions.EDIT}),
-                new TableAction({title: 'Delete', value: AccoladeActions.DELETE})
+                new TableAction({ title: 'Edit', value: AccoladeActions.EDIT }),
+                new TableAction({ title: 'Delete', value: AccoladeActions.DELETE })
             ]
         }));
     }
@@ -148,9 +148,9 @@ export class AccoladesComponent extends Page implements OnDestroy {
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Role'}),
-            new TableHeader({title: 'Start'}),
-            new TableHeader({title: 'End'})
+            new TableHeader({ title: 'Role' }),
+            new TableHeader({ title: 'Start' }),
+            new TableHeader({ title: 'End' })
         ];
     }
 }

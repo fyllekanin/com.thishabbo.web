@@ -10,14 +10,14 @@ import { getBettingStats, StatsModel } from '../../betting/betting.model';
 @Component({
     selector: 'app-arcade-default',
     templateUrl: 'arcade-default.component.html',
-    styleUrls: ['arcade-default.component.css']
+    styleUrls: [ 'arcade-default.component.css' ]
 })
 export class ArcadeDefaultComponent extends Page implements OnDestroy {
 
     highscoreTop = TitleTopBorder.RED;
     stats: Array<StatsBoxModel> = [];
 
-    constructor(
+    constructor (
         private _router: Router,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService,
@@ -30,15 +30,15 @@ export class ArcadeDefaultComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    game(game: string): void {
+    game (game: string): void {
         this._router.navigateByUrl(`/arcade/${game}`);
     }
 
-    private onStats(data: { data: StatsModel }): void {
+    private onStats (data: { data: StatsModel }): void {
         this.stats = getBettingStats(data.data);
     }
 }

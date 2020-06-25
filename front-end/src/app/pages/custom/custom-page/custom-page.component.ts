@@ -13,7 +13,7 @@ import { StringHelper } from 'shared/helpers/string.helper';
 export class CustomPageComponent extends Page implements OnDestroy {
     private _data: PageModel = new PageModel();
 
-    constructor(
+    constructor (
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute,
         breadcrumbService: BreadcrumbService
@@ -26,19 +26,19 @@ export class CustomPageComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    get title(): string {
+    get title (): string {
         return this._data.title;
     }
 
-    get content(): string {
+    get content (): string {
         return this._data.content;
     }
 
-    private onData(data: { data: PageModel }): void {
+    private onData (data: { data: PageModel }): void {
         this._data = data.data;
     }
 }

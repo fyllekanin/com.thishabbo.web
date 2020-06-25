@@ -18,4 +18,8 @@ export class ActivitiesComponent {
             this.isMinimalistic = Boolean(localStorage.getItem(LOCAL_STORAGE.MINIMALISTIC));
         });
     }
+
+    trackLogs (_index: number, item: Activity): number {
+        return item.logId;
+    }
 }

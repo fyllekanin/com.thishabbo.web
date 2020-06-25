@@ -4,13 +4,15 @@ namespace App\Http\Middleware;
 
 use App\Utils\Condition;
 use Closure;
+use Illuminate\Http\Request;
 
 class CheckHabboVerified {
+
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Closure $next
+     * @param  Request  $request
+     * @param  Closure  $next
      *
      * @return mixed
      */

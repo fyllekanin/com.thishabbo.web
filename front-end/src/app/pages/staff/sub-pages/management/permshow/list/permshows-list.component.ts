@@ -28,14 +28,14 @@ import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 export class PermShowsListComponent extends Page implements OnDestroy {
     private _data: PermShowsListPage = new PermShowsListPage();
     private _actions: Array<TableAction> = [
-        new TableAction({title: 'Edit', value: PermShowActions.EDIT_PERM_SHOW}),
-        new TableAction({title: 'Delete', value: PermShowActions.DELETE_PERM_SHOW})
+        new TableAction({ title: 'Edit', value: PermShowActions.EDIT_PERM_SHOW }),
+        new TableAction({ title: 'Delete', value: PermShowActions.DELETE_PERM_SHOW })
     ];
 
-    tabs: Array<TitleTab> = [new TitleTab({
+    tabs: Array<TitleTab> = [ new TitleTab({
         title: 'New Permanent Show',
         link: '/staff/management/permanent-shows/new'
-    })];
+    }) ];
     tableConfig: TableConfig;
     pagination: PaginationModel;
 
@@ -80,7 +80,7 @@ export class PermShowsListComponent extends Page implements OnDestroy {
             return;
         }
         this.tableConfig = new TableConfig({
-            title: 'Permanent Shows',
+            title: 'Permanent Slots',
             headers: this.getTableHeaders(),
             rows: this.getTableRows()
         });
@@ -88,10 +88,10 @@ export class PermShowsListComponent extends Page implements OnDestroy {
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'DJ'}),
-            new TableHeader({title: 'Name'}),
-            new TableHeader({title: 'Day & Hour'}),
-            new TableHeader({title: 'Type'})
+            new TableHeader({ title: 'User' }),
+            new TableHeader({ title: 'Name' }),
+            new TableHeader({ title: 'Day & Hour' }),
+            new TableHeader({ title: 'Type' })
         ];
     }
 
@@ -101,10 +101,10 @@ export class PermShowsListComponent extends Page implements OnDestroy {
             return new TableRow({
                 id: String(item.timetableId),
                 cells: [
-                    new TableCell({title: item.nickname}),
-                    new TableCell({title: item.name}),
-                    new TableCell({title: `${TimeHelper.getDay(item.day).label} - ${TimeHelper.getHours()[item.hour].label}`}),
-                    new TableCell({title: item.type === 0 ? 'Radio' : 'Events'})
+                    new TableCell({ title: item.nickname }),
+                    new TableCell({ title: item.name }),
+                    new TableCell({ title: `${TimeHelper.getDay(item.day).label} - ${TimeHelper.getHours()[item.hour].label}` }),
+                    new TableCell({ title: item.type === 0 ? 'Radio' : 'Events' })
                 ],
                 actions: actions
             });

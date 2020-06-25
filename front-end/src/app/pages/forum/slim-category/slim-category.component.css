@@ -3,7 +3,9 @@
     height: 60px;
     float: left;
     padding: 3px 17px 0 7px;
-    color: #c1bebe;
+    color: #be6d6d;
+    min-width: 60px;
+    text-align: center;
 }
 
 .read {
@@ -12,7 +14,7 @@
 
 .title {
     font-weight: bold;
-    color: #159cfc;
+    color: #be6d6d;
     outline: none;
     display: inline-block;
 }
@@ -41,17 +43,17 @@
 
 .thread-name {
     font-weight: bold;
-    color: #159cfc;
+    color: #be6d6d;
     width: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin: 0px 0px 0px 8px;
+    margin: 0 0 0 8px;
 }
 
 .time-ago, .nickname {
     text-align: left;
-    margin: 0px 0px 0px 8px;
+    margin: 0 0 0 8px;
 }
 
 a {
@@ -68,7 +70,7 @@ a {
 }
 
 .children a {
-    color: #5f9cfc;
+    color: #be6d6d;
     display: inline-block;
 }
 

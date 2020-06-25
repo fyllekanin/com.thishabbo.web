@@ -7,7 +7,7 @@ import { SubscriptionPaymentComponent } from './subscription-payment/subscriptio
 @Component({
     selector: 'app-shop-subscription',
     templateUrl: 'subscription.component.html',
-    styleUrls: ['subscription.component.css']
+    styleUrls: [ 'subscription.component.css' ]
 })
 export class SubscriptionComponent {
     @Input() subscription = new ShopSubscription(null);
@@ -23,7 +23,7 @@ export class SubscriptionComponent {
             title: `Buy ${this.subscription.title}`,
             component: this._componentResolver.resolveComponentFactory(SubscriptionPaymentComponent),
             data: this.subscription,
-            buttons: [new DialogCloseButton('Close')]
+            buttons: [ new DialogCloseButton('Close') ]
         });
     }
 }

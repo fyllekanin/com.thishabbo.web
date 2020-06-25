@@ -2,66 +2,58 @@
 
 namespace App\Http\Controllers\Forum\Thread;
 
+use App\Constants\LogType;
 use App\EloquentModels\Forum\IgnoredThread;
 use App\EloquentModels\Forum\Thread;
 use App\EloquentModels\Forum\ThreadPoll;
 use App\EloquentModels\Forum\ThreadPollAnswer;
 use App\EloquentModels\Forum\ThreadSubscription;
-use App\Helpers\ConfigHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
-use App\Models\Logger\Action;
-use App\Services\ForumService;
-use App\Services\ForumValidatorService;
+use App\Providers\Service\ForumService;
+use App\Providers\Service\ForumValidatorService;
 use App\Utils\Condition;
 use App\Utils\Iterables;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ThreadActionController extends Controller {
-    private $categoryTemplates = null;
+    private $myForumService;
+    private $myValidatorService;
 
-    private $forumService;
-    private $validatorService;
-
-    /**
-     * ThreadController constructor.
-     * Fetch the available category templates and store in an instance variable
-     *
-     * @param ForumService $forumService
-     * @param ForumValidatorService $validatorService
-     */
     public function __construct(ForumService $forumService, ForumValidatorService $validatorService) {
         parent::__construct();
-        $this->categoryTemplates = ConfigHelper::getCategoryTemplatesConfig();
-        $this->forumService = $forumService;
-        $this->validatorService = $validatorService;
+        $this->myForumService = $forumService;
+        $this->myValidatorService = $validatorService;
     }
 
     /**
-     * @param Request $request
-     * @param         $threadId
+     * @param  Request  $request
+     * @param $threadId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function createIgnore(Request $request, $threadId) {
         $user = $request->get('auth');
         $isAlreadyIgnoring = IgnoredThread::where('userId', $user->userId)->where('threadId', $threadId)->count('threadId') > 0;
         Condition::precondition($isAlreadyIgnoring, 400, 'You are already ignoring this thread');
-        $ignore = new IgnoredThread([
-            'userId' => $user->userId,
-            'threadId' => $threadId
-        ]);
+        $ignore = new IgnoredThread(
+            [
+                'userId' => $user->userId,
+                'threadId' => $threadId
+            ]
+        );
         $ignore->save();
 
-        Logger::user($user->userId, $request->ip(), Action::IGNORED_THREAD, ['threadId' => $threadId], $threadId);
+        Logger::user($user->userId, $request->ip(), LogType::IGNORED_THREAD, ['threadId' => $threadId], $threadId);
         return response()->json();
     }
 
     /**
-     * @param Request $request
-     * @param         $threadId
+     * @param  Request  $request
+     * @param $threadId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function deleteIgnore(Request $request, $threadId) {
         $user = $request->get('auth');
@@ -70,16 +62,16 @@ class ThreadActionController extends Controller {
 
         $item->delete();
 
-        Logger::user($user->userId, $request->ip(), Action::UNIGNORED_THREAD, ['threadId' => $threadId], $threadId);
+        Logger::user($user->userId, $request->ip(), LogType::UNIGNORED_THREAD, ['threadId' => $threadId], $threadId);
         return response()->json();
     }
 
 
     /**
-     * @param Request $request
-     * @param         $threadId
+     * @param  Request  $request
+     * @param $threadId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function createVote(Request $request, $threadId) {
         $user = $request->get('auth');
@@ -88,30 +80,39 @@ class ThreadActionController extends Controller {
         $threadPoll = ThreadPoll::where('threadId', $threadId)->first();
         Condition::precondition(!$threadPoll, 404, 'The thread do not have a poll');
         Condition::precondition($user->userId < 1, 400, 'You need to be logged in to enter a vote');
-        Condition::precondition(ThreadPollAnswer::where('threadPollId', $threadPoll->threadPollId)
-                ->where('userId', $user->userId)->count('threadPollId') > 0, 400, 'You have already voted');
+        Condition::precondition(
+            ThreadPollAnswer::where('threadPollId', $threadPoll->threadPollId)
+                ->where('userId', $user->userId)->count('threadPollId') > 0,
+            400,
+            'You have already voted'
+        );
 
-        $option = Iterables::find(json_decode($threadPoll->options), function ($opt) use ($answerId) {
-            return $opt->id == $answerId;
-        });
+        $option = Iterables::find(
+            json_decode($threadPoll->options),
+            function ($opt) use ($answerId) {
+                return $opt->id == $answerId;
+            }
+        );
         Condition::precondition(!$option, 404, 'The answer do not exist');
 
-        $answer = new ThreadPollAnswer([
-            'threadPollId' => $threadPoll->threadPollId,
-            'userId' => $user->userId,
-            'answer' => $answerId
-        ]);
+        $answer = new ThreadPollAnswer(
+            [
+                'threadPollId' => $threadPoll->threadPollId,
+                'userId' => $user->userId,
+                'answer' => $answerId
+            ]
+        );
         $answer->save();
 
-        Logger::user($user->userId, $request->ip(), Action::VOTED_ON_POLL);
-        return response()->json($this->forumService->getThreadPoll($threadPoll->thread, $user->userId));
+        Logger::user($user->userId, $request->ip(), LogType::VOTED_ON_POLL);
+        return response()->json($this->myForumService->getThreadPoll($threadPoll->thread, $user->userId));
     }
 
     /**
-     * @param Request $request
-     * @param         $threadId
+     * @param  Request  $request
+     * @param $threadId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function createThreadSubscription(Request $request, $threadId) {
         $userId = $request->get('auth')->userId;
@@ -121,20 +122,22 @@ class ThreadActionController extends Controller {
         $subscription = ThreadSubscription::where('userId', $userId)->where('threadId', $threadId)->first();
         Condition::precondition($subscription, 400, 'You are already subscribed to this thread');
 
-        $newSubscription = new ThreadSubscription([
-            'userId' => $userId,
-            'threadId' => $threadId
-        ]);
+        $newSubscription = new ThreadSubscription(
+            [
+                'userId' => $userId,
+                'threadId' => $threadId
+            ]
+        );
         $newSubscription->save();
 
         return response()->json();
     }
 
     /**
-     * @param Request $request
-     * @param         $threadId
+     * @param  Request  $request
+     * @param $threadId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function deleteThreadSubscription(Request $request, $threadId) {
         $user = $request->get('auth');

@@ -5,7 +5,7 @@ import { InnerDialogComponent } from 'shared/app-views/dialog/dialog.model';
     selector: 'app-forum-thread-merge-thread',
     templateUrl: 'merge-thread.component.html'
 })
-export class MergeThreadComponent implements InnerDialogComponent {
+export class MergeThreadComponent extends InnerDialogComponent {
     private _threadId: number;
     private _thread: string;
 
@@ -14,6 +14,7 @@ export class MergeThreadComponent implements InnerDialogComponent {
     }
 
     setData (): void {
+        // Empty
     }
 
     set thread (value: string) {

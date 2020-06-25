@@ -1,6 +1,5 @@
 import { IdHelper } from 'shared/helpers/id.helper';
-import { ClassHelper } from 'shared/helpers/class.helper';
-import { primitive, arrayOf } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, primitive } from 'shared/helpers/class.helper';
 
 
 export class FixedToolItem {
@@ -13,7 +12,7 @@ export class FixedToolItem {
     @arrayOf(FixedToolItem)
     children: Array<FixedToolItem> = [];
 
-    constructor(source: Partial<FixedToolItem>) {
+    constructor (source: Partial<FixedToolItem>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -22,7 +21,7 @@ export class FixedTools {
     @arrayOf(FixedToolItem)
     items: Array<FixedToolItem> = [];
 
-    constructor(source?: Partial<FixedTools>) {
+    constructor (source?: Partial<FixedTools>) {
         ClassHelper.assign(this, source);
     }
 }

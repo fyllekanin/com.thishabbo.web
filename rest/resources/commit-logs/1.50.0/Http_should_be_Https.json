@@ -1,0 +1,1 @@
+{"topic":"Http should be Https","type":"Refactor / Improvement","body":"All http links in content controlled by the user is automatically switched to https"}

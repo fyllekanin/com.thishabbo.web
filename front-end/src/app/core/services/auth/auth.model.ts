@@ -1,5 +1,5 @@
 import { arrayOf, ClassHelper, date, objectOf, primitive, primitiveOf } from 'shared/helpers/class.helper';
-import { UserHelper } from 'shared/helpers/user.helper';
+import { UserHelper, UserStyle } from 'shared/helpers/user.helper';
 import { TabModel } from 'shared/app-views/header/tabs/tabs.model';
 
 export class UserCustomFields {
@@ -74,16 +74,16 @@ export class SlimUser {
     coverUrl: string;
     iconUrl: string;
     effectUrl: string;
-    nameStyling: string;
+    nameStyling: UserStyle;
 
     constructor (source?: Partial<SlimUser>) {
         ClassHelper.assign(this, source);
 
-        this.avatarUrl = `url('/rest/resources/images/users/${this.userId}.gif?${this.avatarUpdatedAt}')`;
-        this.coverUrl = `url('/rest/resources/images/covers/${this.userId}.gif?${this.avatarUpdatedAt}')`;
-        this.iconUrl = this.iconId ? `/rest/resources/images/shop/${this.iconId}.gif` : null;
+        this.avatarUrl = `url('/resources/images/users/${this.userId}.gif?${this.avatarUpdatedAt}')`;
+        this.coverUrl = `url('/resources/images/covers/${this.userId}.gif?${this.avatarUpdatedAt}')`;
+        this.iconUrl = this.iconId ? `/resources/images/shop/${this.iconId}.gif` : null;
         this.iconPosition = this.iconPosition || 'left';
-        this.effectUrl = this.effectId ? `url(/rest/resources/images/shop/${this.effectId}.gif)` : '';
+        this.effectUrl = this.effectId ? `url(/resources/images/shop/${this.effectId}.gif)` : '';
         this.nameStyling = UserHelper.getNameColor(this.nameColor);
     }
 }
@@ -188,6 +188,8 @@ export class StaffPermissions {
     canAlwaysSeeConnectionInformation: boolean;
     @primitive()
     canSeeEventStats: boolean;
+    @primitive()
+    canManageAutoDJ: boolean;
 
     constructor (source?: Partial<StaffPermissions>) {
         ClassHelper.assign(this, source);
@@ -198,9 +200,9 @@ export class SitecpPermissions {
     @primitive()
     isSitecp: boolean;
     @primitive()
-    canManageForum: boolean;
+    canManageCategories: boolean;
     @primitive()
-    canManageForumPermissions: boolean;
+    canManageCategoryPermissions: boolean;
     @primitive()
     canManageGroups: boolean;
     @primitive()
@@ -218,11 +220,11 @@ export class SitecpPermissions {
     @primitive()
     canManageGroupsList: boolean;
     @primitive()
-    canEditUserBasic: boolean;
+    canEditUsersBasic: boolean;
     @primitive()
-    canEditUserAdvanced: boolean;
+    canEditUsersAdvanced: boolean;
     @primitive()
-    canBanUser: boolean;
+    canBanUsers: boolean;
     @primitive()
     canMergeUsers: boolean;
     @primitive()
@@ -230,7 +232,7 @@ export class SitecpPermissions {
     @primitive()
     canManageBetting: boolean;
     @primitive()
-    canManageTHC: boolean;
+    canManageCredits: boolean;
     @primitive()
     canManagePolls: boolean;
     @primitive()
@@ -244,11 +246,11 @@ export class SitecpPermissions {
     @primitive()
     canManageShop: boolean;
     @primitive()
-    canPassPrivate: boolean;
+    canPassPrivateProfiles: boolean;
     @primitive()
-    canRemoveEssentials: boolean;
+    canRemoveUsersEssentials: boolean;
     @primitive()
-    canModerateVisitorMessage: boolean;
+    canModerateVisitorMessages: boolean;
     @primitive()
     canReadServerLogs: boolean;
     @primitive()
@@ -257,6 +259,8 @@ export class SitecpPermissions {
     canViewStatistics: boolean;
     @primitive()
     canEditUsersGroups: boolean;
+    @primitive()
+    canManageThreadTemplates: boolean;
 
     constructor (source?: Partial<SitecpPermissions>) {
         ClassHelper.assign(this, source);

@@ -2,23 +2,31 @@
 
 namespace App\Http\Controllers\Sitecp\Settings;
 
+use App\Constants\LogType;
 use App\EloquentModels\Notice;
-use App\Helpers\SettingsHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
-use App\Models\Logger\Action;
+use App\Repositories\Repository\SettingRepository;
 use App\Utils\Condition;
 use App\Utils\Value;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class NoticeController extends Controller {
+    private $mySettingRepository;
+
+    public function __construct(SettingRepository $settingRepository) {
+        parent::__construct();
+        $this->mySettingRepository = $settingRepository;
+    }
 
     /**
      * Put request to update order of notices
      *
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function updateNoticeOrder(Request $request) {
         $user = $request->get('auth');
@@ -30,14 +38,14 @@ class NoticeController extends Controller {
             $n->save();
         }
 
-        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_NOTICES_ORDER);
+        Logger::sitecp($user->userId, $request->ip(), LogType::UPDATED_NOTICES_ORDER);
         return response()->json();
     }
 
     /**
      * Get request to fetch all notices
      *
-     * @return Notice[]|\Illuminate\Database\Eloquent\Collection
+     * @return Notice[]| Collection
      */
     public function getNotices() {
         $notices = Notice::all();
@@ -52,10 +60,10 @@ class NoticeController extends Controller {
     /**
      * Delete request to delete given notice
      *
-     * @param Request $request
-     * @param         $noticeId
+     * @param  Request  $request
+     * @param $noticeId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function deleteNotice(Request $request, $noticeId) {
         $user = $request->get('auth');
@@ -64,16 +72,16 @@ class NoticeController extends Controller {
         $notice->isDeleted = 1;
         $notice->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_NOTICE, ['notice' => $notice->title]);
+        Logger::sitecp($user->userId, $request->ip(), LogType::DELETED_NOTICE, ['notice' => $notice->title]);
         return response()->json();
     }
 
     /**
      * Post method to create a new notice
      *
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function createNotice(Request $request) {
         $user = $request->get('auth');
@@ -87,25 +95,29 @@ class NoticeController extends Controller {
         Condition::precondition(empty($notice->text), 400, 'Text can not be empty');
         Condition::precondition(empty($notice->backgroundColor), 400, 'Background color can not be empty');
 
-        $request->validate([
-            'backgroundImage' => 'required|mimes:jpg,jpeg,bmp,png,gif',
-        ]);
+        $request->validate(
+            [
+                'backgroundImage' => 'required|mimes:jpg,jpeg,bmp,png,gif',
+            ]
+        );
 
         $highestOrderNotice = Notice::orderBy('order', 'DESC')->first();
-        $notice = new Notice([
-            'title' => $notice->title,
-            'text' => $notice->text,
-            'backgroundColor' => $notice->backgroundColor,
-            'order' => Value::objectProperty($highestOrderNotice, 'order', 1),
-            'userId' => $user->userId
-        ]);
+        $notice = new Notice(
+            [
+                'title' => $notice->title,
+                'text' => $notice->text,
+                'backgroundColor' => $notice->backgroundColor,
+                'order' => Value::objectProperty($highestOrderNotice, 'order', 1),
+                'userId' => $user->userId
+            ]
+        );
         $notice->save();
 
-        $fileName = $notice->noticeId . '.gif';
-        $destination = SettingsHelper::getResourcesPath('images/notices');
-        $backgroundImage->move($destination, $fileName);
+        $fileName = $notice->noticeId.'.gif';
+        $target = $this->mySettingRepository->getResourcePath('images/notices');
+        $backgroundImage->move($target, $fileName);
 
-        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_NOTICE, ['notice' => $notice->title]);
+        Logger::sitecp($user->userId, $request->ip(), LogType::CREATED_NOTICE, ['notice' => $notice->title]);
         return response()->json();
     }
 }

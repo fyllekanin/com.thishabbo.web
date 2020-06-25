@@ -1,16 +1,44 @@
 <app-title [title]="'Updating Connection Information'" [tabs]="tabs" (onTabClick)="onTabClick($event)"></app-title>
 <app-content>
-    <label>Radio IP</label>
-    <input name="info-ip" type="text" [(ngModel)]="ip"/>
-
-    <label>Radio Port</label>
-    <input name="info-port" type="text" [(ngModel)]="port"/>
-
-    <label>Radio Password</label>
-    <input name="info-password" type="text" [(ngModel)]="password"/>
-
-    <label>Admin Password</label>
-    <input name="info-admin-password" type="text" [(ngModel)]="adminPassword"/>
+    <div class="grid-container full">
+        <div class="grid-x grid-margin-x">
+            <div class="cell small-12 medium-6">
+                <label>Radio IP</label>
+                <input name="info-ip" type="text" [(ngModel)]="model.ip"/>
+            </div>
+            <div class="cell small-12 medium-6">
+                <label tooltip="Port used to fetch stats and listen to the radio">Radio Port <em
+                        class="fas fa-question-circle"></em></label>
+                <input name="info-port" type="text" [(ngModel)]="model.port"/>
+            </div>
+            <div class="cell small-12 medium-6">
+                <label tooltip="Port used to connect for a DJ">Connection Port <em class="fas fa-question-circle"></em></label>
+                <input name="info-connection-port" type="text" [(ngModel)]="model.connectionPort"/>
+            </div>
+            <div class="cell small-12 medium-6">
+                <label>Radio Password</label>
+                <input name="info-password" type="text" [(ngModel)]="model.password"/>
+            </div>
+            <div class="cell small-12 medium-6">
+                <label>Admin Password</label>
+                <input name="info-admin-password" type="text" [(ngModel)]="model.adminPassword"/>
+            </div>
+            <div class="cell small-12 medium-6" *ngIf="isServerType('iceCastV2')">
+                <span>
+                    <label>Mount point</label>
+                    <input name="info-mount-pint" type="text" [(ngModel)]="model.mountPoint"/>
+                </span>
+            </div>
+            <div class="cell small-12 medium-6" *ngIf="model.isAzuracast">
+                <label>Azuracast Station ID</label>
+                <input name="info-station-id" type="number" [(ngModel)]="model.azuracastStationId"/>
+            </div>
+            <div class="cell small-12 medium-6" *ngIf="model.isAzuracast">
+                <label>Azuracast API Key</label>
+                <input name="info-station-api" type="text" [(ngModel)]="model.azuracastApiKey"/>
+            </div>
+        </div>
+    </div>
 
     <label>Server Type:</label>
     <div class="grid-container full">
@@ -26,6 +54,21 @@
                 <label class="checkbox-container" (click)="toggleType($event, 'shoutCastV2')">
                     ShoutCast V2
                     <input type="checkbox" [checked]="isServerType('shoutCastV2')">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div class="cell small-3">
+                <label class="checkbox-container" (click)="toggleType($event, 'iceCastV2')">
+                    IceCast V2
+                    <input type="checkbox" [checked]="isServerType('iceCastV2')">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div class="cell small-12">
+                <label>Azuracast</label>
+                <label class="checkbox-container">
+                    Is the server using Azuracast?
+                    <input type="checkbox" [(ngModel)]="model.isAzuracast">
                     <span class="checkmark"></span>
                 </label>
             </div>

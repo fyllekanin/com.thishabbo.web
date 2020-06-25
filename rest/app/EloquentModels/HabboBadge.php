@@ -9,5 +9,6 @@ use App\EloquentModels\Models\UnixTimeModel;
  * @property mixed userId
  */
 class HabboBadge extends UnixTimeModel {
+
     protected $fillable = ['habboBadgeId', 'description'];
 }

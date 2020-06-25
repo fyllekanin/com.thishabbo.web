@@ -1,0 +1,1 @@
+{"topic":"Fix incorrect post counting","type":"Bug","body":"Deleting a post did not correctly update the post count on a thread"}

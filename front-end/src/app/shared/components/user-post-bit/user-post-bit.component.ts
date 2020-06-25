@@ -3,7 +3,7 @@ import { User } from 'core/services/auth/auth.model';
 import { StringHelper } from 'shared/helpers/string.helper';
 import { NAME_POSITIONS } from 'shared/constants/name-positions.constants';
 import { AvatarModel } from '../../../pages/user/usercp/essentials/avatar/avatar.model';
-import { UserHelper } from 'shared/helpers/user.helper';
+import { UserHelper, UserStyle } from 'shared/helpers/user.helper';
 
 @Component({
     selector: 'app-user-post-bit',
@@ -12,10 +12,9 @@ import { UserHelper } from 'shared/helpers/user.helper';
 })
 export class UserPostBitComponent {
     private _user = new User();
+    private _previewAvatar: string;
     @Input()
     avatarSize = new AvatarModel(null);
-    @Input()
-    previewAvatar: string;
 
     useAvatarImage = true;
     socials: Array<{ label: string, value: string }> = [];
@@ -24,7 +23,7 @@ export class UserPostBitComponent {
         this.useAvatarImage = false;
     }
 
-    getBarColors (): string {
+    getBarColors (): UserStyle {
         return UserHelper.getBarColor(this._user.barColor);
     }
 
@@ -32,6 +31,12 @@ export class UserPostBitComponent {
     set user (user: User) {
         this._user = user;
         this.setSocials();
+    }
+
+    @Input()
+    set previewAvatar(previewAvatar: string) {
+        this._previewAvatar = previewAvatar;
+        this.useAvatarImage = true;
     }
 
     get user (): User {
@@ -55,7 +60,7 @@ export class UserPostBitComponent {
     }
 
     get userAvatarUrl (): string {
-        return this.previewAvatar || `/rest/resources/images/users/${this._user.userId}.gif?${this._user.avatarUpdatedAt}`;
+        return this._previewAvatar || `/resources/images/users/${this._user.userId}.gif?${this._user.avatarUpdatedAt}`;
     }
 
     get width (): string {

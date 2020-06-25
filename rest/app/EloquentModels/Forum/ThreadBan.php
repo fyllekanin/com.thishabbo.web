@@ -11,6 +11,7 @@ use App\EloquentModels\Models\DeletableModel;
  * @property mixed createdAt
  */
 class ThreadBan extends DeletableModel {
+
     protected $table = 'thread_bans';
     protected $primaryKey = 'threadBanId';
     protected $fillable = ['userId', 'bannedById', 'threadId'];

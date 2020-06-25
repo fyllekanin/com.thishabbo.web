@@ -4,6 +4,7 @@ import { Page } from 'shared/page/page.model';
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { SideMenuBlock, SideMenuItem } from 'shared/app-views/side-menu/side-menu.model';
 import { AuthService } from 'core/services/auth/auth.service';
+import { TimeHelper } from 'shared/helpers/time.helper';
 
 @Component({
     selector: 'app-staff',
@@ -24,7 +25,7 @@ export class StaffComponent extends Page implements OnDestroy, OnInit {
 
     blocks: Array<SideMenuBlock> = [];
 
-    constructor(
+    constructor (
         private _authService: AuthService,
         breadcrumbService: BreadcrumbService,
         elementRef: ElementRef
@@ -33,7 +34,7 @@ export class StaffComponent extends Page implements OnDestroy, OnInit {
         breadcrumbService.breadcrumb = new Breadcrumb({ current: 'StaffCP' });
     }
 
-    ngOnInit(): void {
+    ngOnInit (): void {
         this.blocks = [
             new SideMenuBlock({
                 title: 'All Staff',
@@ -107,6 +108,11 @@ export class StaffComponent extends Page implements OnDestroy, OnInit {
                         isApplicable: this._authService.staffPermissions.canSeeListeners
                     }),
                     new SideMenuItem({
+                        title: 'Listener Statistics',
+                        link: `/staff/management/listener-statistics/${new Date().getFullYear()}/${TimeHelper.getCurrentWeek()}`,
+                        isApplicable: this._authService.staffPermissions.canSeeListeners
+                    }),
+                    new SideMenuItem({
                         title: 'Do Not Hire',
                         link: '/staff/management/do-not-hire',
                         isApplicable: this._authService.staffPermissions.canSeeDoNotHire
@@ -127,6 +133,11 @@ export class StaffComponent extends Page implements OnDestroy, OnInit {
                         isApplicable: this._authService.staffPermissions.canKickDjOffAir
                     }),
                     new SideMenuItem({
+                        title: 'Auto DJ',
+                        link: '/staff/radio/auto-dj',
+                        isApplicable: this._authService.staffPermissions.canManageAutoDJ
+                    }),
+                    new SideMenuItem({
                         title: 'Events Stats',
                         link: '/staff/events/stats',
                         isApplicable: this._authService.staffPermissions.canSeeEventStats
@@ -136,7 +147,7 @@ export class StaffComponent extends Page implements OnDestroy, OnInit {
         ];
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 }

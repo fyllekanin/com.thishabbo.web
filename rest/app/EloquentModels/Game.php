@@ -10,6 +10,7 @@ use App\Helpers\UserHelper;
  * @property mixed userId
  */
 class Game extends UnixTimeModel {
+
     protected $primaryKey = 'gameId';
     protected $fillable = ['userId', 'gameType', 'isFinished', 'score'];
     protected $appends = ['user'];

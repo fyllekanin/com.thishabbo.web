@@ -6,7 +6,9 @@ import { Subject, Subscription } from 'rxjs';
 describe('Page Model', () => {
 
     class Test extends Page implements OnDestroy {
-        ngOnDestroy(): void {}
+        ngOnDestroy (): void {
+            super.destroy();
+        }
     }
 
     let native;
@@ -59,7 +61,7 @@ describe('Page Model', () => {
         };
 
         // When
-        page.addSubscription(ob, () => {});
+        page.addSubscription(ob, () => null);
 
         // Then
         page.destroy();

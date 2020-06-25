@@ -1,4 +1,4 @@
-import { primitive, primitiveOf, arrayOf, ClassHelper, objectOf } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, objectOf, primitive, primitiveOf } from 'shared/helpers/class.helper';
 
 export class CurrentWord {
     @primitive()
@@ -6,7 +6,7 @@ export class CurrentWord {
     @primitive()
     index: number;
 
-    constructor(source: Partial<CurrentWord>) {
+    constructor (source: Partial<CurrentWord>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -32,7 +32,7 @@ export class FastTyperModel {
     @objectOf(CurrentWord)
     currentWord: CurrentWord;
 
-    constructor(source?: Partial<FastTyperModel>) {
+    constructor (source?: Partial<FastTyperModel>) {
         ClassHelper.assign(this, source);
         this.words = this.paragraph ? this.paragraph.split(' ') : [];
         this.currentWord = new CurrentWord({
@@ -41,39 +41,39 @@ export class FastTyperModel {
         });
     }
 
-    startCountDown(): void {
+    startCountDown (): void {
         this.isCountDown = true;
     }
 
-    stopCountDown(): void {
+    stopCountDown (): void {
         this.isCountDown = false;
     }
 
-    startGame(): void {
+    startGame (): void {
         this.isGameRunning = true;
     }
 
-    stopGame(): void {
+    stopGame (): void {
         this.isGameRunning = false;
         this.endTime = Math.round(new Date().getTime() / 1000);
     }
 
-    isLastWord(): boolean {
+    isLastWord (): boolean {
         return this.amountOfWords === (this.currentWord.index + 2);
     }
 
-    nextWord(): void {
+    nextWord (): void {
         this.currentWord = new CurrentWord({
             word: this.words[this.currentWord.index + 2],
             index: this.currentWord.index + 1
         });
     }
 
-    get amountOfWords(): number {
+    get amountOfWords (): number {
         return this.words.length;
     }
 
-    get firstWord(): string {
+    get firstWord (): string {
         return Array.isArray(this.words) && this.words.length > 0 ?
             this.words[0] : '';
     }

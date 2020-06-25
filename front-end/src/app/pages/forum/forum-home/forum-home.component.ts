@@ -9,10 +9,9 @@ import { TitleTab, TitleTopBorder } from 'shared/app-views/title/title.model';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
 import { HttpService } from 'core/services/http/http.service';
 import { NotificationService } from 'core/services/notification/notification.service';
-import { AuthService } from 'core/services/auth/auth.service';
 import { ArrayHelper } from 'shared/helpers/array.helper';
 
-@Component ({
+@Component({
     selector: 'app-forum-home',
     templateUrl: 'forum-home.component.html',
     styleUrls: [ 'forum-home.component.css' ]
@@ -20,14 +19,14 @@ import { ArrayHelper } from 'shared/helpers/array.helper';
 export class ForumHomeComponent extends Page implements OnInit, OnDestroy {
     private _contractedCategories: Array<number> = [];
 
-    forumStats = new ForumStats ();
+    forumStats = new ForumStats();
     categories: Array<SlimCategory> = [];
     latestPostersTop = TitleTopBorder.RED;
     statTabs: Array<TitleTopBorder> = [
-        new TitleTab ({ title: 'Refresh', value: StatsActions.REFRESH }),
-        new TitleTab ({ title: 'Read All', value: StatsActions.READ_ALL })
+        new TitleTab({ title: 'Refresh', value: StatsActions.REFRESH }),
+        new TitleTab({ title: 'Read All', value: StatsActions.READ_ALL })
     ];
-    toggleTab = new TitleTab ({ title: 'Toggle' });
+    toggleTab = new TitleTab({ title: 'Toggle' });
     isForumStatsHidden = false;
 
     currentlyActiveTitle: string;
@@ -37,56 +36,52 @@ export class ForumHomeComponent extends Page implements OnInit, OnDestroy {
         private _router: Router,
         private _httpService: HttpService,
         private _notificationService: NotificationService,
-        private _authService: AuthService,
         activatedRoute: ActivatedRoute,
         breadcrumbService: BreadcrumbService,
         elementRef: ElementRef
     ) {
-        super (elementRef);
-        breadcrumbService.breadcrumb = new Breadcrumb ({ current: 'Forum' });
-        this.addSubscription (activatedRoute.data, this.onPage.bind (this));
-        this._contractedCategories = this.getContractedCategories ();
-        this.isForumStatsHidden = Boolean (localStorage.getItem (LOCAL_STORAGE.HIDE_FORUM_STATS));
+        super(elementRef);
+        breadcrumbService.breadcrumb = new Breadcrumb({ current: 'Forum' });
+        this.addSubscription(activatedRoute.data, this.onPage.bind(this));
+        this._contractedCategories = this.getContractedCategories();
+        this.isForumStatsHidden = Boolean(localStorage.getItem(LOCAL_STORAGE.HIDE_FORUM_STATS));
     }
 
     ngOnInit (): void {
-        if (!this._authService.isLoggedIn ()) {
-            return;
-        }
-        this.updateForumStats ();
+        this.updateForumStats();
     }
 
     ngOnDestroy (): void {
-        super.destroy ();
+        super.destroy();
     }
 
     toggleCategory (category: SlimCategory): void {
-        if (this._contractedCategories.indexOf (category.categoryId) > -1) {
-            this._contractedCategories = this._contractedCategories.filter (categoryId => categoryId !== category.categoryId);
+        if (this._contractedCategories.indexOf(category.categoryId) > -1) {
+            this._contractedCategories = this._contractedCategories.filter(categoryId => categoryId !== category.categoryId);
         } else {
-            this._contractedCategories.push (category.categoryId);
+            this._contractedCategories.push(category.categoryId);
         }
-        this.updateContractedCategories ();
+        this.updateContractedCategories();
     }
 
     isCategoryContracted (category: SlimCategory): boolean {
-        return this._contractedCategories.indexOf (category.categoryId) > -1;
+        return this._contractedCategories.indexOf(category.categoryId) > -1;
     }
 
     onTitleClick (category: SlimCategory): void {
         const url = category.link || `/forum/category/${category.categoryId}/page/1`;
-        this._router.navigateByUrl (url);
+        this._router.navigateByUrl(url);
     }
 
     updateForumStats (): void {
         if (this.isForumStatsHidden) {
             return;
         }
-        this.forumStats = new ForumStats ();
-        const todayMidnight = new Date ().setHours (0, 0, 0, 0) / 1000;
-        this._httpService.get (`page/forum/stats/${todayMidnight}`)
-            .subscribe (res => {
-                this.forumStats = new ForumStats (res);
+        this.forumStats = new ForumStats();
+        const todayMidnight = new Date().setHours(0, 0, 0, 0) / 1000;
+        this._httpService.get(`page/forum/stats/${todayMidnight}`)
+            .subscribe(res => {
+                this.forumStats = new ForumStats(res);
                 this.currentlyActiveTitle = this.forumStats.currentlyActive.length + ' users currently active';
                 this.activeTodayTitle = this.forumStats.activeToday.length + ' users active in the last 24 hours';
             });
@@ -95,36 +90,36 @@ export class ForumHomeComponent extends Page implements OnInit, OnDestroy {
     onStatsTabClick (action: number): void {
         switch (action) {
             case StatsActions.REFRESH:
-                this.updateForumStats ();
+                this.updateForumStats();
                 break;
             case StatsActions.READ_ALL:
-                this.readAll ();
+                this.readAll();
                 break;
         }
     }
 
     private onPage (data: { data: Array<SlimCategory> }): void {
         this.categories = data.data;
-        this.categories.sort (ArrayHelper.sortByPropertyAsc.bind (this, 'displayOrder'));
+        this.categories.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'displayOrder'));
     }
 
     private updateContractedCategories (): void {
-        localStorage.setItem (LOCAL_STORAGE.CONTRACTED_CATEGORIES, JSON.stringify (this._contractedCategories));
+        localStorage.setItem(LOCAL_STORAGE.CONTRACTED_CATEGORIES, JSON.stringify(this._contractedCategories));
     }
 
     private getContractedCategories (): Array<number> {
-        const stored = localStorage.getItem (LOCAL_STORAGE.CONTRACTED_CATEGORIES);
-        return stored ? JSON.parse (stored) : [];
+        const stored = localStorage.getItem(LOCAL_STORAGE.CONTRACTED_CATEGORIES);
+        return stored ? JSON.parse(stored) : [];
     }
 
     private readAll (): void {
-        this._httpService.put ('forum/category/read-all').subscribe (() => {
-            this.categories = this.categories.map (category => {
+        this._httpService.put('forum/category/read-all').subscribe(() => {
+            this.categories = this.categories.map(category => {
                 category.haveRead = true;
-                category.children.forEach (child => child.haveRead = true);
+                category.children.forEach(child => child.haveRead = true);
                 return category;
             });
-            this._notificationService.sendInfoNotification ('You marked all current posts read!');
+            this._notificationService.sendInfoNotification('You marked all current posts read!');
         });
     }
 }

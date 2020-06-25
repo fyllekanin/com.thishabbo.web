@@ -76,20 +76,20 @@ export class InfractionLevelComponent extends Page implements OnDestroy {
         this._page.categoryId = this.selectedCategory ? this.selectedCategory.value.categoryId : null;
         if (this._page.createdAt) {
             this._httpService.put(`sitecp/moderation/infraction-levels/${this._page.infractionLevelId}`,
-                {infractionLevel: this._page})
+                { infractionLevel: this._page })
                 .subscribe(res => {
                     const data = new InfractionLevel(res);
-                    this.onPage({data: data});
+                    this.onPage({ data: data });
                     this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: 'Infraction level updated'
                     }));
                 }, this._notificationService.failureNotification.bind(this._notificationService));
         } else {
-            this._httpService.post(`sitecp/moderation/infraction-levels`, {infractionLevel: this._page})
+            this._httpService.post(`sitecp/moderation/infraction-levels`, { infractionLevel: this._page })
                 .subscribe(res => {
                     const data = new InfractionLevel(res);
-                    this.onPage({data: data});
+                    this.onPage({ data: data });
                     this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
                         message: 'Infraction level created'
@@ -120,9 +120,9 @@ export class InfractionLevelComponent extends Page implements OnDestroy {
         this._page = data.data;
 
         const tabs = [
-            {title: 'Save', value: InfractionLevelActions.SAVE, condition: true},
-            {title: 'Delete', value: InfractionLevelActions.DELETE, condition: this._page.createdAt},
-            {title: 'Back', value: InfractionLevelActions.BACK, condition: true}
+            { title: 'Save', value: InfractionLevelActions.SAVE, condition: true },
+            { title: 'Delete', value: InfractionLevelActions.DELETE, condition: this._page.createdAt },
+            { title: 'Back', value: InfractionLevelActions.BACK, condition: true }
         ];
 
         this.setSelectableItems();

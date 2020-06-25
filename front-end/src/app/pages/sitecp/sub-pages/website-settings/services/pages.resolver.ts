@@ -8,9 +8,10 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class PagesResolver implements Resolve<Array<PageModel>> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
-    resolve(): Observable<Array<PageModel>> {
+    resolve (): Observable<Array<PageModel>> {
         return this._httpService.get('sitecp/content/pages')
             .pipe(map(res => res.map(item => new PageModel(item))));
     }

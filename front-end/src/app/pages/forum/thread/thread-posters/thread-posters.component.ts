@@ -62,16 +62,16 @@ export class ThreadPostersComponent extends InnerDialogComponent {
     private getTableRows (): Array<TableRow> {
         return this._data.items.map(item => new TableRow({
             cells: [
-                new TableCell({title: item.user.nickname}),
-                new TableCell({title: String(item.posts)})
+                new TableCell({ title: item.user.nickname }),
+                new TableCell({ title: String(item.posts) })
             ]
         }));
     }
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'User'}),
-            new TableHeader({title: 'Posts'})
+            new TableHeader({ title: 'User' }),
+            new TableHeader({ title: 'Posts' })
         ];
     }
 }

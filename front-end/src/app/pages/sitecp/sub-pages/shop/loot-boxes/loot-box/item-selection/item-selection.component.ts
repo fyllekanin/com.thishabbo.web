@@ -134,10 +134,10 @@ export class ItemSelectionComponent extends InnerDialogComponent {
         return this._data.items.map(item => new TableRow({
             id: String(item.shopItemId),
             cells: [
-                new TableCell({title: this.getResource(item), innerHTML: true}),
-                new TableCell({title: item.title}),
-                new TableCell({title: ShopHelper.getTypeName(item.type)}),
-                new TableCell({title: ShopHelper.getRarityName(item.rarity)})
+                new TableCell({ title: this.getResource(item), innerHTML: true }),
+                new TableCell({ title: item.title }),
+                new TableCell({ title: ShopHelper.getTypeName(item.type) }),
+                new TableCell({ title: ShopHelper.getRarityName(item.rarity) })
             ],
             isSelected: this._selectedItems
                 .findIndex(selectedItem => selectedItem.shopItemId === item.shopItemId) > -1
@@ -146,10 +146,10 @@ export class ItemSelectionComponent extends InnerDialogComponent {
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Resource'}),
-            new TableHeader({title: 'Title'}),
-            new TableHeader({title: 'Type'}),
-            new TableHeader({title: 'Rarity'})
+            new TableHeader({ title: 'Resource' }),
+            new TableHeader({ title: 'Title' }),
+            new TableHeader({ title: 'Type' }),
+            new TableHeader({ title: 'Rarity' })
         ];
     }
 
@@ -157,11 +157,11 @@ export class ItemSelectionComponent extends InnerDialogComponent {
         switch (item.type) {
             case SHOP_ITEM_TYPES.nameIcon.value:
             case SHOP_ITEM_TYPES.nameEffect.value:
-                return `<img src="/rest/resources/images/shop/${item.shopItemId}.gif" />`;
+                return `<img src="/resources/images/shop/${item.shopItemId}.gif" />`;
             case SHOP_ITEM_TYPES.subscription.value:
                 return '<em class="fas fa-id-card"></em>';
             case SHOP_ITEM_TYPES.badge.value:
-                return `<img src="/rest/resources/images/badges/${item.data.badgeId}.gif" />`;
+                return `<img src="/resources/images/badges/${item.data.badgeId}.gif" />`;
             default:
                 return '';
         }

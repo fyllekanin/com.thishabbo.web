@@ -9,10 +9,10 @@ import { ContentModule } from 'shared/app-views/content/content.module';
 import { MaintenanceResolver } from './services/maintenance.resolver';
 import { MemberOfTheMonthResolver } from './services/member-of-the-month.resolver';
 import { NoticeBoardResolver } from './services/notice-board.resolver';
-import { StaffOfTheWeekResolver } from './services/staff-of-the-week.resolver';
-import { WelcomeBotResolver } from './services/welcome-bot.resolver';
-import { WelcomeBotComponent } from './welcome-bot/welcome-bot.component';
-import { StaffOfTheWeekComponent } from './staff-of-the-week/staff-of-the-week.component';
+import { OutstandingStaffResolver } from './services/outstanding-staff.resolver';
+import { BotSettingsResolver } from './services/bot-settings-resolver.service';
+import { BotSettingsComponent } from './bot-settings/bot-settings.component';
+import { OutstandingStaffComponent } from './outstanding-staff/outstanding-staff.component';
 import { NoticeBoardComponent } from './notice-board/notice-board.component';
 import { CreateNoticeComponent } from './notice-board/create-notice/create-notice.component';
 import { MemberOfTheMonthComponent } from './member-of-the-month/member-of-the-month.component';
@@ -54,8 +54,8 @@ import { ButtonModule } from 'shared/directives/button/button.module';
         ButtonModule
     ],
     declarations: [
-        WelcomeBotComponent,
-        StaffOfTheWeekComponent,
+        BotSettingsComponent,
+        OutstandingStaffComponent,
         NoticeBoardComponent,
         CreateNoticeComponent,
         MemberOfTheMonthComponent,
@@ -78,8 +78,8 @@ import { ButtonModule } from 'shared/directives/button/button.module';
         MaintenanceResolver,
         MemberOfTheMonthResolver,
         NoticeBoardResolver,
-        StaffOfTheWeekResolver,
-        WelcomeBotResolver,
+        OutstandingStaffResolver,
+        BotSettingsResolver,
         NavigationService,
         SiteMessagesResolver,
         SiteMessageResolver,

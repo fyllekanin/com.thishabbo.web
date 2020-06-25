@@ -31,4 +31,5 @@ import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
         SelectionComponent
     ]
 })
-export class TimetableModule {}
+export class TimetableModule {
+}

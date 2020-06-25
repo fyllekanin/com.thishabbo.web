@@ -27,7 +27,7 @@ export class SubscriptionService implements Resolve<SubscriptionItem> {
 
     save (data: SubscriptionItem): Promise<SubscriptionItem> {
         return new Promise(res => {
-            this._httpService.post(`sitecp/shop/subscriptions`, {data: data})
+            this._httpService.post(`sitecp/shop/subscriptions`, { data: data })
                 .subscribe(response => {
                     this._notificationService.sendInfoNotification('Subscription created');
                     res(new SubscriptionItem(response));
@@ -37,7 +37,7 @@ export class SubscriptionService implements Resolve<SubscriptionItem> {
 
     update (data: SubscriptionItem): Promise<SubscriptionItem> {
         return new Promise(res => {
-            this._httpService.put(`sitecp/shop/subscriptions/${data.subscriptionId}`, {data: data})
+            this._httpService.put(`sitecp/shop/subscriptions/${data.subscriptionId}`, { data: data })
                 .subscribe(response => {
                     this._notificationService.sendInfoNotification('Subscription updated');
                     res(new SubscriptionItem(response));

@@ -41,8 +41,9 @@ export class DashboardComponent extends Page implements OnDestroy {
     disableMiniProfile: boolean;
     hideForumStats: boolean;
     singleLatestRow: boolean;
+    showMentionSuggestions: boolean;
     saveTab: Array<TitleTab> = [
-        new TitleTab({title: 'Save'})
+        new TitleTab({ title: 'Save' })
     ];
 
     constructor (
@@ -73,6 +74,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         this.disableMiniProfile = Boolean(localStorage.getItem(LOCAL_STORAGE.MINI_PROFILE_DISABLED));
         this.hideForumStats = Boolean(localStorage.getItem(LOCAL_STORAGE.HIDE_FORUM_STATS));
         this.singleLatestRow = Boolean(localStorage.getItem(LOCAL_STORAGE.SINGLE_LATEST_ROW));
+        this.showMentionSuggestions = Boolean(localStorage.getItem(LOCAL_STORAGE.MENTION_SUGGESTIONS));
     }
 
     onSave (): void {
@@ -84,6 +86,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         this.updateDisabledMiniProfile();
         this.updateHideForumStats();
         this.updateSingleLatestRow();
+        this.updateMentionSuggestions();
         this._notificationService.sendInfoNotification('Device settings saved!');
         this._continuesInformation.deviceSettingsUpdated();
     }
@@ -101,7 +104,7 @@ export class DashboardComponent extends Page implements OnDestroy {
             case TabsActionModel.MOVE_DOWN:
                 const downIndex = this._authService.tabs.findIndex(tab => tab.tabId === action.rowId);
                 this._authService.tabs = ArrayHelper.move(this._authService.tabs, downIndex, downIndex + 1);
-                this._httpService.put('usercp/tabs', {tabs: this._authService.tabs})
+                this._httpService.put('usercp/tabs', { tabs: this._authService.tabs })
                     .subscribe(() => {
                         this.createOrUpdateTabsTable();
                         this._notificationService.sendInfoNotification('Tab order updated');
@@ -110,7 +113,7 @@ export class DashboardComponent extends Page implements OnDestroy {
             case TabsActionModel.MOVE_UP:
                 const upIndex = this._authService.tabs.findIndex(tab => tab.tabId === action.rowId);
                 this._authService.tabs = ArrayHelper.move(this._authService.tabs, upIndex, upIndex - 1);
-                this._httpService.put('usercp/tabs', {tabs: this._authService.tabs})
+                this._httpService.put('usercp/tabs', { tabs: this._authService.tabs })
                     .subscribe(() => {
                         this.createOrUpdateTabsTable();
                         this._notificationService.sendInfoNotification('Tab order updated');
@@ -128,6 +131,14 @@ export class DashboardComponent extends Page implements OnDestroy {
             localStorage.setItem(LOCAL_STORAGE.SINGLE_LATEST_ROW, 'true');
         } else {
             localStorage.removeItem(LOCAL_STORAGE.SINGLE_LATEST_ROW);
+        }
+    }
+
+    private updateMentionSuggestions (): void {
+        if (this.showMentionSuggestions) {
+            localStorage.setItem(LOCAL_STORAGE.MENTION_SUGGESTIONS, 'true');
+        } else {
+            localStorage.removeItem(LOCAL_STORAGE.MENTION_SUGGESTIONS);
         }
     }
 
@@ -194,7 +205,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         }
         this.subscriptionsTableConfig = new TableConfig({
             title: 'Active Subscriptions',
-            headers: [new TableHeader({title: 'Title'}), new TableHeader({title: 'Expires At'})],
+            headers: [ new TableHeader({ title: 'Title' }), new TableHeader({ title: 'Expires At' }) ],
             rows: this.getTabsSubscriptionsRows()
         });
     }
@@ -206,7 +217,7 @@ export class DashboardComponent extends Page implements OnDestroy {
         }
         this.tabsTableConfig = new TableConfig({
             title: 'Tabs',
-            headers: [new TableHeader({title: 'Label'}), new TableHeader({title: 'URL'})],
+            headers: [ new TableHeader({ title: 'Label' }), new TableHeader({ title: 'URL' }) ],
             rows: this.getTabsTableRows()
         });
     }
@@ -216,8 +227,8 @@ export class DashboardComponent extends Page implements OnDestroy {
             return new TableRow({
                 id: subscription.title,
                 cells: [
-                    new TableCell({title: subscription.title}),
-                    new TableCell({title: TimeHelper.getLongDate(subscription.expiresAt)})
+                    new TableCell({ title: subscription.title }),
+                    new TableCell({ title: TimeHelper.getLongDate(subscription.expiresAt) })
                 ]
             });
         });
@@ -226,19 +237,19 @@ export class DashboardComponent extends Page implements OnDestroy {
     private getTabsTableRows (): Array<TableRow> {
         return this._authService.tabs.map((tab, index) => {
             const actions = [
-                {title: 'Move Up', value: TabsActionModel.MOVE_UP, condition: index > 0},
+                { title: 'Move Up', value: TabsActionModel.MOVE_UP, condition: index > 0 },
                 {
                     title: 'Mode Down',
                     value: TabsActionModel.MOVE_DOWN,
                     condition: index < (this._authService.tabs.length - 1)
                 },
-                {title: 'Remove', value: TabsActionModel.REMOVE, condition: true}
+                { title: 'Remove', value: TabsActionModel.REMOVE, condition: true }
             ];
             return new TableRow({
                 id: tab.tabId,
                 cells: [
-                    new TableCell({title: tab.label}),
-                    new TableCell({title: tab.url})
+                    new TableCell({ title: tab.label }),
+                    new TableCell({ title: tab.url })
                 ],
                 actions: actions.filter(action => action.condition).map(action => new TableAction(action))
             });

@@ -2,5 +2,6 @@
 <app-content>
     <label>Radio Box Message</label>
     <app-info-box *ngIf="!model.canUpdate" [model]="infoModel"></app-info-box>
-    <input [disabled]="!model.canUpdate" type="text" [(ngModel)]="model.says" placeholder="Type anything in here for it to display on the website..." />
+    <input [disabled]="!model.canUpdate" type="text" [(ngModel)]="model.says"
+           placeholder="Type anything in here for it to display on the website..."/>
 </app-content>

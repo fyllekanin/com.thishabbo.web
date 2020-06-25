@@ -105,7 +105,7 @@ export const LOG_DICTIONARY = {
     107: 'Created auto ban',
     108: 'Deleted auto ban',
     109: 'Updated auto ban',
-    110: 'Updated staff of the week',
+    110: 'Updated outstanding staff',
     111: 'Updated member of the month',
     112: 'Deleted infraction level',
     113: 'Created infraction level',

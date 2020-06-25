@@ -15,12 +15,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
     selector: 'app-table',
     templateUrl: 'table.component.html',
-    styleUrls: ['table.component.css']
+    styleUrls: [ 'table.component.css' ]
 })
-
 export class TableComponent implements DoCheck {
     private _config: TableConfig;
-    private _columnSize: ColumnSize = {column: '', actions: ''};
+    private _columnSize: ColumnSize = { column: '', actions: '' };
 
     @Output() onAction: EventEmitter<Action> = new EventEmitter();
     @Output() onFilter: EventEmitter<QueryParameters> = new EventEmitter();
@@ -56,11 +55,11 @@ export class TableComponent implements DoCheck {
     }
 
     onFilterChange (): void {
-        const params: QueryParameters = this.filterConfigs.reduce((prev, curr) => {
+        const params: QueryParameters = this.filterConfigs.filter(item => item.value).reduce((prev, curr) => {
             prev[curr.key] = curr.value;
             return prev;
         }, {});
-        this.updateStateOfUrl();
+        this.updateStateOfUrl(params);
         this.onFilter.emit(params);
     }
 
@@ -97,7 +96,7 @@ export class TableComponent implements DoCheck {
     }
 
     get topBorder (): TitleTopBorder {
-        return this._config.topBorder;
+        return this._config.topBorder || TitleTopBorder.BLUE;
     }
 
     get isSet (): boolean {
@@ -166,22 +165,22 @@ export class TableComponent implements DoCheck {
         }
     }
 
-    private updateStateOfUrl (): void {
+    private updateStateOfUrl (params: QueryParameters): void {
         if (this.skipUrlUpdate) {
             return;
         }
         const newPath = location.pathname.replace(new RegExp(/\/page\/[0-9]+/g), '/page/1');
-        const setParams = this.filterConfigs.filter(item => item.value).reduce((prev, curr) => {
-            prev[curr.key] = curr.value;
-            return prev;
-        }, {});
-        this._router.navigateByUrl(this._router.createUrlTree([newPath], {
-            queryParams: setParams,
+        this._router.navigateByUrl(this._router.createUrlTree([ newPath ], {
+            queryParams: params,
             skipLocationChange: true
         }));
     }
 
     private setFilterValues (): void {
+        if (!this._config) {
+            return;
+        }
+
         (this._config.filterConfigs || []).forEach(config => {
             const value = this._activatedRoute.snapshot.queryParams[config.key];
             if (value) {

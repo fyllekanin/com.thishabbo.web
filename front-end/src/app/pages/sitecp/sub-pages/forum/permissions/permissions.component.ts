@@ -12,6 +12,7 @@ import { Page } from 'shared/page/page.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { DialogService } from 'core/services/dialog/dialog.service';
+import { SelectItem } from 'shared/components/form/select/select.model';
 
 @Component({
     selector: 'app-sitecp-forum-category-permissions',
@@ -19,12 +20,13 @@ import { DialogService } from 'core/services/dialog/dialog.service';
 })
 export class PermissionsComponent extends Page implements OnDestroy {
     private _permissionsPage: PermissionsPage = new PermissionsPage();
-    private _selectableGroups: Array<PermissionGroup> = [];
 
+    groups: Array<SelectItem> = [];
+    selectedItem: SelectItem;
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Save', value: PermissionActions.SAVE}),
-        new TitleTab({title: 'Save & Cascade', value: PermissionActions.SAVE_CASCADE}),
-        new TitleTab({title: 'Back', value: PermissionActions.BACK})
+        new TitleTab({ title: 'Save', value: PermissionActions.SAVE }),
+        new TitleTab({ title: 'Save & Cascade', value: PermissionActions.SAVE_CASCADE }),
+        new TitleTab({ title: 'Back', value: PermissionActions.BACK })
     ];
 
     constructor (
@@ -73,14 +75,17 @@ export class PermissionsComponent extends Page implements OnDestroy {
         }
     }
 
-    onGroupChange (groupId: number): void {
-        this._router.navigateByUrl(`/sitecp/forum/categories/${this._permissionsPage.category.categoryId}/permissions/${groupId}`);
+    onGroupChange (item: SelectItem): void {
+        if (!item) {
+            return;
+        }
+        this._router.navigateByUrl(`/sitecp/forum/categories/${this._permissionsPage.category.categoryId}/permissions/${item.value}`);
     }
 
     save (cascade: boolean): void {
         const url = `sitecp/categories/permissions/${this._permissionsPage.category.categoryId}`;
         const groups = this._permissionsPage.groups.filter(item => item.isChecked);
-        groups.push(new PermissionGroup({groupId: this._permissionsPage.group.groupId}));
+        groups.push(new PermissionGroup({ groupId: this._permissionsPage.group.groupId }));
 
         this._httpService.put(url, {
             groups: groups,
@@ -105,10 +110,6 @@ export class PermissionsComponent extends Page implements OnDestroy {
             `Forum Permissions for Category: ${this._permissionsPage.category.title}` : '';
     }
 
-    get groups (): Array<PermissionGroup> {
-        return this._selectableGroups;
-    }
-
     get groupTitle (): string {
         return `Editing Group: ${this._permissionsPage.group.name} Forum Permissions`;
     }
@@ -127,11 +128,14 @@ export class PermissionsComponent extends Page implements OnDestroy {
 
     private onPage (data: { data: PermissionsPage }): void {
         this._permissionsPage = new PermissionsPage(data.data);
-        if (this._authService.sitecpPermissions.canManageForumPermissions && this._permissionsPage.group.groupId !== 0) {
-            this._permissionsPage.groups.unshift(new PermissionGroup({name: 'Default', groupId: 0}));
+        if (this._authService.sitecpPermissions.canManageCategoryPermissions && this._permissionsPage.group.groupId !== 0) {
+            this._permissionsPage.groups.unshift(new PermissionGroup({ name: 'Default', groupId: 0 }));
         }
 
-        this._selectableGroups = [].concat(this._permissionsPage.groups);
-        this._selectableGroups.push(this._permissionsPage.group);
+        this.groups = [].concat(this._permissionsPage.groups).map(group => ({
+            label: group.name,
+            value: group.groupId
+        }));
+        this.groups.push({ label: this._permissionsPage.group.name, value: this._permissionsPage.group.groupId });
     }
 }

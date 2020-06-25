@@ -18,4 +18,5 @@ import { CommonModule } from '@angular/common';
         ReasonComponent
     ]
 })
-export class ReasonModule {}
+export class ReasonModule {
+}

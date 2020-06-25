@@ -2,41 +2,20 @@
 
 namespace App\Helpers;
 
-use App\EloquentModels\Forum\Category;
+use App\Constants\CategoryOptions;
 use App\EloquentModels\Forum\ForumPermission;
 use App\EloquentModels\Group\Group;
+use App\EloquentModels\User\User;
 use Illuminate\Support\Facades\Cache;
 
 class PermissionHelper {
-    private static $superUsers = CONST_APP_SUPER_ADMINS;
 
     public static function isSuperSitecp($userId) {
-        return in_array($userId, self::$superUsers);
-    }
-
-    public static function getSuperUsers() {
-        return self::$superUsers;
-    }
-
-    public static function haveGroupOption($userId, $option) {
-        $user = UserHelper::getUserFromId($userId);
-        $groups = $user->userId > 0 ? $user->groups : [];
-
-        foreach ($groups as $group) {
-            if ($group->options & $option) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static function haveForumOption($categoryId, $option) {
-        $category = Category::find($categoryId);
-        return $category && $category->options & $option;
+        return in_array($userId, CONST_APP_SUPER_ADMINS);
     }
 
     public static function haveForumPermission($userId, $permission, $categoryId) {
-        $cacheString = 'forum-permission-' . $userId . '-' . $permission . '-' . $categoryId;
+        $cacheString = 'forum-permission-'.$userId.'-'.$permission.'-'.$categoryId;
         if (Cache::has($cacheString)) {
             return Cache::get($cacheString);
         }
@@ -44,14 +23,16 @@ class PermissionHelper {
             return true;
         }
 
-        $user = UserHelper::getUserFromId($userId);
+        $user = User::find($userId);
         if (!$user) {
-            return false;
+            $user = (object) [
+                'groupIds' => [0]
+            ];
         }
 
         $result = ForumPermission::where('categoryId', $categoryId)
                 ->whereIn('groupId', $user->groupIds)
-                ->whereRaw('(permissions & ' . $permission . ')')
+                ->whereRaw('(permissions & '.$permission.')')
                 ->count('categoryId') > 0;
 
         Cache::add($cacheString, $result, 10);
@@ -74,9 +55,9 @@ class PermissionHelper {
 
     public static function nameToNumberOptions($category) {
         $options = 0;
-        $categoryOptions = (array)$category->options;
+        $categoryOptions = (array) $category->options;
 
-        foreach (ConfigHelper::getForumOptionsConfig() as $key => $value) {
+        foreach (CategoryOptions::getAsOptions() as $key => $value) {
             if (isset($categoryOptions[$key]) && $categoryOptions[$key]) {
                 $options += $value;
             }
@@ -87,17 +68,17 @@ class PermissionHelper {
     public static function getStaffMiddleware($permission) {
         if (is_array($permission)) {
             $permissions = implode('|', $permission);
-            return ['staff_permission.check:' . $permissions];
+            return ['staff_permission.check:'.$permissions];
         }
-        return ['staff_permission.check:' . $permission];
+        return ['staff_permission.check:'.$permission];
     }
 
     public static function getSitecpMiddleware($permission) {
         if (is_array($permission)) {
             $permissions = implode('|', $permission);
-            return ['sitecp_permission.check:' . $permissions];
+            return ['sitecp_permission.check:'.$permissions];
         }
-        return ['sitecp_permission.check:' . $permission];
+        return ['sitecp_permission.check:'.$permission];
     }
 
     private static function checkPermission($type, $userId, $permission) {
@@ -106,8 +87,8 @@ class PermissionHelper {
             return true;
         }
 
-        $user = UserHelper::getUserFromId($userId);
-        if ($user->userId == 0) {
+        $user = User::find($userId);
+        if (!$user || $user->userId == 0) {
             return false;
         }
 
@@ -116,7 +97,7 @@ class PermissionHelper {
         }
 
         return Group::whereIn('groupId', $user->groupIds)
-                ->whereRaw('(' . $type . ' & ' . $permission . ')')
+                ->whereRaw('('.$type.' & '.$permission.')')
                 ->count('groupId') > 0;
     }
 }

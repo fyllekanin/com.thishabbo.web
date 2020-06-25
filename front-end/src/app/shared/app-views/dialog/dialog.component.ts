@@ -5,7 +5,7 @@ import { DialogButton, DialogCloseButton, DialogConfig } from 'shared/app-views/
 @Component({
     selector: 'app-dialog',
     templateUrl: 'dialog.component.html',
-    styleUrls: ['dialog.component.css']
+    styleUrls: [ 'dialog.component.css' ]
 })
 export class DialogComponent {
     private _config: DialogConfig;
@@ -13,7 +13,7 @@ export class DialogComponent {
     private _buttons: Array<DialogButton | DialogCloseButton> = [];
 
     @HostBinding('class.visible') isVisible = false;
-    @ViewChild('container', {read: ViewContainerRef, static: true}) container;
+    @ViewChild('container', { read: ViewContainerRef, static: true }) container;
     show = false;
 
     constructor (
@@ -33,9 +33,13 @@ export class DialogComponent {
         });
     }
 
-    @HostListener('click', ['$event'])
+    @HostListener('click', [ '$event' ])
     onClose (event): void {
-        const isInsideWrapper = event.path
+        const path = event ? event.composedPath ? event.composedPath() : (event.path || []) : [];
+        if (path.length === 0) {
+            return;
+        }
+        const isInsideWrapper = path
             .some(item => item.classList && item.classList.contains('dialog-wrapper'));
         if (!isInsideWrapper) {
             this.onCloseDialog(true);
@@ -86,5 +90,11 @@ export class DialogComponent {
     private createComponent (): void {
         this._componentRef = this.container.createComponent(this._config.component);
         this._componentRef.instance.setData(this._config.data);
+        this._componentRef.instance.onSubmit = () => {
+            const data = this._componentRef.instance.getData();
+            this._buttons
+                .filter((button: DialogButton) => button.triggerOnSubmit)
+                .forEach((button: DialogButton) => button.callback(data));
+        };
     }
 }

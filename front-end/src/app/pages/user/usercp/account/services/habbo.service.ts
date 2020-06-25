@@ -8,18 +8,18 @@ import { NotificationService } from 'core/services/notification/notification.ser
 @Injectable()
 export class HabboService implements Resolve<string> {
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService
     ) {
     }
 
-    resolve(): Observable<string> {
+    resolve (): Observable<string> {
         return this._httpService.get('usercp/habbo')
             .pipe(map(res => res.habbo));
     }
 
-    save(habbo: string): Observable<void> {
+    save (habbo: string): Observable<void> {
         return this._httpService.put('usercp/habbo', { habbo: habbo })
             .pipe(catchError(this._notificationService.failureNotification.bind(this._notificationService)));
     }

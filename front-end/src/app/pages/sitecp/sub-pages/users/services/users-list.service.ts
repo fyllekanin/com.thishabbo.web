@@ -22,11 +22,15 @@ export class UsersListService implements Resolve<UsersListPage> {
         const nickname = route.queryParams['nickname'];
         const searchType = route.queryParams['searchType'];
         const habbo = route.queryParams['habbo'];
+        const sortBy = route.queryParams['sortBy'];
+        const sortOrder = route.queryParams['sortOrder'];
 
         return this._httpService.get(`sitecp/users/list/page/${pageNr}`, {
             nickname: nickname,
             habbo: habbo,
-            searchType: searchType
+            searchType: searchType,
+            sortBy: sortBy,
+            sortOrder: sortOrder
         })
             .pipe(map(res => new UsersListPage(res)));
     }
@@ -39,12 +43,22 @@ export class UsersListService implements Resolve<UsersListPage> {
             }));
     }
 
-    mergeUsers (srcNickname: string, destNickname: string): Observable<void> {
-        return this._httpService.post(`sitecp/users/merge/source/${srcNickname}/destination/${destNickname}`, {})
+    mergeUsers (sourceNickname: string, targetNickname: string): Observable<void> {
+        return this._httpService.post(`sitecp/users/merge/${sourceNickname}/${targetNickname}`, {})
             .pipe(map(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
                     message: 'Users merged!'
+                }));
+            }), catchError(this._notificationService.failureNotification.bind(this._notificationService)));
+    }
+
+    setUserCredits (credits: number, userId: number): Observable<void> {
+        return this._httpService.put(`sitecp/users/credits`, { data: { credits: credits, userId: userId } })
+            .pipe(map(() => {
+                this._notificationService.sendNotification(new NotificationMessage({
+                    title: 'Success',
+                    message: 'Credits updated on user'
                 }));
             }), catchError(this._notificationService.failureNotification.bind(this._notificationService)));
     }

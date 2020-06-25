@@ -9,14 +9,16 @@
                         {{ item.name }}
                     </option>
                 </select>
-                <br />
+                <br/>
             </div>
             <div class="cell small-6">
                 <div *ngFor="let item of getHalfOfPossibleGroups(true)">
                     <label class="checkbox-container">
                         {{item.name}}
-                        <input type="checkbox" [checked]="haveUserGroup(item)" (click)="toggleGroup(item)" />
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [checked]="haveUserGroup(item)" (click)="toggleGroup(item)"
+                               [disabled]="!haveUserGroup(item) && item.isPublic"/>
+                        <span class="checkmark"
+                              [ngClass]="!haveUserGroup(item) && item.isPublic ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
             </div>
@@ -24,8 +26,10 @@
                 <div *ngFor="let item of getHalfOfPossibleGroups(false)">
                     <label class="checkbox-container">
                         {{item.name}}
-                        <input type="checkbox" [checked]="haveUserGroup(item)" (click)="toggleGroup(item)" />
-                        <span class="checkmark"></span>
+                        <input type="checkbox" [checked]="haveUserGroup(item)" (click)="toggleGroup(item)"
+                               [disabled]="!haveUserGroup(item) && item.isPublic"/>
+                        <span class="checkmark"
+                              [ngClass]="!haveUserGroup(item) && item.isPublic ? 'checkmark-disabled' : ''"></span>
                     </label>
                 </div>
             </div>

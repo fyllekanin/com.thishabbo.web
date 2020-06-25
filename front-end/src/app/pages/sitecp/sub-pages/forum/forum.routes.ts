@@ -12,6 +12,10 @@ import { PrefixListResolver } from './services/prefix-list.resolver';
 import { PrefixService } from './services/prefix.resolver';
 import { GroupTreeComponent } from './group-tree/group-tree.component';
 import { GroupTreeResolver } from './services/group-tree.resolver';
+import { ThreadTemplateListComponent } from './thread-templates/thread-template-list/thread-template-list.component';
+import { ThreadTemplateComponent } from './thread-templates/thread-template/thread-template.component';
+import { ThreadTemplateService } from './services/thread-template.service';
+import { ThreadTemplateListResolver } from './services/thread-template-list.resolver';
 
 export const forumRoutes: Routes = [
     {
@@ -55,6 +59,20 @@ export const forumRoutes: Routes = [
                 component: PrefixComponent,
                 resolve: {
                     data: PrefixService
+                }
+            },
+            {
+                path: 'thread-templates/page/:page',
+                component: ThreadTemplateListComponent,
+                resolve: {
+                    data: ThreadTemplateListResolver
+                }
+            },
+            {
+                path: 'thread-templates/:threadTemplateId',
+                component: ThreadTemplateComponent,
+                resolve: {
+                    data: ThreadTemplateService
                 }
             },
             {

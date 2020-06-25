@@ -36,6 +36,18 @@
     border-top-left-radius: 0.2rem;
 }
 
+.badge-counter {
+    background-color: #cc6363;
+    color: #fff;
+    font-size: 8px;
+    font-weight: 700;
+    position: absolute;
+    padding: .5px 3px;
+    border-radius: 2px;
+    top: -5px;
+    left: -5px;
+}
+
 .container {
     padding: 7px;
     background: #f9f7f7;

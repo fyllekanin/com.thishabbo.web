@@ -2,52 +2,60 @@
 
 namespace App\Http\Controllers\Puller;
 
+use App\Constants\Permission\CategoryPermissions;
+use App\Constants\SettingsKeys;
 use App\EloquentModels\Forum\IgnoredCategory;
 use App\EloquentModels\Forum\IgnoredThread;
 use App\EloquentModels\SiteMessage;
 use App\EloquentModels\Staff\Timetable;
 use App\EloquentModels\User\User;
-use App\Helpers\ConfigHelper;
-use App\Helpers\SettingsHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
-use App\Models\Radio\RadioSettings;
-use App\Services\ActivityService;
-use App\Services\ForumService;
-use App\Services\NotificationService;
-use App\Utils\BBcodeUtil;
+use App\Providers\Service\ActivityService;
+use App\Providers\Service\ContentService;
+use App\Providers\Service\ForumService;
+use App\Providers\Service\NotificationService;
+use App\Providers\Service\RadioService;
+use App\Repositories\Repository\CategoryRepository;
+use App\Repositories\Repository\SettingRepository;
 use App\Utils\Value;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class StreamController extends Controller {
-    private $settingKeys;
-    private $notificationService;
-    private $forumService;
-    private $activityService;
+    private $myNotificationService;
+    private $myForumService;
+    private $myActivityService;
+    private $myContentService;
+    private $myRadioService;
+    private $mySettingRepository;
+    private $myCategoryRepository;
 
-    /**
-     * RadioController constructor.
-     * Set the needed settings keys in instance variable for easier access
-     *
-     * @param NotificationService $notificationService
-     * @param ForumService $forumService
-     * @param ActivityService $activityService
-     */
-    public function __construct(NotificationService $notificationService, ForumService $forumService, ActivityService $activityService) {
+    public function __construct(
+        NotificationService $notificationService,
+        ForumService $forumService,
+        ActivityService $activityService,
+        ContentService $contentService,
+        RadioService $radioService,
+        SettingRepository $settingRepository,
+        CategoryRepository $categoryRepository
+    ) {
         parent::__construct();
-        $this->settingKeys = ConfigHelper::getKeyConfig();
-        $this->notificationService = $notificationService;
-        $this->forumService = $forumService;
-        $this->activityService = $activityService;
+        $this->myNotificationService = $notificationService;
+        $this->myForumService = $forumService;
+        $this->myActivityService = $activityService;
+        $this->myContentService = $contentService;
+        $this->myRadioService = $radioService;
+        $this->mySettingRepository = $settingRepository;
+        $this->myCategoryRepository = $categoryRepository;
     }
 
     /**
      * Radio stats response stream, stream the radio stats every 5sec from the database.
      * The stats are updated every 5sec in a cron job.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return JsonResponse
      */
@@ -56,36 +64,40 @@ class StreamController extends Controller {
         $activeUsers = $this->getActiveUsers();
         $siteMessages = $this->getSiteMessages();
 
-        $ignoredCategoryIds = array_merge(IgnoredCategory::where('userId', $user->userId)->pluck('categoryId')->toArray(),
-            $this->forumService->getCategoriesUserCantSeeOthersThreadsIn($user->userId));
-        $categoryIds = [];
+        $ignoredCategoryIds = array_merge(
+            IgnoredCategory::where('userId', $user->userId)->pluck('categoryId')->toArray(),
+            $this->myForumService->getCategoriesUserCantSeeOthersThreadsIn($user->userId)
+        );
         $ignoredThreadIds = IgnoredThread::where('userId', $user->userId)->pluck('threadId')->toArray();
-        foreach ($this->forumService->getAccessibleCategories($user->userId) as $categoryId) {
-            if (!in_array($categoryId, $ignoredCategoryIds)) {
-                $categoryIds[] = $categoryId;
-            }
-        }
-        $activities = $this->activityService->getLatestActivities($categoryIds, $ignoredThreadIds);
+        $categoryIds = $this->myCategoryRepository
+            ->getCategoryIdsWherePermission($user->userId, CategoryPermissions::CAN_READ)
+            ->filter(function ($categoryId) use ($ignoredCategoryIds) {
+                return !in_array($categoryId, $ignoredCategoryIds);
+            })
+            ->values();
+        $activities = $this->myActivityService->getLatestActivities($user, $categoryIds, $ignoredThreadIds);
 
-        return response()->json([
-            'radio' => $this->getRadioStats(),
-            'events' => $this->getEventsStats(),
-            'unreadNotifications' => $this->getAmountOfUnreadNotifications($user),
-            'siteMessages' => $siteMessages,
-            'activities' => $activities,
-            'footer' => [
-                'month' => $this->getStaffMemberOfTheMonth(),
-                'activeUsers' => $activeUsers
-            ],
-            'user' => $user->userId > 0 ? [
-                'credits' => UserHelper::getUserDataOrCreate($user->userId)->credits,
-                'xp' => UserHelper::getUserDataOrCreate($user->userId)->xp
-            ] : null
-        ]);
+        return response()->json(
+            [
+                'radio' => $this->getRadioStats(),
+                'events' => $this->getEventsStats(),
+                'unreadNotifications' => $this->getAmountOfUnreadNotifications($user),
+                'siteMessages' => $siteMessages,
+                'activities' => $activities,
+                'footer' => [
+                    'month' => $this->getStaffMemberOfTheMonth(),
+                    'activeUsers' => $activeUsers
+                ],
+                'user' => $user->userId > 0 ? [
+                    'credits' => UserHelper::getUserDataOrCreate($user->userId)->credits,
+                    'xp' => UserHelper::getUserDataOrCreate($user->userId)->xp
+                ] : null
+            ]
+        );
     }
 
     private function getStaffMemberOfTheMonth() {
-        $motm = json_decode(SettingsHelper::getSettingValue($this->settingKeys->memberOfTheMonth));
+        $motm = $this->mySettingRepository->getJsonDecodedValueOfSetting(SettingsKeys::MEMBER_OF_THE_MONTH);
 
         $member = User::withNickname(Value::objectProperty($motm, 'member', ''))->first();
         $photo = User::withNickname(Value::objectProperty($motm, 'photo', ''))->first();
@@ -101,8 +113,13 @@ class StreamController extends Controller {
     private function getEventsStats() {
         $hour = date('G');
         $day = date('N');
-        $current = Timetable::events()->with(['user', 'event'])->where('day', $day)->where('hour', $hour)->first();
-        $next = Timetable::events()->with(['user', 'event'])->where('day', $this->getNextDay($day, $hour))->where('hour', $this->getNextHour($hour))->first();
+        $current = Timetable::events()->with(['user', 'event'])->isActive()->where('day', $day)->where('hour', $hour)->first();
+        $next = Timetable::events()
+            ->with(['user', 'event'])
+            ->isActive()
+            ->where('day', $this->getNextDay($day, $hour))
+            ->where('hour', $this->getNextHour($hour))
+            ->first();
 
         $currentEvent = $this->getEventName($current);
         $nextEvent = $this->getEventName($next);
@@ -146,8 +163,7 @@ class StreamController extends Controller {
      * @return object
      */
     private function getRadioStats() {
-        $stats = new RadioSettings(SettingsHelper::getSettingValue($this->settingKeys->radio));
-        $stats->adminPassword = null;
+        $stats = $this->myRadioService->getRadioConnection(false);
         $stats->password = null;
 
         $stats->currentDj = UserHelper::getSlimUser($stats->userId);
@@ -165,25 +181,29 @@ class StreamController extends Controller {
             ->where('readAt', '<', 1)
             ->where('userId', $user->userId)
             ->get(['contentId', 'type'])
-            ->filter(function ($notification) use ($user) {
-                return $this->notificationService
-                    ->isNotificationValid($notification->contentId, $notification->type, $user);
-            })->count('notificationId');
+            ->filter(
+                function ($notification) use ($user) {
+                    return $this->myNotificationService
+                        ->isNotificationValid($notification->contentId, $notification->type, $user);
+                }
+            )->count('notificationId');
     }
 
     /**
      * @return mixed
      */
     private function getSiteMessages() {
-        return SiteMessage::isActive()->orderBy('createdAt', 'DESC')->get(['title', 'content', 'type', 'siteMessageId'])
-            ->map(function ($siteMessage) {
-                return [
-                    'siteMessageId' => $siteMessage->siteMessageId,
-                    'title' => $siteMessage->title,
-                    'type' => $siteMessage->type,
-                    'content' => BBcodeUtil::bbcodeParser($siteMessage->content)
-                ];
-            });
+        return SiteMessage::query()->isActive()->orderBy('createdAt', 'DESC')->get(['title', 'content', 'type', 'siteMessageId'])
+            ->map(
+                function ($siteMessage) {
+                    return [
+                        'siteMessageId' => $siteMessage->siteMessageId,
+                        'title' => $siteMessage->title,
+                        'type' => $siteMessage->type,
+                        'content' => $this->myContentService->getParsedContent($siteMessage->content)
+                    ];
+                }
+            );
     }
 
     /**

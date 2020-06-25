@@ -2,15 +2,24 @@
 
 namespace App\Http\Impl\Auth;
 
+use App\Constants\Permission\CategoryPermissions;
+use App\Constants\Permission\SiteCpPermissions;
+use App\Constants\Permission\StaffPermissions;
+use App\Constants\SettingsKeys;
 use App\EloquentModels\Forum\ForumPermission;
 use App\EloquentModels\Theme;
-use App\Helpers\ConfigHelper;
 use App\Helpers\PermissionHelper;
-use App\Helpers\SettingsHelper;
-use App\Helpers\UserHelper;
+use App\Repositories\Repository\SettingRepository;
 use App\Utils\Value;
+use Exception;
 
 class AuthControllerImpl {
+
+    private $mySettingRepository;
+
+    public function __construct(SettingRepository $settingRepository) {
+        $this->mySettingRepository = $settingRepository;
+    }
 
     /**
      * Get the navigation from the settings
@@ -19,8 +28,8 @@ class AuthControllerImpl {
      */
     public function getNavigation() {
         try {
-            return json_decode(SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->navigation));
-        } catch (\Exception $e) {
+            return $this->mySettingRepository->getJsonDecodedValueOfSetting(SettingsKeys::NAVIGATION);
+        } catch (Exception $e) {
             return [];
         }
     }
@@ -33,17 +42,19 @@ class AuthControllerImpl {
      * @return mixed
      */
     public function getTheme($user) {
-        if (!UserHelper::isUserLoggedIn($user)) {
+        if (!$user || $user->userId == 0) {
             return Theme::where('isDefault', true)
                 ->first();
         }
         $themeId = Value::objectProperty($user, 'theme', 0);
         return Theme::where('themeId', $themeId)
-            ->orWhere(function ($query) use ($themeId) {
-                if ($themeId >= 0) {
-                    $query->where('isDefault', true);
+            ->orWhere(
+                function ($query) use ($themeId) {
+                    if ($themeId >= 0) {
+                        $query->where('isDefault', true);
+                    }
                 }
-            })
+            )
             ->value('minified');
     }
 
@@ -54,9 +65,7 @@ class AuthControllerImpl {
      */
     public function buildStaffPermissions($user) {
         $obj = [];
-        $staffPermissions = ConfigHelper::getStaffConfig();
-
-        foreach ($staffPermissions as $key => $value) {
+        foreach (StaffPermissions::getAsOptions() as $key => $value) {
             $obj[$key] = PermissionHelper::haveStaffPermission($user->userId, $value);
         }
 
@@ -77,26 +86,24 @@ class AuthControllerImpl {
      */
     public function buildSitecpPermissions($user) {
         $obj = ['isSitecp' => false];
-        $sitecpPermissions = ConfigHelper::getSitecpConfig();
-        $forumPermissions = ConfigHelper::getForumPermissions();
 
         // General sitecp permissions
-        foreach ($sitecpPermissions as $key => $value) {
+        foreach (SiteCpPermissions::getAsOptions() as $key => $value) {
             $obj[$key] = PermissionHelper::haveSitecpPermission($user->userId, $value);
         }
 
         // Moderation permissions
         $obj['canModerateThreads'] = PermissionHelper::isSuperSitecp($user->userId) ||
             ForumPermission::withGroups($user->groupIds)
-                ->withPermission($forumPermissions->canApproveThreads)
+                ->withPermission(CategoryPermissions::CAN_APPROVE_THREADS)
                 ->count('categoryId') > 0;
         $obj['canModeratePosts'] = PermissionHelper::isSuperSitecp($user->userId) ||
             ForumPermission::withGroups($user->groupIds)
-                ->withPermission($forumPermissions->canApprovePosts)
+                ->withPermission(CategoryPermissions::CAN_APPROVE_POSTS)
                 ->count('categoryId') > 0;
         $obj['canManagePolls'] = PermissionHelper::isSuperSitecp($user->userId) ||
             ForumPermission::withGroups($user->groupIds)
-                ->withPermission($forumPermissions->canManagePolls)
+                ->withPermission(CategoryPermissions::CAN_MANAGE_POLLS)
                 ->count('categoryId') > 0;
 
         foreach ($obj as $key => $value) {

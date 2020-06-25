@@ -8,7 +8,7 @@ import { BadgeUser, BadgeUsersModel } from './badge-users.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { BADGE_LIST_BREADCRUMB_ITEM, SITECP_BREADCRUMB_ITEM } from '../../../sitecp.constants';
 import { TitleTab } from 'shared/app-views/title/title.model';
-import { NotificationMessage, NotificationType } from 'shared/app-views/global-notification/global-notification.model';
+import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { ArrayHelper } from 'shared/helpers/array.helper';
 import {
     Action,
@@ -18,6 +18,7 @@ import {
     TableHeader,
     TableRow
 } from 'shared/components/table/table.model';
+import { TimeHelper } from 'shared/helpers/time.helper';
 
 @Component({
     selector: 'app-sitecp-badges-users',
@@ -27,10 +28,10 @@ export class BadgeUsersComponent extends Page implements OnDestroy {
     private _data: BadgeUsersModel;
 
     tableConfig: TableConfig;
-    nickname: string;
+    nicknames: string;
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Add'}),
-        new TitleTab({title: 'Back', link: BADGE_LIST_BREADCRUMB_ITEM.url})
+        new TitleTab({ title: 'Add' }),
+        new TitleTab({ title: 'Back', link: BADGE_LIST_BREADCRUMB_ITEM.url })
     ];
 
     constructor (
@@ -57,7 +58,7 @@ export class BadgeUsersComponent extends Page implements OnDestroy {
 
     save (): void {
         const userIds = this._data.users.map(user => user.userId);
-        this._httpService.put(`sitecp/badges/${this._data.badge.badgeId}/users`, {userIds: userIds})
+        this._httpService.put(`sitecp/badges/${this._data.badge.badgeId}/users`, { userIds: userIds })
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
@@ -73,19 +74,27 @@ export class BadgeUsersComponent extends Page implements OnDestroy {
     }
 
     addUser (): void {
-        const user = this._data.availableUsers
-            .find(item => item.nickname.toLowerCase() === this.nickname.toLowerCase());
-        if (!user) {
-            this._notificationService.sendNotification(new NotificationMessage({
-                message: `User with name "${this.nickname}" do not exist`,
-                title: 'User do not exist',
-                type: NotificationType.ERROR
-            }));
-            return;
-        }
+        const names = this.nicknames.indexOf(',') > -1 ? this.nicknames.split(',') : [ this.nicknames ];
+        names
+            .filter(nickname => Boolean(nickname))
+            .map(nickname => nickname.trim())
+            .forEach(nickname => {
+                if (this.doUserHaveBadge(nickname)) {
+                    this._notificationService.sendErrorNotification(`${nickname} already have the badge`);
+                    return;
+                }
 
-        this.nickname = '';
-        this._data.users.push(user);
+                const user = this._data.availableUsers
+                    .find(item => item.nickname.toLowerCase() === nickname.toLowerCase());
+                if (!user) {
+                    this._notificationService.sendErrorNotification(`${nickname} do not exist`);
+                    return;
+                }
+                user.createdAt = TimeHelper.getTime(new Date().getTime() / 1000);
+                this._data.users.push(user);
+            });
+
+        this.nicknames = '';
         this.save();
     }
 
@@ -95,6 +104,10 @@ export class BadgeUsersComponent extends Page implements OnDestroy {
 
     get title (): string {
         return `Manage users for badge: ${this._data.badge.name}`;
+    }
+
+    private doUserHaveBadge (nickname: string): boolean {
+        return this._data.users.findIndex(item => item.nickname.toLowerCase() === nickname.toLowerCase()) > -1;
     }
 
     private onData (data: { data: BadgeUsersModel }): void {
@@ -118,19 +131,19 @@ export class BadgeUsersComponent extends Page implements OnDestroy {
         return this._data.users.map(user => new TableRow({
             id: user.userId.toString(),
             cells: [
-                new TableCell({title: user.nickname}),
-                new TableCell({title: user.createdAt})
+                new TableCell({ title: user.nickname }),
+                new TableCell({ title: user.createdAt })
             ],
             actions: [
-                new TableAction({title: 'Remove'})
+                new TableAction({ title: 'Remove' })
             ]
         }));
     }
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Nickname'}),
-            new TableHeader({title: 'Timestamp'})
+            new TableHeader({ title: 'Nickname' }),
+            new TableHeader({ title: 'Timestamp' })
         ];
     }
 }

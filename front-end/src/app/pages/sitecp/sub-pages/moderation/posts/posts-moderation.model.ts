@@ -17,7 +17,7 @@ export class PostModerate {
     @primitive()
     content: string;
 
-    constructor(source: Partial<PostModerate>) {
+    constructor (source: Partial<PostModerate>) {
         ClassHelper.assign(this, source);
     }
 }

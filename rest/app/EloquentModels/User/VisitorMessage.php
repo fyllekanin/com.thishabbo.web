@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property mixed createdAt
  */
 class VisitorMessage extends DeletableModel {
+
     protected $table = 'visitor_messages';
     protected $primaryKey = 'visitorMessageId';
     protected $fillable = [

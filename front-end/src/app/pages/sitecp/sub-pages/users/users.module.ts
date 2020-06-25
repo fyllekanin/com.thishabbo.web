@@ -36,6 +36,7 @@ import { SubscriptionsService } from './services/subscriptions.service';
 import { SubscriptionComponent } from './subscriptions/subscription/subscription.component';
 import { ChangeHistoryComponent } from './change-history/change-history.component';
 import { ChangeHistoryResolver } from './services/change-history.resolver';
+import { CreditsDialogComponent } from './list/credits-dialog/credits-dialog.component';
 
 @NgModule({
     imports: [
@@ -66,7 +67,8 @@ import { ChangeHistoryResolver } from './services/change-history.resolver';
         AccoladeComponent,
         SubscriptionsComponent,
         SubscriptionComponent,
-        ChangeHistoryComponent
+        ChangeHistoryComponent,
+        CreditsDialogComponent
     ],
     providers: [
         UsersListService,
@@ -84,7 +86,8 @@ import { ChangeHistoryResolver } from './services/change-history.resolver';
         MergeUsersComponent,
         VoucherCodeComponent,
         AccoladeComponent,
-        SubscriptionComponent
+        SubscriptionComponent,
+        CreditsDialogComponent
     ],
     exports: [
         RouterModule

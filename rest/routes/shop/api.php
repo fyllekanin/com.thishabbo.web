@@ -12,3 +12,5 @@ Route::post('/subscriptions/buy/{subscriptionId}', 'ShopController@buySubscripti
 Route::post('/send-thc', 'ShopController@sendThc');
 
 Route::get('/payment-verification/{orderId}', 'ShopController@getPaymentVerification');
+
+Route::post('/buy-rotated-item/{shopItemId}', 'ShopController@buyRotatedItem');

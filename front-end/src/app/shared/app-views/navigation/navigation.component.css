@@ -41,7 +41,7 @@ nav span {
     color: #86b7f0;
     font-size: 11px;
     position: absolute;
-    z-index:2;
+    z-index: 2;
     margin: 0 0 0 8px;
 }
 
@@ -56,6 +56,6 @@ nav span {
     left: 0;
 }
 
-.dropdown-content:before , .dropdown-content:after {
+.dropdown-content:before, .dropdown-content:after {
     border-bottom-color: transparent;
 }

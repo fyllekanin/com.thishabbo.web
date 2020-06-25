@@ -9,19 +9,19 @@ import { EventType } from '../types.model';
 export class TypeComponent extends InnerDialogComponent {
     private _event: EventType;
 
-    setData(event: EventType): void {
+    setData (event: EventType): void {
         this._event = event;
     }
 
-    getData(): EventType {
+    getData (): EventType {
         return this._event;
     }
 
-    get event(): string {
+    get event (): string {
         return this._event.name;
     }
 
-    set event(name: string) {
+    set event (name: string) {
         this._event.name = name;
     }
 }

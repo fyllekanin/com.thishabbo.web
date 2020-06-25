@@ -14,4 +14,5 @@ import { NgModule } from '@angular/core';
         GlobalNotificationComponent
     ]
 })
-export class GlobalNotificationModule {}
+export class GlobalNotificationModule {
+}

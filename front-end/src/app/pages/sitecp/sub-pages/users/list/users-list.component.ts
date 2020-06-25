@@ -6,6 +6,8 @@ import {
     Action,
     FILTER_TYPE_CONFIG,
     FilterConfig,
+    FilterConfigItem,
+    FilterConfigType,
     TableAction,
     TableCell,
     TableConfig,
@@ -23,6 +25,7 @@ import { UsersListService } from '../services/users-list.service';
 import { MergeUsersComponent } from './merge-users/merge-users.component';
 import { QueryParameters } from 'core/services/http/http.model';
 import { InfractionService, InfractionType } from 'shared/components/infraction/infraction.service';
+import { CreditsDialogComponent } from './credits-dialog/credits-dialog.component';
 
 @Component({
     selector: 'app-sitecp-users-list',
@@ -52,7 +55,7 @@ export class UsersListComponent extends Page implements OnDestroy {
         this.addSubscription(activatedRoute.data, this.onPage.bind(this));
         breadcrumbService.breadcrumb = new Breadcrumb({
             current: 'Manage Users',
-            items: [SITECP_BREADCRUMB_ITEM]
+            items: [ SITECP_BREADCRUMB_ITEM ]
         });
     }
 
@@ -89,6 +92,9 @@ export class UsersListComponent extends Page implements OnDestroy {
             case UserListAction.MERGE_USER:
                 this.openMergeDialog(action.rowId);
                 break;
+            case UserListAction.MANAGE_CREDITS:
+                this.openCreditsDialog(action.rowId);
+                break;
             case UserListAction.GIVE_INFRACTION:
                 this._infractionService.infract(Number(action.rowId), InfractionType.USER, null);
                 break;
@@ -104,6 +110,29 @@ export class UsersListComponent extends Page implements OnDestroy {
         }
     }
 
+    private openCreditsDialog (userId: string): void {
+        const user = this._usersListPage.users.find(item => item.userId === Number(userId));
+        this._dialogService.openDialog({
+            title: `Set ${user.nickname} credits`,
+            component: this._componentFactory.resolveComponentFactory(CreditsDialogComponent),
+            buttons: [
+                new DialogCloseButton('Close'),
+                new DialogButton({
+                    title: 'Save',
+                    triggerOnSubmit: true,
+                    callback: data => {
+                        this._service.setUserCredits(data.credits, Number(userId)).subscribe(() => {
+                            this._dialogService.closeDialog();
+                            user.credits = data.credits;
+                            this.createOrUpdateTable();
+                        });
+                    }
+                })
+            ],
+            data: user.credits
+        });
+    }
+
     private openMergeDialog (userId: string): void {
         const user = this._usersListPage.users.find(item => item.userId === Number(userId));
         this._dialogService.openDialog({
@@ -113,13 +142,14 @@ export class UsersListComponent extends Page implements OnDestroy {
                 new DialogCloseButton('Close'),
                 new DialogButton({
                     title: 'Save',
+                    triggerOnSubmit: true,
                     callback: data => {
-                        const srcNickname = data.swapUsers ? data.otherNickname : user.nickname;
-                        const destNickname = data.swapUsers ? user.nickname : data.otherNickname;
-                        this._service.mergeUsers(srcNickname, destNickname).subscribe(() => {
-                            this._dialogService.closeDialog.bind(this._dialogService);
+                        const sourceNickname = data.swapUsers ? data.otherNickname : user.nickname;
+                        const targetNickname = data.swapUsers ? user.nickname : data.otherNickname;
+                        this._service.mergeUsers(sourceNickname, targetNickname).subscribe(() => {
+                            this._dialogService.closeDialog();
                             this._usersListPage.users = this._usersListPage.users
-                                .filter(row => row.nickname !== srcNickname);
+                                .filter(row => row.nickname !== sourceNickname);
                             this.createOrUpdateTable();
                         });
                     }
@@ -149,7 +179,7 @@ export class UsersListComponent extends Page implements OnDestroy {
             {
                 title: 'Edit User',
                 value: UserListAction.EDIT_USER_BASIC,
-                condition: sitecpPermissions.canEditUserBasic || sitecpPermissions.canEditUserAdvanced
+                condition: sitecpPermissions.canEditUsersBasic || sitecpPermissions.canEditUsersAdvanced
             },
             {
                 title: 'Edit User Groups',
@@ -162,16 +192,21 @@ export class UsersListComponent extends Page implements OnDestroy {
                 condition: sitecpPermissions.canManageSubscriptions
             },
             {
+                title: 'Manage THC',
+                value: UserListAction.MANAGE_CREDITS,
+                condition: sitecpPermissions.canManageCredits
+            },
+            {
                 title: 'Edit Accolades',
                 value: UserListAction.EDIT_ACCOLADES,
-                condition: sitecpPermissions.canEditUserAdvanced
+                condition: sitecpPermissions.canEditUsersAdvanced
             },
-            {title: 'Manage Bans', value: UserListAction.MANAGE_BANS, condition: sitecpPermissions.canBanUser},
-            {title: 'Merge User', value: UserListAction.MERGE_USER, condition: sitecpPermissions.canMergeUsers},
+            { title: 'Manage Bans', value: UserListAction.MANAGE_BANS, condition: sitecpPermissions.canBanUsers },
+            { title: 'Merge User', value: UserListAction.MERGE_USER, condition: sitecpPermissions.canMergeUsers },
             {
                 title: 'Manage Essentials',
                 value: UserListAction.MANAGE_ESSENTIALS,
-                condition: sitecpPermissions.canRemoveEssentials
+                condition: sitecpPermissions.canRemoveUsersEssentials
             },
             {
                 title: 'Give Infraction or Warning',
@@ -186,7 +221,7 @@ export class UsersListComponent extends Page implements OnDestroy {
         ];
 
         this._actions = actions.filter(action => action.condition)
-            .map(action => new TableAction({title: action.title, value: action.value}));
+            .map(action => new TableAction({ title: action.title, value: action.value }));
     }
 
     private createOrUpdateTable (): void {
@@ -209,6 +244,28 @@ export class UsersListComponent extends Page implements OnDestroy {
                     placeholder: 'Search for Habbo...',
                     key: 'habbo'
                 }),
+                new FilterConfig({
+                    title: 'Sort By',
+                    key: 'sortBy',
+                    type: FilterConfigType.SELECT,
+                    value: 'nickname',
+                    allOption: false,
+                    items: [
+                        new FilterConfigItem({ label: 'Nickname', value: 'nickname' }),
+                        new FilterConfigItem({ label: 'Credits', value: 'credits' })
+                    ]
+                }),
+                new FilterConfig({
+                    title: 'Sort Order',
+                    key: 'sortOrder',
+                    type: FilterConfigType.SELECT,
+                    value: 'ASC',
+                    allOption: false,
+                    items: [
+                        new FilterConfigItem({ label: 'Ascending', value: 'ASC' }),
+                        new FilterConfigItem({ label: 'Descending', value: 'DESC' })
+                    ]
+                }),
                 FILTER_TYPE_CONFIG
             ]
         });
@@ -217,23 +274,28 @@ export class UsersListComponent extends Page implements OnDestroy {
     private getTableRows (): Array<TableRow> {
         const actions = [].concat(this._actions);
         return this._usersListPage.users.map(user => {
+            const cells = [
+                { title: user.nickname, condition: true },
+                { title: user.habbo || '', condition: true },
+                { title: String(user.credits), condition: this._authService.sitecpPermissions.canManageCredits },
+                { title: this.timeAgo(user.updatedAt), condition: true }
+            ];
+
             return new TableRow({
                 id: String(user.userId),
-                cells: [
-                    new TableCell({title: user.nickname}),
-                    new TableCell({title: user.habbo || ''}),
-                    new TableCell({title: this.timeAgo(user.updatedAt)})
-                ],
+                cells: cells.filter(cell => cell.condition).map(cell => new TableCell(cell)),
                 actions: actions
             });
         });
     }
 
     private getTableHeaders (): Array<TableHeader> {
-        return [
-            new TableHeader({title: 'Nickname'}),
-            new TableHeader({title: 'Habbo'}),
-            new TableHeader({title: 'Last modified'})
+        const headers = [
+            { title: 'Nickname', condition: true },
+            { title: 'Habbo', condition: true },
+            { title: 'Credits', condition: this._authService.sitecpPermissions.canManageCredits },
+            { title: 'Last modified', condition: true }
         ];
+        return headers.filter(header => header.condition).map(header => new TableHeader(header));
     }
 }

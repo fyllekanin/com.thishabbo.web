@@ -1,5 +1,6 @@
-import { arrayOf, ClassHelper, primitive } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
 import { ShopItem } from 'app/pages/sitecp/sub-pages/shop/items/items.model';
+import { SlimUser } from 'core/services/auth/auth.model';
 
 export class NameSettings {
     @primitive()
@@ -16,6 +17,8 @@ export class NameSettings {
     colors: Array<string> = [];
     @primitive()
     canUpdateSettings: boolean;
+    @objectOf(SlimUser)
+    user: SlimUser;
 
     constructor (source?: Partial<NameSettings>) {
         ClassHelper.assign(this, source);

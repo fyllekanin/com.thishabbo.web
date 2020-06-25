@@ -17,7 +17,7 @@ export class ThreadModerate {
     @primitive()
     canDelete: boolean;
 
-    constructor(source: Partial<ThreadModerate>) {
+    constructor (source: Partial<ThreadModerate>) {
         ClassHelper.assign(this, source);
     }
 }

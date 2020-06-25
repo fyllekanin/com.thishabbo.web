@@ -21,4 +21,5 @@ import { BreadcrumbModule } from '../breadcrumb/breadcrumb.module';
         TopBoxComponent
     ]
 })
-export class TopBoxModule { }
+export class TopBoxModule {
+}

@@ -7,14 +7,14 @@ import { NotificationService } from 'core/services/notification/notification.ser
 @Component({
     selector: 'app-usercp-post-bit-badges',
     templateUrl: 'badges.component.html',
-    styleUrls: ['badges.component.css']
+    styleUrls: [ 'badges.component.css' ]
 })
 export class BadgesComponent extends InnerDialogComponent {
     private _selectedBadges: Array<SlimBadge> = [];
 
     badges: Array<SlimBadge> = [];
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService
     ) {
@@ -25,7 +25,7 @@ export class BadgesComponent extends InnerDialogComponent {
             });
     }
 
-    onToggle(badge: SlimBadge): void {
+    onToggle (badge: SlimBadge): void {
         if (this.getIsActive(badge)) {
             this._selectedBadges = this._selectedBadges.filter(item => item.badgeId !== badge.badgeId);
             return;
@@ -38,7 +38,7 @@ export class BadgesComponent extends InnerDialogComponent {
         this._selectedBadges.push(badge);
     }
 
-    getIsActive(badge: SlimBadge): boolean {
+    getIsActive (badge: SlimBadge): boolean {
         return this._selectedBadges.findIndex(item => item.badgeId === badge.badgeId) > -1;
     }
 

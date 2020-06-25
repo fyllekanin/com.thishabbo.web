@@ -1,4 +1,4 @@
-import { FixedTools, FixedToolItem } from 'shared/components/fixed-tools/fixed-tools.model';
+import { FixedToolItem, FixedTools } from 'shared/components/fixed-tools/fixed-tools.model';
 import { FixedToolsComponent } from 'shared/components/fixed-tools/fixed-tools.component';
 import { TestBed } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
@@ -25,9 +25,11 @@ describe('FixedToolsComponent', () => {
     describe('tools', () => {
         it('should set the tools provided', () => {
             // When
-            component.tools = new FixedTools({ items: [
-                new FixedToolItem({ id: '123' })
-            ]});
+            component.tools = new FixedTools({
+                items: [
+                    new FixedToolItem({ id: '123' })
+                ]
+            });
 
             // Then
             expect(component.items.length).toEqual(1);
@@ -55,9 +57,11 @@ describe('FixedToolsComponent', () => {
         });
         it('should set to parent if children exist', () => {
             // Given
-            const item = new FixedToolItem({ title: 'parent', children: [
-                new FixedToolItem({ title: 'test', value: 1 })
-            ]});
+            const item = new FixedToolItem({
+                title: 'parent', children: [
+                    new FixedToolItem({ title: 'test', value: 1 })
+                ]
+            });
 
             // When
             component.onClick(item);
@@ -68,8 +72,8 @@ describe('FixedToolsComponent', () => {
         it('should go back to parent if value is "BACK"', () => {
             // Given
             const child = new FixedToolItem({ title: 'back', value: -1 });
-            const parent = new FixedToolItem({ title: 'test', value: 1, children: [child]});
-            component.tools = new FixedTools({ items: [parent] });
+            const parent = new FixedToolItem({ title: 'test', value: 1, children: [ child ] });
+            component.tools = new FixedTools({ items: [ parent ] });
             component.onClick(parent);
 
             // When
@@ -113,7 +117,7 @@ describe('FixedToolsComponent', () => {
             const result = component.items;
 
             // Then
-            expect(result.map(item => item.value)).toEqual([1, -1]);
+            expect(result.map(item => item.value)).toEqual([ 1, -1 ]);
         });
     });
 });

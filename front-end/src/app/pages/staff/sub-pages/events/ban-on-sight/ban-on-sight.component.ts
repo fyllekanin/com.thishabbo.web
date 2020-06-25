@@ -72,7 +72,7 @@ export class BanOnSightComponent extends Page implements OnDestroy {
     private save (): void {
         if (this._data.createdAt) {
             this._httpService.put(`staff/events/ban-on-sight/${this._data.id}`,
-                {information: this._data})
+                { information: this._data })
                 .subscribe(() => {
                         this.onSuccessUpdate();
                     },
@@ -80,7 +80,7 @@ export class BanOnSightComponent extends Page implements OnDestroy {
                         this._notificationService.failureNotification(error);
                     });
         } else {
-            this._httpService.post('staff/events/ban-on-sight', {information: this._data})
+            this._httpService.post('staff/events/ban-on-sight', { information: this._data })
                 .subscribe(res => {
                         this._data = new BanOnSightItem(res);
                         this.onSuccessCreate();
@@ -136,9 +136,9 @@ export class BanOnSightComponent extends Page implements OnDestroy {
         this._data = data.data;
 
         const tabs = [
-            {title: 'Save', value: BanOnSightActions.SAVE, condition: true},
-            {title: 'Back', value: BanOnSightActions.BACK, condition: true},
-            {title: 'Delete', value: BanOnSightActions.DELETE, condition: this._data.createdAt}
+            { title: 'Save', value: BanOnSightActions.SAVE, condition: true },
+            { title: 'Back', value: BanOnSightActions.BACK, condition: true },
+            { title: 'Delete', value: BanOnSightActions.DELETE, condition: this._data.createdAt }
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));

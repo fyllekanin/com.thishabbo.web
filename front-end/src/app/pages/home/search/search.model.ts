@@ -2,12 +2,6 @@ import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.
 import { SlimUser } from 'core/services/auth/auth.model';
 import { CategoryLeaf } from '../../sitecp/sub-pages/forum/category/category.model';
 
-export enum SearchTypes {
-    THREADS = 'threads',
-    POSTS = 'posts',
-    USER = 'users'
-}
-
 export class SearchParameters {
     @primitive()
     type: string;
@@ -23,6 +17,8 @@ export class SearchParameters {
     order: string;
     @primitive()
     categoryId: number;
+    @primitive()
+    userSearchType: string;
 
     constructor (source: Partial<SearchParameters>) {
         ClassHelper.assign(this, source);

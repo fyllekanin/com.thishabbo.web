@@ -19,7 +19,7 @@ import { BadgesComponent } from './badges/badges.component';
 import { DialogButton, DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
 import { NAME_POSITIONS } from 'shared/constants/name-positions.constants';
 import { StringHelper } from 'shared/helpers/string.helper';
-import { UserHelper } from 'shared/helpers/user.helper';
+import { UserHelper, UserStyle } from 'shared/helpers/user.helper';
 
 @Component({
     selector: 'app-usercp-post-bit',
@@ -31,8 +31,8 @@ export class PostBitComponent extends Page implements OnDestroy {
     userBarColors = '';
     namePositions: Array<{ label: string, value: number }> = [];
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Save', value: PostBitActions.SAVE}),
-        new TitleTab({title: 'Change Badges', value: PostBitActions.ADD_BADGE})
+        new TitleTab({ title: 'Save', value: PostBitActions.SAVE }),
+        new TitleTab({ title: 'Change Badges', value: PostBitActions.ADD_BADGE })
     ];
 
     constructor (
@@ -80,7 +80,7 @@ export class PostBitComponent extends Page implements OnDestroy {
         }
     }
 
-    getBarColors (): string {
+    getBarColors (): UserStyle {
         return UserHelper.getBarColor(this._postBitModel.barColor.color);
     }
 
@@ -108,7 +108,7 @@ export class PostBitComponent extends Page implements OnDestroy {
 
     private onData (data: { data: PostBitModel }): void {
         this._postBitModel = data.data;
-        this.userBarColors = this._postBitModel.barColor && this._postBitModel.barColor.isAvailable ?
+        this.userBarColors = this._postBitModel.barColor && this._postBitModel.barColor.color && this._postBitModel.barColor.isAvailable ?
             this._postBitModel.barColor.color.toString() : '';
     }
 

@@ -7,15 +7,15 @@ export class UsercpAvatarCoverPreviewService implements OnDestroy {
     private _onShowSubject: Subject<void> = new Subject();
     private _onHideSubject: Subject<void> = new Subject();
 
-    update() {
+    update () {
         this._onUpdateSubject.next();
     }
 
-    show() {
+    show () {
         this._onShowSubject.next();
     }
 
-    hide() {
+    hide () {
         this._onHideSubject.next();
     }
 
@@ -25,15 +25,15 @@ export class UsercpAvatarCoverPreviewService implements OnDestroy {
         this._onHideSubject.complete();
     }
 
-    get onUpdate(): Observable<void> {
+    get onUpdate (): Observable<void> {
         return this._onUpdateSubject.asObservable();
     }
 
-    get onShow(): Observable<void> {
+    get onShow (): Observable<void> {
         return this._onShowSubject.asObservable();
     }
 
-    get onHide(): Observable<void> {
+    get onHide (): Observable<void> {
         return this._onHideSubject.asObservable();
     }
 }

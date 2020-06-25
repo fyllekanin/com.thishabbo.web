@@ -19,17 +19,17 @@ import { BanService } from '../services/ban.service';
 @Component({
     selector: 'app-sitecp-users-ban',
     templateUrl: 'ban.component.html',
-    styleUrls: ['ban.component.css']
+    styleUrls: [ 'ban.component.css' ]
 })
 export class BanComponent extends Page implements OnDestroy {
     private _data: BanModel = new BanModel();
 
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Ban'}),
-        new TitleTab({title: 'Back', link: '/sitecp/users/page/1'})
+        new TitleTab({ title: 'Ban' }),
+        new TitleTab({ title: 'Back', link: '/sitecp/users/page/1' })
     ];
     banTabs: Array<TitleTab> = [
-        new TitleTab({title: 'Lift Ban'})
+        new TitleTab({ title: 'Lift Ban' })
     ];
 
     constructor (
@@ -73,9 +73,9 @@ export class BanComponent extends Page implements OnDestroy {
             component: this._componentFactory.resolveComponentFactory(ReasonComponent),
             buttons: [
                 new DialogCloseButton('Close'),
-                new DialogButton({title: 'Lift', callback: this.doLift.bind(this, banId)})
+                new DialogButton({ title: 'Lift', callback: this.doLift.bind(this, banId) })
             ],
-            data: {isBanning: false}
+            data: { isBanning: false }
         });
     }
 
@@ -85,9 +85,9 @@ export class BanComponent extends Page implements OnDestroy {
             component: this._componentFactory.resolveComponentFactory(ReasonComponent),
             buttons: [
                 new DialogCloseButton('Close'),
-                new DialogButton({title: 'Ban', callback: this.doBan.bind(this)})
+                new DialogButton({ title: 'Ban', callback: this.doBan.bind(this) })
             ],
-            data: {isBanning: true}
+            data: { isBanning: true }
         });
     }
 

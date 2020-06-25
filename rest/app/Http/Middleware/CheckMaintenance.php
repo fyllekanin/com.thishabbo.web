@@ -2,17 +2,23 @@
 
 namespace App\Http\Middleware;
 
-use App\Helpers\ConfigHelper;
+use App\Constants\Permission\SiteCpPermissions;
+use App\Constants\SettingsKeys;
 use App\Helpers\PermissionHelper;
-use App\Helpers\SettingsHelper;
+use App\Repositories\Repository\SettingRepository;
 use Closure;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class CheckMaintenance {
 
+    private $mySettingRepository;
+
+    public function __construct(SettingRepository $settingRepository) {
+        $this->mySettingRepository = $settingRepository;
+    }
+
     public function handle($request, Closure $next) {
-        $settingKeys = ConfigHelper::getKeyConfig();
-        $isMaintenance = SettingsHelper::getSettingValue($settingKeys->isMaintenance);
+        $isMaintenance = $this->mySettingRepository->getValueOfSetting(SettingsKeys::IS_MAINTENANCE);
 
         if ($isMaintenance && !$this->canPassMaintenance($request)) {
             throw new HttpException(503);
@@ -22,9 +28,7 @@ class CheckMaintenance {
     }
 
     private function canPassMaintenance($request) {
-        $sitecpPermissions = ConfigHelper::getSitecpConfig();
         $user = $request->get('auth');
-
-        return PermissionHelper::haveSitecpPermission($user->userId, $sitecpPermissions->canEditWebsiteSettings);
+        return PermissionHelper::haveSitecpPermission($user->userId, SiteCpPermissions::CAN_EDIT_WEBSITE_SETTINGS);
     }
 }

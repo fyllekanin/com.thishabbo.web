@@ -1,4 +1,4 @@
-import { primitive, ClassHelper } from 'shared/helpers/class.helper';
+import { ClassHelper, primitive } from 'shared/helpers/class.helper';
 
 export class Notice {
     @primitive()
@@ -14,7 +14,7 @@ export class Notice {
     @primitive()
     order: number;
 
-    constructor(source?: Partial<Notice>) {
+    constructor (source?: Partial<Notice>) {
         ClassHelper.assign(this, source);
     }
 }

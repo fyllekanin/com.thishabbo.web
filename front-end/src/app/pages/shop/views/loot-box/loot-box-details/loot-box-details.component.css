@@ -1,7 +1,13 @@
 .open {
     text-align: center;
+    margin-top: 10px;
 }
 
 em {
     font-size: 30px;
+}
+
+.loot-boxes {
+    overflow-y: scroll;
+    max-height: 500px;
 }

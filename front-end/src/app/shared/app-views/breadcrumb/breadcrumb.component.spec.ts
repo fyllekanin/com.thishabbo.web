@@ -13,6 +13,7 @@ describe('BreadcrumbComponent', () => {
 
     class AuthServiceMock {
         isLoggedIn () {
+            return false;
         }
 
         get authUser () {
@@ -34,17 +35,16 @@ describe('BreadcrumbComponent', () => {
                 BreadcrumbComponent
             ],
             providers: [
-                {provide: AuthService, useValue: new AuthServiceMock()},
-                {provide: BreadcrumbService, useValue: breadcrumbService},
+                { provide: AuthService, useValue: new AuthServiceMock() },
+                { provide: BreadcrumbService, useValue: breadcrumbService },
                 {
                     provide: RouterStateService,
                     useValue: {
-                        updateCurrentPage: () => {
-                        }
+                        updateCurrentPage: () => null
                     }
                 }
             ],
-            schemas: [NO_ERRORS_SCHEMA]
+            schemas: [ NO_ERRORS_SCHEMA ]
         });
         component = TestBed.createComponent(BreadcrumbComponent).componentInstance;
     });
@@ -52,17 +52,17 @@ describe('BreadcrumbComponent', () => {
     describe('onBreadcrumb', () => {
         it('should update current page on new breadcrumb to current if set', () => {
             // Given
-            const updateCurrentPageSpy = spyOn(TestBed.get(RouterStateService), 'updateCurrentPage');
+            const updateCurrentPageSpy = spyOn(TestBed.inject(RouterStateService), 'updateCurrentPage');
 
             // When
-            breadcrumbService.breadcrumb = new Breadcrumb({current: 'test'});
+            breadcrumbService.breadcrumb = new Breadcrumb({ current: 'test' });
 
             // Then
             expect(updateCurrentPageSpy).toHaveBeenCalledWith('test');
         });
         it('should update current page on new breadcrumb to empty if not set', () => {
             // Given
-            const updateCurrentPageSpy = spyOn(TestBed.get(RouterStateService), 'updateCurrentPage');
+            const updateCurrentPageSpy = spyOn(TestBed.inject(RouterStateService), 'updateCurrentPage');
 
             // When
             breadcrumbService.breadcrumb = null;
@@ -117,7 +117,7 @@ describe('BreadcrumbComponent', () => {
     describe('homePage', () => {
         it('should set homePage to home if not logged in', () => {
             // Given
-            spyOn(TestBed.get(AuthService), 'isLoggedIn').and.returnValue(false);
+            spyOn(TestBed.inject(AuthService), 'isLoggedIn').and.returnValue(false);
 
             // When
             const result = component.homePage;
@@ -127,8 +127,8 @@ describe('BreadcrumbComponent', () => {
         });
         it('should set homePage to home if no homePage set', () => {
             // Given
-            spyOn(TestBed.get(AuthService), 'isLoggedIn').and.returnValue(true);
-            spyOnProperty(TestBed.get(AuthService), 'authUser', 'get').and.returnValue({
+            spyOn(TestBed.inject(AuthService), 'isLoggedIn').and.returnValue(true);
+            spyOnProperty(TestBed.inject(AuthService), 'authUser', 'get').and.returnValue({
                 homePage: null
             });
 
@@ -140,8 +140,8 @@ describe('BreadcrumbComponent', () => {
         });
         it('should set homePage to declared homePage', () => {
             // Given
-            spyOn(TestBed.get(AuthService), 'isLoggedIn').and.returnValue(true);
-            spyOnProperty(TestBed.get(AuthService), 'authUser', 'get').and.returnValue({
+            spyOn(TestBed.inject(AuthService), 'isLoggedIn').and.returnValue(true);
+            spyOnProperty(TestBed.inject(AuthService), 'authUser', 'get').and.returnValue({
                 homePage: 'test'
             });
 

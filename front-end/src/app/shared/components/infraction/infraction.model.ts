@@ -10,7 +10,7 @@ export class Infraction {
     @primitive()
     createdAt: number;
 
-    constructor(source: Partial<Infraction>) {
+    constructor (source: Partial<Infraction>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -23,7 +23,7 @@ export class InfractionContext {
     @objectOf(SlimUser)
     user: SlimUser;
 
-    constructor(source: Partial<InfractionContext>) {
+    constructor (source: Partial<InfractionContext>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -36,11 +36,11 @@ export class InfractModel {
     @primitive()
     userId: number;
 
-    constructor(source: Partial<InfractModel>) {
+    constructor (source: Partial<InfractModel>) {
         ClassHelper.assign(this, source);
     }
 
-    get isValid(): boolean {
-        return Boolean (this.infractionLevelId) && Boolean(this.reason) && this.reason.length > 0;
+    get isValid (): boolean {
+        return Boolean(this.infractionLevelId) && Boolean(this.reason) && this.reason.length > 0;
     }
 }

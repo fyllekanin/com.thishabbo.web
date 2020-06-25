@@ -9,7 +9,7 @@ export class BadgesListPage {
     @primitive()
     total: number;
 
-    constructor(source?: Partial<BadgesListPage>) {
+    constructor (source?: Partial<BadgesListPage>) {
         ClassHelper.assign(this, source);
     }
 }

@@ -13,7 +13,7 @@ import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 @Component({
     selector: 'app-sitecp-notice-board',
     templateUrl: 'notice-board.component.html',
-    styleUrls: ['notice-board.component.css']
+    styleUrls: [ 'notice-board.component.css' ]
 })
 export class NoticeBoardComponent {
     private _notices: Array<Notice> = [];
@@ -86,7 +86,7 @@ export class NoticeBoardComponent {
     }
 
     private updateOrder (): void {
-        this._httpService.put('sitecp/content/notices', {notices: this._notices}).subscribe(() => {
+        this._httpService.put('sitecp/content/notices', { notices: this._notices }).subscribe(() => {
             this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Success!',
                 message: 'Notice order updated'

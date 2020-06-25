@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 @Component({
     selector: 'app-top-bar-follower-view',
     templateUrl: 'follower-view.component.html',
-    styleUrls: ['../notification.views.css']
+    styleUrls: [ '../notification.views.css' ]
 })
 export class FollowerViewComponent implements NotificationView {
     private _notification: NotificationModel<FollowerView>;
@@ -32,7 +32,7 @@ export class FollowerViewComponent implements NotificationView {
     }
 
     get imagePath (): string {
-        return `/rest/resources/images/users/${this.user.userId}.gif?${this.user.avatarUpdatedAt}`;
+        return `/resources/images/users/${this.user.userId}.gif?${this.user.avatarUpdatedAt}`;
     }
 
     get user (): SlimUser {
@@ -43,7 +43,7 @@ export class FollowerViewComponent implements NotificationView {
         return this._notification.item.isApproved;
     }
 
-    @HostListener('click', ['$event.target'])
+    @HostListener('click', [ '$event.target' ])
     click (event): void {
         this.onClick.next(this._notification.notificationId);
         if (shouldPerformClickOnNotification(event)) {

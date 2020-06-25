@@ -27,7 +27,7 @@ export class DjSaysComponent extends Page implements OnDestroy {
         content: `You are not the current DJ and do not have override permission to update the DJ says`
     };
 
-    constructor(
+    constructor (
         private _notificationService: NotificationService,
         private _httpService: HttpService,
         elementRef: ElementRef,
@@ -45,11 +45,11 @@ export class DjSaysComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onSave(): void {
+    onSave (): void {
         this._httpService.put('staff/radio/dj-says', { says: this._data.says })
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
@@ -59,11 +59,11 @@ export class DjSaysComponent extends Page implements OnDestroy {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    get model(): DjSaysModel {
+    get model (): DjSaysModel {
         return this._data;
     }
 
-    private onData(data: { data: DjSaysModel }): void {
+    private onData (data: { data: DjSaysModel }): void {
         this._data = data.data;
     }
 }

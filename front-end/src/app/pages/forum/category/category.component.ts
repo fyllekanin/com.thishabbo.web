@@ -19,6 +19,7 @@ import { NotificationMessage } from 'shared/app-views/global-notification/global
 import { MoveThreadComponent } from '../thread/move-thread/move-thread.component';
 import { ChangeOwnerComponent } from '../thread/change-owner/change-owner.component';
 import { LOCAL_STORAGE } from 'shared/constants/local-storage.constants';
+import { Button } from 'shared/directives/button/button.model';
 
 @Component({
     selector: 'app-forum-category',
@@ -94,15 +95,7 @@ export class CategoryComponent extends Page implements OnDestroy {
                     }, this._notificationService.failureNotification.bind(this._notificationService));
                 break;
             case CategoryActions.IGNORE:
-                this._httpService.post(`forum/category/${this.categoryPage.categoryId}/ignore`, {})
-                    .subscribe(() => {
-                        this.categoryPage.isIgnored = true;
-                        this.setTabs();
-                        this._notificationService.sendNotification(new NotificationMessage({
-                            title: 'Success',
-                            message: 'You ignored the Category!'
-                        }));
-                    }, this._notificationService.failureNotification.bind(this._notificationService));
+                this.onIgnoreCategory();
                 break;
             case CategoryActions.UNIGNORE:
                 this._httpService.delete(`forum/category/${this.categoryPage.categoryId}/ignore`)
@@ -123,6 +116,7 @@ export class CategoryComponent extends Page implements OnDestroy {
     }
 
     onAction (action: number): void {
+        const selectedIds = this.categoryPage.getSelectedThreadIds();
         switch (action) {
             case ThreadActions.MOVE_THREAD:
                 this.onMoveThread();
@@ -133,6 +127,28 @@ export class CategoryComponent extends Page implements OnDestroy {
             case ThreadActions.SELECT_ALL:
                 this.categoryPage.getAllThreads()
                     .forEach(thread => thread.isSelected = true);
+                break;
+            case ThreadActions.STICKY_THREAD:
+                this._httpService.put(`forum/moderation/threads/sticky`, { ids: selectedIds })
+                    .subscribe(() => {
+                        this.unSelectAllThreads();
+                        this._router.navigateByUrl(`/forum/category/${this.categoryPage.categoryId}/page/1`);
+                        this._notificationService.sendNotification(new NotificationMessage({
+                            title: 'Success',
+                            message: 'Threads are stickied!'
+                        }));
+                    }, this._notificationService.failureNotification.bind(this._notificationService));
+                break;
+            case ThreadActions.UNSTICKY_THREAD:
+                this._httpService.put(`forum/moderation/threads/unsticky`, { ids: selectedIds })
+                    .subscribe(() => {
+                        this.unSelectAllThreads();
+                        this._router.navigateByUrl(`/forum/category/${this.categoryPage.categoryId}/page/1`);
+                        this._notificationService.sendNotification(new NotificationMessage({
+                            title: 'Success',
+                            message: 'Threads are unstickied!'
+                        }));
+                    }, this._notificationService.failureNotification.bind(this._notificationService));
                 break;
         }
     }
@@ -213,6 +229,15 @@ export class CategoryComponent extends Page implements OnDestroy {
             {
                 title: 'Change Owner', value: ThreadActions.CHANGE_THREAD_OWNER,
                 condition: this.categoryPage.forumPermissions.canChangeOwner
+            },
+            {
+                title: 'Sticky Threads', value: ThreadActions.STICKY_THREAD,
+                condition: this.categoryPage.forumPermissions.canStickyThread
+            }
+            ,
+            {
+                title: 'Unsticky Threads', value: ThreadActions.UNSTICKY_THREAD,
+                condition: this.categoryPage.forumPermissions.canStickyThread
             }
         ];
     }
@@ -339,5 +364,43 @@ export class CategoryComponent extends Page implements OnDestroy {
         return this.categoryPage.stickyThreads.concat(this.categoryPage.threads)
             .filter(thread => thread.isSelected)
             .map(thread => thread.threadId);
+    }
+
+    private onIgnoreCategory (): void {
+        if (this.categoryPage.categories.length === 0) {
+            this.doIgnore(false);
+            return;
+        }
+
+        this._dialogService.openDialog({
+            title: 'Cascade Ignore',
+            content: 'Do you want to ignore all categories that belongs to this one aswell?',
+            buttons: [
+                new DialogButton({
+                    title: 'Only this one',
+                    type: Button.YELLOW,
+                    callback: () => this.doIgnore(false)
+                }),
+                new DialogButton({
+                    title: 'Cascade',
+                    type: Button.BLUE,
+                    callback: () => this.doIgnore(true)
+                }),
+                new DialogCloseButton('Cancel')
+            ]
+        });
+    }
+
+    private doIgnore (isCascade: boolean): void {
+        this._dialogService.closeDialog();
+        this._httpService.post(`forum/category/${this.categoryPage.categoryId}/ignore`, { isCascade: isCascade })
+            .subscribe(() => {
+                this.categoryPage.isIgnored = true;
+                this.setTabs();
+                this._notificationService.sendNotification(new NotificationMessage({
+                    title: 'Success',
+                    message: 'You ignored the Category!'
+                }));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 }

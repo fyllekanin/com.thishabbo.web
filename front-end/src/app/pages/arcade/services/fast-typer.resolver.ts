@@ -8,9 +8,10 @@ import { HighScoreModel } from '../arcade.model';
 @Injectable()
 export class FastTyperResolver implements Resolve<Array<HighScoreModel>> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
-    resolve(): Observable<Array<HighScoreModel>> {
+    resolve (): Observable<Array<HighScoreModel>> {
         return this._httpService.get('arcade/fast-typer/highscore')
             .pipe(map(res => res.map(item => new HighScoreModel(item))));
     }

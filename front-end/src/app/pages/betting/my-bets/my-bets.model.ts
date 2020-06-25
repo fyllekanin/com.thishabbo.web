@@ -11,7 +11,7 @@ export class MyBet {
     @primitive()
     expected: number;
 
-    constructor(source: Partial<MyBet>) {
+    constructor (source: Partial<MyBet>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -22,7 +22,7 @@ export class MyBetsModel {
     @arrayOf(MyBet)
     bets: Array<MyBet> = [];
 
-    constructor(source?: Partial<MyBetsModel>) {
+    constructor (source?: Partial<MyBetsModel>) {
         ClassHelper.assign(this, source);
     }
 }

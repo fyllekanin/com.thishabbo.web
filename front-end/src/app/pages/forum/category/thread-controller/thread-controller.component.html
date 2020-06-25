@@ -2,139 +2,156 @@
 <app-content>
     <div class="grid-container full">
         <div class="grid-x grid-margin-x">
-            <div class="cell small-6">
+            <app-content-tabs *ngIf="contentTabs.length > 1" [items]="contentTabs"
+                              (onItemClick)="onContentTabClick($event)"></app-content-tabs>
+            <div [hidden]="!sections.details" class="cell small-6">
                 <label>Title:</label>
                 <input [(ngModel)]="thread.title" placeholder="New Thread" type="text" name="thread-title">
             </div>
-            <div class="cell small-6">
+            <div [hidden]="!sections.details" class="cell small-6">
                 <label>Prefix:</label>
                 <select [(ngModel)]="thread.prefixId">
                     <option value="0">None</option>
-                    <option *ngFor="let prefix of thread.prefixes" value="{{prefix.prefixId}}">{{prefix.text}}</option>
+                    <option *ngFor="let prefix of thread.prefixes"
+                            value="{{prefix.prefixId}}">{{prefix.text}}</option>
                 </select>
             </div>
-            <div *ngIf="shouldHaveThumbnail" class="cell small-6">
+            <div [hidden]="!sections.details || thread.createdAt" class="cell small-6">
+                <label>Thread Template:</label>
+                <select [ngModel]="''" (ngModelChange)="thread.content = $event">
+                    <option [value]="''" [selected]="true">None</option>
+                    <option *ngFor="let threadTemplate of thread.threadTemplates"
+                            [value]="threadTemplate.content">{{threadTemplate.name}}</option>
+                </select>
+            </div>
+            <div [hidden]="!sections.thumbnail" class="cell small-6">
                 <label>Thumbnail:</label>
                 <input type="file" accept="image/*" #file name="thread-thumbnail">
             </div>
-            <div class="cell small-6" [hidden]="!thumbnailLoaded">
+            <div class="cell small-6" [hidden]="!thumbnailLoaded || !sections.thumbnail">
                 <label>Preview Thumbnail:</label>
                 <details style="margin:0;">
                     <summary>Click to view Thumbnail</summary>
                     <img [src]="thumbnailUrl" (load)="thumbnailLoaded = true"/>
                 </details>
             </div>
-            <div *ngIf="isQuestTemplate" class="cell small-6">
-                <label>Badge: <em *ngIf="badeHaveError" class="error">Only name!</em></label>
-                <input [(ngModel)]="thread.badge" type="text" name="thread-badge"> <br/>
+            <div [hidden]="!sections.poll" class="cell small-12">
+                <div *ngIf="!thread.poll">
+                    <em>You have to toggle in the top bar if you want to have a poll</em>
+                </div>
+                <div *ngIf="thread.poll">
+                    <em>You can later not edit the poll after creation, make sure it's correct before saving</em>
+                    <br/>
+                    <label class="checkbox-container">
+                        Is poll result public?
+                        <input type="checkbox" [(ngModel)]="thread.poll.isPublic">
+                        <span class="checkmark"></span>
+                    </label>
+                    <div class="grid-container full poll-answer">
+                        <div class="grid-x">
+                            <div class="cell small-11">
+                                <label>Question:</label>
+                                <input [(ngModel)]="thread.poll.question" type="text"
+                                       [disabled]="thread.createdAt && !thread.poll.isNew" name="thread-poll-question">
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngFor="let answer of thread.poll.answers; let index = index;">
+                        <div class="grid-container full poll-answer">
+                            <div class="grid-x">
+                                <div class="cell small-11">
+                                    <label>Answer #{{index + 1}}</label>
+                                    <input [(ngModel)]="answer.label" type="text"
+                                           [disabled]="thread.createdAt && !thread.poll.isNew"
+                                           name="thread-poll-answer">
+                                </div>
+                                <div class="cell small-1 remove-answer" *ngIf="!thread.createdAt && thread.poll.isNew">
+                                    <em class="fas fa-trash" (click)="removeAnswer(answer.id)"></em>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button appButton (click)="addThreadAnswer()" [disabled]="thread.createdAt && !thread.poll.isNew">
+                        +Add Answer
+                    </button>
+                </div>
             </div>
-            <div class="cell small-6" *ngIf="isQuestTemplate">
+            <div [hidden]="!sections.quest" class="cell small-6">
                 <label>Room Link:</label>
                 <input [(ngModel)]="thread.roomLink" type="text" name="thread-roomLink"> <br/>
             </div>
-            <div class="cell small-6" *ngIf="isQuestTemplate">
-                Preview: <br/>
-                <img *ngIf="badge" [src]="badgeUrl"/>
+            <div [hidden]="!sections.quest" class="cell small-6">
+                <label tooltip="Split the names with a comma to add multiple">Badges: <em
+                        class="fas fa-question-circle"></em></label>
+                <input [(ngModel)]="badgeCodes" (ngModelChange)="onBadgeCodesChange()" type="text"
+                       name="thread-badge">
             </div>
-            <div *ngIf="isQuestTemplate" class="cell small-6">
+            <div [hidden]="!sections.quest" class="cell small-6">
                 <label>Tags:</label>
-                <div class="grid-container full">
-                    <div class="grid-x grid-margin-x">
-                        <div class="cell small-4">
-                            <div>
-                                <label class="checkbox-container" (click)="toggleTag($event, 'AVAILABLE')">
-                                    Available
-                                    <input type="checkbox" [checked]="haveTag('AVAILABLE')">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div>
-                                <label class="checkbox-container" (click)="toggleTag($event, 'EASY')">
-                                    Easy
-                                    <input type="checkbox" [checked]="haveTag('EASY')">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
+                <div class="grid-x grid-margin-x">
+                    <div class="cell small-4">
+                        <div>
+                            <label class="checkbox-container" (click)="toggleTag($event, 'AVAILABLE')">
+                                Available
+                                <input type="checkbox" [checked]="haveTag('AVAILABLE')">
+                                <span class="checkmark"></span>
+                            </label>
                         </div>
-                        <div class="cell small-4">
-                            <div>
-                                <label class="checkbox-container" (click)="toggleTag($event, 'DIFFICULT')">
-                                    Difficult
-                                    <input type="checkbox" [checked]="haveTag('DIFFICULT')">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div>
-                                <label class="checkbox-container" (click)="toggleTag($event, 'FREE')">
-                                    Free
-                                    <input type="checkbox" [checked]="haveTag('FREE')">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="cell small-4">
-                            <div>
-                                <label class="checkbox-container" (click)="toggleTag($event, 'CLOSED')">
-                                    Closed
-                                    <input type="checkbox" [checked]="haveTag('CLOSED')">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="cell small-4">
-                            <div>
-                                <label class="checkbox-container" (click)="toggleTag($event, 'PAID')">
-                                    Paid
-                                    <input type="checkbox" [checked]="haveTag('PAID')">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
+                        <div>
+                            <label class="checkbox-container" (click)="toggleTag($event, 'EASY')">
+                                Easy
+                                <input type="checkbox" [checked]="haveTag('EASY')">
+                                <span class="checkmark"></span>
+                            </label>
                         </div>
                     </div>
+                    <div class="cell small-4">
+                        <div>
+                            <label class="checkbox-container" (click)="toggleTag($event, 'DIFFICULT')">
+                                Difficult
+                                <input type="checkbox" [checked]="haveTag('DIFFICULT')">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                        <div>
+                            <label class="checkbox-container" (click)="toggleTag($event, 'FREE')">
+                                Free
+                                <input type="checkbox" [checked]="haveTag('FREE')">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="cell small-4">
+                        <div>
+                            <label class="checkbox-container" (click)="toggleTag($event, 'CLOSED')">
+                                Closed
+                                <input type="checkbox" [checked]="haveTag('CLOSED')">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="cell small-4">
+                        <div>
+                            <label class="checkbox-container" (click)="toggleTag($event, 'PAID')">
+                                Paid
+                                <input type="checkbox" [checked]="haveTag('PAID')">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div [hidden]="!sections.quest" class="cell small-6">
+                Preview: <br/>
+                <div *ngFor="let badge of badges" class="badge-preview">
+                    <img class="badge" appHabboBadge [code]="badge"/>
                 </div>
             </div>
         </div>
     </div>
 </app-content>
 
-<app-title *ngIf="canHavePoll" [title]="'Thread Poll'"></app-title>
-<app-content *ngIf="canHavePoll">
-    <div *ngIf="thread.poll">
-        <em>You can later not edit the poll after creation, make sure it's correct before saving</em>
-        <br/>
-        <label class="checkbox-container">
-            Is poll result public?
-            <input type="checkbox" [(ngModel)]="thread.poll.isPublic">
-            <span class="checkmark"></span>
-        </label>
-        <div class="grid-container full poll-answer">
-            <div class="grid-x">
-                <div class="cell small-11">
-                    <label>Question:</label>
-                    <input [(ngModel)]="thread.poll.question" type="text"
-                           [disabled]="thread.createdAt && !thread.poll.isNew" name="thread-poll-question">
-                </div>
-            </div>
-        </div>
-        <div *ngFor="let answer of thread.poll.answers; let index = index;">
-            <div class="grid-container full poll-answer">
-                <div class="grid-x">
-                    <div class="cell small-11">
-                        <label>Answer #{{index + 1}}</label>
-                        <input [(ngModel)]="answer.label" type="text"
-                               [disabled]="thread.createdAt && !thread.poll.isNew" name="thread-poll-answer">
-                    </div>
-                    <div class="cell small-1 remove-answer" *ngIf="!thread.createdAt && thread.poll.isNew">
-                        <em class="fas fa-trash" (click)="removeAnswer(answer.id)"></em>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <button appButton (click)="addThreadAnswer()" [disabled]="thread.createdAt && !thread.poll.isNew">+Add Answer
-        </button>
-    </div>
-</app-content>
 
-
-<app-editor #editor [content]="thread.content" (onKeyUp)="onKeyUp($event)" (onSave)="saveThread()">
+<app-editor #editor [content]="thread.content" [showMentionSuggestions]="true" (onKeyUp)="onKeyUp($event)"
+            (onSave)="onSave()">
 </app-editor>

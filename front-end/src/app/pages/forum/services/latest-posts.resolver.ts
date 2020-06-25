@@ -8,9 +8,10 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class LatestPostsResolver implements Resolve<LatestPostsPage> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
-    resolve(route: ActivatedRouteSnapshot): Observable<LatestPostsPage> {
+    resolve (route: ActivatedRouteSnapshot): Observable<LatestPostsPage> {
         const page = route.params['page'];
 
         return this._httpService.get(`page/forum/latest-posts/page/${page}`)

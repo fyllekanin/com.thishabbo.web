@@ -12,7 +12,7 @@ import { NotificationService } from 'core/services/notification/notification.ser
 @Component({
     selector: 'app-custom-contact',
     templateUrl: 'contact.component.html',
-    styleUrls: ['contact.component.css']
+    styleUrls: [ 'contact.component.css' ]
 })
 export class ContactComponent extends Page implements OnDestroy {
     notLoggedIn: InfoBoxModel = {
@@ -22,7 +22,7 @@ export class ContactComponent extends Page implements OnDestroy {
     };
     data = new ContactModel();
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Submit'})
+        new TitleTab({ title: 'Submit' })
     ];
 
     constructor (
@@ -47,7 +47,7 @@ export class ContactComponent extends Page implements OnDestroy {
     }
 
     onApply (): void {
-        this._httpService.post('form/contact', {data: this.data})
+        this._httpService.post('form/contact', { data: this.data })
             .subscribe(() => {
                 this._notificationService.sendInfoNotification('Contact posted!');
                 this.data = new ContactModel();

@@ -15,7 +15,7 @@ export class SelectableBadgeItem {
     }
 
     getResource (): string {
-        return `<img src="/rest/resources/images/badges/${this.badgeId}.gif?${this.updatedAt}" />`;
+        return `<img src="/resources/images/badges/${this.badgeId}.gif?${this.updatedAt}" />`;
     }
 }
 

@@ -6,7 +6,7 @@ export class IgnoredCategory {
     @primitive()
     title: string;
 
-    constructor(source: Partial<IgnoredCategory>) {
+    constructor (source: Partial<IgnoredCategory>) {
         ClassHelper.assign(this, source);
     }
 }

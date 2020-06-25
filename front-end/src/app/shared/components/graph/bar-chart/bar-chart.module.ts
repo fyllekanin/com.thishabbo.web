@@ -10,4 +10,5 @@ import { BarChartComponent } from 'shared/components/graph/bar-chart/bar-chart.c
         BarChartComponent
     ]
 })
-export class BarChartModule {}
+export class BarChartModule {
+}

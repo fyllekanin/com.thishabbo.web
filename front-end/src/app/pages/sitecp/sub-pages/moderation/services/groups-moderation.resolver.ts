@@ -8,9 +8,10 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class GroupsModerationResolver implements Resolve<Array<GroupModerate>> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
-    resolve(): Observable<Array<GroupModerate>> {
+    resolve (): Observable<Array<GroupModerate>> {
         return this._httpService.get('sitecp/moderation/groups')
             .pipe(map(data => data.map(res => new GroupModerate(res))));
     }

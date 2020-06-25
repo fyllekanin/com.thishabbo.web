@@ -2,18 +2,20 @@
 
 namespace App\Jobs;
 
-use App\EloquentModels\Shop\Subscription;
-use App\EloquentModels\Shop\UserSubscription;
+use App\Constants\Shop\SubscriptionOptions;
 use App\EloquentModels\User\UserData;
-use App\Helpers\AvatarHelper;
-use App\Helpers\ConfigHelper;
 use App\Helpers\UserHelper;
-use App\Utils\Iterables;
+use App\Repositories\Impl\SubscriptionRepository\SubscriptionDBO;
+use App\Repositories\Repository\AvatarRepository;
+use App\Repositories\Repository\SubscriptionRepository;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class SubscriptionUpdated
@@ -29,60 +31,116 @@ use Illuminate\Queue\SerializesModels;
  * @package App\Jobs
  */
 class SubscriptionUpdated implements ShouldQueue {
-    private $subscriptionId;
+
+    private $myAvatarRepository;
+    private $mySubscriptionRepository;
+
+    private $mySubscriptionId;
 
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /**
-     * SubscriptionUpdated constructor
-     *
-     * @param $subscriptionId
-     */
-    public function __construct($subscriptionId) {
-        $this->subscriptionId = $subscriptionId;
+    public function __construct(int $subscriptionId) {
+        $this->mySubscriptionId = $subscriptionId;
     }
 
     /**
      * Executes the job
+     *
+     * @param  AvatarRepository  $avatarRepository
+     * @param  SubscriptionRepository  $subscriptionRepository
      */
-    public function handle() {
-        $subscription = Subscription::find($this->subscriptionId);
+    public function handle(AvatarRepository $avatarRepository, SubscriptionRepository $subscriptionRepository) {
+        $this->myAvatarRepository = $avatarRepository;
+        $this->mySubscriptionRepository = $subscriptionRepository;
+
+        $subscription = $this->mySubscriptionRepository->getSubscriptionWithId($this->mySubscriptionId);
         if (!$subscription) {
             return;
         }
 
-        $userIds = UserSubscription::where('subscriptionId', $this->subscriptionId)->pluck('userId')->toArray();
+        $userIds = $this->mySubscriptionRepository->getUserIdsWithSubscriptionId($this->mySubscriptionId);
         $this->handleNameColor($subscription, $userIds);
         $this->handleNamePosition($subscription, $userIds);
+        $this->handleUserBar($subscription, $userIds);
 
-        foreach ($userIds as $userId) {
-            AvatarHelper::clearAvatarIfInvalid($userId);
-        }
+        $userIds->filter(
+            function ($userId) {
+                return !$this->myAvatarRepository->isCurrentAvatarValidForUserId($userId);
+            }
+        )
+            ->each(
+                function ($userId) {
+                    $this->myAvatarRepository->makeCurrentAvatarValid($userId);
+                }
+            );
     }
 
-    private function handleNameColor($subscription, $userIds) {
-        if ($subscription->options & ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor) {
+    /**
+     * The job failed to process.
+     *
+     * @param  Exception  $exception
+     *
+     * @return void
+     */
+    public function failed(Exception $exception) {
+        Log::channel('que')->error(
+            '
+        [b]File:[/b] '.$exception->getFile().'#'.$exception->getLine().'
+        
+        [b]Message:[/b]
+'.$exception->getMessage().'
+        '
+        );
+    }
+
+    private function handleNameColor(SubscriptionDBO $subscription, Collection $userIds) {
+        if ($subscription->options & SubscriptionOptions::CUSTOM_NAME_COLOR) {
             return;
         }
 
-        $ids = Iterables::filter($userIds, function ($userId) {
-            return !UserHelper::hasSubscriptionFeature($userId, ConfigHelper::getSubscriptionOptions()->canHaveCustomNameColor);
-        });
-        UserData::whereIn('userId', $ids)->update([
-            'nameColor' => null
-        ]);
+        $ids = $userIds->filter(
+            function ($userId) {
+                return !UserHelper::hasSubscriptionFeature($userId, SubscriptionOptions::CUSTOM_NAME_COLOR);
+            }
+        );
+        UserData::whereIn('userId', $ids)->update(
+            [
+                'nameColor' => null
+            ]
+        );
     }
 
-    private function handleNamePosition($subscription, $userIds) {
-        if ($subscription->options & ConfigHelper::getSubscriptionOptions()->canMoveNamePosition) {
+    private function handleNamePosition(SubscriptionDBO $subscription, Collection $userIds) {
+        if ($subscription->options & SubscriptionOptions::NAME_POSITION) {
             return;
         }
 
-        $ids = Iterables::filter($userIds, function ($userId) {
-            return !UserHelper::hasSubscriptionFeature($userId, ConfigHelper::getSubscriptionOptions()->canMoveNamePosition);
-        });
-        UserData::whereIn('userId', $ids)->update([
-            'namePosition' => 0
-        ]);
+        $ids = $userIds->filter(
+            function ($userId) {
+                return !UserHelper::hasSubscriptionFeature($userId, SubscriptionOptions::NAME_POSITION);
+            }
+        );
+        UserData::whereIn('userId', $ids)->update(
+            [
+                'namePosition' => 0
+            ]
+        );
+    }
+
+    private function handleUserBar(SubscriptionDBO $subscription, Collection $userIds) {
+        if ($subscription->options & SubscriptionOptions::CUSTOM_BAR) {
+            return;
+        }
+
+        $ids = $userIds->filter(
+            function ($userId) {
+                return !UserHelper::hasSubscriptionFeature($userId, SubscriptionOptions::CUSTOM_BAR);
+            }
+        );
+        UserData::whereIn('userId', $ids)->update(
+            [
+                'barColor' => null
+            ]
+        );
     }
 }

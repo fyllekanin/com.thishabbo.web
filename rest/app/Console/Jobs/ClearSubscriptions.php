@@ -2,11 +2,12 @@
 
 namespace App\Console\Jobs;
 
+use App\Constants\User\UserJobEventType;
 use App\EloquentModels\Shop\UserSubscription;
-use App\Helpers\ConfigHelper;
 use App\Jobs\UserUpdated;
 
 class ClearSubscriptions {
+
 
     public function init() {
         $time = time();
@@ -15,9 +16,8 @@ class ClearSubscriptions {
         $userIds = $userSubSql->pluck('userId');
         $userSubSql->delete();
 
-        $clearSubType = ConfigHelper::getUserUpdateTypes()->CLEAR_SUBSCRIPTION;
         foreach ($userIds as $userId) {
-            UserUpdated::dispatch($userId, $clearSubType);
+            UserUpdated::dispatch($userId, UserJobEventType::CLEAR_SUBSCRIPTION);
         }
     }
 }

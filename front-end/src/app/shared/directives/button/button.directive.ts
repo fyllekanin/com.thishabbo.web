@@ -36,7 +36,7 @@ export class ButtonDirective {
             0 2px 0 rgba(0, 0, 0, 0.09)`);
     }
 
-    @HostListener('click', ['$event, $event.target'])
+    @HostListener('click', [ '$event, $event.target' ])
     click () {
         if (this._lastClick < (new Date().getTime() - 1000)) {
             this._lastClick = new Date().getTime();

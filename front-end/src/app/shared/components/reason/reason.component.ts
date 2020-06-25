@@ -9,11 +9,11 @@ import { IReason } from './reason.model';
 export class ReasonComponent extends InnerDialogComponent {
     data: IReason;
 
-    setData(data: IReason) {
+    setData (data: IReason) {
         this.data = data;
     }
 
-    getData(): IReason {
+    getData (): IReason {
         return this.data;
     }
 }

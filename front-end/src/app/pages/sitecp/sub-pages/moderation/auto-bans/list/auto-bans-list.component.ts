@@ -73,7 +73,7 @@ export class AutoBansListComponent extends Page implements OnDestroy {
         this._filterTimer = setTimeout(() => {
             this._service.getData(filter, 1)
                 .subscribe(data => {
-                    this.onData({data: data});
+                    this.onData({ data: data });
                 });
         }, 200);
     }
@@ -125,27 +125,27 @@ export class AutoBansListComponent extends Page implements OnDestroy {
             title: 'Automatic Bans',
             headers: AutoBansListComponent.getTableHeaders(),
             rows: this.getTableRows(),
-            filterConfigs: [new FilterConfig({
+            filterConfigs: [ new FilterConfig({
                 title: 'Filter',
                 placeholder: 'Search for automatic bans...',
                 key: 'filter'
-            })]
+            }) ]
         });
     }
 
     private getTableRows (): Array<TableRow> {
         const actions = [
-            new TableAction({title: 'Edit', value: AutoBansActions.EDIT}),
-            new TableAction({title: 'Delete', value: AutoBansActions.DELETE})
+            new TableAction({ title: 'Edit', value: AutoBansActions.EDIT }),
+            new TableAction({ title: 'Delete', value: AutoBansActions.DELETE })
         ];
 
         return this._data.items.map(item => {
             return new TableRow({
                 id: String(item.autoBanId),
                 cells: [
-                    new TableCell({title: item.title}),
-                    new TableCell({title: String(item.amount)}),
-                    new TableCell({title: AutoBansListComponent.getAmountOfDays(item.banLength)})
+                    new TableCell({ title: item.title }),
+                    new TableCell({ title: String(item.amount) }),
+                    new TableCell({ title: AutoBansListComponent.getAmountOfDays(item.banLength) })
                 ],
                 actions: actions
             });
@@ -164,9 +164,9 @@ export class AutoBansListComponent extends Page implements OnDestroy {
 
     private static getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Title'}),
-            new TableHeader({title: 'Amount'}),
-            new TableHeader({title: 'Ban Length'})
+            new TableHeader({ title: 'Title' }),
+            new TableHeader({ title: 'Amount' }),
+            new TableHeader({ title: 'Ban Length' })
         ];
     }
 }

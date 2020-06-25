@@ -18,7 +18,7 @@ import { HttpClient } from '@angular/common/http';
 export class BBcodeComponent extends Page implements OnDestroy {
     private _bbcode: BBcodeModel = new BBcodeModel();
 
-    @ViewChild('image', {static: false}) imageInput;
+    @ViewChild('image') imageInput;
     tabs: Array<TitleTab> = [];
 
     constructor (
@@ -67,18 +67,18 @@ export class BBcodeComponent extends Page implements OnDestroy {
         form.append('bbcode', JSON.stringify(this._bbcode));
 
         if (this._bbcode.createdAt) {
-            this._httpClient.post(`/rest/api/sitecp/content/bbcodes/${this._bbcode.bbcodeId}`, form)
+            this._httpClient.post(`/api/sitecp/content/bbcodes/${this._bbcode.bbcodeId}`, form)
                 .subscribe((res: any) => {
-                    this.onData({data: new BBcodeModel(res)});
+                    this.onData({ data: new BBcodeModel(res) });
                     this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success!',
                         message: 'BBCode has been saved!'
                     }));
                 }, this._notificationService.failureNotification.bind(this._notificationService));
         } else {
-            this._httpClient.post(`/rest/api/sitecp/content/bbcodes`, form)
+            this._httpClient.post(`/api/sitecp/content/bbcodes`, form)
                 .subscribe((res: any) => {
-                    this.onData({data: new BBcodeModel(res)});
+                    this.onData({ data: new BBcodeModel(res) });
                     this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success!',
                         message: 'BBcode has been created!'
@@ -114,7 +114,7 @@ export class BBcodeComponent extends Page implements OnDestroy {
     }
 
     private onDelete (bbcode: BBcodeModel): void {
-        this._httpClient.delete(`/rest/api/sitecp/content/bbcodes/${bbcode.bbcodeId}`)
+        this._httpClient.delete(`/api/sitecp/content/bbcodes/${bbcode.bbcodeId}`)
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
@@ -129,9 +129,9 @@ export class BBcodeComponent extends Page implements OnDestroy {
         this._bbcode = data.data;
 
         const tabs = [
-            {title: 'Save', value: BBcodeActions.SAVE, condition: true},
-            {title: 'Back', value: BBcodeActions.BACK, condition: true},
-            {title: 'Delete', value: BBcodeActions.DELETE, condition: this._bbcode.createdAt}
+            { title: 'Save', value: BBcodeActions.SAVE, condition: true },
+            { title: 'Back', value: BBcodeActions.BACK, condition: true },
+            { title: 'Delete', value: BBcodeActions.DELETE, condition: this._bbcode.createdAt }
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));

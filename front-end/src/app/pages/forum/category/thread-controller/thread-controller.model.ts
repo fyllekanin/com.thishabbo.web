@@ -3,6 +3,17 @@ import { CategoryParent } from '../category.model';
 import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
 import { ThreadPoll } from '../../thread/thread-poll/thread-poll.model';
 
+export class SlimThreadTemplate {
+    @primitive()
+    name: string;
+    @primitive()
+    content: string;
+
+    constructor (source?: Partial<SlimThreadTemplate>) {
+        ClassHelper.assign(this, source);
+    }
+}
+
 export class ThreadSkeleton {
     @primitive()
     threadId: number;
@@ -18,16 +29,16 @@ export class ThreadSkeleton {
     createdAt: number;
     @primitive()
     template: string;
-    @primitive()
-    contentApproval: boolean;
+    @arrayOf(SlimThreadTemplate)
+    threadTemplates: Array<SlimThreadTemplate> = [];
     @arrayOf(ThreadPrefix)
     prefixes: Array<ThreadPrefix> = [];
     @primitive()
     prefixId: number;
     @arrayOf(String)
     tags: Array<string> = [];
-    @primitive()
-    badge: string;
+    @arrayOf(String)
+    badges: Array<string> = [];
     @primitive()
     roomLink: string;
     @objectOf(ThreadPoll)

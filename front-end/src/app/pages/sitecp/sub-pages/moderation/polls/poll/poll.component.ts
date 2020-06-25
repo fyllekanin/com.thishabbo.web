@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PollAnswerModel, PollModel } from './poll.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
-import { SITECP_BREADCRUMB_ITEM, POLL_LIST_BREADCRUMB_ITEM } from '../../../../sitecp.constants';
+import { POLL_LIST_BREADCRUMB_ITEM, SITECP_BREADCRUMB_ITEM } from '../../../../sitecp.constants';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 
 @Component({
@@ -18,7 +18,7 @@ export class PollComponent extends Page implements OnDestroy {
         new TitleTab({ title: 'Back to list' })
     ];
 
-    constructor(
+    constructor (
         private _router: Router,
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute,
@@ -35,23 +35,23 @@ export class PollComponent extends Page implements OnDestroy {
         });
     }
 
-    onBack(): void {
+    onBack (): void {
         this._router.navigateByUrl('/sitecp/moderation/polls/page/1');
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         this.destroy();
     }
 
-    get question(): string {
+    get question (): string {
         return this._data.question;
     }
 
-    get answers(): Array<PollAnswerModel> {
+    get answers (): Array<PollAnswerModel> {
         return this._data.answers;
     }
 
-    private onData(data: { data: PollModel }): void {
+    private onData (data: { data: PollModel }): void {
         this._data = data.data;
     }
 }

@@ -8,9 +8,10 @@ import { LatestThreadsPage } from '../latest-threads/latest-threads.model';
 @Injectable()
 export class LatestThreadsResolver implements Resolve<LatestThreadsPage> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
-    resolve(route: ActivatedRouteSnapshot): Observable<LatestThreadsPage> {
+    resolve (route: ActivatedRouteSnapshot): Observable<LatestThreadsPage> {
         const page = route.params['page'];
 
         return this._httpService.get(`page/forum/latest-threads/page/${page}`)

@@ -2,12 +2,12 @@ import { Component, ElementRef, EventEmitter, Input, OnDestroy, Output } from '@
 import { Router } from '@angular/router';
 import { Page } from 'shared/page/page.model';
 import { ForumPermissions, SlimThread } from '../forum.model';
-import { IUserProfile } from 'shared/directives/user-profile.directive';
+import { IUserProfile } from 'shared/directives/user-profile/user-profile.directive';
 
 @Component({
     selector: 'app-forum-slim-thread',
     templateUrl: 'slim-thread.component.html',
-    styleUrls: ['slim-thread.component.css']
+    styleUrls: [ 'slim-thread.component.css' ]
 })
 
 export class SlimThreadComponent extends Page implements OnDestroy {
@@ -18,6 +18,7 @@ export class SlimThreadComponent extends Page implements OnDestroy {
     @Input() isChecked: boolean;
 
     lastPostInfo: IUserProfile;
+    pages = [];
 
     constructor (
         private _router: Router,
@@ -42,6 +43,7 @@ export class SlimThreadComponent extends Page implements OnDestroy {
     @Input()
     set thread (thread: SlimThread) {
         this._slimThread = thread || new SlimThread();
+        this.setPages();
         this.lastPostInfo = this._slimThread ? {
             userId: this._slimThread.lastPost.user.userId,
             avatarUpdatedAt: this._slimThread.lastPost.user.avatarUpdatedAt
@@ -91,5 +93,15 @@ export class SlimThreadComponent extends Page implements OnDestroy {
 
     get icon (): string {
         return this._slimThread.icon || 'fas fa-comment-alt';
+    }
+
+    private setPages (): void {
+        if (!this._slimThread.lastPost) {
+            return;
+        }
+        this.pages = [];
+        for (let i = 1; i <= this._slimThread.lastPost.page && i < 6; i++) {
+            this.pages.push(i);
+        }
     }
 }

@@ -2,81 +2,86 @@
 
 namespace App\Http\Controllers\Sitecp\Settings;
 
+use App\Constants\LogType;
+use App\Constants\Permission\CategoryPermissions;
+use App\Constants\SettingsKeys;
 use App\EloquentModels\Page;
-use App\Helpers\ConfigHelper;
 use App\Helpers\PermissionHelper;
-use App\Helpers\SettingsHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
-use App\Models\Logger\Action;
-use App\Services\ForumService;
+use App\Providers\Service\ForumService;
+use App\Repositories\Repository\SettingRepository;
 use App\Utils\Condition;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class PageSettingsController extends Controller {
-    private $settingKeys;
-    private $forumService;
+    private $myForumService;
+    private $mySettingRepository;
 
-    /**
-     * GeneralSettingsController constructor.
-     * Fetch the setting keys and store them in an instance variable
-     *
-     * @param ForumService $forumService
-     */
-    public function __construct(ForumService $forumService) {
+    public function __construct(ForumService $forumService, SettingRepository $settingRepository) {
         parent::__construct();
-        $this->forumService = $forumService;
-        $this->settingKeys = ConfigHelper::getKeyConfig();
+        $this->myForumService = $forumService;
+
+        $this->mySettingRepository = $settingRepository;
     }
 
     public function getHomePageThreads(Request $request) {
         $user = $request->get('auth');
 
-        $categoryIds = json_decode(SettingsHelper::getSettingValue($this->settingKeys->homePageThreads));
-        return response()->json([
-            'categoryIds' => is_array($categoryIds) ? $categoryIds : [],
-            'categories' => $this->forumService->getCategoryTree($user, [], -1)
-        ]);
+        $categoryIds = $this->mySettingRepository->getJsonDecodedValueOfSetting(SettingsKeys::HOME_PAGE_THREADS);
+        return response()->json(
+            [
+                'categoryIds' => is_array($categoryIds) ? $categoryIds : [],
+                'categories' => $this->myForumService->getCategoryTree($user, [], -1)
+            ]
+        );
     }
 
     public function updateHomePageThreads(Request $request) {
         $user = $request->get('auth');
         $data = $request->input('data');
-        $permissions = ConfigHelper::getForumPermissions();
-
         if (!is_array($data)) {
             $data = [];
         }
 
         foreach ($data as $item) {
-            Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, $permissions->canRead, $item), 400,
-                'You do not have access to one or more of the categories');
+            Condition::precondition(
+                !PermissionHelper::haveForumPermission($user->userId, CategoryPermissions::CAN_READ, $item),
+                400,
+                'You do not have access to one or more of the categories'
+            );
         }
 
-        SettingsHelper::createOrUpdateSetting($this->settingKeys->homePageThreads, json_encode($data));
-        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_HOME_PAGE_THREADS);
+        $this->mySettingRepository->createOrUpdate(SettingsKeys::HOME_PAGE_THREADS, json_encode($data));
+        Logger::sitecp($user->userId, $request->ip(), LogType::UPDATED_HOME_PAGE_THREADS);
         return response()->json();
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getPages() {
-        return response()->json(Page::all()->map(function ($page) {
-            return [
-                'pageId' => $page->pageId,
-                'path' => $page->path,
-                'title' => $page->title,
-                'isSystem' => $page->isSystem,
-                'canEdit' => $page->canEdit
-            ];
-        }));
+        return response()->json(
+            Page::all()->map(
+                function ($page) {
+                    return [
+                        'pageId' => $page->pageId,
+                        'path' => $page->path,
+                        'title' => $page->title,
+                        'isSystem' => $page->isSystem,
+                        'canEdit' => $page->canEdit
+                    ];
+                }
+            )
+        );
     }
 
     /**
      * @param $pageId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getPage($pageId) {
         $page = Page::find($pageId);
@@ -86,52 +91,65 @@ class PageSettingsController extends Controller {
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function createPage(Request $request) {
         $user = $request->get('auth');
-        $data = (object)$request->input('data');
+        $data = (object) $request->input('data');
 
         Condition::precondition(!isset($data->path) || empty($data->path), 400, 'Path can not be empty');
         Condition::precondition(!isset($data->title) || empty($data->title), 400, 'Title can not be empty');
         Condition::precondition(!isset($data->content) || empty($data->content), 400, 'Content can not be empty');
-        Condition::precondition(!preg_match('/[a-zA-Z]+/', $data->path), 400,
-            'Path is not valid, it can only be text');
+        Condition::precondition(
+            !preg_match('/[a-zA-Z]+/', $data->path),
+            400,
+            'Path is not valid, it can only be text'
+        );
 
-        $page = new Page([
-            'path' => $data->path,
-            'title' => $data->title,
-            'content' => $data->content
-        ]);
+        $page = new Page(
+            [
+                'path' => $data->path,
+                'title' => $data->title,
+                'content' => $data->content
+            ]
+        );
         $page->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_PAGE, [
-            'title' => $data->title
-        ]);
+        Logger::sitecp(
+            $user->userId,
+            $request->ip(),
+            LogType::CREATED_PAGE,
+            [
+                'title' => $data->title
+            ]
+        );
         return $this->getPage($page->pageId);
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @param         $pageId
+     * @param $pageId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function updatePage(Request $request, $pageId) {
         $user = $request->get('auth');
         $page = Page::find($pageId);
-        $data = (object)$request->input('data');
+        $data = (object) $request->input('data');
 
         Condition::precondition(!$page, 404, 'No page with that ID exists');
         Condition::precondition(!$page->canEdit, 400, 'You can not edit this page');
         Condition::precondition(!isset($data->path) || empty($data->path), 400, 'Path can not be empty');
         Condition::precondition(!isset($data->title) || empty($data->title), 400, 'Title can not be empty');
         Condition::precondition(!isset($data->content) || empty($data->content), 400, 'Content can not be empty');
-        Condition::precondition(!preg_match('/[a-zA-Z]+/', $data->path), 400,
-            'Path is not valid, it can only be text');
+        Condition::precondition(
+            !preg_match('/[a-zA-Z]+/', $data->path),
+            400,
+            'Path is not valid, it can only be text'
+        );
 
         if (!$page->isSystem) {
             $page->path = $data->path;
@@ -140,18 +158,23 @@ class PageSettingsController extends Controller {
         $page->content = $data->content;
         $page->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_PAGE, [
-            'title' => $data->title
-        ]);
+        Logger::sitecp(
+            $user->userId,
+            $request->ip(),
+            LogType::UPDATED_PAGE,
+            [
+                'title' => $data->title
+            ]
+        );
         return response()->json();
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @param         $pageId
+     * @param $pageId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function deletePage(Request $request, $pageId) {
         $user = $request->get('auth');
@@ -163,41 +186,51 @@ class PageSettingsController extends Controller {
         $page->isDeleted = true;
         $page->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_PAGE, [
-            'title' => $page->title
-        ]);
+        Logger::sitecp(
+            $user->userId,
+            $request->ip(),
+            LogType::DELETED_PAGE,
+            [
+                'title' => $page->title
+            ]
+        );
         return response()->json();
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getNavigation() {
         $navigation = null;
         try {
-            $navigation = json_decode(SettingsHelper::getSettingValue($this->settingKeys->navigation));
-        } catch (\Exception $e) {
+            $navigation = $this->mySettingRepository->getJsonDecodedValueOfSetting(SettingsKeys::NAVIGATION);
+        } catch (Exception $e) {
             $navigation = [];
         }
         return response()->json(is_array($navigation) ? $navigation : []);
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function updateNavigation(Request $request) {
         $user = $request->get('auth');
 
         $navigation = json_encode($request->input('navigation'));
-        $oldNavigation = json_decode(SettingsHelper::getSettingValue($this->settingKeys->navigation));
+        $oldNavigation = $this->mySettingRepository->getJsonDecodedValueOfSetting(SettingsKeys::NAVIGATION);
+        $this->mySettingRepository->createOrUpdate(SettingsKeys::NAVIGATION, $navigation);
 
-        SettingsHelper::createOrUpdateSetting($this->settingKeys->navigation, $navigation);
-        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_NAVIGATION, [
-            'oldNavigation' => $oldNavigation,
-            'newNavigation' => $navigation
-        ]);
+        Logger::sitecp(
+            $user->userId,
+            $request->ip(),
+            LogType::UPDATED_NAVIGATION,
+            [
+                'oldNavigation' => $oldNavigation,
+                'newNavigation' => $navigation
+            ]
+        );
         return response()->json();
     }
 }

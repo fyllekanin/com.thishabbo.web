@@ -34,13 +34,13 @@ export class NavigationComponent extends Page implements OnDestroy {
     private _newMainItemAction = 2;
 
     tabs = [
-        new TitleTab({title: 'Save', value: this._saveAction}),
-        new TitleTab({title: 'Back', link: '/sitecp/website-settings'}),
-        new TitleTab({title: 'Create Main Item', value: this._newMainItemAction})
+        new TitleTab({ title: 'Save', value: this._saveAction }),
+        new TitleTab({ title: 'Back', link: '/sitecp/website-settings' }),
+        new TitleTab({ title: 'Create Main Item', value: this._newMainItemAction })
     ];
 
     tableTabs = [
-        new TitleTab({title: 'Add Child'})
+        new TitleTab({ title: 'Add Child' })
     ];
 
     constructor (
@@ -56,7 +56,7 @@ export class NavigationComponent extends Page implements OnDestroy {
         this.addSubscription(activatedRoute.data, this.onData.bind(this));
         breadcrumbService.breadcrumb = new Breadcrumb({
             current: 'Navigation',
-            items: [SITECP_BREADCRUMB_ITEM, WEBSITE_SETTINGS_BREADCRUMB_ITEM]
+            items: [ SITECP_BREADCRUMB_ITEM, WEBSITE_SETTINGS_BREADCRUMB_ITEM ]
         });
     }
 
@@ -67,7 +67,7 @@ export class NavigationComponent extends Page implements OnDestroy {
             this._dialogService.openDialog({
                 title: 'Adding main item',
                 component: this._componentResolver.resolveComponentFactory(NavigationItemComponent),
-                data: {isMainItem: true},
+                data: { isMainItem: true },
                 buttons: [
                     new DialogCloseButton('Close'),
                     new DialogButton({
@@ -108,7 +108,7 @@ export class NavigationComponent extends Page implements OnDestroy {
         this._dialogService.openDialog({
             title: 'Configuring',
             component: this._componentResolver.resolveComponentFactory(NavigationItemComponent),
-            data: {isMainItem: false},
+            data: { isMainItem: false },
             buttons: [
                 new DialogCloseButton('Close'),
                 new DialogButton({
@@ -138,7 +138,7 @@ export class NavigationComponent extends Page implements OnDestroy {
         this._dialogService.openDialog({
             title: 'Configuring',
             component: this._componentResolver.resolveComponentFactory(NavigationItemComponent),
-            data: {isMainItem: item instanceof MainItem, item: item},
+            data: { isMainItem: item instanceof MainItem, item: item },
             buttons: [
                 new DialogCloseButton('Close'),
                 new DialogButton({
@@ -219,7 +219,7 @@ export class NavigationComponent extends Page implements OnDestroy {
     }
 
     private onSave (): void {
-        this._httpService.put('sitecp/content/navigation', {navigation: this._data})
+        this._httpService.put('sitecp/content/navigation', { navigation: this._data })
             .subscribe(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
                     title: 'Success',
@@ -244,30 +244,30 @@ export class NavigationComponent extends Page implements OnDestroy {
 
     private buildTableConfigs (): void {
         const actions = [
-            new TableAction({title: 'Edit', value: NavigationActions.EDIT}),
-            new TableAction({title: 'Move Up', value: NavigationActions.MOVE_UP}),
-            new TableAction({title: 'Move Down', value: NavigationActions.MOVE_DOWN}),
-            new TableAction({title: 'Remove', value: NavigationActions.REMOVE})
+            new TableAction({ title: 'Edit', value: NavigationActions.EDIT }),
+            new TableAction({ title: 'Move Up', value: NavigationActions.MOVE_UP }),
+            new TableAction({ title: 'Move Down', value: NavigationActions.MOVE_DOWN }),
+            new TableAction({ title: 'Remove', value: NavigationActions.REMOVE })
         ];
         this._tableConfigs = this._data.map((item, index) => {
             return new TableConfig({
                 id: index,
                 title: item.label,
                 headers: NavigationComponent.getTableHeaders(),
-                rows: [new TableRow({
+                rows: [ new TableRow({
                     id: item.id,
                     cells: [
-                        new TableCell({title: item.label}),
-                        new TableCell({title: item.isHomePage ? 'Custom Home' : item.url}),
-                        new TableCell({title: `<i class="fas ${item.icon}"></i>`, innerHTML: true})
+                        new TableCell({ title: item.label }),
+                        new TableCell({ title: item.isHomePage ? 'Custom Home' : item.url }),
+                        new TableCell({ title: `<i class="fas ${item.icon}"></i>`, innerHTML: true })
                     ],
                     actions: actions
-                })].concat(item.children.map(child => new TableRow({
+                }) ].concat(item.children.map(child => new TableRow({
                     id: child.id,
                     cells: [
-                        new TableCell({title: child.isDivider ? 'Divider' : child.label}),
-                        new TableCell({title: child.isDivider ? '' : (child.isHomePage ? 'Custom Home' : child.url)}),
-                        new TableCell({title: ''})
+                        new TableCell({ title: child.isDivider ? 'Divider' : child.label }),
+                        new TableCell({ title: child.isDivider ? '' : (child.isHomePage ? 'Custom Home' : child.url) }),
+                        new TableCell({ title: '' })
                     ],
                     actions: actions
                 })))
@@ -277,9 +277,9 @@ export class NavigationComponent extends Page implements OnDestroy {
 
     private static getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Label'}),
-            new TableHeader({title: 'Url'}),
-            new TableHeader({title: 'icon'})
+            new TableHeader({ title: 'Label' }),
+            new TableHeader({ title: 'Url' }),
+            new TableHeader({ title: 'icon' })
         ];
     }
 
@@ -312,7 +312,7 @@ export class NavigationComponent extends Page implements OnDestroy {
 
     private getAllItems (): Array<NavigationItem> {
         return this._data.reduce((prev, curr) => {
-            return prev.concat([<NavigationItem>curr].concat(curr.children));
+            return prev.concat([ <NavigationItem>curr ].concat(curr.children));
         }, []);
     }
 }

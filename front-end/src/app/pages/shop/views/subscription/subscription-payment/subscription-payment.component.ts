@@ -10,10 +10,10 @@ import { INFO_BOX_TYPE, InfoBoxModel } from 'shared/app-views/info-box/info-box.
     selector: 'app-shop-subscriptions-payment',
     templateUrl: 'subscription-payment.component.html',
     styles: [
-            `button {
+        `button {
             width: 100%;
         }`,
-            `.lds-roller div:after {
+        `.lds-roller div:after {
             content: " ";
             display: block;
             position: absolute;
@@ -23,7 +23,7 @@ import { INFO_BOX_TYPE, InfoBoxModel } from 'shared/app-views/info-box/info-box.
             background: #000;
             margin: -3px 0 0 -3px;
         }`,
-            `.lds-roller {
+        `.lds-roller {
             left: calc(50% - 64px);
         }`
     ]
@@ -77,7 +77,7 @@ export class SubscriptionPaymentComponent extends InnerDialogComponent {
             clientId: 'AbqW_Z73zTKh4ABcSB3tvfn544vYNh3a0DuJUNauSr7UpbgSxjkzEHUYjb8I28j_f3wT96a4RSY648ju',
             createOrderOnClient: () => <ICreateOrderRequest>{
                 intent: 'CAPTURE',
-                purchase_units: [{
+                purchase_units: [ {
                     reference_id: String(this._data.subscriptionId),
                     amount: {
                         currency_code: 'GBP',
@@ -89,7 +89,7 @@ export class SubscriptionPaymentComponent extends InnerDialogComponent {
                             }
                         }
                     },
-                    items: [{
+                    items: [ {
                         name: this._data.title,
                         quantity: '1',
                         category: 'DIGITAL_GOODS',
@@ -97,8 +97,8 @@ export class SubscriptionPaymentComponent extends InnerDialogComponent {
                             currency_code: 'GBP',
                             value: String(this._data.pounds)
                         }
-                    }]
-                }]
+                    } ]
+                } ]
             },
             advanced: {
                 commit: 'true'

@@ -2,23 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\EloquentModels\Forum\Category;
-use App\Helpers\ConfigHelper;
-use App\Helpers\DataHelper;
+use App\Constants\CategoryOptions;
+use App\Constants\GithubAuth;
+use App\Constants\LogType;
 use App\Http\Controllers\Forum\Thread\ThreadCrudController;
 use App\Logger;
-use App\Models\Logger\Action;
+use App\Repositories\Repository\CategoryRepository;
 use App\Utils\Condition;
+use App\Utils\CurlBuilder;
 use App\Views\BugReportView;
 use App\Views\ContactApplicationView;
 use App\Views\JobApplicationView;
 use Illuminate\Http\Request;
 
 class FormController extends Controller {
+    private $myCategoryRepository;
+
+    public function __construct(CategoryRepository $categoryRepository) {
+        parent::__construct();
+        $this->myCategoryRepository = $categoryRepository;
+    }
 
     public function createApplication(Request $request, ThreadCrudController $threadCrudController) {
         $user = $request->get('auth');
-        $data = (object)$request->input('data');
+        $data = (object) $request->input('data');
 
         Condition::precondition(!$user || $user->userId == 0, 400, 'You need to be logged in to apply!');
         Condition::precondition(!isset($data->habbo) || empty($data->habbo), 400, 'A Habbo needs to be set!');
@@ -29,20 +36,20 @@ class FormController extends Controller {
         Condition::precondition(!preg_match('/[a-zA-Z0-9]+#[0-9]{4}/i', $data->discord), 400, 'Discord format must be name#xxxx!');
 
         $threadSkeleton = JobApplicationView::of($data);
-        $jobCategories = Category::isJobCategory()->get();
+        $jobCategories = $this->myCategoryRepository->getCategoriesWithOption(CategoryOptions::JOB_APPLICATIONS_GO_HERE);
 
         foreach ($jobCategories as $category) {
             $threadSkeleton->categoryId = $category->categoryId;
             $threadCrudController->doThread($user, null, $threadSkeleton, null, true);
         }
 
-        Logger::user($user->userId, $request->ip(), Action::CREATED_APPLICATION);
+        Logger::user($user->userId, $request->ip(), LogType::CREATED_APPLICATION);
         return response()->json();
     }
 
     public function createContact(Request $request, ThreadCrudController $threadCrudController) {
         $user = $request->get('auth');
-        $data = (object)$request->input('data');
+        $data = (object) $request->input('data');
 
         Condition::precondition(!$user || $user->userId == 0, 400, 'You need to be logged in to apply!');
         Condition::precondition(!isset($data->habbo) || empty($data->habbo), 400, 'A Habbo needs to be set!');
@@ -50,20 +57,20 @@ class FormController extends Controller {
         Condition::precondition(!isset($data->content) || empty($data->content), 400, 'You need to write why you\'re contacting us!');
 
         $threadSkeleton = ContactApplicationView::of($data);
-        $jobCategories = Category::isContactCategory()->get();
+        $jobCategories = $this->myCategoryRepository->getCategoriesWithOption(CategoryOptions::CONTACT_POSTS_GO_HERE);
 
         foreach ($jobCategories as $category) {
             $threadSkeleton->categoryId = $category->categoryId;
             $threadCrudController->doThread($user, null, $threadSkeleton, null, true);
         }
 
-        Logger::user($user->userId, $request->ip(), Action::CREATED_CONTACT);
+        Logger::user($user->userId, $request->ip(), LogType::CREATED_CONTACT);
         return response()->json();
     }
 
     public function createBugReport(Request $request) {
         $user = $request->get('auth');
-        $data = (object)$request->input('data');
+        $data = (object) $request->input('data');
 
         Condition::precondition(!$user || $user->userId == 0, 400, 'You need to be logged in to report a bug!');
         Condition::precondition(!isset($data->title) || empty($data->title), 400, 'You must set a title for the bug!');
@@ -75,22 +82,14 @@ class FormController extends Controller {
 
         $postFields = json_encode(BugReportView::of($user, $data));
 
-        $githubSettings = ConfigHelper::getGithubSettings();
+        $owner = GithubAuth::OWNER;
+        $repo = GithubAuth::REPOSITORY;
+        $auth = 'Authorization: Token '.GithubAuth::TOKEN;
 
-        $owner = $githubSettings->owner;
-        $repo = $githubSettings->repository;
-        $token = $githubSettings->token;
-
-        $auth = 'Authorization: Token ' . $token;
-
-        $curl = DataHelper::getBasicCurl('https://api.github.com/repos/' . $owner . '/' . $repo . '/issues');
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $auth));
-        curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $postFields);
-
-        $data = curl_exec($curl);
-        curl_close($curl);
-
-        return $data;
+        return CurlBuilder::newBuilder("https://api.github.com/repos/{$owner}/{$repo}/issues")
+            ->withHeaders(['Content-Type: application/json', $auth])
+            ->asPostMethod()
+            ->withBody($postFields)
+            ->exec();
     }
 }

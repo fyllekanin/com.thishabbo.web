@@ -30,9 +30,9 @@ export class HomePageThreadsComponent extends Page implements OnDestroy {
     items: Array<SelectItem> = [];
     value: SelectItem = null;
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Save', value: HomePageThreadsAction.SAVE}),
-        new TitleTab({title: 'Add Item', value: HomePageThreadsAction.ADD}),
-        new TitleTab({title: 'Back', link: '/sitecp/website-settings'})
+        new TitleTab({ title: 'Save', value: HomePageThreadsAction.SAVE }),
+        new TitleTab({ title: 'Add Item', value: HomePageThreadsAction.ADD }),
+        new TitleTab({ title: 'Back', link: '/sitecp/website-settings' })
     ];
 
     constructor (
@@ -83,7 +83,7 @@ export class HomePageThreadsComponent extends Page implements OnDestroy {
     }
 
     private onSave (): void {
-        this._httpService.put('sitecp/content/home-page-threads', {data: this._data.categoryIds})
+        this._httpService.put('sitecp/content/home-page-threads', { data: this._data.categoryIds })
             .subscribe(() => {
                 this._notificationService.sendInfoNotification('Categories set!');
             }, this._notificationService.failureNotification.bind(this._notificationService));
@@ -118,21 +118,22 @@ export class HomePageThreadsComponent extends Page implements OnDestroy {
     }
 
     private getTableRows (): Array<TableRow> {
-        return this._data.categories.filter(category => this._data.categoryIds.indexOf(category.categoryId) > -1)
+        const items = ArrayHelper.flatCategories(this._data.categories, '');
+        return items.filter(category => this._data.categoryIds.indexOf(category.categoryId) > -1)
             .map(category => new TableRow({
                 id: category.categoryId.toString(),
                 cells: [
-                    new TableCell({title: category.title})
+                    new TableCell({ title: category.title })
                 ],
                 actions: [
-                    new TableAction({title: 'Remove'})
+                    new TableAction({ title: 'Remove' })
                 ]
             }));
     }
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Category'})
+            new TableHeader({ title: 'Category' })
         ];
     }
 }

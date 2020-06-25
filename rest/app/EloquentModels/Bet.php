@@ -9,6 +9,7 @@ use App\EloquentModels\User\UserBet;
  * @property mixed betId
  */
 class Bet extends DeletableModel {
+
     protected $table = 'bets';
     protected $primaryKey = 'betId';
     protected $fillable = ['name', 'betCategoryId', 'leftSide', 'rightSide', 'isFinished', 'result', 'isSuspended', 'displayOrder'];

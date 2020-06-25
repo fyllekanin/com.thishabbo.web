@@ -4,11 +4,11 @@ import { Component, Input, ViewChild } from '@angular/core';
 @Component({
     selector: 'app-content',
     templateUrl: 'content.component.html',
-    styleUrls: ['content.component.css', '../title/title.component.css']
+    styleUrls: [ 'content.component.css', '../title/title.component.css' ]
 })
 
 export class ContentComponent {
-    @ViewChild('content', {static: true}) contentEle;
+    @ViewChild('content', { static: true }) contentEle;
     topBorder: TitleTopBorder = '';
 
     @Input() minHeight = null;

@@ -1,0 +1,1 @@
+{"topic":"Add proxy.conf.json","type":"Bug","body":"The proxy.conf.json was missing in the project, was not possible to start the front-end"}

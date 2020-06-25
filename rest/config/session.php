@@ -122,7 +122,7 @@ return [
     |
     */
 
-    'cookie' => str_slug(CONST_APP_NAME, '_') . '_session',
+    'cookie' => CONST_APP_NAME . '_session',
 
     /*
     |--------------------------------------------------------------------------

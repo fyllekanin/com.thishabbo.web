@@ -13,7 +13,6 @@ import { getPostTools, getStatsBoxes, getThreadTools, ThreadActions, ThreadPage 
 import { Component, ComponentFactoryResolver, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { EditorAction } from 'shared/components/editor/editor.model';
-import { NotificationMessage } from 'shared/app-views/global-notification/global-notification.model';
 import { Breadcrumb, BreadcrumbItem } from 'core/services/breadcrum/breadcrum.model';
 import { FORUM_BREADCRUM_ITEM } from '../forum.constants';
 import { DialogCloseButton } from 'shared/app-views/dialog/dialog.model';
@@ -34,12 +33,12 @@ import { INFO_BOX_TYPE, InfoBoxModel } from 'shared/app-views/info-box/info-box.
     styleUrls: [ 'thread.component.css' ]
 })
 export class ThreadComponent extends Page implements OnDestroy {
-    private _threadPage: ThreadPage = new ThreadPage();
+    private _threadPage = new ThreadPage();
     private _isToolsVisible = false;
     private _multiQuotedPosts: Array<PostModel> = [];
     private _quoteRegex = /\[quotepost([\s\S]*)quotepost\]/g;
 
-    @ViewChild('editor', { static: false }) editor: EditorComponent;
+    @ViewChild('editor') editor: EditorComponent;
 
     isMiniProfileDisabled = false;
     fixedTools: FixedTools;
@@ -134,12 +133,11 @@ export class ThreadComponent extends Page implements OnDestroy {
     }
 
     onUpdatePost (postModel: PostModel): void {
-        this._httpService.put(`forum/thread/post/${postModel.postId}`, { post: postModel })
-            .subscribe(res => {
-                this.onSuccessUpdate(res);
-                AutoSaveHelper.remove(AutoSave.POST_EDIT, postModel.postId);
-            }, error => {
-                this._notificationService.failureNotification(error);
+        this._service.updatePost(postModel)
+            .subscribe(updatedModel => {
+                this._threadPage.threadPosts = this._threadPage.threadPosts.map(post => {
+                    return post.postId === updatedModel.postId ? updatedModel : post;
+                });
             });
     }
 
@@ -271,12 +269,8 @@ ${postContent}[/quotepost]\n\r`;
     private doPost (toggleThread: boolean): void {
         const threadId = this._threadPage ? this._threadPage.threadId : 0;
         const content = this.editor ? this.editor.getEditorValue() : '';
-
-        this._httpService.post(`forum/thread/${threadId}`, { content: content, toggleThread: toggleThread })
-            .subscribe(post => {
-                this.onSuccessPost(toggleThread, post);
-                this._notificationService.sendInfoNotification('Your post has been created!');
-            }, this._notificationService.failureNotification.bind(this._notificationService));
+        this._service.createPost(threadId, content, toggleThread)
+            .subscribe(post => this.onSuccessPost(toggleThread, post));
     }
 
     private onOpenAutoSave (): void {
@@ -294,35 +288,27 @@ ${postContent}[/quotepost]\n\r`;
         }
     }
 
-    private onSuccessUpdate (postModel: PostModel): void {
-        this._notificationService.sendNotification(new NotificationMessage({
-            title: 'Success',
-            message: 'Post updated!'
-        }));
-        this._threadPage.threadPosts = this._threadPage.threadPosts.map(post => {
-            return post.postId === postModel.postId ? new PostModel(postModel) : post;
-        });
-    }
-
     private onSuccessPost (toggleThread: boolean, post: PostModel): void {
         this.editor.content = '';
+        this._notificationService.sendInfoNotification('Your post has been created!');
         AutoSaveHelper.remove(AutoSave.POST, this._threadPage.threadId);
-        if (this._threadPage.contentApproval) {
+        if (!post.isApproved) {
             this._dialogService.openDialog({
                 title: 'Your post is awaiting approval!',
                 content: `Your post is placed under the category of "unapproved" posts,
                     it will be waiting approval from a moderator before it isvisible.`,
                 buttons: [ new DialogCloseButton('Close') ]
             });
+            return;
+        }
+
+        if (this._threadPage.page < this._threadPage.total) {
+            const url = `/forum/thread/${this._threadPage.threadId}/page/${this._threadPage.total}?scrollTo=post-${post.postId}`;
+            this._router.navigateByUrl(url);
         } else {
-            if (this._threadPage.page < this._threadPage.total) {
-                const url = `/forum/thread/${this._threadPage.threadId}/page/${this._threadPage.total}?scrollTo=post-${post.postId}`;
-                this._router.navigateByUrl(url);
-            } else {
-                this._threadPage.threadPosts.push(new PostModel(post));
-                this._threadPage.isOpen = toggleThread ? !this._threadPage.isOpen : this._threadPage.isOpen;
-                this.buildEditorButtons();
-            }
+            this._threadPage.threadPosts.push(post);
+            this._threadPage.isOpen = toggleThread ? !this._threadPage.isOpen : this._threadPage.isOpen;
+            this.buildEditorButtons();
         }
     }
 
@@ -330,12 +316,13 @@ ${postContent}[/quotepost]\n\r`;
         this._threadPage = data.data;
         this._threadPage.parents.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'displayOrder'));
         this._threadPage.threadPosts.sort(ArrayHelper.sortByPropertyAsc.bind(this, 'postId'));
+        const byUser = this._activatedRoute.params['postedByUser'] ? `/${this._activatedRoute.params['postedByUser']}` : '';
         this.pagination = new PaginationModel({
             total: this._threadPage.total,
             page: this._threadPage.page,
-            url: `/forum/thread/${this._threadPage.threadId}/page/:page`
+            url: `/forum/thread/${this._threadPage.threadId}/page/:page` + byUser
         });
-        this.stats = getStatsBoxes(this._threadPage);
+        this.stats = getStatsBoxes(this._threadPage, this.onMarkBadge.bind(this));
         this.setPrefix();
         this.createOrUpdateTabs();
 
@@ -449,6 +436,14 @@ ${postContent}[/quotepost]\n\r`;
         }
 
         this.editorButtons = buttons;
+    }
+
+    private onMarkBadge (): void {
+        this._service.markBadgeCompleted(this._threadPage.badges).subscribe(() => {
+            this._notificationService.sendInfoNotification('Badge(s) completed!');
+            this._threadPage.isBadgesCompleted = true;
+            this.stats = getStatsBoxes(this.thread, this.onMarkBadge.bind(this));
+        });
     }
 
     private showThreadPosters (): void {

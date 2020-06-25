@@ -15,6 +15,8 @@
         </div>
         <div class="cell small-12">
             <div class="wrapper-margin-x">
+                <app-title [title]="'Tools'" [isStandalone]="true" [top]="null" [tabs]="tabs"
+                           (onTabClick)="onTabClick($event)"></app-title>
                 <div *ngFor="let post of posts; trackBy: trackPosts; let first = first; let index = index;"
                      class="post-{{post.postId}}"
                      [ngClass]="!post.isApproved ? 'opacity' : ''">
@@ -22,8 +24,6 @@
                             [checkboxValue]="post.isSelected"
                             [checkbox]="first ? pagination.page > 1 : (forumPermissions.canDeletePosts || forumPermissions.canApprovePosts)"
                             [title]="getPostTitle(post, index)"
-                            [tabs]="first ? tabs : null"
-                            (onTabClick)="onTabClick($event)"
                             (onCheckboxChange)="onCheckboxChange(post)">
                     </app-title>
                     <app-content>
@@ -44,8 +44,8 @@
                 <div *ngIf="canPost">
                     <div class="new-post-editor">
                         <app-editor #editor
-                                    [subTitle]="subTitle"
                                     [buttons]="editorButtons"
+                                    [showMentionSuggestions]="true"
                                     (onTabClick)="onButtonClick($event)"
                                     (onKeyUp)="onKeyUp($event)">
                         </app-editor>
@@ -69,7 +69,7 @@
                         No current readers!
                     </span>
                 </app-content>
-                <app-title [title]="'Last 20 users to read this thread'"></app-title>
+                <app-title [title]="'Users that have read this thread'"></app-title>
                 <app-content>
                     <span *ngFor="let reader of thread.readers; let index = index;">{{index > 0 ? ', ' : ''}}
                         <app-user-link [user]="reader.user" [attr.tooltip]="reader.timeAgo"

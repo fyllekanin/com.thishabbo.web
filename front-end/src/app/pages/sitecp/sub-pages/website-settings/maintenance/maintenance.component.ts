@@ -18,10 +18,10 @@ import { MaintenanceActions, MaintenanceModel } from './maintenance.model';
 export class MaintenanceComponent extends Page implements OnDestroy {
     private _maintenanceModel: MaintenanceModel = new MaintenanceModel();
 
-    @ViewChild('editor', {static: true}) editor: EditorComponent;
+    @ViewChild('editor', { static: true }) editor: EditorComponent;
     buttons: Array<EditorAction> = [
-        new EditorAction({title: 'Save', value: MaintenanceActions.SAVE, saveCallback: this.onSave.bind(this) }),
-        new EditorAction({title: 'Back', value: MaintenanceActions.BACK})
+        new EditorAction({ title: 'Save', value: MaintenanceActions.SAVE, saveCallback: this.onSave.bind(this) }),
+        new EditorAction({ title: 'Back', value: MaintenanceActions.BACK })
     ];
 
     constructor (
@@ -66,14 +66,14 @@ export class MaintenanceComponent extends Page implements OnDestroy {
         this._maintenanceModel = data.data;
     }
 
-    private onSave(): void {
+    private onSave (): void {
         this._maintenanceModel.content = this.editor.getEditorValue();
-                this._httpService.put('sitecp/content/maintenance', {maintenance: this._maintenanceModel})
-                    .subscribe(() => {
-                        this._notificationService.sendNotification(new NotificationMessage({
-                            title: 'Success',
-                            message: this._maintenanceModel.content.length > 0 ? 'Maintenance turned on' : 'Maintenance turned off'
-                        }));
-                    }, this._notificationService.failureNotification.bind(this._notificationService));
+        this._httpService.put('sitecp/content/maintenance', { maintenance: this._maintenanceModel })
+            .subscribe(() => {
+                this._notificationService.sendNotification(new NotificationMessage({
+                    title: 'Success',
+                    message: this._maintenanceModel.content.length > 0 ? 'Maintenance turned on' : 'Maintenance turned off'
+                }));
+            }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 }

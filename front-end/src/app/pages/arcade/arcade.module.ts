@@ -45,4 +45,5 @@ import { UserLinkModule } from 'shared/components/user/user-link.module';
     ]
 })
 
-export class ArcadeModule {}
+export class ArcadeModule {
+}

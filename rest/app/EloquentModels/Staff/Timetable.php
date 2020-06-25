@@ -1,4 +1,6 @@
-<?php /** @noinspection ALL */
+<?php /**
+ * @noinspection ALL
+ */
 
 namespace App\EloquentModels\Staff;
 
@@ -8,6 +10,8 @@ use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
+ *
+ *
  * @property mixed timetableId
  * @property mixed hour
  * @property mixed userId
@@ -16,7 +20,6 @@ use Illuminate\Database\Eloquent\Builder;
  * @property mixed day
  */
 class Timetable extends DeletableModel {
-
     protected $table = 'timetable';
     protected $primaryKey = 'timetableId';
     protected $fillable = ['userId', 'day', 'hour', 'isPerm', 'type', 'eventId', 'isActive', 'link'];
@@ -66,7 +69,6 @@ class Timetable extends DeletableModel {
             'description' => $this->timetableData->description,
             'createdAt' => $this->timetableData->createdAt->timestamp
         ] : [];
-
     }
 
     public function scopeIsActive($query) {
@@ -85,5 +87,4 @@ class Timetable extends DeletableModel {
     public function scopeEvents(Builder $query) {
         return $query->where('type', '>', 0);
     }
-
 }

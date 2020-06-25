@@ -1,4 +1,3 @@
-
 export enum NavigationActions {
     REMOVE,
     MOVE_UP,

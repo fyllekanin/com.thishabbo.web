@@ -5,6 +5,7 @@ namespace App\EloquentModels\User;
 use App\EloquentModels\Models\DeletableModel;
 
 class UserBet extends DeletableModel {
+
     protected $table = 'user_bets';
     protected $primaryKey = 'userBetId';
     protected $fillable = ['userId', 'betId', 'leftSide', 'rightSide', 'amount'];

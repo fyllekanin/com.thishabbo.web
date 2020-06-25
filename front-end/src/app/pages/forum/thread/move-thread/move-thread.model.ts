@@ -8,7 +8,7 @@ export class MoveThreadCategory {
     @arrayOf(MoveThreadCategory)
     children: Array<MoveThreadCategory> = [];
 
-    constructor(source: Partial<MoveThreadCategory>) {
+    constructor (source: Partial<MoveThreadCategory>) {
         ClassHelper.assign(this, source);
     }
 }

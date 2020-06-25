@@ -17,21 +17,32 @@ import { AutoSave } from '../../forum.model';
 import { ThreadAnswer, ThreadPoll } from '../../thread/thread-poll/thread-poll.model';
 import { TitleTab } from 'shared/app-views/title/title.model';
 import { FORUM_BREADCRUM_ITEM } from '../../forum.constants';
+import { ContentTab } from 'shared/app-views/content-tabs/content-tabs.model';
 
 @Component({
     selector: 'app-forum-thread-controller',
     templateUrl: 'thread-controller.component.html',
-    styleUrls: ['thread-controller.component.css']
+    styleUrls: [ 'thread-controller.component.css' ]
 })
 
 export class ThreadControllerComponent extends Page implements OnDestroy {
     private _data: ThreadSkeleton = new ThreadSkeleton();
     thumbnailLoaded;
 
-    @ViewChild('editor', {static: true}) editor: EditorComponent;
-    @ViewChild('file', {static: false}) fileInput;
+    @ViewChild('editor', { static: true }) editor: EditorComponent;
+    @ViewChild('file') fileInput;
 
     tabs: Array<TitleTab> = [];
+    badgeCodes = '';
+    badges: Array<string> = [];
+
+    contentTabs: Array<ContentTab> = [];
+    sections = {
+        details: true,
+        poll: false,
+        quest: false,
+        thumbnail: false
+    };
 
     constructor (
         private _dialogService: DialogService,
@@ -65,7 +76,7 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
                 }
                 break;
             case ThreadControllerActions.SAVE:
-                this.saveThread();
+                this.onSave();
                 break;
             case ThreadControllerActions.AUTO_SAVE:
                 this.onOpenAutoSave();
@@ -82,11 +93,17 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
 
     toggleTag ($event, tag: string): void {
         $event.preventDefault();
+
         if (this.haveTag(tag)) {
             this._data.tags = this._data.tags.filter(t => t !== tag);
         } else {
             this._data.tags.push(tag);
         }
+    }
+
+    onBadgeCodesChange () {
+        this.badges = [];
+        this.badges = this.badgeCodes.split(',').map(code => code.trim());
     }
 
     onKeyUp (content: string): void {
@@ -99,7 +116,7 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
     }
 
     onPollToggle (): void {
-        this._data.poll = !this._data.poll ? new ThreadPoll({isNew: true}) : null;
+        this._data.poll = !this._data.poll ? new ThreadPoll({ isNew: true }) : null;
         if (this._data.poll) {
             this.addThreadAnswer();
             this.addThreadAnswer();
@@ -110,29 +127,35 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
         this._data.poll.answers.push(new ThreadAnswer());
     }
 
-    saveThread (): void {
+    onSave (): void {
         this._data.content = this.editor.getEditorValue();
         const form = new FormData();
-        if (this._data.template !== CategoryTemplates.DEFAULT && this.fileInput.nativeElement.files) {
+        if (this._data.template === CategoryTemplates.QUEST && this.fileInput.nativeElement.files) {
             const file = this.fileInput.nativeElement.files[0];
             form.append('thumbnail', file);
         }
+        this._data.badges = this.badges;
         form.append('thread', JSON.stringify(this._data));
         if (!this.isNew) {
-            this._httpClient.post(`rest/api/forum/thread/update/${this._data.threadId}`, form)
+            this._httpClient.post(`api/forum/thread/update/${this._data.threadId}`, form)
                 .subscribe(res => {
                     this.onSuccessUpdate(res);
                 }, error => {
                     this._notificationService.failureNotification(error);
                 });
         } else {
-            this._httpClient.post('rest/api/forum/thread', form)
-                .subscribe((res: { threadId: number }) => {
+            this._httpClient.post('api/forum/thread', form)
+                .subscribe((res: { threadId: number, isApproved: boolean }) => {
                     this.onSuccessCreate(res);
                 }, error => {
                     this._notificationService.failureNotification(error);
                 });
         }
+    }
+
+    onContentTabClick (item: ContentTab): void {
+        Object.keys(this.sections).forEach(key => this.sections[key] = false);
+        this.sections[item.label.toLowerCase()] = true;
     }
 
     get thread (): ThreadSkeleton {
@@ -145,40 +168,20 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
             `Creating New Thread: ${this._data.title}`;
     }
 
-    get badge (): string {
-        return this._data.badge;
-    }
-
-    set badge (value: string) {
-        this._data.badge = value;
-    }
-
     get isNew (): boolean {
         return !Boolean(this._data && this._data.createdAt);
     }
 
     get shouldHaveThumbnail (): boolean {
-        return CategoryTemplates.DEFAULT !== this._data.template;
+        return CategoryTemplates.QUEST === this._data.template;
     }
 
     get isQuestTemplate (): boolean {
         return CategoryTemplates.QUEST === this._data.template;
     }
 
-    get badgeUrl (): string {
-        return this._data.badge ? `https://habboo-a.akamaihd.net/c_images/album1584/${this._data.badge}.gif` : '';
-    }
-
     get thumbnailUrl (): string {
-        return `/rest/resources/images/thumbnails/${this._data.threadId}.gif`;
-    }
-
-    get canHavePoll (): boolean {
-        return this._data.canHavePoll;
-    }
-
-    get badeHaveError (): boolean {
-        return Boolean(this._data.badge && this._data.badge.match(new RegExp(/[^A-Za-z0-9]+/)));
+        return `/resources/images/thumbnails/${this._data.threadId}.gif`;
     }
 
     private onOpenAutoSave (): void {
@@ -191,14 +194,24 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
 
     private onData (data: { data: ThreadSkeleton }): void {
         this._data = data.data;
+        this.badgeCodes = this._data.badges.join(',');
+        this.badges = this._data.badges;
         this.setPrefix();
         this.setBreadcrumb();
 
         this.tabs = [
-            new TitleTab({title: data.data.createdAt ? 'Save' : 'Create', value: ThreadControllerActions.SAVE}),
-            new TitleTab({title: 'Back', value: ThreadControllerActions.BACK}),
-            new TitleTab({title: 'Toggle Poll', value: ThreadControllerActions.TOGGLE_POLL})
+            new TitleTab({ title: data.data.createdAt ? 'Save' : 'Create', value: ThreadControllerActions.SAVE }),
+            new TitleTab({ title: 'Back', value: ThreadControllerActions.BACK }),
+            new TitleTab({ title: 'Toggle Poll', value: ThreadControllerActions.TOGGLE_POLL })
         ];
+
+        this.contentTabs = [
+            { label: 'Details', isActive: true, condition: true },
+            { label: 'Poll', isActive: false, condition: this._data.canHavePoll },
+            { label: 'Quest', isActive: false, condition: this.isQuestTemplate },
+            { label: 'Thumbnail', isActive: false, condition: this.isQuestTemplate }
+        ].filter(item => item.condition)
+            .map(item => new ContentTab(item.label, item.isActive));
 
         if (this._data.poll || !this._data.canHavePoll) {
             this.tabs = this.tabs.filter(button => button.value !== ThreadControllerActions.TOGGLE_POLL);
@@ -213,15 +226,15 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
     }
 
     private setBreadcrumb (): void {
-        const threadCrumb = this.isNew ? [] : [new BreadcrumbItem({
+        const threadCrumb = this.isNew ? [] : [ new BreadcrumbItem({
             title: this._data.title,
             url: `/forum/thread/${this._data.threadId}/page/1`
-        })];
+        }) ];
 
         this._data.parents.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'displayOrder'));
         this._breadcrumbService.breadcrumb = new Breadcrumb({
             current: this._data.threadId > 0 ? 'Editing' : 'New',
-            items: [FORUM_BREADCRUM_ITEM].concat(this._data.parents.map(parent => new BreadcrumbItem({
+            items: [ FORUM_BREADCRUM_ITEM ].concat(this._data.parents.map(parent => new BreadcrumbItem({
                 title: parent.title,
                 url: `/forum/category/${parent.categoryId}/page/1`
             })).concat(threadCrumb))
@@ -243,9 +256,9 @@ export class ThreadControllerComponent extends Page implements OnDestroy {
         }));
     }
 
-    private onSuccessCreate (data: { threadId: number }): void {
+    private onSuccessCreate (data: { threadId: number, isApproved: boolean }): void {
         AutoSaveHelper.remove(AutoSave.THREAD, this._data.categoryId);
-        if (this._data.contentApproval) {
+        if (!data.isApproved) {
             this._dialogService.openDialog({
                 title: 'You thread is currently awaiting approval!',
                 content: `Your thread is placed under the category of "unapproved" threads,

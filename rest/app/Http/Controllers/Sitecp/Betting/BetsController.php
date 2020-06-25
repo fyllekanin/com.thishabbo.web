@@ -2,39 +2,35 @@
 
 namespace App\Http\Controllers\Sitecp\Betting;
 
+use App\Constants\LogType;
 use App\EloquentModels\Bet;
 use App\EloquentModels\BetCategory;
 use App\EloquentModels\User\UserBet;
-use App\Helpers\DataHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
-use App\Models\Logger\Action;
-use App\Services\CreditsService;
+use App\Providers\Service\CreditsService;
 use App\Utils\Condition;
+use App\Utils\PaginationUtil;
 use App\Utils\Value;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use stdClass;
 
 class BetsController extends Controller {
-    private $creditsService;
+    private $myCreditsService;
 
-    /**
-     * BetsController constructor.
-     *
-     * @param CreditsService $creditsService
-     */
-    public function __construct (CreditsService $creditsService) {
+    public function __construct(CreditsService $creditsService) {
         parent::__construct();
-        $this->creditsService = $creditsService;
+        $this->myCreditsService = $creditsService;
     }
 
     /**
-     * @param Request $request
-     * @param         $betId
+     * @param  Request  $request
+     * @param $betId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function suspendBet (Request $request, $betId) {
+    public function suspendBet(Request $request, $betId) {
         $user = $request->get('auth');
         $bet = Bet::find($betId);
         Condition::precondition(!$bet, 404, 'The specific bet do not exist');
@@ -43,19 +39,21 @@ class BetsController extends Controller {
         $bet->isSuspended = true;
         $bet->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::SUSPENDED_BET, [
+        Logger::sitecp(
+            $user->userId, $request->ip(), LogType::SUSPENDED_BET, [
             'bet' => $bet->name
-        ], $bet->betId);
+        ], $bet->betId
+        );
         return response()->json();
     }
 
     /**
-     * @param Request $request
-     * @param         $betId
+     * @param  Request  $request
+     * @param $betId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function unsuspendBet (Request $request, $betId) {
+    public function unsuspendBet(Request $request, $betId) {
         $user = $request->get('auth');
         $bet = Bet::find($betId);
         Condition::precondition(!$bet, 404, 'The specific bet do not exist');
@@ -64,19 +62,21 @@ class BetsController extends Controller {
         $bet->isSuspended = false;
         $bet->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::UNSUSPENDED_BET, [
+        Logger::sitecp(
+            $user->userId, $request->ip(), LogType::UNSUSPENDED_BET, [
             'bet' => $bet->name
-        ], $bet->betId);
+        ], $bet->betId
+        );
         return response()->json();
     }
 
     /**
-     * @param Request $request
-     * @param         $betId
+     * @param  Request  $request
+     * @param $betId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function setResult (Request $request, $betId) {
+    public function setResult(Request $request, $betId) {
         $user = $request->get('auth');
         $result = $request->input('result');
         $bet = Bet::find($betId);
@@ -92,20 +92,22 @@ class BetsController extends Controller {
             $this->giveUserPrizes($bet->betId);
         }
 
-        Logger::sitecp($user->userId, $request->ip(), Action::SET_BET_RESULT, [
+        Logger::sitecp(
+            $user->userId, $request->ip(), LogType::SET_BET_RESULT, [
             'bet' => $bet->name,
             'result' => $result
-        ], $bet->betId);
+        ], $bet->betId
+        );
         return response()->json($bet);
     }
 
     /**
-     * @param Request $request
-     * @param         $page
+     * @param  Request  $request
+     * @param $page
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getBets (Request $request, $page) {
+    public function getBets(Request $request, $page) {
         $filter = $request->input('filter');
         $status = $request->input('status');
 
@@ -115,7 +117,7 @@ class BetsController extends Controller {
         if ($status) {
             switch ($status) {
                 case 'suspended':
-                    $getBadgeSql->where('isSuspended', true);
+                    $getBadgeSql->where('isSuspended', true)->where('isFinished', false);
                     break;
                 case 'finished':
                     $getBadgeSql->where('isFinished', true);
@@ -126,62 +128,68 @@ class BetsController extends Controller {
             }
         }
 
-        $total = DataHelper::getTotal($getBadgeSql->count('betId'));
-        $bets = $getBadgeSql->take($this->perPage)->skip(DataHelper::getOffset($page))->get();
+        $total = PaginationUtil::getTotalPages($getBadgeSql->count('betId'));
+        $bets = $getBadgeSql->take($this->perPage)->skip(PaginationUtil::getOffset($page))->get();
 
-        return response()->json([
-            'bets' => $bets,
-            'page' => $page,
-            'total' => $total
-        ]);
+        return response()->json(
+            [
+                'bets' => $bets,
+                'page' => $page,
+                'total' => $total
+            ]
+        );
     }
 
     /**
      * @param $betId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getBet ($betId) {
+    public function getBet($betId) {
         $bet = Bet::find($betId);
 
-        return response()->json([
-            'bet' => $bet ? $bet : new stdClass(),
-            'categories' => BetCategory::all()
-        ]);
+        return response()->json(
+            [
+                'bet' => $bet ? $bet : new stdClass(),
+                'categories' => BetCategory::all()
+            ]
+        );
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function createBet (Request $request) {
+    public function createBet(Request $request) {
         $user = $request->get('auth');
-        $bet = (object)$request->input('bet');
+        $bet = (object) $request->input('bet');
 
         $this->betConditionCollection($bet);
-        $newBet = new Bet([
-            'name' => $bet->name,
-            'leftSide' => $bet->leftSide,
-            'rightSide' => $bet->rightSide,
-            'betCategoryId' => $bet->betCategoryId,
-            'displayOrder' => $bet->displayOrder
-        ]);
+        $newBet = new Bet(
+            [
+                'name' => $bet->name,
+                'leftSide' => $bet->leftSide,
+                'rightSide' => $bet->rightSide,
+                'betCategoryId' => $bet->betCategoryId,
+                'displayOrder' => $bet->displayOrder
+            ]
+        );
         $newBet->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_BET, ['bet' => $bet->name], $bet->betId);
+        Logger::sitecp($user->userId, $request->ip(), LogType::CREATED_BET, ['bet' => $newBet->name], $newBet->betId);
         return $this->getBet($newBet->betId);
     }
 
     /**
-     * @param Request $request
-     * @param         $betId
+     * @param  Request  $request
+     * @param $betId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function updateBet (Request $request, $betId) {
+    public function updateBet(Request $request, $betId) {
         $user = $request->get('auth');
-        $newBet = (object)$request->input('bet');
+        $newBet = (object) $request->input('bet');
 
         $bet = Bet::find($betId);
         Condition::precondition(!$bet, 404, 'The bet does not exist!');
@@ -195,17 +203,17 @@ class BetsController extends Controller {
         $bet->displayOrder = $newBet->displayOrder;
         $bet->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_BET, ['bet' => $bet->name], $bet->betId);;
+        Logger::sitecp($user->userId, $request->ip(), LogType::UPDATED_BET, ['bet' => $bet->name], $bet->betId);;
         return $this->getBet($newBet->betId);
     }
 
     /**
-     * @param Request $request
-     * @param         $betId
+     * @param  Request  $request
+     * @param $betId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function deleteBet (Request $request, $betId) {
+    public function deleteBet(Request $request, $betId) {
         $user = $request->get('auth');
 
         $bet = Bet::find($betId);
@@ -216,7 +224,7 @@ class BetsController extends Controller {
 
         $this->deleteUserBets($betId);
 
-        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_BET, ['bet' => $bet->name], $bet->betId);
+        Logger::sitecp($user->userId, $request->ip(), LogType::DELETED_BET, ['bet' => $bet->name], $bet->betId);
         return response()->json();
     }
 
@@ -225,11 +233,11 @@ class BetsController extends Controller {
      *
      * @param $betId
      */
-    private function deleteUserBets ($betId) {
+    private function deleteUserBets($betId) {
         $userBets = UserBet::where('betId', $betId)->get();
 
         foreach ($userBets as $userBet) {
-            $this->creditsService->giveCredits($userBet->userId, $userBet->amount);
+            $this->myCreditsService->giveCredits($userBet->userId, $userBet->amount);
             $userBet->isDeleted = true;
             $userBet->save();
         }
@@ -238,7 +246,7 @@ class BetsController extends Controller {
     /**
      * @param $bet
      */
-    private function betConditionCollection ($bet) {
+    private function betConditionCollection($bet) {
         Condition::precondition(!$bet, 400, 'Stupid developer');
         Condition::precondition(!isset($bet->name) || empty($bet->name), 400, 'Name can not be empty');
 
@@ -249,20 +257,19 @@ class BetsController extends Controller {
         Condition::precondition(!$bettingCategory, 404, 'Betting category needs to be set');
 
         Condition::precondition(!isset($bet->displayOrder) || !is_numeric($bet->displayOrder), 400, 'Display order is not a number');
-
     }
 
     /**
      * @param $betId
      */
-    private function giveUserPrizes ($betId) {
+    private function giveUserPrizes($betId) {
         $bets = UserBet::where('betId', $betId)->get();
 
         foreach ($bets as $bet) {
             $rightSide = round($bet->amount / $bet->rightSide);
             $profit = $bet->leftSide * $rightSide;
 
-            $this->creditsService->giveCredits($bet->userId, ($profit + $bet->amount));
+            $this->myCreditsService->giveCredits($bet->userId, ($profit + $bet->amount));
         }
     }
 }

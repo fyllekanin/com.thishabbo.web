@@ -9,6 +9,7 @@ use App\EloquentModels\Models\UnixTimeModel;
  * @property mixed avatarId
  */
 class Avatar extends UnixTimeModel {
+
     protected $table = 'avatars';
     protected $primaryKey = 'avatarId';
     protected $fillable = ['userId', 'width', 'height'];

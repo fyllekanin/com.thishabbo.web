@@ -17,5 +17,6 @@ export const LOCAL_STORAGE = {
     MINIMALISTIC: 'minimalistic',
     MINI_PROFILE_DISABLED: 'mini-profile-disabled',
     HIDE_FORUM_STATS: 'hide-forum-stats',
-    SINGLE_LATEST_ROW: 'single-latest-row'
+    SINGLE_LATEST_ROW: 'single-latest-row',
+    MENTION_SUGGESTIONS: 'mention-suggestions'
 };

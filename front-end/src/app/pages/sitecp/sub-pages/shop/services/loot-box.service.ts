@@ -28,7 +28,7 @@ export class LootBoxService implements Resolve<LootBoxModel> {
     save (lootBox: LootBoxModel): Promise<void> {
         return new Promise((res, rej) => {
             if (!lootBox.createdAt) {
-                this._httpService.post('sitecp/shop/loot-boxes', {lootBox: lootBox})
+                this._httpService.post('sitecp/shop/loot-boxes', { lootBox: lootBox })
                     .subscribe(() => {
                         this._notificationService.sendInfoNotification('Loot box created!');
                         res();
@@ -37,7 +37,7 @@ export class LootBoxService implements Resolve<LootBoxModel> {
                         rej();
                     });
             } else {
-                this._httpService.put(`sitecp/shop/loot-boxes/${lootBox.lootBoxId}`, {lootBox: lootBox})
+                this._httpService.put(`sitecp/shop/loot-boxes/${lootBox.lootBoxId}`, { lootBox: lootBox })
                     .subscribe(() => {
                         this._notificationService.sendInfoNotification('Loot box updated!');
                         res();

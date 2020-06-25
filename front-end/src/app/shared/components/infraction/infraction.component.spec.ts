@@ -57,7 +57,7 @@ describe('InfractionComponent', () => {
         it('should should return levels from data if set', () => {
             // Given
             component.setData(new InfractionContext({
-                levels: [new InfractionLevel({ infractionLevelId: 1 })]
+                levels: [ new InfractionLevel({ infractionLevelId: 1 }) ]
             }));
 
             // When
@@ -83,7 +83,7 @@ describe('InfractionComponent', () => {
         it('should return history from data if set', () => {
             // Given
             component.setData(new InfractionContext({
-                history: [new Infraction({ title: 'test' })]
+                history: [ new Infraction({ title: 'test' }) ]
             }));
 
             // When

@@ -1,42 +1,42 @@
-import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
-import { INFO_BOX_TYPE, InfoBoxModel } from 'shared/app-views/info-box/info-box.model';
+import { Component, EventEmitter, HostBinding, Input, Output, TemplateRef } from '@angular/core';
+import { InfoBoxModel } from 'shared/app-views/info-box/info-box.model';
 
 @Component({
     selector: 'app-info-box',
     templateUrl: 'info-box.component.html',
-    styleUrls: ['info-box.component.css']
+    styleUrls: [ 'info-box.component.css' ]
 })
 export class InfoBoxComponent {
     private _model: InfoBoxModel;
 
-    @HostBinding('class.warning') isWarning = false;
-    @HostBinding('class.info') isInfo = false;
-    @HostBinding('class.alert') isAlert = false;
+    @HostBinding('class') typClass = '';
 
     @Input() isClosable = false;
+    @Input() template: TemplateRef<any> = null;
     @Output() onClick: EventEmitter<any> = new EventEmitter();
 
     @Input()
-    set model(model: InfoBoxModel) {
+    set model (model: InfoBoxModel) {
         this._model = model;
         this.checkType();
     }
 
-    get title(): string {
+    get title (): string {
         return this._model ? this._model.title : '';
     }
 
-    get content(): string {
+    get content (): string {
         return this._model ? this._model.content : '';
     }
 
-    click(): void {
+    click (): void {
         this.onClick.emit(this._model.id);
     }
 
-    private checkType(): void {
-        this.isWarning = this._model.type === INFO_BOX_TYPE.WARNING;
-        this.isInfo = this._model.type === INFO_BOX_TYPE.INFO;
-        this.isAlert = this._model.type === INFO_BOX_TYPE.ALERT;
+    private checkType (): void {
+        if (!this._model) {
+            return;
+        }
+        this.typClass = this._model.type;
     }
 }

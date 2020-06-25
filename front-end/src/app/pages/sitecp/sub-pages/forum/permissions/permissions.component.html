@@ -3,9 +3,8 @@
     <div class="grid-container full">
         <div class="grid-x grid-margin-x">
             <div class="cell small-12">
-                <select [ngModel]="model.group ? model.group.groupId : -1" (ngModelChange)="onGroupChange($event)">
-                    <option *ngFor="let grp of groups" value="{{grp.groupId}}">{{grp.name}}</option>
-                </select>
+                <app-form-select [items]="groups" [(value)]="selectedItem"
+                                 (valueChange)="onGroupChange($event)"></app-form-select>
             </div>
 
             <div class="cell small-6 permission-container">

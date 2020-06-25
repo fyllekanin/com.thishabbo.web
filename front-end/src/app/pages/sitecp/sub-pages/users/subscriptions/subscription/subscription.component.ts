@@ -42,7 +42,7 @@ export class SubscriptionComponent extends InnerDialogComponent {
 
     private setDates (): void {
         const date = this._data.createdAt ? new Date(this._data.expiresAt * 1000) : new Date();
-        this._months = TimeHelper.FULL_MONTHS.map((month, index) => ({label: month, value: index + 1}));
+        this._months = TimeHelper.FULL_MONTHS.map((month, index) => ({ label: month, value: index + 1 }));
         this.year = date.getFullYear();
         this.month = date.getMonth() + 1;
         this.day = date.getDate();

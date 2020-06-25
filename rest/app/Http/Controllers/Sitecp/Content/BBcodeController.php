@@ -2,62 +2,76 @@
 
 namespace App\Http\Controllers\Sitecp\Content;
 
+use App\Constants\LogType;
 use App\EloquentModels\BBcode;
-use App\Helpers\SettingsHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
-use App\Models\Logger\Action;
+use App\Repositories\Repository\SettingRepository;
 use App\Utils\Condition;
 use App\Utils\Value;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class BBcodeController extends Controller {
+    private $mySettingRepository;
+
+    public function __construct(SettingRepository $settingRepository) {
+        parent::__construct();
+        $this->mySettingRepository = $settingRepository;
+    }
 
     /**
      * Post request to create a new bbcode
      *
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function createBBcode(Request $request) {
+    public function createBbcode(Request $request) {
         $user = $request->get('auth');
         $file = $request->file('image');
-        $bbcode = (object)json_decode($request->input('bbcode'));
+        $bbcode = (object) json_decode($request->input('bbcode'));
         $this->bbcodeChecker($bbcode, $request, true);
 
-        $newBbcode = new BBcode([
-            'name' => $bbcode->name,
-            'example' => Value::objectProperty($bbcode, 'example', null),
-            'pattern' => $bbcode->pattern,
-            'replace' => Value::objectProperty($bbcode, 'replace', null),
-            'content' => Value::objectProperty($bbcode, 'content', null),
-            'isEmoji' => $bbcode->isEmoji
-        ]);
+        $newBbcode = new BBcode(
+            [
+                'name' => $bbcode->name,
+                'example' => Value::objectProperty($bbcode, 'example', null),
+                'pattern' => $bbcode->pattern,
+                'replace' => Value::objectProperty($bbcode, 'replace', null),
+                'content' => Value::objectProperty($bbcode, 'content', null),
+                'isEmoji' => $bbcode->isEmoji
+            ]
+        );
         $newBbcode->save();
 
         if ($bbcode->isEmoji) {
-            $fileName = $newBbcode->bbcodeId . '.gif';
-            $destination = SettingsHelper::getResourcesPath('images/emojis');
-            $file->move($destination, $fileName);
+            $fileName = $newBbcode->bbcodeId.'.gif';
+            $target = $this->mySettingRepository->getResourcePath('images/emojis');
+            $file->move($target, $fileName);
         }
 
-        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_BBCODE,
-            ['bbcode' => $newBbcode->name], $newBbcode->bbcodeId);
-        return $this->getBBcode($newBbcode->bbcodeId);
+        Logger::sitecp(
+            $user->userId,
+            $request->ip(),
+            LogType::CREATED_BBCODE,
+            ['bbcode' => $newBbcode->name],
+            $newBbcode->bbcodeId
+        );
+        return $this->getBbcode($newBbcode->bbcodeId);
     }
 
     /**
      * Put request to update given bbcode
      *
-     * @param Request $request
-     * @param         $bbcodeId
+     * @param  Request  $request
+     * @param $bbcodeId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function updateBBcode(Request $request, $bbcodeId) {
+    public function updateBbcode(Request $request, $bbcodeId) {
         $user = $request->get('auth');
-        $bbcode = (object)json_decode($request->input('bbcode'));
+        $bbcode = (object) json_decode($request->input('bbcode'));
         $file = $request->file('image');
 
         $existing = BBcode::find($bbcodeId);
@@ -74,13 +88,13 @@ class BBcodeController extends Controller {
         $existing->save();
 
         if ($request->has('image')) {
-            $fileName = $existing->bbcodeId . '.gif';
-            $destination = SettingsHelper::getResourcesPath('images/emojis');
-            $file->move($destination, $fileName);
+            $fileName = $existing->bbcodeId.'.gif';
+            $target = $this->mySettingRepository->getResourcePath('images/emojis');
+            $file->move($target, $fileName);
         }
 
-        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_BBCODE, ['bbcode' => $existing->name], $existing->bbcodeId);
-        return $this->getBBcode($bbcodeId);
+        Logger::sitecp($user->userId, $request->ip(), LogType::UPDATED_BBCODE, ['bbcode' => $existing->name], $existing->bbcodeId);
+        return $this->getBbcode($bbcodeId);
     }
 
     /**
@@ -88,9 +102,9 @@ class BBcodeController extends Controller {
      *
      * @param $bbcodeId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getBBcode($bbcodeId) {
+    public function getBbcode($bbcodeId) {
         $bbcode = BBcode::find($bbcodeId);
         Condition::precondition(!$bbcode, 404, 'BBcode do not exist');
 
@@ -100,12 +114,12 @@ class BBcodeController extends Controller {
     /**
      * Delete request to delete given bbcode
      *
-     * @param Request $request
-     * @param         $bbcodeId
+     * @param  Request  $request
+     * @param $bbcodeId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function deleteBBcode(Request $request, $bbcodeId) {
+    public function deleteBbcode(Request $request, $bbcodeId) {
         $user = $request->get('auth');
         $bbcode = BBcode::find($bbcodeId);
 
@@ -113,39 +127,43 @@ class BBcodeController extends Controller {
         Condition::precondition($bbcode->isSystem, 400, 'Can not delete system defined bbcode');
 
         $bbcode->delete();
-        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_BBCODE, ['bbcode' => $bbcode->name], $bbcode->bbcodeId);
+        Logger::sitecp($user->userId, $request->ip(), LogType::DELETED_BBCODE, ['bbcode' => $bbcode->name], $bbcode->bbcodeId);
         return response()->json();
     }
 
     /**
      * Get request to fetch array of all available bbcodes
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getBBcodes() {
+    public function getBbcodes() {
         return response()->json(BBcode::get());
     }
 
     /**
      * Condition collection for creating or updating a bbcode
      *
-     * @param      $bbcode
-     * @param      $request
+     * @param $bbcode
+     * @param $request
      *
-     * @param bool $isImageRequired
-     *
+     * @param  bool  $isImageRequired
      */
     private function bbcodeChecker($bbcode, $request, $isImageRequired) {
         Condition::precondition(!$bbcode, 400, 'No bbcode sent for creation');
         Condition::precondition(!isset($bbcode->name), 400, 'Name needs to be present');
         Condition::precondition(!isset($bbcode->pattern), 400, 'Pattern needs to be present');
         Condition::precondition(!is_int(preg_match($bbcode->pattern, '')), 400, 'Pattern is invalid');
-        Condition::precondition($isImageRequired && BBcode::where('pattern', $bbcode->pattern)->count('bbcodeId') > 0,
-            404, 'Pattern already exists');
+        Condition::precondition(
+            $isImageRequired && BBcode::where('pattern', $bbcode->pattern)->count('bbcodeId') > 0,
+            404,
+            'Pattern already exists'
+        );
         if ($bbcode->isEmoji) {
-            $request->validate([
-                'image' => ($isImageRequired ? 'required|' : '') . 'mimes:jpg,jpeg,bmp,png,gif|dimensions:max_width=22,max_height=22',
-            ]);
+            $request->validate(
+                [
+                    'image' => ($isImageRequired ? 'required|' : '').'mimes:jpg,jpeg,bmp,png,gif|dimensions:max_width=22,max_height=22',
+                ]
+            );
         } else {
             Condition::precondition(!isset($bbcode->example), 400, 'Example needs to be present');
             Condition::precondition(!isset($bbcode->replace), 400, 'Replace needs to be present');

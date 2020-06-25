@@ -5,9 +5,10 @@
 .big-header {
     width: 100%;
     max-width: 100%;
-    height: 13.9rem;
+    height: 225px;
     position: relative;
     background: -webkit-linear-gradient(top, #338fd1 0, #3682b9 100%);
+    background: #1c74a4 url(/assets/images/sky-header.png) repeat-x bottom;
     overflow: hidden;
 }
 

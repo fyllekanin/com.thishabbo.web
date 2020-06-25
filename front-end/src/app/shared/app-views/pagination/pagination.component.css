@@ -7,6 +7,10 @@ a {
     color: #8a8787;
 }
 
+.page-no-click {
+    pointer-events: none;
+}
+
 button {
     padding: 12px;
     text-align: center;

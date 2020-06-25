@@ -11,7 +11,7 @@ import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 @Component({
     selector: 'app-shop-loot-boxes',
     templateUrl: 'loot-boxes.component.html',
-    styleUrls: ['loot-boxes.component.css']
+    styleUrls: [ 'loot-boxes.component.css' ]
 })
 export class LootBoxesComponent extends Page implements OnDestroy {
     private _data: LootBoxesPage;

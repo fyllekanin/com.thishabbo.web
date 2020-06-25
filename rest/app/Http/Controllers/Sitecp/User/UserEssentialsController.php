@@ -2,22 +2,29 @@
 
 namespace App\Http\Controllers\Sitecp\User;
 
+use App\Constants\LogType;
 use App\EloquentModels\User\UserData;
-use App\Helpers\SettingsHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
-use App\Models\Logger\Action;
+use App\Repositories\Repository\SettingRepository;
 use App\Utils\Condition;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
 class UserEssentialsController extends Controller {
+    private $mySettingRepository;
+
+    public function __construct(SettingRepository $settingRepository) {
+        parent::__construct();
+        $this->mySettingRepository = $settingRepository;
+    }
 
     /**
      * @param $userId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getUser($userId) {
         $user = UserHelper::getUser($userId);
@@ -28,46 +35,46 @@ class UserEssentialsController extends Controller {
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @param $userId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function deleteAvatar(Request $request, $userId) {
         $user = $request->get('auth');
-        $path = SettingsHelper::getResourcesPath('images/users/' . $userId . '.gif');
+        $path = $this->mySettingRepository->getResourcePath('images/users/'.$userId.'.gif');
 
         Condition::precondition(!File::exists($path), 404, 'This user do not have a avatar');
 
         File::delete($path);
 
-        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_AVATAR, [], $userId);
+        Logger::sitecp($user->userId, $request->ip(), LogType::DELETED_AVATAR, [], $userId);
         return response()->json();
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @param $userId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function deleteCoverPhoto(Request $request, $userId) {
         $user = $request->get('auth');
-        $path = SettingsHelper::getResourcesPath('images/covers/' . $userId . 'gif');
+        $path = $this->mySettingRepository->getResourcePath('images/covers/'.$userId.'gif');
 
         Condition::precondition(!File::exists($path), 404, 'This user do not have a coverphoto');
 
         File::delete($path);
 
-        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_COVER_PHOTO, [], $userId);
+        Logger::sitecp($user->userId, $request->ip(), LogType::DELETED_COVER_PHOTO, [], $userId);
         return response()->json();
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @param $userId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function deleteSignature(Request $request, $userId) {
         $user = $request->get('auth');
@@ -78,7 +85,7 @@ class UserEssentialsController extends Controller {
         $userdata->signature = '';
         $userdata->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_SIGNATURE, [], $userId);
+        Logger::sitecp($user->userId, $request->ip(), LogType::DELETED_SIGNATURE, [], $userId);
         return response()->json();
     }
 }

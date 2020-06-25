@@ -1,4 +1,4 @@
-import { UserProfileModule } from 'shared/directives/user-profile.module';
+import { UserProfileModule } from 'shared/directives/user-profile/user-profile.module';
 import { HomeDefaultResolver } from './services/home-default.resolver';
 import { FormsModule } from '@angular/forms';
 import { PageModule } from 'shared/page/page.module';
@@ -16,7 +16,6 @@ import { InfoBoxModule } from 'shared/app-views/info-box/info-box.module';
 import { MediaArticlesComponent } from './home-default/media-articles/media-articles.component';
 import { SafeStyleModule } from 'shared/pipes/safe-style/safe-style.module';
 import { SafeHtmlModule } from 'shared/pipes/safe-html/safe-html.module';
-import { StaffSpotlightComponent } from './home-default/staff-spotlight/staff-spotlight.component';
 import { SearchComponent } from './search/search.component';
 import { SearchResolver } from './services/search.resolver';
 import { PaginationModule } from 'shared/app-views/pagination/pagination.module';
@@ -28,6 +27,7 @@ import { BadgesModule } from 'shared/components/badges/badges.module';
 import { VersionsComponent } from './versions/versions.component';
 import { VersionsResolver } from './services/versions.resolver';
 import { SelectModule } from 'shared/components/form/select/select.module';
+import { ImageLazyLoadModule } from 'shared/directives/image-lazy-load/image-lazy-load.module';
 
 @NgModule({
     imports: [
@@ -47,13 +47,13 @@ import { SelectModule } from 'shared/components/form/select/select.module';
         UserLinkModule,
         SlimArticleModule,
         BadgesModule,
-        SelectModule
+        SelectModule,
+        ImageLazyLoadModule
     ],
     declarations: [
         HomeDefaultComponent,
         LoginBoxComponent,
         MediaArticlesComponent,
-        StaffSpotlightComponent,
         SearchComponent,
         GroupListComponent,
         VersionsComponent

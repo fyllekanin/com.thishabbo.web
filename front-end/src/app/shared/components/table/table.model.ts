@@ -117,6 +117,8 @@ export class FilterConfig {
     value: string;
     @primitiveOf(Boolean)
     allOption = true;
+    @primitive()
+    help: string;
     type: FilterConfigType = FilterConfigType.TEXT;
     items: Array<FilterConfigItem> = [];
 
@@ -140,9 +142,9 @@ export const FILTER_TYPE_CONFIG = new FilterConfig({
     value: 'partial',
     allOption: false,
     items: [
-        new FilterConfigItem({label: 'Partial', value: 'partial'}),
-        new FilterConfigItem({label: 'Exact', value: 'exact'}),
-        new FilterConfigItem({label: 'From start', value: 'fromStart'})
+        new FilterConfigItem({ label: 'Partial', value: 'partial' }),
+        new FilterConfigItem({ label: 'Exact', value: 'exact' }),
+        new FilterConfigItem({ label: 'From start', value: 'fromStart' })
     ]
 });
 

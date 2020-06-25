@@ -19,11 +19,11 @@ export class KickDjComponent extends Page implements OnDestroy {
     infoModel: InfoBoxModel = {
         title: 'Warning!',
         type: INFO_BOX_TYPE.WARNING,
-        content: `If you kick off the DJ there will be no one air! This action is direct and you
-         should be prepared for any other DJ to jump on air after this button has been clicked.`
+        content: `If you kick the DJ there will be no-one on the radio! This action is direct and you
+         should be prepared for any other DJ to "catch the radio" after this button has been clicked.`
     };
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService,
         private _dialogService: DialogService,
@@ -32,19 +32,19 @@ export class KickDjComponent extends Page implements OnDestroy {
         super(elementRef);
     }
 
-    onKick(): void {
+    onKick (): void {
         this._dialogService.confirm({
             title: `Kick Current DJ`,
-            content: `Are you sure you want to kick off the current DJ?`,
+            content: `Are you sure you want to kick the current DJ off air?`,
             callback: this.doKick.bind(this)
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    private doKick(): void {
+    private doKick (): void {
         this._httpService.post('staff/radio/kick/dj', {})
             .subscribe(() => {
                 this._dialogService.closeDialog();

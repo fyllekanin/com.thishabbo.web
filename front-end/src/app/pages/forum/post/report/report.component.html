@@ -1,1 +1,7 @@
+<app-info-box [model]="infoModel" [template]="infoTemplate"></app-info-box>
+<ng-template #infoTemplate>
+    Abuse of the report system may result in a forum ban.<br/>
+    A full list of our forum rules can be seen <a routerLink="/page/rules" target="_blank">here</a>.
+</ng-template>
+<p></p>
 <textarea [(ngModel)]="message" placeholder="Reason for reporting"></textarea>

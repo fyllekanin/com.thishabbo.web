@@ -37,7 +37,7 @@ export class ShopComponent extends Page implements OnInit, OnDestroy {
 
     constructor (breadcrumbService: BreadcrumbService, elementRef: ElementRef) {
         super(elementRef);
-        breadcrumbService.breadcrumb = new Breadcrumb({current: SHOP_HUB.title});
+        breadcrumbService.breadcrumb = new Breadcrumb({ current: SHOP_HUB.title });
     }
 
     ngOnInit (): void {

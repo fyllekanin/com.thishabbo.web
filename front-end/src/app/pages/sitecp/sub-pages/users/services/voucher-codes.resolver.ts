@@ -8,7 +8,8 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class VoucherCodesResolver implements Resolve<VoucherCodesPage> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
     resolve (route: ActivatedRouteSnapshot): Observable<VoucherCodesPage> {
         const page = route.params['page'];

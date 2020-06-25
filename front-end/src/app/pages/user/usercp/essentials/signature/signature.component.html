@@ -1,13 +1,12 @@
 <app-editor #editor
-    [title]="'Signature'"
-    [content]="signature"
-    [buttons]="[saveButton]"
-    (onTabClick)="onSave()"
-    (onSave)="onSave()"
-    (onKeyUp)="onKeyUp($event)">
+            [title]="'Signature'"
+            [content]="signature"
+            [buttons]="tabs"
+            (onTabClick)="onAction($event)"
+            (onSave)="onSave()">
 </app-editor>
 
 <app-title [title]="'Preview'"></app-title>
 <app-content>
-    <div [innerHTML]="parsedSignature | safeHtml"></div>
+    <div [innerHTML]="preview | safeHtml"></div>
 </app-content>

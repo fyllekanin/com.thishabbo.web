@@ -1,0 +1,12 @@
+<app-title [title]="'Search Users'" [tabs]="tabs" (onTabClick)="searchUsers()"></app-title>
+<app-content>
+    <div>Use the search box below to search for ThisHabbo users.</div>
+    <label>Username:</label>
+    <input [(ngModel)]="nickname" type="text" placeholder="Who do you want to search for?">
+</app-content>
+<app-title [title]="'Search Results'"></app-title>
+<app-content>
+    <div *ngFor="let user of users">
+        <app-user-link [user]="user"></app-user-link>
+    </div>
+</app-content>

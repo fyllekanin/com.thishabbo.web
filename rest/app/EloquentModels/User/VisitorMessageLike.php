@@ -11,6 +11,7 @@ use App\EloquentModels\Models\UnixTimeModel;
  * @property mixed updatedAt
  */
 class VisitorMessageLike extends UnixTimeModel {
+
     protected $table = 'visitor_message_likes';
     protected $primaryKey = 'visitorMessageLikeId';
     protected $fillable = [

@@ -3,6 +3,7 @@
 namespace App\EloquentModels\User;
 
 use App\Helpers\PermissionHelper;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -12,15 +13,18 @@ use Illuminate\Notifications\Notifiable;
  * @property mixed userId
  * @property mixed referralId
  * @property mixed username
- * @method static withNickname
+ * @method   static withNickname($nickname)
  *
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class User extends Authenticatable {
+
     use Notifiable;
 
-    protected $fillable = ['username', 'nickname', 'habbo', 'gdpr', 'password',
-        'likes', 'displayGroupId', 'posts', 'threads', 'theme', 'lastActivity', 'referralId'];
+    protected $fillable = [
+        'username', 'nickname', 'habbo', 'gdpr', 'password',
+        'likes', 'displayGroupId', 'posts', 'threads', 'theme', 'lastActivity', 'referralId'
+    ];
     protected $hidden = ['username', 'password'];
     protected $primaryKey = 'userId';
     const CREATED_AT = 'createdAt';
@@ -28,6 +32,10 @@ class User extends Authenticatable {
 
     public function getDateFormat() {
         return 'U';
+    }
+
+    protected function serializeDate(DateTimeInterface $date) {
+        return $date->getTimestamp();
     }
 
     public function userdata() {
@@ -64,7 +72,7 @@ class User extends Authenticatable {
     }
 
     public function scopeWithNicknameLike(Builder $query, $nickname) {
-        return $query->where('nickname', 'LIKE', '%' . $nickname . '%');
+        return $query->whereRaw('lower(nickname) LIKE ?', [strtolower($nickname)]);
     }
 
     public function scopeWithNickname(Builder $query, $nickname) {
@@ -84,7 +92,7 @@ class User extends Authenticatable {
             return 101;
         }
 
-        return (int)self::select('users.userId', 'groups.immunity')
+        return (int) self::select('users.userId', 'groups.immunity')
             ->where('users.userId', $userId)
             ->leftJoin('user_groups', 'user_groups.userId', '=', 'users.userId')
             ->leftJoin('groups', 'groups.groupId', '=', 'user_groups.groupId')
@@ -92,23 +100,28 @@ class User extends Authenticatable {
     }
 
     public function getGroupIdsAttribute() {
-        $groupIds = $this->userGroups()->getResults()->map(function ($group) {
-            return $group->groupId;
-        })->toArray();
+        $groupIds = $this->userGroups()->getResults()->map(
+            function ($group) {
+                return $group->groupId;
+            }
+        )->toArray();
         array_push($groupIds, 0);
         return $groupIds;
     }
 
     public function getGroupsAttribute() {
-        return $this->userGroups()->getResults()->map(function ($group) {
-            return $group->group;
-        });
+        return $this->userGroups()->getResults()->map(
+            function ($group) {
+                return $group->group;
+            }
+        );
     }
 
     public function getSubscriptionsAttribute() {
-        return $this->subscriptions()->getResults()->map(function ($userSubscription) {
-            return $userSubscription->subscription;
-        });
+        return $this->subscriptions()->getResults()->map(
+            function ($userSubscription) {
+                return $userSubscription->subscription;
+            }
+        );
     }
-
 }

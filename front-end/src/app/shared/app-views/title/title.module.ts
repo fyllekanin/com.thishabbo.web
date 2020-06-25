@@ -19,4 +19,5 @@ import { RouterModule } from '@angular/router';
     ]
 })
 
-export class TitleModule {}
+export class TitleModule {
+}

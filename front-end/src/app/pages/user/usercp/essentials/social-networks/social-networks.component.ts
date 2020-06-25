@@ -21,7 +21,7 @@ export class SocialNetworksComponent extends Page implements OnDestroy {
         new TitleTab({ title: 'Save' })
     ];
 
-    constructor(
+    constructor (
         private _notificationService: NotificationService,
         private _service: SocialNetworksService,
         elementRef: ElementRef,
@@ -38,11 +38,11 @@ export class SocialNetworksComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    update(): void {
+    update (): void {
         if (!this.valuesAreValid) {
             this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Error',
@@ -55,15 +55,15 @@ export class SocialNetworksComponent extends Page implements OnDestroy {
         this._service.save(this._data);
     }
 
-    get model(): SocialNetworksModel {
+    get model (): SocialNetworksModel {
         return this._data;
     }
 
-    private onData(data: { data: SocialNetworksModel }): void {
+    private onData (data: { data: SocialNetworksModel }): void {
         this._data = data.data;
     }
 
-    private valuesAreValid(): boolean {
+    private valuesAreValid (): boolean {
         const discordIsValid = this._data.discord &&
             new RegExp(/^((.+?)#\d{4})/).test(this._data.discord);
 

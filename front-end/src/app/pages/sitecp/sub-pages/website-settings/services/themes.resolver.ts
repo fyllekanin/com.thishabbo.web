@@ -8,9 +8,10 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class ThemesResolver implements Resolve<Array<Theme>> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
-    resolve(): Observable<Array<Theme>> {
+    resolve (): Observable<Array<Theme>> {
         return this._httpService.get('sitecp/content/themes')
             .pipe(map(res => res.map(item => new Theme(item))));
     }

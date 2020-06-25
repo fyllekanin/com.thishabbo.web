@@ -49,4 +49,5 @@ import { ResultComponent } from './bets/list/result/result.component';
         RouterModule
     ]
 })
-export class BettingModule {}
+export class BettingModule {
+}

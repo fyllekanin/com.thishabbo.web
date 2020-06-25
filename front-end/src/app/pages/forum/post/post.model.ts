@@ -1,4 +1,4 @@
-import { arrayOf, ClassHelper, objectOf, primitive } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, objectOf, primitive, primitiveOf } from 'shared/helpers/class.helper';
 import { SlimUser, User } from 'core/services/auth/auth.model';
 
 export class PostModel {
@@ -22,7 +22,7 @@ export class PostModel {
     likers: Array<SlimUser> = [];
     @primitive()
     isApproved: boolean;
-    @primitive()
+    @primitiveOf(Boolean)
     isSelected = false;
 
     constructor (source?: Partial<PostModel>) {

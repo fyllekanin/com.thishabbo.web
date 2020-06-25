@@ -31,7 +31,7 @@ export class BBcodesListComponent extends Page implements OnDestroy {
     emojiConfig: TableConfig;
     systemConfig: TableConfig;
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Create BBCode', link: '/sitecp/content/bbcodes/new'})
+        new TitleTab({ title: 'Create BBCode', link: '/sitecp/content/bbcodes/new' })
     ];
 
     constructor (
@@ -47,7 +47,7 @@ export class BBcodesListComponent extends Page implements OnDestroy {
         this.addSubscription(activatedRoute.data, this.onData.bind(this));
         breadcrumbService.breadcrumb = new Breadcrumb({
             current: MANAGE_BBCODES_BREADCRUMB_ITEM.title,
-            items: [SITECP_BREADCRUMB_ITEM]
+            items: [ SITECP_BREADCRUMB_ITEM ]
         });
     }
 
@@ -131,16 +131,16 @@ export class BBcodesListComponent extends Page implements OnDestroy {
 
     private getEmojiTableRows (list: Array<BBcodeModel>): Array<TableRow> {
         const actions = [
-            new TableAction({title: 'Edit BBCode', value: BBcodeActions.EDIT_BBCODE}),
-            new TableAction({title: 'Delete BBCode', value: BBcodeActions.DELETE_BBCODE})
+            new TableAction({ title: 'Edit BBCode', value: BBcodeActions.EDIT_BBCODE }),
+            new TableAction({ title: 'Delete BBCode', value: BBcodeActions.DELETE_BBCODE })
         ];
         return list.map(bbcode => {
             return new TableRow({
                 id: String(bbcode.bbcodeId),
                 cells: [
-                    new TableCell({title: bbcode.pattern}),
+                    new TableCell({ title: bbcode.pattern }),
                     new TableCell({
-                        title: `<img src="/rest/resources/images/emojis/${bbcode.bbcodeId}.gif" />`,
+                        title: `<img src="/resources/images/emojis/${bbcode.bbcodeId}.gif" />`,
                         innerHTML: true
                     })
                 ],
@@ -151,15 +151,15 @@ export class BBcodesListComponent extends Page implements OnDestroy {
 
     private getTableRows (list: Array<BBcodeModel>, haveActions: boolean): Array<TableRow> {
         const actions = haveActions ? [
-            new TableAction({title: 'Edit BBCode', value: BBcodeActions.EDIT_BBCODE}),
-            new TableAction({title: 'Delete BBCode', value: BBcodeActions.DELETE_BBCODE})
+            new TableAction({ title: 'Edit BBCode', value: BBcodeActions.EDIT_BBCODE }),
+            new TableAction({ title: 'Delete BBCode', value: BBcodeActions.DELETE_BBCODE })
         ] : [];
         return list.map(bbcode => {
             return new TableRow({
                 id: String(bbcode.bbcodeId),
                 cells: [
-                    new TableCell({title: bbcode.name}),
-                    new TableCell({title: bbcode.example})
+                    new TableCell({ title: bbcode.name }),
+                    new TableCell({ title: bbcode.example })
                 ],
                 actions: actions
             });
@@ -168,16 +168,16 @@ export class BBcodesListComponent extends Page implements OnDestroy {
 
     private getEmojiTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Selector'}),
-            new TableHeader({title: 'Image'})
+            new TableHeader({ title: 'Selector' }),
+            new TableHeader({ title: 'Image' })
         ];
     }
 
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Name'}),
-            new TableHeader({title: 'Example'})
+            new TableHeader({ title: 'Name' }),
+            new TableHeader({ title: 'Example' })
         ];
     }
 }

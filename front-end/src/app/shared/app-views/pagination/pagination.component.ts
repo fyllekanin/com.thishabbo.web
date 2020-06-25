@@ -6,7 +6,7 @@ import { QueryParameters } from 'core/services/http/http.model';
 @Component({
     selector: 'app-pagination',
     templateUrl: 'pagination.component.html',
-    styleUrls: ['pagination.component.css']
+    styleUrls: [ 'pagination.component.css' ]
 })
 export class PaginationComponent {
     private _paginationModel: PaginationModel = new PaginationModel();
@@ -28,8 +28,8 @@ export class PaginationComponent {
 
     goToPrevious (): void {
         if (this._paginationModel.url) {
-            const url = this.getUrl({value: this._paginationModel.page - 1});
-            this._router.navigateByUrl(this._router.createUrlTree([url], {queryParams: this.queryParameters}));
+            const url = this.getUrl({ value: this._paginationModel.page - 1 });
+            this._router.navigateByUrl(this._router.createUrlTree([ url ], { queryParams: this.queryParameters }));
         } else {
             this.onPageSwitch.emit(this._paginationModel.page - 1);
         }
@@ -37,8 +37,8 @@ export class PaginationComponent {
 
     goToNext (): void {
         if (this._paginationModel.url) {
-            const url = this.getUrl({value: this._paginationModel.page + 1});
-            this._router.navigateByUrl(this._router.createUrlTree([url], {queryParams: this.queryParameters}));
+            const url = this.getUrl({ value: this._paginationModel.page + 1 });
+            this._router.navigateByUrl(this._router.createUrlTree([ url ], { queryParams: this.queryParameters }));
         } else {
             this.onPageSwitch.emit(this._paginationModel.page + 1);
         }
@@ -118,22 +118,22 @@ export class PaginationComponent {
 
     private getBackwardItems (): Array<PaginationItem> {
         return this.thereIsGapBackwards() ? [
-            {value: 1, title: '1'},
-            {value: 2, title: '2'},
-            {value: 3, title: '3'},
-            {value: -1, title: '...'},
-            {value: this._paginationModel.page - 1, title: (this._paginationModel.page - 1).toString()}
+            { value: 1, title: '1' },
+            { value: 2, title: '2' },
+            { value: 3, title: '3' },
+            { value: -1, title: '...' },
+            { value: this._paginationModel.page - 1, title: (this._paginationModel.page - 1).toString() }
         ] : [];
     }
 
     private getForwardItems (): Array<PaginationItem> {
         return this.thereIsGapForward() ? [
-            {value: this._paginationModel.page + 1, title: (this._paginationModel.page + 1).toString()},
-            {value: this._paginationModel.page + 2, title: (this._paginationModel.page + 2).toString()},
-            {value: -1, title: '...'},
-            {value: this._paginationModel.total - 2, title: (this._paginationModel.total - 2).toString()},
-            {value: this._paginationModel.total - 1, title: (this._paginationModel.total - 1).toString()},
-            {value: this._paginationModel.total, title: (this._paginationModel.total).toString()}
+            { value: this._paginationModel.page + 1, title: (this._paginationModel.page + 1).toString() },
+            { value: this._paginationModel.page + 2, title: (this._paginationModel.page + 2).toString() },
+            { value: -1, title: '...' },
+            { value: this._paginationModel.total - 2, title: (this._paginationModel.total - 2).toString() },
+            { value: this._paginationModel.total - 1, title: (this._paginationModel.total - 1).toString() },
+            { value: this._paginationModel.total, title: (this._paginationModel.total).toString() }
         ] : [];
     }
 }

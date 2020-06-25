@@ -6,7 +6,7 @@ import { AfterViewInit, Component, ElementRef, NgZone, OnDestroy, ViewChild, Vie
 @Component({
     selector: 'app-global-notification',
     templateUrl: 'global-notification.component.html',
-    styleUrls: ['global-notification.component.css'],
+    styleUrls: [ 'global-notification.component.css' ],
     encapsulation: ViewEncapsulation.None
 })
 
@@ -16,27 +16,27 @@ export class GlobalNotificationComponent implements AfterViewInit, OnDestroy {
 
     @ViewChild('wrapper', { static: true }) wrapper: ElementRef;
 
-    constructor(
+    constructor (
         private _ngZone: NgZone,
         notificationService: NotificationService
     ) {
         this._notificationSubscription = notificationService.onNotification.subscribe(this.onNotification.bind(this));
     }
 
-    ngAfterViewInit(): void {
+    ngAfterViewInit (): void {
         this._wrapperElement = this.wrapper.nativeElement;
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         this._notificationSubscription.unsubscribe();
     }
 
-    private onNotification(notification: NotificationMessage): void {
+    private onNotification (notification: NotificationMessage): void {
         const node = this.createElement(notification);
         this._wrapperElement.appendChild(node);
     }
 
-    private createElement(notification: NotificationMessage): Node {
+    private createElement (notification: NotificationMessage): Node {
         const node = document.createElement('div');
         node.className = `global-notification ${this.getType(notification)}`;
 
@@ -63,7 +63,7 @@ export class GlobalNotificationComponent implements AfterViewInit, OnDestroy {
         return node;
     }
 
-    private dismissNotification(node: HTMLElement): void {
+    private dismissNotification (node: HTMLElement): void {
         node.className = node.className + ' global-notification-hidden';
         setTimeout(() => {
             node.style.display = 'none';
@@ -71,7 +71,7 @@ export class GlobalNotificationComponent implements AfterViewInit, OnDestroy {
         }, 2100);
     }
 
-    private getType(notification: NotificationMessage): string {
+    private getType (notification: NotificationMessage): string {
         switch (notification.type) {
             case NotificationType.INFO:
                 return 'global-notification-info';

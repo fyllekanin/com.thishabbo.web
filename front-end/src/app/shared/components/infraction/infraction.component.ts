@@ -14,11 +14,11 @@ export class InfractionComponent extends InnerDialogComponent {
     infractionLevelId = 0;
     reason = '';
 
-    setData(data: InfractionContext): void {
+    setData (data: InfractionContext): void {
         this._data = data;
     }
 
-    getData(): InfractModel {
+    getData (): InfractModel {
         return new InfractModel({
             infractionLevelId: this.infractionLevelId,
             reason: this.reason,
@@ -26,15 +26,15 @@ export class InfractionComponent extends InnerDialogComponent {
         });
     }
 
-    getTime(time: number): string {
+    getTime (time: number): string {
         return TimeHelper.getTime(time);
     }
 
-    get levels(): Array<InfractionLevel> {
+    get levels (): Array<InfractionLevel> {
         return this._data ? this._data.levels : [];
     }
 
-    get history(): Array<Infraction> {
+    get history (): Array<Infraction> {
         return this._data ? this._data.history : [];
     }
 }

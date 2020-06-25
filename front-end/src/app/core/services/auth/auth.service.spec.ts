@@ -19,6 +19,7 @@ describe('AuthService', () => {
         }
 
         get () {
+            return null;
         }
     }
 
@@ -30,8 +31,8 @@ describe('AuthService', () => {
         TestBed.configureTestingModule({
             imports: [
                 RouterTestingModule.withRoutes([
-                    {path: 'auth/login', redirectTo: ''},
-                    {path: 'dashboard', redirectTo: ''}
+                    { path: 'auth/login', redirectTo: '' },
+                    { path: 'dashboard', redirectTo: '' }
                 ])
             ],
             providers: [
@@ -39,29 +40,28 @@ describe('AuthService', () => {
                 DialogService,
                 RouterStateService,
                 {
-                    provide: ContinuesInformationService, useValue: {
-                        triggerFetch: () => {
-                        }
-                    }
+                    provide: ContinuesInformationService, useValue: {}
                 },
                 {
                     provide: NotificationService, useValue: {
                         failureNotification: () => {
+                            // Empty
                         },
                         sendNotification: () => {
+                            // Empty
                         }
                     }
                 },
-                {provide: HttpService, useValue: httpServiceMock}
+                { provide: HttpService, useValue: httpServiceMock }
             ]
         });
 
-        authService = TestBed.get(AuthService);
+        authService = TestBed.inject(AuthService);
     });
 
     it('user should set the user and store it in localStorage', () => {
         // Given
-        const user = new AuthUser({nickname: 'test'});
+        const user = new AuthUser({ nickname: 'test' });
 
         // When
         authService.user = user;
@@ -73,9 +73,10 @@ describe('AuthService', () => {
 
     it('navigateToHome should navigate to /home', done => {
         // Given
-        spyOn(TestBed.get(Router), 'navigateByUrl').and.callFake(url => {
+        spyOn(TestBed.inject(Router), 'navigateByUrl').and.callFake(url => {
             expect(url).toEqual('/home');
             done();
+            return Promise.resolve(true);
         });
 
         // When
@@ -95,7 +96,7 @@ describe('AuthService', () => {
         });
         it('should return the refreshToken if user is set', () => {
             // Given
-            authService.user = new AuthUser({oauth: new OAuth({refreshToken: 'test'})});
+            authService.user = new AuthUser({ oauth: new OAuth({ refreshToken: 'test' }) });
 
             // When
             const result = authService.getRefreshToken();
@@ -173,7 +174,7 @@ describe('AuthService', () => {
 
     it('getAccessToken should return "access-token" from localStorage', () => {
         // Given
-        const user = {oauth: {accessToken: 'token'}};
+        const user = { oauth: { accessToken: 'token' } };
         localStorage.setItem(LOCAL_STORAGE.AUTH_USER, btoa(JSON.stringify(user)));
 
         // When

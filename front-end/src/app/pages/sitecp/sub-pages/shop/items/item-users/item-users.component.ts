@@ -26,10 +26,10 @@ export class ItemUsersComponent extends Page implements OnDestroy {
     private _data: ItemUsersPage;
 
     tableConfig: TableConfig;
-    nickname: string;
+    nicknames: string;
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Add'}),
-        new TitleTab({title: 'Back', link: SHOP_ITEMS_BREADCRUMB_ITEMS.url})
+        new TitleTab({ title: 'Add' }),
+        new TitleTab({ title: 'Back', link: SHOP_ITEMS_BREADCRUMB_ITEMS.url })
     ];
 
     constructor (
@@ -57,10 +57,10 @@ export class ItemUsersComponent extends Page implements OnDestroy {
 
     onAdd (): void {
         this._httpService.post(`sitecp/shop/items/${this._data.itemId}/users`, {
-            nickname: this.nickname
-        }).subscribe(item => {
-            this.nickname = null;
-            this._data.items.push(new ItemUserModel(item));
+            nicknames: this.nicknames.split(',').map(item => item.trim())
+        }).subscribe(items => {
+            this.nicknames = null;
+            (items || []).forEach(item => this._data.items.push(new ItemUserModel(item)));
             this._notificationService.sendInfoNotification('Item given!');
             this.createOrUpdateTable();
         }, this._notificationService.failureNotification.bind(this._notificationService));
@@ -104,19 +104,19 @@ export class ItemUsersComponent extends Page implements OnDestroy {
         return this._data.items.map(item => new TableRow({
             id: String(item.userItemId),
             cells: [
-                new TableCell({title: item.user.nickname}),
-                new TableCell({title: item.createdAt})
+                new TableCell({ title: item.user.nickname }),
+                new TableCell({ title: item.createdAt })
             ],
             actions: [
-                new TableAction({title: 'Remove'})
+                new TableAction({ title: 'Remove' })
             ]
         }));
     }
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Nickname'}),
-            new TableHeader({title: 'Timestamp'})
+            new TableHeader({ title: 'Nickname' }),
+            new TableHeader({ title: 'Timestamp' })
         ];
     }
 }

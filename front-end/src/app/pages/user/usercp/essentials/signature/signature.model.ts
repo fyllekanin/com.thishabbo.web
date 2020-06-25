@@ -1,5 +1,4 @@
-import { ClassHelper } from 'shared/helpers/class.helper';
-import { primitive } from 'shared/helpers/class.helper';
+import { ClassHelper, primitive } from 'shared/helpers/class.helper';
 
 export class Signature {
     @primitive()
@@ -7,11 +6,12 @@ export class Signature {
     @primitive()
     parsedSignature: string;
 
-    constructor(source?: Partial<Signature>) {
+    constructor (source?: Partial<Signature>) {
         ClassHelper.assign(this, source);
     }
 }
 
 export enum SignatureActions {
-    SAVE
+    SAVE,
+    PREVIEW
 }

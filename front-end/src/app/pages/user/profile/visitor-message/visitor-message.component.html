@@ -7,7 +7,7 @@
     </div>
     <div class="toggle-replies" (click)="isRepliesOpen = !isRepliesOpen; toggleReplies();">
         <div class="avatar">
-            <img appUserProfile [info]="visitorMessage.user" />
+            <img appUserProfile [info]="visitorMessage.user"/>
         </div>
         <div class="content">
             <div class="user">
@@ -41,7 +41,7 @@
                 <em class="fas fa-clock"></em> {{getTime(comment.createdAt)}}
             </div>
             <div class="avatar">
-                <img appUserProfile [info]="comment.user" />
+                <img appUserProfile [info]="comment.user"/>
             </div>
             <div class="content">
                 <div class="user">

@@ -1,8 +1,5 @@
-<div *ngIf="!response">
+<div *ngIf="!response" class="loot-boxes">
     <app-table [config]="tableConfig"></app-table>
-    <div class="open">
-        <button appButton (onClick)="open()">Open Loot Box</button>
-    </div>
 </div>
 <div *ngIf="response" class="align-center">
     <div *ngIf="response.isRefund">
@@ -22,4 +19,8 @@
         <br/>
         Congrats on your new item! :D
     </div>
+</div>
+
+<div *ngIf="!response" class="open">
+    <button appButton (onClick)="open()">Open Loot Box</button>
 </div>

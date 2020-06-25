@@ -13,7 +13,7 @@ import { TitleTab } from 'shared/app-views/title/title.model';
 })
 export class GroupTreeComponent extends Page implements OnDestroy {
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Back', link: '/sitecp/forum/categories/page/1'})
+        new TitleTab({ title: 'Back', link: '/sitecp/forum/categories/page/1' })
     ];
     data: TreeDiagram;
 

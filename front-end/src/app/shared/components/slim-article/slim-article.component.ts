@@ -5,7 +5,7 @@ import { SlimArticle } from 'shared/components/slim-article/slim-article.model';
 @Component({
     selector: 'app-slim-article',
     templateUrl: 'slim-article.component.html',
-    styleUrls: ['slim-article.component.css']
+    styleUrls: [ 'slim-article.component.css' ]
 })
 export class SlimArticleComponent {
     private _article: SlimArticle = new SlimArticle();
@@ -24,15 +24,19 @@ export class SlimArticleComponent {
     }
 
     get haveBadge (): boolean {
-        return Boolean(this._article.badge);
+        return Boolean(this._article.badges && this._article.badges.length > 0);
+    }
+
+    get badgeCount (): number {
+        return this._article.badges.length;
     }
 
     get backgroundImage (): string {
-        return `url(/rest/resources/images/thumbnails/${this._article.threadId}.gif?updatedAt=${this._article.updatedAt})`;
+        return `url(/resources/images/thumbnails/${this._article.threadId}.gif?updatedAt=${this._article.updatedAt})`;
     }
 
-    get badgeUrl (): string {
-        return `https://habboo-a.akamaihd.net/c_images/album1584/${this._article.badge}.gif`;
+    get badge (): string {
+        return this._article.badges[0];
     }
 
     get article (): SlimArticle {

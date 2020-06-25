@@ -8,7 +8,7 @@
     <div class="nickname nickname-top-inside" *ngIf="isTopInside">
         <app-user-link [user]="user"></app-user-link>
     </div>
-    <img *ngIf="useAvatarImage" class="mobile-hidden" [src]="userAvatarUrl"
+    <img *ngIf="useAvatarImage" class="mobile-hidden" appImageLazyLoad [src]="userAvatarUrl"
          (error)="onAvatarError()" [style.width]="width" [style.height]="height"/>
     <div class="nickname nickname-bottom-inside" *ngIf="isBottomInside">
         <app-user-link [user]="user"></app-user-link>
@@ -22,7 +22,7 @@
 </div>
 <div class="userbars">
     <div *ngIf="user.barColor">
-        <div class="custom-user-bar-template" [style]="getBarColors() | safeStyle">Donator</div>
+        <div class="custom-user-bar-template" [ngStyle]="getBarColors()">Donator</div>
     </div>
     <div class="custom-user-bar-template" *ngFor="let userBar of user.userBars" [style]="userBar.styling | safeStyle">
         {{userBar.name}}
@@ -70,6 +70,6 @@
 </div>
 <div class="badges" *ngIf="user.badges && user.badges.length > 0">
     <span *ngFor="let badge of user.badges" [attr.tooltip]="badge.name">
-        <img [src]="'/rest/resources/images/badges/' + badge.badgeId + '.gif'"/>
+        <img [src]="'/resources/images/badges/' + badge.badgeId + '.gif'"/>
     </span>
 </div>

@@ -9,12 +9,13 @@ import { SlimUser } from 'core/services/auth/auth.model';
 @Injectable()
 export class PostService {
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService
-    ) {}
+    ) {
+    }
 
-    reportPost(postId: number, message: string): Observable<void> {
+    reportPost (postId: number, message: string): Observable<void> {
         return this._httpService.post(`forum/moderation/post/report`, { postId: postId, message: message })
             .pipe(map(() => {
                 this._notificationService.sendNotification(new NotificationMessage({
@@ -24,7 +25,7 @@ export class PostService {
             }), catchError(this._notificationService.failureNotification.bind(this._notificationService)));
     }
 
-    likePost(postId: number): Observable<Array<SlimUser>> {
+    likePost (postId: number): Observable<Array<SlimUser>> {
         return this._httpService.post(`forum/thread/like/post/${postId}`, null)
             .pipe(map(data => {
                 this._notificationService.sendNotification(new NotificationMessage({
@@ -35,7 +36,7 @@ export class PostService {
             }), catchError(this._notificationService.failureNotification.bind(this._notificationService)));
     }
 
-    unlikePost(postId: number): Observable<Array<SlimUser>> {
+    unlikePost (postId: number): Observable<Array<SlimUser>> {
         return this._httpService.delete(`forum/thread/unlike/post/${postId}`, null)
             .pipe(map(data => {
                 this._notificationService.sendNotification(new NotificationMessage({

@@ -79,7 +79,7 @@ export class DoNotHireComponent extends Page implements OnDestroy {
 
         if (this._editing) {
             this._httpService.put(`staff/management/do-not-hire/${this._editing}`,
-                {information: information})
+                { information: information })
                 .subscribe(() => {
                         this.onSuccessUpdate();
                     },
@@ -87,7 +87,7 @@ export class DoNotHireComponent extends Page implements OnDestroy {
                         this._notificationService.failureNotification(error);
                     });
         } else {
-            this._httpService.post('staff/management/do-not-hire', {information: information})
+            this._httpService.post('staff/management/do-not-hire', { information: information })
                 .subscribe(() => {
                         this.onSuccessCreate();
                     },
@@ -145,9 +145,9 @@ export class DoNotHireComponent extends Page implements OnDestroy {
         }
 
         const tabs = [
-            {title: 'Save', value: DoNotHireActions.SAVE, condition: true},
-            {title: 'Back', value: DoNotHireActions.BACK, condition: true},
-            {title: 'Delete', value: DoNotHireActions.DELETE, condition: this._data.createdAt}
+            { title: 'Save', value: DoNotHireActions.SAVE, condition: true },
+            { title: 'Back', value: DoNotHireActions.BACK, condition: true },
+            { title: 'Delete', value: DoNotHireActions.DELETE, condition: this._data.createdAt }
         ];
 
         this.tabs = tabs.filter(tab => tab.condition).map(tab => new TitleTab(tab));

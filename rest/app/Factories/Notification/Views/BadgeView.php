@@ -5,6 +5,7 @@ namespace App\Factories\Notification\Views;
 use App\EloquentModels\Badge;
 
 class BadgeView {
+
     public $badge;
 
     /**

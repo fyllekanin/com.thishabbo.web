@@ -1,7 +1,8 @@
 <div class="image" [style.backgroundImage]="backgroundImage | safeStyle">
     <div class="inner-image">
         <div class="badge" *ngIf="haveBadge">
-            <img [src]="badgeUrl" />
+            <span class="badge-counter">{{ badgeCount }}</span>
+            <img appHabboBadge [code]="badge"/>
         </div>
     </div>
 </div>

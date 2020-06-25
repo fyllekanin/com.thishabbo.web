@@ -8,9 +8,10 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class SiteMessagesResolver implements Resolve<Array<SiteMessageModel>> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
-    resolve(): Observable<Array<SiteMessageModel>> {
+    resolve (): Observable<Array<SiteMessageModel>> {
         return this._httpService.get('sitecp/content/site-messages')
             .pipe(map(res => {
                 return res.map(item => new SiteMessageModel(item));

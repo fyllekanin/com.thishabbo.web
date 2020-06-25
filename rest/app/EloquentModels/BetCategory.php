@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property mixed name
  */
 class BetCategory extends DeletableModel {
+
     protected $table = 'bet_categories';
     protected $primaryKey = 'betCategoryId';
     protected $fillable = ['name', 'displayOrder'];
@@ -24,9 +25,11 @@ class BetCategory extends DeletableModel {
     }
 
     public function getActiveBetsAttribute() {
-        return Bet::where('isFinished', 0)->where('betCategoryId', $this->betCategoryId)->get()->map(function($bet) {
-            $bet->append('backersCount');
-            return $bet;
-        });
+        return Bet::where('isFinished', 0)->where('betCategoryId', $this->betCategoryId)->get()->map(
+            function ($bet) {
+                $bet->append('backersCount');
+                return $bet;
+            }
+        );
     }
 }

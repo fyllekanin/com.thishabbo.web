@@ -4,7 +4,7 @@ import { FastTyperModel } from './fast-typer.model';
 import { HttpService } from 'core/services/http/http.service';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Page } from 'shared/page/page.model';
-import { Component, ElementRef, ViewEncapsulation, Renderer2, OnDestroy } from '@angular/core';
+import { Component, ElementRef, OnDestroy, Renderer2, ViewEncapsulation } from '@angular/core';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { ARCADE_BREADCRUM_ITEM } from '../arcade.constants';
 import { TitleTab } from 'shared/app-views/title/title.model';
@@ -14,7 +14,7 @@ import { HighScoreModel } from '../arcade.model';
 @Component({
     selector: 'app-arcade-fast-typer',
     templateUrl: 'fast-typer.component.html',
-    styleUrls: ['fast-typer.component.css'],
+    styleUrls: [ 'fast-typer.component.css' ],
     encapsulation: ViewEncapsulation.None
 })
 export class FastTyperComponent extends Page implements OnDestroy {
@@ -29,7 +29,7 @@ export class FastTyperComponent extends Page implements OnDestroy {
     timer = 3;
     tabs: Array<TitleTab> = [];
 
-    constructor(
+    constructor (
         private _notificationService: NotificationService,
         private _renderer: Renderer2,
         private _httpService: HttpService,
@@ -48,11 +48,11 @@ export class FastTyperComponent extends Page implements OnDestroy {
         this.tabs = this._defaultTabs;
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    startGame(): void {
+    startGame (): void {
         this.tabs = [];
         this._httpService.get('arcade/fast-typer').subscribe(res => {
             this._fastTyperModel = new FastTyperModel(res);
@@ -62,7 +62,7 @@ export class FastTyperComponent extends Page implements OnDestroy {
         });
     }
 
-    checkContent(): void {
+    checkContent (): void {
         if (!this.wordMatching(this._fastTyperModel.isLastWord())) {
             return;
         }
@@ -84,37 +84,37 @@ export class FastTyperComponent extends Page implements OnDestroy {
         }
     }
 
-    get highscoreList(): Array<HighScoreModel> {
+    get highscoreList (): Array<HighScoreModel> {
         return this._highscore;
     }
 
-    get countDownGoing(): boolean {
+    get countDownGoing (): boolean {
         return this._fastTyperModel.isCountDown;
     }
 
-    get isGameRunning(): boolean {
+    get isGameRunning (): boolean {
         return this._fastTyperModel.isGameRunning;
     }
 
-    get gameContent(): string {
+    get gameContent (): string {
         return this.isGameRunning ? this._fastTyperModel.words.map((word, index) => {
             return index <= this._fastTyperModel.currentWord.index ? `<span class="cleared">${word}</span>` : word;
         }).join(' ') : this._awaitingStart;
     }
 
-    private onData(data: { data: Array<HighScoreModel> }): void {
+    private onData (data: { data: Array<HighScoreModel> }): void {
         this._highscore = data.data;
     }
 
-    private wordMatching(isLastWord: boolean): boolean {
-        return this.gameInput === (this._fastTyperModel.currentWord.word + (isLastWord ? '' : ' ')) ;
+    private wordMatching (isLastWord: boolean): boolean {
+        return this.gameInput === (this._fastTyperModel.currentWord.word + (isLastWord ? '' : ' '));
     }
 
-    private startCountDown(): void {
+    private startCountDown (): void {
         this._fastTyperModel.startCountDown();
         const countDownTimer = setInterval(() => {
             if (this.timer-- && this.timer > 0) {
-                return ;
+                return;
             }
             this.focusInput();
             this._fastTyperModel.startGame();
@@ -123,7 +123,7 @@ export class FastTyperComponent extends Page implements OnDestroy {
         }, 1000);
     }
 
-    private focusInput(): void {
+    private focusInput (): void {
         const element = this._renderer.selectRootElement('#gameInput');
         setTimeout(() => element.focus(), 0);
     }

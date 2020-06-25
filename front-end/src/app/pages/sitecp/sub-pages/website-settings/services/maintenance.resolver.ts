@@ -8,9 +8,10 @@ import { MaintenanceModel } from '../maintenance/maintenance.model';
 @Injectable()
 export class MaintenanceResolver implements Resolve<MaintenanceModel> {
 
-    constructor (private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
-    resolve(): Observable<MaintenanceModel> {
+    resolve (): Observable<MaintenanceModel> {
         return this._httpService.get('sitecp/content/maintenance')
             .pipe(map(res => new MaintenanceModel(res)));
     }

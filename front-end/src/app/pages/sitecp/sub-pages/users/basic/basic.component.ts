@@ -18,8 +18,8 @@ export class BasicComponent extends Page implements OnDestroy {
     private _basicPage: BasicPage = new BasicPage();
 
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Save'}),
-        new TitleTab({title: 'Back', link: '/sitecp/users/page/1'})
+        new TitleTab({ title: 'Save' }),
+        new TitleTab({ title: 'Back', link: '/sitecp/users/page/1' })
     ];
 
     constructor (
@@ -61,11 +61,11 @@ export class BasicComponent extends Page implements OnDestroy {
     }
 
     get canDoBasic (): boolean {
-        return this._authService.sitecpPermissions.canEditUserBasic;
+        return this._authService.sitecpPermissions.canEditUsersBasic;
     }
 
     get canDoAdvanced (): boolean {
-        return this._authService.sitecpPermissions.canEditUserAdvanced;
+        return this._authService.sitecpPermissions.canEditUsersAdvanced;
     }
 
     private onPage (data: { data: BasicPage }): void {

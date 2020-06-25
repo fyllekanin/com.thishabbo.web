@@ -12,7 +12,7 @@ export class PollListModel {
     @primitive()
     threadId: number;
 
-    constructor(source: Partial<PollListModel>) {
+    constructor (source: Partial<PollListModel>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -25,7 +25,7 @@ export class PollsListModel {
     @arrayOf(PollListModel)
     polls: Array<PollListModel> = [];
 
-    constructor(source: Partial<PollsListModel>) {
+    constructor (source: Partial<PollsListModel>) {
         ClassHelper.assign(this, source);
     }
 }

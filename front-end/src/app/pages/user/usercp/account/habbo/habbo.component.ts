@@ -22,7 +22,7 @@ export class HabboComponent extends Page implements OnDestroy {
         new TitleTab({ title: 'Save' })
     ];
 
-    constructor(
+    constructor (
         private _notificationService: NotificationService,
         private _service: HabboService,
         private _authService: AuthService,
@@ -40,11 +40,11 @@ export class HabboComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onSave(): void {
+    onSave (): void {
         if (!this.newHabbo) {
             this._notificationService.sendNotification(new NotificationMessage({
                 title: 'Warning',
@@ -63,15 +63,15 @@ export class HabboComponent extends Page implements OnDestroy {
         });
     }
 
-    get motto(): string {
+    get motto (): string {
         return `thishabbo-${this._authService.authUser.userId}`;
     }
 
-    get habbo(): string {
+    get habbo (): string {
         return this._habbo || 'None';
     }
 
-    private onData(data: { data: string }): void {
+    private onData (data: { data: string }): void {
         this._habbo = data.data;
     }
 }

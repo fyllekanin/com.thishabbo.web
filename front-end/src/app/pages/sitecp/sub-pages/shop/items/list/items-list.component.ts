@@ -38,7 +38,7 @@ export class ItemsListComponent extends Page implements OnDestroy {
     tableConfig: TableConfig;
     pagination: PaginationModel;
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Create New', link: '/sitecp/shop/items/new'})
+        new TitleTab({ title: 'Create New', link: '/sitecp/shop/items/new' })
     ];
 
     constructor (
@@ -69,7 +69,7 @@ export class ItemsListComponent extends Page implements OnDestroy {
         this._filter = params;
         this._filterTimer = setTimeout(() => {
             this._service.getPage(1, this._filter).subscribe(res => {
-                this.onData({data: res});
+                this.onData({ data: res });
             });
         }, 200);
     }
@@ -140,10 +140,10 @@ export class ItemsListComponent extends Page implements OnDestroy {
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Resource'}),
-            new TableHeader({title: 'Title'}),
-            new TableHeader({title: 'Type'}),
-            new TableHeader({title: 'Rarity'})
+            new TableHeader({ title: 'Resource' }),
+            new TableHeader({ title: 'Title' }),
+            new TableHeader({ title: 'Type' }),
+            new TableHeader({ title: 'Rarity' })
         ];
     }
 
@@ -173,10 +173,10 @@ export class ItemsListComponent extends Page implements OnDestroy {
             return new TableRow({
                 id: String(item.shopItemId),
                 cells: [
-                    new TableCell({title: item.getResource(), innerHTML: true}),
-                    new TableCell({title: item.title}),
-                    new TableCell({title: ShopHelper.getTypeName(item.type)}),
-                    new TableCell({title: ShopHelper.getRarityName(item.rarity)})
+                    new TableCell({ title: item.getResource(), innerHTML: true }),
+                    new TableCell({ title: item.title }),
+                    new TableCell({ title: ShopHelper.getTypeName(item.type) }),
+                    new TableCell({ title: ShopHelper.getRarityName(item.rarity) })
                 ],
                 actions: actions.filter(action => action.condition)
                     .map(action => new TableAction(action))

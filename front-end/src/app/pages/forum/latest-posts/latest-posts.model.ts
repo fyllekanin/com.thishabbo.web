@@ -9,7 +9,7 @@ export class LatestPostsPage {
     @arrayOf(ForumLatestPost)
     items: Array<ForumLatestPost> = [];
 
-    constructor(source: Partial<LatestPostsPage>) {
+    constructor (source: Partial<LatestPostsPage>) {
         ClassHelper.assign(this, source);
     }
 }

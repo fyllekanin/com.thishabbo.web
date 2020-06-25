@@ -1,65 +1,36 @@
-import { ActivatedRouteSnapshot } from '@angular/router';
-import { HttpService } from 'core/services/http/http.service';
 import { TimetableResolver } from 'shared/services/timetable.resolver';
-import { TestBed } from '@angular/core/testing';
+import { HttpService } from 'core/services/http/http.service';
+import { ActivatedRouteSnapshot } from '@angular/router';
+import { of } from 'rxjs';
+import { TimetablePage } from 'shared/models/timetable.model';
 
 describe('TimetableResolver', () => {
 
-    describe('resolve', () => {
+    let httpService: HttpService;
+    let resolver: TimetableResolver;
 
-        let service: TimetableResolver;
+    beforeEach(() => {
+        httpService = <HttpService><unknown>{
+            get: () => null
+        };
+        resolver = new TimetableResolver(httpService);
+    });
 
-        beforeEach(() => {
-            TestBed.configureTestingModule({
-                providers: [
-                    TimetableResolver,
-                    {
-                        provide: HttpService, useValue: {
-                            get: () => {
-                                return {
-                                    pipe: () => {
-                                    }
-                                };
-                            }
-                        }
-                    }
-                ]
-            });
-            service = TestBed.get(TimetableResolver);
-        });
+    it('resolver should take the type from activatedRoute and map the result to page', done => {
+        // Given
+        const activatedRoute = <ActivatedRouteSnapshot><unknown>{
+            data: {
+                type: 'type'
+            }
+        };
+        spyOn(httpService, 'get').and.returnValue(of({ timezones: [ 'timezone' ] }));
 
-        it('should apply the date "type" to the path with events', () => {
-            // Given
-            const httpService = TestBed.get(HttpService);
-            const activatedRouteSnapshot = new ActivatedRouteSnapshot();
-            activatedRouteSnapshot.data = {type: 'events'};
-            spyOn(httpService, 'get').and.returnValue({
-                pipe: () => {
-                }
-            });
-
-            // When
-            service.resolve(activatedRouteSnapshot);
-
+        // When
+        resolver.resolve(activatedRoute).subscribe(result => {
             // Then
-            expect(httpService.get).toHaveBeenCalledWith('events/timetable');
-        });
-
-        it('should apply the date "type" to the path with radio', () => {
-            // Given
-            const httpService = TestBed.get(HttpService);
-            const activatedRouteSnapshot = new ActivatedRouteSnapshot();
-            activatedRouteSnapshot.data = {type: 'radio'};
-            spyOn(httpService, 'get').and.returnValue({
-                pipe: () => {
-                }
-            });
-
-            // When
-            service.resolve(activatedRouteSnapshot);
-
-            // Then
-            expect(httpService.get).toHaveBeenCalledWith('radio/timetable');
+            expect(result instanceof TimetablePage).toBeTruthy();
+            expect(result.timezones).toEqual([ 'timezone' ]);
+            done();
         });
     });
 });

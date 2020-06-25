@@ -2,38 +2,30 @@
 
 namespace App\Http\Controllers\Arcade;
 
+use App\Constants\GameTypes;
+use App\Constants\LogType;
+use App\Constants\Prices;
 use App\EloquentModels\Game;
 use App\EloquentModels\Paragraph;
-use App\Helpers\ConfigHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
-use App\Models\Logger\Action;
-use App\Services\CreditsService;
+use App\Providers\Service\CreditsService;
 use App\Utils\Condition;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class FastTyperController extends Controller {
-    private $gameTypes = null;
-
-    /**
-     * FastTyperController constructor.
-     * Fetch available game types and store in instance variable
-     */
-    public function __construct() {
-        parent::__construct();
-        $this->gameTypes = ConfigHelper::getGameTypesConfig();
-    }
 
     /**
      * Get request to get the highscore for fastest typer
      *
-     * @param bool $asJson
+     * @param  bool  $asJson
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getFastTyperHighscoreTable($asJson = false) {
         $highScore = Game::orderBy('score', 'DESC')
-            ->where('gameType', $this->gameTypes->fastTyper)
+            ->where('gameType', GameTypes::FASTEST_TYPER)
             ->where('isFinished', '>', 0)
             ->take(10)
             ->get();
@@ -45,53 +37,59 @@ class FastTyperController extends Controller {
      * Get request to start a new game and get the paragraph
      * for the game.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @param CreditsService $creditsService
+     * @param  CreditsService  $creditsService
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getFastTyperParagraph(Request $request, CreditsService $creditsService) {
         $user = $request->get('auth');
 
-        Condition::precondition(!$creditsService->haveEnoughCredits($user->userId, ConfigHelper::getCostSettings()->arcade), 400,
-            'You need at least ' . ConfigHelper::getCostSettings()->arcade . ' credits to play');
-        $creditsService->takeCredits($user->userId, ConfigHelper::getCostSettings()->arcade);
+        Condition::precondition(
+            !$creditsService->haveEnoughCredits($user->userId, Prices::ARCADE_GAME), 400,
+            'You need at least '.Prices::ARCADE_GAME.' credits to play'
+        );
+        $creditsService->takeCredits($user->userId, Prices::ARCADE_GAME);
 
         $paragraph = Paragraph::inRandomOrder()->first();
-        $game = new Game([
-            'userId' => $user->userId,
-            'gameType' => $this->gameTypes->fastTyper
-        ]);
+        $game = new Game(
+            [
+                'userId' => $user->userId,
+                'gameType' => GameTypes::FASTEST_TYPER
+            ]
+        );
         $game->save();
 
-        Logger::user($user->userId, $request->ip(), Action::STARTED_FASTEST_TYPE_GAME);
-        return response()->json([
-            'paragraph' => $paragraph->text,
-            'gameId' => $game->gameId,
-            'paragraphId' => $paragraph->paragraphId
-        ]);
+        Logger::user($user->userId, $request->ip(), LogType::STARTED_FASTEST_TYPE_GAME);
+        return response()->json(
+            [
+                'paragraph' => $paragraph->text,
+                'gameId' => $game->gameId,
+                'paragraphId' => $paragraph->paragraphId
+            ]
+        );
     }
 
     /**
      * Post request to create the score
      *
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @param CreditsService $creditsService
+     * @param  CreditsService  $creditsService
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function createFastTyperScore(Request $request, CreditsService $creditsService) {
         $user = $request->get('auth');
-        $result = (object)$request->input('result');
+        $result = (object) $request->input('result');
 
         $paragraph = Paragraph::find($result->paragraphId);
         $game = Game::find($result->gameId);
 
         Condition::precondition(!$paragraph, 404, 'Paragraph do not exist');
         Condition::precondition(!$game, 404, 'Game do not exist');
-        Condition::precondition($game->gameType != $this->gameTypes->fastTyper, 404, 'Game do not exist');
+        Condition::precondition($game->gameType != GameTypes::FASTEST_TYPER, 404, 'Game do not exist');
         Condition::precondition($game->userId != $user->userId, 400, 'Not your game');
 
         $olderThenFiveMinutes = $game->createdAt->timestamp + (60 * 5) < time();
@@ -99,20 +97,23 @@ class FastTyperController extends Controller {
 
         $game->score = $this->getWordsPerMinute($paragraph->text, $result->startTime, $result->endTime);
         $game->isFinished = true;
+        $game->isFinished = true;
         $game->save();
 
         $this->checkWinnings($game, $user, $creditsService);
-        Logger::user($user->userId, $request->ip(), Action::FINISHED_FASTEST_TYPE_GAME, ['score' => $game->score]);
-        return response()->json([
-            'score' => $game->score,
-            'highscore' => $this->getFastTyperHighscoreTable()
-        ]);
+        Logger::user($user->userId, $request->ip(), LogType::FINISHED_FASTEST_TYPE_GAME, ['score' => $game->score]);
+        return response()->json(
+            [
+                'score' => $game->score,
+                'highscore' => $this->getFastTyperHighscoreTable()
+            ]
+        );
     }
 
     /**
-     * @param $game
-     * @param $user
-     * @param $creditsService
+     * @param                                        $game
+     * @param                                        $user
+     * @param                                        $creditsService
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     private function checkWinnings($game, $user, $creditsService) {

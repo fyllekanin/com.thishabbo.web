@@ -16,4 +16,5 @@ import { ButtonModule } from 'shared/directives/button/button.module';
         DialogComponent
     ]
 })
-export class DialogModule {}
+export class DialogModule {
+}

@@ -146,7 +146,7 @@ export class ThreadActionExecutor {
                 new DialogButton({
                     title: 'Merge',
                     callback: threadId => {
-                        this._httpService.put(`forum/moderation/thread/merge/${this._threadPage.threadId}`, {destThreadId: threadId})
+                        this._httpService.put(`forum/moderation/thread/merge/${this._threadPage.threadId}`, { targetThreadId: threadId })
                             .subscribe(() => {
                                 this._notificationService.sendInfoNotification('Threads Merged!');
                                 this._router.navigateByUrl(`/forum/thread/${threadId}/page/1`);
@@ -162,7 +162,7 @@ export class ThreadActionExecutor {
             title: 'Are you sure?',
             content: 'Are you sure you wanna delete these posts?',
             callback: () => {
-                this._httpService.put(`forum/moderation/thread/delete/posts`, {postIds: postIds})
+                this._httpService.put(`forum/moderation/thread/delete/posts`, { postIds: postIds })
                     .subscribe(() => {
                         this._threadPage.threadPosts = this._threadPage.threadPosts.filter(po => postIds.indexOf(po.postId) === -1);
                         this._dialogService.closeDialog();
@@ -203,7 +203,7 @@ export class ThreadActionExecutor {
             return;
         }
 
-        this._httpService.put(`forum/moderation/thread/merge-posts/${this._threadPage.threadId}`, {postIds: selectedPostIds})
+        this._httpService.put(`forum/moderation/thread/merge-posts/${this._threadPage.threadId}`, { postIds: selectedPostIds })
             .subscribe(newPost => {
                 this._notificationService.sendInfoNotification('Posts are merged');
                 this._threadPage.threadPosts = this._threadPage.threadPosts.filter(item => {
@@ -226,7 +226,7 @@ export class ThreadActionExecutor {
                 new DialogButton({
                     title: 'Done', callback: categoryId => {
                         this._httpService.put(`forum/moderation/thread/move/category/${categoryId}`,
-                            {threadIds: [this._threadPage.threadId]})
+                            { threadIds: [ this._threadPage.threadId ] })
                             .subscribe(() => {
                                 this._notificationService.sendInfoNotification('Thread is moved!');
                                 this._dialogService.closeDialog();
@@ -244,7 +244,7 @@ export class ThreadActionExecutor {
             component: this._componentFactory.resolveComponentFactory(ChangeOwnerComponent),
             buttons: [
                 new DialogCloseButton('Close'),
-                new DialogButton({title: 'Done', callback: this.onChangeThreadOwner.bind(this)})
+                new DialogButton({ title: 'Done', callback: this.onChangeThreadOwner.bind(this) })
             ]
         });
     }
@@ -260,13 +260,13 @@ export class ThreadActionExecutor {
             component: this._componentFactory.resolveComponentFactory(ChangeOwnerComponent),
             buttons: [
                 new DialogCloseButton('Close'),
-                new DialogButton({title: 'Done', callback: this.onChangePostOwner.bind(this, selectedPostIds)})
+                new DialogButton({ title: 'Done', callback: this.onChangePostOwner.bind(this, selectedPostIds) })
             ]
         });
     }
 
     private onChangePostOwner (postIds: Array<number>, nickname: string): void {
-        this._httpService.put(`forum/moderation/thread/posts/change-owner`, {nickname: nickname, postIds: postIds})
+        this._httpService.put(`forum/moderation/thread/posts/change-owner`, { nickname: nickname, postIds: postIds })
             .subscribe(user => {
                 const newOwner = new User(user);
                 this._threadPage.threadPosts.forEach(post => {
@@ -281,7 +281,7 @@ export class ThreadActionExecutor {
     private onChangeThreadOwner (nickname: string): void {
         this._httpService.put(`forum/moderation/thread/change-owner`, {
             nickname: nickname,
-            threadIds: [this._threadPage.threadId]
+            threadIds: [ this._threadPage.threadId ]
         })
             .subscribe(user => {
                 const newOwner = new User(user);
@@ -368,7 +368,7 @@ export class ThreadActionExecutor {
 
     private onUnApprovePosts (): void {
         const selectedPostIds = this._threadPage.threadPosts.filter(post => post.isSelected).map(post => post.postId);
-        this._httpService.put('forum/moderation/thread/unapprove/posts', {postIds: selectedPostIds})
+        this._httpService.put('forum/moderation/thread/unapprove/posts', { postIds: selectedPostIds })
             .subscribe(() => {
                 this._threadPage.threadPosts = this._threadPage.threadPosts.map(post => {
                     post.isApproved = post.isSelected ? false : post.isApproved;
@@ -381,7 +381,7 @@ export class ThreadActionExecutor {
 
     private onApprovePosts (): void {
         const selectedPostIds = this._threadPage.threadPosts.filter(post => post.isSelected).map(post => post.postId);
-        this._httpService.put('forum/moderation/thread/approve/posts', {postIds: selectedPostIds})
+        this._httpService.put('forum/moderation/thread/approve/posts', { postIds: selectedPostIds })
             .subscribe(() => {
                 this._threadPage.threadPosts = this._threadPage.threadPosts.map(post => {
                     post.isApproved = post.isSelected ? true : post.isApproved;

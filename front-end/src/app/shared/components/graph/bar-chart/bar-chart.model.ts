@@ -13,7 +13,7 @@ export class BarChartItem {
     yItem: any;
     xItem: any;
 
-    constructor(source: {
+    constructor (source: {
         yItem: any,
         xItem: any
     }) {
@@ -29,7 +29,7 @@ export class BarChartModel {
     @arrayOf(BarChartItem)
     items: Array<BarChartItem> = [];
 
-    constructor(source: {
+    constructor (source: {
         yLabel: string,
         xLabel: string,
         items: Array<BarChartItem>

@@ -9,15 +9,9 @@ class UpdateNewMentionBbcodes extends Migration {
      *
      * @return void
      */
-    public function up() {
+    public function up () {
         DB::table('bbcodes')->where('name', 'Mention v2')->update([
             'replace' => '<a class="mention-user" data-type="internal" data-url="/user/profile/$1">$1</a>',
-            'updatedAt' => time()
-        ]);
-        DB::table('bbcodes')->where('name', 'Group tag v2')->update([
-            'example' => ':group_nickname:',
-            'pattern' => '/:([a-zA-Z0-9_]+):/si',
-            'replace' => '<a class="mention-group">$1</a>',
             'updatedAt' => time()
         ]);
 
@@ -29,7 +23,7 @@ class UpdateNewMentionBbcodes extends Migration {
      *
      * @return void
      */
-    public function down() {
+    public function down () {
         //
     }
 }

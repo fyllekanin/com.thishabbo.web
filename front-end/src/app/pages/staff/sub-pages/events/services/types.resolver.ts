@@ -8,9 +8,10 @@ import { EventTypesPage } from '../types/types.model';
 @Injectable()
 export class TypesReolver implements Resolve<EventTypesPage> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
-    resolve(activatedRoute: ActivatedRouteSnapshot): Observable<EventTypesPage> {
+    resolve (activatedRoute: ActivatedRouteSnapshot): Observable<EventTypesPage> {
         const page = activatedRoute.params['page'];
         const filterQuery = activatedRoute.queryParams['filter'];
         return this._httpService.get(`staff/events/types/page/${page}`, { filter: filterQuery })

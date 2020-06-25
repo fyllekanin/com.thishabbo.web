@@ -6,10 +6,13 @@ import { BadgeView } from 'app/shared/components/notification-views/badge-view/b
 @Component({
     selector: 'app-top-bar-badge-view',
     templateUrl: 'badge-view.component.html',
-    styleUrls: ['../notification.views.css']
+    styleUrls: [ '../notification.views.css' ]
 })
 export class BadgeViewComponent implements NotificationView {
     private _notification: NotificationModel<BadgeView>;
+
+    imagePath: string;
+    name: string;
 
     @Output()
     onClick = new EventEmitter<number>();
@@ -17,21 +20,17 @@ export class BadgeViewComponent implements NotificationView {
     @Input()
     set notification (notification: NotificationModel<BadgeView>) {
         this._notification = notification;
-    }
-
-    get imagePath (): string {
-        return `/rest/resources/images/badges/${this._notification.item.badge.badgeId}.gif`;
-    }
-
-    get name (): string {
-        return this._notification.item.badge.name;
+        this.name = this._notification.item.badge ? this._notification.item.badge.name : 'Unknown';
+        this.imagePath = this._notification.item.badge ?
+            `/resources/images/badges/${this._notification.item.badge.badgeId}.gif` :
+            '/assets/images/badge_error.gif';
     }
 
     getTime (): string {
         return this._notification.createdAt;
     }
 
-    @HostListener('click', ['$event.target'])
+    @HostListener('click', [ '$event.target' ])
     click (): void {
         this.onClick.next(this._notification.notificationId);
     }

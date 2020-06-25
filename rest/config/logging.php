@@ -42,7 +42,19 @@ return [
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
-            'level' => 'debug',
+            'level' => 'debug'
+        ],
+
+        'javascript' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/javascript.log'),
+            'level' => 'debug'
+        ],
+
+        'que' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/que.log'),
+            'level' => 'debug'
         ],
 
         'daily' => [

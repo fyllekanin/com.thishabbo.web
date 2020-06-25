@@ -23,7 +23,7 @@ export class IgnoredCategoriesComponent extends Page implements OnDestroy {
 
     tableConfig: TableConfig;
 
-    constructor(
+    constructor (
         private _httpService: HttpService,
         private _notificationService: NotificationService,
         elementRef: ElementRef,
@@ -33,11 +33,11 @@ export class IgnoredCategoriesComponent extends Page implements OnDestroy {
         this.addSubscription(activatedRoute.data, this.onData.bind(this));
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onAction(action: Action): void {
+    onAction (action: Action): void {
         this._httpService.delete(`forum/category/${action.rowId}/ignore`)
             .subscribe(() => {
                 this._data = this._data.filter(item => item.categoryId !== Number(action.rowId));
@@ -49,12 +49,12 @@ export class IgnoredCategoriesComponent extends Page implements OnDestroy {
             }, this._notificationService.failureNotification.bind(this._notificationService));
     }
 
-    private onData(data: { data: Array<IgnoredCategory> }): void {
+    private onData (data: { data: Array<IgnoredCategory> }): void {
         this._data = data.data;
         this.buildTableConfig();
     }
 
-    private buildTableConfig(): void {
+    private buildTableConfig (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -62,18 +62,18 @@ export class IgnoredCategoriesComponent extends Page implements OnDestroy {
         this.tableConfig = new TableConfig({
             title: 'Ignored Categories',
             headers: [
-                new TableHeader({ title: 'Category '})
+                new TableHeader({ title: 'Category ' })
             ],
             rows: this.getTableRows()
         });
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         return this._data.map(item => {
             return new TableRow({
                 id: String(item.categoryId),
-                cells: [new TableCell({ title: item.title })],
-                actions: [new TableAction({ title: 'Unignore', value: null })]
+                cells: [ new TableCell({ title: item.title }) ],
+                actions: [ new TableAction({ title: 'Unignore', value: null }) ]
             });
         });
     }

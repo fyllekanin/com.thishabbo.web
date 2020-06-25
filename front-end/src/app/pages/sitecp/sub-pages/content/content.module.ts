@@ -46,4 +46,5 @@ import { GroupsListResolver } from './services/groups-list.resolver';
         RouterModule
     ]
 })
-export class SitecpContentModule { }
+export class SitecpContentModule {
+}

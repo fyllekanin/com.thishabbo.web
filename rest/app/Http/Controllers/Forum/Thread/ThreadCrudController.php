@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers\Forum\Thread;
 
+use App\Constants\CategoryOptions;
+use App\Constants\CategoryTemplates;
+use App\Constants\LogType;
+use App\Constants\Permission\CategoryPermissions;
+use App\Constants\User\UserIgnoredNotifications;
 use App\EloquentModels\Forum\Category;
+use App\EloquentModels\Forum\ForumPermission;
 use App\EloquentModels\Forum\IgnoredCategory;
 use App\EloquentModels\Forum\IgnoredThread;
 use App\EloquentModels\Forum\Post;
@@ -10,132 +16,123 @@ use App\EloquentModels\Forum\Prefix;
 use App\EloquentModels\Forum\TemplateData;
 use App\EloquentModels\Forum\Thread;
 use App\EloquentModels\Forum\ThreadBan;
+use App\EloquentModels\Forum\ThreadPoll;
 use App\EloquentModels\Forum\ThreadRead;
 use App\EloquentModels\Forum\ThreadSubscription;
+use App\EloquentModels\Forum\ThreadTemplate;
 use App\EloquentModels\User\User;
-use App\Helpers\ConfigHelper;
-use App\Helpers\DataHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
-use App\Http\Impl\Forum\ThreadCrudControllerImpl;
 use App\Jobs\NotifyCategorySubscribers;
 use App\Jobs\NotifyMentionsInPost;
 use App\Logger;
-use App\Models\Logger\Action;
-use App\Services\ForumService;
-use App\Services\ForumValidatorService;
-use App\Services\PointsService;
+use App\Providers\Service\ForumService;
+use App\Providers\Service\ForumValidatorService;
+use App\Providers\Service\PointsService;
+use App\Repositories\Repository\CategoryRepository;
+use App\Repositories\Repository\GroupRepository;
 use App\Utils\Condition;
+use App\Utils\PaginationUtil;
 use App\Utils\Value;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use stdClass;
 
 class ThreadCrudController extends Controller {
-    private $categoryTemplates = null;
+    private $myForumService;
+    private $myValidatorService;
+    private $myPointsService;
+    private $myGroupRepository;
+    private $myCategoryRepository;
 
-    private $forumService;
-    private $validatorService;
-    private $pointsService;
-    private $myImpl;
-
-    /**
-     * ThreadController constructor.
-     * Fetch the available category templates and store in an instance variable
-     *
-     * @param ForumService             $forumService
-     * @param ForumValidatorService    $validatorService
-     * @param PointsService            $pointsService
-     * @param ThreadCrudControllerImpl $impl
-     */
-    public function __construct (ForumService $forumService, ForumValidatorService $validatorService,
-                                 PointsService $pointsService, ThreadCrudControllerImpl $impl) {
+    public function __construct(
+        ForumService $forumService,
+        ForumValidatorService $validatorService,
+        PointsService $pointsService,
+        GroupRepository $groupRepository,
+        CategoryRepository $categoryRepository
+    ) {
         parent::__construct();
-        $this->categoryTemplates = ConfigHelper::getCategoryTemplatesConfig();
-        $this->forumService = $forumService;
-        $this->validatorService = $validatorService;
-        $this->pointsService = $pointsService;
-        $this->myImpl = $impl;
+        $this->myForumService = $forumService;
+        $this->myValidatorService = $validatorService;
+        $this->myPointsService = $pointsService;
+        $this->myGroupRepository = $groupRepository;
+        $this->myCategoryRepository = $categoryRepository;
     }
 
     /**
      * @param $threadId
      * @param $page
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getPosters ($threadId, $page) {
-        $query = Post::where('posts.threadId', $threadId)
-            ->join('users', 'users.userId', '=', 'posts.userId')
-            ->select('users.userId', DB::raw('COUNT(*) as amount'))
-            ->groupBy('users.userId')
-            ->orderBy(DB::raw('COUNT(*)'), 'DESC');
-        $total = DataHelper::getTotal($query->count());
+    public function getPosters($threadId, $page) {
+        $query = $this->getTopPostersQuery($threadId);
+        $total = PaginationUtil::getTotalPages($query->count());
 
-        return response()->json([
-            'total' => $total,
-            'page' => $page,
-            'items' => $query->take($this->perPage)
-                ->skip(DataHelper::getOffset($page))
-                ->get()
-                ->map(function ($item) {
-                    return [
-                        'user' => UserHelper::getSlimUser($item->userId),
-                        'posts' => $item->amount
-                    ];
-                })
-        ]);
+        return response()->json(
+            [
+                'total' => $total,
+                'page' => $page,
+                'items' => $query->take($this->perPage)
+                    ->skip(PaginationUtil::getOffset($page))
+                    ->get()
+                    ->map(
+                        function ($item) {
+                            return [
+                                'user' => UserHelper::getSlimUser($item->userId),
+                                'posts' => $item->amount
+                            ];
+                        }
+                    )
+            ]
+        );
     }
 
     /**
-     * @param Request $request
-     * @param         $page
+     * @param  Request  $request
+     * @param $page
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getLatestThreads (Request $request, $page) {
+    public function getLatestThreads(Request $request, $page) {
         $user = $request->get('auth');
         $perPage = 20;
 
-        $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
-        $ignoredCategoryIds = array_merge(IgnoredCategory::where('userId', $user->userId)->pluck('categoryId')->toArray(),
-            $this->forumService->getCategoriesUserCantSeeOthersThreadsIn($user->userId));
-        $ignoredThreadIds = IgnoredThread::where('userId', $user->userId)->pluck('threadId');
+        $threadSql = $this->getLatestThreadsQuery($user);
+        $total = PaginationUtil::getTotalPages($threadSql->count('threadId'));
 
-        $threadSql = Thread::whereIn('categoryId', $categoryIds)
-            ->where('isApproved', 1)
-            ->whereNotIn('categoryId', $ignoredCategoryIds)
-            ->whereNotIn('threadId', $ignoredThreadIds)
-            ->orderBy('createdAt', 'DESC');
-        $total = DataHelper::getTotal($threadSql->count('threadId'));
-
-        return response()->json([
-            'page' => $page,
-            'total' => $total,
-            'items' => $threadSql->take($perPage)->skip(DataHelper::getOffset($page, $perPage))->get()->map(function ($thread) use ($user) {
-                return [
-                    'categoryId' => $thread->categoryId,
-                    'style' => isset($thread->prefix) ? $thread->prefix->style : '',
-                    'text' => isset($thread->prefix) ? $thread->prefix->text : '',
-                    'threadId' => $thread->threadId,
-                    'title' => $thread->title,
-                    'user' => UserHelper::getSlimUser($thread->userId),
-                    'isRead' => ThreadRead::where('userId', $user->userId)->where('threadId', $thread->threadId)->count() > 0,
-                    'createdAt' => $thread->createdAt->timestamp
-                ];
-            })
-        ]);
+        return response()->json(
+            [
+                'page' => $page,
+                'total' => $total,
+                'items' => $threadSql->take($perPage)->skip(PaginationUtil::getOffset($page, $perPage))->get()->map(
+                    function ($thread) use ($user) {
+                        return [
+                            'categoryId' => $thread->categoryId,
+                            'style' => isset($thread->prefix) ? $thread->prefix->style : '',
+                            'text' => isset($thread->prefix) ? $thread->prefix->text : '',
+                            'threadId' => $thread->threadId,
+                            'title' => $thread->title,
+                            'user' => UserHelper::getSlimUser($thread->userId),
+                            'isRead' => ThreadRead::where('userId', $user->userId)->where('threadId', $thread->threadId)->count() > 0,
+                            'createdAt' => $thread->createdAt->timestamp
+                        ];
+                    }
+                )
+            ]
+        );
     }
 
     /**
      * Post request to create a new thread
      *
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function createThread (Request $request) {
+    public function createThread(Request $request) {
         $user = $request->get('auth');
         $thumbnail = $request->file('thumbnail');
         $threadSkeleton = json_decode($request->input('thread'));
@@ -144,32 +141,41 @@ class ThreadCrudController extends Controller {
     }
 
     /**
-     * @param Request $request
-     * @param         $threadId
+     * @param  Request  $request
+     * @param $threadId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function updateThread (Request $request, $threadId) {
+    public function updateThread(Request $request, $threadId) {
         $user = $request->get('auth');
         $thumbnail = $request->file('thumbnail');
         $threadSkeleton = json_decode($request->input('thread'));
         $category = Category::where('categoryId', $threadSkeleton->categoryId)->first(['template', 'options']);
 
         Condition::precondition(!$category, 404, 'Category do not exist');
-        Condition::precondition(ThreadBan::where('threadId', $threadId)->where('userId', $user->userId)->count() > 0, 400,
-            'You are banned from this thread');
+        Condition::precondition(
+            ThreadBan::where('threadId', $threadId)->where('userId', $user->userId)->count() > 0,
+            400,
+            'You are banned from this thread'
+        );
 
-        $isPrefixMandatory = $category->options & ConfigHelper::getForumOptionsConfig()->prefixMandatory;
+        $isPrefixMandatory = $category->options & CategoryOptions::PREFIX_MANDATORY;
         $havePrefix = isset($threadSkeleton->prefixId) && $threadSkeleton->prefixId > 0;
-        Condition::precondition($isPrefixMandatory && !$havePrefix, 400,
-            'Prefix is mandatory');
+        Condition::precondition(
+            $isPrefixMandatory && !$havePrefix,
+            400,
+            'Prefix is mandatory'
+        );
 
-        $this->validatorService->validateCreateUpdateThread($user, $threadSkeleton, $category, $request);
+        $this->myValidatorService->validateCreateUpdateThread($user, $threadSkeleton, $category, $request);
         $thread = Thread::find($threadId);
 
-        if (!PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canEditOthersPosts, $thread->categoryId)) {
-            Condition::precondition($thread && $thread->userId != $user->userId, 403,
-                'You don\'t have permission to edit someone elses thread in here');
+        if (!PermissionHelper::haveForumPermission($user->userId, CategoryPermissions::CAN_EDIT_OTHERS_POSTS, $thread->categoryId)) {
+            Condition::precondition(
+                $thread && $thread->userId != $user->userId,
+                403,
+                'You don\'t have permission to edit someone elses thread in here'
+            );
         }
 
         $oldContent = $thread->firstPost->content;
@@ -182,70 +188,86 @@ class ThreadCrudController extends Controller {
         $thread->save();
 
         NotifyMentionsInPost::dispatch($threadSkeleton->content, $thread->firstPostId, $user->userId);
-        if ($category->template !== $this->categoryTemplates->DEFAULT) {
+        if ($category->template !== CategoryTemplates::DEFAULT) {
             $this->uploadFileAndCreateTemplateData($threadSkeleton, $thumbnail, $threadId, $request->hasFile('thumbnail'));
         }
 
-        $this->myImpl->createOrUpdatePoll($thread, $threadSkeleton);
-        Logger::user($user->userId, $request->ip(), Action::UPDATED_THREAD, [
-            'thread' => $thread->title,
-            'postId' => $thread->firstPostId,
-            'oldContent' => $oldContent,
-            'newContent' => $thread->firstPost->content
-        ], $thread->threadId);
+        $this->createOrUpdatePoll($thread, $threadSkeleton);
+        Logger::user(
+            $user->userId,
+            $request->ip(),
+            LogType::UPDATED_THREAD,
+            [
+                'thread' => $thread->title,
+                'postId' => $thread->firstPostId,
+                'oldContent' => $oldContent,
+                'newContent' => $thread->firstPost->content
+            ],
+            $thread->threadId
+        );
         return $this->getThreadController($request, $thread->categoryId, $thread->threadId);
     }
 
     /**
      * Get request to get the resource for creating a new thread or updating existing
      *
-     * @param Request $request
-     * @param         $categoryId
-     * @param         $threadId
+     * @param  Request  $request
+     * @param $categoryId
+     * @param $threadId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getThreadController (Request $request, $categoryId, $threadId) {
+    public function getThreadController(Request $request, $categoryId, $threadId) {
         $user = $request->get('auth');
         $category = Category::find($categoryId);
 
         Condition::precondition(!$category, 404, 'No category with that ID');
-        Condition::precondition(ThreadBan::where('threadId', $threadId)->where('userId', $user->userId)->count() > 0, 400,
-            'You are banned from this thread');
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead,
-            $categoryId, 'No permissions to access this category');
-        PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canCreateThreads,
-            $categoryId, 'No permissions to create threads in this category');
+        Condition::precondition(
+            ThreadBan::where('threadId', $threadId)->where('userId', $user->userId)->count() > 0,
+            400,
+            'You are banned from this thread'
+        );
+        PermissionHelper::haveForumPermissionWithException(
+            $user->userId,
+            CategoryPermissions::CAN_READ,
+            $categoryId,
+            'No permissions to access this category'
+        );
+        PermissionHelper::haveForumPermissionWithException(
+            $user->userId,
+            CategoryPermissions::CAN_CREATE_THREADS,
+            $categoryId,
+            'No permissions to create threads in this category'
+        );
 
-        $newThread = new stdClass();
-        $newThread->threadId = -1;
-        $newThread->categoryId = $categoryId;
-        $newThread->content = '';
-        $newThread->parents = $this->forumService->getCategoryParents($newThread);
-
+        $newThread = $this->getNewThread($this->myForumService, $categoryId);
         $existingThread = Thread::find($threadId);
         $thread = $existingThread ? $existingThread : $newThread;
 
         if ($existingThread) {
             $thread->append('template')
                 ->append('content')
-                ->append('badge')
+                ->append('badges')
                 ->append('tags')
                 ->append('roomLink')
                 ->makeHidden('category');
         } else {
             $thread->template = Category::find($categoryId)->template;
+            $thread->threadTemplates = ThreadTemplate::availableForCategory($thread->categoryId)->get(['name', 'content']);
         }
 
-        if (!PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canEditOthersPosts, $thread->categoryId)) {
-            Condition::precondition($thread && isset($thread->createdAt) && $thread->userId != $user->userId, 403,
-                'You don\'t have permission to edit someone elses thread in here');
+        if (!PermissionHelper::haveForumPermission($user->userId, CategoryPermissions::CAN_EDIT_OTHERS_POSTS, $thread->categoryId)) {
+            Condition::precondition(
+                $thread && isset($thread->createdAt) && $thread->userId != $user->userId,
+                403,
+                'You don\'t have permission to edit someone elses thread in here'
+            );
         }
 
-        $thread->prefixes = Prefix::availableForCategory($thread->categoryId)->get(['prefixId', 'text']);
-        $thread->forumPermissions = $this->forumService->getForumPermissionsForUserInCategory($user->userId, $categoryId);
-        $thread->poll = $this->forumService->getThreadPoll($thread, $user->userId);
-        $thread->canHavePoll = $category->options & ConfigHelper::getForumOptionsConfig()->threadsCanHavePolls;
+        $thread->prefixes = Prefix::availableForCategory($thread->categoryId)->orderBy('text', 'ASC')->get(['prefixId', 'text']);
+        $thread->forumPermissions = $this->myForumService->getForumPermissionsForUserInCategory($user->userId, $categoryId);
+        $thread->poll = $this->myForumService->getThreadPoll($thread, $user->userId);
+        $thread->canHavePoll = $category->options & CategoryOptions::THREADS_CAN_HAVE_POLLS;
 
         return response()->json($thread);
     }
@@ -253,116 +275,119 @@ class ThreadCrudController extends Controller {
     /**
      * Get request to fetch a thread resource
      *
-     * @param Request $request
-     * @param         $threadId
-     * @param int     $page
+     * @param  Request  $request
+     * @param $threadId
+     * @param  int  $page
      *
-     * @param null    $postedByUser
+     * @param  null  $postedByUser
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getThreadPage (Request $request, $threadId, $page = 1, $postedByUser = null) {
+    public function getThreadPage(Request $request, $threadId, $page = 1, $postedByUser = null) {
         $user = $request->get('auth');
-        $thread = Thread::find($threadId);
-        $postedBy = null;
-
-        if ($postedByUser) {
-            $postedBy = User::withNickname($postedByUser)->first();
-            Condition::precondition(!$postedBy, 404, 'No user to look for with that nickname');
-        }
-
-        Condition::precondition(!$thread, 404, 'Thread does not exist');
-        Condition::precondition(!PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canViewThreadContent, $thread->categoryId), 403, 'You can not view thread content');
-
-        $isCreator = $thread->userId == $user->userId;
-        Condition::precondition(!$isCreator && !PermissionHelper::haveForumPermission($user->userId, ConfigHelper::getForumPermissions()->canViewOthersThreads, $thread->categoryId), 403,
-            'You can not view others thread content');
-
-        $this->myImpl->canUserAccessThread($user, $thread);
-        $this->forumService->updateReadCategory($thread->categoryId, $user->userId);
-        $this->forumService->updateReadThread($thread->threadId, $user->userId);
-        $permissions = $this->forumService->getForumPermissionsForUserInCategory($user->userId, $thread->categoryId);
-
-        $thread->load(['threadPosts' => function ($query) use ($permissions, $page, $postedBy) {
-            if ($postedBy) {
-                $query->where('userId', $postedBy->userId);
-            }
-            $query->isApproved($permissions->canApprovePosts)
-                ->skip(DataHelper::getOffset($page))
-                ->take($this->perPage);
-        }]);
-
+        $thread = Condition::requireNotNull(Thread::find($threadId), 'Thread does not exist');
         $thread->page = $page;
 
+        $postedBy = $postedByUser ? Condition::requireNotNull(User::withNickname($postedByUser)->first(), 'No user with nickname') : null;
+        Condition::precondition(
+            !PermissionHelper::haveForumPermission($user->userId, CategoryPermissions::CAN_VIEW_THREAD_CONTENT, $thread->categoryId),
+            403,
+            'You can not view thread content'
+        );
+        Condition::precondition(
+            $thread->userId != $user->userId &&
+            !PermissionHelper::haveForumPermission($user->userId, CategoryPermissions::CAN_VIEW_OTHERS_THREADS, $thread->categoryId),
+            403,
+            'You can not view others thread content'
+        );
+        $forumPermissions = $this->myForumService->getForumPermissionsForUserInCategory($user->userId, $thread->categoryId);
+
+        $this->canUserAccessThread($user, $thread);
+        $this->myForumService->updateReadCategory($thread->categoryId, $user->userId);
+        $this->myForumService->updateReadThread($thread->threadId, $user->userId);
+
         $total = Post::where('threadId', $thread->threadId)
-            ->where('isApproved', ($permissions->canApprovePosts ? '>=' : '>'), 0)
+            ->where('isApproved', ($forumPermissions->canApprovePosts ? '>=' : '>'), 0)
             ->count('postId');
-        $thread->total = $postedBy ?
-            $this->myImpl->getThreadPostTotalByUser($thread->threadId, $user->userId, $permissions->canApprovePosts) :
-            DataHelper::getTotal($total);
-
-        $thread->contentApproval = PermissionHelper::haveGroupOption($user->userId, ConfigHelper::getGroupOptionsConfig()->contentNeedApproval);
-        $thread->forumPermissions = $permissions;
-        $thread->isSubscribed = ThreadSubscription::where('userId', $user->userId)->where('threadId', $threadId)->count('threadId') > 0;
+        $thread->loadThreadPosts($user, $page, $postedBy, $this->perPage, $forumPermissions);
         $thread->append('categoryIsOpen');
-        $thread->poll = $this->forumService->getThreadPoll($thread, $user->userId);
-        $thread->isIgnored = IgnoredThread::where('userId', $user->userId)->where('threadId', $thread->threadId)->count('threadId') > 0;
-        $thread->template = $thread->category->template;
+        $thread->appendTemplateRelatedData($user);
 
-        if ($thread->template === ConfigHelper::getCategoryTemplatesConfig()->QUEST) {
-            $thread->append('badge')
-                ->append('tags')
-                ->append('roomLink');
-        }
-
-        $thread->readers = $this->myImpl->getThreadReaders($thread->threadId, 0);
-        $thread->currentReaders = $this->myImpl->getThreadReaders($thread->threadId, time() - 600);
-        $thread->isThreadBanned = false;
-
-        if (ThreadBan::where('threadId', $threadId)->where('userId', $user->userId)->count() > 0) {
-            $thread->isThreadBanned = true;
-            $thread->threadPosts = [];
-        }
-
-        return response()->json($thread);
+        return response()->json(
+            [
+                'threadId' => $thread->threadId,
+                'categoryId' => $thread->categoryId,
+                'title' => $thread->title,
+                'isOpen' => $thread->isOpen,
+                'isApproved' => $thread->isApproved,
+                'firstPostId' => $thread->firstPostId,
+                'isSticky' => $thread->isSticky,
+                'prefixId' => $thread->prefixId,
+                'createdAt' => $thread->createdAt->timestamp,
+                'updatedAt' => $thread->updatedAt->timestamp,
+                'page' => $page,
+                'forumPermissions' => $forumPermissions,
+                'total' => $postedBy ?
+                    $this->getThreadPostTotalByUser($thread->threadId, $user->userId, $forumPermissions->canApprovePosts) :
+                    PaginationUtil::getTotalPages($total),
+                'isSubscribed' => ThreadSubscription::where('userId', $user->userId)->where('threadId', $threadId)->count('threadId') > 0,
+                'poll' => $this->myForumService->getThreadPoll($thread, $user->userId),
+                'isIgnored' => IgnoredThread::where('userId', $user->userId)->where('threadId', $thread->threadId)->count('threadId') > 0,
+                'template' => $thread->category->template,
+                'readers' => $this->getThreadReaders($thread->threadId, 0),
+                'currentReaders' => $this->getThreadReaders($thread->threadId, time() - 600),
+                'parents' => $this->myForumService->getCategoryParents($thread),
+                'categoryIsOpen' => $thread->categoryIsOpen,
+                'user' => UserHelper::getSlimUser($thread->userId),
+                'threadPosts' => $thread->threadPosts,
+                'tags' => isset($thread->tags) ? $thread->tags : null,
+                'badges' => isset($thread->badges) ? $thread->badges : null,
+                'roomLink' => isset($thread->roomLink) ? $thread->roomLink : null,
+                'isBadgesCompleted' => isset($thread->isBadgesCompleted) ? $thread->isBadgesCompleted : null
+            ]
+        );
     }
 
     /**
-     * @param         $user
-     * @param         $thumbnail
-     * @param         $threadSkeleton
-     * @param Request $request
-     * @param bool    $skipValidation
+     * @param $user
+     * @param $thumbnail
+     * @param $threadSkeleton
+     * @param  Request  $request
+     * @param  bool  $skipValidation
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function doThread ($user, $thumbnail, $threadSkeleton, $request, $skipValidation = false) {
+    public function doThread($user, $thumbnail, $threadSkeleton, $request, $skipValidation = false) {
         $category = Category::where('categoryId', $threadSkeleton->categoryId)->first(['template', 'options', 'isOpen']);
-        $contentNeedApproval = PermissionHelper::haveGroupOption($user->userId, ConfigHelper::getGroupOptionsConfig()->contentNeedApproval);
+        $contentNeedApproval = $this->myGroupRepository->doUsersContentNeedApproval($user->userId);
         $prefixId = Value::objectProperty($threadSkeleton, 'prefixId', 0);
         $this->createThreadConditions($category, $prefixId);
 
         if (!$skipValidation) {
-            $this->validatorService->validateCreateUpdateThread($user, $threadSkeleton, $category, $request);
+            $this->myValidatorService->validateCreateUpdateThread($user, $threadSkeleton, $category, $request);
         }
 
-        $post = new Post([
-            'threadId' => -1,
-            'userId' => $user->userId,
-            'content' => $threadSkeleton->content
-        ]);
+        $post = new Post(
+            [
+                'threadId' => -1,
+                'userId' => $user->userId,
+                'content' => $threadSkeleton->content
+            ]
+        );
         $post->save();
 
-        $isApproved = !(($category->options & ConfigHelper::getForumOptionsConfig()->threadsNeedApproval || $contentNeedApproval) && !$skipValidation);
-        $thread = new Thread([
-            'categoryId' => $threadSkeleton->categoryId,
-            'title' => $threadSkeleton->title,
-            'userId' => $user->userId,
-            'firstPostId' => $post->postId,
-            'lastPostId' => $post->postId,
-            'isApproved' => $isApproved,
-            'prefixId' => $prefixId
-        ]);
+        $isApproved = !(($category->options & CategoryOptions::THREADS_NEED_APPROVAL || $contentNeedApproval) && !$skipValidation);
+        $thread = new Thread(
+            [
+                'categoryId' => $threadSkeleton->categoryId,
+                'title' => $threadSkeleton->title,
+                'userId' => $user->userId,
+                'firstPostId' => $post->postId,
+                'lastPostId' => $post->postId,
+                'isApproved' => $isApproved,
+                'prefixId' => $prefixId
+            ]
+        );
         $thread->save();
 
         $post->threadId = $thread->threadId;
@@ -373,39 +398,53 @@ class ThreadCrudController extends Controller {
             $user->posts++;
             $user->save();
 
-            $this->pointsService->givePointsFromCategory($user->userId, $thread->categoryId);
+            $this->myPointsService->givePointsFromCategory($user->userId, $thread->categoryId);
         }
 
         NotifyMentionsInPost::dispatch($threadSkeleton->content, $post->postId, $user->userId);
 
-        if ($category->template !== $this->categoryTemplates->DEFAULT && !$skipValidation) {
+        if ($category->template == CategoryTemplates::QUEST && !$skipValidation) {
             $this->uploadFileAndCreateTemplateData($threadSkeleton, $thumbnail, $thread->threadId, $request->hasFile('thumbnail'));
         }
 
-        if ($user->userId > 0 && !($user->ignoredNotifications & ConfigHelper::getIgnoredNotificationsConfig()->AUTO_SUBSCRIBE_THREAD)) {
-            $newSubscription = new ThreadSubscription([
-                'userId' => $user->userId,
-                'threadId' => $thread->threadId
-            ]);
+        if ($user->userId > 0 && !($user->ignoredNotifications & UserIgnoredNotifications::AUTO_SUBSCRIBE_THREAD)) {
+            $newSubscription = new ThreadSubscription(
+                [
+                    'userId' => $user->userId,
+                    'threadId' => $thread->threadId
+                ]
+            );
             $newSubscription->save();
         }
 
         $this->logThreadCreation($thread, $request, $user);
-        $this->myImpl->createThreadPoll($thread, $threadSkeleton);
-        $this->forumService->postSiteMessageIfApplicable($thread);
-        $this->forumService->updateLastPostIdOnCategory($thread->categoryId);
-        $this->forumService->updateReadCategory($thread->categoryId, $user->userId);
-        $this->forumService->updateReadThread($thread->threadId, $user->userId);
+        $this->createThreadPoll($thread, $threadSkeleton);
+        $this->myForumService->postSiteMessageIfApplicable($thread);
+        $this->myForumService->updateLastPostIdOnCategory($thread->categoryId);
+        $this->myForumService->updateReadCategory($thread->categoryId, $user->userId);
+        $this->myForumService->updateReadThread($thread->threadId, $user->userId);
         NotifyCategorySubscribers::dispatch($thread->categoryId, $thread->userId, $thread->threadId);
-        return response()->json(['threadId' => $thread->threadId], 201);
+        return response()->json(
+            [
+                'threadId' => $thread->threadId,
+                'isApproved' => $thread->isApproved
+            ],
+            201
+        );
     }
 
-    private function logThreadCreation ($thread, $request, $user) {
-        Logger::user($user->userId, ($request ? $request->ip() : ''), Action::CREATED_THREAD, [
-            'thread' => $thread->title,
-            'threadId' => $thread->threadId,
-            'categoryId' => $thread->categoryId
-        ], $thread->threadId);
+    private function logThreadCreation($thread, $request, $user) {
+        Logger::user(
+            $user->userId,
+            ($request ? $request->ip() : ''),
+            LogType::CREATED_THREAD,
+            [
+                'thread' => $thread->title,
+                'threadId' => $thread->threadId,
+                'categoryId' => $thread->categoryId
+            ],
+            $thread->threadId
+        );
     }
 
     /**
@@ -416,27 +455,29 @@ class ThreadCrudController extends Controller {
      * @param $threadId
      * @param $hasFile
      */
-    private function uploadFileAndCreateTemplateData ($threadSkeleton, $thumbnail, $threadId, $hasFile) {
+    private function uploadFileAndCreateTemplateData($threadSkeleton, $thumbnail, $threadId, $hasFile) {
         if ($hasFile) {
-            $fileName = $threadId . '.gif';
-            $destination = base_path('/rest/resources/images/thumbnails');
-            $thumbnail->move($destination, $fileName);
+            $fileName = $threadId.'.gif';
+            $target = base_path('/resources/images/thumbnails');
+            $thumbnail->move($target, $fileName);
         }
 
-        if (!empty($threadSkeleton->badge)) {
+        if (!empty($threadSkeleton->badges)) {
             $templateData = TemplateData::where('threadId', $threadId)->first();
             if ($templateData) {
-                $templateData->badge = $threadSkeleton->badge;
+                $templateData->badges = json_encode($threadSkeleton->badges);
                 $templateData->tags = implode(',', $threadSkeleton->tags);
                 $templateData->roomLink = Value::objectProperty($threadSkeleton, 'roomLink', '');
                 $templateData->save();
             } else {
-                TemplateData::create([
-                    'threadId' => $threadId,
-                    'badge' => $threadSkeleton->badge,
-                    'tags' => implode(',', $threadSkeleton->tags),
-                    'roomLink' => Value::objectProperty($threadSkeleton, 'roomLink', '')
-                ]);
+                TemplateData::create(
+                    [
+                        'threadId' => $threadId,
+                        'badges' => json_encode($threadSkeleton->badges),
+                        'tags' => implode(',', $threadSkeleton->tags),
+                        'roomLink' => Value::objectProperty($threadSkeleton, 'roomLink', '')
+                    ]
+                );
             }
         }
     }
@@ -448,11 +489,103 @@ class ThreadCrudController extends Controller {
      * @param $category
      * @param $havePrefix
      */
-    private function createThreadConditions ($category, $havePrefix) {
+    private function createThreadConditions($category, $havePrefix) {
         Condition::precondition(!$category, 404, 'Category do not exist');
         Condition::precondition($category->isOpen == 0, 400, 'Category is closed');
 
-        $isPrefixMandatory = $category->options & ConfigHelper::getForumOptionsConfig()->prefixMandatory;
+        $isPrefixMandatory = $category->options & CategoryOptions::PREFIX_MANDATORY;
         Condition::precondition($isPrefixMandatory && !$havePrefix, 400, 'Prefix is mandatory');
+    }
+
+    private function getNewThread(ForumService $forumService, $categoryId) {
+        $thread = new Thread();
+        $thread->threadId = -1;
+        $thread->categoryId = $categoryId;
+        $thread->content = '';
+        $thread->parents = $forumService->getCategoryParents($thread);
+        return $thread;
+    }
+
+    private function createOrUpdatePoll($thread, $threadSkeleton) {
+        if (!$thread->poll) {
+            $this->createThreadPoll($thread, $threadSkeleton);
+        }
+        if ($thread->poll && $threadSkeleton->poll) {
+            $thread->poll->isResultPublic = $threadSkeleton->poll->isPublic;
+            $thread->poll->save();
+        }
+    }
+
+    private function createThreadPoll($thread, $threadSkeleton) {
+        if (!isset($threadSkeleton->poll)) {
+            return;
+        }
+        $threadPoll = new ThreadPoll(
+            [
+                'threadId' => $thread->threadId,
+                'question' => $threadSkeleton->poll->question,
+                'options' => json_encode($threadSkeleton->poll->answers),
+                'isResultPublic' => isset($threadSkeleton->poll->isPublic) ? $threadSkeleton->poll->isPublic : false
+            ]
+        );
+        $threadPoll->save();
+    }
+
+    private function getLatestThreadsQuery($user) {
+        $categoryIds = $this->myCategoryRepository->getCategoryIdsWherePermission($user->userId, CategoryPermissions::CAN_READ);
+        $ignoredCategoryIds = array_merge(
+            IgnoredCategory::where('userId', $user->userId)->pluck('categoryId')->toArray(),
+            $this->myForumService->getCategoriesUserCantSeeOthersThreadsIn($user->userId)
+        );
+        $ignoredThreadIds = IgnoredThread::where('userId', $user->userId)->pluck('threadId');
+
+        return Thread::whereIn('categoryId', $categoryIds)
+            ->where('isApproved', 1)
+            ->whereNotIn('categoryId', $ignoredCategoryIds)
+            ->whereNotIn('threadId', $ignoredThreadIds)
+            ->orderBy('createdAt', 'DESC');
+    }
+
+    private function getTopPostersQuery($threadId) {
+        return Post::where('posts.threadId', $threadId)
+            ->join('users', 'users.userId', '=', 'posts.userId')
+            ->select('users.userId', DB::raw('COUNT(posts.postId) as amount'))
+            ->groupBy('users.userId')
+            ->orderBy(DB::raw('COUNT(posts.postId)'), 'DESC');
+    }
+
+    private function getThreadPostTotalByUser($threadId, $userId, $canApprovePosts) {
+        return PaginationUtil::getTotalPages(
+            Post::where('userId', $userId)->where('threadId', $threadId)
+                ->isApproved($canApprovePosts)
+                ->count('postId')
+        );
+    }
+
+    private function canUserAccessThread($user, $thread) {
+        $canAccessCategory = PermissionHelper::haveForumPermission($user->userId, CategoryPermissions::CAN_READ, $thread->categoryId) &&
+            (
+            ForumPermission::where('categoryId', $thread->categoryId)
+                ->where('groupId', 0)
+                ->where('isAuthOnly', true)
+                ->count() > 0 ? $user->userId > 0 : true
+            );
+        $cantAccessUnapproved = !$thread->isApproved &&
+            !PermissionHelper::haveForumPermission($user->userId, CategoryPermissions::CAN_APPROVE_THREADS, $thread->categoryId);
+        Condition::precondition(!$canAccessCategory, 403, 'No permissions to access this category');
+        Condition::precondition($user->userId != $thread->userId && $cantAccessUnapproved, 400, 'You cant access a unapproved thread');
+    }
+
+    private function getThreadReaders($threadId, $lastRead) {
+        return ThreadRead::where('threadId', $threadId)->where('updatedAt', '>', $lastRead)
+            ->orderBy('updatedAt', 'DESC')
+            ->get(['userId', 'updatedAt'])->map(
+                function ($read) {
+                    return [
+                        'user' => UserHelper::getSlimUser($read->userId),
+                        'time' => $read->updatedAt->timestamp
+                    ];
+                }
+            );
     }
 }

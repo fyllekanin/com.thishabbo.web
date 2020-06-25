@@ -18,7 +18,7 @@ export class PasswordComponent extends Page implements OnDestroy {
     password: string;
     repassword: string;
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Save'})
+        new TitleTab({ title: 'Save' })
     ];
 
     constructor (

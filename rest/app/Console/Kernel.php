@@ -2,16 +2,14 @@
 
 namespace App\Console;
 
-use App\Console\Commands\ForceDeadlock;
 use App\Console\Commands\RadioStats;
-use App\EloquentModels\Log\RadioStatsLog;
-use App\Helpers\ConfigHelper;
-use App\Helpers\SettingsHelper;
-use App\Models\Radio\RadioSettings;
+use App\EloquentModels\Log\ThcStatsLog;
+use App\EloquentModels\User\UserData;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel {
+
     /**
      * The Artisan commands provided by your application.
      *
@@ -24,26 +22,25 @@ class Kernel extends ConsoleKernel {
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule $schedule
+     * @param  Schedule  $schedule
      *
      * @return void
      */
     protected function schedule(Schedule $schedule) {
         $schedule->call('\App\Console\Jobs\ClearSubscriptions@init')->twiceDaily();
-
         $schedule->call('\App\Console\Jobs\ScanBadges@init')->twiceDaily();
-
-        $schedule->call(function () {
-            $radio = new RadioSettings(SettingsHelper::getSettingValue(ConfigHelper::getKeyConfig()->radio));
-            RadioStatsLog::create([
-                'userId' => $radio->userId,
-                'listeners' => $radio->listeners,
-                'song' => $radio->song
-            ]);
-        })->everyFiveMinutes();
-
-        $schedule->call('\App\Console\Jobs\ClearDJSays@init')->hourly();
         $schedule->call('\App\Console\Jobs\ClearTimetable@init')->dailyAt('07:00');
+        $schedule->call('\App\Console\Jobs\UpdateRotatedShopItems@init')->dailyAt('00:00');
+
+        $schedule->call(
+            function () {
+                ThcStatsLog::create(
+                    [
+                        'credits' => UserData::where('credits', '>', 0)->sum('credits')
+                    ]
+                );
+            }
+        )->hourly();
     }
 
     /**
@@ -52,6 +49,6 @@ class Kernel extends ConsoleKernel {
      * @return void
      */
     protected function commands() {
-        $this->load(__DIR__ . '/Commands');
+        $this->load(__DIR__.'/Commands');
     }
 }

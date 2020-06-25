@@ -40,6 +40,7 @@ export class SelectBadgeComponent extends InnerDialogComponent implements OnInit
     }
 
     setData () {
+        // Empty
     }
 
     onPageSwitch (page: number): void {
@@ -100,18 +101,18 @@ export class SelectBadgeComponent extends InnerDialogComponent implements OnInit
         return this._data.items.map(item => new TableRow({
             id: String(item.badgeId),
             cells: [
-                new TableCell({title: item.getResource(), innerHTML: true}),
-                new TableCell({title: item.name}),
-                new TableCell({title: String(item.points)})
+                new TableCell({ title: item.getResource(), innerHTML: true }),
+                new TableCell({ title: item.name }),
+                new TableCell({ title: String(item.points) })
             ]
         }));
     }
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Resource'}),
-            new TableHeader({title: 'Name'}),
-            new TableHeader({title: 'Points'})
+            new TableHeader({ title: 'Resource' }),
+            new TableHeader({ title: 'Name' }),
+            new TableHeader({ title: 'Points' })
         ];
     }
 }

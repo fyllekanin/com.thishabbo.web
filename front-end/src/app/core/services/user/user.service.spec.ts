@@ -11,7 +11,7 @@ describe('UserService', () => {
                 UserService
             ]
         });
-        service = TestBed.get(UserService);
+        service = TestBed.inject(UserService);
     });
 
     it('should update subscribers when user is active/inactive', done => {

@@ -21,7 +21,7 @@ export class SubscriptionsListService implements Resolve<SubscriptionsListPage> 
     resolve (route: ActivatedRouteSnapshot): Observable<SubscriptionsListPage> {
         const page = route.params['page'];
 
-        return this.getPage(page, {filter: route.queryParams['filter']});
+        return this.getPage(page, { filter: route.queryParams['filter'] });
     }
 
     getPage (page: number, filter: QueryParameters): Observable<SubscriptionsListPage> {

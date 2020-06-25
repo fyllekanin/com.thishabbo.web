@@ -19,7 +19,7 @@ export class NotificationSettingsComponent extends Page implements OnDestroy {
         new TitleTab({ title: 'Save' })
     ];
 
-    constructor(
+    constructor (
         private _service: NotificationSettingsService,
         elementRef: ElementRef,
         breadcrumbService: BreadcrumbService,
@@ -35,19 +35,19 @@ export class NotificationSettingsComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    onSave(): void {
+    onSave (): void {
         this._service.save(this._data);
     }
 
-    get model(): NotificationSettingsModel {
+    get model (): NotificationSettingsModel {
         return this._data;
     }
 
-    private onData(data: { data: NotificationSettingsModel }): void {
+    private onData (data: { data: NotificationSettingsModel }): void {
         this._data = data.data;
     }
 }

@@ -18,12 +18,13 @@ describe('RouterStateService', () => {
                 {
                     provide: DialogService, useValue: {
                         closeDialog: () => {
+                            // Empty
                         }
                     }
                 }
             ]
         });
-        service = TestBed.get(RouterStateService);
+        service = TestBed.inject(RouterStateService);
     });
 
     describe('updateNotificationAmount', () => {

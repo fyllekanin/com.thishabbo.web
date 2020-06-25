@@ -41,6 +41,8 @@ export class RadioModel {
     port: string;
     @objectOf(SlimUser)
     nextDj: SlimUser;
+    @primitive()
+    radioUrl: string;
 
     constructor (source: Partial<RadioModel>) {
         ClassHelper.assign(this, source);

@@ -7,7 +7,7 @@ import { TimeHelper } from 'shared/helpers/time.helper';
     selector: 'app-forum-thread-edit-history',
     templateUrl: 'edit-history.component.html'
 })
-export class EditHistoryComponent implements InnerDialogComponent {
+export class EditHistoryComponent extends InnerDialogComponent {
     private _data: Array<PostHistoryModel> = [];
 
     historyTimestamp = -1;
@@ -15,6 +15,7 @@ export class EditHistoryComponent implements InnerDialogComponent {
     viewBBcode = false;
 
     getData () {
+        // Empty
     }
 
     setData (history: Array<PostHistoryModel>) {

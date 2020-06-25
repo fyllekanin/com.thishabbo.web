@@ -8,9 +8,10 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class CategoryResolver implements Resolve<BetCategoryModel> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
-    resolve(route: ActivatedRouteSnapshot): Observable<BetCategoryModel> {
+    resolve (route: ActivatedRouteSnapshot): Observable<BetCategoryModel> {
         const betCategoryId = route.params['betCategoryId'];
         return this._httpService.get(`sitecp/betting/category/${betCategoryId}`)
             .pipe(map(res => new BetCategoryModel(res)));

@@ -13,8 +13,8 @@ export enum ARTICLE_TAG {
 export class SlimArticle {
     @primitive()
     threadId: number;
-    @primitive()
-    badge: string;
+    @arrayOf(String)
+    badges: Array<string>;
     @primitive()
     title: string;
     @primitive()
@@ -32,8 +32,12 @@ export class SlimArticle {
 
     backgroundUrl: string;
 
+    get avatarUrl (): string {
+        return `/resources/images/users/${this.user.userId}.gif?${this.user.avatarUpdatedAt}`;
+    }
+
     constructor (source?: Partial<SlimArticle>) {
         ClassHelper.assign(this, source);
-        this.backgroundUrl = `url(/rest/resources/images/thumbnails/${this.threadId}.gif?updatedAt=${this.updatedAt})`;
+        this.backgroundUrl = `url(/resources/images/thumbnails/${this.threadId}.gif?updatedAt=${this.updatedAt})`;
     }
 }

@@ -1,7 +1,7 @@
 import { Notice } from 'shared/components/notice/notice.model';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
-import { HomeDefaultPage, HomePageThread, StaffSpotlightUser } from './home-default.model';
+import { HomeDefaultPage, HomePageThread } from './home-default.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Page } from 'shared/page/page.model';
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
@@ -12,7 +12,7 @@ import { BadgeModel } from 'shared/components/badges/badges.model';
 @Component({
     selector: 'app-page-home-default',
     templateUrl: 'home-default.component.html',
-    styleUrls: ['home-default.component.css']
+    styleUrls: [ 'home-default.component.css' ]
 })
 
 export class HomeDefaultComponent extends Page implements OnInit, OnDestroy {
@@ -62,10 +62,6 @@ export class HomeDefaultComponent extends Page implements OnInit, OnDestroy {
 
     get notices (): Array<Notice> {
         return this._data.notices;
-    }
-
-    get staffSpotlightUsers (): Array<StaffSpotlightUser> {
-        return this._data.spotlight;
     }
 
     get badges (): Array<BadgeModel> {

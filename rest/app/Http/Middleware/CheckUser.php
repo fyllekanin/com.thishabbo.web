@@ -3,19 +3,21 @@
 namespace App\Http\Middleware;
 
 use App\EloquentModels\User\Token;
-use App\Helpers\UserHelper;
+use App\EloquentModels\User\User;
 use App\Utils\RequestUtil;
 use Closure;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class CheckUser {
+
     private $refreshRoute = '/api/auth/refresh';
 
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Closure $next
+     * @param  Request  $request
+     * @param  Closure  $next
      *
      * @return mixed
      */
@@ -28,7 +30,19 @@ class CheckUser {
             throw new HttpException(419);
         }
 
-        $user = UserHelper::getUserFromId($token ? $token->userId : 0);
+        $defaultUser = (object) [
+            'userId' => 0,
+            'groupIds' => [0],
+            'nickname' => 'no-one',
+            'createdAt' => (object) ['timestamp' => 0],
+            'posts' => 0,
+            'likes' => 0,
+            'lastActivity' => 0,
+            'save' => function () {
+            }
+        ];
+
+        $user = $token ? User::find($token->userId) : $defaultUser;
         if ($user->userId > 0) {
             $user->lastActivity = time();
             $user->save();

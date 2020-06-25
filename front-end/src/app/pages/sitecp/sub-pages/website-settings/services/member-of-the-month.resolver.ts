@@ -8,9 +8,10 @@ import { MemberOfTheMonthModel } from '../member-of-the-month/member-of-the-mont
 @Injectable()
 export class MemberOfTheMonthResolver implements Resolve<MemberOfTheMonthModel> {
 
-    constructor(private _httpService: HttpService) {}
+    constructor (private _httpService: HttpService) {
+    }
 
-    resolve(): Observable<MemberOfTheMonthModel> {
+    resolve (): Observable<MemberOfTheMonthModel> {
         return this._httpService.get('sitecp/content/member-of-the-month')
             .pipe(map(res => new MemberOfTheMonthModel(res)));
     }

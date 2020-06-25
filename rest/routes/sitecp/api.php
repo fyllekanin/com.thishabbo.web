@@ -1,39 +1,39 @@
 <?php
 
-use App\Helpers\ConfigHelper;
+use App\Constants\Permission\SiteCpPermissions;
 use App\Helpers\PermissionHelper;
 use Illuminate\Support\Facades\Route;
-
-$permissions = ConfigHelper::getSitecpConfig();
 
 Route::get('/ping', 'PageController@getPing');
 Route::get('/dashboard/{clientTodayMidnight}', 'Sitecp\SitecpDashboardController@getDashboard');
 
-Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canReadServerLogs)], function () {
+Route::group(['middleware' => PermissionHelper::getSitecpMiddleware(SiteCpPermissions::CAN_READ_SERVER_LOGS)], function () {
     Route::get('server-logs', 'Sitecp\LogsController@getServerLogs');
     Route::get('server-logs/{fileName}', 'Sitecp\LogsController@getServerLog');
 });
 
-Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canViewStatistics)], function () {
+Route::group(['middleware' => PermissionHelper::getSitecpMiddleware(SiteCpPermissions::CAN_VIEW_STATISTICS)], function () {
     Route::get('/statistics/users/{year}/{month}', 'Sitecp\Statistics\UserStatisticsController@getUsersLoggedIn');
     Route::get('/statistics/posts/{year}/{month}', 'Sitecp\Statistics\ForumStatisticsController@getPosts');
     Route::get('/statistics/threads/{year}/{month}', 'Sitecp\Statistics\ForumStatisticsController@getThreads');
 });
 
-Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canSeeLogs)], function () {
+Route::group(['middleware' => PermissionHelper::getSitecpMiddleware(SiteCpPermissions::CAN_SEE_LOGS)], function () {
     Route::get('/logs/{type}/page/{page}', 'Sitecp\LogsController@getLogs');
 });
 
-Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canManageTHC)], function () {
+Route::group(['middleware' => PermissionHelper::getSitecpMiddleware(SiteCpPermissions::CAN_MANAGE_CREDITS)], function () {
     Route::get('/thc/requests', 'Sitecp\User\UserThcController@getThcRequests');
     Route::put('/thc/requests', 'Sitecp\User\UserThcController@updateThcRequests');
 
     Route::get('/voucher-codes/page/{page}', 'Sitecp\User\UserThcController@getVoucherCodes');
     Route::post('/voucher-codes', 'Sitecp\User\UserThcController@createVoucherCode');
     Route::delete('/voucher-codes/{voucherCodeId}', 'Sitecp\User\UserThcController@deleteVoucherCode');
+
+    Route::put('/users/credits', 'Sitecp\User\UserThcController@updateUserCredits');
 });
 
-Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canManageForum)], function () use ($permissions) {
+Route::group(['middleware' => PermissionHelper::getSitecpMiddleware(SiteCpPermissions::CAN_MANAGE_CATEGORIES)], function () {
     Route::post('/categories', 'Sitecp\Forum\CategoriesController@createCategory');
     Route::put('/categories/{categoryId}', 'Sitecp\Forum\CategoriesController@updateCategory');
     Route::put('/categories/orders/update', 'Sitecp\Forum\CategoriesController@updateCategoryOrders');
@@ -42,29 +42,31 @@ Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions
     Route::get('/categories/{categoryId}', 'Sitecp\Forum\CategoriesController@getCategory');
     Route::delete('/categories/{categoryId}', 'Sitecp\Forum\CategoriesController@deleteCategory');
 
-    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canManageForumPermissions)], function () {
+    Route::put('/categories/merge/{sourceCategoryId}/{targetCategoryId}', 'Sitecp\Forum\CategoriesController@mergeCategories');
+
+    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware(SiteCpPermissions::CAN_MANAGE_CATEGORY_PERMISSIONS)], function () {
         Route::get('/categories/permissions/{categoryId}/group/{groupId}', 'Sitecp\Forum\PermissionController@getGroupForumPermissions');
         Route::put('/categories/permissions/{categoryId}', 'Sitecp\Forum\PermissionController@updateGroupForumPermissions');
     });
 });
 
-Route::prefix('moderation')->group(function () use ($permissions) {
+Route::prefix('moderation')->group(function () {
     Route::get('threads', 'Sitecp\Moderation\ForumController@getModerateThreads');
     Route::get('posts', 'Sitecp\Moderation\ForumController@getModeratePosts');
     Route::get('polls/page/{page}', 'Moderation\ThreadPollController@getPolls');
     Route::get('polls/{threadId}', 'Moderation\ThreadPollController@getPoll');
 
-    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canModerateVisitorMessage)], function () {
+    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware(SiteCpPermissions::CAN_MODERATE_VISITOR_MESSAGES)], function () {
         Route::delete('visitor-message/{visitorMessageId}', 'Sitecp\Moderation\VisitorMessageController@deleteVisitorMessage');
     });
 
-    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canApprovePublicGroups)], function () {
+    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware(SiteCpPermissions::CAN_APPROVE_PUBLIC_GROUPS)], function () {
         Route::get('groups', 'Sitecp\Group\GroupsController@getGroupApplications');
         Route::post('groups/approve', 'Sitecp\Group\GroupsController@approveGroupApplication');
         Route::delete('groups/deny/{groupRequestId}', 'Sitecp\Group\GroupsController@denyGroupApplication');
     });
 
-    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canDoInfractions)], function () {
+    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware(SiteCpPermissions::CAN_DO_INFRACTIONS)], function () {
         Route::get('infract/{userId}', 'Sitecp\Moderation\InfractionController@getInfractionContext');
         Route::post('infract', 'Sitecp\Moderation\InfractionController@createInfraction');
 
@@ -72,7 +74,7 @@ Route::prefix('moderation')->group(function () use ($permissions) {
         Route::delete('infraction/{infractionId}', 'Sitecp\Moderation\InfractionController@deleteInfraction');
     });
 
-    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canManageInfractions)], function () {
+    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware(SiteCpPermissions::CAN_MANAGE_INFRACTIONS)], function () {
         Route::get('auto-bans/page/{page}', 'Sitecp\Moderation\AutoBanController@getAutoBans');
         Route::get('auto-bans/{autoBanId}', 'Sitecp\Moderation\AutoBanController@getAutoBan');
         Route::post('auto-bans', 'Sitecp\Moderation\AutoBanController@createAutoBan');
@@ -86,12 +88,12 @@ Route::prefix('moderation')->group(function () use ($permissions) {
         Route::post('infraction-levels', 'Sitecp\Moderation\InfractionLevelsController@createInfractionLevel');
     });
 
-    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canBanUser)], function () {
+    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware(SiteCpPermissions::CAN_BAN_USERS)], function () {
         Route::get('/bans/page/{page}', 'Sitecp\User\BansController@getBannedUsers');
     });
 });
 
-Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canManageGroups)], function () {
+Route::group(['middleware' => PermissionHelper::getSitecpMiddleware(SiteCpPermissions::CAN_MANAGE_GROUPS)], function () {
     Route::post('/groups', 'Sitecp\Group\GroupsController@createGroup');
     Route::put('/groups/{groupId}', 'Sitecp\Group\GroupsController@updateGroup');
     Route::get('/groups/list/page/{page}', 'Sitecp\Group\GroupsController@getGroups');
@@ -101,18 +103,23 @@ Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions
     Route::get('/groups/{groupId}/forum-permissions', 'Sitecp\Group\GroupPermissionsController@getGroupForumPermissions');
 });
 
-Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canSeeIps)], function () {
+Route::group(['middleware' => PermissionHelper::getSitecpMiddleware(SiteCpPermissions::CAN_SEE_IPS)], function () {
     Route::get('/users/ip-search', 'Search\IpSearchController@getIpSearch');
 });
 
-Route::group(['middleware' => PermissionHelper::getSitecpMiddleware([$permissions->canEditUserBasic, $permissions->canEditUserAdvanced,
-    $permissions->canBanUser, $permissions->canRemoveEssentials, $permissions->canDoInfractions,
-    $permissions->canManageSubscriptions, $permissions->canEditUsersGroups])], function () use ($permissions) {
-
+Route::group([
+    'middleware' => PermissionHelper::getSitecpMiddleware(
+        [
+            SiteCpPermissions::CAN_EDIT_USER_BASICS, SiteCpPermissions::CAN_EDIT_USER_ADVANCED,
+            SiteCpPermissions::CAN_BAN_USERS, SiteCpPermissions::CAN_REMOVE_USERS_ESSENTIALS, SiteCpPermissions::CAN_DO_INFRACTIONS,
+            SiteCpPermissions::CAN_MANAGE_SUBSCRIPTIONS, SiteCpPermissions::CAN_EDIT_USERS_GROUPS
+        ]
+    )
+], function () {
     Route::get('/users/list/page/{page}', 'Sitecp\User\UserController@getUsers');
     Route::get('/users/{userId}/history/page/{page}', 'Sitecp\User\UserHistoryController@getHistory');
 
-    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canManageSubscriptions)], function () {
+    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware(SiteCpPermissions::CAN_MANAGE_SUBSCRIPTIONS)], function () {
         Route::get('/users/{userId}/subscriptions', 'Sitecp\User\UserSubscriptionsController@getUserSubscriptions');
 
         Route::post('/users/{userId}/subscriptions', 'Sitecp\User\UserSubscriptionsController@createUserSubscription');
@@ -120,7 +127,7 @@ Route::group(['middleware' => PermissionHelper::getSitecpMiddleware([$permission
         Route::delete('/users/subscriptions/{userSubscriptionId}', 'Sitecp\User\UserSubscriptionsController@deleteUserSubscription');
     });
 
-    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canRemoveEssentials)], function () {
+    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware(SiteCpPermissions::CAN_REMOVE_USERS_ESSENTIALS)], function () {
         Route::get('/users/{userId}/essentials', 'Sitecp\User\UserEssentialsController@getUser');
 
         Route::delete('/users/{userId}/avatar', 'Sitecp\User\UserEssentialsController@deleteAvatar');
@@ -128,39 +135,42 @@ Route::group(['middleware' => PermissionHelper::getSitecpMiddleware([$permission
         Route::delete('/users/{userId}/signature', 'Sitecp\User\UserEssentialsController@deleteSignature');
     });
 
-    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canMergeUsers)], function () {
-        Route::post('/users/merge/source/{srcUserId}/destination/{destUserId}', 'Sitecp\User\UserController@mergeUsers');
+    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware(SiteCpPermissions::CAN_MERGE_USERS)], function () {
+        Route::post('/users/merge/{sourceUserId}/{targetUserId}', 'Sitecp\User\UserController@mergeUsers');
     });
 
-    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware([$permissions->canEditUserBasic, $permissions->canEditUserAdvanced])], function () {
+    Route::group([
+        'middleware' => PermissionHelper::getSitecpMiddleware([
+            SiteCpPermissions::CAN_EDIT_USER_BASICS, SiteCpPermissions::CAN_EDIT_USER_ADVANCED
+        ])
+    ], function () {
         Route::get('/users/{userId}/basic', 'Sitecp\User\UserController@getUserBasic');
         Route::put('/users/{userId}/basic', 'Sitecp\User\UserController@updateUserBasic');
     });
 
-    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canEditUsersGroups)], function () {
+    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware(SiteCpPermissions::CAN_EDIT_USERS_GROUPS)], function () {
         Route::get('/users/{userId}/groups', 'Sitecp\User\UserGroupsController@getUserGroups');
         Route::put('/users/{userId}/groups', 'Sitecp\User\UserGroupsController@updateUserGroups');
     });
 
-    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canEditUserAdvanced)], function () {
+    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware(SiteCpPermissions::CAN_EDIT_USER_ADVANCED)], function () {
         Route::get('/users/{userId}/accolades', 'Sitecp\User\AccoladesController@getAccoladePage');
         Route::post('/users/{userId}/accolades', 'Sitecp\User\AccoladesController@createAccolade');
         Route::put('/users/{userId}/accolades/{accoladeId}', 'Sitecp\User\AccoladesController@updateAccolade');
         Route::delete('/users/{userId}/accolades/{accoladeId}', 'Sitecp\User\AccoladesController@deleteAccolade');
     });
 
-    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canBanUser)], function () {
+    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware(SiteCpPermissions::CAN_BAN_USERS)], function () {
         Route::get('/users/{userId}/bans', 'Sitecp\User\BansController@getUserBans');
         Route::post('/users/{userId}/ban', 'Sitecp\User\BansController@createUserBan');
         Route::put('/users/{userId}/lift/{banId}', 'Sitecp\User\BansController@liftUserBan');
     });
 });
 
-Route::prefix('content')->group(function () use ($permissions) {
-
-    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canEditWebsiteSettings)], function () {
-        Route::get('/staff-of-the-week', 'Sitecp\Settings\StaffSpotlightController@getStaffOfTheWeek');
-        Route::put('/staff-of-the-week', 'Sitecp\Settings\StaffSpotlightController@updateStaffOfTheWeek');
+Route::prefix('content')->group(function () {
+    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware(SiteCpPermissions::CAN_EDIT_WEBSITE_SETTINGS)], function () {
+        Route::get('/outstanding-staff', 'Sitecp\Settings\StaffSpotlightController@getOutstandingStaff');
+        Route::put('/outstanding-staff', 'Sitecp\Settings\StaffSpotlightController@updateOutstandingStaff');
 
         Route::get('/member-of-the-month', 'Sitecp\Settings\StaffSpotlightController@getMemberOfTheMonth');
         Route::put('/member-of-the-month', 'Sitecp\Settings\StaffSpotlightController@updateMemberOfTheMonth');
@@ -170,8 +180,8 @@ Route::prefix('content')->group(function () use ($permissions) {
         Route::post('/notices', 'Sitecp\Settings\NoticeController@createNotice');
         Route::put('/notices', 'Sitecp\Settings\NoticeController@updateNoticeOrder');
 
-        Route::get('/welcome-bot', 'Sitecp\Settings\WelcomeBotController@getWelcomeBotSettings');
-        Route::put('/welcome-bot', 'Sitecp\Settings\WelcomeBotController@updateWelcomeBotSettings');
+        Route::get('/bot-settings', 'Sitecp\Settings\BotSettingsController@getBotSettings');
+        Route::put('/bot-settings', 'Sitecp\Settings\BotSettingsController@updateBotSettings');
 
         Route::get('/maintenance', 'Sitecp\Settings\GeneralSettingsController@getMaintenance');
         Route::put('/maintenance', 'Sitecp\Settings\GeneralSettingsController@updateMaintenance');
@@ -203,21 +213,21 @@ Route::prefix('content')->group(function () use ($permissions) {
         Route::put('/home-page-threads', 'Sitecp\Settings\PageSettingsController@updateHomePageThreads');
     });
 
-    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canManageBBcodes)], function () {
-        Route::get('/bbcodes', 'Sitecp\Content\BBcodeController@getBBcodes');
-        Route::get('/bbcodes/{bbcodeId}', 'Sitecp\Content\BBcodeController@getBBcode');
-        Route::delete('/bbcodes/{bbcodeId}', 'Sitecp\Content\BBcodeController@deleteBBcode');
-        Route::post('/bbcodes/{bbcodeId}', 'Sitecp\Content\BBcodeController@updateBBcode');
-        Route::post('/bbcodes', 'Sitecp\Content\BBcodeController@createBBcode');
+    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware(SiteCpPermissions::CAN_MANAGE_BBCODES)], function () {
+        Route::get('/bbcodes', 'Sitecp\Content\BBcodeController@getBbcodes');
+        Route::get('/bbcodes/{bbcodeId}', 'Sitecp\Content\BBcodeController@getBbcode');
+        Route::delete('/bbcodes/{bbcodeId}', 'Sitecp\Content\BBcodeController@deleteBbcode');
+        Route::post('/bbcodes/{bbcodeId}', 'Sitecp\Content\BBcodeController@updateBbcode');
+        Route::post('/bbcodes', 'Sitecp\Content\BBcodeController@createBbcode');
     });
 
-    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canManageGroupsList)], function () {
+    Route::group(['middleware' => PermissionHelper::getSitecpMiddleware(SiteCpPermissions::CAN_MANAGE_GROUPS_LIST)], function () {
         Route::get('/groupslist', 'Sitecp\Group\GroupsListController@getGroupsList');
         Route::put('/groupslist', 'Sitecp\Group\GroupsListController@updateGroupsList');
     });
 });
 
-Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canManagePrefixes)], function () {
+Route::group(['middleware' => PermissionHelper::getSitecpMiddleware(SiteCpPermissions::CAN_MANAGE_PREFIXES)], function () {
     Route::get('/prefixes/page/{page}', 'Sitecp\Forum\PrefixController@getPrefixes');
     Route::post('/prefixes', 'Sitecp\Forum\PrefixController@createPrefix');
     Route::get('/prefixes/{prefixId}', 'Sitecp\Forum\PrefixController@getPrefix');
@@ -225,7 +235,15 @@ Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions
     Route::put('/prefixes/{prefixId}', 'Sitecp\Forum\PrefixController@updatePrefix');
 });
 
-Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canManageBadges)], function () {
+Route::group(['middleware' => PermissionHelper::getSitecpMiddleware(SiteCpPermissions::CAN_MANAGE_THREAD_TEMPLATES)], function () {
+    Route::get('/thread-templates/page/{page}', 'Sitecp\Forum\ThreadTemplateController@getThreadTemplates');
+    Route::post('/thread-templates', 'Sitecp\Forum\ThreadTemplateController@createThreadTemplate');
+    Route::get('/thread-templates/{threadTemplateId}', 'Sitecp\Forum\ThreadTemplateController@getThreadTemplate');
+    Route::delete('/thread-templates/{threadTemplateId}', 'Sitecp\Forum\ThreadTemplateController@deleteThreadTemplate');
+    Route::put('/thread-templates/{threadTemplateId}', 'Sitecp\Forum\ThreadTemplateController@updateThreadTemplate');
+});
+
+Route::group(['middleware' => PermissionHelper::getSitecpMiddleware(SiteCpPermissions::CAN_MANAGE_BADGES)], function () {
     Route::post('/badges', 'Sitecp\BadgesController@createBadge');
     Route::post('/badges/{badgeId}', 'Sitecp\BadgesController@updateBadge');
     Route::get('/badges/list/page/{page}', 'Sitecp\BadgesController@getBadges');
@@ -236,7 +254,7 @@ Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions
     Route::put('/badges/{badgeId}/users', 'Sitecp\BadgesController@updateUsersWithBadge');
 });
 
-Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canManageShop)], function () {
+Route::group(['middleware' => PermissionHelper::getSitecpMiddleware(SiteCpPermissions::CAN_MANAGE_SHOP)], function () {
     Route::get('/shop/items/page/{page}', 'Sitecp\Shop\ItemsController@getItems');
     Route::get('/shop/items/{itemId}', 'Sitecp\Shop\ItemsController@getItem');
 
@@ -258,7 +276,7 @@ Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions
     Route::delete('/shop/loot-boxes/{lootBoxId}', 'Sitecp\Shop\LootBoxesController@deleteLootBox');
 });
 
-Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canManageSubscriptions)], function () {
+Route::group(['middleware' => PermissionHelper::getSitecpMiddleware(SiteCpPermissions::CAN_MANAGE_SUBSCRIPTIONS)], function () {
     Route::get('/shop/subscriptions/page/{page}', 'Sitecp\Shop\SubscriptionsController@getSubscriptions');
     Route::get('/shop/subscriptions/{subscriptionId}', 'Sitecp\Shop\SubscriptionsController@getSubscription');
     Route::post('/shop/subscriptions', 'Sitecp\Shop\SubscriptionsController@createSubscription');
@@ -266,8 +284,7 @@ Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions
     Route::delete('/shop/subscriptions/{subscriptionId}', 'Sitecp\Shop\SubscriptionsController@deleteSubscription');
 });
 
-Route::group(['middleware' => PermissionHelper::getSitecpMiddleware($permissions->canManageBetting)], function () {
-
+Route::group(['middleware' => PermissionHelper::getSitecpMiddleware(SiteCpPermissions::CAN_MANAGE_BETTING)], function () {
     Route::get('/betting/categories/{page}', 'Sitecp\Betting\CategoryController@getBetCategories');
     Route::get('/betting/category/{betCategoryId}', 'Sitecp\Betting\CategoryController@getBetCategory');
     Route::delete('/betting/category/{betCategoryId}', 'Sitecp\Betting\CategoryController@deleteBetCategory');

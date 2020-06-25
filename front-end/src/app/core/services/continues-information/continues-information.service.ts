@@ -22,6 +22,7 @@ export class ContinuesInformationService implements Resolve<void> {
     private _fastInterval = 1000 * 5;
     private _slowInterval = (1000 * 60) * 5;
     private _currentInterval = this._fastInterval;
+    private _isPullRunning = false;
 
     constructor (
         private _httpService: HttpService,
@@ -29,8 +30,12 @@ export class ContinuesInformationService implements Resolve<void> {
         private _authService: AuthService,
         userService: UserService
     ) {
-        this.updateInterval();
+        this.doRequest();
+        this.updateInterval(true);
         userService.onUserActivityChange.subscribe(isUserActive => {
+            if (!isUserActive) {
+                this._isPullRunning = false;
+            }
             this.onUserActivityChange(isUserActive);
         });
         this._authService.onUserChange.subscribe(() => {
@@ -93,18 +98,26 @@ export class ContinuesInformationService implements Resolve<void> {
         } else if (this.isFastInterval() && !isUserActive) {
             this._currentInterval = this._slowInterval;
         }
-        this.updateInterval();
+        this.updateInterval(isUserActive);
     }
 
     private doRequest (): void {
+        if (this._isPullRunning) {
+            return;
+        }
+        this._isPullRunning = true;
         this._httpService.get('puller/pull')
             .subscribe(this.onContinuesInformationData.bind(this));
     }
 
-    private updateInterval (): void {
+    private updateInterval (isUserActive: boolean): void {
         this._ngZone.runOutsideAngular(() => {
             clearInterval(this._timer);
-            this.doRequest();
+
+            if (isUserActive) {
+                this.doRequest();
+            }
+
             this._timer = setInterval(() => {
                 this.doRequest();
             }, this._currentInterval);
@@ -121,11 +134,12 @@ export class ContinuesInformationService implements Resolve<void> {
 
     private onContinuesInformationData (response): void {
         this._ngZone.run(() => {
+            this._isPullRunning = false;
             const data = new ContinuesInformationModel(response);
             this.setUserPoints(data);
             this._onContinuesInformationSubject.next(data);
 
-            if (this._notifications.length < data.unreadNotifications) {
+            if (this._notifications.length !== data.unreadNotifications) {
                 this._notifications = [];
                 this.fetchNotifications();
             }
@@ -152,7 +166,8 @@ export class ContinuesInformationService implements Resolve<void> {
                     return true;
                 }
                 return false;
-            });
+            })
+            .filter(notification => notificationIds.indexOf(notification.notificationId) > -1);
         this._notifications.sort(ArrayHelper.sortByPropertyDesc.bind(this, 'notificationId'));
 
         this._notificationsSubject.next(this._notifications);

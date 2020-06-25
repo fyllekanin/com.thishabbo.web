@@ -75,7 +75,7 @@ export class SiteMessagesComponent extends Page implements OnDestroy {
                         this._httpService.delete(`sitecp/content/site-messages/${action.rowId}`)
                             .subscribe(() => {
                                 this._dialogService.closeDialog();
-                                this._data = this._data.filter(item => item.siteMessageId === siteMessage.siteMessageId);
+                                this._data = this._data.filter(item => item.siteMessageId !== siteMessage.siteMessageId);
                                 this.createOrUpdateTable();
                                 this._notificationService.sendNotification(new NotificationMessage({
                                     title: 'Success',
@@ -99,7 +99,7 @@ export class SiteMessagesComponent extends Page implements OnDestroy {
             return;
         }
         this.tableConfig = new TableConfig({
-            title: 'Site Messages',
+            title: 'Active Site Messages',
             headers: this.getTableHeaders(),
             rows: this.getTableRows()
         });

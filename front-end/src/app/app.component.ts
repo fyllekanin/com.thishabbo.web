@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
-import { NavigationStart, ResolveEnd, Router, NavigationEnd } from '@angular/router';
+import { NavigationEnd, NavigationStart, ResolveEnd, Router } from '@angular/router';
 import { Page } from 'shared/page/page.model';
 import { UserService } from 'core/services/user/user.service';
 import { fadeAnimation } from 'shared/animations/fade.animation';
@@ -31,17 +31,18 @@ import { AuthService } from 'core/services/auth/auth.service';
                 </div>
             </div>
         </div>
-        <app-footer></app-footer>
+        <app-footer *ngIf="isFirstLoadDone"></app-footer>
         <div class="to-top" (click)="goToTop()">&#8249;</div>
     `,
-    styleUrls: ['app.component.css'],
-    animations: [fadeAnimation]
+    styleUrls: [ 'app.component.css' ],
+    animations: [ fadeAnimation ]
 })
 export class AppComponent extends Page implements OnInit, OnDestroy {
     loadingProgress = 0;
     isLoading = false;
     isFixed = false;
     requestInProgress = false;
+    isFirstLoadDone = false;
 
     constructor (
         private _router: Router,
@@ -73,13 +74,14 @@ export class AppComponent extends Page implements OnInit, OnDestroy {
                 }, 2000);
                 try {
                     if (AppComponent.isScrollToSet()) {
-                        this.tryToScrollToElement();
+                        this.tryToScrollToElement(0);
                     } else if (!AppComponent.isScrollOff()) {
-                        document.getElementsByTagName('body')[0].scrollIntoView({behavior: 'smooth'});
+                        document.getElementsByTagName('body')[0].scrollIntoView({ behavior: 'smooth' });
                     }
                 } catch (e) {
-                    document.getElementsByTagName('body')[0].scrollIntoView({behavior: 'smooth'});
+                    document.getElementsByTagName('body')[0].scrollIntoView({ behavior: 'smooth' });
                 }
+                this.isFirstLoadDone = true;
             }
         });
     }
@@ -101,7 +103,7 @@ export class AppComponent extends Page implements OnInit, OnDestroy {
     }
 
     goToTop (): void {
-        document.getElementsByTagName('body')[0].scrollIntoView({behavior: 'smooth'});
+        document.getElementsByTagName('body')[0].scrollIntoView({ behavior: 'smooth' });
     }
 
     private addCustomListeners (): void {
@@ -145,15 +147,16 @@ export class AppComponent extends Page implements OnInit, OnDestroy {
         return urlParams.has('skipScroll');
     }
 
-    private tryToScrollToElement (count = 0): void {
+    private tryToScrollToElement (count: number): void {
         const urlParams = new URLSearchParams(window.location.search);
+        let myCount = count ? count : 0;
         if (urlParams.has('scrollTo')) {
             const eleSelector = urlParams.get('scrollTo');
             const eles = this._elementRef.nativeElement.getElementsByClassName(`${eleSelector}`);
             if (eles && eles.length > 0) {
-                eles[0].scrollIntoView({behavior: 'smooth'});
-            } else if (count < 5) {
-                setTimeout(this.tryToScrollToElement.bind(this, count++), 100);
+                eles[0].scrollIntoView({ behavior: 'smooth' });
+            } else if (myCount < 5) {
+                setTimeout(this.tryToScrollToElement.bind(this, myCount++), 100);
             }
         }
     }

@@ -13,7 +13,7 @@
 }
 
 :host(.alert) {
-    background: #79b554 url(/assets/images/boxtitlebg_trans.png);
+    background: #F2B130 url(/assets/images/boxtitlebg_trans.png);
 }
 
 :host(.info) {

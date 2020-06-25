@@ -73,7 +73,7 @@ export class ThemeComponent extends Page implements OnDestroy {
 
     private onSave (): void {
         if (this._data.createdAt) {
-            this._httpService.put(`sitecp/content/themes/${this._data.themeId}`, {theme: this._data})
+            this._httpService.put(`sitecp/content/themes/${this._data.themeId}`, { theme: this._data })
                 .subscribe(() => {
                     this._notificationService.sendNotification(new NotificationMessage({
                         title: 'Success',
@@ -81,7 +81,7 @@ export class ThemeComponent extends Page implements OnDestroy {
                     }));
                 }, this._notificationService.failureNotification.bind(this._notificationService));
         } else {
-            this._httpService.post('sitecp/content/themes', {theme: this._data})
+            this._httpService.post('sitecp/content/themes', { theme: this._data })
                 .subscribe(() => {
                     this._data.createdAt = new Date().getTime() / 1000;
                     this.updateTabs();
@@ -118,9 +118,9 @@ export class ThemeComponent extends Page implements OnDestroy {
 
     private updateTabs (): void {
         const tabs = [
-            {title: 'Save', value: ThemeActions.SAVE, condition: true},
-            {title: 'Back', value: ThemeActions.BACK, condition: true},
-            {title: 'Delete', value: ThemeActions.DELETE, condition: this._data.createdAt}
+            { title: 'Save', value: ThemeActions.SAVE, condition: true },
+            { title: 'Back', value: ThemeActions.BACK, condition: true },
+            { title: 'Delete', value: ThemeActions.DELETE, condition: this._data.createdAt }
         ];
         this.tabs = tabs.filter(item => item.condition).map(item => new TitleTab(item));
     }

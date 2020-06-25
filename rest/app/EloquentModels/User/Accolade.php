@@ -8,6 +8,7 @@ use App\EloquentModels\Models\DeletableModel;
  * @property mixed accoladeId
  */
 class Accolade extends DeletableModel {
+
     protected $table = 'accolades';
     protected $primaryKey = 'accoladeId';
     protected $fillable = ['userId', 'role', 'start', 'end', 'type'];

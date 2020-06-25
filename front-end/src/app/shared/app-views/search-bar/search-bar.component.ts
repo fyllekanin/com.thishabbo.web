@@ -7,7 +7,7 @@ import { StringHelper } from 'shared/helpers/string.helper';
 @Component({
     selector: 'app-search-bar',
     templateUrl: 'search-bar.component.html',
-    styleUrls: ['search-bar.component.css']
+    styleUrls: [ 'search-bar.component.css' ]
 })
 
 export class SearchBarComponent {
@@ -47,10 +47,10 @@ export class SearchBarComponent {
                 degree = degree >= 360 ? 0 : degree + 1;
             }, 5);
         }).then(() => {
-            const queryParameters = {queryParams: {text: this.text}};
+            const queryParameters = { queryParams: { text: this.text } };
             this.text = '';
             this._router.navigateByUrl(this._router.createUrlTree(
-                ['/home/search/threads/page/1'],
+                [ '/home/search/threads/page/1' ],
                 queryParameters
             ));
         });

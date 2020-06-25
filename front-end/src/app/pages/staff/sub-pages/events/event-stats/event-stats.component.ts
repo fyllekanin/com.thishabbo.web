@@ -64,8 +64,8 @@ export class EventStatsComponent extends Page implements OnDestroy {
     private getTableRows (): Array<TableRow> {
         return this._data.map(item => new TableRow({
             cells: [
-                new TableCell({title: item.name}),
-                new TableCell({title: String(item.amount)})
+                new TableCell({ title: item.name }),
+                new TableCell({ title: String(item.amount) })
             ]
         }));
     }
@@ -78,6 +78,10 @@ export class EventStatsComponent extends Page implements OnDestroy {
                 allOption: true,
                 type: FilterConfigType.SELECT,
                 items: [
+                    new FilterConfigItem({
+                        label: 'All',
+                        value: ''
+                    }),
                     new FilterConfigItem({
                         label: 'EU',
                         value: 'EU'
@@ -97,8 +101,8 @@ export class EventStatsComponent extends Page implements OnDestroy {
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'Event'}),
-            new TableHeader({title: 'Amount'})
+            new TableHeader({ title: 'Event' }),
+            new TableHeader({ title: 'Amount' })
         ];
     }
 }

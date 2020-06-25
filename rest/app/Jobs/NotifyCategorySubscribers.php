@@ -2,14 +2,16 @@
 
 namespace App\Jobs;
 
-use App\EloquentModels\Forum\CategorySubscription;
-use App\Models\Notification\Type;
+use App\Constants\NotificationTypes;
+use App\Repositories\Repository\ForumListenerRepository;
+use App\Repositories\Repository\NotificationRepository;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class NotifyCategorySubscribers
@@ -20,48 +22,55 @@ use Illuminate\Support\Facades\DB;
  * @package App\Jobs
  */
 class NotifyCategorySubscribers implements ShouldQueue {
-    private $categoryId;
-    private $userId;
-    private $threadId;
+
+    private $myCategoryId;
+    private $myUserId;
+    private $myThreadId;
 
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /**
-     * NotifyThreadSubscribers constructor.
-     *
-     * @param $categoryId
-     * @param $userId
-     * @param $threadId
-     */
     public function __construct($categoryId, $userId, $threadId) {
-        $this->categoryId = $categoryId;
-        $this->userId = $userId;
-        $this->threadId = $threadId;
+        $this->myCategoryId = $categoryId;
+        $this->myUserId = $userId;
+        $this->myThreadId = $threadId;
     }
 
     /**
-     * Executes the job
+     * @param  NotificationRepository  $notificationRepository
+     * @param  ForumListenerRepository  $forumListenerRepository
      */
-    public function handle() {
-        $subscribeType = Type::getType(Type::CATEGORY_SUBSCRIPTION);
+    public function handle(NotificationRepository $notificationRepository, ForumListenerRepository $forumListenerRepository) {
+        $notifiedUserIds = $notificationRepository
+            ->getNotifiedUserIdsForTypeAndContent(NotificationTypes::CATEGORY_SUBSCRIPTION, $this->myThreadId);
+        $notifiedUserIds->push($this->myUserId);
 
-        $alreadyNotified = DB::table('notifications')->where('type', $subscribeType)->where('contentId', $this->threadId)->pluck('userId');
-        $userIds = CategorySubscription::where('categoryId', $this->categoryId)->whereNotIn('userId', $alreadyNotified)->pluck('userId');
-
-        $inserts = [];
-        foreach ($userIds as $userId) {
-            if ($userId == $this->userId) {
-                continue;
+        $forumListenerRepository->getUserIdsSubscribedToCategoryId($this->myCategoryId, $notifiedUserIds)->each(
+            function ($userId) use ($notificationRepository) {
+                $notificationRepository->createNotification(
+                    $userId,
+                    $this->myUserId,
+                    NotificationTypes::CATEGORY_SUBSCRIPTION,
+                    $this->myThreadId
+                );
             }
-            $inserts[] = [
-                'userId' => $userId,
-                'senderId' => $this->userId,
-                'type' => $subscribeType,
-                'contentId' => $this->threadId,
-                'createdAt' => time()
-            ];
-        }
+        );
+    }
 
-        DB::table('notifications')->insert($inserts);
+    /**
+     * The job failed to process.
+     *
+     * @param  Exception  $exception
+     *
+     * @return void
+     */
+    public function failed(Exception $exception) {
+        Log::channel('que')->error(
+            '
+        [b]File:[/b] '.$exception->getFile().'#'.$exception->getLine().'
+        
+        [b]Message:[/b]
+'.$exception->getMessage().'
+        '
+        );
     }
 }

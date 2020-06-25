@@ -15,7 +15,7 @@ export class MoveThreadComponent extends InnerDialogComponent {
     categoryId = -1;
     items: Array<SelectItem> = [];
 
-    constructor(httpService: HttpService) {
+    constructor (httpService: HttpService) {
         super();
         httpService.get('forum/slim-categories')
             .subscribe(data => {
@@ -24,10 +24,18 @@ export class MoveThreadComponent extends InnerDialogComponent {
             });
     }
 
-    setData() {
+    setData () {
+        // Empty
     }
 
-    getData() {
+    getData () {
         return this.categoryId;
+    }
+
+    onValueChange (item: SelectItem): void {
+        if (!item) {
+            return;
+        }
+        this.categoryId = item.value;
     }
 }

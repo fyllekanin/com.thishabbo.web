@@ -3,13 +3,18 @@
         <div *ngFor="let stat of stats" class="cell box" [ngClass]="column">
             <app-content [top]="stat.borderColor" [minHeight]="minHeight">
                 <div *ngIf="stat.icon"><em [ngClass]="stat.icon"></em></div>
-                <div *ngIf="stat.externalIcon" [style]="stat.externalIconStyle | safeStyle"
+                <div *ngIf="stat.externalIcons" [style]="stat.externalIconStyle | safeStyle"
                      (click)="goToExternalIcon(stat)" [ngClass]="stat.externalIconLink ? 'clickable' : ''">
-                    <img [src]="stat.externalIcon"/>
+                    <img *ngFor="let externalIcon of stat.externalIcons" [src]="externalIcon"/>
+                </div>
+                <div *ngIf="stat.badges" [style]="stat.externalIconStyle | safeStyle"
+                     (click)="goToExternalIcon(stat)" [ngClass]="stat.externalIconLink ? 'clickable' : ''">
+                    <img *ngFor="let badge of stat.badges" appHabboBadge [code]="badge"/>
                 </div>
                 <div class="title">{{stat.title}}</div>
                 <div *ngIf="stat.breadText">{{stat.breadText}}</div>
-                <div *ngIf="stat.innerHTML" [innerHTML]="stat.innerHTML | safeHtml"></div>
+                <div *ngIf="stat.innerHTML" [innerHTML]="stat.innerHTML | safeHtml" class="innerElement"
+                     (click)="stat.innerHTMLCallback ? stat.innerHTMLCallback() : null"></div>
             </app-content>
         </div>
     </div>

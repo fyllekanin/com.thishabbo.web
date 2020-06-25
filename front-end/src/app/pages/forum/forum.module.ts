@@ -7,9 +7,9 @@ import { PostComponent } from './post/post.component';
 import { ThreadService } from './services/thread.service';
 import { ThreadComponent } from './thread/thread.component';
 import { PaginationModule } from 'shared/app-views/pagination/pagination.module';
-import { UserProfileModule } from 'shared/directives/user-profile.module';
+import { UserProfileModule } from 'shared/directives/user-profile/user-profile.module';
 import { SlimThreadComponent } from './slim-thread/slim-thread.component';
-import { CategoryResolver } from './services/category.resolver';
+import { CategoryService } from './services/category.service';
 import { CategoryComponent } from './category/category.component';
 import { SlimCategoryComponent } from './slim-category/slim-category.component';
 import { CommonModule } from '@angular/common';
@@ -45,6 +45,8 @@ import { InfoBoxModule } from 'shared/app-views/info-box/info-box.module';
 import { MergeThreadComponent } from './thread/merge-thread/merge-thread.component';
 import { ThreadBansComponent } from './thread/thread-bans/thread-bans.component';
 import { SelectModule } from 'shared/components/form/select/select.module';
+import { ContentTabsModule } from 'shared/app-views/content-tabs/content-tabs.module';
+import { HabboBadgeModule } from 'shared/directives/habbo-badge/habbo-badge.module';
 
 @NgModule({
     imports: [
@@ -67,7 +69,9 @@ import { SelectModule } from 'shared/components/form/select/select.module';
         StatsBoxesModule,
         UserPostBitModule,
         InfoBoxModule,
-        SelectModule
+        SelectModule,
+        ContentTabsModule,
+        HabboBadgeModule
     ],
     declarations: [
         ForumHomeComponent,
@@ -91,7 +95,7 @@ import { SelectModule } from 'shared/components/form/select/select.module';
     ],
     providers: [
         ForumHomeResolver,
-        CategoryResolver,
+        CategoryService,
         ThreadService,
         ThreadControllerResolver,
         PostService,

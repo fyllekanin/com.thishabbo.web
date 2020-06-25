@@ -19,4 +19,5 @@ import { FormsModule } from '@angular/forms';
         InfractionComponent
     ]
 })
-export class InfractionModule {}
+export class InfractionModule {
+}

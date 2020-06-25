@@ -8,7 +8,7 @@ export class ThreadStatisticsModel {
     @primitive()
     threads: number;
 
-    constructor(source: Partial<ThreadStatisticsModel>) {
+    constructor (source: Partial<ThreadStatisticsModel>) {
         ClassHelper.assign(this, source);
     }
 }
@@ -25,7 +25,7 @@ export class ThreadsStatisticsModel {
     @primitive()
     month: number;
 
-    constructor(source: Partial<ThreadStatisticsModel>) {
+    constructor (source: Partial<ThreadStatisticsModel>) {
         ClassHelper.assign(this, source);
     }
 }

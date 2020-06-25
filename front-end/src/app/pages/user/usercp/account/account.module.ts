@@ -62,4 +62,5 @@ import { NotificationViewsModule } from 'shared/components/notification-views/no
         RouterModule
     ]
 })
-export class AccountModule {}
+export class AccountModule {
+}

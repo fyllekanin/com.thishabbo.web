@@ -4,14 +4,14 @@ import { ContinuesInformationService } from 'core/services/continues-information
 import { NoticeBoardComponent } from './notice-board/notice-board.component';
 import { NoticeBoardResolver } from './services/notice-board.resolver';
 import { CreateNoticeComponent } from './notice-board/create-notice/create-notice.component';
-import { WelcomeBotComponent } from './welcome-bot/welcome-bot.component';
-import { StaffOfTheWeekComponent } from './staff-of-the-week/staff-of-the-week.component';
+import { BotSettingsComponent } from './bot-settings/bot-settings.component';
+import { OutstandingStaffComponent } from './outstanding-staff/outstanding-staff.component';
 import { MemberOfTheMonthComponent } from './member-of-the-month/member-of-the-month.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { MaintenanceResolver } from './services/maintenance.resolver';
 import { MemberOfTheMonthResolver } from './services/member-of-the-month.resolver';
-import { StaffOfTheWeekResolver } from './services/staff-of-the-week.resolver';
-import { WelcomeBotResolver } from './services/welcome-bot.resolver';
+import { OutstandingStaffResolver } from './services/outstanding-staff.resolver';
+import { BotSettingsResolver } from './services/bot-settings-resolver.service';
 import { NavigationComponent } from './navigation/navigation.component';
 import { NavigationService } from './services/navigation.service';
 import { SiteMessagesComponent } from './site-messages/list/site-messages.component';
@@ -56,17 +56,17 @@ export const websiteSettingsRoutes: Routes = [
         }
     },
     {
-        path: 'welcome-bot',
-        component: WelcomeBotComponent,
+        path: 'bot-settings',
+        component: BotSettingsComponent,
         resolve: {
-            data: WelcomeBotResolver
+            data: BotSettingsResolver
         }
     },
     {
-        path: 'staff-of-the-week',
-        component: StaffOfTheWeekComponent,
+        path: 'outstanding-staff',
+        component: OutstandingStaffComponent,
         resolve: {
-            data: StaffOfTheWeekResolver
+            data: OutstandingStaffResolver
         }
     },
     {

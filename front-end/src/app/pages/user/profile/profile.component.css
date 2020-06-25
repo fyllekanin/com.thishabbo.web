@@ -75,17 +75,17 @@
 }
 
 .symbol-content-wrapper .content-symbol:after {
-	content: '';
-	position: absolute;
-	right: 0;
-	top: 50%;
-	width: 0;
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 0;
     height: 0;
     border-left: 10px solid #f0f0f0;
     border-top: 17px solid transparent;
     border-right: 0;
     border-bottom: 17px solid transparent;
-	margin-top: -17px;
+    margin-top: -17px;
     margin-right: -10px;
 }
 

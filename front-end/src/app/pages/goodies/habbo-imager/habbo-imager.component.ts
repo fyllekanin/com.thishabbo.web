@@ -9,7 +9,7 @@ import { TitleTopBorder } from 'shared/app-views/title/title.model';
 @Component({
     selector: 'app-goodies-habbo-imager',
     templateUrl: 'habbo-imager.component.html',
-    styleUrls: ['habbo-imager.component.css']
+    styleUrls: [ 'habbo-imager.component.css' ]
 })
 export class HabboImagerComponent extends Page implements OnDestroy, OnInit {
     private _basicUrl = 'https://www.habbo.com/habbo-imaging/avatarimage?user={habbo}';

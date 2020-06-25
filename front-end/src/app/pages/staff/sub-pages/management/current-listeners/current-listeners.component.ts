@@ -42,8 +42,8 @@ export class CurrentListenersComponent extends Page implements OnDestroy {
             headers: this.getTableHeaders(),
             rows: this._data.map(item => new TableRow({
                 cells: [
-                    new TableCell({title: item.user ? item.user.nickname : 'Unknown'}),
-                    new TableCell({title: this.getListeningTime(item.time)})
+                    new TableCell({ title: item.user ? item.user.nickname : 'Unknown' }),
+                    new TableCell({ title: this.getListeningTime(item.time) })
                 ]
             }))
         });
@@ -58,8 +58,8 @@ export class CurrentListenersComponent extends Page implements OnDestroy {
 
     private getTableHeaders (): Array<TableHeader> {
         return [
-            new TableHeader({title: 'User'}),
-            new TableHeader({title: 'Listening Time'})
+            new TableHeader({ title: 'User' }),
+            new TableHeader({ title: 'Listening Time' })
         ];
     }
 }

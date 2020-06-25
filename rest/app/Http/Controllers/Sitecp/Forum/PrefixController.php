@@ -2,43 +2,42 @@
 
 namespace App\Http\Controllers\Sitecp\Forum;
 
+use App\Constants\LogType;
+use App\Constants\Permission\CategoryPermissions;
 use App\EloquentModels\Forum\Category;
 use App\EloquentModels\Forum\Prefix;
-use App\Helpers\ConfigHelper;
-use App\Helpers\DataHelper;
 use App\Helpers\PermissionHelper;
 use App\Http\Controllers\Controller;
 use App\Logger;
-use App\Models\Logger\Action;
-use App\Services\ForumService;
+use App\Providers\Service\ForumService;
+use App\Repositories\Repository\CategoryRepository;
 use App\Utils\Condition;
+use App\Utils\PaginationUtil;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use stdClass;
 
 class PrefixController extends Controller {
-    private $forumService;
+    private $myForumService;
+    private $myCateogyRepository;
 
-    /**
-     * PrefixController constructor.
-     *
-     * @param ForumService $forumService
-     */
-    public function __construct (ForumService $forumService) {
+    public function __construct(ForumService $forumService, CategoryRepository $categoryRepository) {
         parent::__construct();
-        $this->forumService = $forumService;
+        $this->myForumService = $forumService;
+        $this->myCateogyRepository = $categoryRepository;
     }
 
     /**
      * Get request to get all the available prefixes
      *
-     * @param Request $request
-     * @param         $prefixId
+     * @param  Request  $request
+     * @param $prefixId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getPrefix (Request $request, $prefixId) {
+    public function getPrefix(Request $request, $prefixId) {
         $user = $request->get('auth');
-        $categoryIds = $this->forumService->getAccessibleCategories($user->userId);
+        $categoryIds = $this->myCateogyRepository->getCategoryIdsWherePermission($user->userId, CategoryPermissions::CAN_READ);
         $prefix = null;
 
         if ($prefixId == 'new') {
@@ -50,33 +49,30 @@ class PrefixController extends Controller {
         $prefix->categoryIds = isset($prefix->categoryIds) && strlen($prefix->categoryIds) > 0 ? explode(',', $prefix->categoryIds) : [-1];
 
         Condition::precondition(!$prefix, 404, 'Prefix do not exist');
-        $categories = Category::select('categoryId', 'title')
-            ->whereIn('categoryId', $categoryIds)
-            ->where('parentId', '-1')
-            ->get();
-
-        foreach ($categories as $category) {
-            $category->children = $this->forumService->getChildren($category, $categoryIds, true);
-        }
-        $prefix->categories = $categories;
+        $prefix->categories = $this->myForumService->getChildren((object) ['categoryId' => '-1'], $categoryIds, true);
         return response()->json($prefix);
     }
 
     /**
      * Post request to create a new prefix
      *
-     * @param Request $request
+     * @param  Request  $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function createPrefix (Request $request) {
+    public function createPrefix(Request $request) {
         $user = $request->get('auth');
-        $prefix = (object)$request->input('prefix');
+        $prefix = (object) $request->input('prefix');
         $categoryIds = isset($prefix->categoryIds) ? $prefix->categoryIds : [];
 
+        $categoryIds = Category::whereIn('categoryId', $categoryIds)->pluck('categoryId')->toArray();
         foreach ($categoryIds as $categoryId) {
-            PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId,
-                'You do not have access to one of the forum');
+            PermissionHelper::haveForumPermissionWithException(
+                $user->userId,
+                CategoryPermissions::CAN_READ,
+                $categoryId,
+                'You do not have access to one of the forum'
+            );
         }
 
         Condition::precondition(!isset($prefix->text), 400, 'Text needs to be present');
@@ -84,36 +80,43 @@ class PrefixController extends Controller {
         Condition::precondition(strlen($prefix->text) < 1, 400, 'Text can not be empty');
         Condition::precondition(strlen($prefix->style) < 1, 400, 'Style can not be empty');
 
-        $prefix = new Prefix([
-            'text' => $prefix->text,
-            'style' => $prefix->style,
-            'categoryIds' => implode(',', $categoryIds)
-        ]);
+        $prefix = new Prefix(
+            [
+                'text' => $prefix->text,
+                'style' => $prefix->style,
+                'categoryIds' => implode(',', $categoryIds)
+            ]
+        );
         $prefix->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::CREATED_PREFIX, ['prefix' => $prefix->text], $prefix->prefixId);
+        Logger::sitecp($user->userId, $request->ip(), LogType::CREATED_PREFIX, ['prefix' => $prefix->text], $prefix->prefixId);
         return $this->getPrefix($request, $prefix->prefixId);
     }
 
     /**
      * Put request to update the given prefix
      *
-     * @param Request $request
-     * @param         $prefixId
+     * @param  Request  $request
+     * @param $prefixId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function updatePrefix (Request $request, $prefixId) {
+    public function updatePrefix(Request $request, $prefixId) {
         $user = $request->get('auth');
-        $prefix = (object)$request->input('prefix');
+        $prefix = (object) $request->input('prefix');
         $categoryIds = isset($prefix->categoryIds) ? $prefix->categoryIds : [];
         $existing = Prefix::find($prefixId);
 
         Condition::precondition(!$existing, 404, 'Prefix do not exist');
 
+        $categoryIds = Category::whereIn('categoryId', $categoryIds)->pluck('categoryId')->toArray();
         foreach ($categoryIds as $categoryId) {
-            PermissionHelper::haveForumPermissionWithException($user->userId, ConfigHelper::getForumPermissions()->canRead, $categoryId,
-                'You do not have access to one of the forum');
+            PermissionHelper::haveForumPermissionWithException(
+                $user->userId,
+                CategoryPermissions::CAN_READ,
+                $categoryId,
+                'You do not have access to one of the forum'
+            );
         }
 
         Condition::precondition(!isset($prefix->text), 400, 'Text needs to be present');
@@ -126,19 +129,19 @@ class PrefixController extends Controller {
         $existing->categoryIds = implode(',', $categoryIds);
         $existing->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::UPDATED_PREFIX, ['prefix' => $prefix->text], $prefix->prefixId);
+        Logger::sitecp($user->userId, $request->ip(), LogType::UPDATED_PREFIX, ['prefix' => $prefix->text], $prefix->prefixId);
         return $this->getPrefix($request, $prefixId);
     }
 
     /**
      * Delete request to delete the given prefix
      *
-     * @param Request $request
-     * @param         $prefixId
+     * @param  Request  $request
+     * @param $prefixId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function deletePrefix (Request $request, $prefixId) {
+    public function deletePrefix(Request $request, $prefixId) {
         $user = $request->get('auth');
 
         $prefix = Prefix::find($prefixId);
@@ -147,7 +150,7 @@ class PrefixController extends Controller {
         $prefix->isDeleted = true;
         $prefix->save();
 
-        Logger::sitecp($user->userId, $request->ip(), Action::DELETED_PREFIX, ['prefix' => $prefix->text], $prefix->prefixId);
+        Logger::sitecp($user->userId, $request->ip(), LogType::DELETED_PREFIX, ['prefix' => $prefix->text], $prefix->prefixId);
         return response()->json();
     }
 
@@ -156,14 +159,16 @@ class PrefixController extends Controller {
      *
      * @param $page
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getPrefixes ($page) {
+    public function getPrefixes($page) {
 
-        return response()->json([
-            'page' => $page,
-            'total' => DataHelper::getTotal(Prefix::count()),
-            'items' => Prefix::take($this->perPage)->skip(DataHelper::getOffset($page))->get()
-        ]);
+        return response()->json(
+            [
+                'page' => $page,
+                'total' => PaginationUtil::getTotalPages(Prefix::count()),
+                'items' => Prefix::take($this->perPage)->skip(PaginationUtil::getOffset($page))->get()
+            ]
+        );
     }
 }

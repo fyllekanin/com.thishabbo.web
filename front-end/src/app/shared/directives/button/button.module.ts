@@ -13,4 +13,5 @@ import { ButtonDirective } from 'shared/directives/button/button.directive';
         ButtonDirective
     ]
 })
-export class ButtonModule {}
+export class ButtonModule {
+}

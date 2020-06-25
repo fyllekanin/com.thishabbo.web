@@ -19,8 +19,8 @@ export class MemberOfTheMonthComponent extends Page implements OnDestroy {
     private _data = new MemberOfTheMonthModel();
 
     tabs: Array<TitleTab> = [
-        new TitleTab({title: 'Save'}),
-        new TitleTab({title: 'Back', link: '/sitecp/website-settings'})
+        new TitleTab({ title: 'Save' }),
+        new TitleTab({ title: 'Back', link: '/sitecp/website-settings' })
     ];
 
     constructor (
@@ -54,7 +54,7 @@ export class MemberOfTheMonthComponent extends Page implements OnDestroy {
     }
 
     onSave (): void {
-        this._httpService.put('sitecp/content/member-of-the-month', {information: this._data})
+        this._httpService.put('sitecp/content/member-of-the-month', { information: this._data })
             .subscribe(() => {
                 this.onSuccessUpdate();
             }, error => {

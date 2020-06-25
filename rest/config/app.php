@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Redis\RedisServiceProvider;
+
 return [
     /**
      * Version of the application, match with the front-end version for the communication to be verified
@@ -152,9 +154,11 @@ return [
         /*
          * Application Service Providers...
          */
+        App\Repositories\RepositoryServiceProvider::class,
         App\Providers\AppServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
+        RedisServiceProvider::class
 
     ],
 

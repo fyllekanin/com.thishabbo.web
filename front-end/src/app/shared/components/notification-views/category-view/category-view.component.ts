@@ -11,7 +11,7 @@ import { SlimUser } from 'core/services/auth/auth.model';
 @Component({
     selector: 'app-top-bar-category-view',
     templateUrl: 'category-view.component.html',
-    styleUrls: ['../notification.views.css']
+    styleUrls: [ '../notification.views.css' ]
 })
 export class CategoryViewComponent implements NotificationView {
     private _notification: NotificationModel<CategoryView>;
@@ -36,14 +36,14 @@ export class CategoryViewComponent implements NotificationView {
     }
 
     get imagePath (): string {
-        return `/rest/resources/images/users/${this.user.userId}.gif?${this.user.avatarUpdatedAt}`;
+        return `/resources/images/users/${this.user.userId}.gif?${this.user.avatarUpdatedAt}`;
     }
 
     getTime (): string {
         return this._notification.createdAt;
     }
 
-    @HostListener('click', ['$event.target'])
+    @HostListener('click', [ '$event.target' ])
     click (event): void {
         this.onClick.next(this._notification.notificationId);
         if (shouldPerformClickOnNotification(event)) {

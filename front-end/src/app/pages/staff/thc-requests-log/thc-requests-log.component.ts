@@ -2,7 +2,7 @@ import { Component, ElementRef, OnDestroy } from '@angular/core';
 import { Page } from 'shared/page/page.model';
 import { ActivatedRoute } from '@angular/router';
 import { ThcRequestLogPage } from './thc-requests-log.model';
-import { TableConfig, TableHeader, TableRow, TableCell } from 'shared/components/table/table.model';
+import { TableCell, TableConfig, TableHeader, TableRow } from 'shared/components/table/table.model';
 import { BreadcrumbService } from 'core/services/breadcrum/breadcrumb.service';
 import { Breadcrumb } from 'core/services/breadcrum/breadcrum.model';
 import { STAFFCP_BREADCRUM_ITEM } from '../staff.constants';
@@ -11,7 +11,7 @@ import { PaginationModel } from 'shared/app-views/pagination/pagination.model';
 @Component({
     selector: 'app-staff-thc-requests-log',
     templateUrl: 'thc-requests-log.component.html',
-    styleUrls: ['thc-requests-log.component.css']
+    styleUrls: [ 'thc-requests-log.component.css' ]
 })
 export class ThcRequestsLogComponent extends Page implements OnDestroy {
     private _data: ThcRequestLogPage;
@@ -19,7 +19,7 @@ export class ThcRequestsLogComponent extends Page implements OnDestroy {
     tableConfig: TableConfig;
     pagination: PaginationModel;
 
-    constructor(
+    constructor (
         elementRef: ElementRef,
         activatedRoute: ActivatedRoute,
         breadcrumbService: BreadcrumbService
@@ -34,11 +34,11 @@ export class ThcRequestsLogComponent extends Page implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy (): void {
         super.destroy();
     }
 
-    private onData(data: { data: ThcRequestLogPage }): void {
+    private onData (data: { data: ThcRequestLogPage }): void {
         this._data = data.data;
         this.createOrUpdateTable();
 
@@ -49,7 +49,7 @@ export class ThcRequestsLogComponent extends Page implements OnDestroy {
         });
     }
 
-    private createOrUpdateTable(): void {
+    private createOrUpdateTable (): void {
         if (this.tableConfig) {
             this.tableConfig.rows = this.getTableRows();
             return;
@@ -61,7 +61,7 @@ export class ThcRequestsLogComponent extends Page implements OnDestroy {
         });
     }
 
-    private getTableRows(): Array<TableRow> {
+    private getTableRows (): Array<TableRow> {
         return this._data.items.map(item => new TableRow({
             id: null,
             cells: [
@@ -74,7 +74,7 @@ export class ThcRequestsLogComponent extends Page implements OnDestroy {
         }));
     }
 
-    private getTableHeaders(): Array<TableHeader> {
+    private getTableHeaders (): Array<TableHeader> {
         return [
             new TableHeader({ title: 'Nickname / Habbo' }),
             new TableHeader({ title: 'Amount' }),

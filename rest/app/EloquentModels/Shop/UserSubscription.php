@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property mixed expiresAt
  */
 class UserSubscription extends UnixTimeModel {
+
     protected $primaryKey = 'userSubscriptionId';
     protected $table = 'user_subscriptions';
     protected $fillable = ['subscriptionId', 'userId', 'expiresAt'];

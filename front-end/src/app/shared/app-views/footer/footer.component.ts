@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import {
     ActiveUser,
     ContinuesInformationModel,
@@ -13,14 +13,17 @@ import { Router } from '@angular/router';
     styleUrls: [ 'footer.component.css' ]
 })
 
-export class FooterComponent {
+export class FooterComponent implements AfterViewInit {
     private _info: ContinuesInformationModel;
 
     constructor (
         private _router: Router,
-        continuesInformationService: ContinuesInformationService
+        private _continuesInformationService: ContinuesInformationService
     ) {
-        continuesInformationService.onContinuesInformation
+    }
+
+    ngAfterViewInit (): void {
+        this._continuesInformationService.onContinuesInformation
             .subscribe(continuesInformation => this._info = continuesInformation);
     }
 

@@ -1,4 +1,4 @@
-import { arrayOf, ClassHelper, objectOf, primitive, dateAndTime } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, dateAndTime, objectOf, primitive } from 'shared/helpers/class.helper';
 import { SlimUser } from 'core/services/auth/auth.model';
 import { Activity } from 'core/services/continues-information/continues-information.model';
 import { TimeHelper } from 'shared/helpers/time.helper';

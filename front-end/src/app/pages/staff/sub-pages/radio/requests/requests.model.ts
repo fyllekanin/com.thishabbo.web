@@ -1,4 +1,4 @@
-import { arrayOf, ClassHelper, primitive, dateAndTime } from 'shared/helpers/class.helper';
+import { arrayOf, ClassHelper, dateAndTime, primitive } from 'shared/helpers/class.helper';
 
 export class RequestModel {
     @primitive()
@@ -28,3 +28,7 @@ export class RequestsPage {
     }
 }
 
+export enum RequestAction {
+    RELOAD,
+    DELETE_ALL
+}
